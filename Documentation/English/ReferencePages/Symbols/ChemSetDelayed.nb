@@ -1,0 +1,1478 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     61811,       1469]
+NotebookOptionsPosition[     47792,       1130]
+NotebookOutlinePosition[     56996,       1342]
+CellTagsIndexPosition[     56953,       1339]
+WindowTitle->ChemSetDelayed
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[GridBox[{
+   {GridBox[{
+      {
+       DynamicBox[If[$VersionNumber < 11.1, 
+         Cell[
+         "CHEMTOOLS SYMBOL", "PacletNameCell", TextAlignment -> Center, 
+          CellID -> 34], 
+         ItemBox[
+          Cell[
+           BoxData[
+            RowBox[{
+              InterpretationBox[
+               StyleBox[
+                
+                GraphicsBox[{}, ImageSize -> {8, 0}, BaselinePosition -> 
+                 Baseline], "CacheGraphics" -> False], 
+               Spacer[8], Selectable -> False], 
+              Cell[
+              "CHEMTOOLS SYMBOL", "PacletNameCell", TextAlignment -> Center, 
+               CellID -> 35], 
+              InterpretationBox[
+               StyleBox[
+                
+                GraphicsBox[{}, ImageSize -> {8, 0}, BaselinePosition -> 
+                 Baseline], "CacheGraphics" -> False], 
+               Spacer[8], Selectable -> False]}]]], Background -> 
+          Hue[0.38, 0.64, 0.6], ItemSize -> Full]],
+        ImageSizeCache->{132., {5., 13.}},
+        UpdateInterval->Infinity], ""}
+     },
+     GridBoxAlignment->{"Rows" -> {{Center}}},
+     GridBoxItemSize->{"Columns" -> {Full, 
+         Scaled[0.02]}, "Rows" -> {{2.5}}}], Cell[TextData[{
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "See Also",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "d29073bf-746c-4dca-84de-00dcee58226d"]
+         }],ExpressionUUID->"b1276cdb-d3be-49ab-b9fb-f0a96524518f"],
+         StripOnInput->False], {"\<\"ChemSet\"\>":>Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemSet"], "\<\"ChemThreadSet\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemThreadSet"], "\<\"ChemThreadSetDelayed\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemThreadSetDelayed"], "\<\"ChemUnset\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemUnset"], "\<\"ChemGet\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/ref/ChemGet"]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"SeeAlso"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "36043cfc-7b59-4023-876e-7b6b51107f83"],
+     "\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\
+\[ThickSpace]",
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "Related Guides",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "3d5b5c20-b034-4a5f-ad60-8bfdba66d869"]
+         }],ExpressionUUID->"d3d1f229-80dd-4fc8-ae85-4b5ac0b1cff1"],
+         StripOnInput->False], {"\<\"Chemistry Objects\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/guide/ChemObjects", 
+         EvaluationNotebook[]], "\<\"Object Interface\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/guide/ChemObjectInterface", 
+         EvaluationNotebook[]]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"MoreAbout"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "2a379605-f0af-4466-9af7-f2988f432b9e"],
+     "\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\
+\[ThickSpace]",
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "URL",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "e9e82d44-f3c8-47bd-8fcd-12f5365d646d"]
+         }],ExpressionUUID->"0582c2ac-6569-4f87-ab9c-ee0f85ae3ccf"],
+         StripOnInput->False], {
+        RowBox[{
+         RowBox[{"ChemTools", "/", "ref"}], "/", "ChemSetDelayed"}]:>None, 
+        RowBox[{"Copy", " ", "Documentation", " ", "Center", " ", "URI"}]:>
+        CopyToClipboard["ChemTools/ref/ChemSetDelayed"], Delimiter, 
+        RowBox[{"Copy", " ", "web", " ", "URL"}]:>CopyToClipboard[
+         Hyperlink[
+         "https://www.wolframcloud.com/objects/b3m2a1.paclets/reference/\
+ChemTools/ref/ChemSetDelayed"]], 
+        RowBox[{"Go", " ", "to", " ", "URL"}]:>SystemOpen[
+        "https://www.wolframcloud.com/objects/b3m2a1.paclets/reference/\
+ChemTools/ref/ChemSetDelayed"]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"URLMenu"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "603d7b97-ca0b-45c5-a8ea-16df06cc47bf"]
+    }], "AnchorBar",ExpressionUUID->"f96ac1b7-e1ce-460c-8c73-8b777d921cd4"]}
+  }]], "AnchorBarGrid",
+ CellID->1,ExpressionUUID->"a39195f6-9d96-4d5b-ac95-836d19969239"],
+
+Cell["ChemSetDelayed", "ObjectName",
+ CellID->2,ExpressionUUID->"1aeee0ed-e5a9-4f1f-9727-a697924a3a4f"],
+
+Cell[BoxData[GridBox[{
+   {"", Cell[TextData[{
+     Cell[BoxData[
+      RowBox[{Cell[BoxData[
+        TemplateBox[{Cell[
+           TextData["ChemSetDelayed"]],"paclet:ChemTools/ref/ChemSetDelayed"},
+         
+         "RefLink",
+         BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+        "5d748eec-1d1a-4417-ae30-31456485302b"], "[", 
+       RowBox[{
+        StyleBox["obj", "TI"], ",", 
+        StyleBox["prop", "TI"], ",", 
+        StyleBox["val", "TI"]}], "]"}]], "InlineFormula",ExpressionUUID->
+      "b89cbd0b-9da8-4bfe-9e13-4e4cad67a4ef"],
+     "\[LineSeparator]",
+     Cell[TextData[{
+      "Sets the attribute ",
+      StyleBox["prop", "TI", "TI"],
+      " of ",
+      StyleBox["obj", "TI", "TI"],
+      " to the delayed value of ",
+      StyleBox["val", "TI", "TI"]
+     }], "InlineFormula",ExpressionUUID->
+      "41857498-e5fe-4517-9b9c-c6509837a9a3"]
+    }],ExpressionUUID->"35621a90-712d-47b5-9bde-89a04c7b88a5"]},
+   {"", Cell[TextData[{
+     Cell[BoxData[
+      RowBox[{Cell[BoxData[
+        TemplateBox[{Cell[
+           TextData["ChemSetDelayed"]],"paclet:ChemTools/ref/ChemSetDelayed"},
+         
+         "RefLink",
+         BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+        "7429f288-30ca-42f1-8a87-28c58c8ef6c3"], "[", 
+       RowBox[{
+        StyleBox["obj", "TI"], ",", 
+        RowBox[{"{", 
+         RowBox[{
+          SubscriptBox[
+           StyleBox["prop", "TI"], "1"], ",", 
+          SubscriptBox[
+           StyleBox["prop", "TI"], "2"], ",", "..."}], "}"}], ",", 
+        StyleBox["val", "TI"]}], "]"}]], "InlineFormula",ExpressionUUID->
+      "b7429993-6252-485a-82d5-1e87b1501085"],
+     "\[LineSeparator]",
+     Cell[TextData[{
+      "Sets ",
+      Cell[BoxData[
+       SubscriptBox[
+        StyleBox["prop", "TI", "TI"], 
+        StyleBox["1", "TI", "TI"]]],ExpressionUUID->
+       "b1d7b467-18a1-48cd-885b-9d874d58edb8"],
+      ", ",
+      Cell[BoxData[
+       SubscriptBox[
+        StyleBox["prop", "TI", "TI"], 
+        StyleBox["2", "TI", "TI"]]],ExpressionUUID->
+       "3ef63a0a-1dd8-4172-890a-a82510d68adb"],
+      ", ... of ",
+      StyleBox["obj", "TI", "TI"],
+      " to the delayed value of ",
+      StyleBox["val", "TI", "TI"]
+     }], "InlineFormula",ExpressionUUID->
+      "53093b9e-4ea2-4e0e-baf6-f4163c838bba"]
+    }],ExpressionUUID->"e3a27b2d-5c09-4ee6-8d17-c0fb0edb4475"]},
+   {"", Cell[TextData[{
+     Cell[BoxData[
+      RowBox[{Cell[BoxData[
+        TemplateBox[{Cell[
+           TextData["ChemSetDelayed"]],"paclet:ChemTools/ref/ChemSetDelayed"},
+         
+         "RefLink",
+         BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+        "85b5dd8e-b5bb-4837-a02a-5625a2159378"], "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          SubscriptBox[
+           StyleBox["obj", "TI"], "1"], ",", 
+          SubscriptBox[
+           StyleBox["obj", "TI"], "2"], ",", "..."}], "}"}], ",", 
+        StyleBox["prop", "TI"], ",", 
+        StyleBox["val", "TI"]}], "]"}]], "InlineFormula",ExpressionUUID->
+      "08647eec-90d9-4007-911f-1a76db669b09"],
+     "\[LineSeparator]",
+     Cell[TextData[{
+      "Sets ",
+      StyleBox["prop", "TI", "TI"],
+      " of ",
+      Cell[BoxData[
+       SubscriptBox[
+        StyleBox["obj", "TI", "TI"], 
+        StyleBox["1", "TI", "TI"]]],ExpressionUUID->
+       "35b429bc-8645-4e41-bce5-a90cbebfe6d1"],
+      ", ",
+      Cell[BoxData[
+       SubscriptBox[
+        StyleBox["obj", "TI", "TI"], 
+        StyleBox["2", "TI", "TI"]]],ExpressionUUID->
+       "5a5a878d-fcc4-45af-a739-1c17590d218d"],
+      ", ... to the delayed value of ",
+      StyleBox["val", "TI", "TI"]
+     }], "InlineFormula",ExpressionUUID->
+      "0c4be00b-0ba5-412d-b7d3-c3448b051f4f"]
+    }],ExpressionUUID->"4c9b23ec-d606-4f18-8253-8d30ff950370"]},
+   {"", Cell[TextData[{
+     Cell[BoxData[
+      RowBox[{Cell[BoxData[
+        TemplateBox[{Cell[
+           TextData["ChemSetDelayed"]],"paclet:ChemTools/ref/ChemSetDelayed"},
+         
+         "RefLink",
+         BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+        "c79ed50c-ff38-46c0-b92f-e9bab80b3bb7"], "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          SubscriptBox[
+           StyleBox["obj", "TI"], "1"], ",", 
+          SubscriptBox[
+           StyleBox["obj", "TI"], "2"], ",", "..."}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{
+          SubscriptBox[
+           StyleBox["prop", "TI"], "1"], ",", 
+          SubscriptBox[
+           StyleBox["prop", "TI"], "2"], ",", "..."}], "}"}], ",", 
+        StyleBox["val", "TI"]}], "]"}]], "InlineFormula",ExpressionUUID->
+      "ee6243e6-732f-4fb3-9875-f55b8cba2200"],
+     "\[LineSeparator]",
+     Cell[TextData[{
+      "Sets ",
+      Cell[BoxData[
+       SubscriptBox[
+        StyleBox["prop", "TI", "TI"], 
+        StyleBox["i", "TI", "TI"]]],ExpressionUUID->
+       "aa88f9e0-f129-43b8-ae03-41bc30379c7c"],
+      " of ",
+      Cell[BoxData[
+       SubscriptBox[
+        StyleBox["obj", "TI", "TI"], 
+        StyleBox["i", "TI", "TI"]]],ExpressionUUID->
+       "997bee87-af59-49fc-8d4b-49a0f5396a95"],
+      " to the delayed value of ",
+      StyleBox["val", "TI", "TI"],
+      " for each ",
+      StyleBox["i", "TI", "TI"]
+     }], "InlineFormula",ExpressionUUID->
+      "f0f5c9d5-88ac-4d61-ab34-e7ff3ef15035"]
+    }],ExpressionUUID->"c233117a-41ed-4b4e-9875-dae028c824cc"]},
+   {"", Cell[TextData[{
+     Cell[BoxData[
+      RowBox[{Cell[BoxData[
+        TemplateBox[{Cell[
+           TextData["ChemSetDelayed"]],"paclet:ChemTools/ref/ChemSetDelayed"},
+         
+         "RefLink",
+         BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+        "71ac4b38-e394-4a9f-a20b-998813eda474"], "[", 
+       RowBox[{
+        StyleBox["prop", "TI"], ",", 
+        StyleBox["val", "TI"]}], "]"}]], "InlineFormula",ExpressionUUID->
+      "8ee51653-6c95-4e61-9b27-97b0533f1a13"],
+     "\[LineSeparator]",
+     Cell[TextData[{
+      "Operator form of ",
+      Cell[BoxData[
+       TemplateBox[{Cell[
+          TextData["ChemSetDelayed"]],"paclet:ChemTools/ref/ChemSetDelayed"},
+        "RefLink",
+        BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+       "6f20e699-e105-4a35-ab40-6fda8e4c2fa6"]
+     }], "InlineFormula",ExpressionUUID->
+      "71c8e2d4-09c6-4c73-8332-28213bb9e679"]
+    }],ExpressionUUID->"5448a297-7867-40d9-b0ca-0380d3f9e12b"]}
+  }]], "Usage",
+ CellID->3,ExpressionUUID->"54f6cc37-156b-48df-b2f3-7d73628849a2"],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ Cell[BoxData[
+  DynamicBox[If[$VersionNumber < 11.1, "", 
+    Cell[
+     BoxData[
+      ToBoxes[
+       Toggler[
+        Dynamic[
+         MatchQ[
+          CurrentValue[
+           EvaluationNotebook[], {TaggingRules, "Openers", "NotesSection"}, 
+           Closed], 
+          Alternatives[Open, True]], (CurrentValue[
+            EvaluationNotebook[], {
+            TaggingRules, "Openers", "NotesSection"}] = #; Null)& , 
+         ImageSizeCache -> {14., {5., 9.}}], {True -> Style[
+           Graphics[{
+             Thickness[0.18], 
+             RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+             Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+            PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+           0.68 Inherited], False -> Rotate[
+           Style[
+            Graphics[{
+              Thickness[0.18], 
+              RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+              Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+             PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+            0.68 Inherited], Rational[1, 2] Pi, {-1.65, -1}]}]]]]],
+   ImageSizeCache->{14., {6., 15.}},
+   UpdateInterval->Infinity]],ExpressionUUID->
+  "8a8fc616-3b08-4180-8ef9-77790914403c"],
+ Cell["Details", "NotesFrameText",ExpressionUUID->
+  "f15d83f2-f6d8-42f4-804e-06594ec0fd1b"]
+}], "NotesSection",
+ WholeCellGroupOpener->True,
+ CellID->4,ExpressionUUID->"50426e79-5437-4c63-8699-580b756e1a06"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemSetDelayed"]],"paclet:ChemTools/ref/ChemSetDelayed"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "060fbd13-fd38-4bf1-bacc-5667a1b2dc41"],
+ " is vectorized to minimize the number of ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["AssociateTo"]],"paclet:ref/AssociateTo"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "393ce8f1-f072-4065-90a2-e6a332d4124f"],
+ " calls necessary"
+}], "Notes",
+ CellID->5,ExpressionUUID->"9543c3f8-a6cd-4eb8-84b9-f1f217e671b1"],
+
+Cell[TextData[{
+ "For setting properties in a threaded manner see ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemThreadSetDelayed"]],
+    "paclet:ChemTools/ref/ChemThreadSetDelayed"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "510333f3-d067-4f15-a1ae-a9621720946c"]
+}], "Notes",
+ CellID->6,ExpressionUUID->"ff69a936-f279-4064-835b-5891df158ed5"],
+
+Cell[TextData[{
+ "For setting properties in an immediate manner see ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemSet"]],"paclet:ChemTools/ref/ChemSet"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "8bc27454-8dbf-40df-9817-6002e8f07a4f"]
+}], "Notes",
+ CellID->7,ExpressionUUID->"cef496e0-157d-4b78-afee-c2d564d37cf4"],
+
+Cell[BoxData[
+ ButtonBox[
+  DynamicBox[ToBoxes[
+    Overlay[{
+      Graphics[{}, Background -> If[
+         CurrentValue["MouseOver"], 
+         RGBColor[0.942, 0.978, 0.992], None], ImageSize -> {720, 70}, 
+       AspectRatio -> Full], 
+      Pane[
+       Grid[{{"", 
+          Spacer[10], 
+          Image[CompressedData["
+1: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
+5NcAcGsArIXlkb7RdGmIn54/M8zd3lqf0zs0zfX8uTnyDRY+sF5soXriZwFf
+0qL9ZUuD5c9eU7KoUEtQTS1SSGIqVVgpf5oQl65erVrH8cyQ94cblVt8T3XP
+eCTJ6xk1qeooN4brVskeTyvyczDf16RSAhyVyV6j6sVesuVWxFEn+3Sluyzd
+HnJMlWInKJy4mVdzt/rchfLapkspF26wzmeOrjuuib+Dkl9Yx52OHbjCllTc
+Ie4j1ypXoqRqpyYlPstS1z/kamesrO507LvjLmLdBKb4j5JhOykcKXUzAkz7
+zFxN12dGXJOsStLUVDQ89ZXqDmsjW0fyNnM/vV0+HDEymRj/jayyrYKqEXmr
+9v4gkLpb9hvT3YcyOEXgfn1dZXZba31t9dWeksL8MzUP1uknyj1nUQFFItMR
+PDEnB6leUqXrewYElHqJKw10bjWJzh0+GeHwa3S8Wo0LUPSi+Gq1yIUAe59c
+d+B3JC4oPXXOJpAWHesZG5YcYWdZLG6dFERUKVVKJTRxnGmJwX6iXoFlLhFJ
+dB3/gDpQJBYrnZ2uMMLpYgyMnB2pvHBhaGhsuK5ltPR+x7lXmquwAPccuV1Z
+5M72O8qnxoZDMe55XD3COQfYT+A5L55Rs3xrgr9qRw3wuOfo+9DnOcsrOEwZ
+cNb+rgAHDhw4cODAgQMHDhw4cPw7gHDgwIEDBw4cOHDgwIEDxx+EkLCxo645
+P/edrTQEbTz5L1djYQgyVRLCVCAo8otN1X8XEuKrHd6JbD+o/hDNidIhie18
+UdpPEER2Q1LFu9GCrSfM3Hmt8BH7T367kFjJB5/ZIEkRtMjdFYI+EoOgdz3d
+CEvqYVk+kIjFd5DmpLzHdIxyt25hax0l4d4pv2oKHNnaGpKaTPfPyYiwjvFq
+VKzgbH+nKbx5i7NFXHCHbO7pG2cs+w1rW1v8R02YwQY3Lvxtodq5b8/mtraq
++IyQ5iK3tJyW1qhSy/6kuLZ3Q9mNc2lKXVrCxd2BNL8AVlOb+ZlhPUqpQcep
+HZ2ejCkoHBytdzlNk+1V9awLc6WVpc1rNRtH3dzLYv4dMuontzs2PaiLL58n
+Q7Y1Ik7tDd13k2p7CvpPtfVMXcmrJ2d73X081E9pB1YPWFcmFxntP73/lPHg
+8AnQ9/R214Ud52M66Hfuy993H49/MslhjArfCOkuT3pvrrbxal8Zo6O8tG64
+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
+Bw4cOP4A/h/9VWQR
+           "], "Byte", ColorSpace -> "RGB", ImageSize -> All,
+            Interleaving -> False, Magnification -> Automatic]}}, 
+        Spacings -> {0, 0}, Alignment -> {Center, Center}], 
+       ImageSize -> {720, 70}, Alignment -> {Left, Center}], 
+      If[
+       CurrentValue["MouseOver"], 
+       Image[CompressedData["
+1:eJzdmc9vE0cUxyNAosfeckGIXnujJy6tVKk9VOLStFVz4AIlRD00VQMSouXQ
+/hEIIfXAta0qFTggkBqpCA40CSUJtKX8ik1i4ti7XjuJfyQkw/uud52345nx
+7I+A1cM3tuPdnfeZN+/HjN869vXQiV0DAwMn36A/Q0dPvz8+fvTMJ2/Sh8/G
+Tn45OjZy/KOxUyOjI+OHju2mf74TaA9JCPG/kdfaTKr9pCOkC6TbpBJJBNoi
+FUk3SedIw6TBFGMplZJjnPQ7szmOrpNGXzPHWdLdhPbLukUae8UcB1PMfy9d
+JR14BRznTXaU1tbFvLMq/lmqirsLrpjMlcWf8yVf0/R+ZtEV/xZrIl+pC6ex
+oXtOjfQp3TMQV5YcP+rsX/AaYrZQ6dhsoykSeIsrLR3P+R3gUDIsrbbE7GI8
++1X6u1gV5brSP7FYenAo19ITdy21/Vx38mWxWG2oWIYy4DioYniwXMuUgStH
+8yON55L2peToyks7yRAKeUAa90oKjrNJ1hLi9z7FL+a1QDFcWtsQy6vrtGaa
+4rFbt84HhVpTZjmekCNS4xDTvcZ+sLxC8fpCVFpbEXmBws9LxHXvuWd81vQz
+R7iNF5zjRgKOb2RfmPLSFMVoe/7IzuZmx94Zdg/e+98F3+Pap7R+TCz/lVZk
+nwzH5IjEBeqDiQHz68nzTvZ2cYScgXBt3sAymSvJ+fhyDI79Xb4wrOlCrRXM
+72Ysf4QceP/Y0cfdw/Kq7JO9lhxH+H3oNcx+34qul/VtFq0/ePz4n6O+47qT
+d2SODy05LvD70C/p8pIf02y9VyQmFUd43fZr+/oFyme6+ZJ6lx8sOW5zDvRA
+qmcjt8p283Wvio9O/ATXyPGEuVeNNe9E6sklSw6+j/P7VtWzc24jErN8vXuG
++JBjiAu9sGos1F5m0z1Ljsh65L13JL59X7dt1YnfO+n37fpr/Xh31bkLtYbZ
+VEjCoVuzqNMYW/d9XMFHuhyMfMlsqlpybNlwFNc2fH9kxmGoJXOFiD+eWXIU
+Oce0Zl2hXwpjOYt15RnqCHIKs+kvS46bnAN7UdWzsZbDnNlV23R5l8W3Jwnf
+3dfkRqk/+dWS4xzn0OWQuQKrB5J94asq77ZZN4UncZeb+pySr0T2JN9Zcgxz
+DlP/E/ZVPOdymfqrSB9AelrR93DoKZhN71lyDHIOnGtMaZ6PfMgZqlIdUXJI
+9Q+vTkNfA2eofkk5dI8lB3TNpqZDTyhOIvWczbOuT5TXFM4ZdM+XavnPOgYN
+xyjnQH+jG6e9frdZtmPX3LeH/nhYUvdvEPYEbjOylzockwO6xVlMc+bnL8qZ
+jrTvU3GEa8/1/WDe60u+mDAxGDi+4hzYz+BsxjQubM1jPyL1XTyvlf2Yrmvj
+gQt1nO1tq6S3E3BAVzkLzpd6jQ3BRuRr+AhrDj3lI9oPoT7ocmsWLAaOA8G9
+LA9ne/6WJUuP88QhuXc01ZTXyWJxvtt1Nvp8pemfzfQTi+V5excLnoneB+ca
+SW1D7kDc257PmVhi/P7xMcmReZDLcK4Rxz/oP2F/WB9gW1qWmL9H7SNdkVl4
+zUTex14UfQv6SewfkKvgO8TWcn1deW9aloS/D35B+kPHE1MTYV7MiiUGR6jP
+SZcT2v+TF/QasCFLlgQcofaSPiB9T/qNNEtaJHmkHGmK9AvpW9K7pN1y3syK
+JSWHsfexVVKWOXYW0Q8cSViQ9/lvcv3CEYdFZug3DhsWFUM/cphYdAz9yqFi
+QUzrGEgX03LssDosBl1MUQf7haXD8BJ6c/TW
+        "], "Byte", ColorSpace -> "RGB", 
+        Interleaving -> True, Magnification -> 0.5], 
+       Image[CompressedData["
+1:eJztmctL1FEUx4cUbNnOjYht29mqTUFQi6BNU5ELN5omLZpIg6hc1B8hIrRo
+WxGULqQgoZzxAer4yPcDZJzxnY6Kb+Z2vsPMdOd67/3d30NnFh34huXv3ns+
+93HOubeL1U/9j875fL6G8/SHv+rF9fr6qpd3L9Bf7gcaHtcFamtuBZ7X1tXW
+X6kuoH+8nFIhiTH2X4yVkipJLaRe0ir7ZwnSMilIaiJVkIrzwGde9aQfzJl9
+J9Xl2P9G0qBD/0ULkQJn7H85cz7/VtZOKjsDhmadE7u7u2xhYYGNjY2xvr4+
+FgqFWGdnZ1JdXV1sYGCATU5OsqWlJXZ4eKjqZot0j9r47MqQ4Z1q4NXVVTY4
+OJjx2UTBYDDJu7W1peq2+RQ4pAzb29ssHA7b8l+m8fFxdnBw4JrFgkG6lyKR
+SHJO3TKk1d3dzdbX12VD+T3gKBc7TSQSbGpqyjP/RS0uLopD/iGVuOQ4EZdO
+k0HD0uaCo1G2l6x8wF4bHR1N+hKPx9ne3l4yjm1sbCTbm8aDzc1NcfgahxxZ
+OQ5n2uo8TE9Pq84rE/saGRnR9tXb28uOjo74Zr8ccDwTx9bFJZxRzLdoyBfp
+b/CzaNFoVMsyMzMjNqmwyZF1LpAfdAw7OzvSebfigK2srGj36P7+Pv95qw2O
+UnEs3Z6WrYMdDtj8/Lyy/7m5OfHzIkOOSr4RzqjuPOjMlAOxnP9WPCeC3TTk
+aOEboV5SrbnVmTblgK2trSnnS6hd3hpyZE0AaiBZ34itVmaHA2vS09MjHQtz
+ydlXQw7+HpesW2V9S3KVKw7YxMSEdCzkXs5+G3JkGV9780KOS/uqEt8WP+u+
+hanyLHINZzEnHKo9izyt+71dwXAvkf0O8ZKzuCFHwoQDceysOIaHh3mXIoYc
+y3wj3ONkfafzhpf7SpVHhJgSNuQI8o1UcR172crsnnP4KxtLqE8+G3I08Y1w
+nzbYs645jo+PlTFFiI2vDTkq+EaqPQuhbvWKIxaLWcaUlF0z5CjmG+FdQ1Wv
+C/HQMQfqc1UO7O/vFz8vNOSAvvENVTkdEnKtIw68Mxj2/1HFoOCo4xujvlGN
+A6H2dsoxOzur7Bd3Apwbzm7b5IBCpnMGIWaiRjLlwF6y6lNYiw4dg4bjCd8J
+alvMj25c+Iq6VeThDfOLe6DqPPBCTOTutiiELjnggNp5H/C+ZDU2BB9R8yHH
+IN4hbmK9kB9UsdULFg1HWaptxuCTHT+8kCmLhgPyi3sDc+zlW6JXLBYc0Im3
+Ubwv4c6ZTywGHFIW9Inax83aIHbg3Ju+z+lYDDmgO6QTj8l4m8G7hp31QWyD
+/+n8AN/cstjggEpIbSJL2pAzEfdxF0XdMjQ0lLw/IFZh7XC2hHopa33dsNjk
+SOsh6aeKx6Z1pHzJFQv0gNTq0P8PLFVrpHzINQtURLpBekP6QsJlNErCw/k8
+qY/0ifSKdJVUIImbXrG44dDWPqZyyoJzyFnOOZywIO4L/yeXFxx2WCQMecVh
+wqJgyDsOHYuGIS85ZCw40xqG9245TlkZFo3lO4MJS4bhL7E9ExQ=
+        "], "Byte", 
+        ColorSpace -> "RGB", Interleaving -> True, Magnification -> 0.5]]}, 
+     Alignment -> {-0.85, Center}], StandardForm],
+   ImageSizeCache->{720., {32., 38.}}],
+  Appearance->None,
+  ButtonFunction:>(CurrentValue[
+     EvaluationNotebook[], {TaggingRules, "Openers", "NotesSection"}] = Open),
+  
+  Evaluator->Automatic,
+  Method->"Preemptive"]], "NotesThumbnails",
+ CellOpen->FEPrivate`If[
+   FEPrivate`Less[FEPrivate`$VersionNumber, 11.1], False, 
+   FEPrivate`Not[
+    FEPrivate`Or[
+     FEPrivate`SameQ[
+      FrontEnd`CurrentValue[
+       FrontEnd`EvaluationNotebook[], {
+       TaggingRules, "Openers", "NotesSection"}], Open], 
+     FEPrivate`SameQ[
+      FrontEnd`CurrentValue[
+       FrontEnd`EvaluationNotebook[], {
+       TaggingRules, "Openers", "NotesSection"}], True]]]],
+ CellID->8,ExpressionUUID->"ce4beb82-81df-4d06-b7e4-a3b617c3183b"]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "NotesSection"}, Closed]]]],
+
+Cell["", "PageDelimiter",
+ CellID->9,ExpressionUUID->"8914ab0e-d506-4912-aa8c-91ac41730868"],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ Cell[BoxData[
+  DynamicBox[If[$VersionNumber < 11.1, "", 
+    Cell[
+     BoxData[
+      ToBoxes[
+       Toggler[
+        Dynamic[
+         MatchQ[
+          CurrentValue[
+           EvaluationNotebook[], {
+           TaggingRules, "Openers", "PrimaryExamplesSection"}, Closed], 
+          Alternatives[Open, True]], (CurrentValue[
+            EvaluationNotebook[], {
+            TaggingRules, "Openers", "PrimaryExamplesSection"}] = #; Null)& , 
+         ImageSizeCache -> {14., {5., 9.}}], {True -> Style[
+           Graphics[{
+             Thickness[0.18], 
+             RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+             Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+            PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+           0.68 Inherited], False -> Rotate[
+           Style[
+            Graphics[{
+              Thickness[0.18], 
+              RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+              Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+             PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+            0.68 Inherited], Rational[1, 2] Pi, {-1.65, -1}]}]]]]],
+   ImageSizeCache->{14., {12., 13.}},
+   UpdateInterval->Infinity]],ExpressionUUID->
+  "6cc2cdcd-90c8-4f51-af14-e6d1f2ff8b0a"],
+ "Examples"
+}], "PrimaryExamplesSection",
+ WholeCellGroupOpener->True,
+ CellID->10,ExpressionUUID->"d37e104b-e8d1-4eb3-8141-f76fce7b03db"],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ Cell[BoxData[
+  DynamicBox[If[$VersionNumber < 11.1, "", 
+    Cell[
+     BoxData[
+      ToBoxes[
+       Toggler[
+        Dynamic[
+         MatchQ[
+          CurrentValue[
+           EvaluationNotebook[], {
+           TaggingRules, "Openers", "ExampleSection", "0"}, Closed], 
+          Alternatives[Open, True]], (CurrentValue[
+            EvaluationNotebook[], {
+            TaggingRules, "Openers", "ExampleSection", "0"}] = #; Null)& , 
+         ImageSizeCache -> {14., {5., 9.}}], {True -> Style[
+           Graphics[{
+             Thickness[0.18], 
+             RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+             Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+            PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+           0.68 Inherited], False -> Rotate[
+           Style[
+            Graphics[{
+              Thickness[0.18], 
+              RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+              Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+             PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+            0.68 Inherited], Rational[1, 2] Pi, {-1.65, -1}]}]]]]],
+   ImageSizeCache->{14., {12., 13.}},
+   UpdateInterval->Infinity]],ExpressionUUID->
+  "486c6042-1977-47fc-89ae-4663e3188a06"],
+ "Basic Examples"
+}], "ExampleSection",
+ WholeCellGroupOpener->True,
+ CellID->11,ExpressionUUID->"80be372f-5e76-4001-93a9-210d5db80342"],
+
+Cell["Set an object attribute delayed:", "ExampleText",
+ CellID->12,ExpressionUUID->"1ecf9ee7-7dd0-49da-a96e-7484b0ca81c7"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"obj", "=", 
+   RowBox[{"ChemAdd", "[", 
+    RowBox[{"$ChemDefaultSystem", ",", "\"\<Object\>\""}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ChemSetDelayed", "[", 
+   RowBox[{"obj", ",", "\"\<Count\>\"", ",", 
+    RowBox[{"RandomReal", "[", "]"}]}], "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"ChemGet", "[", 
+    RowBox[{"obj", ",", "\"\<Count\>\""}], "]"}], ",", 
+   RowBox[{"ChemGet", "[", 
+    RowBox[{"obj", ",", "\"\<Count\>\""}], "]"}]}], "}"}]}], "Input",
+ CellChangeTimes->{{3.70110205941367*^9, 3.701102081419435*^9}, {
+  3.701103541555111*^9, 3.701103552879301*^9}},
+ CellLabel->"In[1]:=",
+ CellID->13,ExpressionUUID->"339b956d-9c6a-4494-b416-9bf6326e1ff4"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0.5762429273459333`", ",", "0.4108790079465259`"}], 
+  "}"}]], "Output",
+ CellLabel->"Out[3]=",
+ CellID->14,ExpressionUUID->"e3320ad3-c4b1-4e12-82f3-19a0803a9bbc"],
+
+Cell[BoxData[
+ InterpretationBox[Cell[
+  "\t", "ExampleDelimiter",ExpressionUUID->
+   "0054b993-9ac0-4f24-a642-8f46a95b54f8"],
+  $Line = 0; Null]], "ExampleDelimiter",
+ CellID->15,ExpressionUUID->"7763fa92-48a0-4ab2-805d-db747f09a7b9"],
+
+Cell["Set on multiple objects:", "ExampleText",
+ CellID->16,ExpressionUUID->"ec25c678-7842-48f5-93c7-0eb4d4649daa"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"objs", "=", 
+   RowBox[{"ChemAdd", "[", 
+    RowBox[{"$ChemDefaultSystem", ",", "\"\<Object\>\"", ",", "5"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ChemSetDelayed", "[", 
+   RowBox[{"objs", ",", "\"\<Count\>\"", ",", 
+    RowBox[{"RandomReal", "[", "]"}]}], "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"ChemGet", "[", 
+  RowBox[{"objs", ",", "\"\<Count\>\""}], "]"}]}], "Input",
+ CellChangeTimes->{{3.701102100741022*^9, 3.7011021072190847`*^9}, {
+  3.70110355795718*^9, 3.701103561613142*^9}},
+ CellLabel->"In[4]:=",
+ CellID->17,ExpressionUUID->"4b456193-c36a-4688-8bd6-68b8dc02f457"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+  "0.4603634692342915`", ",", "0.6294383288226018`", ",", 
+   "0.4378513530753141`", ",", "0.044621960026437923`", ",", 
+   "0.29272467823671344`"}], "}"}]], "Output",
+ CellLabel->"Out[6]=",
+ CellID->18,ExpressionUUID->"88d933b5-af85-47b4-bc08-829cd631f1f2"],
+
+Cell[BoxData[
+ InterpretationBox[Cell[
+  "\t", "ExampleDelimiter",ExpressionUUID->
+   "55d4effe-5806-471d-b0f0-3eb2a810870c"],
+  $Line = 0; Null]], "ExampleDelimiter",
+ CellID->19,ExpressionUUID->"085f7e4b-0673-48d8-abff-f97912a538f1"],
+
+Cell["Set multiple properties on multiple objects:", "ExampleText",
+ CellID->20,ExpressionUUID->"c87fd71b-ccc5-452d-829c-38a80d0d2668"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ChemSetDelayed", "[", 
+   RowBox[{"objs", ",", 
+    RowBox[{"{", 
+     RowBox[{"\"\<A\>\"", ",", "\"\<B\>\""}], "}"}], ",", 
+    RowBox[{"RandomReal", "[", "]"}]}], "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"ChemGet", "[", 
+  RowBox[{"objs", ",", 
+   RowBox[{"{", 
+    RowBox[{"\"\<A\>\"", ",", "\"\<B\>\""}], "}"}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.701102132595546*^9, 3.701102144739368*^9}, {
+  3.701103567908804*^9, 3.70110357009429*^9}},
+ CellLabel->"In[7]:=",
+ CellID->21,ExpressionUUID->"d6626fd0-a56f-464e-af56-cc9a7f8bd56e"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0.8671680794898062`", ",", "0.10636814971598896`"}], "}"}], ",", 
+   
+   RowBox[{"{", 
+    RowBox[{"0.19785517285050358`", ",", "0.20967994858829475`"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"0.24067351928206615`", ",", "0.9629023044283751`"}], "}"}], ",", 
+   
+   RowBox[{"{", 
+    RowBox[{"0.5507196614787548`", ",", "0.7664490255482901`"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"0.7839237045653156`", ",", "0.016880229385626944`"}], "}"}]}], 
+  "}"}]], "Output",
+ CellLabel->"Out[8]=",
+ CellID->22,ExpressionUUID->"92a1092b-54ff-471e-b05a-59c16bc202c5"]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "ExampleSection", "0"}, 
+  Closed]]]],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ Cell[BoxData[
+  DynamicBox[If[$VersionNumber < 11.1, "", 
+    Cell[
+     BoxData[
+      ToBoxes[
+       Toggler[
+        Dynamic[
+         MatchQ[
+          CurrentValue[
+           EvaluationNotebook[], {
+           TaggingRules, "Openers", "ExampleSection", "1"}, Closed], 
+          Alternatives[Open, True]], (CurrentValue[
+            EvaluationNotebook[], {
+            TaggingRules, "Openers", "ExampleSection", "1"}] = #; Null)& , 
+         ImageSizeCache -> {14., {5., 9.}}], {True -> Style[
+           Graphics[{
+             Thickness[0.18], 
+             RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+             Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+            PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+           0.68 Inherited], False -> Rotate[
+           Style[
+            Graphics[{
+              Thickness[0.18], 
+              RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+              Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+             PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+            0.68 Inherited], Rational[1, 2] Pi, {-1.65, -1}]}]]]]],
+   ImageSizeCache->{14., {6., 15.}},
+   UpdateInterval->Infinity]],ExpressionUUID->
+  "ed006642-8dad-4235-aaec-56b11f961c00"],
+ "Scope"
+}], "ExampleSection",
+ WholeCellGroupOpener->True,
+ CellID->23,ExpressionUUID->"3beba784-f7f7-4c8d-ae14-c3a677e66f3c"],
+
+Cell[TextData[{
+ "Note that a vectorized set is faster than one using ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["Map"]],"paclet:ref/Map"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "84e5c0be-3801-4420-a29d-0085ebf398c7"],
+ ":"
+}], "ExampleText",
+ CellID->24,ExpressionUUID->"1d21e045-87ea-40b8-a2bb-046eda88f676"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"manyobjs", "=", 
+   RowBox[{"ChemAdd", "[", 
+    RowBox[{"$ChemDefaultSystem", ",", "\"\<Object\>\"", ",", "100"}], 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"{", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"ChemSetDelayed", "[", 
+        RowBox[{"#", ",", "\"\<Prop\>\"", ",", 
+         RowBox[{"RandomReal", "[", "]"}]}], "]"}], "&"}], "/@", "manyobjs"}],
+      ";"}], "//", "RepeatedTiming"}], ",", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ChemSetDelayed", "[", 
+      RowBox[{"manyobjs", ",", "\"\<Prop\>\"", ",", 
+       RowBox[{"RandomReal", "[", "]"}]}], "]"}], ";"}], "//", 
+    "RepeatedTiming"}]}], "\[IndentingNewLine]", "}"}]}], "Input",
+ CellChangeTimes->{{3.701102220437008*^9, 3.7011023076492033`*^9}, {
+  3.7011023996221313`*^9, 3.701102400527339*^9}, {3.701103244381412*^9, 
+  3.701103248698344*^9}, {3.701103576138858*^9, 3.701103584370294*^9}},
+ CellLabel->"In[9]:=",
+ CellID->25,ExpressionUUID->"aa7da3a1-fa6d-4740-8021-28d092bee117"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0.0014480657142857142`2.", ",", "Null"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"0.0008241713286713287`2.", ",", "Null"}], "}"}]}], 
+  "}"}]], "Output",
+ CellLabel->"Out[10]=",
+ CellID->26,ExpressionUUID->"bc009de3-76b3-416c-b24c-7db9d32f6227"]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "ExampleSection", "1"}, 
+  Closed]]]]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "PrimaryExamplesSection"}, 
+  Closed]]]],
+
+Cell[CellGroupData[{
+
+Cell["See Also", "SeeAlsoSection",
+ CellID->27,ExpressionUUID->"d4142e60-de0e-4578-811c-13ab7ba1d688"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemSet"]],"paclet:ChemTools/ref/ChemSet"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"85b78259-f830-4b37-bac2-4c9bbf9b1180"],
+ "\[NonBreakingSpace]",
+ StyleBox["\[MediumSpace]\[FilledVerySmallSquare]\[MediumSpace]", 
+  "InlineSeparator"],
+ " ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemThreadSet"]],"paclet:ChemTools/ref/ChemThreadSet"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"c5d60e52-f998-4449-962d-2824624c4523"],
+ "\[NonBreakingSpace]",
+ StyleBox["\[MediumSpace]\[FilledVerySmallSquare]\[MediumSpace]", 
+  "InlineSeparator"],
+ " ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemThreadSetDelayed"]],
+    "paclet:ChemTools/ref/ChemThreadSetDelayed"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"571f6c79-4efa-44da-b189-7ef7544ce902"],
+ "\[NonBreakingSpace]",
+ StyleBox["\[MediumSpace]\[FilledVerySmallSquare]\[MediumSpace]", 
+  "InlineSeparator"],
+ " ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemUnset"]],"paclet:ChemTools/ref/ChemUnset"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"4ea9cd6c-cca9-4d52-a04b-e9f4f884f991"],
+ "\[NonBreakingSpace]",
+ StyleBox["\[MediumSpace]\[FilledVerySmallSquare]\[MediumSpace]", 
+  "InlineSeparator"],
+ " ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemGet"]],"paclet:ChemTools/ref/ChemGet"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"8602819b-3df6-40ad-98fc-7b91878bf029"]
+}], "SeeAlso",
+ CellID->28,ExpressionUUID->"afddb818-2a88-45ec-8cdb-93229ae870c7"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Related Guides", "MoreAboutSection",
+ CellID->29,ExpressionUUID->"8a41aa63-ea54-444f-8ab7-321ad9b625f6"],
+
+Cell[BoxData[
+ DynamicBox[If[$VersionNumber < 11.1, 
+   TemplateBox[{
+     Cell[
+      TextData["Chemistry Objects"]], "paclet:ChemTools/guide/ChemObjects"}, 
+    "RefLink", BaseStyle -> {"InlineFormula", FontFamily -> "Verdana"}], 
+   TemplateBox[{
+     Cell[
+      TextData["Chemistry Objects"]], "paclet:ChemTools/guide/ChemObjects"}, 
+    "RefLinkPlain", BaseStyle -> {"InlineFormula"}]],
+  ImageSizeCache->{108., {4., 14.}},
+  UpdateInterval->Infinity]], "MoreAbout",
+ CellID->30,ExpressionUUID->"0625b206-0019-4a25-b6b9-f12218f0cdbb"],
+
+Cell[BoxData[
+ DynamicBox[If[$VersionNumber < 11.1, 
+   TemplateBox[{
+     Cell[
+      TextData["Object Interface"]], 
+     "paclet:ChemTools/guide/ChemObjectInterface"}, "RefLink", 
+    BaseStyle -> {"InlineFormula", FontFamily -> "Verdana"}], 
+   TemplateBox[{
+     Cell[
+      TextData["Object Interface"]], 
+     "paclet:ChemTools/guide/ChemObjectInterface"}, "RefLinkPlain", 
+    BaseStyle -> {"InlineFormula"}]],
+  ImageSizeCache->{95., {4., 14.}},
+  UpdateInterval->Infinity]], "MoreAbout",
+ CellID->31,ExpressionUUID->"d679b8bb-056b-4588-8c75-19b9f00aa317"]
+}, Open  ]],
+
+Cell["ChemTools Package Version 1.1", "History",
+ CellID->32,ExpressionUUID->"19f2a0cb-90fa-4d89-bdc2-36800cf77da5"],
+
+Cell[" ", "FooterCell",
+ CellID->33,ExpressionUUID->"3d6d5e1d-4257-4558-a13e-a9ebfaf00e59"]
+},
+ClosingSaveDialog->False,
+Saveable->False,
+WindowSize->{808, 755},
+WindowMargins->{{314, Automatic}, {Automatic, 50}},
+WindowTitle->"ChemSetDelayed",
+TaggingRules->{
+ "ColorType" -> "SymbolColor", "ModificationHighlight" -> False, "LinkTrails" -> 
+  "", "HasOptions" -> False, "SearchTextTranslated" -> "", 
+  "Metadata" -> {
+   "built" -> "{2017, 7, 20, 2, 45, 22.416789}", 
+    "history" -> {"11.1", "", ""}, "context" -> "ChemTools`", 
+    "keywords" -> {"chemsetdelayed", "chem", "set", "delayed"}, 
+    "specialkeywords" -> Automatic, "tutorialcollectionlinks" -> {}, "index" -> 
+    True, "label" -> "ChemTools", "language" -> "ChemTools", "paclet" -> 
+    "Mathematica", "status" -> "None", "summary" -> 
+    "Sets a property of a system or object delayed", "synonyms" -> {}, 
+    "tabletags" -> {}, "title" -> "ChemSetDelayed", "titlemodifier" -> 
+    "ChemSetDelayed", "windowtitle" -> "ChemSetDelayed", "type" -> "Symbol", 
+    "uri" -> "ChemTools/ref/ChemSetDelayed"}, 
+  "Openers" -> {
+   "NotesSection" -> Closed, "PrimaryExamplesSection" -> Open, 
+    "ExampleSection" -> {"0" -> Open, "1" -> Closed}, 
+    "ExampleSection" -> {"1" -> Closed}}},
+FrontEndVersion->"11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (April 27, \
+2017)",
+StyleDefinitions->Notebook[{
+   Cell[
+    StyleData[
+    StyleDefinitions -> 
+     FrontEnd`FileName[{"Wolfram"}, "Reference.nb", CharacterEncoding -> 
+       "UTF-8"]]], 
+   Cell[
+    StyleData["Notebook"], DockedCells -> {
+      Cell[
+       BoxData[
+        PanelBox[
+         StyleBox[
+          TemplateBox[{
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {9, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            TemplateBox[{
+              TooltipBox[
+               DynamicModuleBox[{$CellContext`destination$$ = 0}, 
+                DynamicBox[
+                 FEPrivate`If[FEPrivate`HistoryList["Back"] === {}, 
+                  ButtonBox[
+                   DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "DisabledBackIcon.png"]]], Enabled -> False, Appearance -> 
+                   None, FrameMargins -> 0], 
+                  ButtonBox[
+                   PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "BackIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "BackIcon.png"]]]}, 
+                    Dynamic[
+                    CurrentValue["MouseOver"]]], ButtonFunction :> 
+                   FrontEndToken[
+                    FrontEnd`ButtonNotebook[], "HyperlinkGoBack"], Evaluator -> 
+                   None, Appearance -> None, FrameMargins -> 0]]], 
+                DynamicModuleValues :> {}], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipBack"]]], 
+              StyleBox[
+               
+               GraphicsBox[{}, ImageSize -> {2, 0}, BaselinePosition -> 
+                Baseline], "CacheGraphics" -> False], 
+              TooltipBox[
+               DynamicModuleBox[{$CellContext`destination$$ = 0}, 
+                DynamicBox[
+                 FEPrivate`If[FEPrivate`HistoryList["Forward"] === {}, 
+                  ButtonBox[
+                   DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "DisabledForwardIcon.png"]]], Enabled -> False, 
+                   Appearance -> None, FrameMargins -> 0], 
+                  ButtonBox[
+                   PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "ForwardIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "ForwardIcon.png"]]]}, 
+                    Dynamic[
+                    CurrentValue["MouseOver"]]], ButtonFunction :> 
+                   FrontEndToken[
+                    FrontEnd`ButtonNotebook[], "HyperlinkGoForward"], 
+                   Evaluator -> None, Appearance -> None, FrameMargins -> 
+                   0]]], DynamicModuleValues :> {}], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipForward"]]], 
+              TooltipBox[
+               DynamicBox[
+                ToBoxes[
+                 FEPrivate`GenerateHelpViewerActionMenu[], StandardForm]], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipHistory"]]], 
+              StyleBox[
+               
+               GraphicsBox[{}, ImageSize -> {13, 0}, BaselinePosition -> 
+                Baseline], "CacheGraphics" -> False], 
+              TooltipBox[
+               ButtonBox[
+                PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "HomeIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "HomeIcon.png"]]]}, 
+                 Dynamic[
+                  CurrentValue["MouseOver"]]], ButtonFunction :> 
+                Documentation`HelpLookup[
+                  CurrentValue[HomePage], 
+                  FrontEnd`ButtonNotebook[], 
+                  CurrentValue[Language]], Appearance -> None, Evaluator -> 
+                Automatic, Method -> "Preemptive"], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipHome"]]]}, "RowDefault"], 
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {39, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            FrameBox[
+             StyleBox[
+              DynamicBox[
+               FEPrivate`FrontEndResource[
+               "FEExpressions", "HelpViewerSearchField"]], 
+              InputFieldBoxOptions -> {
+               ImageSize -> 
+                Dynamic[AbsoluteCurrentValue[{WindowSize, 1}] - 220], 
+                FrameMargins -> 
+                FEPrivate`Switch[
+                 FEPrivate`$OperatingSystem, "MacOSX", {{3, 3}, {0, -1}}, 
+                  "Windows", {{0, 2}, {0, 2}}, 
+                  Blank[], {{2, 2}, {0, 0}}]}], FrameStyle -> None, 
+             FrameMargins -> {{0, 0}, {4, 0}}], 
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {12, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            TooltipBox[
+             ButtonBox[
+              PaneSelectorBox[{True -> DynamicBox[
+                  FEPrivate`ImportImage[
+                   
+                   FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "RevertIconHot.png"]]], False -> DynamicBox[
+                  FEPrivate`ImportImage[
+                   
+                   FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "RevertIcon.png"]]]}, 
+               Dynamic[
+                CurrentValue["MouseOver"]]], ButtonFunction :> FrontEndToken[
+                FrontEnd`ButtonNotebook[], "Revert", False], Evaluator -> 
+              None, Appearance -> None, Method -> "Preemptive"], 
+             DynamicBox[
+              FEPrivate`FrontEndResource[
+              "HelpToolbarText", "TooltipRefresh"]]]}, "RowDefault"], 
+          CacheGraphics -> False, 
+          ButtonBoxOptions -> {BaselinePosition -> (Baseline -> Baseline)}], 
+         Alignment -> {Left, Center}, Appearance -> Image[CompressedData["
+1:eJztyDkKAkEUhOFGE0OvIHgIU0PTEQ8ww7SDSQs9gnhXl3HBfbmC7Q0qeWDw
+f1CPqtcr5tm05ZyrO+lk+XIYY74ad9OYhHpWBV+OwsJXPg6Kdnr2U8qUX/8A
+AAAA+HtvyF6AgSdg4AHZHbIbYOAKGLhAdobsBBg4QnaAbA9ZAxjYAQa2gIEN
+ZGvIvp8pRMU=
+           "], "Byte", ColorSpace -> "RGB", Interleaving -> 
+           True], ImageSize -> {
+           Scaled[1], Full}]], "DockedCell", CellFrame -> 0, 
+       CellMargins -> {{0, -10}, {-2, -1}}, 
+       CellFrameMargins -> {{0, 0}, {0, 0}}, ShowCodeAssist -> False, 
+       Background -> None], 
+      Cell[
+      "", CellSize -> {1, 1}, CellOpen -> False, 
+       CellFrame -> {{0, 0}, {2, 0}}, CellFrameColor -> 
+       Hue[0.38, 0.64, 0.6]]}], 
+   Cell[
+    StyleData["DockedCell"], CellFrame -> {{0, 0}, {1, 0}}, CellFrameColor -> 
+    Hue[0.38, 0.64, 0.6]]}, Visible -> False, FrontEndVersion -> 
+  "11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (April 27, 2017)", 
+  StyleDefinitions -> "Default.nb"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[586, 21, 5401, 131, 70, "AnchorBarGrid", "ExpressionUUID" -> \
+"a39195f6-9d96-4d5b-ac95-836d19969239",
+ CellID->1],
+Cell[5990, 154, 103, 1, 70, "ObjectName", "ExpressionUUID" -> \
+"1aeee0ed-e5a9-4f1f-9727-a697924a3a4f",
+ CellID->2],
+Cell[6096, 157, 6366, 177, 70, "Usage", "ExpressionUUID" -> \
+"54f6cc37-156b-48df-b2f3-7d73628849a2",
+ CellID->3],
+Cell[CellGroupData[{
+Cell[12487, 338, 1523, 36, 70, "NotesSection", "ExpressionUUID" -> \
+"50426e79-5437-4c63-8699-580b756e1a06",
+ CellID->4],
+Cell[14013, 376, 579, 16, 70, "Notes", "ExpressionUUID" -> \
+"9543c3f8-a6cd-4eb8-84b9-f1f217e671b1",
+ CellID->5],
+Cell[14595, 394, 381, 10, 70, "Notes", "ExpressionUUID" -> \
+"ff69a936-f279-4064-835b-5891df158ed5",
+ CellID->6],
+Cell[14979, 406, 352, 9, 70, "Notes", "ExpressionUUID" -> \
+"cef496e0-157d-4b78-afee-c2d564d37cf4",
+ CellID->7],
+Cell[15334, 417, 17691, 308, 70, "NotesThumbnails", "ExpressionUUID" -> \
+"ce4beb82-81df-4d06-b7e4-a3b617c3183b",
+ CellOpen->FEPrivate`If[
+   FEPrivate`Less[FEPrivate`$VersionNumber, 11.1], False, 
+   FEPrivate`Not[
+    FEPrivate`Or[
+     FEPrivate`SameQ[
+      FrontEnd`CurrentValue[
+       FrontEnd`EvaluationNotebook[], {
+       TaggingRules, "Openers", "NotesSection"}], Open], 
+     FEPrivate`SameQ[
+      FrontEnd`CurrentValue[
+       FrontEnd`EvaluationNotebook[], {
+       TaggingRules, "Openers", "NotesSection"}], True]]]],
+ CellID->8]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "NotesSection"}, Closed]]]],
+Cell[33130, 729, 92, 1, 70, "PageDelimiter", "ExpressionUUID" -> \
+"8914ab0e-d506-4912-aa8c-91ac41730868",
+ CellID->9],
+Cell[CellGroupData[{
+Cell[33247, 734, 1474, 35, 70, "PrimaryExamplesSection", "ExpressionUUID" -> \
+"d37e104b-e8d1-4eb3-8141-f76fce7b03db",
+ CellID->10],
+Cell[CellGroupData[{
+Cell[34746, 773, 1466, 35, 70, "ExampleSection", "ExpressionUUID" -> \
+"80be372f-5e76-4001-93a9-210d5db80342",
+ CellID->11],
+Cell[36215, 810, 123, 1, 70, "ExampleText", "ExpressionUUID" -> \
+"1ecf9ee7-7dd0-49da-a96e-7484b0ca81c7",
+ CellID->12],
+Cell[36341, 813, 758, 19, 70, "Input", "ExpressionUUID" -> \
+"339b956d-9c6a-4494-b416-9bf6326e1ff4",
+ CellID->13],
+Cell[37102, 834, 203, 5, 70, "Output", "ExpressionUUID" -> \
+"e3320ad3-c4b1-4e12-82f3-19a0803a9bbc",
+ CellID->14],
+Cell[37308, 841, 235, 5, 70, "ExampleDelimiter", "ExpressionUUID" -> \
+"7763fa92-48a0-4ab2-805d-db747f09a7b9",
+ CellID->15],
+Cell[37546, 848, 115, 1, 70, "ExampleText", "ExpressionUUID" -> \
+"ec25c678-7842-48f5-93c7-0eb4d4649daa",
+ CellID->16],
+Cell[37664, 851, 650, 15, 70, "Input", "ExpressionUUID" -> \
+"4b456193-c36a-4688-8bd6-68b8dc02f457",
+ CellID->17],
+Cell[38317, 868, 298, 7, 70, "Output", "ExpressionUUID" -> \
+"88d933b5-af85-47b4-bc08-829cd631f1f2",
+ CellID->18],
+Cell[38618, 877, 235, 5, 70, "ExampleDelimiter", "ExpressionUUID" -> \
+"085f7e4b-0673-48d8-abff-f97912a538f1",
+ CellID->19],
+Cell[38856, 884, 135, 1, 70, "ExampleText", "ExpressionUUID" -> \
+"c87fd71b-ccc5-452d-829c-38a80d0d2668",
+ CellID->20],
+Cell[38994, 887, 582, 14, 70, "Input", "ExpressionUUID" -> \
+"d6626fd0-a56f-464e-af56-cc9a7f8bd56e",
+ CellID->21],
+Cell[39579, 903, 636, 17, 70, "Output", "ExpressionUUID" -> \
+"92a1092b-54ff-471e-b05a-59c16bc202c5",
+ CellID->22]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "ExampleSection", "0"}, 
+  Closed]]]],
+Cell[CellGroupData[{
+Cell[40352, 927, 1456, 35, 70, "ExampleSection", "ExpressionUUID" -> \
+"3beba784-f7f7-4c8d-ae14-c3a677e66f3c",
+ CellID->23],
+Cell[41811, 964, 349, 10, 70, "ExampleText", "ExpressionUUID" -> \
+"1d21e045-87ea-40b8-a2bb-046eda88f676",
+ CellID->24],
+Cell[42163, 976, 1084, 26, 70, "Input", "ExpressionUUID" -> \
+"aa7da3a1-fa6d-4740-8021-28d092bee117",
+ CellID->25],
+Cell[43250, 1004, 318, 9, 70, "Output", "ExpressionUUID" -> \
+"bc009de3-76b3-416c-b24c-7db9d32f6227",
+ CellID->26]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "ExampleSection", "1"}, 
+  Closed]]]]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "PrimaryExamplesSection"}, 
+  Closed]]]],
+Cell[CellGroupData[{
+Cell[43820, 1023, 102, 1, 70, "SeeAlsoSection", "ExpressionUUID" -> \
+"d4142e60-de0e-4578-811c-13ab7ba1d688",
+ CellID->27],
+Cell[43925, 1026, 2380, 59, 70, "SeeAlso", "ExpressionUUID" -> \
+"afddb818-2a88-45ec-8cdb-93229ae870c7",
+ CellID->28]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[46342, 1090, 110, 1, 70, "MoreAboutSection", "ExpressionUUID" -> \
+"8a41aa63-ea54-444f-8ab7-321ad9b625f6",
+ CellID->29],
+Cell[46455, 1093, 540, 12, 70, "MoreAbout", "ExpressionUUID" -> \
+"0625b206-0019-4a25-b6b9-f12218f0cdbb",
+ CellID->30],
+Cell[46998, 1107, 565, 14, 70, "MoreAbout", "ExpressionUUID" -> \
+"d679b8bb-056b-4588-8c75-19b9f00aa317",
+ CellID->31]
+}, Open  ]],
+Cell[47578, 1124, 116, 1, 70, "History", "ExpressionUUID" -> \
+"19f2a0cb-90fa-4d89-bdc2-36800cf77da5",
+ CellID->32],
+Cell[47697, 1127, 91, 1, 70, "FooterCell", "ExpressionUUID" -> \
+"3d6d5e1d-4257-4558-a13e-a9ebfaf00e59",
+ CellID->33]
+}
+]
+*)
+
+(* End of internal cache information *)

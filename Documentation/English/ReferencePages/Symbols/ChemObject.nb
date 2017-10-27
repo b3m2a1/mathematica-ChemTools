@@ -1,0 +1,1938 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     85846,       1929]
+NotebookOptionsPosition[     71564,       1583]
+NotebookOutlinePosition[     80687,       1793]
+CellTagsIndexPosition[     80644,       1790]
+WindowTitle->ChemObject
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[GridBox[{
+   {GridBox[{
+      {
+       DynamicBox[If[$VersionNumber < 11.1, 
+         Cell[
+         "CHEMTOOLS SYMBOL", "PacletNameCell", TextAlignment -> Center, 
+          CellID -> 37], 
+         ItemBox[
+          Cell[
+           BoxData[
+            RowBox[{
+              InterpretationBox[
+               StyleBox[
+                
+                GraphicsBox[{}, ImageSize -> {8, 0}, BaselinePosition -> 
+                 Baseline], "CacheGraphics" -> False], 
+               Spacer[8], Selectable -> False], 
+              Cell[
+              "CHEMTOOLS SYMBOL", "PacletNameCell", TextAlignment -> Center, 
+               CellID -> 38], 
+              InterpretationBox[
+               StyleBox[
+                
+                GraphicsBox[{}, ImageSize -> {8, 0}, BaselinePosition -> 
+                 Baseline], "CacheGraphics" -> False], 
+               Spacer[8], Selectable -> False]}]]], Background -> 
+          Hue[0.38, 0.64, 0.6], ItemSize -> Full]],
+        ImageSizeCache->{132., {5., 13.}},
+        UpdateInterval->Infinity], ""}
+     },
+     GridBoxAlignment->{"Rows" -> {{Center}}},
+     GridBoxItemSize->{"Columns" -> {Full, 
+         Scaled[0.02]}, "Rows" -> {{2.5}}}], Cell[TextData[{
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "See Also",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "b710154e-81e0-422e-8b24-7d1813359c31"]
+         }],ExpressionUUID->"49c13a9f-409f-497d-8af8-afced2d3701b"],
+         StripOnInput->False], {"\<\"ChemAdd\"\>":>Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemAdd"], "\<\"ChemRemove\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemRemove"], "\<\"ChemGet\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemGet"], "\<\"ChemSet\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemSet"], "\<\"ChemSetDelayed\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemSetDelayed"], "\<\"ChemThreadSet\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemThreadSet"], "\<\"ChemThreadSetDelayed\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/ref/ChemThreadSetDelayed"]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"SeeAlso"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "ac20499e-846d-443c-838a-9fcd7f0dd821"],
+     "\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\
+\[ThickSpace]",
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "Related Guides",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "819c5064-9c54-42a5-8f43-29fd259cabe6"]
+         }],ExpressionUUID->"afa8ca72-4850-4abe-bd96-65f537e68fee"],
+         StripOnInput->False], {"\<\"Chemistry Objects\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/guide/ChemObjects", 
+         EvaluationNotebook[]], "\<\"Object Interface\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/guide/ChemObjectInterface", 
+         EvaluationNotebook[]]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"MoreAbout"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "bda5228c-9f68-4271-9785-173903610e7d"],
+     "\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\
+\[ThickSpace]",
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "URL",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "01d13bca-01c0-48c9-a291-99cad5deb282"]
+         }],ExpressionUUID->"8f4dfe00-fa1a-4ca1-8b25-907579d6b59f"],
+         StripOnInput->False], {
+        RowBox[{
+         RowBox[{"ChemTools", "/", "ref"}], "/", "ChemObject"}]:>None, 
+        RowBox[{"Copy", " ", "Documentation", " ", "Center", " ", "URI"}]:>
+        CopyToClipboard["ChemTools/ref/ChemObject"], Delimiter, 
+        RowBox[{"Copy", " ", "web", " ", "URL"}]:>CopyToClipboard[
+         Hyperlink[
+         "https://www.wolframcloud.com/objects/b3m2a1.paclets/reference/\
+ChemTools/ref/ChemObject"]], 
+        RowBox[{"Go", " ", "to", " ", "URL"}]:>SystemOpen[
+        "https://www.wolframcloud.com/objects/b3m2a1.paclets/reference/\
+ChemTools/ref/ChemObject"]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"URLMenu"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "5b022d45-14b2-47d7-b00d-4a764f744f1c"]
+    }], "AnchorBar",ExpressionUUID->"81c9c7bc-e4fc-4b11-a53c-e9ec0a17aae7"]}
+  }]], "AnchorBarGrid",
+ CellID->1,ExpressionUUID->"a1ab5947-e135-4a38-ac5e-db49ae9be55d"],
+
+Cell["ChemObject", "ObjectName",
+ CellID->2,ExpressionUUID->"30dc86bc-8ffe-4a70-8570-c2176071be60"],
+
+Cell[BoxData[GridBox[{
+   {"", Cell[TextData[{
+     Cell[BoxData[
+      RowBox[{Cell[BoxData[
+        TemplateBox[{Cell[
+           TextData["ChemObject"]],"paclet:ChemTools/ref/ChemObject"},
+         "RefLink",
+         BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+        "359cd478-b8ca-437f-82a7-85094658065c"], "[", 
+       StyleBox["system", "TI"], "]"}]], "InlineFormula",ExpressionUUID->
+      "fa52d142-1616-4490-9fee-2b06b1e6adb0"],
+     "\[LineSeparator]",
+     Cell[TextData[{
+      "Represents a chemical system with key ",
+      StyleBox["system", "TI", "TI"]
+     }], "InlineFormula",ExpressionUUID->
+      "5fee7691-4e04-4b1b-ae65-0c88fbf28b7d"]
+    }],ExpressionUUID->"f48d568d-a3e3-4004-b0df-a5b691869a2b"]},
+   {"", Cell[TextData[{
+     Cell[BoxData[
+      RowBox[{Cell[BoxData[
+        TemplateBox[{Cell[
+           TextData["ChemObject"]],"paclet:ChemTools/ref/ChemObject"},
+         "RefLink",
+         BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+        "5b87ef95-64a2-44d7-bc4f-e6ee02cb4028"], "[", 
+       RowBox[{
+        StyleBox["system", "TI"], ",", 
+        StyleBox["obj", "TI"]}], "]"}]], "InlineFormula",ExpressionUUID->
+      "f48eb78e-a5b9-40d2-9f68-9460faf31e5a"],
+     "\[LineSeparator]",
+     Cell[TextData[{
+      "Represents an object with key ",
+      StyleBox["obj ", "TI",
+       FontSlant->"Italic"],
+      "in the chemical system ",
+      StyleBox["system", "TI", "TI"]
+     }], "InlineFormula",ExpressionUUID->
+      "4ba6aa75-40bb-4745-abe8-b341d79fb838"]
+    }],ExpressionUUID->"5a8ddb1d-8dd5-4599-ab95-7a7a97247782"]}
+  }]], "Usage",
+ CellID->3,ExpressionUUID->"b423e351-9ad3-4fa7-ab91-59072aa636f1"],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ Cell[BoxData[
+  DynamicBox[If[$VersionNumber < 11.1, "", 
+    Cell[
+     BoxData[
+      ToBoxes[
+       Toggler[
+        Dynamic[
+         MatchQ[
+          CurrentValue[
+           EvaluationNotebook[], {TaggingRules, "Openers", "NotesSection"}, 
+           Closed], 
+          Alternatives[Open, True]], (CurrentValue[
+            EvaluationNotebook[], {
+            TaggingRules, "Openers", "NotesSection"}] = #; Null)& , 
+         ImageSizeCache -> {14., {5., 9.}}], {True -> Style[
+           Graphics[{
+             Thickness[0.18], 
+             RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+             Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+            PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+           0.68 Inherited], False -> Rotate[
+           Style[
+            Graphics[{
+              Thickness[0.18], 
+              RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+              Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+             PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+            0.68 Inherited], Rational[1, 2] Pi, {-1.65, -1}]}]]]]],
+   ImageSizeCache->{14., {6., 15.}},
+   UpdateInterval->Infinity]],ExpressionUUID->
+  "8cbf6589-05b9-44f6-ab00-853dce873059"],
+ Cell["Details", "NotesFrameText",ExpressionUUID->
+  "c1b44511-2041-4610-9905-65110c16fe6c"]
+}], "NotesSection",
+ WholeCellGroupOpener->True,
+ CellID->4,ExpressionUUID->"cb267b00-9fed-4f06-aa11-1c1889e3ddf9"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemObject"]],"paclet:ChemTools/ref/ChemObject"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "5dd185cd-3e19-4a97-b32d-962127fc9064"],
+ " is no more than a head that specifies a key or key pair should be treated \
+as a reference by functions"
+}], "Notes",
+ CellID->5,ExpressionUUID->"25ea9208-ca48-4ea6-a54e-4b19b527a05b"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemObject"]],"paclet:ChemTools/ref/ChemObject"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "8433d1b4-fbef-49a0-b7cb-625d8b2b8485"],
+ " acts like a pointer, in many ways, except in this case it is a pointer to \
+an ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["Association"]],"paclet:ref/Association"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "e3d252fc-016f-4389-9f4a-ddd180c11043"],
+ " stored in ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["$ChemicalSystems"]],"paclet:ChemTools/ref/$ChemicalSystems"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "ccf77ddc-6d97-4f37-a949-a63e32d5ddab"]
+}], "Notes",
+ CellID->6,ExpressionUUID->"c1a31c13-54dc-4fd6-906b-d490ce103dcc"],
+
+Cell[TextData[{
+ "Using ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemObject"]],"paclet:ChemTools/ref/ChemObject"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "57a4683e-d507-4024-a1d8-ba63ac44af3d"],
+ " as a ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["Head"]],"paclet:ref/Head"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "b50d18b0-f143-43e4-adc3-2fcaa15b61e1"],
+ " to keys makes it simpler to extend functionality in a clean, consistent \
+manner"
+}], "Notes",
+ CellID->7,ExpressionUUID->"f8ee252d-36af-424a-ae39-01c3114ee454"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemObject"]],"paclet:ChemTools/ref/ChemObject"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "54a002b2-6bf1-4d84-aa58-901ca7f6e10c"],
+ " acts a formatting head, displaying via ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ArrangeSummaryBox"]],"paclet:BoxForm/ref/ArrangeSummaryBox"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "6a48c993-12b5-449e-834b-73c6822d8f03"]
+}], "Notes",
+ CellID->8,ExpressionUUID->"c6271866-c4c7-44f3-88b2-a8bcce856455"],
+
+Cell[TextData[{
+ "A ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemObject"]],"paclet:ChemTools/ref/ChemObject"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "2c4e6223-2716-4ca2-9ebe-5e5fef6c0ac0"],
+ " is created every time ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["CreateChemicalSystem"]],
+    "paclet:ChemTools/ref/CreateChemicalSystem"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "1ec80080-9db6-401a-bba6-1426a7216f68"],
+ " or ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemAdd"]],"paclet:ChemTools/ref/ChemAdd"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "8f08d4c7-04a9-46e0-9f4e-5f3f17b0e824"],
+ " is called:"
+}], "Notes",
+ CellID->9,ExpressionUUID->"1de55207-7de0-4ca2-a74d-7051e3e47279"],
+
+Cell[BoxData[
+ ButtonBox[
+  DynamicBox[ToBoxes[
+    Overlay[{
+      Graphics[{}, Background -> If[
+         CurrentValue["MouseOver"], 
+         RGBColor[0.942, 0.978, 0.992], None], ImageSize -> {720, 70}, 
+       AspectRatio -> Full], 
+      Pane[
+       Grid[{{"", 
+          Spacer[10], 
+          Image[CompressedData["
+1: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
+EnNFexVy4SpXbaDSkwdh7Vy34IqS/JXcDPnYP4/OiVc6SDa7avXKxATwcfrX
+ymVb2UKtTAvw2VXYmQeU+0KCZJO2xx63c7WprX9FINhI1Icp1Qa5aaO6fubf
+hFeIl0Tl+is2cN2hsitNMCQBfcaW6pzOlmZaNtrRoyrOPnLWiiJWQovB/lAo
+r3kHUdKW5jfmAU4lWdm7Vvxni7gvh5NvNsqomEt9oaB/B8n7RByEjfk+4w+7
+cUPcXAKUk030pJ3fNhWkPP3EXcbm3EfSnDaLwgaeWlzn7eS4KRHvm8Jn/170
+pmzAp3Zwxe7mlWn4+zvZf1Xx+fgh3DMTNPmbzYPb1SCoaGwkdNv+iqyxgqmE
+uQyV6lOZQXu50KS4RJXcxOSYhDpD4TZXqXiDJIUeK5cqFaTVzOUa2SXFMfZW
+FJhEBLtEc3saLUUK9KLyFm5xFrflbdP1IeS8AxgmuejqZZ01iLmjClGKNhlW
+qpcL+JrneWzu3shSNK3hCnPwTnKKvltkdXPf5rtw0NT3kTPef6sNHHgjTGFb
+w8Bf3H7zLyNw9Uac6I1wZ1Mc2VDMLsXO726i7pVwTZe7GgzqS8QQJXvbKE1P
+vwuknTJLoHKDRNim7hBEYMOek2ELk23we4ASkX0g07HnuwgNe74Oe9R0VMpB
+3Kdjz7dRImguYBHbOxi/DJu7GE5tFxNI9pGNPA3qfrgF+9gGRCbjkwxQRHsS
+yLt07DkNS8fAnm8xyNGL2PN9OMoPMHUur4A9ZxbBEnS+B3sO8KrYc3gJ9pwm
+yRzCntNxkizsOW17Bso2PZrBNADrj9X4Qz1h87B52XkVlK3vKMzo0wLHuhh9
+wmMoH2h2OII9H+Fk4XUYxruEZqkHMfy7DQPuDOcvgz2f+Vi0TlUDUbkWJRIg
+WOQr4/JBrUBg4nfqEHOv8X4MRHFNbgt6Wiop3Yjjz5d8aKqUx29UJVao8AC1
+POvqmRZB+JNpYmQMv9EjUfu/hfpFCTSa8eSKR/4i2PPR+4ZffCpGcfc0CpS4
+4qn5lomRx2mDGxbqYPh3X54HiMGbuevf9vxJTs3xBrcFb/t/KKnoyX+Vlv6W
+DGJmxuv0Zhkq6KOgoqCvyOc0w1XJJWghqKCvIaTxi7R0WUC4TtoFGqRsHpcK
+10vzV4onC+aG3fUE5VsZWnqI0q32DWOKqnVaQrxMheO+vENynHeMUKq0J4Rz
+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
+L+ScLwJxC7V03qxoiVJV7hX8X8L17zwduGyddc3YLMTkagooXr4r3XAtQk0o
+X/a+362JpyZf2AKPTZi3wI0bD024XDWyL1mJae+/Z+90p3pbUDiez/srC8eL
+sTxcaXxfLbyspbVU7o0zWtH9krSCro7tFRtwcZ+2C9cRVwlzMH9oo15n6uhq
+rmvF7aDkSVB4BnYf6EiJgtW79iAW8EBRIM74lqyd8jhwJwsqBy5yqFh+FuD7
+dsNVPeA305U3+Fid51T2m6oR/yhrlVYuAiU+bTktTVN5dbNbKtJnbL6bA9F4
+IT2TuX9TruDIfxB/RtJS0/ycvuDEy+cqAuH3O2J0w2NSkwPPcg2u6Plk1GeV
+2/fl51YXDyjGTmuH24VEhUxrNYanQIBMnIUL+EmXQeh+RpvZ44fWrXZWOHAL
+DFRaGw0KyFGvyb28qhUBgdlpib6yCXGRUV7utbI9EzFpVqi9VXJUSlJ2PDd3
+q0eOdr4/HmIckmTHECvvdI/oNJsUk8bEtDw1dcLLWnooeFzHZPGYNA/HjkmM
+HusE1+aXjQjThLySYHjU0KDiB9hz5Cj2HDkOe468DHtOOYI9x/YLJvYcORZ7
+jmIuFEF+CHu+QR9IjD6sTDGHaAM3TrN3x5nJAHBsw3GAPd8fAzgSfqyHOSo/
+VROEorvng3fxO3Pb8Kw7rChmewZWF9CJPWu/gKiSbTJhzmV3lgTrVKmeMKlX
+tb5Jeg6EWay6acL2AiwvweyQx+5MQRzMAHFu230J1paWd7ZmMbT6ygKsbCEz
+/8x3m+wGgZFPHAIdtS6ahMqafRnlpsOTwnuuUkrWws/pkpqxbSTOwuK8FUR8
+2rh718/M+45U9aWHCt9mUVl8nmJ5Qb8r/H6Xc11V5CUEws+6yXzn9Pdm/NXL
+583LvgkQuBJ2+0bBNTk1no2fDXuOkwgVFOH1kbubUCcVf1tKU8zAQu3aOUV9
+TY30nN/Mj/Mpe90H5b8lLP5jQo/3H5Z2H4io2Zm0kA0sOu/oXrJRczpnIO1+
+Xs9N6ZK3tIOuwMKouJGZovkHYg9s+cyN5T6wutH4c2nZUNgOH9Hxiq9NfaTS
+6BBUE2fwNLU01Tgo1yu3yibzIszFptfGg592J7g75sS4pRbqpqeXFdwaWlYr
+jzBtyclON8tLTrBsN20wbkkrrvbN2owtKMqM10nLLo0tznzkmpQ89j+iogzq
+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
+hpz8Q9hzhqGwajqmH+xr/1jzSnTyn8We/xhxhFESBY6c87F1EoVjsefoUf06
+O/b8YChpA4iwwfeZhbIjyQ81Dz2sAWAoLI6op+koDrZzPlY2qtBA+1ViMu2H
+jlE6lJ2FPaccYM+ZN6WzVE8o2xdFCHqoUDblOe1WQuYtVcC8TgHYVgUde95T
+B7D4ZO7gR65GRpBh2KFfX7pLgobiQ92exh57wUcGYw5/gD1/8pzh2sPU8bt9
+Myw02ja90KeEWTrqbfeoQDAxNsW6Cp08tg+b4zA7Dc0F2BkfBWTPI7isnqGM
+XkLj7FhD+5PBksr+orr5vvkGYt+jshooiX6YAOUG9RZ1bpk1Fp0flcf7Dcpe
+gWdWeaVd5X4JOZYhAwWEj0MCC41dHVZdEtGm8rHBzufNuM6Rjty1hoXahrGM
+emLfwFJTR9tC73zdQuN87dOkx2Mrk329ZdXLDau9La0jgPg5j5s3L2QNdmY+
+W21Y621pebYSsjSX0TEZ3wvlkd7JOR2wfPaTkbVKmC8vr0luaSgtqS6cWals
+bypqLsmuLtio64NQHV4j+LTLVyz0AyWfd93uZ74l+rWpJKh+bagopn5a/ptY
+128i9i9UyMkL3xOT+kyYVEaAouHc7O6y7LaO7qS6XKAUN5alVlVVlpU3NhZP
+z6bWNCw+KuvJ7qitrhqoT+mqKS4vgaa7mjy8S1390F9RUZ5GDSut74prre6o
+La/rgagH/EbETUhXN/NE8iq6n7R25oz3PO7vHSzIfV5d8qihtfh5wUB/JcSY
+6HKiCgaOiYNfRyp9miPtdcvc+Y4YhF5uCf62/xt/xbn1f18GYRtdQ29nJ/tL
+njCQ2d1IbizpTy0dK+vPmu7Ia28ZaSvo6hzse9zU1tLYndjW1N6cuZEy25XX
+Wd+V//xR10grOsMtYukGs1mNHYONbQXPH3WOtJQ+KanNb6vLfgKJhkZ3qNNh
+nQLLsI/DlF2EnX0Sdty3CURCbyOsoTt4ZAO21ieIsPdkfQNm5omT+6sLxHEY
+WwUY39hfgfmZ1d1AXUBw4xu4jY01qh9gY5uEojjy1jaKR/AkWN8hkZBd4t4e
+iUTaQ9f2iKS9HdzOTBkFv4vi0Q1q+B4JheU5ZA2FbcL+HgmojSHt72AaunXK
+Ho6MtWDrMElg3wB2XiR/6Is+WqKVl4HSjvMyzS7lmFTH1MDuZ2LPaSAACsK2
+ldCT0/W2x2HPDz5sPIw9Z+aDw4SZYR/eEw/2CQYC/VCzURa9ZDZ3OSAQU4Vs
+s8Nff7T5iZz/K1ezb+WTp1kpI1nt4N8jyJnY+a+K6KZA1YVVl4+sDY3MP1S/
+batcMfo/NUSvalB06YKx+LtR4nzWl0yiPpa2/5e9S/5/jeHgOMnB5SToxcEw
+J3Ud//vh+6fSaZ4Pr3IIJFITHGNOCl3KfO3AeyLkzwzXlzknrnwTdZ2a6w1e
+tvT/lXA3p+a/mb7f577DXthf8v7E7r2bSrN85Wglc3ySx/F59ikOIS6OD5bU
+xPbrueud7buKi53bvPPqn6nFKbaJeBY2b5+QKEpO/5X/I3OhXsmTmXX1MTzt
+RqFVli03PoVqymOekiSXx+En7nbqcYwNq7tU3GzyFJ3aeGPy2cS8jlVrFPCc
+7jbO7xSKLrnd6ZE3vFIrX/cgKYtDrlvoN8Qq1cikuAfxr1m0yNSEvrVdopAc
+E/8g6lTGI2XfarXSrKb/yo1q2nBValcPcqqYUJrE/5qjPZfjzCTH2UcN1ZuV
+mR3V5esuZx7nJuNKO+abZ77yK+IwW2wa/O1AS0VHRjNHb1d/81be7JrWIs7x
+D9tmw03+TyhLDb0nNck9HK1Jy7jn0Qv4+aLpk31B9Q350VDS+ts76zmTVDZo
+aDL0C6qkO7I029g1/Dt7yOCg7GvvjyRtJ/9uNws/efovsGZIGkjZCed4HN2Z
+TUqZ3xP51VBzd2UfLmu7uQL3ZKFo8jccv/3NyV+nNodEhpu22jlE2draV/aJ
+R7WH1lnXyeSkqLf9RqYpdvQPWSE+jo+sOZLC4sLsmv2z3rNs5D1VlVns697b
+VuuXzGE0nsCRIZdUXm8wXurf2sFhW1nt55c2bNbG9017+VKHY3GWTot7ZFJo
+YVi/Z/rgHz3HnU925wW3Vb+LCp8Mb3RL4Xj7cU5Qd8GHcJVjote7rd29rvOj
+32V1VAeGuzbZZ3cn1+S1tv6aPjH+jePUrzh+/bvXTlGtk7/l+M3v1Io5/u31
+E//B8btTJ17/3Wscr596jeO3HFTr9dc5fs9x8iTH76gZ/53qOfXGqVOnODh+
+RXW9Tp19HL/+FcfvqI5/+82pkxy/5vj1b0/+7k+dn3Bw/IHj9799jZqb4403
+fk+t7tevcZyiPn4vW0bL9KuTJ16jFvH7B7knX8v5kON1atLXT5743ckTr5+k
+xr72W47XaIWeOMFBXzInGEuDg+O1Exxv0MPY1tIJDvr6OYkFnjxIz+aiJTlx
+OBujlBNsKQ8ynqL5TrJ7j2Q++cJyZq5iLB+t6SdPsqo+QSsb69Gv6K08iaU/
+cQILodfzGi0WK+PUH05i9mv0smgJ6H+MxwmOEwchjIKZaVheRiJmt5i5qFV9
+mPVrjlMnODj5qc17g/rSPlDGqhIM5qC+2JOvc1BfDa3msx2n36D351ccHDSX
+hzw1969OVbicPMFBfT2v/5fa1Vhq5Amq+9ccP785yfHRTp9cccEbLQsRjwK6
+FCO7S0gGjz2t57M5PEYF+9xOeo794899selNXUtuHdrd0bk1zkNZyj2mjcUn
+o+Yz0t39/wK1Xgmpg9ncfcWQEu/Qq143oN/pfjwV/idb+nVX3BZu9r/dvROd
+WhYKa6A4KWuvaSwp90T2nstIyRs5iMDfJ+Tg6VDV+HRbsxr0D7c1grk7DJ2K
+S2yNRqRPdntUDxCaK7oDzvaITi9kE6ZqUgZrXv8lWvp2V4NKczaHSHnKZY1m
+jbx2nUqrOjPHNrcTVS0PCrJ+X9ly4a/Jv8lJ9HnoWG/o9/vCWN8QH8Nqu+Jw
+DqtOr4vk/3g9ga+xtsDXR73WLDfWx67WKNMpoCjv1yd+uOqfZl5jW3UnDpbY
+wci8zsGY5a8zwjHCweFpwUqKZTvFWNps++zP304mfWGsSfraZy5QjhMn6f+M
+JXmSZTOayMp7km7//O/+nzbsXMovX9vJUycPKnzt1InXGANJH0XMpo35aydO
+HnmrtIFlf/uvUilj4E+cPPka4w2xFXzy5AthJ08yZtbJ16h/p15jvsmTWACt
+ff+nWuuAi+rY+nPv3aUjZVnYpS8IIogl9liwxIiJX4g+Y4sl2EUQRJqFJkgT
+QQQFFkHq0lnKAgpIk153XRBQBCkiSBSJLSa+7Lv3bmHBkmfyve/3voG9d+bM
+OWfmzu6c859zLoLND70CIRvagDACgtP5nXw51OliOnBV6AfGurEK1oRwPgK/
+wdeNCwD+wyJ8Zhi/CBcNxoeamD9YcHLtCVFzp52ckxIUjNdVjQTExeiH4mgd
+7Db5Mc3PoZclAjXQJflPLuKUJfpCBqLro3fq7L2W4NTySX0KvrNMwJmlkwXm
+GEMaD/0Ovomfd/3AkYzQK0e4qVGVjebx65MWHo0vGJFUi7ZfmBP39mTCd9TW
+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
+           "], "Byte", 
+           ColorSpace -> "RGB", ImageSize -> All, Interleaving -> False, 
+           Magnification -> Automatic]}}, Spacings -> {0, 0}, 
+        Alignment -> {Center, Center}], ImageSize -> {720, 70}, 
+       Alignment -> {Left, Center}], 
+      If[
+       CurrentValue["MouseOver"], 
+       Image[CompressedData["
+1:eJzdmc9vE0cUxyNAosfeckGIXnujJy6tVKk9VOLStFVz4AIlRD00VQMSouXQ
+/hEIIfXAta0qFTggkBqpCA40CSUJtKX8ik1i4ti7XjuJfyQkw/uud52345nx
+7I+A1cM3tuPdnfeZN+/HjN869vXQiV0DAwMn36A/Q0dPvz8+fvTMJ2/Sh8/G
+Tn45OjZy/KOxUyOjI+OHju2mf74TaA9JCPG/kdfaTKr9pCOkC6TbpBJJBNoi
+FUk3SedIw6TBFGMplZJjnPQ7szmOrpNGXzPHWdLdhPbLukUae8UcB1PMfy9d
+JR14BRznTXaU1tbFvLMq/lmqirsLrpjMlcWf8yVf0/R+ZtEV/xZrIl+pC6ex
+oXtOjfQp3TMQV5YcP+rsX/AaYrZQ6dhsoykSeIsrLR3P+R3gUDIsrbbE7GI8
++1X6u1gV5brSP7FYenAo19ITdy21/Vx38mWxWG2oWIYy4DioYniwXMuUgStH
+8yON55L2peToyks7yRAKeUAa90oKjrNJ1hLi9z7FL+a1QDFcWtsQy6vrtGaa
+4rFbt84HhVpTZjmekCNS4xDTvcZ+sLxC8fpCVFpbEXmBws9LxHXvuWd81vQz
+R7iNF5zjRgKOb2RfmPLSFMVoe/7IzuZmx94Zdg/e+98F3+Pap7R+TCz/lVZk
+nwzH5IjEBeqDiQHz68nzTvZ2cYScgXBt3sAymSvJ+fhyDI79Xb4wrOlCrRXM
+72Ysf4QceP/Y0cfdw/Kq7JO9lhxH+H3oNcx+34qul/VtFq0/ePz4n6O+47qT
+d2SODy05LvD70C/p8pIf02y9VyQmFUd43fZr+/oFyme6+ZJ6lx8sOW5zDvRA
+qmcjt8p283Wvio9O/ATXyPGEuVeNNe9E6sklSw6+j/P7VtWzc24jErN8vXuG
++JBjiAu9sGos1F5m0z1Ljsh65L13JL59X7dt1YnfO+n37fpr/Xh31bkLtYbZ
+VEjCoVuzqNMYW/d9XMFHuhyMfMlsqlpybNlwFNc2fH9kxmGoJXOFiD+eWXIU
+Oce0Zl2hXwpjOYt15RnqCHIKs+kvS46bnAN7UdWzsZbDnNlV23R5l8W3Jwnf
+3dfkRqk/+dWS4xzn0OWQuQKrB5J94asq77ZZN4UncZeb+pySr0T2JN9Zcgxz
+DlP/E/ZVPOdymfqrSB9AelrR93DoKZhN71lyDHIOnGtMaZ6PfMgZqlIdUXJI
+9Q+vTkNfA2eofkk5dI8lB3TNpqZDTyhOIvWczbOuT5TXFM4ZdM+XavnPOgYN
+xyjnQH+jG6e9frdZtmPX3LeH/nhYUvdvEPYEbjOylzockwO6xVlMc+bnL8qZ
+jrTvU3GEa8/1/WDe60u+mDAxGDi+4hzYz+BsxjQubM1jPyL1XTyvlf2Yrmvj
+gQt1nO1tq6S3E3BAVzkLzpd6jQ3BRuRr+AhrDj3lI9oPoT7ocmsWLAaOA8G9
+LA9ne/6WJUuP88QhuXc01ZTXyWJxvtt1Nvp8pemfzfQTi+V5excLnoneB+ca
+SW1D7kDc257PmVhi/P7xMcmReZDLcK4Rxz/oP2F/WB9gW1qWmL9H7SNdkVl4
+zUTex14UfQv6SewfkKvgO8TWcn1deW9aloS/D35B+kPHE1MTYV7MiiUGR6jP
+SZcT2v+TF/QasCFLlgQcofaSPiB9T/qNNEtaJHmkHGmK9AvpW9K7pN1y3syK
+JSWHsfexVVKWOXYW0Q8cSViQ9/lvcv3CEYdFZug3DhsWFUM/cphYdAz9yqFi
+QUzrGEgX03LssDosBl1MUQf7haXD8BJ6c/TW
+        "], "Byte", ColorSpace -> "RGB", 
+        Interleaving -> True, Magnification -> 0.5], 
+       Image[CompressedData["
+1:eJztmctL1FEUx4cUbNnOjYht29mqTUFQi6BNU5ELN5omLZpIg6hc1B8hIrRo
+WxGULqQgoZzxAer4yPcDZJzxnY6Kb+Z2vsPMdOd67/3d30NnFh34huXv3ns+
+93HOubeL1U/9j875fL6G8/SHv+rF9fr6qpd3L9Bf7gcaHtcFamtuBZ7X1tXW
+X6kuoH+8nFIhiTH2X4yVkipJLaRe0ir7ZwnSMilIaiJVkIrzwGde9aQfzJl9
+J9Xl2P9G0qBD/0ULkQJn7H85cz7/VtZOKjsDhmadE7u7u2xhYYGNjY2xvr4+
+FgqFWGdnZ1JdXV1sYGCATU5OsqWlJXZ4eKjqZot0j9r47MqQ4Z1q4NXVVTY4
+OJjx2UTBYDDJu7W1peq2+RQ4pAzb29ssHA7b8l+m8fFxdnBw4JrFgkG6lyKR
+SHJO3TKk1d3dzdbX12VD+T3gKBc7TSQSbGpqyjP/RS0uLopD/iGVuOQ4EZdO
+k0HD0uaCo1G2l6x8wF4bHR1N+hKPx9ne3l4yjm1sbCTbm8aDzc1NcfgahxxZ
+OQ5n2uo8TE9Pq84rE/saGRnR9tXb28uOjo74Zr8ccDwTx9bFJZxRzLdoyBfp
+b/CzaNFoVMsyMzMjNqmwyZF1LpAfdAw7OzvSebfigK2srGj36P7+Pv95qw2O
+UnEs3Z6WrYMdDtj8/Lyy/7m5OfHzIkOOSr4RzqjuPOjMlAOxnP9WPCeC3TTk
+aOEboV5SrbnVmTblgK2trSnnS6hd3hpyZE0AaiBZ34itVmaHA2vS09MjHQtz
+ydlXQw7+HpesW2V9S3KVKw7YxMSEdCzkXs5+G3JkGV9780KOS/uqEt8WP+u+
+hanyLHINZzEnHKo9izyt+71dwXAvkf0O8ZKzuCFHwoQDceysOIaHh3mXIoYc
+y3wj3ONkfafzhpf7SpVHhJgSNuQI8o1UcR172crsnnP4KxtLqE8+G3I08Y1w
+nzbYs645jo+PlTFFiI2vDTkq+EaqPQuhbvWKIxaLWcaUlF0z5CjmG+FdQ1Wv
+C/HQMQfqc1UO7O/vFz8vNOSAvvENVTkdEnKtIw68Mxj2/1HFoOCo4xujvlGN
+A6H2dsoxOzur7Bd3Apwbzm7b5IBCpnMGIWaiRjLlwF6y6lNYiw4dg4bjCd8J
+alvMj25c+Iq6VeThDfOLe6DqPPBCTOTutiiELjnggNp5H/C+ZDU2BB9R8yHH
+IN4hbmK9kB9UsdULFg1HWaptxuCTHT+8kCmLhgPyi3sDc+zlW6JXLBYc0Im3
+Ubwv4c6ZTywGHFIW9Inax83aIHbg3Ju+z+lYDDmgO6QTj8l4m8G7hp31QWyD
+/+n8AN/cstjggEpIbSJL2pAzEfdxF0XdMjQ0lLw/IFZh7XC2hHopa33dsNjk
+SOsh6aeKx6Z1pHzJFQv0gNTq0P8PLFVrpHzINQtURLpBekP6QsJlNErCw/k8
+qY/0ifSKdJVUIImbXrG44dDWPqZyyoJzyFnOOZywIO4L/yeXFxx2WCQMecVh
+wqJgyDsOHYuGIS85ZCw40xqG9245TlkZFo3lO4MJS4bhL7E9ExQ=
+        "], "Byte", 
+        ColorSpace -> "RGB", Interleaving -> True, Magnification -> 0.5]]}, 
+     Alignment -> {-0.85, Center}], StandardForm],
+   ImageSizeCache->{720., {32., 38.}}],
+  Appearance->None,
+  ButtonFunction:>(CurrentValue[
+     EvaluationNotebook[], {TaggingRules, "Openers", "NotesSection"}] = Open),
+  
+  Evaluator->Automatic,
+  Method->"Preemptive"]], "NotesThumbnails",
+ CellOpen->FEPrivate`If[
+   FEPrivate`Less[FEPrivate`$VersionNumber, 11.1], False, 
+   FEPrivate`Not[
+    FEPrivate`Or[
+     FEPrivate`SameQ[
+      FrontEnd`CurrentValue[
+       FrontEnd`EvaluationNotebook[], {
+       TaggingRules, "Openers", "NotesSection"}], Open], 
+     FEPrivate`SameQ[
+      FrontEnd`CurrentValue[
+       FrontEnd`EvaluationNotebook[], {
+       TaggingRules, "Openers", "NotesSection"}], True]]]],
+ CellID->10,ExpressionUUID->"e2914b6f-47f2-4176-ace5-c652e12bb563"]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "NotesSection"}, Closed]]]],
+
+Cell["", "PageDelimiter",
+ CellID->11,ExpressionUUID->"2659d346-e34d-4906-95f3-bec28be95b0c"],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ Cell[BoxData[
+  DynamicBox[If[$VersionNumber < 11.1, "", 
+    Cell[
+     BoxData[
+      ToBoxes[
+       Toggler[
+        Dynamic[
+         MatchQ[
+          CurrentValue[
+           EvaluationNotebook[], {
+           TaggingRules, "Openers", "PrimaryExamplesSection"}, Closed], 
+          Alternatives[Open, True]], (CurrentValue[
+            EvaluationNotebook[], {
+            TaggingRules, "Openers", "PrimaryExamplesSection"}] = #; Null)& , 
+         ImageSizeCache -> {14., {5., 9.}}], {True -> Style[
+           Graphics[{
+             Thickness[0.18], 
+             RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+             Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+            PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+           0.68 Inherited], False -> Rotate[
+           Style[
+            Graphics[{
+              Thickness[0.18], 
+              RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+              Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+             PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+            0.68 Inherited], Rational[1, 2] Pi, {-1.65, -1}]}]]]]],
+   ImageSizeCache->{14., {12., 13.}},
+   UpdateInterval->Infinity]],ExpressionUUID->
+  "9db7500a-6aa6-4449-a0e1-30a278d34bc1"],
+ "Examples"
+}], "PrimaryExamplesSection",
+ WholeCellGroupOpener->True,
+ CellID->12,ExpressionUUID->"1ccff346-5a59-49d1-a6ad-f1848dc838ff"],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ Cell[BoxData[
+  DynamicBox[If[$VersionNumber < 11.1, "", 
+    Cell[
+     BoxData[
+      ToBoxes[
+       Toggler[
+        Dynamic[
+         MatchQ[
+          CurrentValue[
+           EvaluationNotebook[], {
+           TaggingRules, "Openers", "ExampleSection", "0"}, Closed], 
+          Alternatives[Open, True]], (CurrentValue[
+            EvaluationNotebook[], {
+            TaggingRules, "Openers", "ExampleSection", "0"}] = #; Null)& , 
+         ImageSizeCache -> {14., {5., 9.}}], {True -> Style[
+           Graphics[{
+             Thickness[0.18], 
+             RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+             Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+            PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+           0.68 Inherited], False -> Rotate[
+           Style[
+            Graphics[{
+              Thickness[0.18], 
+              RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+              Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+             PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+            0.68 Inherited], Rational[1, 2] Pi, {-1.65, -1}]}]]]]],
+   ImageSizeCache->{14., {12., 13.}},
+   UpdateInterval->Infinity]],ExpressionUUID->
+  "e1f4bc99-b7cb-412a-9a88-d39903709e0b"],
+ "Basic Examples"
+}], "ExampleSection",
+ WholeCellGroupOpener->True,
+ CellID->13,ExpressionUUID->"85039c14-5977-4034-a26a-bd496bd23942"],
+
+Cell["Create a chemical system object:", "ExampleText",
+ CellID->14,ExpressionUUID->"b199b4c7-10c4-4d3d-842e-d19b5f846176"],
+
+Cell[BoxData[
+ RowBox[{"CreateChemicalSystem", "[", "\"\<NewSystem-\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.701095066697773*^9, 3.701095084065*^9}, 
+   3.701095173107972*^9},
+ CellLabel->"In[1]:=",
+ CellID->15,ExpressionUUID->"bec60ad9-a1a6-49b0-afb5-5fd023388555"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   TagBox["ChemObject",
+    "SummaryHead"], "[", 
+   DynamicModuleBox[{Typeset`open$$ = False}, 
+    PanelBox[
+     PaneSelectorBox[{False->GridBox[{
+        {
+         PaneBox[
+          ButtonBox[
+           
+           DynamicBox[FEPrivate`FrontEndResource[
+            "FEBitmaps", "SquarePlusIconMedium"],
+            ImageSizeCache->{12., {0., 12.}}],
+           Appearance->None,
+           ButtonFunction:>(Typeset`open$$ = True),
+           Evaluator->Automatic,
+           Method->"Preemptive"],
+          Alignment->{Center, Center},
+          
+          ImageSize->
+           Dynamic[{
+            Automatic, 3.5 CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+             Magnification]}]], GridBox[{
+           {
+            RowBox[{
+             TagBox["\<\"Type: \"\>",
+              "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+             TagBox["\<\"System\"\>",
+              "SummaryItem"]}]}
+          },
+          AutoDelete->False,
+          
+          BaseStyle->{
+           ShowStringCharacters -> False, NumberMarks -> False, 
+            PrintPrecision -> 3, ShowSyntaxStyles -> False},
+          GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+          
+          GridBoxItemSize->{
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+          GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+       },
+       AutoDelete->False,
+       BaselinePosition->{1, 1},
+       GridBoxAlignment->{"Rows" -> {{Top}}},
+       GridBoxItemSize->{
+        "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], True->
+      GridBox[{
+        {
+         PaneBox[
+          ButtonBox[
+           
+           DynamicBox[FEPrivate`FrontEndResource[
+            "FEBitmaps", "SquareMinusIconMedium"]],
+           Appearance->None,
+           ButtonFunction:>(Typeset`open$$ = False),
+           Evaluator->Automatic,
+           Method->"Preemptive"],
+          Alignment->{Center, Center},
+          
+          ImageSize->
+           Dynamic[{
+            Automatic, 3.5 CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+             Magnification]}]], GridBox[{
+           {
+            RowBox[{
+             TagBox["\<\"Type: \"\>",
+              "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+             TagBox["\<\"System\"\>",
+              "SummaryItem"]}]},
+           {
+            RowBox[{
+             TagBox["\<\"NewID: \"\>",
+              "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+             TagBox[
+              TagBox["1",
+               Short[#, 1]& ],
+              "SummaryItem"]}]},
+           {
+            RowBox[{
+             TagBox["\<\"View: \"\>",
+              "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+             TagBox[
+              TagBox[
+               RowBox[{"Function", "[", 
+                RowBox[{
+                "ChemTools`Private`self", ",", "ChemTools`Private`self"}], 
+                "]"}],
+               Short[#, 1]& ],
+              "SummaryItem"]}]}
+          },
+          AutoDelete->False,
+          
+          BaseStyle->{
+           ShowStringCharacters -> False, NumberMarks -> False, 
+            PrintPrecision -> 3, ShowSyntaxStyles -> False},
+          GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+          
+          GridBoxItemSize->{
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+          GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+       },
+       AutoDelete->False,
+       BaselinePosition->{1, 1},
+       GridBoxAlignment->{"Rows" -> {{Top}}},
+       GridBoxItemSize->{
+        "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, Dynamic[
+      Typeset`open$$],
+      ImageSize->Automatic],
+     BaselinePosition->Baseline],
+    DynamicModuleValues:>{}], "]"}],
+  ChemTools`ChemObject["NewSystem-9aae745a-cc5b-4ae8-8d18-06338c2c539f"],
+  Editable->False,
+  SelectWithContents->True,
+  Selectable->False]], "Output",
+ CellLabel->"Out[1]=",
+ CellID->16,ExpressionUUID->"b8b92e79-5362-4e61-9ea8-12d74ef1302b"]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "ExampleSection", "0"}, 
+  Closed]]]],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ Cell[BoxData[
+  DynamicBox[If[$VersionNumber < 11.1, "", 
+    Cell[
+     BoxData[
+      ToBoxes[
+       Toggler[
+        Dynamic[
+         MatchQ[
+          CurrentValue[
+           EvaluationNotebook[], {
+           TaggingRules, "Openers", "ExampleSection", "1"}, Closed], 
+          Alternatives[Open, True]], (CurrentValue[
+            EvaluationNotebook[], {
+            TaggingRules, "Openers", "ExampleSection", "1"}] = #; Null)& , 
+         ImageSizeCache -> {14., {5., 9.}}], {True -> Style[
+           Graphics[{
+             Thickness[0.18], 
+             RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+             Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+            PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+           0.68 Inherited], False -> Rotate[
+           Style[
+            Graphics[{
+              Thickness[0.18], 
+              RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+              Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+             PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+            0.68 Inherited], Rational[1, 2] Pi, {-1.65, -1}]}]]]]],
+   ImageSizeCache->{14., {6., 15.}},
+   UpdateInterval->Infinity]],ExpressionUUID->
+  "563abdcb-377e-4e7c-b479-db07841aa832"],
+ "Scope"
+}], "ExampleSection",
+ WholeCellGroupOpener->True,
+ CellID->17,ExpressionUUID->"6724b960-b758-4022-ac7e-32c57ee3241c"],
+
+Cell[TextData[{
+ "We can see the unformatted form of a ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemObject"]],"paclet:ChemTools/ref/ChemObject"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "d2d2e18b-9ce7-49e3-b2a8-db73f80f508c"],
+ " by turning of ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["$ChemFormatObjects"]],
+    "paclet:ChemTools/ref/$ChemFormatObjects"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "005233d7-7a0a-46c9-a9c0-a307d20def34"]
+}], "ExampleText",
+ CellID->18,ExpressionUUID->"cdef6f8a-1e80-427b-abd3-748bab339e08"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"$ChemFormatObjects", "=", "False"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"sys", "=", 
+  RowBox[{
+  "CreateChemicalSystem", "[", "\"\<NewSystem-\>\"", "]"}]}]}], "Input",
+ CellChangeTimes->{{3.701095158437262*^9, 3.701095187737093*^9}, {
+  3.7010952745420723`*^9, 3.7010952753014507`*^9}},
+ CellLabel->"In[2]:=",
+ CellID->19,ExpressionUUID->"18ee5a97-ee9a-44db-8ed8-1fa46d72af22"],
+
+Cell[BoxData[
+ RowBox[{"ChemObject", 
+  "[", "\<\"NewSystem-a66a58c9-89ff-4156-a6fe-ce6bf672be7b\"\>", 
+  "]"}]], "Output",
+ CellLabel->"Out[3]=",
+ CellID->20,ExpressionUUID->"b2df94ed-b0dc-4c4c-9b89-ea1c1d1abca8"],
+
+Cell[TextData[{
+ "By restoring ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["$ChemFormatObjects"]],
+    "paclet:ChemTools/ref/$ChemFormatObjects"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "b513bd46-199d-4f67-960b-4a67078fcd48"],
+ " it will format once more:"
+}], "ExampleText",
+ CellID->21,ExpressionUUID->"d8612ae3-5a31-43d9-a277-3a397acf7e61"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"$ChemFormatObjects", "=", "True"}], 
+  ";"}], "\[IndentingNewLine]", "sys"}], "Input",
+ CellChangeTimes->{{3.701095299970674*^9, 3.701095303594878*^9}},
+ CellLabel->"In[4]:=",
+ CellID->22,ExpressionUUID->"2213a3f7-735d-499a-b67f-4d66878b846f"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   TagBox["ChemObject",
+    "SummaryHead"], "[", 
+   DynamicModuleBox[{Typeset`open$$ = False}, 
+    PanelBox[
+     PaneSelectorBox[{False->GridBox[{
+        {
+         PaneBox[
+          ButtonBox[
+           
+           DynamicBox[FEPrivate`FrontEndResource[
+            "FEBitmaps", "SquarePlusIconMedium"],
+            ImageSizeCache->{12., {0., 12.}}],
+           Appearance->None,
+           ButtonFunction:>(Typeset`open$$ = True),
+           Evaluator->Automatic,
+           Method->"Preemptive"],
+          Alignment->{Center, Center},
+          
+          ImageSize->
+           Dynamic[{
+            Automatic, 3.5 CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+             Magnification]}]], GridBox[{
+           {
+            RowBox[{
+             TagBox["\<\"Type: \"\>",
+              "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+             TagBox["\<\"System\"\>",
+              "SummaryItem"]}]}
+          },
+          AutoDelete->False,
+          
+          BaseStyle->{
+           ShowStringCharacters -> False, NumberMarks -> False, 
+            PrintPrecision -> 3, ShowSyntaxStyles -> False},
+          GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+          
+          GridBoxItemSize->{
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+          GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+       },
+       AutoDelete->False,
+       BaselinePosition->{1, 1},
+       GridBoxAlignment->{"Rows" -> {{Top}}},
+       GridBoxItemSize->{
+        "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], True->
+      GridBox[{
+        {
+         PaneBox[
+          ButtonBox[
+           
+           DynamicBox[FEPrivate`FrontEndResource[
+            "FEBitmaps", "SquareMinusIconMedium"]],
+           Appearance->None,
+           ButtonFunction:>(Typeset`open$$ = False),
+           Evaluator->Automatic,
+           Method->"Preemptive"],
+          Alignment->{Center, Center},
+          
+          ImageSize->
+           Dynamic[{
+            Automatic, 3.5 CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[
+             Magnification]}]], GridBox[{
+           {
+            RowBox[{
+             TagBox["\<\"Type: \"\>",
+              "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+             TagBox["\<\"System\"\>",
+              "SummaryItem"]}]},
+           {
+            RowBox[{
+             TagBox["\<\"NewID: \"\>",
+              "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+             TagBox[
+              TagBox["1",
+               Short[#, 1]& ],
+              "SummaryItem"]}]},
+           {
+            RowBox[{
+             TagBox["\<\"View: \"\>",
+              "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+             TagBox[
+              TagBox[
+               RowBox[{"Function", "[", 
+                RowBox[{
+                "ChemTools`Private`self", ",", "ChemTools`Private`self"}], 
+                "]"}],
+               Short[#, 1]& ],
+              "SummaryItem"]}]}
+          },
+          AutoDelete->False,
+          
+          BaseStyle->{
+           ShowStringCharacters -> False, NumberMarks -> False, 
+            PrintPrecision -> 3, ShowSyntaxStyles -> False},
+          GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+          
+          GridBoxItemSize->{
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+          GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+       },
+       AutoDelete->False,
+       BaselinePosition->{1, 1},
+       GridBoxAlignment->{"Rows" -> {{Top}}},
+       GridBoxItemSize->{
+        "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, Dynamic[
+      Typeset`open$$],
+      ImageSize->Automatic],
+     BaselinePosition->Baseline],
+    DynamicModuleValues:>{}], "]"}],
+  ChemTools`ChemObject["NewSystem-a66a58c9-89ff-4156-a6fe-ce6bf672be7b"],
+  Editable->False,
+  SelectWithContents->True,
+  Selectable->False]], "Output",
+ CellLabel->"Out[5]=",
+ CellID->23,ExpressionUUID->"e03ff0eb-1696-499f-b717-f5babd53d965"],
+
+Cell[TextData[{
+ "If an object is removed it is no longer recognized as a valid ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemObject"]],"paclet:ChemTools/ref/ChemObject"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "0a07e3d9-191e-46bb-bd48-0db0bfd8941a"],
+ ":"
+}], "ExampleText",
+ CellID->24,ExpressionUUID->"00b82f28-d78d-4c4b-ae45-776b5206dcb7"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ChemRemove", "@", "sys"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"ChemObjectQ", "@", "sys"}]}], "Input",
+ CellChangeTimes->{{3.701095208329537*^9, 3.701095255847631*^9}},
+ CellLabel->"In[6]:=",
+ CellID->25,ExpressionUUID->"2da2f619-3f54-4599-a1f3-4172bf95f02a"],
+
+Cell[BoxData["False"], "Output",
+ CellLabel->"Out[7]=",
+ CellID->26,ExpressionUUID->"184fc261-cbdf-4e4d-9675-f6bd91f19a8d"],
+
+Cell["And it also loses its formatting:", "ExampleText",
+ CellID->27,ExpressionUUID->"53c99cad-2dff-4bc3-a45e-22b88b3f880e"],
+
+Cell[BoxData["sys"], "Input",
+ CellChangeTimes->{{3.7010952655277767`*^9, 3.701095267081944*^9}},
+ CellLabel->"In[8]:=",
+ CellID->28,ExpressionUUID->"bb772854-514d-4366-a9d2-02a8ea5af9ed"],
+
+Cell[BoxData[
+ RowBox[{"ChemObject", 
+  "[", "\<\"NewSystem-a66a58c9-89ff-4156-a6fe-ce6bf672be7b\"\>", 
+  "]"}]], "Output",
+ CellLabel->"Out[8]=",
+ CellID->29,ExpressionUUID->"c8c4f745-d6bc-4741-96af-b0b938a046d3"]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "ExampleSection", "1"}, 
+  Closed]]]]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "PrimaryExamplesSection"}, 
+  Closed]]]],
+
+Cell[CellGroupData[{
+
+Cell["See Also", "SeeAlsoSection",
+ CellID->30,ExpressionUUID->"e2257ef6-3b35-4851-903a-8478f6b2a78a"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemAdd"]],"paclet:ChemTools/ref/ChemAdd"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"338f8c33-03e8-4dbc-bd90-fbbab8f19b85"],
+ "\[NonBreakingSpace]",
+ StyleBox["\[MediumSpace]\[FilledVerySmallSquare]\[MediumSpace]", 
+  "InlineSeparator"],
+ " ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemRemove"]],"paclet:ChemTools/ref/ChemRemove"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"768911b6-e4d0-47c2-9e22-52d7f083e789"],
+ "\[NonBreakingSpace]",
+ StyleBox["\[MediumSpace]\[FilledVerySmallSquare]\[MediumSpace]", 
+  "InlineSeparator"],
+ " ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemGet"]],"paclet:ChemTools/ref/ChemGet"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"3661c3dc-bab4-42d3-8f5d-d8d376c7d5b4"],
+ "\[NonBreakingSpace]",
+ StyleBox["\[MediumSpace]\[FilledVerySmallSquare]\[MediumSpace]", 
+  "InlineSeparator"],
+ " ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemSet"]],"paclet:ChemTools/ref/ChemSet"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"1138b2f4-b1d6-4692-8197-327e5cd953b7"],
+ "\[NonBreakingSpace]",
+ StyleBox["\[MediumSpace]\[FilledVerySmallSquare]\[MediumSpace]", 
+  "InlineSeparator"],
+ " ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemSetDelayed"]],"paclet:ChemTools/ref/ChemSetDelayed"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"eac3efcd-21b2-4fc6-b0ca-32b0e694f67b"],
+ "\[NonBreakingSpace]",
+ StyleBox["\[MediumSpace]\[FilledVerySmallSquare]\[MediumSpace]", 
+  "InlineSeparator"],
+ " ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemThreadSet"]],"paclet:ChemTools/ref/ChemThreadSet"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"e36ce6dd-03fa-429f-9e84-b20b1a24034b"],
+ "\[NonBreakingSpace]",
+ StyleBox["\[MediumSpace]\[FilledVerySmallSquare]\[MediumSpace]", 
+  "InlineSeparator"],
+ " ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemThreadSetDelayed"]],
+    "paclet:ChemTools/ref/ChemThreadSetDelayed"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"519628d3-4851-4265-86e7-0ec7a0887ca6"]
+}], "SeeAlso",
+ CellID->31,ExpressionUUID->"82df1ed8-ff97-46bf-9a3f-cc1d397fd9f3"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Related Guides", "MoreAboutSection",
+ CellID->32,ExpressionUUID->"e59163cf-1ee0-4955-8ad7-b15436726484"],
+
+Cell[BoxData[
+ DynamicBox[If[$VersionNumber < 11.1, 
+   TemplateBox[{
+     Cell[
+      TextData["Chemistry Objects"]], "paclet:ChemTools/guide/ChemObjects"}, 
+    "RefLink", BaseStyle -> {"InlineFormula", FontFamily -> "Verdana"}], 
+   TemplateBox[{
+     Cell[
+      TextData["Chemistry Objects"]], "paclet:ChemTools/guide/ChemObjects"}, 
+    "RefLinkPlain", BaseStyle -> {"InlineFormula"}]],
+  ImageSizeCache->{108., {4., 14.}},
+  UpdateInterval->Infinity]], "MoreAbout",
+ CellID->33,ExpressionUUID->"1518a89d-d9ec-4269-a3a5-6cf1ae0d3e3b"],
+
+Cell[BoxData[
+ DynamicBox[If[$VersionNumber < 11.1, 
+   TemplateBox[{
+     Cell[
+      TextData["Object Interface"]], 
+     "paclet:ChemTools/guide/ChemObjectInterface"}, "RefLink", 
+    BaseStyle -> {"InlineFormula", FontFamily -> "Verdana"}], 
+   TemplateBox[{
+     Cell[
+      TextData["Object Interface"]], 
+     "paclet:ChemTools/guide/ChemObjectInterface"}, "RefLinkPlain", 
+    BaseStyle -> {"InlineFormula"}]],
+  ImageSizeCache->{95., {4., 14.}},
+  UpdateInterval->Infinity]], "MoreAbout",
+ CellID->34,ExpressionUUID->"71d34965-8a6b-4e34-8eb9-29b912143873"]
+}, Open  ]],
+
+Cell["ChemTools Package Version 1.1", "History",
+ CellID->35,ExpressionUUID->"9ad2f344-8f97-48fb-a926-541da51d7be3"],
+
+Cell[" ", "FooterCell",
+ CellID->36,ExpressionUUID->"36922510-6009-45b7-a274-ee56ef9d47b6"]
+},
+ClosingSaveDialog->False,
+Saveable->False,
+WindowSize->{808, 755},
+WindowMargins->{{314, Automatic}, {Automatic, 50}},
+WindowTitle->"ChemObject",
+TaggingRules->{
+ "ColorType" -> "SymbolColor", "ModificationHighlight" -> False, "LinkTrails" -> 
+  "", "HasOptions" -> False, "SearchTextTranslated" -> "", 
+  "Metadata" -> {
+   "built" -> "{2017, 7, 20, 2, 45, 2.993525}", "history" -> {"11.1", "", ""},
+     "context" -> "ChemTools`", 
+    "keywords" -> {"chemobject", "chem", "object"}, "specialkeywords" -> 
+    Automatic, "tutorialcollectionlinks" -> {}, "index" -> True, "label" -> 
+    "ChemTools", "language" -> "ChemTools", "paclet" -> "Mathematica", 
+    "status" -> "None", "summary" -> "General head for object", 
+    "synonyms" -> {}, "tabletags" -> {}, "title" -> "ChemObject", 
+    "titlemodifier" -> "ChemObject", "windowtitle" -> "ChemObject", "type" -> 
+    "Symbol", "uri" -> "ChemTools/ref/ChemObject"}, 
+  "Openers" -> {
+   "NotesSection" -> Closed, "PrimaryExamplesSection" -> Open, 
+    "ExampleSection" -> {"0" -> Open, "1" -> Closed}, 
+    "ExampleSection" -> {"1" -> Closed}}},
+FrontEndVersion->"11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (April 27, \
+2017)",
+StyleDefinitions->Notebook[{
+   Cell[
+    StyleData[
+    StyleDefinitions -> 
+     FrontEnd`FileName[{"Wolfram"}, "Reference.nb", CharacterEncoding -> 
+       "UTF-8"]]], 
+   Cell[
+    StyleData["Notebook"], DockedCells -> {
+      Cell[
+       BoxData[
+        PanelBox[
+         StyleBox[
+          TemplateBox[{
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {9, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            TemplateBox[{
+              TooltipBox[
+               DynamicModuleBox[{$CellContext`destination$$ = 0}, 
+                DynamicBox[
+                 FEPrivate`If[FEPrivate`HistoryList["Back"] === {}, 
+                  ButtonBox[
+                   DynamicBox[
+                    FEPrivate`ImportImage[
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "DisabledBackIcon.png"]]], Enabled -> False, Appearance -> 
+                   None, FrameMargins -> 0], 
+                  ButtonBox[
+                   PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "BackIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "BackIcon.png"]]]}, 
+                    Dynamic[
+                    CurrentValue["MouseOver"]]], ButtonFunction :> 
+                   FrontEndToken[
+                    FrontEnd`ButtonNotebook[], "HyperlinkGoBack"], Evaluator -> 
+                   None, Appearance -> None, FrameMargins -> 0]]], 
+                DynamicModuleValues :> {}], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipBack"]]], 
+              StyleBox[
+               
+               GraphicsBox[{}, ImageSize -> {2, 0}, BaselinePosition -> 
+                Baseline], "CacheGraphics" -> False], 
+              TooltipBox[
+               DynamicModuleBox[{$CellContext`destination$$ = 0}, 
+                DynamicBox[
+                 FEPrivate`If[FEPrivate`HistoryList["Forward"] === {}, 
+                  ButtonBox[
+                   DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "DisabledForwardIcon.png"]]], Enabled -> False, 
+                   Appearance -> None, FrameMargins -> 0], 
+                  ButtonBox[
+                   PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "ForwardIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "ForwardIcon.png"]]]}, 
+                    Dynamic[
+                    CurrentValue["MouseOver"]]], ButtonFunction :> 
+                   FrontEndToken[
+                    FrontEnd`ButtonNotebook[], "HyperlinkGoForward"], 
+                   Evaluator -> None, Appearance -> None, FrameMargins -> 
+                   0]]], DynamicModuleValues :> {}], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipForward"]]], 
+              TooltipBox[
+               DynamicBox[
+                ToBoxes[
+                 FEPrivate`GenerateHelpViewerActionMenu[], StandardForm]], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipHistory"]]], 
+              StyleBox[
+               
+               GraphicsBox[{}, ImageSize -> {13, 0}, BaselinePosition -> 
+                Baseline], "CacheGraphics" -> False], 
+              TooltipBox[
+               ButtonBox[
+                PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "HomeIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "HomeIcon.png"]]]}, 
+                 Dynamic[
+                  CurrentValue["MouseOver"]]], ButtonFunction :> 
+                Documentation`HelpLookup[
+                  CurrentValue[HomePage], 
+                  FrontEnd`ButtonNotebook[], 
+                  CurrentValue[Language]], Appearance -> None, Evaluator -> 
+                Automatic, Method -> "Preemptive"], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipHome"]]]}, "RowDefault"], 
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {39, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            FrameBox[
+             StyleBox[
+              DynamicBox[
+               FEPrivate`FrontEndResource[
+               "FEExpressions", "HelpViewerSearchField"]], 
+              InputFieldBoxOptions -> {
+               ImageSize -> 
+                Dynamic[AbsoluteCurrentValue[{WindowSize, 1}] - 220], 
+                FrameMargins -> 
+                FEPrivate`Switch[
+                 FEPrivate`$OperatingSystem, "MacOSX", {{3, 3}, {0, -1}}, 
+                  "Windows", {{0, 2}, {0, 2}}, 
+                  Blank[], {{2, 2}, {0, 0}}]}], FrameStyle -> None, 
+             FrameMargins -> {{0, 0}, {4, 0}}], 
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {12, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            TooltipBox[
+             ButtonBox[
+              PaneSelectorBox[{True -> DynamicBox[
+                  FEPrivate`ImportImage[
+                   
+                   FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "RevertIconHot.png"]]], False -> DynamicBox[
+                  FEPrivate`ImportImage[
+                   
+                   FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "RevertIcon.png"]]]}, 
+               Dynamic[
+                CurrentValue["MouseOver"]]], ButtonFunction :> FrontEndToken[
+                FrontEnd`ButtonNotebook[], "Revert", False], Evaluator -> 
+              None, Appearance -> None, Method -> "Preemptive"], 
+             DynamicBox[
+              FEPrivate`FrontEndResource[
+              "HelpToolbarText", "TooltipRefresh"]]]}, "RowDefault"], 
+          CacheGraphics -> False, 
+          ButtonBoxOptions -> {BaselinePosition -> (Baseline -> Baseline)}], 
+         Alignment -> {Left, Center}, Appearance -> Image[CompressedData["
+1:eJztyDkKAkEUhOFGE0OvIHgIU0PTEQ8ww7SDSQs9gnhXl3HBfbmC7Q0qeWDw
+f1CPqtcr5tm05ZyrO+lk+XIYY74ad9OYhHpWBV+OwsJXPg6Kdnr2U8qUX/8A
+AAAA+HtvyF6AgSdg4AHZHbIbYOAKGLhAdobsBBg4QnaAbA9ZAxjYAQa2gIEN
+ZGvIvp8pRMU=
+           "], "Byte", ColorSpace -> "RGB", Interleaving -> 
+           True], ImageSize -> {
+           Scaled[1], Full}]], "DockedCell", CellFrame -> 0, 
+       CellMargins -> {{0, -10}, {-2, -1}}, 
+       CellFrameMargins -> {{0, 0}, {0, 0}}, ShowCodeAssist -> False, 
+       Background -> None], 
+      Cell[
+      "", CellSize -> {1, 1}, CellOpen -> False, 
+       CellFrame -> {{0, 0}, {2, 0}}, CellFrameColor -> 
+       Hue[0.38, 0.64, 0.6]]}], 
+   Cell[
+    StyleData["DockedCell"], CellFrame -> {{0, 0}, {1, 0}}, CellFrameColor -> 
+    Hue[0.38, 0.64, 0.6]]}, Visible -> False, FrontEndVersion -> 
+  "11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (April 27, 2017)", 
+  StyleDefinitions -> "Default.nb"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[582, 21, 5591, 135, 70, "AnchorBarGrid", "ExpressionUUID" -> \
+"a1ab5947-e135-4a38-ac5e-db49ae9be55d",
+ CellID->1],
+Cell[6176, 158, 99, 1, 70, "ObjectName", "ExpressionUUID" -> \
+"30dc86bc-8ffe-4a70-8570-c2176071be60",
+ CellID->2],
+Cell[6278, 161, 1655, 41, 70, "Usage", "ExpressionUUID" -> \
+"b423e351-9ad3-4fa7-ab91-59072aa636f1",
+ CellID->3],
+Cell[CellGroupData[{
+Cell[7958, 206, 1523, 36, 70, "NotesSection", "ExpressionUUID" -> \
+"cb267b00-9fed-4f06-aa11-1c1889e3ddf9",
+ CellID->4],
+Cell[9484, 244, 412, 10, 70, "Notes", "ExpressionUUID" -> \
+"25ea9208-ca48-4ea6-a54e-4b19b527a05b",
+ CellID->5],
+Cell[9899, 256, 826, 23, 70, "Notes", "ExpressionUUID" -> \
+"c1a31c13-54dc-4fd6-906b-d490ce103dcc",
+ CellID->6],
+Cell[10728, 281, 598, 18, 70, "Notes", "ExpressionUUID" -> \
+"f8ee252d-36af-424a-ae39-01c3114ee454",
+ CellID->7],
+Cell[11329, 301, 569, 15, 70, "Notes", "ExpressionUUID" -> \
+"c6271866-c4c7-44f3-88b2-a8bcce856455",
+ CellID->8],
+Cell[11901, 318, 800, 25, 70, "Notes", "ExpressionUUID" -> \
+"1de55207-7de0-4ca2-a74d-7051e3e47279",
+ CellID->9],
+Cell[12704, 345, 37073, 626, 70, "NotesThumbnails", "ExpressionUUID" -> \
+"e2914b6f-47f2-4176-ace5-c652e12bb563",
+ CellOpen->FEPrivate`If[
+   FEPrivate`Less[FEPrivate`$VersionNumber, 11.1], False, 
+   FEPrivate`Not[
+    FEPrivate`Or[
+     FEPrivate`SameQ[
+      FrontEnd`CurrentValue[
+       FrontEnd`EvaluationNotebook[], {
+       TaggingRules, "Openers", "NotesSection"}], Open], 
+     FEPrivate`SameQ[
+      FrontEnd`CurrentValue[
+       FrontEnd`EvaluationNotebook[], {
+       TaggingRules, "Openers", "NotesSection"}], True]]]],
+ CellID->10]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "NotesSection"}, Closed]]]],
+Cell[49882, 975, 93, 1, 70, "PageDelimiter", "ExpressionUUID" -> \
+"2659d346-e34d-4906-95f3-bec28be95b0c",
+ CellID->11],
+Cell[CellGroupData[{
+Cell[50000, 980, 1474, 35, 70, "PrimaryExamplesSection", "ExpressionUUID" -> \
+"1ccff346-5a59-49d1-a6ad-f1848dc838ff",
+ CellID->12],
+Cell[CellGroupData[{
+Cell[51499, 1019, 1466, 35, 70, "ExampleSection", "ExpressionUUID" -> \
+"85039c14-5977-4034-a26a-bd496bd23942",
+ CellID->13],
+Cell[52968, 1056, 123, 1, 70, "ExampleText", "ExpressionUUID" -> \
+"b199b4c7-10c4-4d3d-842e-d19b5f846176",
+ CellID->14],
+Cell[53094, 1059, 270, 5, 70, "Input", "ExpressionUUID" -> \
+"bec60ad9-a1a6-49b0-afb5-5fd023388555",
+ CellID->15],
+Cell[53367, 1066, 4079, 117, 70, "Output", "ExpressionUUID" -> \
+"b8b92e79-5362-4e61-9ea8-12d74ef1302b",
+ CellID->16]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "ExampleSection", "0"}, 
+  Closed]]]],
+Cell[CellGroupData[{
+Cell[57583, 1190, 1456, 35, 70, "ExampleSection", "ExpressionUUID" -> \
+"6724b960-b758-4022-ac7e-32c57ee3241c",
+ CellID->17],
+Cell[59042, 1227, 602, 17, 70, "ExampleText", "ExpressionUUID" -> \
+"cdef6f8a-1e80-427b-abd3-748bab339e08",
+ CellID->18],
+Cell[59647, 1246, 422, 10, 70, "Input", "ExpressionUUID" -> \
+"18ee5a97-ee9a-44db-8ed8-1fa46d72af22",
+ CellID->19],
+Cell[60072, 1258, 214, 5, 70, "Output", "ExpressionUUID" -> \
+"b2df94ed-b0dc-4c4c-9b89-ea1c1d1abca8",
+ CellID->20],
+Cell[60289, 1265, 380, 11, 70, "ExampleText", "ExpressionUUID" -> \
+"d8612ae3-5a31-43d9-a277-3a397acf7e61",
+ CellID->21],
+Cell[60672, 1278, 279, 6, 70, "Input", "ExpressionUUID" -> \
+"2213a3f7-735d-499a-b67f-4d66878b846f",
+ CellID->22],
+Cell[60954, 1286, 4079, 117, 70, "Output", "ExpressionUUID" -> \
+"e03ff0eb-1696-499f-b717-f5babd53d965",
+ CellID->23],
+Cell[65036, 1405, 383, 10, 70, "ExampleText", "ExpressionUUID" -> \
+"00b82f28-d78d-4c4b-ae45-776b5206dcb7",
+ CellID->24],
+Cell[65422, 1417, 299, 6, 70, "Input", "ExpressionUUID" -> \
+"2da2f619-3f54-4599-a1f3-4172bf95f02a",
+ CellID->25],
+Cell[65724, 1425, 123, 2, 70, "Output", "ExpressionUUID" -> \
+"184fc261-cbdf-4e4d-9675-f6bd91f19a8d",
+ CellID->26],
+Cell[65850, 1429, 124, 1, 70, "ExampleText", "ExpressionUUID" -> \
+"53c99cad-2dff-4bc3-a45e-22b88b3f880e",
+ CellID->27],
+Cell[65977, 1432, 188, 3, 70, "Input", "ExpressionUUID" -> \
+"bb772854-514d-4366-a9d2-02a8ea5af9ed",
+ CellID->28],
+Cell[66168, 1437, 214, 5, 70, "Output", "ExpressionUUID" -> \
+"c8c4f745-d6bc-4741-96af-b0b938a046d3",
+ CellID->29]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "ExampleSection", "1"}, 
+  Closed]]]]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "PrimaryExamplesSection"}, 
+  Closed]]]],
+Cell[CellGroupData[{
+Cell[66634, 1452, 102, 1, 70, "SeeAlsoSection", "ExpressionUUID" -> \
+"e2257ef6-3b35-4851-903a-8478f6b2a78a",
+ CellID->30],
+Cell[66739, 1455, 3338, 83, 70, "SeeAlso", "ExpressionUUID" -> \
+"82df1ed8-ff97-46bf-9a3f-cc1d397fd9f3",
+ CellID->31]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[70114, 1543, 110, 1, 70, "MoreAboutSection", "ExpressionUUID" -> \
+"e59163cf-1ee0-4955-8ad7-b15436726484",
+ CellID->32],
+Cell[70227, 1546, 540, 12, 70, "MoreAbout", "ExpressionUUID" -> \
+"1518a89d-d9ec-4269-a3a5-6cf1ae0d3e3b",
+ CellID->33],
+Cell[70770, 1560, 565, 14, 70, "MoreAbout", "ExpressionUUID" -> \
+"71d34965-8a6b-4e34-8eb9-29b912143873",
+ CellID->34]
+}, Open  ]],
+Cell[71350, 1577, 116, 1, 70, "History", "ExpressionUUID" -> \
+"9ad2f344-8f97-48fb-a926-541da51d7be3",
+ CellID->35],
+Cell[71469, 1580, 91, 1, 70, "FooterCell", "ExpressionUUID" -> \
+"36922510-6009-45b7-a274-ee56ef9d47b6",
+ CellID->36]
+}
+]
+*)
+
+(* End of internal cache information *)

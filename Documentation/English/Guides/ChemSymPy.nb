@@ -1,0 +1,425 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     16916,        415]
+NotebookOptionsPosition[      7048,        186]
+NotebookOutlinePosition[     15979,        392]
+CellTagsIndexPosition[     15936,        389]
+WindowTitle->ChemSymPy
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     TagBox[GridBox[{
+        {
+         ItemBox[
+          TemplateBox[{InterpretationBox[
+             StyleBox[
+              
+              GraphicsBox[{}, ImageSize -> {8, 0}, BaselinePosition -> 
+               Baseline], "CacheGraphics" -> False], 
+             Spacer[8], Selectable -> False],Cell["GUIDE", "PacletNameCell"],
+            InterpretationBox[
+             StyleBox[
+              
+              GraphicsBox[{}, ImageSize -> {8, 0}, BaselinePosition -> 
+               Baseline], "CacheGraphics" -> False], 
+             Spacer[8], Selectable -> False]},
+           "RowDefault"],
+          Background->RGBColor[0.8, 0.4, 0],
+          ItemSize->Full,
+          StripOnInput->False]}
+       },
+       AutoDelete->False,
+       GridBoxAlignment->{"Columns" -> {{Automatic}}, "Rows" -> {{Center}}},
+       GridBoxItemSize->{"Columns" -> {All, 
+           Scaled[0.02]}, "Rows" -> {{2.5}}}],
+      "Grid"], Cell[TextData[{
+      Cell[BoxData[
+       ActionMenuBox[
+        TemplateBox[{"\"Functions\"","\"  \"",GraphicsBox[{{{{{{
+                 GrayLevel[0.66667], 
+                 Thickness[0.13], 
+                 LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}}}}}}, 
+           AspectRatio -> 1, ImageSize -> 20, 
+           PlotRange -> {{-3, 4}, {-1, 1}}]},
+         "RowDefault"], {
+        RowBox[{"Hold", "[", "\<\"SymbolicPythonQ\"\>", "]"}]:>Hold[
+        "SymbolicPythonQ"], 
+        RowBox[{"Hold", "[", "\<\"ToPython\"\>", "]"}]:>Hold["ToPython"], 
+        RowBox[{"Hold", "[", "\<\"ToSymbolicPython\"\>", "]"}]:>Hold[
+        "ToSymbolicPython"]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"GuideFunction"]],ExpressionUUID->
+       "c5a43a81-d120-472d-be13-34f85db14de6"],
+      "\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\
+\[ThickSpace]",
+      Cell[BoxData[
+       ActionMenuBox[
+        TemplateBox[{"\"Related Guides\"","\"  \"",GraphicsBox[{{{{{{
+                 GrayLevel[0.66667], 
+                 Thickness[0.13], 
+                 LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}}}}}}, 
+           AspectRatio -> 1, ImageSize -> 20, 
+           PlotRange -> {{-3, 4}, {-1, 1}}]},
+         "RowDefault"], {"\<\"Chemistry Extension\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/guide/ChemExtensions", 
+         EvaluationNotebook[]]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"MoreAbout"]],ExpressionUUID->
+       "16e695c8-0bb1-4ac0-b2d5-773a48fe77a5"],
+      "\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\
+\[ThickSpace]",
+      Cell[BoxData[
+       ActionMenuBox[
+        TemplateBox[{"\"URL\"","\"  \"",GraphicsBox[{{{{{{
+                 GrayLevel[0.66667], 
+                 Thickness[0.13], 
+                 LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}}}}}}, 
+           AspectRatio -> 1, ImageSize -> 20, 
+           PlotRange -> {{-3, 4}, {-1, 1}}]},
+         "RowDefault"], {"\<\"ChemSymPy\"\>":>
+        None, "\<\"Copy Documentation Center URI\"\>":>CopyToClipboard[
+        "ChemSymPy"], Delimiter, "\<\"Copy web URL\"\>":>CopyToClipboard[
+         Hyperlink[
+          
+          URLBuild[{
+           "http://reference.wolfram.com/language", 
+            "ChemSymPy"}]]], "\<\"Go to URL\"\>":>SystemOpen[
+         URLBuild[{"http://reference.wolfram.com/language", "ChemSymPy"}]]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"URLMenu"]],ExpressionUUID->
+       "fac1f767-e4e0-4408-886c-8de242690232"]
+     }], "AnchorBar",ExpressionUUID->"3a7b767e-0b36-42da-a149-6bf50a3c7873"]}
+   },
+   AutoDelete->False,
+   GridBoxAlignment->{"Columns" -> {Left, Right}, "Rows" -> {{Center}}},
+   GridBoxItemSize->{"Columns" -> {
+       Scaled[0.35], {
+        Scaled[0.65]}}, "Rows" -> {{Automatic}}}],
+  "Grid"]], "AnchorBarGrid",
+ CellID->1,ExpressionUUID->"2f18d399-6a47-4622-a161-d88dee5ccb0c"],
+
+Cell[CellGroupData[{
+
+Cell["Symbolic Python", "GuideTitle",
+ CellID->2,ExpressionUUID->"dd5c7f23-9f48-411b-83a1-b739dbeff354"],
+
+Cell["\<\
+The symbolic python interface provides a way to create templates for python \
+code that can be easily tweaked and extended. Through the ToSymbolicPython \
+function it is also possible to go from Mathematica code to symbolic python \
+directly, simplifying the process yet more.\
+\>", "GuideAbstract",ExpressionUUID->"c5e720cf-5678-43b7-953c-526183f613c0"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["SymbolicPythonQ"]],"paclet:ChemTools/ref/SymbolicPythonQ"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "e842e6fa-7fbe-446b-bfbc-9b891e6aff01"],
+ StyleBox[" \[LongDash] ", "GuideEmDash"],
+ "Specifies whether a structure can be interpreted as symbolic python and not \
+as Wolfram Language code."
+}], "GuideText",ExpressionUUID->"65b22488-e8d6-47c9-969f-b07cb67deee4"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ToPython"]],"paclet:ChemTools/ref/ToPython"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "5d9f568d-c7ee-4635-a8b4-fd610bd981e8"],
+ StyleBox[" \[LongDash] ", "GuideEmDash"],
+ "Converts symbolic python to plain python string"
+}], "GuideText",ExpressionUUID->"f9955f9a-23d3-4d84-9708-daf7458c5c41"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ToSymbolicPython"]],"paclet:ChemTools/ref/ToSymbolicPython"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "7f9fafc1-e908-4667-9fb3-c49fe52e50b4"],
+ StyleBox[" \[LongDash] ", "GuideEmDash"],
+ "Converts Wolfram Language code into symbolic python with reasonably broad \
+coverage"
+}], "GuideText",ExpressionUUID->"1ab130ea-ed37-430f-b025-4c579b4597f9"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Related Guides", "GuideMoreAboutSection",
+ WholeCellGroupOpener->True,
+ CellID->4,ExpressionUUID->"91739dcc-1656-4deb-9f21-0048a9c16ea3"],
+
+Cell[BoxData[Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["Chemistry Extension"]],"paclet:ChemTools/guide/ChemExtensions"},
+   "RefLink",
+   BaseStyle->"GuideMoreAbout"]],ExpressionUUID->
+  "093ac421-8093-4c09-965f-21272c4f9cc4"]], "GuideMoreAbout",ExpressionUUID->\
+"b337fa2e-c2e7-4111-b52d-e791dff6658e"]
+}, Open  ]],
+
+Cell[" ", "FooterCell",
+ CellID->5,ExpressionUUID->"09f18a04-43eb-44c5-92c0-4223cc6dbb68"]
+},
+ClosingSaveDialog->False,
+Saveable->False,
+WindowSize->{808, 755},
+WindowMargins->{{314, Automatic}, {Automatic, 50}},
+WindowTitle->"ChemSymPy",
+TaggingRules->{
+ "ColorType" -> "GuideColor", 
+  "Metadata" -> {
+   "built" -> "{2017, 4, 13, 13, 44, 35.504830}", "history" -> {}, "context" -> 
+    "System`", "keywords" -> {}, "specialkeywords" -> {}, 
+    "tutorialcollectionlinks" -> {}, "index" -> True, "label" -> "Guide", 
+    "language" -> "en", "paclet" -> "Mathematica", "status" -> "None", 
+    "summary" -> {
+     "The symbolic python interface provides a way to create templates for \
+python code that can be easily tweaked and extended. Through the \
+ToSymbolicPython function it is also possible to go from Mathematica code to \
+symbolic python directly, simplifying the process yet more."}, 
+    "synonyms" -> {}, "tabletags" -> {}, "title" -> "Symbolic Python", 
+    "titlemodifier" -> "", "windowtitle" -> "Symbolic Python", "type" -> 
+    "Guide", "uri" -> "ChemTools/guide/ChemSymPy"}},
+FrontEndVersion->"11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 16, \
+2017)",
+StyleDefinitions->Notebook[{
+   Cell[
+    StyleData[
+    StyleDefinitions -> 
+     FrontEnd`FileName[{"Wolfram"}, "Reference.nb", CharacterEncoding -> 
+       "UTF-8"]]], 
+   Cell[
+    StyleData["Notebook"], DockedCells -> {
+      Cell[
+       BoxData[
+        PanelBox[
+         StyleBox[
+          TemplateBox[{
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {9, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            TemplateBox[{
+              TooltipBox[
+               DynamicModuleBox[{$CellContext`destination$$ = 0}, 
+                DynamicBox[
+                 FEPrivate`If[FEPrivate`HistoryList["Back"] === {}, 
+                  ButtonBox[
+                   DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "DisabledBackIcon.png"]]], Enabled -> False, Appearance -> 
+                   None, FrameMargins -> 0], 
+                  ButtonBox[
+                   PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "BackIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "BackIcon.png"]]]}, 
+                    Dynamic[
+                    CurrentValue["MouseOver"]]], ButtonFunction :> 
+                   FrontEndToken[
+                    FrontEnd`ButtonNotebook[], "HyperlinkGoBack"], Evaluator -> 
+                   None, Appearance -> None, FrameMargins -> 0]]], 
+                DynamicModuleValues :> {}], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipBack"]]], 
+              StyleBox[
+               
+               GraphicsBox[{}, ImageSize -> {2, 0}, BaselinePosition -> 
+                Baseline], "CacheGraphics" -> False], 
+              TooltipBox[
+               DynamicModuleBox[{$CellContext`destination$$ = 0}, 
+                DynamicBox[
+                 FEPrivate`If[FEPrivate`HistoryList["Forward"] === {}, 
+                  ButtonBox[
+                   DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "DisabledForwardIcon.png"]]], Enabled -> False, 
+                   Appearance -> None, FrameMargins -> 0], 
+                  ButtonBox[
+                   PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "ForwardIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "ForwardIcon.png"]]]}, 
+                    Dynamic[
+                    CurrentValue["MouseOver"]]], ButtonFunction :> 
+                   FrontEndToken[
+                    FrontEnd`ButtonNotebook[], "HyperlinkGoForward"], 
+                   Evaluator -> None, Appearance -> None, FrameMargins -> 
+                   0]]], DynamicModuleValues :> {}], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipForward"]]], 
+              TooltipBox[
+               DynamicBox[
+                ToBoxes[
+                 FEPrivate`GenerateHelpViewerActionMenu[], StandardForm]], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipHistory"]]], 
+              StyleBox[
+               
+               GraphicsBox[{}, ImageSize -> {13, 0}, BaselinePosition -> 
+                Baseline], "CacheGraphics" -> False], 
+              TooltipBox[
+               ButtonBox[
+                PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "HomeIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "HomeIcon.png"]]]}, 
+                 Dynamic[
+                  CurrentValue["MouseOver"]]], ButtonFunction :> 
+                Documentation`HelpLookup[
+                  CurrentValue[HomePage], 
+                  FrontEnd`ButtonNotebook[], 
+                  CurrentValue[Language]], Appearance -> None, Evaluator -> 
+                Automatic, Method -> "Preemptive"], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipHome"]]]}, "RowDefault"], 
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {39, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            FrameBox[
+             StyleBox[
+              DynamicBox[
+               FEPrivate`FrontEndResource[
+               "FEExpressions", "HelpViewerSearchField"]], 
+              InputFieldBoxOptions -> {
+               ImageSize -> 
+                Dynamic[AbsoluteCurrentValue[{WindowSize, 1}] - 220], 
+                FrameMargins -> 
+                FEPrivate`Switch[
+                 FEPrivate`$OperatingSystem, "MacOSX", {{3, 3}, {0, -1}}, 
+                  "Windows", {{0, 2}, {0, 2}}, 
+                  Blank[], {{2, 2}, {0, 0}}]}], FrameStyle -> None, 
+             FrameMargins -> {{0, 0}, {4, 0}}], 
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {12, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            TooltipBox[
+             ButtonBox[
+              PaneSelectorBox[{True -> DynamicBox[
+                  FEPrivate`ImportImage[
+                   
+                   FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "RevertIconHot.png"]]], False -> DynamicBox[
+                  FEPrivate`ImportImage[
+                   
+                   FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "RevertIcon.png"]]]}, 
+               Dynamic[
+                CurrentValue["MouseOver"]]], ButtonFunction :> FrontEndToken[
+                FrontEnd`ButtonNotebook[], "Revert", False], Evaluator -> 
+              None, Appearance -> None, Method -> "Preemptive"], 
+             DynamicBox[
+              FEPrivate`FrontEndResource[
+              "HelpToolbarText", "TooltipRefresh"]]]}, "RowDefault"], 
+          CacheGraphics -> False, 
+          ButtonBoxOptions -> {BaselinePosition -> (Baseline -> Baseline)}], 
+         Alignment -> {Left, Center}, Appearance -> Image[CompressedData["
+1:eJztyDkKAkEUhOFGE0OvIHgIU0PTEQ8ww7SDSQs9gnhXl3HBfbmC7Q0qeWDw
+f1CPqtcr5tm05ZyrO+lk+XIYY74ad9OYhHpWBV+OwsJXPg6Kdnr2U8qUX/8A
+AAAA+HtvyF6AgSdg4AHZHbIbYOAKGLhAdobsBBg4QnaAbA9ZAxjYAQa2gIEN
+ZGvIvp8pRMU=
+           "], "Byte", ColorSpace -> "RGB", Interleaving -> 
+           True], ImageSize -> {
+           Scaled[1], Full}]], "DockedCell", CellFrame -> 0, 
+       CellMargins -> {{0, -10}, {-2, -1}}, 
+       CellFrameMargins -> {{0, 0}, {0, 0}}, ShowCodeAssist -> False, 
+       Background -> None], 
+      Cell[
+      "", CellSize -> {1, 1}, CellOpen -> False, 
+       CellFrame -> {{0, 0}, {2, 0}}, CellFrameColor -> 
+       RGBColor[0.8, 0.4, 0]]}]}, Visible -> False, FrontEndVersion -> 
+  "11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 16, 2017)", 
+  StyleDefinitions -> "Default.nb"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[581, 21, 4070, 97, 53, "AnchorBarGrid", "ExpressionUUID" -> \
+"2f18d399-6a47-4622-a161-d88dee5ccb0c",
+ CellID->1],
+Cell[CellGroupData[{
+Cell[4676, 122, 104, 1, 61, "GuideTitle", "ExpressionUUID" -> \
+"dd5c7f23-9f48-411b-83a1-b739dbeff354",
+ CellID->2],
+Cell[4783, 125, 364, 5, 91, "GuideAbstract", "ExpressionUUID" -> \
+"c5e720cf-5678-43b7-953c-526183f613c0"],
+Cell[5150, 132, 459, 10, 50, "GuideText", "ExpressionUUID" -> \
+"65b22488-e8d6-47c9-969f-b07cb67deee4"],
+Cell[5612, 144, 389, 9, 29, "GuideText", "ExpressionUUID" -> \
+"f9955f9a-23d3-4d84-9708-daf7458c5c41"],
+Cell[6004, 155, 442, 10, 29, "GuideText", "ExpressionUUID" -> \
+"1ab130ea-ed37-430f-b025-4c579b4597f9"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6483, 170, 143, 2, 73, "GuideMoreAboutSection", "ExpressionUUID" -> \
+"91739dcc-1656-4deb-9f21-0048a9c16ea3",
+ CellID->4],
+Cell[6629, 174, 310, 6, 26, "GuideMoreAbout", "ExpressionUUID" -> \
+"b337fa2e-c2e7-4111-b52d-e791dff6658e"]
+}, Open  ]],
+Cell[6954, 183, 90, 1, 40, "FooterCell", "ExpressionUUID" -> \
+"09f18a04-43eb-44c5-92c0-4223cc6dbb68",
+ CellID->5]
+}
+]
+*)
+
+(* End of internal cache information *)
+

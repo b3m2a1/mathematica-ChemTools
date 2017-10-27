@@ -1,0 +1,708 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Meyer DVR (for use on a grid in \[CurlyPhi])", \
+"CodeSection",ExpressionUUID->"c3afa8f0-0f4e-4802-881f-de7ebd657cac"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDVRBegin", "[", "]"}], ";"}]], "InputSection",
+ CellChangeTimes->{3.699240055548855*^9, 
+  3.707066301972454*^9},ExpressionUUID->"9a2cb7e8-49f8-4b19-81eb-\
+1f17ad1d14eb"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"MeyerDVRFormatGrid", "::", "usage"}], "=", 
+   "\"\<Formats the grid\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"MeyerDVRPoints", "::", "usage"}], "=", 
+   "\"\<Generates the grid\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"MeyerDVRK", "::", "usage"}], "=", "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"MeyerDVRV", "::", "usage"}], "=", "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"MeyerDVRWavefunctions", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"MeyerDVRPlot", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.699233585754648*^9, 
+  3.699233606709139*^9}},ExpressionUUID->"f5bfd106-d3c9-4e32-9101-\
+3a231ed9cb83"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"3c8d288b-dcf7-4d04-8ead-\
+ac6087d146b6"],
+
+Cell[CellGroupData[{
+
+Cell["Grid Formatting Function", \
+"Subsubsection",ExpressionUUID->"b1769d8b-4f0d-4e66-b610-234304d3776c"],
+
+Cell["\<\
+This function should take a grid and the grid points used to generate the \
+grid.\
+\>", "Text",ExpressionUUID->"294559a5-a47c-47b1-be8a-f796625ad8f0"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"MeyerDVRFormatGrid", "[", 
+    RowBox[{"grid_", ",", "points_"}], "]"}], ":=", "grid"}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{
+  3.6992337144218187`*^9},ExpressionUUID->"c2d29d21-a58c-4592-b673-\
+e075b8140fb3"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Grid Points Function", \
+"Subsubsection",ExpressionUUID->"25304569-9fca-4d58-9ac0-df8a77886276"],
+
+Cell["\<\
+This function should take the number of grid points for each coordinate\
+\>", "Text",ExpressionUUID->"de514c34-0837-4680-867b-1322b7424f36"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"MeyerDVRPoints", "[", 
+   RowBox[{
+    RowBox[{"{", "points_Integer", "}"}], ",", "\n", "\t", 
+    RowBox[{"X", ":", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"_", "?", "NumericQ"}], ",", 
+        RowBox[{"_", "?", "NumericQ"}]}], "}"}], "}"}], ":", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", 
+        RowBox[{"2.", "\[Pi]"}]}], "}"}], "}"}]}]}], "\n", "\t", "]"}], ":=", 
+  "\n", "\t", 
+  RowBox[{
+   RowBox[{"DeleteDuplicatesBy", "[", 
+    RowBox[{
+     RowBox[{"Mod", "[", 
+      RowBox[{"#", ",", 
+       RowBox[{"2", "\[Pi]"}]}], "]"}], "&"}], "]"}], "[", "\n", "\t\t", 
+   RowBox[{"Subdivide", "@@", 
+    RowBox[{"Append", "[", 
+     RowBox[{
+      RowBox[{"X", "[", 
+       RowBox[{"[", "1", "]"}], "]"}], ",", "points"}], "]"}]}], "\n", "\t\t",
+    "]"}]}]], "CodeInput",
+ CellChangeTimes->{
+  3.699200045278949*^9, {3.69920008501616*^9, 3.6992000920807247`*^9}, {
+   3.699200124968298*^9, 3.699200133406434*^9}, {3.6992074474542017`*^9, 
+   3.699207450724925*^9}, {3.699211747970565*^9, 3.699211787049007*^9}, {
+   3.69921185461567*^9, 3.6992119283628674`*^9}, {3.699212533676085*^9, 
+   3.6992125341066017`*^9}, {3.69922854340968*^9, 3.699228545982193*^9}, 
+   3.699233703214385*^9, {3.6992348897707253`*^9, 3.6992348905056057`*^9}, {
+   3.699234945784017*^9, 3.699234948815877*^9}, {3.699817466240732*^9, 
+   3.69981746864366*^9}, {3.699817590417569*^9, 3.69981760184925*^9}, {
+   3.699817655349147*^9, 3.699817679158914*^9}, {3.6998179502083693`*^9, 
+   3.6998179536887217`*^9}, 3.715977689183535*^9, {3.715977738831935*^9, 
+   3.7159777400537*^9}, {3.7159782330962*^9, 3.715978268220458*^9}, {
+   3.715978306430287*^9, 3.715978309476307*^9}, {3.715978377763957*^9, 
+   3.715978571806107*^9}, {3.7159972896821547`*^9, 3.715997338560968*^9}, {
+   3.715997432992814*^9, 3.715997433078754*^9}, {3.715997476977598*^9, 
+   3.715997477135552*^9}, {3.7159978000115347`*^9, 3.71599780176748*^9}, {
+   3.715997903862156*^9, 3.715997940136242*^9}, 
+   3.7159993129112463`*^9},ExpressionUUID->"a59f0a81-fc64-4427-a5ec-\
+6dcef05f3638"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Kinetic Energy Function", \
+"Subsubsection",ExpressionUUID->"a3b8b866-8dcd-4e68-b320-2fa6443cebc0"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "MeyerDVRK", "]"}], "=", 
+   RowBox[{"{", 
+    RowBox[{"\"\<\[HBar]\>\"", "->", "1"}], "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"MeyerDVRK", "[", 
+    RowBox[{"gridpoints_", ",", 
+     RowBox[{"ops", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"X", "=", "gridpoints"}], ",", 
+       RowBox[{"p", "=", 
+        RowBox[{"Length", "@", "gridpoints"}]}], ",", 
+       RowBox[{"\[HBar]", "=", 
+        RowBox[{"OptionValue", "@", "\"\<\[HBar]\>\""}]}]}], "}"}], ",", "\n",
+      "\t\t", 
+     RowBox[{"N", "@", 
+      RowBox[{"Table", "[", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"(", "\[HBar]", ")"}], "*", "\n", "\t\t\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"i", "==", "j"}], ",", "\n", "\t\t\t\t", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"p", "^", "2"}], "/", "2"}], "+", "1"}], ")"}], "*", 
+            RowBox[{"1", "/", "6"}]}], ",", "\n", "\t\t\t\t", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"-", "1"}], ")"}], "^", 
+              RowBox[{"(", 
+               RowBox[{"i", "-", "j"}], ")"}]}], ")"}], "/", 
+            RowBox[{"(", 
+             RowBox[{"2", "*", 
+              RowBox[{
+               RowBox[{"Sin", "[", 
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{"\[Pi]", "*", 
+                   RowBox[{"(", 
+                    RowBox[{"i", "-", "j"}], ")"}]}], ")"}], "/", "p"}], 
+                "]"}], "^", "2"}]}], ")"}]}]}], "\n", "\t\t\t\t", "]"}]}], 
+        ",", "\n", "\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "p"}], "}"}], ",", "\n", "\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"j", ",", "p"}], "}"}]}], "]"}]}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.69923372404648*^9, 3.6992338389489393`*^9}, {
+  3.6992350059651327`*^9, 
+  3.699235006844495*^9}},ExpressionUUID->"976917fb-3228-49cc-bab8-\
+682afb778d85"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Potential Energy Function", \
+"Subsubsection",ExpressionUUID->"8de4955d-86f0-4c2f-a99f-ffd9f3fcf7fc"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "MeyerDVRV", "]"}], "=", 
+   RowBox[{"{", 
+    RowBox[{"Function", "->", "Sin"}], "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"MeyerDVRV", "[", 
+    RowBox[{"gridpoints_", ",", 
+     RowBox[{"ops", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"P", "=", 
+        RowBox[{"OptionValue", "[", "Function", "]"}]}], ",", 
+       RowBox[{"X", "=", "gridpoints"}], ",", 
+       RowBox[{"p", "=", 
+        RowBox[{"Length", "@", "gridpoints"}]}]}], "}"}], ",", "\n", "\t\t", 
+     RowBox[{"SparseArray", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Band", "[", 
+         RowBox[{"{", 
+          RowBox[{"1", ",", "1"}], "}"}], "]"}], "->", 
+        RowBox[{"P", "/@", "X"}]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"p", ",", "p"}], "}"}]}], "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.6992338443715897`*^9, 
+  3.699233865600621*^9}},ExpressionUUID->"76ccce19-a508-4c88-b7ff-\
+4a024b562a3a"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Wavefunctions function", \
+"Subsubsection",ExpressionUUID->"7ab447d4-3ff6-45f9-88e8-39f916315c14"],
+
+Cell[BoxData[{
+ RowBox[{"Clear", "[", "\"\<MeyerDVRWavefunctions\>\"", "]"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"MeyerDVRWavefunctions", "[", 
+    RowBox[{"T_", ",", "V_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"S", "=", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"#", "[", 
+          RowBox[{"[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"1", ",", "2"}], "}"}], ",", 
+            RowBox[{"Ordering", "[", 
+             RowBox[{"First", "@", "#"}], "]"}]}], "]"}], "]"}], "&"}], "@", 
+        RowBox[{"Eigensystem", "[", 
+         RowBox[{"T", "+", "V"}], "]"}]}]}], "}"}], ",", "\n", "\t\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"phase", "=", 
+         RowBox[{"Sign", "/@", 
+          RowBox[{"S", "[", 
+           RowBox[{"[", 
+            RowBox[{"2", ",", "1"}], "]"}], "]"}]}]}], "}"}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"First", "@", "S"}], ",", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"phase", "*", "#"}], "&"}], "/@", 
+          RowBox[{"Last", "@", "S"}]}]}], "}"}]}], "\n", "\t\t\t", "]"}]}], 
+    "\n", "\t\t", "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.699233927737445*^9, 
+  3.699233947021268*^9}},ExpressionUUID->"f6298ee0-ff4f-46ee-8d56-\
+c55a76698811"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Plotting Function", \
+"Subsubsection",ExpressionUUID->"050ce668-e971-4abc-a0d1-127f1fd6cfde"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "MeyerDVRPlot", "]"}], "=", "\n", "\t", 
+   RowBox[{"DeleteDuplicatesBy", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"Flatten", "@", 
+      RowBox[{"{", "\n", "\t", "\t\t", 
+       RowBox[{
+        RowBox[{"FilterRules", "[", 
+         RowBox[{
+          RowBox[{"Options", "[", "ListPolarPlot", "]"}], ",", 
+          RowBox[{"Except", "[", 
+           RowBox[{"Joined", "|", "ColorFunction"}], "]"}]}], "]"}], ",", 
+        "\n", "\t", "\t", "\t", 
+        RowBox[{"Labeled", "->", "True"}], ",", "\n", "\t", "\t", "\t", 
+        RowBox[{"\"\<EnergyShift\>\"", "\[Rule]", "False"}], ",", "\n", "\t", 
+        "\t", "\t", 
+        RowBox[{"\"\<WavefunctionSelection\>\"", "\[Rule]", "Automatic"}], 
+        ",", "\n", "\t", "\t\t", 
+        RowBox[{"\"\<EnergyDigits\>\"", "->", "3"}], ",", "\n", "\t", "\t", 
+        "\t", 
+        RowBox[{"\"\<ShowPotential\>\"", "->", "True"}], ",", "\n", "\t", 
+        "\t", "\t", 
+        RowBox[{"\"\<SquareWavefunction\>\"", "->", "False"}], ",", "\n", 
+        "\t", "\t", "\t", 
+        RowBox[{"Manipulate", "->", "True"}], ",", "\n", "\t", "\t", "\t", 
+        RowBox[{"ColorFunction", "->", "\"\<BrightBands\>\""}]}], "\n", "\t", 
+       "\t\t", "}"}]}], ",", "\n", "\t", "\t", "First"}], "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"MeyerDVRPlot", "[", 
+   RowBox[{"solutions_", ",", "gridpoints_", ",", "potential_", ",", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{"X", ",", 
+      RowBox[{"V", "=", "potential"}], ",", "\[CapitalLambda]", ",", 
+      "\[CapitalPsi]", ",", "\[Psi]", ",", "\n", "\t\t\t", "waveSet", ",", 
+      "wavePlot", ",", "potentialPlot", ",", "volEl", ",", "\n", "\t\t\t", 
+      RowBox[{"num", "=", "\n", "\t\t\t\t", 
+       RowBox[{"Replace", "[", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "\"\<WavefunctionSelection\>\"", "]"}], 
+         ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"Automatic", "\[RuleDelayed]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"OptionValue", "@", "Manipulate"}], "//", "TrueQ"}], ",",
+             "All", ",", "5"}], "]"}]}]}], "\n", "\t\t\t\t\t", "]"}]}]}], 
+     "}"}], ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"X", "=", "gridpoints"}], ";", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"\[CapitalLambda]", ",", "\[CapitalPsi]"}], "}"}], "=", 
+      "solutions"}], ";", "\n", "\t\t", 
+     RowBox[{"num", "=", "\n", "\t\t\t", 
+      RowBox[{"Which", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"num", "===", "All"}], ",", "\n", "\t\t\t\t\t", 
+        RowBox[{"Range", "[", 
+         RowBox[{"1", ",", 
+          RowBox[{"Length", "[", "\[CapitalLambda]", "]"}]}], "]"}], ",", 
+        "\n", "\t\t\t\t", 
+        RowBox[{"MatchQ", "[", 
+         RowBox[{"num", ",", "_List"}], "]"}], ",", "\n", "\t\t\t\t\t", "num",
+         ",", "\n", "\t\t\t\t", 
+        RowBox[{"MatchQ", "[", 
+         RowBox[{"num", ",", "_Integer"}], "]"}], ",", "\n", "\t\t\t\t\t", 
+        RowBox[{"Range", "[", 
+         RowBox[{"1", ",", "num"}], "]"}], ",", "\n", "\t\t\t\t", "True", ",",
+         "\n", "\t\t\t\t\t", 
+        RowBox[{"Range", "[", 
+         RowBox[{"1", ",", 
+          RowBox[{"Floor", "[", 
+           RowBox[{
+            RowBox[{"Length", "[", "\[CapitalLambda]", "]"}], "/", "2"}], 
+           "]"}]}], "]"}]}], "\n", "\t", "\t\t\t", "]"}]}], ";", "\n", "\t", 
+     "\t", 
+     RowBox[{
+      RowBox[{"volEl", "[", "x_", "]"}], ":=", "\n", "\t", "\t\t", 
+      RowBox[{"Sqrt", "[", 
+       RowBox[{"1", "-", 
+        RowBox[{"x", "^", "2"}]}], "]"}]}], ";", "\n", "\t", "\t", 
+     RowBox[{
+      RowBox[{"\[Psi]", "[", "n_", "]"}], ":=", "\n", "\t", "\t\t", 
+      RowBox[{"Reverse", "@", 
+       RowBox[{
+        RowBox[{"SortBy", "[", "First", "]"}], "@", "\n", "\t", "\t\t\t", 
+        RowBox[{"With", "[", "\n", "\t", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"{", "\n", "\t", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"S", "=", 
+             RowBox[{"OptionValue", "[", "\"\<EnergyShift\>\"", "]"}]}], ",", 
+            "\n", "\t", "\t", "\t\t\t\t", 
+            RowBox[{"Q", "=", 
+             RowBox[{"TrueQ", "@", 
+              RowBox[{
+              "OptionValue", "[", "\"\<SquareWavefunction\>\"", "]"}]}]}]}], 
+           "\n", "\t", "\t", "\t\t\t\t", "}"}], ",", "\n", "\t", "\t", 
+          "\t\t\t", 
+          RowBox[{"MapThread", "[", "\n", "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"#", ",", 
+               RowBox[{
+                RowBox[{"If", "[", 
+                 RowBox[{"S", ",", 
+                  RowBox[{"\[CapitalLambda]", "[", 
+                   RowBox[{"[", "n", "]"}], "]"}], ",", "0"}], "]"}], "+", 
+                RowBox[{"If", "[", 
+                 RowBox[{"Q", ",", 
+                  RowBox[{"Power", "[", 
+                   RowBox[{"#2", ",", "2"}], "]"}], ",", "#2"}], "]"}]}]}], 
+              "}"}], "&"}], ",", "\n", "\t", "\t", "\t\t\t\t", 
+            RowBox[{"{", 
+             RowBox[{"X", ",", 
+              RowBox[{"\[CapitalPsi]", "[", 
+               RowBox[{"[", "n", "]"}], "]"}]}], "}"}]}], "]"}]}], "\n", "\t",
+          "\t\t\t\t", "]"}]}]}]}], ";", "\n", "\t\t", 
+     RowBox[{"waveSet", "=", 
+      RowBox[{"\[Psi]", "/@", "num"}]}], ";", "\n", "\t\t", 
+     RowBox[{"wavePlot", "=", "\n", "\t\t\t", 
+      RowBox[{"MapThread", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"ListPolarPlot", "[", 
+          RowBox[{"#", ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"PlotLegends", "->", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"TrueQ", "@", 
+               RowBox[{"OptionValue", "[", "Labeled", "]"}]}], ",", "\n", 
+              "\t\t\t\t\t\t\t", 
+              RowBox[{"Row", "[", 
+               RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{"Subscript", "[", 
+                  RowBox[{"\"\<\[Psi]\>\"", ",", 
+                   RowBox[{"ToString", "[", "#2", "]"}]}], "]"}], ",", "\n", 
+                 "\t\t\t\t\t\t\t\t", "\"\<: E=\>\"", ",", "\n", "\t", 
+                 "\t\t\t\t\t\t\t", 
+                 RowBox[{"Round", "[", 
+                  RowBox[{
+                   RowBox[{"\[CapitalLambda]", "[", 
+                    RowBox[{"[", "#2", "]"}], "]"}], ",", 
+                   RowBox[{"1.0", "*", 
+                    RowBox[{"10", "^", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"-", "1"}], "*", 
+                    RowBox[{
+                    "OptionValue", "[", "\"\<EnergyDigits\>\"", "]"}]}], 
+                    ")"}]}]}]}], "]"}]}], "\n", "\t\t\t\t\t\t\t\t", "}"}], 
+               "]"}], ",", "\n", "\t", "\t\t\t\t\t\t", "None"}], "\n", 
+             "\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"ColorFunctionScaling", "->", "False"}], ",", "\n", 
+           "\t\t\t\t\t", 
+           RowBox[{"ColorFunction", "->", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"With", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"c", "=", 
+                RowBox[{
+                 RowBox[{"ColorData", "[", 
+                  RowBox[{"OptionValue", "[", "ColorFunction", "]"}], "]"}], 
+                 "[", 
+                 RowBox[{"#2", "/", 
+                  RowBox[{"Length", "@", "num"}]}], "]"}]}], "}"}], ",", "\n",
+               "\t\t\t\t\t\t\t", 
+              RowBox[{"Function", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"x", ",", "y", ",", "\[Theta]", ",", "r"}], "}"}], 
+                ",", 
+                RowBox[{"Darker", "[", 
+                 RowBox[{"c", ",", 
+                  RowBox[{"\[Theta]", "/", 
+                   RowBox[{"(", 
+                    RowBox[{"1.5", "\[Pi]"}], ")"}]}]}], "]"}]}], "]"}]}], 
+             "\n", "\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"FilterRules", "[", 
+            RowBox[{
+             RowBox[{
+             "{", "\n", "\t\t\t\t\t\t", "ops", "\n", "\t\t\t\t\t\t", "}"}], 
+             ",", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"Options", "[", "ListPolarPlot", "]"}]}], "\n", 
+            "\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"Joined", "\[Rule]", "True"}]}], "\n", "\t\t\t\t", "]"}], 
+         "&"}], ",", 
+        RowBox[{"{", "\n", "\t\t\t\t", 
+         RowBox[{"waveSet", ",", "\n", "\t\t\t\t", "num"}], "\n", "\t\t\t\t", 
+         "}"}]}], "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"potentialPlot", "=", "\n", "\t\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"TrueQ", "@", 
+         RowBox[{"OptionValue", "[", "\"\<ShowPotential\>\"", "]"}]}], ",", 
+        "\n", "\t\t\t\t", 
+        RowBox[{"With", "[", 
+         RowBox[{
+          RowBox[{"{", "\n", "\t\t\t\t\t", 
+           RowBox[{"pset", "=", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"With", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"D", "=", 
+                 RowBox[{"Diagonal", "[", "V", "]"}]}], ",", 
+                RowBox[{"M", "=", 
+                 RowBox[{"Max", "@", 
+                  RowBox[{"Diagonal", "@", "V"}]}]}], ",", 
+                RowBox[{"m", "=", 
+                 RowBox[{"Max", "[", 
+                  RowBox[{"waveSet", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"All", ",", "All", ",", "2"}], "]"}], "]"}], 
+                  "]"}]}]}], "}"}], ",", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"Reverse", "@", 
+               RowBox[{
+                RowBox[{"SortBy", "[", "First", "]"}], "@", "\n", 
+                "\t\t\t\t\t\t\t\t", 
+                RowBox[{"MapThread", "[", "\n", "\t\t\t\t\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"#1", ",", 
+                    RowBox[{
+                    RowBox[{"Abs", "[", 
+                    RowBox[{"m", "/", "M"}], "]"}], "#2"}]}], "}"}], "&"}], 
+                  ",", "\n", "\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{"{", 
+                   RowBox[{"X", ",", "D"}], "}"}]}], "\n", 
+                 "\t\t\t\t\t\t\t\t\t", "]"}]}]}]}], "\n", "\t\t\t\t\t\t\t", 
+             "]"}]}], "}"}], ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"With", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"p", "=", "1"}], ",", 
+              RowBox[{"M", "=", 
+               RowBox[{"Max", "[", 
+                RowBox[{"pset", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"All", ",", "2"}], "]"}], "]"}], "]"}]}], ",", 
+              RowBox[{"m", "=", 
+               RowBox[{"Min", "[", 
+                RowBox[{"pset", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"All", ",", "2"}], "]"}], "]"}], "]"}]}]}], "}"}], 
+            ",", "\n", "\t", "\t", "\t\t\t\t", 
+            RowBox[{"Graphics", "[", 
+             RowBox[{"{", "\n", "\t", "\t", "\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"Arrowheads", "[", "Small", "]"}], ",", "\n", 
+               "\t\t\t\t\t\t\t", 
+               RowBox[{"Table", "[", "\n", "\t\t\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"GrayLevel", "[", 
+                    RowBox[{"Rescale", "[", 
+                    RowBox[{
+                    RowBox[{"pset", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"i", ",", "2"}], "]"}], "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"m", ",", "M"}], "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"0", ",", ".9"}], "}"}]}], "]"}], "]"}], ",", 
+                   "\n", "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{"Arrow", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"-", "#2"}], "*", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Sin", "[", "#1", "]"}], ",", 
+                    RowBox[{"Cos", "[", "#1", "]"}]}], "}"}]}], "&"}], "@@@", 
+                    
+                    RowBox[{"Take", "[", 
+                    RowBox[{"pset", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", 
+                    RowBox[{"(", 
+                    RowBox[{"i", "+", "1"}], ")"}]}], "}"}]}], "]"}]}], 
+                    "]"}]}], "\n", "\t\t\t\t\t\t\t\t\t", "}"}], ",", "\n", 
+                 "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"{", 
+                  RowBox[{"i", ",", 
+                   RowBox[{
+                    RowBox[{"Floor", "[", 
+                    RowBox[{
+                    RowBox[{"Length", "[", "pset", "]"}], "/", "p"}], "]"}], 
+                    "-", "1"}]}], "}"}]}], "]"}]}], "\n", "\t\t\t\t\t\t\t", 
+              "}"}], "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], "\n", 
+         "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"{", "}"}]}], "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"OptionValue", "[", "Manipulate", "]"}], ",", "\n", "\t\t\t", 
+       RowBox[{"With", "[", 
+        RowBox[{
+         RowBox[{"{", "\n", "\t\t\t\t", 
+          RowBox[{
+           RowBox[{"wp", "=", "wavePlot"}], ",", 
+           RowBox[{"pp", "=", "potentialPlot"}]}], "}"}], ",", "\n", 
+         "\t\t\t\t", 
+         RowBox[{"Manipulate", "[", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"Show", "[", 
+            RowBox[{
+             RowBox[{"wp", "[", 
+              RowBox[{"[", "n", "]"}], "]"}], ",", "pp"}], "]"}], ",", "\n", 
+           "\t\t\t\t\t", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"n", ",", "1", ",", "\"\<Wavefunction\>\""}], "}"}], 
+             ",", "1", ",", 
+             RowBox[{"Length", "[", "wp", "]"}], ",", "1"}], "}"}]}], "\n", 
+          "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
+       RowBox[{"Show", "[", 
+        RowBox[{"Append", "[", 
+         RowBox[{"wavePlot", ",", "potentialPlot"}], "]"}], "]"}]}], "\n", 
+      "\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}]}], "CodeInput",
+ CellChangeTimes->{{3.6992339702122107`*^9, 3.6992341400162497`*^9}, {
+   3.699234241108663*^9, 3.6992342589814463`*^9}, {3.699234926556601*^9, 
+   3.699234928882739*^9}, 
+   3.6992352672472982`*^9},ExpressionUUID->"a44f4e3f-845e-41d9-802d-\
+dbacbe953f1a"]
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"4f0b35c1-72ca-4080-85f4-\
+541d6a3e85c8"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$MeyerDVR", "=", "\n", "\t", 
+   RowBox[{"<|", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"\"\<Name\>\"", "\[Rule]", "\"\<Meyer 1D\>\""}], ",", "\n", "\t",
+      "\t", 
+     RowBox[{"\"\<Dimension\>\"", "\[Rule]", "1"}], ",", "\n", "\t", "\t", 
+     RowBox[{"\"\<FormatGrid\>\"", "\[Rule]", "MeyerDVRFormatGrid"}], ",", 
+     "\n", "\t", "\t", 
+     RowBox[{"\"\<PointLabels\>\"", "->", 
+      RowBox[{"{", 
+       RowBox[{"(", 
+        RowBox[{
+        "\"\<\[CurlyPhi]\>\"", "|", "\"\<\[Phi]\>\"", "|", "\"\<phi\>\"", 
+         "|", "\"\<Phi\>\"", "|", "\"\<Angular\>\"", "|", "\"\<angular\>\""}],
+         ")"}], "}"}]}], ",", "\n", "\t", "\t", 
+     RowBox[{"\"\<Range\>\"", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", 
+         RowBox[{"2", "\[Pi]"}]}], "}"}], "}"}]}], ",", "\n", "\t", "\t", 
+     RowBox[{"\"\<Grid\>\"", "->", "MeyerDVRPoints"}], ",", "\n", "\t", "\t", 
+     
+     RowBox[{"\"\<KineticEnergy\>\"", "->", "MeyerDVRK"}], ",", "\n", "\t", 
+     "\t", 
+     RowBox[{"\"\<PotentialEnergy\>\"", "->", "MeyerDVRV"}], ",", "\n", "\t", 
+     "\t", 
+     RowBox[{"\"\<Wavefunctions\>\"", "->", "MeyerDVRWavefunctions"}], ",", 
+     "\n", "\t", "\t", 
+     RowBox[{"\"\<View\>\"", "->", "MeyerDVRPlot"}]}], "\n", "\t\t", "|>"}]}],
+   ";"}]], "CodeInput",
+ CellChangeTimes->{{3.699234301921033*^9, 3.699234330125806*^9}, {
+   3.6992348101145077`*^9, 3.699234841112837*^9}, 3.69923559452069*^9, {
+   3.699237970148656*^9, 3.6992379747860527`*^9}, 
+   3.699241769914647*^9},ExpressionUUID->"c32a21e7-5362-48ed-adaf-\
+4c1a1241abef"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDVREnd", "[", "]"}], ";"}]], "InputSection",
+ CellChangeTimes->{
+  3.699240055548855*^9, {3.699241768256687*^9, 3.69924176854694*^9}, 
+   3.707066296723466*^9},ExpressionUUID->"9bd87d61-7aa7-4d9e-9bcb-\
+6b4b5ecfd51d"],
+
+Cell[BoxData["$MeyerDVR"], \
+"CodeInput",ExpressionUUID->"8baa8ab2-8346-400a-b758-5139bc6790a9"]
+}, Open  ]]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"619f87b4-ca02-4398-a2f4-\
+61ddd28c0370"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{63, Automatic}, {29, Automatic}},
+FrontEndVersion->"11.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
+10, 2017)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

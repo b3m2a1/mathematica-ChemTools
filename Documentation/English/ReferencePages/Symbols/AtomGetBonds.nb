@@ -1,0 +1,2911 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[    118453,       2902]
+NotebookOptionsPosition[    105359,       2587]
+NotebookOutlinePosition[    114480,       2797]
+CellTagsIndexPosition[    114437,       2794]
+WindowTitle->AtomGetBonds
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[GridBox[{
+   {GridBox[{
+      {
+       DynamicBox[If[$VersionNumber < 11.1, 
+         Cell[
+         "CHEMTOOLS SYMBOL", "PacletNameCell", TextAlignment -> Center, 
+          CellID -> 28], 
+         ItemBox[
+          Cell[
+           BoxData[
+            RowBox[{
+              InterpretationBox[
+               StyleBox[
+                
+                GraphicsBox[{}, ImageSize -> {8, 0}, BaselinePosition -> 
+                 Baseline], "CacheGraphics" -> False], 
+               Spacer[8], Selectable -> False], 
+              Cell[
+              "CHEMTOOLS SYMBOL", "PacletNameCell", TextAlignment -> Center, 
+               CellID -> 29], 
+              InterpretationBox[
+               StyleBox[
+                
+                GraphicsBox[{}, ImageSize -> {8, 0}, BaselinePosition -> 
+                 Baseline], "CacheGraphics" -> False], 
+               Spacer[8], Selectable -> False]}]]], Background -> 
+          Hue[0.38, 0.64, 0.6], ItemSize -> Full]],
+        ImageSizeCache->{132., {5., 13.}},
+        UpdateInterval->Infinity], ""}
+     },
+     GridBoxAlignment->{"Rows" -> {{Center}}},
+     GridBoxItemSize->{"Columns" -> {Full, 
+         Scaled[0.02]}, "Rows" -> {{2.5}}}], Cell[TextData[{
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "See Also",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "25e3b682-57d8-4b49-b73c-9d612f7db899"]
+         }],ExpressionUUID->"97ff0923-ead0-4367-9f85-99f32a5a818c"],
+         StripOnInput->False], {"\<\"CreateAtom\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/CreateAtom"], "\<\"CreateBond\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/CreateBond"], "\<\"AtomCreateBond\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/ref/AtomCreateBond"]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"SeeAlso"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "b8c87afe-6b02-4ec5-8ae9-170eea0913c3"],
+     "\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\
+\[ThickSpace]",
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "Related Guides",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "d7518ae6-7733-4550-93b9-0a6ec524cf07"]
+         }],ExpressionUUID->"16fa69ad-4238-4e3d-9ac9-20b07b87fcb1"],
+         StripOnInput->False], {"\<\"Chemistry Objects\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/guide/ChemObjects", 
+         EvaluationNotebook[]], "\<\"Atom Object\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/guide/ChemAtomObject", 
+         EvaluationNotebook[]], "\<\"Bond Object\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/guide/ChemBondObject", 
+         EvaluationNotebook[]]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"MoreAbout"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "ee7b3d79-02dd-4d1a-aeca-ec7d68bb4358"],
+     "\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\
+\[ThickSpace]",
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "URL",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "18c86475-bf09-4bdc-973f-5c33f8561434"]
+         }],ExpressionUUID->"795013e5-34ba-4562-a71d-a37e7db81894"],
+         StripOnInput->False], {
+        RowBox[{
+         RowBox[{"ChemTools", "/", "ref"}], "/", "AtomGetBonds"}]:>None, 
+        RowBox[{"Copy", " ", "Documentation", " ", "Center", " ", "URI"}]:>
+        CopyToClipboard["ChemTools/ref/AtomGetBonds"], Delimiter, 
+        RowBox[{"Copy", " ", "web", " ", "URL"}]:>CopyToClipboard[
+         Hyperlink[
+         "https://www.wolframcloud.com/objects/b3m2a1.paclets/reference/\
+ChemTools/ref/AtomGetBonds"]], 
+        RowBox[{"Go", " ", "to", " ", "URL"}]:>SystemOpen[
+        "https://www.wolframcloud.com/objects/b3m2a1.paclets/reference/\
+ChemTools/ref/AtomGetBonds"]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"URLMenu"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "2fca5156-8501-46f5-ac03-e57789d06b4c"]
+    }], "AnchorBar",ExpressionUUID->"75135410-45c3-47a0-8ce6-85a47014fd77"]}
+  }]], "AnchorBarGrid",
+ CellID->1,ExpressionUUID->"946c6d5a-7574-4dea-86dc-308b38774fc4"],
+
+Cell["AtomGetBonds", "ObjectName",
+ CellID->2,ExpressionUUID->"1fcf31d0-636a-452d-af5a-f2b4c9b0e5a0"],
+
+Cell[BoxData[GridBox[{
+   {"", Cell[TextData[{
+     Cell[BoxData[
+      RowBox[{Cell[BoxData[
+        TemplateBox[{Cell[
+           TextData["AtomGetBonds"]],"paclet:ChemTools/ref/AtomGetBonds"},
+         "RefLink",
+         BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+        "218b6bb2-bb36-4934-958a-ae004b28d94d"], "[", 
+       RowBox[{
+        SubscriptBox[
+         StyleBox["atom", "TI"], "1"], ",", 
+        SubscriptBox[
+         StyleBox["atom", "TI"], "2"]}], "]"}]], "InlineFormula",
+      ExpressionUUID->"7d720133-c875-465e-8fdd-3eaf926ae50e"],
+     "\[LineSeparator]",
+     Cell[TextData[{
+      "Gets bonds to from ",
+      Cell[BoxData[
+       SubscriptBox[
+        StyleBox["atom", "TI", "TI"], 
+        StyleBox["1", "TI", "TI"]]],ExpressionUUID->
+       "784f3253-379b-42e2-a4a4-aa802da209d5"],
+      " to ",
+      Cell[BoxData[
+       SubscriptBox[
+        StyleBox["atom", "TI", "TI"], 
+        StyleBox["2", "TI", "TI"]]],ExpressionUUID->
+       "0ed83a08-8753-4bb4-8f9d-490da51f2e2b"]
+     }], "InlineFormula",ExpressionUUID->
+      "9b65a943-5b1e-4144-867c-d54eaeeb89ce"]
+    }],ExpressionUUID->"41a6ed69-f3bb-43fb-9bbe-61c67e59f783"]}
+  }]], "Usage",
+ CellID->3,ExpressionUUID->"2bb0ba5a-2c35-457f-8401-55497fa64474"],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ Cell[BoxData[
+  DynamicBox[If[$VersionNumber < 11.1, "", 
+    Cell[
+     BoxData[
+      ToBoxes[
+       Toggler[
+        Dynamic[
+         MatchQ[
+          CurrentValue[
+           EvaluationNotebook[], {TaggingRules, "Openers", "NotesSection"}, 
+           Closed], 
+          Alternatives[Open, True]], (CurrentValue[
+            EvaluationNotebook[], {
+            TaggingRules, "Openers", "NotesSection"}] = #; Null)& , 
+         ImageSizeCache -> {14., {5., 9.}}], {True -> Style[
+           Graphics[{
+             Thickness[0.18], 
+             RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+             Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+            PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+           0.68 Inherited], False -> Rotate[
+           Style[
+            Graphics[{
+              Thickness[0.18], 
+              RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+              Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+             PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+            0.68 Inherited], Rational[1, 2] Pi, {-1.65, -1}]}]]]]],
+   ImageSizeCache->{14., {6., 15.}},
+   UpdateInterval->Infinity]],ExpressionUUID->
+  "920446c3-2e9a-41c0-9ee8-33fb19a6f31e"],
+ Cell["Details", "NotesFrameText",ExpressionUUID->
+  "0a9d294f-5c36-4cb8-8f4c-9168cb10243d"]
+}], "NotesSection",
+ WholeCellGroupOpener->True,
+ CellID->4,ExpressionUUID->"32550a7a-db67-43c3-9b66-cbaeae280bec"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["AtomGetBonds"]],"paclet:ChemTools/ref/AtomGetBonds"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "eda68f9d-25ff-41c2-8dd3-c32b9685308b"],
+ " operates on the object IDs"
+}], "Notes",
+ CellID->5,ExpressionUUID->"228021f2-6487-435a-b6c8-50a9079860b1"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  SubscriptBox[
+   StyleBox["atom", "TI"], 
+   StyleBox["2", "TI"]]],ExpressionUUID->
+  "ecc640cf-5fea-4993-86e7-82f8c68d3682"],
+ " can be a pattern in which case it will match against the id"
+}], "Notes",
+ CellID->6,ExpressionUUID->"dec00714-3540-43fc-a1bd-3a597272c93d"],
+
+Cell[BoxData[
+ ButtonBox[
+  DynamicBox[ToBoxes[
+    Overlay[{
+      Graphics[{}, Background -> If[
+         CurrentValue["MouseOver"], 
+         RGBColor[0.942, 0.978, 0.992], None], ImageSize -> {720, 70}, 
+       AspectRatio -> Full], 
+      Pane[
+       Grid[{{"", 
+          Spacer[10], 
+          Image[CompressedData["
+1:eJztnAdYFMm2x5uwuut9b3fv7lt1d68RIworoqKg5ChJkWAgZxEQxQwCknPO
+OUgeGLKMEiRKVKLEAcRAUlAxMzPndQ+oKLrvyu7ed7/71c+Z6apTp05Vn+rq
+9vv826t0jysZsmIYZvk1/qOkc1bk5Emd8we+xysq5pZHjcwN9GXMTxkYGZzc
+qcuGG9nxryT+TcO/gEAgEAgEAoFAIBAIBAKB+M+CAefSgPzmbZXup5YPNOiv
+vm90pu6tkSryqX6l7R+ZOm7UvHcsFAPQzQU6XnyZQYOAG55a6USvedIxzADq
+au0K9rhkwXSyovoB9+Q9GeVl8mHHl4UIypyvFvSuUpXujuDbl7WPDM+MROpO
+iNq2Kl4sFXcLlEjm3FmjePqaVCiUC1t0KQnFguLitOUilFS5eGgQMr2yWLTc
+o8JRrslV9AwWAfIJIkHrU5XPvp7nXN2LAEK38hdLDW7LltCylndUMfPMOKYk
+ru9k2Spoek4qUUHP7JiVGEktemcikIUjZYSSdvBvV7LYOeLMa6lGsuRT8Ofy
+hF2BMidFLyrDRdM2cSvl7fsOgaKHlrq2h9wh03UH9DiGa7lfgFb6/udKDoIm
+rxjzm+roJIMh6atyUSxQS/6YSaQWeV/J9n16dltiKbyh27QML8gctrZ3c1BX
+kMjkOQTNW0UuysjK2v/Dw/MQrFlna7nXa5Vtwc5tcEFYJFwhXQXiNwWpxKur
+CSaD0x5B5/V7vI3deVVK+Q2KfomD/YniQrtvHPxxmHk9zAt6FYy2t1Y+TX/e
+d6dtuAF60oah4Caj8FZRNp2e+WCsmzo0lN3elfcQoCWLsdb9DlAq7jUxGgsH
+nmS+KC67k3MPgNz5uuFBK7zKre8Y7JnM6gbIvfkyP6dnaflA+rPh5Ed15dAy
+0pDx/AW5db5XKnMpPjjJ3wlENF2FL8gJNZ02v2l9Bhow6HQ6g8agE3+ATmMA
+jY5/aDQGbsTb8APRjM+RGJhomnbDbUQDPnPadFe8TBQIV6KB6c10o+P+jJnA
+/ypoX7J4jD83pb8Dfe5I+OUye66zJo4X6UTG5vQhFuVtiTY7JNP6oTud8a4J
+70R72w1gamZ0YuWIA9OPPsWgER9i2CmiBowpYmWnGHTChhdxGzHmFOFO+DEv
+HdyMh5oC5grTaLgvg/i8HZq4LmaKNBxg9iaaCfP0eMRQRE/mMEyYMeDd4tDf
+nd/H61UeM2eDvZmA4VlVe+q7ouMU5EYCvHL6eFfmJbx8PV0KzQur8nvfMMaM
+8IG7Z/30Eb/R0B4/dZ6uFPkAnCWSBWOjQzlwd+r505cTRLd2l46khOeFgWUQ
+zhHyujXiCXSG1MHTFN8HrYF9gTuj1zXfDn98I6osPegJXKrJ8++G4jtlfVc5
+reookWPumRweTQxIirodXDcZdX04rB9yIg4ehub2mt5yr1ThUD4YSg4nR71I
+ixzg9nzqlbfWtprxLDbhZV5wdV3QoP+1a/5tPWG13A4QtPX6ct/ux6HtUBD+
+wAULqgCoCPaKs0uIjrU0POrQmzr1hNu52eB78m/SOyFOQN5QkNsQrgisZbT+
+oqGUxa1ov8N3dRHflrN7dOy3ckWCrB+PiCaoa6w1MlfcKxtmtM+0ZOdeaUjc
+SLoisDtxcbQsjygEGEqrQ5zcFk0dAyeNBFnIXiHAv770zE9uG8J11Ku3y/HD
+I92/uwhzWietNzZ345M4rLW9gMMdHLlrt0lq6m8TwAMc0f9HcRfQjdMdI3xd
+Gk7Zuru5TgY8frS0Nm/b2ijh6zvBX/aU9DKty3Dit5X09j0+IsabJZNE29be
++kE3k3ci6IydNQg4qJIlgITJsxTtKZZ2Udme2ryrZAe47ekz49tWJyHMIe8N
+TmZG52gPFwp+7WFyXsyXi56s6mWrbSe1MVywQNSnn6uCH2q4VjntOfxEdbu2
+lrUcRThtRZBsDBTwt+6+IiUk4woeB8QiviW2U5RvXCTlct6titKG2IqrDAiX
+SzU2vOHYYA831A49SNSrg0Sds/SOBYq10ToeI2oFJtFJus32Q5S41GxwzPGp
+8IH7ukXaD+0afHJiquQiPWqdYVzHIkrTpVg/skw7E3JiKvePgwXZtCGG4kAy
+fnLLOzMpsNBCtzbKpFbe36nBAe7qGodzqZi5a8aHZ3jUuodrNsYcoj88HOhT
+GVirmYhf/pR96vSPdkx21ef+AtF/9tP2f5L/6zY8pKqS9IcGQCAQCAQCgUAg
+EAgEAoFAIBAIBAKBQCAQCAQCgUAgEP+PWFEg752e742/QSXQoOcm1dy+7a2R
+qj5XRsSAvJ6PrM038xXeVTL2AWhUMD0mUgG8qm11sv6A9vz2GAM6eM6WfZeV
+JElJPnRUMyJmf3ZD8YEEi53BiioBZZKxxVqH74YJGWapFsGEuki9mahLvaxd
+sZi3n2jikr1l8nY5MlFQKGzVsU8oE0SWxS4TqQqXI0H5npM5S8Wq3WrOyLVe
+lDbFUkA4fEfoisy9NvOVyrpVAgSIyxbtfyBLUdV20/TSOxGdelpbxdLOuUbR
+0vVwrobhBUtftUKzWIlciBDyEhFL3bFbQNlCeNiGy1y5SENgvxd3MPDEil7Y
+e0YFjG1KpU8c5FTUAX5PRdVjDqrqJiuUdDkfF/PT4UC8NEPUc/upL5LazmL0
+GdBlo9TdZBINVa2MSaezD18V0jzhKJ5Blg6TND5jq2x6PtAhRP+gesGOE1DF
+tdteSkbJdl2Akyn8Y7XVUbVLa9yyfxMFUzGxkMNxiuDL467vrasglgXndos4
+cfNFGPls1ijdalj4cyaIR28T3F0n/+vTearkcWgNMNTTenM8+1XPg66RZujI
+Gp8qvE0vaSu5Cq9yxob6ex/dy+/uvfYEoD53iiNwGApu3G1j1Bf0j2W8LKzu
+zR2GqQzq81v3WuB5bmN3b/8EuQ8YWW0vrxS0Lm7uTn81kPy48gbcHKokv54k
+d81be078fIH2nFb0JZuiLePPFUrTP6s9B0J7zvhQe07Il6fd6DPacwahOX+n
+Pad/rD0nAtKYCuV/sfb8S5w/oQj/i/i09nx2WmZrz6dF4nOV8Z/VntNnun0i
+HlN7zvhntOe0D7Tn9HfacyICU3tOe689x9eUUJZPz3OKEIx/QntOn6s9x2MS
+7ng3xhRtlvacMUt7zpgOQKe/P7X32vNZG6Yodc5/3XjxBIZmZfjswLuiI0BK
+OMBD149zmhI/OZ0R8CJFVIW8b3hADP6hVN2uYfo4hs/y2ZDHdCUPD3vxDZHM
+0Yf9+YT2fHJae37TpSPu8sv8gFrw3RT6ujHiKTQH34KJJN+R+sA71kJ+azrr
+I56WRBSlhL5inLtB9h+EooGqntwNDq3pMQ/ck9f4dQDExrUH3XocXnUvdBAS
+Q8SPQmN7bW+ZW6RoqBjcvRyZHvs8MaaHI3LcM3udcyNjIjL5VVZoVXXgfeer
+Bf69raF1m3zAlT9vtf+94VAqZCb0WX8fWAdwLSQg2Dk+MsLMwMixPY3+YL17
+o86ijC3SQhAitvfYrg2WQNrOAzUrD2smb9A4K+q8mcLJdX6T2QnejVkg6cW5
++zgoHeTQM5eQOORpLnPxCo+4GgRwZ2bvEAxbfFmMWxbszIRNwV9+g6amlpN6
+giokrdvGx1Fx/Dt7zkQlgzI+WWEYOvw/bnvWuESvMtJ34xIxPMBH+TUETvJd
+5xY1UeEVAzcLeZ3NxX3wwizNMdjdt/K4jaOL+4TLc+qSW8lbVwTKlHCB68Gj
+ihxG6aCzdSPUSrlIa3IfiNt3c0vt30zSuMDaxcgPdthoRSpAOCa6gCJ4Reqi
+Om9hsShZAE7LUHW2/1a1W2rDwUCwsNZ2YQyy7GENVrcS9tkB4YYXPTSchdYE
+7CnZHn17RzkXFHKtduPVmdy7VVXFSilDLG1p9O4MiJOolEyR2qHgBfZHdvsv
+xVf7TahvTNi12ML68tLKuLICAD/5NAPdMreGi1B+RH003KAJQnRsoXGhYrOf
+btA9ZYpeYpRBs83TdFJYCdhnBV8Jgm4Dit7YpRpvUmqhXLhvmRuMqp8OV7en
+6CZRdPIhMZ2i/AyO5hvcDiq1Sjv6ujokmRxQZKpZHXCiQj7IHR+nU/NYGM+B
+Y85HIoIyfco8QtVvB+rDvYPBQVdDK7UygZSUrWT2sfacVPO5R1CXzaftfxLd
++5RJf+kACAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgE4q+DUTxI73pX
+e1N95T7QYWRkvLD80VvjeN6n3s2c1/+RZKm2O0bzXSVSBUCliVmcIAF4NJ/X
+p/wR7fk4A0Yiyrs8epou97dk5Ge0NpI7hnrSWnLjb5JJzdSEVmpW1mRtbGFb
+xgA8VBZvMhQOrpF3uSLu7yGW+a3GdQXvbLlUyBFyapEVKoHt3H7LRRr85Clw
+bY9t8hLxRvt68309p+SNWa8BP0kgYg1ZymW+c3W7CVCdmN6XOZlOzcqpy6kp
+LG1vKMnLKCmru5dRWJPTm5NfUXwzu/9afQoVnNXsZYWSeAREjhzbO3R+nY1U
+lbS4steWOOBMFj4vZ24CB4PSVY4f4lA5ClyxkkfMzx1S1VmposH9jLSHAfLZ
++0DQf5vdfAXdoy+AntyUWZPYkUeuyOsr7cylJmQXlyd2t6Q1p+WXXs8sKmqp
+bs4j5/ZEXIdCbn43Ydkj5zZFnD3zeulKz0O6p9b5kTgVQFtqr79GsB6cF7E5
+FWQiKnMVjglLXdqyM0HDk0O3hPNY/mIKCGZtE5Gsl9jwZv7ac/owTE4Mjb7o
+oj18Pv5sBEa7X9F6H9H6H/X3w5uuF0+fjL963DM+3v8aoKJw8peICchrHLgN
+NdcePCC/zGvsznsIb0iDT5rudMLT3EYq9e4o+T5MZfROFly9+ffeVhKjN+lZ
+SQM0PirPpY1n9f0h7TljjuWzzq+ufcmmaMiZd/4+MwEGE5j5M/1+7GktMvM4
+3Q7Tumn6jPac9u695wymRP3de88Zb9Xo77Xn8FZ7zkDac/rcDHz2veeML9ee
+M2CO++e05zPFudrzqWltOJHC39GeM3szted0On36fed0QntOvCh9RntO/7z2
+nLhGZl6T/gnt+XS3d9rzmSCzU/aB9jwnc85qv5yc/d7zKauHb4vPnAESUgEG
+fD7OaXzO5EwUr6zIirD3DYSI/bnjh9rz7unjKL55X/UETFdS4/HozMQNjXeX
+wl3688mXT4hulS5d0ZkvswOawJY7knEj6hnUB7fBw0Tfx1WBd09J+G+4VxH1
+oiDu+uXIN1NWt9IChoHSe4Oausq78zJ5wCN6dWAv0EKT24K6xsLr7oTdg5gE
+wbNQ03pj4Lp3qFSgJPRfjs5IeRGb0rMmY9SNtNKjjTEWSXpFCq8rDx5zqsry
+H2wIu7EpCi5IJ68OHLkbeg8S06hm64NaAAqDQn08YiLDj+kY+jdnMbpW+DSq
+/ZC7QWIfuEiKHedf7wCXeXbDldVKJnEcJkdlLvIUbuCxWWart5vjOkh4beKz
+BlntjQaWguI6dlbirqTfRHTAjjcvfcsB7+VpIr8dBHOrrdbgqMapY6Durh19
+CII28kqsrTf40X1tlpjFNV6p/TCgtthNeGVI4LKzGt6cQsdkxAp/TQR9yVwu
+IXM5PkW4cHyvnlDxXRg/mu4W6RFVesLR2dXvkRu9/pf2GJ7lYRJXdsFpbT2F
+1UevgAbfNiiUvaSoxaMXeKiMr3TRiYRNoBdjlAjbLx6L1QRPdtEFhULlB04a
+bq7OkL8iDdpHBtS3ClTuUFh7JArUvZUCoJNVBovff0nEaxe4mplHKLrsWRbD
+W74xq46Pwg+5W9b6bjeakOTSVbA5mK+Q8nMyTxm4Hyo4kCW/ScUPTh7c5bsJ
+X+0XAd6XI0viimsrqkuSykuA4bQvVd+00vmGCxQe0RsPMOgEf21HKF6g3IOn
+pE+pWIPsb9x+nhZBiaiFS5kRRdHQYpRvMmzbFByfny0XHnjDD+6r2gTp+OTr
+ZuXrlEAIJfPgG7pBoW6fx41TZDPG1YjIQi+KiX6zk1WRXLh7tQu0aJiH8O4/
+badz2YfsV+sTqNXtagFdasFhpXHXtK9CfHqKku0c7fnNzz2Cbl36tP1PoklB
+ufAvHQCBQCAQCAQCgUAgEAgEAvHvBIZAIBAIBAKBQCAQCAQCgfjPgoUt3mCR
+IzvGxqxg/x2aZox9g8mprU9NksS+wm2sGLZu7G/fsEwXcTd2vMCGLcTOyeKO
+2AI2pp0F/6rKH2zE3b7GPRdido/YsB41bBHu/6vfIiyA3z33GMbOPt9p6gux
+YLug5CIEOA7r2bS0tHs7D547pEcN6ICE7rZk9WFH7fpeIY+xAe8mE2xJ5cDh
+qjteCu2h1tS8yLsXYES1OdSIao+p34k40kU1Yh+D0PFBrQutetje0VRnxp39
+1/Vim3ZH328EZ2xUvcdryvZ2+t9YWOY1U8jGMG8Y0e/knDgx0OPdSqomB0Zk
+V/bVJsWLDhSk9Fxs7Ykhkaj6raSOs9j5Zs87j70A7nbd7FgbNRE3dK6wnRr3
+yIEN/AY7qTkkLD1EqSG9f7S+DevyqO6sS5sYbHnU+ASWmU0txdqUG7l7sqnk
+RfOc6daVGPuIV2vOmENjEaXV4ErwTe2nZXkxd9wu9LiNXqnPu15R4R6aVHP9
+ofNkFaY62pVzr6o/czyW0rCEMepbWZLCKHF+dHdBfkNren9UFubTGpZv1tY5
+6oORb3cWPe5K6Mh7TnUduGwNWtj9I+29fTqt8CtxqcwPVlHs5x2CQj8f+I57
+5dYNAth2pWUL9/J9Ly8gfWDhN0rLV23cvGK9ksBW6ZUYJqawCezXY9KCPHxs
+gjKrflJcISnEK7Mc+2rf+iVCnFzYYgXhTRybV0pzY98q8vwiJ68MB7fIfb9c
+bdkuUUxgyU7FH/9Hnm9+GcX3B3GCH5zk75/xItWvvyAnW/fPO3+fhA1jZWVj
+ZWFjYWXBCxizTHzY2FjwXyZseI3Y98T9gRUjasQP04domPYnjkz/txamNx6W
+Da9h+A8Rj+1PnfrvwML+JavHOu970pfyiQzgt83ZxlkbmX26xjJndiz4Yr3t
+zDZ78mwsc079bTy8Ce8140t0Z2e24KHw9WLC9GJnZWdnYWcnZsTOwoaHYsXL
+uAEvsxKrz8rKbGZnDsKO29iJKwY34434owI34M2s7PhI+MRmrlRWvO/MKeLR
+mfFZZ05rOjYekBket7Oyv00GUWbupOkos6/6D9dL13pOTpdyY8Kz3JNWvMuG
+N4aZnsGwJW7Ek242ZkacS6dLHrqnDru/bxBcgGF/D1802z2Sb/q4DcN+XL3U
+ZSZAIMYS8l/Ek2/JT1wW2PKvvv3+2++IUWSihM+fXHzWXR5LAqeFkpcWY2Lu
+4tgaK/d/yHrwxj6JB2kJ1yXGVmbHL/3I2qR+3HELZiKst9v5SZiIi//acJtJ
+d0EWdjsbIQ/BJa7ym5w3Yx6pbS2Yopwev0W5Z3PMG4zXzkbPZrHlecHXwStC
+3SBNmmWpvcXP+u7qsu4cxeYmjjvFXHWnQhakPzj3zJV7pQcP5hLCkwIQj2FH
+4kNcKAFnYq9XNYeJnVmwZjJUsQnOQWcbFtZHbRh7k4SdePUS04O2OntoKhso
+fXr+Tn/2eFb24NQZrN1rZLgYu9X9rLG8vvt2QH5fvCG1rwuzG7E48azOkx4y
++LwF8y0ZrsCc7z2rb67ypfjcwzxfD/TQ1Qsh+qV3bd7Zxy1t2JoOoDyYjHeC
+mHy/B/3ttwfsJrwWpPSY9A00VndRWZJaWq9OROtj3zdYp4dcDVS5nknKSF+V
+/AMv7LEZHHefdOzCsrrzpug3LbHcx69YNB7EjlQ+bUjoNAY16Ax7+FWQT5I/
+dj+cYopPDIbBuPdAd2wrXUe5R20MSy3nL6W2Hel9ArdDsYSk3hiWrTAKXtdi
+2i8De0B3fOhAacsjB4bR0FEtsO/GFJ6/KHjUu63+bkZVVM3he67P7Po0MMta
++Q710bG7pVj2w7sOxL+cLXT3tfKwOKUnrq+pcMrsONs37vmuiUkHIjXcMP10
+EpdppBR2LCUO04FsRYsUl9/S9WNOO8Qo+P2gp210BPPVviDhjG1NPpfK6bvD
+yVRXMd/NTsAP20SO877sop5wRhlPxVEDJdJPC2OsUoXOK/tZpnyn5mNm7HMu
+NlHwXLhhXlgEPs7GlGSfJ/fTAhKPWus67AqyT9prS8K2kFysRRx0Ek5iZ+z1
+81PZP7oP6Ut/7qkimvGZhj+HbfcHjf7SARAIBAKBQCAQCAQCgUAgEP9O/C+E
+brhl
+           "], "Byte", ColorSpace -> "RGB", ImageSize -> All, 
+           Interleaving -> False, Magnification -> Automatic]}}, 
+        Spacings -> {0, 0}, Alignment -> {Center, Center}], 
+       ImageSize -> {720, 70}, Alignment -> {Left, Center}], 
+      If[
+       CurrentValue["MouseOver"], 
+       Image[CompressedData["
+1:eJzdmc9vE0cUxyNAosfeckGIXnujJy6tVKk9VOLStFVz4AIlRD00VQMSouXQ
+/hEIIfXAta0qFTggkBqpCA40CSUJtKX8ik1i4ti7XjuJfyQkw/uud52345nx
+7I+A1cM3tuPdnfeZN+/HjN869vXQiV0DAwMn36A/Q0dPvz8+fvTMJ2/Sh8/G
+Tn45OjZy/KOxUyOjI+OHju2mf74TaA9JCPG/kdfaTKr9pCOkC6TbpBJJBNoi
+FUk3SedIw6TBFGMplZJjnPQ7szmOrpNGXzPHWdLdhPbLukUae8UcB1PMfy9d
+JR14BRznTXaU1tbFvLMq/lmqirsLrpjMlcWf8yVf0/R+ZtEV/xZrIl+pC6ex
+oXtOjfQp3TMQV5YcP+rsX/AaYrZQ6dhsoykSeIsrLR3P+R3gUDIsrbbE7GI8
++1X6u1gV5brSP7FYenAo19ITdy21/Vx38mWxWG2oWIYy4DioYniwXMuUgStH
+8yON55L2peToyks7yRAKeUAa90oKjrNJ1hLi9z7FL+a1QDFcWtsQy6vrtGaa
+4rFbt84HhVpTZjmekCNS4xDTvcZ+sLxC8fpCVFpbEXmBws9LxHXvuWd81vQz
+R7iNF5zjRgKOb2RfmPLSFMVoe/7IzuZmx94Zdg/e+98F3+Pap7R+TCz/lVZk
+nwzH5IjEBeqDiQHz68nzTvZ2cYScgXBt3sAymSvJ+fhyDI79Xb4wrOlCrRXM
+72Ysf4QceP/Y0cfdw/Kq7JO9lhxH+H3oNcx+34qul/VtFq0/ePz4n6O+47qT
+d2SODy05LvD70C/p8pIf02y9VyQmFUd43fZr+/oFyme6+ZJ6lx8sOW5zDvRA
+qmcjt8p283Wvio9O/ATXyPGEuVeNNe9E6sklSw6+j/P7VtWzc24jErN8vXuG
++JBjiAu9sGos1F5m0z1Ljsh65L13JL59X7dt1YnfO+n37fpr/Xh31bkLtYbZ
+VEjCoVuzqNMYW/d9XMFHuhyMfMlsqlpybNlwFNc2fH9kxmGoJXOFiD+eWXIU
+Oce0Zl2hXwpjOYt15RnqCHIKs+kvS46bnAN7UdWzsZbDnNlV23R5l8W3Jwnf
+3dfkRqk/+dWS4xzn0OWQuQKrB5J94asq77ZZN4UncZeb+pySr0T2JN9Zcgxz
+DlP/E/ZVPOdymfqrSB9AelrR93DoKZhN71lyDHIOnGtMaZ6PfMgZqlIdUXJI
+9Q+vTkNfA2eofkk5dI8lB3TNpqZDTyhOIvWczbOuT5TXFM4ZdM+XavnPOgYN
+xyjnQH+jG6e9frdZtmPX3LeH/nhYUvdvEPYEbjOylzockwO6xVlMc+bnL8qZ
+jrTvU3GEa8/1/WDe60u+mDAxGDi+4hzYz+BsxjQubM1jPyL1XTyvlf2Yrmvj
+gQt1nO1tq6S3E3BAVzkLzpd6jQ3BRuRr+AhrDj3lI9oPoT7ocmsWLAaOA8G9
+LA9ne/6WJUuP88QhuXc01ZTXyWJxvtt1Nvp8pemfzfQTi+V5excLnoneB+ca
+SW1D7kDc257PmVhi/P7xMcmReZDLcK4Rxz/oP2F/WB9gW1qWmL9H7SNdkVl4
+zUTex14UfQv6SewfkKvgO8TWcn1deW9aloS/D35B+kPHE1MTYV7MiiUGR6jP
+SZcT2v+TF/QasCFLlgQcofaSPiB9T/qNNEtaJHmkHGmK9AvpW9K7pN1y3syK
+JSWHsfexVVKWOXYW0Q8cSViQ9/lvcv3CEYdFZug3DhsWFUM/cphYdAz9yqFi
+QUzrGEgX03LssDosBl1MUQf7haXD8BJ6c/TW
+        "], "Byte", ColorSpace -> "RGB", 
+        Interleaving -> True, Magnification -> 0.5], 
+       Image[CompressedData["
+1:eJztmctL1FEUx4cUbNnOjYht29mqTUFQi6BNU5ELN5omLZpIg6hc1B8hIrRo
+WxGULqQgoZzxAer4yPcDZJzxnY6Kb+Z2vsPMdOd67/3d30NnFh34huXv3ns+
+93HOubeL1U/9j875fL6G8/SHv+rF9fr6qpd3L9Bf7gcaHtcFamtuBZ7X1tXW
+X6kuoH+8nFIhiTH2X4yVkipJLaRe0ir7ZwnSMilIaiJVkIrzwGde9aQfzJl9
+J9Xl2P9G0qBD/0ULkQJn7H85cz7/VtZOKjsDhmadE7u7u2xhYYGNjY2xvr4+
+FgqFWGdnZ1JdXV1sYGCATU5OsqWlJXZ4eKjqZot0j9r47MqQ4Z1q4NXVVTY4
+OJjx2UTBYDDJu7W1peq2+RQ4pAzb29ssHA7b8l+m8fFxdnBw4JrFgkG6lyKR
+SHJO3TKk1d3dzdbX12VD+T3gKBc7TSQSbGpqyjP/RS0uLopD/iGVuOQ4EZdO
+k0HD0uaCo1G2l6x8wF4bHR1N+hKPx9ne3l4yjm1sbCTbm8aDzc1NcfgahxxZ
+OQ5n2uo8TE9Pq84rE/saGRnR9tXb28uOjo74Zr8ccDwTx9bFJZxRzLdoyBfp
+b/CzaNFoVMsyMzMjNqmwyZF1LpAfdAw7OzvSebfigK2srGj36P7+Pv95qw2O
+UnEs3Z6WrYMdDtj8/Lyy/7m5OfHzIkOOSr4RzqjuPOjMlAOxnP9WPCeC3TTk
+aOEboV5SrbnVmTblgK2trSnnS6hd3hpyZE0AaiBZ34itVmaHA2vS09MjHQtz
+ydlXQw7+HpesW2V9S3KVKw7YxMSEdCzkXs5+G3JkGV9780KOS/uqEt8WP+u+
+hanyLHINZzEnHKo9izyt+71dwXAvkf0O8ZKzuCFHwoQDceysOIaHh3mXIoYc
+y3wj3ONkfafzhpf7SpVHhJgSNuQI8o1UcR172crsnnP4KxtLqE8+G3I08Y1w
+nzbYs645jo+PlTFFiI2vDTkq+EaqPQuhbvWKIxaLWcaUlF0z5CjmG+FdQ1Wv
+C/HQMQfqc1UO7O/vFz8vNOSAvvENVTkdEnKtIw68Mxj2/1HFoOCo4xujvlGN
+A6H2dsoxOzur7Bd3Apwbzm7b5IBCpnMGIWaiRjLlwF6y6lNYiw4dg4bjCd8J
+alvMj25c+Iq6VeThDfOLe6DqPPBCTOTutiiELjnggNp5H/C+ZDU2BB9R8yHH
+IN4hbmK9kB9UsdULFg1HWaptxuCTHT+8kCmLhgPyi3sDc+zlW6JXLBYc0Im3
+Ubwv4c6ZTywGHFIW9Inax83aIHbg3Ju+z+lYDDmgO6QTj8l4m8G7hp31QWyD
+/+n8AN/cstjggEpIbSJL2pAzEfdxF0XdMjQ0lLw/IFZh7XC2hHopa33dsNjk
+SOsh6aeKx6Z1pHzJFQv0gNTq0P8PLFVrpHzINQtURLpBekP6QsJlNErCw/k8
+qY/0ifSKdJVUIImbXrG44dDWPqZyyoJzyFnOOZywIO4L/yeXFxx2WCQMecVh
+wqJgyDsOHYuGIS85ZCw40xqG9245TlkZFo3lO4MJS4bhL7E9ExQ=
+        "], "Byte", 
+        ColorSpace -> "RGB", Interleaving -> True, Magnification -> 0.5]]}, 
+     Alignment -> {-0.85, Center}], StandardForm],
+   ImageSizeCache->{720., {32., 38.}}],
+  Appearance->None,
+  ButtonFunction:>(CurrentValue[
+     EvaluationNotebook[], {TaggingRules, "Openers", "NotesSection"}] = Open),
+  
+  Evaluator->Automatic,
+  Method->"Preemptive"]], "NotesThumbnails",
+ CellOpen->FEPrivate`If[
+   FEPrivate`Less[FEPrivate`$VersionNumber, 11.1], False, 
+   FEPrivate`Not[
+    FEPrivate`Or[
+     FEPrivate`SameQ[
+      FrontEnd`CurrentValue[
+       FrontEnd`EvaluationNotebook[], {
+       TaggingRules, "Openers", "NotesSection"}], Open], 
+     FEPrivate`SameQ[
+      FrontEnd`CurrentValue[
+       FrontEnd`EvaluationNotebook[], {
+       TaggingRules, "Openers", "NotesSection"}], True]]]],
+ CellID->7,ExpressionUUID->"9a1094ac-b307-4e80-972f-c7eff81598c0"]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "NotesSection"}, Closed]]]],
+
+Cell["", "PageDelimiter",
+ CellID->8,ExpressionUUID->"868bc50c-de80-4532-afb3-9014bba7d460"],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ Cell[BoxData[
+  DynamicBox[If[$VersionNumber < 11.1, "", 
+    Cell[
+     BoxData[
+      ToBoxes[
+       Toggler[
+        Dynamic[
+         MatchQ[
+          CurrentValue[
+           EvaluationNotebook[], {
+           TaggingRules, "Openers", "PrimaryExamplesSection"}, Closed], 
+          Alternatives[Open, True]], (CurrentValue[
+            EvaluationNotebook[], {
+            TaggingRules, "Openers", "PrimaryExamplesSection"}] = #; Null)& , 
+         ImageSizeCache -> {14., {5., 9.}}], {True -> Style[
+           Graphics[{
+             Thickness[0.18], 
+             RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+             Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+            PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+           0.68 Inherited], False -> Rotate[
+           Style[
+            Graphics[{
+              Thickness[0.18], 
+              RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+              Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+             PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+            0.68 Inherited], Rational[1, 2] Pi, {-1.65, -1}]}]]]]],
+   ImageSizeCache->{14., {12., 13.}},
+   UpdateInterval->Infinity]],ExpressionUUID->
+  "07ae4719-b3e6-47ce-9703-51de2900ecf3"],
+ "Examples"
+}], "PrimaryExamplesSection",
+ WholeCellGroupOpener->True,
+ CellID->9,ExpressionUUID->"f2898c62-8677-4360-a45d-145bf00b27d6"],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ Cell[BoxData[
+  DynamicBox[If[$VersionNumber < 11.1, "", 
+    Cell[
+     BoxData[
+      ToBoxes[
+       Toggler[
+        Dynamic[
+         MatchQ[
+          CurrentValue[
+           EvaluationNotebook[], {
+           TaggingRules, "Openers", "ExampleSection", "0"}, Closed], 
+          Alternatives[Open, True]], (CurrentValue[
+            EvaluationNotebook[], {
+            TaggingRules, "Openers", "ExampleSection", "0"}] = #; Null)& , 
+         ImageSizeCache -> {14., {5., 9.}}], {True -> Style[
+           Graphics[{
+             Thickness[0.18], 
+             RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+             Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+            PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+           0.68 Inherited], False -> Rotate[
+           Style[
+            Graphics[{
+              Thickness[0.18], 
+              RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+              Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+             PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+            0.68 Inherited], Rational[1, 2] Pi, {-1.65, -1}]}]]]]],
+   ImageSizeCache->{14., {12., 13.}},
+   UpdateInterval->Infinity]],ExpressionUUID->
+  "543541fa-8bd5-48bd-b0bc-62fb9bd5c5b3"],
+ "Basic Examples"
+}], "ExampleSection",
+ WholeCellGroupOpener->True,
+ CellID->10,ExpressionUUID->"97e0ff60-7d95-4b8f-82a0-567516448cb0"],
+
+Cell[TextData[{
+ "Find bonds between the first and second atoms in benzene: ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["AtomGetBonds"]],"paclet:ChemTools/ref/AtomGetBonds"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "f7982b63-1374-4ef2-a01d-b7b0ccffa2ff"]
+}], "ExampleText",
+ CellID->11,ExpressionUUID->"a7b7fc43-b287-4f23-b967-783cbe57f355"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"benzene", "=", 
+   RowBox[{"ChemImport", "@", "\"\<benzene\>\""}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"a1", ",", "a2"}], "}"}], "=", 
+   RowBox[{
+    RowBox[{"benzene", "::", "Atoms"}], "[", 
+    RowBox[{"[", 
+     RowBox[{"1", ";;", "2"}], "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"AtomGetBonds", "[", 
+  RowBox[{"a1", ",", "a2"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.70000769795348*^9, 3.7000077097909613`*^9}, 
+   3.700164854985753*^9},
+ CellLabel->"In[1]:=",
+ CellID->12,ExpressionUUID->"65a360b3-3aae-4c15-a87e-cc3d589d5c3a"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  InterpretationBox[
+   RowBox[{
+    TagBox["ChemObject",
+     "SummaryHead"], "[", 
+    DynamicModuleBox[{Typeset`open$$ = False}, 
+     PanelBox[
+      PaneSelectorBox[{False->GridBox[{
+         {
+          PaneBox[
+           ButtonBox[
+            
+            DynamicBox[FEPrivate`FrontEndResource[
+             "FEBitmaps", "SquarePlusIconMedium"],
+             ImageSizeCache->{12., {0., 12.}}],
+            Appearance->None,
+            ButtonFunction:>(Typeset`open$$ = True),
+            Evaluator->Automatic,
+            Method->"Preemptive"],
+           Alignment->{Center, Center},
+           
+           ImageSize->
+            Dynamic[{
+             Automatic, 3.5 CurrentValue["FontCapHeight"]/
+              AbsoluteCurrentValue[Magnification]}]], GridBox[{
+            {
+             RowBox[{
+              TagBox["\<\"Type: \"\>",
+               "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+              TagBox["\<\"Bond\"\>",
+               "SummaryItem"]}]}
+           },
+           AutoDelete->False,
+           
+           BaseStyle->{
+            ShowStringCharacters -> False, NumberMarks -> False, 
+             PrintPrecision -> 3, ShowSyntaxStyles -> False},
+           GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+           
+           
+           GridBoxItemSize->{
+            "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+           GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+        },
+        AutoDelete->False,
+        BaselinePosition->{1, 1},
+        GridBoxAlignment->{"Rows" -> {{Top}}},
+        GridBoxItemSize->{
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], True->GridBox[{
+         {
+          PaneBox[
+           ButtonBox[
+            
+            DynamicBox[FEPrivate`FrontEndResource[
+             "FEBitmaps", "SquareMinusIconMedium"]],
+            Appearance->None,
+            ButtonFunction:>(Typeset`open$$ = False),
+            Evaluator->Automatic,
+            Method->"Preemptive"],
+           Alignment->{Center, Center},
+           
+           ImageSize->
+            Dynamic[{
+             Automatic, 3.5 CurrentValue["FontCapHeight"]/
+              AbsoluteCurrentValue[Magnification]}]], GridBox[{
+            {
+             RowBox[{
+              TagBox["\<\"Type: \"\>",
+               "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+              TagBox["\<\"Bond\"\>",
+               "SummaryItem"]}]},
+            {
+             RowBox[{
+              TagBox["\<\"Atoms: \"\>",
+               "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+              TagBox[
+               TagBox[
+                RowBox[{"{", 
+                 RowBox[{"\<\"Atom-7\"\>", ",", "\<\"Atom-8\"\>"}], "}"}],
+                Short[#, 1]& ],
+               "SummaryItem"]}]},
+            {
+             RowBox[{
+              TagBox["\<\"Color: \"\>",
+               "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+              TagBox[
+               TagBox[
+                RowBox[{"{", 
+                 RowBox[{"Automatic", ",", "Automatic"}], "}"}],
+                Short[#, 1]& ],
+               "SummaryItem"]}]},
+            {
+             RowBox[{
+              TagBox["\<\"Graphic: \"\>",
+               "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+              TagBox[
+               TagBox[
+                InterpretationBox[
+                 RowBox[{
+                  TagBox["ChemMethod",
+                   "SummaryHead"], "[", 
+                  DynamicModuleBox[{Typeset`open$$ = False}, 
+                   PanelBox[
+                    PaneSelectorBox[{False->GridBox[{
+                    {
+                    PaneBox[
+                    ButtonBox[
+                    
+                    DynamicBox[FEPrivate`FrontEndResource[
+                    "FEBitmaps", "SquarePlusIconMedium"]],
+                    Appearance->None,
+                    ButtonFunction:>(Typeset`open$$ = True),
+                    Evaluator->Automatic,
+                    Method->"Preemptive"],
+                    Alignment->{Center, Center},
+                    
+                    ImageSize->
+                    Dynamic[{
+                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], GridBox[{
+                    {
+                    RowBox[{
+                    TagBox["\<\"Type: \"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox["\<\"Bound Method\"\>",
+                    "SummaryItem"]}]}
+                    },
+                    AutoDelete->False,
+                    
+                    BaseStyle->{
+                    ShowStringCharacters -> False, NumberMarks -> False, 
+                    PrintPrecision -> 3, ShowSyntaxStyles -> False},
+                    
+                    GridBoxAlignment->{
+                    "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxSpacings->{
+                    "Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+                    },
+                    AutoDelete->False,
+                    BaselinePosition->{1, 1},
+                    GridBoxAlignment->{"Rows" -> {{Top}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], 
+                    True->GridBox[{
+                    {
+                    PaneBox[
+                    ButtonBox[
+                    
+                    DynamicBox[FEPrivate`FrontEndResource[
+                    "FEBitmaps", "SquareMinusIconMedium"]],
+                    Appearance->None,
+                    ButtonFunction:>(Typeset`open$$ = False),
+                    Evaluator->Automatic,
+                    Method->"Preemptive"],
+                    Alignment->{Center, Center},
+                    
+                    ImageSize->
+                    Dynamic[{
+                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], GridBox[{
+                    {
+                    RowBox[{
+                    TagBox["\<\"Type: \"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox["\<\"Bound Method\"\>",
+                    "SummaryItem"]}]},
+                    {
+                    RowBox[{
+                    TagBox["\<\"Function\"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox[
+                    RowBox[{
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"ChemTools`Private`Package`o", "=", 
+                    RowBox[{"{", "##1", "}"}]}], "}"}], ",", 
+                    RowBox[{"BondGraphic", "[", 
+                    RowBox[{
+                    RowBox[{
+                    "First", "[", "ChemTools`Private`Package`o", "]"}], ",", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"FilterRules", "[", 
+                    RowBox[{
+                    RowBox[{"Rest", "[", "ChemTools`Private`Package`o", "]"}],
+                     ",", 
+                    RowBox[{"Options", "[", "BondGraphic", "]"}]}], "]"}]}]}],
+                     "]"}]}], "]"}], "&"}],
+                    "SummaryItem"]}]}
+                    },
+                    AutoDelete->False,
+                    
+                    BaseStyle->{
+                    ShowStringCharacters -> False, NumberMarks -> False, 
+                    PrintPrecision -> 3, ShowSyntaxStyles -> False},
+                    
+                    GridBoxAlignment->{
+                    "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxSpacings->{
+                    "Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+                    },
+                    AutoDelete->False,
+                    BaselinePosition->{1, 1},
+                    GridBoxAlignment->{"Rows" -> {{Top}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, 
+                    Dynamic[Typeset`open$$],
+                    ImageSize->Automatic],
+                    BaselinePosition->Baseline],
+                   DynamicModuleValues:>{}], "]"}],
+                 ChemTools`ChemMethod[With[{ChemTools`Private`Package`o = {
+                    SlotSequence[1]}}, 
+                   ChemTools`BondGraphic[
+                    First[ChemTools`Private`Package`o], 
+                    Apply[Sequence, 
+                    FilterRules[
+                    Rest[ChemTools`Private`Package`o], 
+                    Options[ChemTools`BondGraphic]]]]]& ],
+                 Editable->False,
+                 SelectWithContents->True,
+                 Selectable->False],
+                Short[#, 1]& ],
+               "SummaryItem"]}]},
+            {
+             TagBox["\<\"\[Ellipsis]\"\>",
+              "SummaryItem"]}
+           },
+           AutoDelete->False,
+           
+           BaseStyle->{
+            ShowStringCharacters -> False, NumberMarks -> False, 
+             PrintPrecision -> 3, ShowSyntaxStyles -> False},
+           GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+           
+           
+           GridBoxItemSize->{
+            "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+           GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+        },
+        AutoDelete->False,
+        BaselinePosition->{1, 1},
+        GridBoxAlignment->{"Rows" -> {{Top}}},
+        GridBoxItemSize->{
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, Dynamic[
+       Typeset`open$$],
+       ImageSize->Automatic],
+      BaselinePosition->Baseline],
+     DynamicModuleValues:>{}], "]"}],
+   ChemTools`ChemObject[
+   "System-default-f69abdd0-759a-4d5e-b335-f8394bcdf855", 
+    "Bond-19-8c7c5bc9-4504-49f2-8103-ffecca8416d1"],
+   Editable->False,
+   SelectWithContents->True,
+   Selectable->False], "}"}]], "Output",
+ CellLabel->"Out[3]=",
+ CellID->13,ExpressionUUID->"8fced9e0-5c13-4676-8c1d-cd83babd8e31"],
+
+Cell[TextData[{
+ "Find bonds the between the second and ",
+ StyleBox["any", "TI"],
+ " atoms:"
+}], "ExampleText",
+ CellID->14,ExpressionUUID->"2916a68c-7fd0-4ec7-86eb-2ae37bc1985d"],
+
+Cell[BoxData[
+ RowBox[{"AtomGetBonds", "[", 
+  RowBox[{"a2", ",", "_"}], "]"}]], "Input",
+ CellChangeTimes->{{3.7000078451741333`*^9, 3.700007851012414*^9}},
+ CellLabel->"In[4]:=",
+ CellID->15,ExpressionUUID->"a8289d25-d410-44fa-ac66-ff43d97f1577"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   InterpretationBox[
+    RowBox[{
+     TagBox["ChemObject",
+      "SummaryHead"], "[", 
+     DynamicModuleBox[{Typeset`open$$ = False}, 
+      PanelBox[
+       PaneSelectorBox[{False->GridBox[{
+          {
+           PaneBox[
+            ButtonBox[
+             
+             DynamicBox[FEPrivate`FrontEndResource[
+              "FEBitmaps", "SquarePlusIconMedium"],
+              ImageSizeCache->{12., {0., 12.}}],
+             Appearance->None,
+             ButtonFunction:>(Typeset`open$$ = True),
+             Evaluator->Automatic,
+             Method->"Preemptive"],
+            Alignment->{Center, Center},
+            
+            ImageSize->
+             Dynamic[{
+              Automatic, 3.5 CurrentValue["FontCapHeight"]/
+               AbsoluteCurrentValue[Magnification]}]], GridBox[{
+             {
+              RowBox[{
+               TagBox["\<\"Type: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox["\<\"Bond\"\>",
+                "SummaryItem"]}]}
+            },
+            AutoDelete->False,
+            
+            BaseStyle->{
+             ShowStringCharacters -> False, NumberMarks -> False, 
+              PrintPrecision -> 3, ShowSyntaxStyles -> False},
+            GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+            GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+         },
+         AutoDelete->False,
+         BaselinePosition->{1, 1},
+         GridBoxAlignment->{"Rows" -> {{Top}}},
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], True->
+        GridBox[{
+          {
+           PaneBox[
+            ButtonBox[
+             
+             DynamicBox[FEPrivate`FrontEndResource[
+              "FEBitmaps", "SquareMinusIconMedium"]],
+             Appearance->None,
+             ButtonFunction:>(Typeset`open$$ = False),
+             Evaluator->Automatic,
+             Method->"Preemptive"],
+            Alignment->{Center, Center},
+            
+            ImageSize->
+             Dynamic[{
+              Automatic, 3.5 CurrentValue["FontCapHeight"]/
+               AbsoluteCurrentValue[Magnification]}]], GridBox[{
+             {
+              RowBox[{
+               TagBox["\<\"Type: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox["\<\"Bond\"\>",
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Atoms: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 RowBox[{"{", 
+                  RowBox[{"\<\"Atom-7\"\>", ",", "\<\"Atom-8\"\>"}], "}"}],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Color: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 RowBox[{"{", 
+                  RowBox[{"Automatic", ",", "Automatic"}], "}"}],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Graphic: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 InterpretationBox[
+                  RowBox[{
+                   TagBox["ChemMethod",
+                    "SummaryHead"], "[", 
+                   DynamicModuleBox[{Typeset`open$$ = False}, 
+                    PanelBox[
+                    PaneSelectorBox[{False->GridBox[{
+                    {
+                    PaneBox[
+                    ButtonBox[
+                    
+                    DynamicBox[FEPrivate`FrontEndResource[
+                    "FEBitmaps", "SquarePlusIconMedium"]],
+                    Appearance->None,
+                    ButtonFunction:>(Typeset`open$$ = True),
+                    Evaluator->Automatic,
+                    Method->"Preemptive"],
+                    Alignment->{Center, Center},
+                    
+                    ImageSize->
+                    Dynamic[{
+                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], GridBox[{
+                    {
+                    RowBox[{
+                    TagBox["\<\"Type: \"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox["\<\"Bound Method\"\>",
+                    "SummaryItem"]}]}
+                    },
+                    AutoDelete->False,
+                    
+                    BaseStyle->{
+                    ShowStringCharacters -> False, NumberMarks -> False, 
+                    PrintPrecision -> 3, ShowSyntaxStyles -> False},
+                    
+                    GridBoxAlignment->{
+                    "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxSpacings->{
+                    "Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+                    },
+                    AutoDelete->False,
+                    BaselinePosition->{1, 1},
+                    GridBoxAlignment->{"Rows" -> {{Top}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], 
+                    True->GridBox[{
+                    {
+                    PaneBox[
+                    ButtonBox[
+                    
+                    DynamicBox[FEPrivate`FrontEndResource[
+                    "FEBitmaps", "SquareMinusIconMedium"]],
+                    Appearance->None,
+                    ButtonFunction:>(Typeset`open$$ = False),
+                    Evaluator->Automatic,
+                    Method->"Preemptive"],
+                    Alignment->{Center, Center},
+                    
+                    ImageSize->
+                    Dynamic[{
+                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], GridBox[{
+                    {
+                    RowBox[{
+                    TagBox["\<\"Type: \"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox["\<\"Bound Method\"\>",
+                    "SummaryItem"]}]},
+                    {
+                    RowBox[{
+                    TagBox["\<\"Function\"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox[
+                    RowBox[{
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"ChemTools`Private`Package`o", "=", 
+                    RowBox[{"{", "##1", "}"}]}], "}"}], ",", 
+                    RowBox[{"BondGraphic", "[", 
+                    RowBox[{
+                    RowBox[{
+                    "First", "[", "ChemTools`Private`Package`o", "]"}], ",", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"FilterRules", "[", 
+                    RowBox[{
+                    RowBox[{"Rest", "[", "ChemTools`Private`Package`o", "]"}],
+                     ",", 
+                    RowBox[{"Options", "[", "BondGraphic", "]"}]}], "]"}]}]}],
+                     "]"}]}], "]"}], "&"}],
+                    "SummaryItem"]}]}
+                    },
+                    AutoDelete->False,
+                    
+                    BaseStyle->{
+                    ShowStringCharacters -> False, NumberMarks -> False, 
+                    PrintPrecision -> 3, ShowSyntaxStyles -> False},
+                    
+                    GridBoxAlignment->{
+                    "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxSpacings->{
+                    "Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+                    },
+                    AutoDelete->False,
+                    BaselinePosition->{1, 1},
+                    GridBoxAlignment->{"Rows" -> {{Top}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, 
+                    Dynamic[Typeset`open$$],
+                    ImageSize->Automatic],
+                    BaselinePosition->Baseline],
+                    DynamicModuleValues:>{}], "]"}],
+                  ChemTools`ChemMethod[With[{ChemTools`Private`Package`o = {
+                    SlotSequence[1]}}, 
+                    ChemTools`BondGraphic[
+                    First[ChemTools`Private`Package`o], 
+                    Apply[Sequence, 
+                    FilterRules[
+                    Rest[ChemTools`Private`Package`o], 
+                    Options[ChemTools`BondGraphic]]]]]& ],
+                  Editable->False,
+                  SelectWithContents->True,
+                  Selectable->False],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              TagBox["\<\"\[Ellipsis]\"\>",
+               "SummaryItem"]}
+            },
+            AutoDelete->False,
+            
+            BaseStyle->{
+             ShowStringCharacters -> False, NumberMarks -> False, 
+              PrintPrecision -> 3, ShowSyntaxStyles -> False},
+            GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+            GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+         },
+         AutoDelete->False,
+         BaselinePosition->{1, 1},
+         GridBoxAlignment->{"Rows" -> {{Top}}},
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, Dynamic[
+        Typeset`open$$],
+        ImageSize->Automatic],
+       BaselinePosition->Baseline],
+      DynamicModuleValues:>{}], "]"}],
+    ChemTools`ChemObject[
+    "System-default-f69abdd0-759a-4d5e-b335-f8394bcdf855", 
+     "Bond-19-8c7c5bc9-4504-49f2-8103-ffecca8416d1"],
+    Editable->False,
+    SelectWithContents->True,
+    Selectable->False], ",", 
+   InterpretationBox[
+    RowBox[{
+     TagBox["ChemObject",
+      "SummaryHead"], "[", 
+     DynamicModuleBox[{Typeset`open$$ = False}, 
+      PanelBox[
+       PaneSelectorBox[{False->GridBox[{
+          {
+           PaneBox[
+            ButtonBox[
+             
+             DynamicBox[FEPrivate`FrontEndResource[
+              "FEBitmaps", "SquarePlusIconMedium"],
+              ImageSizeCache->{12., {0., 12.}}],
+             Appearance->None,
+             ButtonFunction:>(Typeset`open$$ = True),
+             Evaluator->Automatic,
+             Method->"Preemptive"],
+            Alignment->{Center, Center},
+            
+            ImageSize->
+             Dynamic[{
+              Automatic, 3.5 CurrentValue["FontCapHeight"]/
+               AbsoluteCurrentValue[Magnification]}]], GridBox[{
+             {
+              RowBox[{
+               TagBox["\<\"Type: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox["\<\"Bond\"\>",
+                "SummaryItem"]}]}
+            },
+            AutoDelete->False,
+            
+            BaseStyle->{
+             ShowStringCharacters -> False, NumberMarks -> False, 
+              PrintPrecision -> 3, ShowSyntaxStyles -> False},
+            GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+            GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+         },
+         AutoDelete->False,
+         BaselinePosition->{1, 1},
+         GridBoxAlignment->{"Rows" -> {{Top}}},
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], True->
+        GridBox[{
+          {
+           PaneBox[
+            ButtonBox[
+             
+             DynamicBox[FEPrivate`FrontEndResource[
+              "FEBitmaps", "SquareMinusIconMedium"]],
+             Appearance->None,
+             ButtonFunction:>(Typeset`open$$ = False),
+             Evaluator->Automatic,
+             Method->"Preemptive"],
+            Alignment->{Center, Center},
+            ImageSize->
+             Dynamic[{
+              Automatic, 3.5 CurrentValue["FontCapHeight"]/
+               AbsoluteCurrentValue[Magnification]}]], GridBox[{
+             {
+              RowBox[{
+               TagBox["\<\"Type: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox["\<\"Bond\"\>",
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Atoms: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 RowBox[{"{", 
+                  RowBox[{"\<\"Atom-8\"\>", ",", "\<\"Atom-10\"\>"}], "}"}],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Color: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 RowBox[{"{", 
+                  RowBox[{"Automatic", ",", "Automatic"}], "}"}],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Graphic: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 InterpretationBox[
+                  RowBox[{
+                   TagBox["ChemMethod",
+                    "SummaryHead"], "[", 
+                   DynamicModuleBox[{Typeset`open$$ = False}, 
+                    PanelBox[
+                    PaneSelectorBox[{False->GridBox[{
+                    {
+                    PaneBox[
+                    ButtonBox[
+                    
+                    DynamicBox[FEPrivate`FrontEndResource[
+                    "FEBitmaps", "SquarePlusIconMedium"]],
+                    Appearance->None,
+                    ButtonFunction:>(Typeset`open$$ = True),
+                    Evaluator->Automatic,
+                    Method->"Preemptive"],
+                    Alignment->{Center, Center},
+                    
+                    ImageSize->
+                    Dynamic[{
+                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], GridBox[{
+                    {
+                    RowBox[{
+                    TagBox["\<\"Type: \"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox["\<\"Bound Method\"\>",
+                    "SummaryItem"]}]}
+                    },
+                    AutoDelete->False,
+                    
+                    BaseStyle->{
+                    ShowStringCharacters -> False, NumberMarks -> False, 
+                    PrintPrecision -> 3, ShowSyntaxStyles -> False},
+                    
+                    GridBoxAlignment->{
+                    "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxSpacings->{
+                    "Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+                    },
+                    AutoDelete->False,
+                    BaselinePosition->{1, 1},
+                    GridBoxAlignment->{"Rows" -> {{Top}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], 
+                    True->GridBox[{
+                    {
+                    PaneBox[
+                    ButtonBox[
+                    
+                    DynamicBox[FEPrivate`FrontEndResource[
+                    "FEBitmaps", "SquareMinusIconMedium"]],
+                    Appearance->None,
+                    ButtonFunction:>(Typeset`open$$ = False),
+                    Evaluator->Automatic,
+                    Method->"Preemptive"],
+                    Alignment->{Center, Center},
+                    
+                    ImageSize->
+                    Dynamic[{
+                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], GridBox[{
+                    {
+                    RowBox[{
+                    TagBox["\<\"Type: \"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox["\<\"Bound Method\"\>",
+                    "SummaryItem"]}]},
+                    {
+                    RowBox[{
+                    TagBox["\<\"Function\"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox[
+                    RowBox[{
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"ChemTools`Private`Package`o", "=", 
+                    RowBox[{"{", "##1", "}"}]}], "}"}], ",", 
+                    RowBox[{"BondGraphic", "[", 
+                    RowBox[{
+                    RowBox[{
+                    "First", "[", "ChemTools`Private`Package`o", "]"}], ",", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"FilterRules", "[", 
+                    RowBox[{
+                    RowBox[{"Rest", "[", "ChemTools`Private`Package`o", "]"}],
+                     ",", 
+                    RowBox[{"Options", "[", "BondGraphic", "]"}]}], "]"}]}]}],
+                     "]"}]}], "]"}], "&"}],
+                    "SummaryItem"]}]}
+                    },
+                    AutoDelete->False,
+                    
+                    BaseStyle->{
+                    ShowStringCharacters -> False, NumberMarks -> False, 
+                    PrintPrecision -> 3, ShowSyntaxStyles -> False},
+                    
+                    GridBoxAlignment->{
+                    "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxSpacings->{
+                    "Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+                    },
+                    AutoDelete->False,
+                    BaselinePosition->{1, 1},
+                    GridBoxAlignment->{"Rows" -> {{Top}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, 
+                    Dynamic[Typeset`open$$],
+                    ImageSize->Automatic],
+                    BaselinePosition->Baseline],
+                    DynamicModuleValues:>{}], "]"}],
+                  ChemTools`ChemMethod[With[{ChemTools`Private`Package`o = {
+                    SlotSequence[1]}}, 
+                    ChemTools`BondGraphic[
+                    First[ChemTools`Private`Package`o], 
+                    Apply[Sequence, 
+                    FilterRules[
+                    Rest[ChemTools`Private`Package`o], 
+                    Options[ChemTools`BondGraphic]]]]]& ],
+                  Editable->False,
+                  SelectWithContents->True,
+                  Selectable->False],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              TagBox["\<\"\[Ellipsis]\"\>",
+               "SummaryItem"]}
+            },
+            AutoDelete->False,
+            
+            BaseStyle->{
+             ShowStringCharacters -> False, NumberMarks -> False, 
+              PrintPrecision -> 3, ShowSyntaxStyles -> False},
+            GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+            GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+         },
+         AutoDelete->False,
+         BaselinePosition->{1, 1},
+         GridBoxAlignment->{"Rows" -> {{Top}}},
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, Dynamic[
+        Typeset`open$$],
+        ImageSize->Automatic],
+       BaselinePosition->Baseline],
+      DynamicModuleValues:>{}], "]"}],
+    ChemTools`ChemObject[
+    "System-default-f69abdd0-759a-4d5e-b335-f8394bcdf855", 
+     "Bond-22-abe4d43e-b3db-418a-ba75-ee4b98366944"],
+    Editable->False,
+    SelectWithContents->True,
+    Selectable->False], ",", 
+   InterpretationBox[
+    RowBox[{
+     TagBox["ChemObject",
+      "SummaryHead"], "[", 
+     DynamicModuleBox[{Typeset`open$$ = False}, 
+      PanelBox[
+       PaneSelectorBox[{False->GridBox[{
+          {
+           PaneBox[
+            ButtonBox[
+             
+             DynamicBox[FEPrivate`FrontEndResource[
+              "FEBitmaps", "SquarePlusIconMedium"],
+              ImageSizeCache->{12., {0., 12.}}],
+             Appearance->None,
+             ButtonFunction:>(Typeset`open$$ = True),
+             Evaluator->Automatic,
+             Method->"Preemptive"],
+            Alignment->{Center, Center},
+            
+            ImageSize->
+             Dynamic[{
+              Automatic, 3.5 CurrentValue["FontCapHeight"]/
+               AbsoluteCurrentValue[Magnification]}]], GridBox[{
+             {
+              RowBox[{
+               TagBox["\<\"Type: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox["\<\"Bond\"\>",
+                "SummaryItem"]}]}
+            },
+            AutoDelete->False,
+            
+            BaseStyle->{
+             ShowStringCharacters -> False, NumberMarks -> False, 
+              PrintPrecision -> 3, ShowSyntaxStyles -> False},
+            GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+            GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+         },
+         AutoDelete->False,
+         BaselinePosition->{1, 1},
+         GridBoxAlignment->{"Rows" -> {{Top}}},
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], True->
+        GridBox[{
+          {
+           PaneBox[
+            ButtonBox[
+             
+             DynamicBox[FEPrivate`FrontEndResource[
+              "FEBitmaps", "SquareMinusIconMedium"]],
+             Appearance->None,
+             ButtonFunction:>(Typeset`open$$ = False),
+             Evaluator->Automatic,
+             Method->"Preemptive"],
+            Alignment->{Center, Center},
+            
+            ImageSize->
+             Dynamic[{
+              Automatic, 3.5 CurrentValue["FontCapHeight"]/
+               AbsoluteCurrentValue[Magnification]}]], GridBox[{
+             {
+              RowBox[{
+               TagBox["\<\"Type: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox["\<\"Bond\"\>",
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Atoms: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 RowBox[{"{", 
+                  RowBox[{"\<\"Atom-8\"\>", ",", "\<\"Atom-14\"\>"}], "}"}],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Color: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 RowBox[{"{", 
+                  RowBox[{"Automatic", ",", "Automatic"}], "}"}],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Graphic: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 InterpretationBox[
+                  RowBox[{
+                   TagBox["ChemMethod",
+                    "SummaryHead"], "[", 
+                   DynamicModuleBox[{Typeset`open$$ = False}, 
+                    PanelBox[
+                    PaneSelectorBox[{False->GridBox[{
+                    {
+                    PaneBox[
+                    ButtonBox[
+                    
+                    DynamicBox[FEPrivate`FrontEndResource[
+                    "FEBitmaps", "SquarePlusIconMedium"]],
+                    Appearance->None,
+                    ButtonFunction:>(Typeset`open$$ = True),
+                    Evaluator->Automatic,
+                    Method->"Preemptive"],
+                    Alignment->{Center, Center},
+                    
+                    ImageSize->
+                    Dynamic[{
+                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], GridBox[{
+                    {
+                    RowBox[{
+                    TagBox["\<\"Type: \"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox["\<\"Bound Method\"\>",
+                    "SummaryItem"]}]}
+                    },
+                    AutoDelete->False,
+                    
+                    BaseStyle->{
+                    ShowStringCharacters -> False, NumberMarks -> False, 
+                    PrintPrecision -> 3, ShowSyntaxStyles -> False},
+                    
+                    GridBoxAlignment->{
+                    "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxSpacings->{
+                    "Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+                    },
+                    AutoDelete->False,
+                    BaselinePosition->{1, 1},
+                    GridBoxAlignment->{"Rows" -> {{Top}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], 
+                    True->GridBox[{
+                    {
+                    PaneBox[
+                    ButtonBox[
+                    
+                    DynamicBox[FEPrivate`FrontEndResource[
+                    "FEBitmaps", "SquareMinusIconMedium"]],
+                    Appearance->None,
+                    ButtonFunction:>(Typeset`open$$ = False),
+                    Evaluator->Automatic,
+                    Method->"Preemptive"],
+                    Alignment->{Center, Center},
+                    
+                    ImageSize->
+                    Dynamic[{
+                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], GridBox[{
+                    {
+                    RowBox[{
+                    TagBox["\<\"Type: \"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox["\<\"Bound Method\"\>",
+                    "SummaryItem"]}]},
+                    {
+                    RowBox[{
+                    TagBox["\<\"Function\"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox[
+                    RowBox[{
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"ChemTools`Private`Package`o", "=", 
+                    RowBox[{"{", "##1", "}"}]}], "}"}], ",", 
+                    RowBox[{"BondGraphic", "[", 
+                    RowBox[{
+                    RowBox[{
+                    "First", "[", "ChemTools`Private`Package`o", "]"}], ",", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"FilterRules", "[", 
+                    RowBox[{
+                    RowBox[{"Rest", "[", "ChemTools`Private`Package`o", "]"}],
+                     ",", 
+                    RowBox[{"Options", "[", "BondGraphic", "]"}]}], "]"}]}]}],
+                     "]"}]}], "]"}], "&"}],
+                    "SummaryItem"]}]}
+                    },
+                    AutoDelete->False,
+                    
+                    BaseStyle->{
+                    ShowStringCharacters -> False, NumberMarks -> False, 
+                    PrintPrecision -> 3, ShowSyntaxStyles -> False},
+                    
+                    GridBoxAlignment->{
+                    "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxSpacings->{
+                    "Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+                    },
+                    AutoDelete->False,
+                    BaselinePosition->{1, 1},
+                    GridBoxAlignment->{"Rows" -> {{Top}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, 
+                    Dynamic[Typeset`open$$],
+                    ImageSize->Automatic],
+                    BaselinePosition->Baseline],
+                    DynamicModuleValues:>{}], "]"}],
+                  ChemTools`ChemMethod[With[{ChemTools`Private`Package`o = {
+                    SlotSequence[1]}}, 
+                    ChemTools`BondGraphic[
+                    First[ChemTools`Private`Package`o], 
+                    Apply[Sequence, 
+                    FilterRules[
+                    Rest[ChemTools`Private`Package`o], 
+                    Options[ChemTools`BondGraphic]]]]]& ],
+                  Editable->False,
+                  SelectWithContents->True,
+                  Selectable->False],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              TagBox["\<\"\[Ellipsis]\"\>",
+               "SummaryItem"]}
+            },
+            AutoDelete->False,
+            
+            BaseStyle->{
+             ShowStringCharacters -> False, NumberMarks -> False, 
+              PrintPrecision -> 3, ShowSyntaxStyles -> False},
+            GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+            GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+         },
+         AutoDelete->False,
+         BaselinePosition->{1, 1},
+         GridBoxAlignment->{"Rows" -> {{Top}}},
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, Dynamic[
+        Typeset`open$$],
+        ImageSize->Automatic],
+       BaselinePosition->Baseline],
+      DynamicModuleValues:>{}], "]"}],
+    ChemTools`ChemObject[
+    "System-default-f69abdd0-759a-4d5e-b335-f8394bcdf855", 
+     "Bond-23-0e0e3c63-797b-4aef-bf42-b1a6c6d1ce9f"],
+    Editable->False,
+    SelectWithContents->True,
+    Selectable->False]}], "}"}]], "Output",
+ CellLabel->"Out[4]=",
+ CellID->16,ExpressionUUID->"ee6a73cb-3662-4f3b-9fe0-5819791b9443"],
+
+Cell[TextData[{
+ "Note that this is just the the atom\[CloseCurlyQuote]s ",
+ Cell[BoxData[
+  StyleBox["\"\<Bonds\>\"", "InlineFormula",
+   ShowAutoStyles->True]],ExpressionUUID->
+  "b627bab7-e9e3-4387-b9a0-f4683e208538"],
+ " attribute:"
+}], "ExampleText",
+ CellID->17,ExpressionUUID->"99439066-d6f3-47bc-ac3b-7db128e870a3"],
+
+Cell[BoxData[
+ RowBox[{"a2", "::", "Bonds"}]], "Input",
+ CellChangeTimes->{{3.700007895708432*^9, 3.700007897506308*^9}},
+ CellLabel->"In[5]:=",
+ CellID->18,ExpressionUUID->"9f405fc5-2626-400a-9c21-85583017150e"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   InterpretationBox[
+    RowBox[{
+     TagBox["ChemObject",
+      "SummaryHead"], "[", 
+     DynamicModuleBox[{Typeset`open$$ = False}, 
+      PanelBox[
+       PaneSelectorBox[{False->GridBox[{
+          {
+           PaneBox[
+            ButtonBox[
+             
+             DynamicBox[FEPrivate`FrontEndResource[
+              "FEBitmaps", "SquarePlusIconMedium"],
+              ImageSizeCache->{12., {0., 12.}}],
+             Appearance->None,
+             ButtonFunction:>(Typeset`open$$ = True),
+             Evaluator->Automatic,
+             Method->"Preemptive"],
+            Alignment->{Center, Center},
+            
+            ImageSize->
+             Dynamic[{
+              Automatic, 3.5 CurrentValue["FontCapHeight"]/
+               AbsoluteCurrentValue[Magnification]}]], GridBox[{
+             {
+              RowBox[{
+               TagBox["\<\"Type: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox["\<\"Bond\"\>",
+                "SummaryItem"]}]}
+            },
+            AutoDelete->False,
+            
+            BaseStyle->{
+             ShowStringCharacters -> False, NumberMarks -> False, 
+              PrintPrecision -> 3, ShowSyntaxStyles -> False},
+            GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+            GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+         },
+         AutoDelete->False,
+         BaselinePosition->{1, 1},
+         GridBoxAlignment->{"Rows" -> {{Top}}},
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], True->
+        GridBox[{
+          {
+           PaneBox[
+            ButtonBox[
+             
+             DynamicBox[FEPrivate`FrontEndResource[
+              "FEBitmaps", "SquareMinusIconMedium"]],
+             Appearance->None,
+             ButtonFunction:>(Typeset`open$$ = False),
+             Evaluator->Automatic,
+             Method->"Preemptive"],
+            Alignment->{Center, Center},
+            
+            ImageSize->
+             Dynamic[{
+              Automatic, 3.5 CurrentValue["FontCapHeight"]/
+               AbsoluteCurrentValue[Magnification]}]], GridBox[{
+             {
+              RowBox[{
+               TagBox["\<\"Type: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox["\<\"Bond\"\>",
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Atoms: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 RowBox[{"{", 
+                  RowBox[{"\<\"Atom-7\"\>", ",", "\<\"Atom-8\"\>"}], "}"}],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Color: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 RowBox[{"{", 
+                  RowBox[{"Automatic", ",", "Automatic"}], "}"}],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Graphic: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 InterpretationBox[
+                  RowBox[{
+                   TagBox["ChemMethod",
+                    "SummaryHead"], "[", 
+                   DynamicModuleBox[{Typeset`open$$ = False}, 
+                    PanelBox[
+                    PaneSelectorBox[{False->GridBox[{
+                    {
+                    PaneBox[
+                    ButtonBox[
+                    
+                    DynamicBox[FEPrivate`FrontEndResource[
+                    "FEBitmaps", "SquarePlusIconMedium"]],
+                    Appearance->None,
+                    ButtonFunction:>(Typeset`open$$ = True),
+                    Evaluator->Automatic,
+                    Method->"Preemptive"],
+                    Alignment->{Center, Center},
+                    
+                    ImageSize->
+                    Dynamic[{
+                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], GridBox[{
+                    {
+                    RowBox[{
+                    TagBox["\<\"Type: \"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox["\<\"Bound Method\"\>",
+                    "SummaryItem"]}]}
+                    },
+                    AutoDelete->False,
+                    
+                    BaseStyle->{
+                    ShowStringCharacters -> False, NumberMarks -> False, 
+                    PrintPrecision -> 3, ShowSyntaxStyles -> False},
+                    
+                    GridBoxAlignment->{
+                    "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxSpacings->{
+                    "Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+                    },
+                    AutoDelete->False,
+                    BaselinePosition->{1, 1},
+                    GridBoxAlignment->{"Rows" -> {{Top}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], 
+                    True->GridBox[{
+                    {
+                    PaneBox[
+                    ButtonBox[
+                    
+                    DynamicBox[FEPrivate`FrontEndResource[
+                    "FEBitmaps", "SquareMinusIconMedium"]],
+                    Appearance->None,
+                    ButtonFunction:>(Typeset`open$$ = False),
+                    Evaluator->Automatic,
+                    Method->"Preemptive"],
+                    Alignment->{Center, Center},
+                    
+                    ImageSize->
+                    Dynamic[{
+                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], GridBox[{
+                    {
+                    RowBox[{
+                    TagBox["\<\"Type: \"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox["\<\"Bound Method\"\>",
+                    "SummaryItem"]}]},
+                    {
+                    RowBox[{
+                    TagBox["\<\"Function\"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox[
+                    RowBox[{
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"ChemTools`Private`Package`o", "=", 
+                    RowBox[{"{", "##1", "}"}]}], "}"}], ",", 
+                    RowBox[{"BondGraphic", "[", 
+                    RowBox[{
+                    RowBox[{
+                    "First", "[", "ChemTools`Private`Package`o", "]"}], ",", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"FilterRules", "[", 
+                    RowBox[{
+                    RowBox[{"Rest", "[", "ChemTools`Private`Package`o", "]"}],
+                     ",", 
+                    RowBox[{"Options", "[", "BondGraphic", "]"}]}], "]"}]}]}],
+                     "]"}]}], "]"}], "&"}],
+                    "SummaryItem"]}]}
+                    },
+                    AutoDelete->False,
+                    
+                    BaseStyle->{
+                    ShowStringCharacters -> False, NumberMarks -> False, 
+                    PrintPrecision -> 3, ShowSyntaxStyles -> False},
+                    
+                    GridBoxAlignment->{
+                    "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxSpacings->{
+                    "Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+                    },
+                    AutoDelete->False,
+                    BaselinePosition->{1, 1},
+                    GridBoxAlignment->{"Rows" -> {{Top}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, 
+                    Dynamic[Typeset`open$$],
+                    ImageSize->Automatic],
+                    BaselinePosition->Baseline],
+                    DynamicModuleValues:>{}], "]"}],
+                  ChemTools`ChemMethod[With[{ChemTools`Private`Package`o = {
+                    SlotSequence[1]}}, 
+                    ChemTools`BondGraphic[
+                    First[ChemTools`Private`Package`o], 
+                    Apply[Sequence, 
+                    FilterRules[
+                    Rest[ChemTools`Private`Package`o], 
+                    Options[ChemTools`BondGraphic]]]]]& ],
+                  Editable->False,
+                  SelectWithContents->True,
+                  Selectable->False],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              TagBox["\<\"\[Ellipsis]\"\>",
+               "SummaryItem"]}
+            },
+            AutoDelete->False,
+            
+            BaseStyle->{
+             ShowStringCharacters -> False, NumberMarks -> False, 
+              PrintPrecision -> 3, ShowSyntaxStyles -> False},
+            GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+            GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+         },
+         AutoDelete->False,
+         BaselinePosition->{1, 1},
+         GridBoxAlignment->{"Rows" -> {{Top}}},
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, Dynamic[
+        Typeset`open$$],
+        ImageSize->Automatic],
+       BaselinePosition->Baseline],
+      DynamicModuleValues:>{}], "]"}],
+    ChemTools`ChemObject[
+    "System-default-f69abdd0-759a-4d5e-b335-f8394bcdf855", 
+     "Bond-19-8c7c5bc9-4504-49f2-8103-ffecca8416d1"],
+    Editable->False,
+    SelectWithContents->True,
+    Selectable->False], ",", 
+   InterpretationBox[
+    RowBox[{
+     TagBox["ChemObject",
+      "SummaryHead"], "[", 
+     DynamicModuleBox[{Typeset`open$$ = False}, 
+      PanelBox[
+       PaneSelectorBox[{False->GridBox[{
+          {
+           PaneBox[
+            ButtonBox[
+             
+             DynamicBox[FEPrivate`FrontEndResource[
+              "FEBitmaps", "SquarePlusIconMedium"],
+              ImageSizeCache->{12., {0., 12.}}],
+             Appearance->None,
+             ButtonFunction:>(Typeset`open$$ = True),
+             Evaluator->Automatic,
+             Method->"Preemptive"],
+            Alignment->{Center, Center},
+            
+            ImageSize->
+             Dynamic[{
+              Automatic, 3.5 CurrentValue["FontCapHeight"]/
+               AbsoluteCurrentValue[Magnification]}]], GridBox[{
+             {
+              RowBox[{
+               TagBox["\<\"Type: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox["\<\"Bond\"\>",
+                "SummaryItem"]}]}
+            },
+            AutoDelete->False,
+            
+            BaseStyle->{
+             ShowStringCharacters -> False, NumberMarks -> False, 
+              PrintPrecision -> 3, ShowSyntaxStyles -> False},
+            GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+            GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+         },
+         AutoDelete->False,
+         BaselinePosition->{1, 1},
+         GridBoxAlignment->{"Rows" -> {{Top}}},
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], True->
+        GridBox[{
+          {
+           PaneBox[
+            ButtonBox[
+             
+             DynamicBox[FEPrivate`FrontEndResource[
+              "FEBitmaps", "SquareMinusIconMedium"]],
+             Appearance->None,
+             ButtonFunction:>(Typeset`open$$ = False),
+             Evaluator->Automatic,
+             Method->"Preemptive"],
+            Alignment->{Center, Center},
+            ImageSize->
+             Dynamic[{
+              Automatic, 3.5 CurrentValue["FontCapHeight"]/
+               AbsoluteCurrentValue[Magnification]}]], GridBox[{
+             {
+              RowBox[{
+               TagBox["\<\"Type: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox["\<\"Bond\"\>",
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Atoms: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 RowBox[{"{", 
+                  RowBox[{"\<\"Atom-8\"\>", ",", "\<\"Atom-10\"\>"}], "}"}],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Color: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 RowBox[{"{", 
+                  RowBox[{"Automatic", ",", "Automatic"}], "}"}],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Graphic: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 InterpretationBox[
+                  RowBox[{
+                   TagBox["ChemMethod",
+                    "SummaryHead"], "[", 
+                   DynamicModuleBox[{Typeset`open$$ = False}, 
+                    PanelBox[
+                    PaneSelectorBox[{False->GridBox[{
+                    {
+                    PaneBox[
+                    ButtonBox[
+                    
+                    DynamicBox[FEPrivate`FrontEndResource[
+                    "FEBitmaps", "SquarePlusIconMedium"]],
+                    Appearance->None,
+                    ButtonFunction:>(Typeset`open$$ = True),
+                    Evaluator->Automatic,
+                    Method->"Preemptive"],
+                    Alignment->{Center, Center},
+                    
+                    ImageSize->
+                    Dynamic[{
+                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], GridBox[{
+                    {
+                    RowBox[{
+                    TagBox["\<\"Type: \"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox["\<\"Bound Method\"\>",
+                    "SummaryItem"]}]}
+                    },
+                    AutoDelete->False,
+                    
+                    BaseStyle->{
+                    ShowStringCharacters -> False, NumberMarks -> False, 
+                    PrintPrecision -> 3, ShowSyntaxStyles -> False},
+                    
+                    GridBoxAlignment->{
+                    "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxSpacings->{
+                    "Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+                    },
+                    AutoDelete->False,
+                    BaselinePosition->{1, 1},
+                    GridBoxAlignment->{"Rows" -> {{Top}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], 
+                    True->GridBox[{
+                    {
+                    PaneBox[
+                    ButtonBox[
+                    
+                    DynamicBox[FEPrivate`FrontEndResource[
+                    "FEBitmaps", "SquareMinusIconMedium"]],
+                    Appearance->None,
+                    ButtonFunction:>(Typeset`open$$ = False),
+                    Evaluator->Automatic,
+                    Method->"Preemptive"],
+                    Alignment->{Center, Center},
+                    
+                    ImageSize->
+                    Dynamic[{
+                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], GridBox[{
+                    {
+                    RowBox[{
+                    TagBox["\<\"Type: \"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox["\<\"Bound Method\"\>",
+                    "SummaryItem"]}]},
+                    {
+                    RowBox[{
+                    TagBox["\<\"Function\"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox[
+                    RowBox[{
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"ChemTools`Private`Package`o", "=", 
+                    RowBox[{"{", "##1", "}"}]}], "}"}], ",", 
+                    RowBox[{"BondGraphic", "[", 
+                    RowBox[{
+                    RowBox[{
+                    "First", "[", "ChemTools`Private`Package`o", "]"}], ",", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"FilterRules", "[", 
+                    RowBox[{
+                    RowBox[{"Rest", "[", "ChemTools`Private`Package`o", "]"}],
+                     ",", 
+                    RowBox[{"Options", "[", "BondGraphic", "]"}]}], "]"}]}]}],
+                     "]"}]}], "]"}], "&"}],
+                    "SummaryItem"]}]}
+                    },
+                    AutoDelete->False,
+                    
+                    BaseStyle->{
+                    ShowStringCharacters -> False, NumberMarks -> False, 
+                    PrintPrecision -> 3, ShowSyntaxStyles -> False},
+                    
+                    GridBoxAlignment->{
+                    "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxSpacings->{
+                    "Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+                    },
+                    AutoDelete->False,
+                    BaselinePosition->{1, 1},
+                    GridBoxAlignment->{"Rows" -> {{Top}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, 
+                    Dynamic[Typeset`open$$],
+                    ImageSize->Automatic],
+                    BaselinePosition->Baseline],
+                    DynamicModuleValues:>{}], "]"}],
+                  ChemTools`ChemMethod[With[{ChemTools`Private`Package`o = {
+                    SlotSequence[1]}}, 
+                    ChemTools`BondGraphic[
+                    First[ChemTools`Private`Package`o], 
+                    Apply[Sequence, 
+                    FilterRules[
+                    Rest[ChemTools`Private`Package`o], 
+                    Options[ChemTools`BondGraphic]]]]]& ],
+                  Editable->False,
+                  SelectWithContents->True,
+                  Selectable->False],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              TagBox["\<\"\[Ellipsis]\"\>",
+               "SummaryItem"]}
+            },
+            AutoDelete->False,
+            
+            BaseStyle->{
+             ShowStringCharacters -> False, NumberMarks -> False, 
+              PrintPrecision -> 3, ShowSyntaxStyles -> False},
+            GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+            GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+         },
+         AutoDelete->False,
+         BaselinePosition->{1, 1},
+         GridBoxAlignment->{"Rows" -> {{Top}}},
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, Dynamic[
+        Typeset`open$$],
+        ImageSize->Automatic],
+       BaselinePosition->Baseline],
+      DynamicModuleValues:>{}], "]"}],
+    ChemTools`ChemObject[
+    "System-default-f69abdd0-759a-4d5e-b335-f8394bcdf855", 
+     "Bond-22-abe4d43e-b3db-418a-ba75-ee4b98366944"],
+    Editable->False,
+    SelectWithContents->True,
+    Selectable->False], ",", 
+   InterpretationBox[
+    RowBox[{
+     TagBox["ChemObject",
+      "SummaryHead"], "[", 
+     DynamicModuleBox[{Typeset`open$$ = False}, 
+      PanelBox[
+       PaneSelectorBox[{False->GridBox[{
+          {
+           PaneBox[
+            ButtonBox[
+             
+             DynamicBox[FEPrivate`FrontEndResource[
+              "FEBitmaps", "SquarePlusIconMedium"],
+              ImageSizeCache->{12., {0., 12.}}],
+             Appearance->None,
+             ButtonFunction:>(Typeset`open$$ = True),
+             Evaluator->Automatic,
+             Method->"Preemptive"],
+            Alignment->{Center, Center},
+            
+            ImageSize->
+             Dynamic[{
+              Automatic, 3.5 CurrentValue["FontCapHeight"]/
+               AbsoluteCurrentValue[Magnification]}]], GridBox[{
+             {
+              RowBox[{
+               TagBox["\<\"Type: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox["\<\"Bond\"\>",
+                "SummaryItem"]}]}
+            },
+            AutoDelete->False,
+            
+            BaseStyle->{
+             ShowStringCharacters -> False, NumberMarks -> False, 
+              PrintPrecision -> 3, ShowSyntaxStyles -> False},
+            GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+            GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+         },
+         AutoDelete->False,
+         BaselinePosition->{1, 1},
+         GridBoxAlignment->{"Rows" -> {{Top}}},
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], True->
+        GridBox[{
+          {
+           PaneBox[
+            ButtonBox[
+             
+             DynamicBox[FEPrivate`FrontEndResource[
+              "FEBitmaps", "SquareMinusIconMedium"]],
+             Appearance->None,
+             ButtonFunction:>(Typeset`open$$ = False),
+             Evaluator->Automatic,
+             Method->"Preemptive"],
+            Alignment->{Center, Center},
+            
+            ImageSize->
+             Dynamic[{
+              Automatic, 3.5 CurrentValue["FontCapHeight"]/
+               AbsoluteCurrentValue[Magnification]}]], GridBox[{
+             {
+              RowBox[{
+               TagBox["\<\"Type: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox["\<\"Bond\"\>",
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Atoms: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 RowBox[{"{", 
+                  RowBox[{"\<\"Atom-8\"\>", ",", "\<\"Atom-14\"\>"}], "}"}],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Color: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 RowBox[{"{", 
+                  RowBox[{"Automatic", ",", "Automatic"}], "}"}],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              RowBox[{
+               TagBox["\<\"Graphic: \"\>",
+                "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+               TagBox[
+                TagBox[
+                 InterpretationBox[
+                  RowBox[{
+                   TagBox["ChemMethod",
+                    "SummaryHead"], "[", 
+                   DynamicModuleBox[{Typeset`open$$ = False}, 
+                    PanelBox[
+                    PaneSelectorBox[{False->GridBox[{
+                    {
+                    PaneBox[
+                    ButtonBox[
+                    
+                    DynamicBox[FEPrivate`FrontEndResource[
+                    "FEBitmaps", "SquarePlusIconMedium"]],
+                    Appearance->None,
+                    ButtonFunction:>(Typeset`open$$ = True),
+                    Evaluator->Automatic,
+                    Method->"Preemptive"],
+                    Alignment->{Center, Center},
+                    
+                    ImageSize->
+                    Dynamic[{
+                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], GridBox[{
+                    {
+                    RowBox[{
+                    TagBox["\<\"Type: \"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox["\<\"Bound Method\"\>",
+                    "SummaryItem"]}]}
+                    },
+                    AutoDelete->False,
+                    
+                    BaseStyle->{
+                    ShowStringCharacters -> False, NumberMarks -> False, 
+                    PrintPrecision -> 3, ShowSyntaxStyles -> False},
+                    
+                    GridBoxAlignment->{
+                    "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxSpacings->{
+                    "Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+                    },
+                    AutoDelete->False,
+                    BaselinePosition->{1, 1},
+                    GridBoxAlignment->{"Rows" -> {{Top}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], 
+                    True->GridBox[{
+                    {
+                    PaneBox[
+                    ButtonBox[
+                    
+                    DynamicBox[FEPrivate`FrontEndResource[
+                    "FEBitmaps", "SquareMinusIconMedium"]],
+                    Appearance->None,
+                    ButtonFunction:>(Typeset`open$$ = False),
+                    Evaluator->Automatic,
+                    Method->"Preemptive"],
+                    Alignment->{Center, Center},
+                    
+                    ImageSize->
+                    Dynamic[{
+                    Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], GridBox[{
+                    {
+                    RowBox[{
+                    TagBox["\<\"Type: \"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox["\<\"Bound Method\"\>",
+                    "SummaryItem"]}]},
+                    {
+                    RowBox[{
+                    TagBox["\<\"Function\"\>",
+                    "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                    TagBox[
+                    RowBox[{
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"ChemTools`Private`Package`o", "=", 
+                    RowBox[{"{", "##1", "}"}]}], "}"}], ",", 
+                    RowBox[{"BondGraphic", "[", 
+                    RowBox[{
+                    RowBox[{
+                    "First", "[", "ChemTools`Private`Package`o", "]"}], ",", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"FilterRules", "[", 
+                    RowBox[{
+                    RowBox[{"Rest", "[", "ChemTools`Private`Package`o", "]"}],
+                     ",", 
+                    RowBox[{"Options", "[", "BondGraphic", "]"}]}], "]"}]}]}],
+                     "]"}]}], "]"}], "&"}],
+                    "SummaryItem"]}]}
+                    },
+                    AutoDelete->False,
+                    
+                    BaseStyle->{
+                    ShowStringCharacters -> False, NumberMarks -> False, 
+                    PrintPrecision -> 3, ShowSyntaxStyles -> False},
+                    
+                    GridBoxAlignment->{
+                    "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    
+                    GridBoxSpacings->{
+                    "Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+                    },
+                    AutoDelete->False,
+                    BaselinePosition->{1, 1},
+                    GridBoxAlignment->{"Rows" -> {{Top}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, 
+                    Dynamic[Typeset`open$$],
+                    ImageSize->Automatic],
+                    BaselinePosition->Baseline],
+                    DynamicModuleValues:>{}], "]"}],
+                  ChemTools`ChemMethod[With[{ChemTools`Private`Package`o = {
+                    SlotSequence[1]}}, 
+                    ChemTools`BondGraphic[
+                    First[ChemTools`Private`Package`o], 
+                    Apply[Sequence, 
+                    FilterRules[
+                    Rest[ChemTools`Private`Package`o], 
+                    Options[ChemTools`BondGraphic]]]]]& ],
+                  Editable->False,
+                  SelectWithContents->True,
+                  Selectable->False],
+                 Short[#, 1]& ],
+                "SummaryItem"]}]},
+             {
+              TagBox["\<\"\[Ellipsis]\"\>",
+               "SummaryItem"]}
+            },
+            AutoDelete->False,
+            
+            BaseStyle->{
+             ShowStringCharacters -> False, NumberMarks -> False, 
+              PrintPrecision -> 3, ShowSyntaxStyles -> False},
+            GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+            GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+         },
+         AutoDelete->False,
+         BaselinePosition->{1, 1},
+         GridBoxAlignment->{"Rows" -> {{Top}}},
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, Dynamic[
+        Typeset`open$$],
+        ImageSize->Automatic],
+       BaselinePosition->Baseline],
+      DynamicModuleValues:>{}], "]"}],
+    ChemTools`ChemObject[
+    "System-default-f69abdd0-759a-4d5e-b335-f8394bcdf855", 
+     "Bond-23-0e0e3c63-797b-4aef-bf42-b1a6c6d1ce9f"],
+    Editable->False,
+    SelectWithContents->True,
+    Selectable->False]}], "}"}]], "Output",
+ CellLabel->"Out[5]=",
+ CellID->19,ExpressionUUID->"6c6120b6-9aae-41a2-9e8f-f96aa35d99ff"]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "ExampleSection", "0"}, 
+  Closed]]]]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "PrimaryExamplesSection"}, 
+  Closed]]]],
+
+Cell[CellGroupData[{
+
+Cell["See Also", "SeeAlsoSection",
+ CellID->20,ExpressionUUID->"c15699a4-62d2-47d5-8c22-b9ef8fe0193c"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["CreateAtom"]],"paclet:ChemTools/ref/CreateAtom"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"421f6cbf-7254-445f-ad31-715f69274929"],
+ "\[NonBreakingSpace]",
+ StyleBox["\[MediumSpace]\[FilledVerySmallSquare]\[MediumSpace]", 
+  "InlineSeparator"],
+ " ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["CreateBond"]],"paclet:ChemTools/ref/CreateBond"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"1c09123a-ad27-493c-87fa-b29c5d5c9232"],
+ "\[NonBreakingSpace]",
+ StyleBox["\[MediumSpace]\[FilledVerySmallSquare]\[MediumSpace]", 
+  "InlineSeparator"],
+ " ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["AtomCreateBond"]],"paclet:ChemTools/ref/AtomCreateBond"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"03426591-c473-4160-80d5-e6622e89f779"]
+}], "SeeAlso",
+ CellID->21,ExpressionUUID->"128562da-8d2a-43a8-8a6f-aef5d72238f3"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Related Guides", "MoreAboutSection",
+ CellID->22,ExpressionUUID->"cbf2c43d-adbc-46c0-a736-dedb505fe550"],
+
+Cell[BoxData[
+ DynamicBox[If[$VersionNumber < 11.1, 
+   TemplateBox[{
+     Cell[
+      TextData["Chemistry Objects"]], "paclet:ChemTools/guide/ChemObjects"}, 
+    "RefLink", BaseStyle -> {"InlineFormula", FontFamily -> "Verdana"}], 
+   TemplateBox[{
+     Cell[
+      TextData["Chemistry Objects"]], "paclet:ChemTools/guide/ChemObjects"}, 
+    "RefLinkPlain", BaseStyle -> {"InlineFormula"}]],
+  ImageSizeCache->{108., {4., 14.}},
+  UpdateInterval->Infinity]], "MoreAbout",
+ CellID->23,ExpressionUUID->"370286a9-df97-413e-90f1-66a2be19c64d"],
+
+Cell[BoxData[
+ DynamicBox[If[$VersionNumber < 11.1, 
+   TemplateBox[{
+     Cell[
+      TextData["Atom Object"]], "paclet:ChemTools/guide/ChemAtomObject"}, 
+    "RefLink", BaseStyle -> {"InlineFormula", FontFamily -> "Verdana"}], 
+   TemplateBox[{
+     Cell[
+      TextData["Atom Object"]], "paclet:ChemTools/guide/ChemAtomObject"}, 
+    "RefLinkPlain", BaseStyle -> {"InlineFormula"}]],
+  ImageSizeCache->{74., {4., 14.}},
+  UpdateInterval->Infinity]], "MoreAbout",
+ CellID->24,ExpressionUUID->"388e2c82-06e3-4485-afa5-292d4ea37a78"],
+
+Cell[BoxData[
+ DynamicBox[If[$VersionNumber < 11.1, 
+   TemplateBox[{
+     Cell[
+      TextData["Bond Object"]], "paclet:ChemTools/guide/ChemBondObject"}, 
+    "RefLink", BaseStyle -> {"InlineFormula", FontFamily -> "Verdana"}], 
+   TemplateBox[{
+     Cell[
+      TextData["Bond Object"]], "paclet:ChemTools/guide/ChemBondObject"}, 
+    "RefLinkPlain", BaseStyle -> {"InlineFormula"}]],
+  ImageSizeCache->{74., {4., 14.}},
+  UpdateInterval->Infinity]], "MoreAbout",
+ CellID->25,ExpressionUUID->"6e0f0f82-57b9-48b0-a792-28dcf69407ec"]
+}, Open  ]],
+
+Cell["ChemTools Package Version 1.1", "History",
+ CellID->26,ExpressionUUID->"2823ada1-c3a7-4d5b-8d2a-8b9caec88912"],
+
+Cell[" ", "FooterCell",
+ CellID->27,ExpressionUUID->"c711524f-58eb-4806-9dda-f59eeb46ece9"]
+},
+ClosingSaveDialog->False,
+Saveable->False,
+WindowSize->{808, 755},
+WindowMargins->{{314, Automatic}, {Automatic, 50}},
+WindowTitle->"AtomGetBonds",
+TaggingRules->{
+ "ColorType" -> "SymbolColor", "ModificationHighlight" -> False, "LinkTrails" -> 
+  "", "HasOptions" -> False, "SearchTextTranslated" -> "", 
+  "Metadata" -> {
+   "built" -> "{2017, 7, 20, 2, 41, 56.519924}", 
+    "history" -> {"11.1", "", ""}, "context" -> "ChemTools`", 
+    "keywords" -> {"atomgetbonds", "atom", "get", "bonds"}, "specialkeywords" -> 
+    Automatic, "tutorialcollectionlinks" -> {}, "index" -> True, "label" -> 
+    "ChemTools", "language" -> "ChemTools", "paclet" -> "Mathematica", 
+    "status" -> "None", "summary" -> "Gets bonds to atoms matching a pattern",
+     "synonyms" -> {}, "tabletags" -> {}, "title" -> "AtomGetBonds", 
+    "titlemodifier" -> "AtomGetBonds", "windowtitle" -> "AtomGetBonds", 
+    "type" -> "Symbol", "uri" -> "ChemTools/ref/AtomGetBonds"}, 
+  "Openers" -> {
+   "NotesSection" -> Closed, "PrimaryExamplesSection" -> Open, 
+    "ExampleSection" -> {"0" -> Open}}},
+FrontEndVersion->"11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (April 27, \
+2017)",
+StyleDefinitions->Notebook[{
+   Cell[
+    StyleData[
+    StyleDefinitions -> 
+     FrontEnd`FileName[{"Wolfram"}, "Reference.nb", CharacterEncoding -> 
+       "UTF-8"]]], 
+   Cell[
+    StyleData["Notebook"], DockedCells -> {
+      Cell[
+       BoxData[
+        PanelBox[
+         StyleBox[
+          TemplateBox[{
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {9, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            TemplateBox[{
+              TooltipBox[
+               DynamicModuleBox[{$CellContext`destination$$ = 0}, 
+                DynamicBox[
+                 FEPrivate`If[FEPrivate`HistoryList["Back"] === {}, 
+                  ButtonBox[
+                   DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "DisabledBackIcon.png"]]], Enabled -> False, Appearance -> 
+                   None, FrameMargins -> 0], 
+                  ButtonBox[
+                   PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "BackIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "BackIcon.png"]]]}, 
+                    Dynamic[
+                    CurrentValue["MouseOver"]]], ButtonFunction :> 
+                   FrontEndToken[
+                    FrontEnd`ButtonNotebook[], "HyperlinkGoBack"], Evaluator -> 
+                   None, Appearance -> None, FrameMargins -> 0]]], 
+                DynamicModuleValues :> {}], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipBack"]]], 
+              StyleBox[
+               
+               GraphicsBox[{}, ImageSize -> {2, 0}, BaselinePosition -> 
+                Baseline], "CacheGraphics" -> False], 
+              TooltipBox[
+               DynamicModuleBox[{$CellContext`destination$$ = 0}, 
+                DynamicBox[
+                 FEPrivate`If[FEPrivate`HistoryList["Forward"] === {}, 
+                  ButtonBox[
+                   DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "DisabledForwardIcon.png"]]], Enabled -> False, 
+                   Appearance -> None, FrameMargins -> 0], 
+                  ButtonBox[
+                   PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "ForwardIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "ForwardIcon.png"]]]}, 
+                    Dynamic[
+                    CurrentValue["MouseOver"]]], ButtonFunction :> 
+                   FrontEndToken[
+                    FrontEnd`ButtonNotebook[], "HyperlinkGoForward"], 
+                   Evaluator -> None, Appearance -> None, FrameMargins -> 
+                   0]]], DynamicModuleValues :> {}], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipForward"]]], 
+              TooltipBox[
+               DynamicBox[
+                ToBoxes[
+                 FEPrivate`GenerateHelpViewerActionMenu[], StandardForm]], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipHistory"]]], 
+              StyleBox[
+               
+               GraphicsBox[{}, ImageSize -> {13, 0}, BaselinePosition -> 
+                Baseline], "CacheGraphics" -> False], 
+              TooltipBox[
+               ButtonBox[
+                PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "HomeIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "HomeIcon.png"]]]}, 
+                 Dynamic[
+                  CurrentValue["MouseOver"]]], ButtonFunction :> 
+                Documentation`HelpLookup[
+                  CurrentValue[HomePage], 
+                  FrontEnd`ButtonNotebook[], 
+                  CurrentValue[Language]], Appearance -> None, Evaluator -> 
+                Automatic, Method -> "Preemptive"], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipHome"]]]}, "RowDefault"], 
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {39, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            FrameBox[
+             StyleBox[
+              DynamicBox[
+               FEPrivate`FrontEndResource[
+               "FEExpressions", "HelpViewerSearchField"]], 
+              InputFieldBoxOptions -> {
+               ImageSize -> 
+                Dynamic[AbsoluteCurrentValue[{WindowSize, 1}] - 220], 
+                FrameMargins -> 
+                FEPrivate`Switch[
+                 FEPrivate`$OperatingSystem, "MacOSX", {{3, 3}, {0, -1}}, 
+                  "Windows", {{0, 2}, {0, 2}}, 
+                  Blank[], {{2, 2}, {0, 0}}]}], FrameStyle -> None, 
+             FrameMargins -> {{0, 0}, {4, 0}}], 
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {12, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            TooltipBox[
+             ButtonBox[
+              PaneSelectorBox[{True -> DynamicBox[
+                  FEPrivate`ImportImage[
+                   
+                   FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "RevertIconHot.png"]]], False -> DynamicBox[
+                  FEPrivate`ImportImage[
+                   
+                   FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "RevertIcon.png"]]]}, 
+               Dynamic[
+                CurrentValue["MouseOver"]]], ButtonFunction :> FrontEndToken[
+                FrontEnd`ButtonNotebook[], "Revert", False], Evaluator -> 
+              None, Appearance -> None, Method -> "Preemptive"], 
+             DynamicBox[
+              FEPrivate`FrontEndResource[
+              "HelpToolbarText", "TooltipRefresh"]]]}, "RowDefault"], 
+          CacheGraphics -> False, 
+          ButtonBoxOptions -> {BaselinePosition -> (Baseline -> Baseline)}], 
+         Alignment -> {Left, Center}, Appearance -> Image[CompressedData["
+1:eJztyDkKAkEUhOFGE0OvIHgIU0PTEQ8ww7SDSQs9gnhXl3HBfbmC7Q0qeWDw
+f1CPqtcr5tm05ZyrO+lk+XIYY74ad9OYhHpWBV+OwsJXPg6Kdnr2U8qUX/8A
+AAAA+HtvyF6AgSdg4AHZHbIbYOAKGLhAdobsBBg4QnaAbA9ZAxjYAQa2gIEN
+ZGvIvp8pRMU=
+           "], "Byte", ColorSpace -> "RGB", Interleaving -> 
+           True], ImageSize -> {
+           Scaled[1], Full}]], "DockedCell", CellFrame -> 0, 
+       CellMargins -> {{0, -10}, {-2, -1}}, 
+       CellFrameMargins -> {{0, 0}, {0, 0}}, ShowCodeAssist -> False, 
+       Background -> None], 
+      Cell[
+      "", CellSize -> {1, 1}, CellOpen -> False, 
+       CellFrame -> {{0, 0}, {2, 0}}, CellFrameColor -> 
+       Hue[0.38, 0.64, 0.6]]}], 
+   Cell[
+    StyleData["DockedCell"], CellFrame -> {{0, 0}, {1, 0}}, CellFrameColor -> 
+    Hue[0.38, 0.64, 0.6]]}, Visible -> False, FrontEndVersion -> 
+  "11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (April 27, 2017)", 
+  StyleDefinitions -> "Default.nb"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[584, 21, 5317, 130, 70, "AnchorBarGrid", "ExpressionUUID" -> \
+"946c6d5a-7574-4dea-86dc-308b38774fc4",
+ CellID->1],
+Cell[5904, 153, 101, 1, 70, "ObjectName", "ExpressionUUID" -> \
+"1fcf31d0-636a-452d-af5a-f2b4c9b0e5a0",
+ CellID->2],
+Cell[6008, 156, 1246, 33, 70, "Usage", "ExpressionUUID" -> \
+"2bb0ba5a-2c35-457f-8401-55497fa64474",
+ CellID->3],
+Cell[CellGroupData[{
+Cell[7279, 193, 1523, 36, 70, "NotesSection", "ExpressionUUID" -> \
+"32550a7a-db67-43c3-9b66-cbaeae280bec",
+ CellID->4],
+Cell[8805, 231, 339, 9, 70, "Notes", "ExpressionUUID" -> \
+"228021f2-6487-435a-b6c8-50a9079860b1",
+ CellID->5],
+Cell[9147, 242, 303, 8, 70, "Notes", "ExpressionUUID" -> \
+"dec00714-3540-43fc-a1bd-3a597272c93d",
+ CellID->6],
+Cell[9453, 252, 13409, 238, 70, "NotesThumbnails", "ExpressionUUID" -> \
+"9a1094ac-b307-4e80-972f-c7eff81598c0",
+ CellOpen->FEPrivate`If[
+   FEPrivate`Less[FEPrivate`$VersionNumber, 11.1], False, 
+   FEPrivate`Not[
+    FEPrivate`Or[
+     FEPrivate`SameQ[
+      FrontEnd`CurrentValue[
+       FrontEnd`EvaluationNotebook[], {
+       TaggingRules, "Openers", "NotesSection"}], Open], 
+     FEPrivate`SameQ[
+      FrontEnd`CurrentValue[
+       FrontEnd`EvaluationNotebook[], {
+       TaggingRules, "Openers", "NotesSection"}], True]]]],
+ CellID->7]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "NotesSection"}, Closed]]]],
+Cell[22967, 494, 92, 1, 70, "PageDelimiter", "ExpressionUUID" -> \
+"868bc50c-de80-4532-afb3-9014bba7d460",
+ CellID->8],
+Cell[CellGroupData[{
+Cell[23084, 499, 1473, 35, 70, "PrimaryExamplesSection", "ExpressionUUID" -> \
+"f2898c62-8677-4360-a45d-145bf00b27d6",
+ CellID->9],
+Cell[CellGroupData[{
+Cell[24582, 538, 1466, 35, 70, "ExampleSection", "ExpressionUUID" -> \
+"97e0ff60-7d95-4b8f-82a0-567516448cb0",
+ CellID->10],
+Cell[26051, 575, 377, 9, 70, "ExampleText", "ExpressionUUID" -> \
+"a7b7fc43-b287-4f23-b967-783cbe57f355",
+ CellID->11],
+Cell[26431, 586, 616, 17, 70, "Input", "ExpressionUUID" -> \
+"65a360b3-3aae-4c15-a87e-cc3d589d5c3a",
+ CellID->12],
+Cell[27050, 605, 10477, 266, 70, "Output", "ExpressionUUID" -> \
+"8fced9e0-5c13-4676-8c1d-cd83babd8e31",
+ CellID->13],
+Cell[37530, 873, 180, 5, 70, "ExampleText", "ExpressionUUID" -> \
+"2916a68c-7fd0-4ec7-86eb-2ae37bc1985d",
+ CellID->14],
+Cell[37713, 880, 248, 5, 70, "Input", "ExpressionUUID" -> \
+"a8289d25-d410-44fa-ac66-ff43d97f1577",
+ CellID->15],
+Cell[37964, 887, 31543, 789, 70, "Output", "ExpressionUUID" -> \
+"ee6a73cb-3662-4f3b-9fe0-5819791b9443",
+ CellID->16],
+Cell[69510, 1678, 323, 8, 70, "ExampleText", "ExpressionUUID" -> \
+"99439066-d6f3-47bc-ac3b-7db128e870a3",
+ CellID->17],
+Cell[69836, 1688, 212, 4, 70, "Input", "ExpressionUUID" -> \
+"9f405fc5-2626-400a-9c21-85583017150e",
+ CellID->18],
+Cell[70051, 1694, 31543, 789, 70, "Output", "ExpressionUUID" -> \
+"6c6120b6-9aae-41a2-9e8f-f96aa35d99ff",
+ CellID->19]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "ExampleSection", "0"}, 
+  Closed]]]]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "PrimaryExamplesSection"}, 
+  Closed]]]],
+Cell[CellGroupData[{
+Cell[101846, 2493, 102, 1, 70, "SeeAlsoSection", "ExpressionUUID" -> \
+"c15699a4-62d2-47d5-8c22-b9ef8fe0193c",
+ CellID->20],
+Cell[101951, 2496, 1417, 34, 70, "SeeAlso", "ExpressionUUID" -> \
+"128562da-8d2a-43a8-8a6f-aef5d72238f3",
+ CellID->21]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[103405, 2535, 110, 1, 70, "MoreAboutSection", "ExpressionUUID" -> \
+"cbf2c43d-adbc-46c0-a736-dedb505fe550",
+ CellID->22],
+Cell[103518, 2538, 540, 12, 70, "MoreAbout", "ExpressionUUID" -> \
+"370286a9-df97-413e-90f1-66a2be19c64d",
+ CellID->23],
+Cell[104061, 2552, 533, 12, 70, "MoreAbout", "ExpressionUUID" -> \
+"388e2c82-06e3-4485-afa5-292d4ea37a78",
+ CellID->24],
+Cell[104597, 2566, 533, 12, 70, "MoreAbout", "ExpressionUUID" -> \
+"6e0f0f82-57b9-48b0-a792-28dcf69407ec",
+ CellID->25]
+}, Open  ]],
+Cell[105145, 2581, 116, 1, 70, "History", "ExpressionUUID" -> \
+"2823ada1-c3a7-4d5b-8d2a-8b9caec88912",
+ CellID->26],
+Cell[105264, 2584, 91, 1, 70, "FooterCell", "ExpressionUUID" -> \
+"c711524f-58eb-4806-9dda-f59eeb46ece9",
+ CellID->27]
+}
+]
+*)
+
+(* End of internal cache information *)

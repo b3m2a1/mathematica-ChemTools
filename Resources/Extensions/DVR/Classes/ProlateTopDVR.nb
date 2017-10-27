@@ -1,0 +1,304 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Prolate Top DVR", \
+"CodeSection",ExpressionUUID->"72bb8bfa-4601-40ca-851d-2838eb276ece"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDVRBegin", "[", "]"}], ";"}]], "InputSection",
+ CellChangeTimes->{3.699240055548855*^9, 
+  3.707066425717123*^9},ExpressionUUID->"15e02cf1-243b-498b-bdc1-\
+5e8c363c92b1"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ProlateTopDVRK", "::", "usage"}], "=", 
+   "\"\<The adjusted kinetic operator form of SphericalDVRK\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ProlateTopDVR", "::", "usage"}], "=", 
+   "\"\<The output association for class making\>\""}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.69974535665308*^9, 
+  3.699745374267799*^9}},ExpressionUUID->"6dbd1ee2-a6f2-4dc2-a9a0-\
+cf6181dd6d28"],
+
+Cell[BoxData[
+ RowBox[{"ChemDVRNeeds", "/@", 
+  RowBox[{"{", 
+   RowBox[{
+   "\"\<SphericalDVR\>\"", ",", "\"\<LegendreDVR\>\"", ",", 
+    "\"\<RadialDVR\>\"", ",", "\"\<MeyerDVR\>\""}], "}"}]}]], "CodeInput",
+ CellChangeTimes->{{3.699240903099269*^9, 3.699240905198851*^9}, 
+   3.707066430636751*^9},ExpressionUUID->"53a6c2e1-fbed-456f-bc40-\
+0289f3848175"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"f21fb984-bb8e-40d2-b3b1-\
+c77c9e079669"],
+
+Cell[CellGroupData[{
+
+Cell["Kinetic Energy Matrix", \
+"Subsubsection",ExpressionUUID->"ec7be560-28ea-44dd-94c1-8296de43b4d2"],
+
+Cell[BoxData[{
+ RowBox[{"Clear", "[", "\"\<ProlateTopDVRK\>\"", "]"}], "\n", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "ProlateTopDVRK", "]"}], "=", 
+    RowBox[{"Flatten", "[", 
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"Options", "[", "SphericalDVRK", "]"}], ",", "\n", "\t\t\t", 
+       RowBox[{"\"\<RotationalA\>\"", "->", "10"}], ",", "\n", "\t\t\t", 
+       RowBox[{"\"\<RotationalB\>\"", "->", "3"}], ",", "\n", "\t", "\t", 
+       "\t", 
+       RowBox[{"\"\<RotationalC\>\"", "->", "1"}]}], "\n", "\t\t\t", "}"}], 
+     "]"}]}], ";"}]}], "\n", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"ProlateTopDVRK", "[", 
+    RowBox[{"grid_", ",", 
+     RowBox[{"ops", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"T", "=", 
+        RowBox[{"Last", "@", "grid"}]}], ",", "\n", "\t", "\t\t", 
+       RowBox[{"X", "=", 
+        RowBox[{"DeleteDuplicates", "/@", 
+         RowBox[{"Transpose", "@", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{
+            RowBox[{"First", "@", "grid"}], ",", 
+            RowBox[{
+             RowBox[{"Depth", "@", 
+              RowBox[{"First", "@", "grid"}]}], "-", "3"}]}], "]"}]}]}]}]}], 
+      "}"}], ",", "\n", "\t\t\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"rX", "=", 
+          RowBox[{"X", "[", 
+           RowBox[{"[", "1", "]"}], "]"}]}], ",", 
+         RowBox[{"\[Phi]X", "=", 
+          RowBox[{"X", "[", 
+           RowBox[{"[", "2", "]"}], "]"}]}], ",", 
+         RowBox[{"\[Theta]X", "=", 
+          RowBox[{"X", "[", 
+           RowBox[{"[", "3", "]"}], "]"}]}], ",", "\n", "\t", "\t", "\t\t", 
+         RowBox[{"rK", "=", 
+          RowBox[{"RadialDVRK", "[", 
+           RowBox[{"X", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], "]"}]}], ",", 
+         RowBox[{"\[Phi]K", "=", 
+          RowBox[{"MeyerDVRK", "[", 
+           RowBox[{"X", "[", 
+            RowBox[{"[", "2", "]"}], "]"}], "]"}]}], ",", 
+         RowBox[{"\[Theta]K", "=", 
+          RowBox[{"LegendreDVRK", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"X", "[", 
+              RowBox[{"[", "3", "]"}], "]"}], ",", "T"}], "}"}], "]"}]}]}], 
+        "\n", "\t", "\t\t\t", "}"}], ",", "\n", "\t", "\t\t\t", 
+       RowBox[{"With", "[", 
+        RowBox[{
+         RowBox[{"{", "\n", "\t", "\t\t\t\t", 
+          RowBox[{
+           RowBox[{"rN", "=", 
+            RowBox[{"Length", "@", "rK"}]}], ",", 
+           RowBox[{"\[Phi]N", "=", 
+            RowBox[{"Length", "@", "\[Phi]K"}]}], ",", 
+           RowBox[{"\[Theta]N", "=", 
+            RowBox[{"Length", "@", "\[Theta]K"}]}], ",", "\n", "\t", "\t", 
+           "\t", "\t\t", 
+           RowBox[{"\[HBar]", "=", 
+            RowBox[{"OptionValue", "@", "\"\<\[HBar]\>\""}]}], ",", "\n", 
+           "\t", "\t", "\t", "\t\t", 
+           RowBox[{"Am", "=", 
+            RowBox[{"OptionValue", "[", "\"\<RotationalA\>\"", "]"}]}], ",", 
+           "\n", "\t", "\t", "\t", "\t\t", 
+           RowBox[{"Bm", "=", 
+            RowBox[{"OptionValue", "[", "\"\<RotationalB\>\"", "]"}]}], ",", 
+           "\n", "\t", "\t", "\t", "\t\t", 
+           RowBox[{"Cm", "=", 
+            RowBox[{"OptionValue", "[", "\"\<RotationalC\>\"", "]"}]}]}], 
+          "\n", "\t", "\t", "\t\t\t", "}"}], ",", "\n", "\t", "\t", "\t\t\t", 
+         
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", "\n", "\t", "\t", "\t\t\t\t", 
+            RowBox[{
+             RowBox[{"rf", "=", 
+              RowBox[{"Function", "[", 
+               RowBox[{"k", ",", 
+                RowBox[{"1", "+", 
+                 RowBox[{"Mod", "[", 
+                  RowBox[{
+                   RowBox[{"Floor", "[", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"k", "-", "1"}], ")"}], "/", "\[Phi]N"}], "]"}], 
+                   ",", "rN"}], "]"}]}]}], "]"}]}], ",", "\n", "\t", "\t", 
+             "\t", "\t", "\t\t", 
+             RowBox[{"ff", "=", 
+              RowBox[{"Function", "[", 
+               RowBox[{"k", ",", 
+                RowBox[{"1", "+", 
+                 RowBox[{"Mod", "[", 
+                  RowBox[{
+                   RowBox[{"k", "-", "1"}], ",", "\[Phi]N"}], "]"}]}]}], 
+               "]"}]}], ",", "\n", "\t", "\t", "\t", "\t", "\t\t", 
+             RowBox[{"qf", "=", 
+              RowBox[{"Function", "[", 
+               RowBox[{"k", ",", 
+                RowBox[{"1", "+", 
+                 RowBox[{"Floor", "[", 
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{"k", "-", "1"}], ")"}], "/", 
+                   RowBox[{"(", 
+                    RowBox[{"rN", "*", "\[Phi]N"}], ")"}]}], "]"}]}]}], 
+               "]"}]}], ",", "\n", "\t", "\t", "\t", "\t\t\t", 
+             RowBox[{"n", "=", 
+              RowBox[{"rN", "*", "\[Phi]N", "*", "\[Theta]N"}]}]}], "\n", 
+            "\t", "\t", "\t", "\t\t\t", "}"}], ",", "\n", "\t", "\t", "\t", 
+           "\t\t\t", 
+           RowBox[{"\[HBar]", "*", 
+            RowBox[{
+            "ParallelTable", "[", "\n", "\t", "\t", "\t", "\t", "\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"KroneckerDelta", "[", 
+                 RowBox[{
+                  RowBox[{"ff", "[", "i", "]"}], ",", 
+                  RowBox[{"ff", "[", "j", "]"}]}], "]"}], "*", 
+                RowBox[{"KroneckerDelta", "[", 
+                 RowBox[{
+                  RowBox[{"qf", "[", "i", "]"}], ",", 
+                  RowBox[{"qf", "[", "j", "]"}]}], "]"}], "*", "\n", "\t", 
+                "\t", "\t", "\t", "\t", "\t\t\t\t", 
+                RowBox[{"rK", "[", 
+                 RowBox[{"[", " ", 
+                  RowBox[{
+                   RowBox[{"rf", "[", "i", "]"}], ",", 
+                   RowBox[{"rf", "[", "j", "]"}]}], " ", "]"}], "]"}]}], "+", 
+               "\n", "\t", "\t", "\t", "\t", "\t", "\t\t\t", 
+               RowBox[{
+                RowBox[{"KroneckerDelta", "[", 
+                 RowBox[{
+                  RowBox[{"rf", "[", "i", "]"}], ",", 
+                  RowBox[{"rf", "[", "j", "]"}]}], "]"}], "*", 
+                RowBox[{"KroneckerDelta", "[", 
+                 RowBox[{
+                  RowBox[{"qf", "[", "i", "]"}], ",", 
+                  RowBox[{"qf", "[", "j", "]"}]}], "]"}], "\n", "\t", "\t", 
+                "\t", "\t", "\t", "\t\t\t\t", "*", 
+                RowBox[{"(", 
+                 RowBox[{"Am", "-", 
+                  RowBox[{
+                   RowBox[{"1", "/", "2"}], 
+                   RowBox[{"(", 
+                    RowBox[{"Bm", "+", "Cm"}], ")"}]}]}], ")"}], "*", 
+                RowBox[{"\[Phi]K", "[", 
+                 RowBox[{"[", " ", 
+                  RowBox[{
+                   RowBox[{"ff", "[", "i", "]"}], ",", 
+                   RowBox[{"ff", "[", "j", "]"}]}], " ", "]"}], "]"}]}], "+", 
+               "\n", "\t", "\t", "\t", "\t", "\t", "\t\t\t", 
+               RowBox[{
+                RowBox[{"KroneckerDelta", "[", 
+                 RowBox[{
+                  RowBox[{"ff", "[", "i", "]"}], ",", 
+                  RowBox[{"ff", "[", "j", "]"}]}], "]"}], "*", 
+                RowBox[{"KroneckerDelta", "[", 
+                 RowBox[{
+                  RowBox[{"rf", "[", "i", "]"}], ",", 
+                  RowBox[{"rf", "[", "j", "]"}]}], "]"}], "*", "\n", "\t", 
+                "\t", "\t", "\t", "\t", "\t\t\t\t", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"1", "/", "2"}], 
+                  RowBox[{"(", 
+                   RowBox[{"Bm", "+", "Cm"}], ")"}]}], ")"}], "*", 
+                RowBox[{"\[Theta]K", "[", 
+                 RowBox[{"[", " ", 
+                  RowBox[{
+                   RowBox[{"qf", "[", "i", "]"}], ",", 
+                   RowBox[{"qf", "[", "j", "]"}]}], " ", "]"}], "]"}]}]}], 
+              ",", "\n", "\t", "\t", "\t", "\t", "\t\t\t", 
+              RowBox[{"{", 
+               RowBox[{"i", ",", "n"}], "}"}], ",", "\n", "\t", "\t", "\t", 
+              "\t", "\t\t\t", 
+              RowBox[{"{", 
+               RowBox[{"j", ",", "n"}], "}"}]}], "\n", "\t", "\t", 
+             "\t\t\t\t\t", "]"}]}]}], "\n", "\t", "\t\t\t\t\t", "]"}]}], "\n",
+         "\t", "\t\t\t\t", "]"}]}], "\n", "\t", "\t\t\t", "]"}]}], "\n", "\t",
+     "\t\t", "]"}]}]}]}], "CodeInput",
+ CellChangeTimes->{{3.6997453816411037`*^9, 3.699745428066723*^9}, {
+  3.69974546170028*^9, 3.6997454962197943`*^9}, {3.6997455375136957`*^9, 
+  3.699745635439192*^9}, {3.699745678539102*^9, 
+  3.699745868975933*^9}},ExpressionUUID->"c9a94bf8-7656-47b8-bd89-\
+da8678373d5c"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"d07eed60-ee87-40e5-9f4a-\
+c9f8952236c9"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDVREnd", "[", "]"}], ";"}]], "InputSection",
+ CellChangeTimes->{{3.69923997837263*^9, 3.699240000757471*^9}, 
+   3.707066420065618*^9},ExpressionUUID->"e887f8d8-f632-4eb4-bc5e-\
+dd552eb094bf"],
+
+Cell[BoxData[
+ RowBox[{"$ProlateTopDVR", "=", "\n", "\t", 
+  RowBox[{"ReplacePart", "[", 
+   RowBox[{"$SphericalDVR", ",", "\n", "\t\t", 
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"\"\<Name\>\"", "\[Rule]", "\"\<Plane Point\>\""}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"\"\<KineticEnergy\>\"", "->", "ProlateTopDVRK"}]}], "\n", 
+     "\t\t\t", "}"}]}], "]"}]}]], "CodeInput",
+ CellChangeTimes->{
+  3.699303829588441*^9, {3.6997458929895897`*^9, 
+   3.699745897166193*^9}},ExpressionUUID->"50554ad4-1b5f-4466-a307-\
+139f2a6ec347"]
+}, Open  ]]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"6c0e4b5e-596f-4981-817e-\
+aa6f36407405"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{Automatic, 25}, {0, Automatic}},
+FrontEndVersion->"11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 16, \
+2017)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

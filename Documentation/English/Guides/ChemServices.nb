@@ -1,0 +1,610 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     24103,        601]
+NotebookOptionsPosition[     13139,        350]
+NotebookOutlinePosition[     22111,        557]
+CellTagsIndexPosition[     22068,        554]
+WindowTitle->ChemServices
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[GridBox[{
+   {GridBox[{
+      {
+       DynamicBox[If[$VersionNumber < 11.1, 
+         Cell["GUIDE", "PacletNameCell", TextAlignment -> Center], 
+         ItemBox[
+          Cell[
+           BoxData[
+            RowBox[{
+              InterpretationBox[
+               StyleBox[
+                
+                GraphicsBox[{}, ImageSize -> {8, 0}, BaselinePosition -> 
+                 Baseline], "CacheGraphics" -> False], 
+               Spacer[8], Selectable -> False], 
+              Cell["GUIDE", "PacletNameCell", TextAlignment -> Center], 
+              InterpretationBox[
+               StyleBox[
+                
+                GraphicsBox[{}, ImageSize -> {8, 0}, BaselinePosition -> 
+                 Baseline], "CacheGraphics" -> False], 
+               Spacer[8], Selectable -> False]}]]], Background -> 
+          RGBColor[0.8, 0.4, 0], ItemSize -> Full]],
+        ImageSizeCache->{56., {5., 13.}},
+        UpdateInterval->Infinity], ""}
+     },
+     GridBoxAlignment->{"Rows" -> {{Center}}},
+     GridBoxItemSize->{"Columns" -> {Full, 
+         Scaled[0.02]}, "Rows" -> {{2.5}}}], Cell[TextData[{
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "Functions",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "62320e47-c737-46d6-ac8b-caba6655e92f"]
+         }],ExpressionUUID->"ddb31cec-ab10-41b3-b20c-f7e5ede1f7e2"],
+         StripOnInput->False], {"\<\"$ChemSpider\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/$ChemSpider"], "\<\"$ChemSpiderToken\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/$ChemSpiderToken"], "\<\"ChemSpiderHasQ\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemSpiderHasQ"], "\<\"ChemSpiderID\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemSpiderID"], "\<\"ChemSpiderImport\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemSpiderImport"], "\<\"ChemSpiderInfo\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemSpiderInfo"], "\<\"ChemSpiderParse\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemSpiderParse"], "\<\"ChemSpiderRequest\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemSpiderRequest"], "\<\"ChemSpiderScrape\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemSpiderScrape"], "\<\"$PubChem\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/$PubChem"], "\<\"PubChemHasQ\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/PubChemHasQ"], "\<\"PubChemID\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/PubChemID"], "\<\"PubChemSDF\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/PubChemSDF"], "\<\"PubChemStructure\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/ref/PubChemStructure"]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"GuideFunction"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "b45c0675-093f-4ea0-b82c-ee2bc2cf0916"],
+     "\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\
+\[ThickSpace]",
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "Related Guides",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "87b72aa7-743a-49c5-bde7-2008c796f019"]
+         }],ExpressionUUID->"0df873ba-c759-414b-ad4c-bebdff9169f9"],
+         StripOnInput->False], {"\<\"ChemTools Overview\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/guide/ChemTools", 
+         EvaluationNotebook[]], "\<\"Chemistry Data Framework\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/guide/ChemData", 
+         EvaluationNotebook[]], "\<\"Chemistry Utilities\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/guide/ChemUtilities", 
+         EvaluationNotebook[]]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"MoreAbout"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "5e6a0170-1f7c-44ce-b472-7fcf05378de8"],
+     "\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\
+\[ThickSpace]",
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "URL",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "88fbe4f2-98d5-4e71-889c-74589a64442b"]
+         }],ExpressionUUID->"2c7a071c-3627-44ca-91bf-f6089c981ea5"],
+         StripOnInput->False], {"ChemServices":>None, 
+        RowBox[{"Copy", " ", "Documentation", " ", "Center", " ", "URI"}]:>
+        CopyToClipboard["ChemServices"], Delimiter, 
+        RowBox[{"Copy", " ", "web", " ", "URL"}]:>CopyToClipboard[
+         Hyperlink[
+         "https://www.wolframcloud.com/objects/b3m2a1.paclets/reference/\
+ChemServices"]], 
+        RowBox[{"Go", " ", "to", " ", "URL"}]:>SystemOpen[
+        "https://www.wolframcloud.com/objects/b3m2a1.paclets/reference/\
+ChemServices"]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"URLMenu"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "0523c32c-1d3f-4981-9166-c72fe0f647d9"]
+    }], "AnchorBar",ExpressionUUID->"97b284eb-4703-4a49-962f-188b2abc889c"]}
+  }]], "AnchorBarGrid",
+ CellID->1,ExpressionUUID->"3390ea9f-5723-4b4f-94dd-d50424c0bed7"],
+
+Cell[CellGroupData[{
+
+Cell["Chemistry Services", "GuideTitle",
+ CellID->2,ExpressionUUID->"f02818a0-ba00-4ace-a7f9-4014a085fce3"],
+
+Cell["\<\
+As part of the ChemData framework there are links to the ChemSpider and \
+PubChem APIs, partially building on top of Mathematica\[CloseCurlyQuote]s \
+built-in ServiceConnect framework and partially custom written.\
+\>", "GuideAbstract",ExpressionUUID->"9a4ff470-2eee-4cd4-91a5-c59eeccca95d"],
+
+Cell["\t", "GuideDelimiterSubsection",ExpressionUUID->"7351b8bf-744b-47a5-926a-c7ffb091eabb"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["PubChem", "GuideFunctionsSubsection",ExpressionUUID->"5f7718e6-4697-46ff-a499-9e79b900a797"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["$PubChem"]],"paclet:ChemTools/ref/$PubChem"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "c7f32ba8-abc0-45f8-b2d4-74562143c874"],
+ StyleBox[" \[LongDash] ", "GuideEmDash"],
+ "ServiceConnection object for PubChem"
+}], "GuideText",ExpressionUUID->"2f653d54-9c5d-41dd-90d1-793f1d69d34c"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["PubChemID"]],"paclet:ChemTools/ref/PubChemID"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "34e080de-9ce2-4b5a-8905-6b2f2b0b9a15"],
+ ", ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["PubChemHasQ"]],"paclet:ChemTools/ref/PubChemHasQ"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "e8697c5d-aefd-43eb-84b3-f381afe21102"],
+ StyleBox[" \[LongDash] ", "GuideEmDash"],
+ "Returns API identifiers or specifies whether one exists"
+}], "GuideText",ExpressionUUID->"4bfa6928-0180-450e-af4e-333f28e87570"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["PubChemSDF"]],"paclet:ChemTools/ref/PubChemSDF"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "d3264499-3f43-4a04-872e-d20b165fda46"],
+ ", ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["PubChemStructure"]],"paclet:ChemTools/ref/PubChemStructure"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "52124bd4-a515-44c2-ad77-072361e71772"],
+ StyleBox[" \[LongDash] ", "GuideEmDash"],
+ "Returns structures from the PubChem API"
+}], "GuideText",ExpressionUUID->"67ce88b1-0c5c-4c25-be14-0ba704705723"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["ChemSpider", "GuideFunctionsSubsection",ExpressionUUID->"7eef2fcd-2dc2-4efc-af92-4dc4703d8020"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["$ChemSpider"]],"paclet:ChemTools/ref/$ChemSpider"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "5e237bc7-885f-4289-8b86-bb7f2026b7bd"],
+ StyleBox[" \[LongDash] ", "GuideEmDash"],
+ " ServiceConnection object for ChemSpider"
+}], "GuideText",ExpressionUUID->"42f70c81-3c9a-41ae-abc5-2ede716aba9f"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemSpiderID"]],"paclet:ChemTools/ref/ChemSpiderID"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "fcb5a4e3-e60b-47e3-8544-44c1540c0bae"],
+ ", ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemSpiderHasQ"]],"paclet:ChemTools/ref/ChemSpiderHasQ"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "44c1ecfe-5362-4de2-9395-44d5b421594f"],
+ StyleBox[" \[LongDash] ", "GuideEmDash"],
+ "Returns API identifiers or specifies whether one exists"
+}], "GuideText",ExpressionUUID->"0c382dae-d10d-48dd-937b-62e88536014e"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemSpiderRequest"]],"paclet:ChemTools/ref/ChemSpiderRequest"},
+   
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "f17b7fcb-fc08-4a39-af39-fdd6edc1f6ed"],
+ ", ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemSpiderParse"]],"paclet:ChemTools/ref/ChemSpiderParse"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "d431681a-1362-4464-b822-fcd0d287d71c"],
+ ", ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemSpiderInfo"]],"paclet:ChemTools/ref/ChemSpiderInfo"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "e4a2b4db-b591-43bd-862a-af7a3ea9c86e"],
+ ", ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemSpiderImport"]],"paclet:ChemTools/ref/ChemSpiderImport"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "316c1eb7-fa26-4210-8462-e1d3824eb610"],
+ StyleBox[" \[LongDash] ", "GuideEmDash"],
+ "API call delegators for the ChemSpider web API "
+}], "GuideText",ExpressionUUID->"de9e16d9-4533-4c38-8067-aca026113778"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemSpiderScrape"]],"paclet:ChemTools/ref/ChemSpiderScrape"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "08d12de1-1cec-4de7-8dd0-0d4a5ea87407"],
+ StyleBox[" \[LongDash] ", "GuideEmDash"],
+ "Scrapes a ChemSpider web page for information that isn\[CloseCurlyQuote]t \
+directly exposed in the API"
+}], "GuideText",ExpressionUUID->"15194f95-cb42-4faa-a9aa-b9a9fd82b3fe"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Related Guides", "GuideMoreAboutSection",
+ WholeCellGroupOpener->
+  True,ExpressionUUID->"f0ddbf8f-0c5b-42f2-a0bb-56cb30a2c51d"],
+
+Cell[BoxData[Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemTools Overview"]],"paclet:ChemTools/guide/ChemTools"},
+   "RefLink",
+   BaseStyle->"GuideMoreAbout"]],ExpressionUUID->
+  "072c6f0b-1740-49c0-9d0f-0960775087d3"]], "GuideMoreAbout",ExpressionUUID->\
+"73c9cb22-588e-4448-92ce-f7897f9a92fd"],
+
+Cell[BoxData[Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["Chemistry Data Framework"]],"paclet:ChemTools/guide/ChemData"},
+   
+   "RefLink",
+   BaseStyle->"GuideMoreAbout"]],ExpressionUUID->
+  "727cd349-ef37-4576-b386-27426a26435c"]], "GuideMoreAbout",ExpressionUUID->\
+"4a6231f2-1f90-4599-9ceb-ec25bfb11f9e"],
+
+Cell[BoxData[Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["Chemistry Utilities"]],"paclet:ChemTools/guide/ChemUtilities"},
+   
+   "RefLink",
+   BaseStyle->"GuideMoreAbout"]],ExpressionUUID->
+  "cf51f924-2178-46cf-b590-086b27ec861c"]], "GuideMoreAbout",ExpressionUUID->\
+"368e9d41-b26f-4f20-8557-8f923cdf34bb"]
+}, Open  ]],
+
+Cell[" ", "FooterCell",
+ CellID->5,ExpressionUUID->"1ed1e315-ec8a-4484-9629-1e300b73cf32"]
+},
+ClosingSaveDialog->False,
+Saveable->False,
+WindowSize->{808, 755},
+WindowMargins->{{314, Automatic}, {Automatic, 50}},
+WindowTitle->"ChemServices",
+TaggingRules->{
+ "ColorType" -> "GuideColor", 
+  "Metadata" -> {
+   "built" -> "{2017, 7, 20, 12, 11, 48.002341}", 
+    "history" -> {"11.1", "", ""}, "context" -> "ChemTools`", 
+    "keywords" -> {"chemistry services", "chemistry services"}, 
+    "specialkeywords" -> Automatic, "tutorialcollectionlinks" -> {}, "index" -> 
+    True, "label" -> "Symbol", "language" -> "en", "paclet" -> "Mathematica", 
+    "status" -> "None", "summary" -> 
+    "As part of the ChemData framework there are links to the ChemSpider and \
+PubChem APIs, partially building on top of Mathematica\[CloseCurlyQuote]s \
+built-in ServiceConnect framework and partially custom written.", 
+    "synonyms" -> {}, "tabletags" -> {}, "title" -> "Chemistry Services", 
+    "titlemodifier" -> "Chemistry Services", "windowtitle" -> 
+    "Chemistry Services", "type" -> "Guide", "uri" -> 
+    "ChemTools/guide/ChemServices"}},
+FrontEndVersion->"11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (April 27, \
+2017)",
+StyleDefinitions->Notebook[{
+   Cell[
+    StyleData[
+    StyleDefinitions -> 
+     FrontEnd`FileName[{"Wolfram"}, "Reference.nb", CharacterEncoding -> 
+       "UTF-8"]]], 
+   Cell[
+    StyleData["Notebook"], DockedCells -> {
+      Cell[
+       BoxData[
+        PanelBox[
+         StyleBox[
+          TemplateBox[{
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {9, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            TemplateBox[{
+              TooltipBox[
+               DynamicModuleBox[{$CellContext`destination$$ = 0}, 
+                DynamicBox[
+                 FEPrivate`If[FEPrivate`HistoryList["Back"] === {}, 
+                  ButtonBox[
+                   DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "DisabledBackIcon.png"]]], Enabled -> False, Appearance -> 
+                   None, FrameMargins -> 0], 
+                  ButtonBox[
+                   PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "BackIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "BackIcon.png"]]]}, 
+                    Dynamic[
+                    CurrentValue["MouseOver"]]], ButtonFunction :> 
+                   FrontEndToken[
+                    FrontEnd`ButtonNotebook[], "HyperlinkGoBack"], Evaluator -> 
+                   None, Appearance -> None, FrameMargins -> 0]]], 
+                DynamicModuleValues :> {}], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipBack"]]], 
+              StyleBox[
+               
+               GraphicsBox[{}, ImageSize -> {2, 0}, BaselinePosition -> 
+                Baseline], "CacheGraphics" -> False], 
+              TooltipBox[
+               DynamicModuleBox[{$CellContext`destination$$ = 0}, 
+                DynamicBox[
+                 FEPrivate`If[FEPrivate`HistoryList["Forward"] === {}, 
+                  ButtonBox[
+                   DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "DisabledForwardIcon.png"]]], Enabled -> False, 
+                   Appearance -> None, FrameMargins -> 0], 
+                  ButtonBox[
+                   PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "ForwardIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "ForwardIcon.png"]]]}, 
+                    Dynamic[
+                    CurrentValue["MouseOver"]]], ButtonFunction :> 
+                   FrontEndToken[
+                    FrontEnd`ButtonNotebook[], "HyperlinkGoForward"], 
+                   Evaluator -> None, Appearance -> None, FrameMargins -> 
+                   0]]], DynamicModuleValues :> {}], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipForward"]]], 
+              TooltipBox[
+               DynamicBox[
+                ToBoxes[
+                 FEPrivate`GenerateHelpViewerActionMenu[], StandardForm]], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipHistory"]]], 
+              StyleBox[
+               
+               GraphicsBox[{}, ImageSize -> {13, 0}, BaselinePosition -> 
+                Baseline], "CacheGraphics" -> False], 
+              TooltipBox[
+               ButtonBox[
+                PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "HomeIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "HomeIcon.png"]]]}, 
+                 Dynamic[
+                  CurrentValue["MouseOver"]]], ButtonFunction :> 
+                Documentation`HelpLookup[
+                  CurrentValue[HomePage], 
+                  FrontEnd`ButtonNotebook[], 
+                  CurrentValue[Language]], Appearance -> None, Evaluator -> 
+                Automatic, Method -> "Preemptive"], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipHome"]]]}, "RowDefault"], 
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {39, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            FrameBox[
+             StyleBox[
+              DynamicBox[
+               FEPrivate`FrontEndResource[
+               "FEExpressions", "HelpViewerSearchField"]], 
+              InputFieldBoxOptions -> {
+               ImageSize -> 
+                Dynamic[AbsoluteCurrentValue[{WindowSize, 1}] - 220], 
+                FrameMargins -> 
+                FEPrivate`Switch[
+                 FEPrivate`$OperatingSystem, "MacOSX", {{3, 3}, {0, -1}}, 
+                  "Windows", {{0, 2}, {0, 2}}, 
+                  Blank[], {{2, 2}, {0, 0}}]}], FrameStyle -> None, 
+             FrameMargins -> {{0, 0}, {4, 0}}], 
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {12, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            TooltipBox[
+             ButtonBox[
+              PaneSelectorBox[{True -> DynamicBox[
+                  FEPrivate`ImportImage[
+                   
+                   FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "RevertIconHot.png"]]], False -> DynamicBox[
+                  FEPrivate`ImportImage[
+                   
+                   FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "RevertIcon.png"]]]}, 
+               Dynamic[
+                CurrentValue["MouseOver"]]], ButtonFunction :> FrontEndToken[
+                FrontEnd`ButtonNotebook[], "Revert", False], Evaluator -> 
+              None, Appearance -> None, Method -> "Preemptive"], 
+             DynamicBox[
+              FEPrivate`FrontEndResource[
+              "HelpToolbarText", "TooltipRefresh"]]]}, "RowDefault"], 
+          CacheGraphics -> False, 
+          ButtonBoxOptions -> {BaselinePosition -> (Baseline -> Baseline)}], 
+         Alignment -> {Left, Center}, Appearance -> Image[CompressedData["
+1:eJztyDkKAkEUhOFGE0OvIHgIU0PTEQ8ww7SDSQs9gnhXl3HBfbmC7Q0qeWDw
+f1CPqtcr5tm05ZyrO+lk+XIYY74ad9OYhHpWBV+OwsJXPg6Kdnr2U8qUX/8A
+AAAA+HtvyF6AgSdg4AHZHbIbYOAKGLhAdobsBBg4QnaAbA9ZAxjYAQa2gIEN
+ZGvIvp8pRMU=
+           "], "Byte", ColorSpace -> "RGB", Interleaving -> 
+           True], ImageSize -> {
+           Scaled[1], Full}]], "DockedCell", CellFrame -> 0, 
+       CellMargins -> {{0, -10}, {-2, -1}}, 
+       CellFrameMargins -> {{0, 0}, {0, 0}}, ShowCodeAssist -> False, 
+       Background -> None], 
+      Cell[
+      "", CellSize -> {1, 1}, CellOpen -> False, 
+       CellFrame -> {{0, 0}, {2, 0}}, CellFrameColor -> 
+       RGBColor[0.8, 0.4, 0]]}]}, Visible -> False, FrontEndVersion -> 
+  "11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (April 27, 2017)", 
+  StyleDefinitions -> "Default.nb"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[584, 21, 6317, 146, 70, "AnchorBarGrid", "ExpressionUUID" -> \
+"3390ea9f-5723-4b4f-94dd-d50424c0bed7",
+ CellID->1],
+Cell[CellGroupData[{
+Cell[6926, 171, 107, 1, 70, "GuideTitle", "ExpressionUUID" -> \
+"f02818a0-ba00-4ace-a7f9-4014a085fce3",
+ CellID->2],
+Cell[7036, 174, 301, 4, 70, "GuideAbstract", "ExpressionUUID" -> \
+"9a4ff470-2eee-4cd4-91a5-c59eeccca95d"],
+Cell[7340, 180, 93, 0, 70, "GuideDelimiterSubsection", "ExpressionUUID" -> \
+"7351b8bf-744b-47a5-926a-c7ffb091eabb"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7470, 185, 98, 0, 70, "GuideFunctionsSubsection", "ExpressionUUID" -> \
+"5f7718e6-4697-46ff-a499-9e79b900a797"],
+Cell[7571, 187, 378, 9, 70, "GuideText", "ExpressionUUID" -> \
+"2f653d54-9c5d-41dd-90d1-793f1d69d34c"],
+Cell[7952, 198, 620, 16, 70, "GuideText", "ExpressionUUID" -> \
+"4bfa6928-0180-450e-af4e-333f28e87570"],
+Cell[8575, 216, 616, 16, 70, "GuideText", "ExpressionUUID" -> \
+"67ce88b1-0c5c-4c25-be14-0ba704705723"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9228, 237, 101, 0, 70, "GuideFunctionsSubsection", "ExpressionUUID" -> \
+"7eef2fcd-2dc2-4efc-af92-4dc4703d8020"],
+Cell[9332, 239, 388, 9, 70, "GuideText", "ExpressionUUID" -> \
+"42f70c81-3c9a-41ae-abc5-2ede716aba9f"],
+Cell[9723, 250, 632, 16, 70, "GuideText", "ExpressionUUID" -> \
+"0c382dae-d10d-48dd-937b-62e88536014e"],
+Cell[10358, 268, 1098, 31, 70, "GuideText", "ExpressionUUID" -> \
+"de9e16d9-4533-4c38-8067-aca026113778"],
+Cell[11459, 301, 461, 10, 70, "GuideText", "ExpressionUUID" -> \
+"15194f95-cb42-4faa-a9aa-b9a9fd82b3fe"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[11957, 316, 134, 2, 70, "GuideMoreAboutSection", "ExpressionUUID" -> \
+"f0ddbf8f-0c5b-42f2-a0bb-56cb30a2c51d"],
+Cell[12094, 320, 304, 6, 70, "GuideMoreAbout", "ExpressionUUID" -> \
+"73c9cb22-588e-4448-92ce-f7897f9a92fd"],
+Cell[12401, 328, 313, 7, 70, "GuideMoreAbout", "ExpressionUUID" -> \
+"4a6231f2-1f90-4599-9ceb-ec25bfb11f9e"],
+Cell[12717, 337, 313, 7, 70, "GuideMoreAbout", "ExpressionUUID" -> \
+"368e9d41-b26f-4f20-8557-8f923cdf34bb"]
+}, Open  ]],
+Cell[13045, 347, 90, 1, 70, "FooterCell", "ExpressionUUID" -> \
+"1ed1e315-ec8a-4484-9629-1e300b73cf32",
+ CellID->5]
+}
+]
+*)
+
+(* End of internal cache information *)

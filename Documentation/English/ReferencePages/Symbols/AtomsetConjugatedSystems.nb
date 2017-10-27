@@ -1,0 +1,1627 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     66789,       1618]
+NotebookOptionsPosition[     54167,       1315]
+NotebookOutlinePosition[     63410,       1528]
+CellTagsIndexPosition[     63367,       1525]
+WindowTitle->AtomsetConjugatedSystems
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[GridBox[{
+   {GridBox[{
+      {
+       DynamicBox[If[$VersionNumber < 11.1, 
+         Cell[
+         "CHEMTOOLS SYMBOL", "PacletNameCell", TextAlignment -> Center, 
+          CellID -> 23], 
+         ItemBox[
+          Cell[
+           BoxData[
+            RowBox[{
+              InterpretationBox[
+               StyleBox[
+                
+                GraphicsBox[{}, ImageSize -> {8, 0}, BaselinePosition -> 
+                 Baseline], "CacheGraphics" -> False], 
+               Spacer[8], Selectable -> False], 
+              Cell[
+              "CHEMTOOLS SYMBOL", "PacletNameCell", TextAlignment -> Center, 
+               CellID -> 24], 
+              InterpretationBox[
+               StyleBox[
+                
+                GraphicsBox[{}, ImageSize -> {8, 0}, BaselinePosition -> 
+                 Baseline], "CacheGraphics" -> False], 
+               Spacer[8], Selectable -> False]}]]], Background -> 
+          Hue[0.38, 0.64, 0.6], ItemSize -> Full]],
+        ImageSizeCache->{132., {5., 13.}},
+        UpdateInterval->Infinity], ""}
+     },
+     GridBoxAlignment->{"Rows" -> {{Center}}},
+     GridBoxItemSize->{"Columns" -> {Full, 
+         Scaled[0.02]}, "Rows" -> {{2.5}}}], Cell[TextData[{
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "See Also",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "ab4b6817-9385-44f2-a6a4-48023236befc"]
+         }],ExpressionUUID->"cba65306-94a1-4ecb-9f71-2d409f256a34"],
+         StripOnInput->False], {"\<\"AtomsetConnectedComponents\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/AtomsetConnectedComponents"], "\<\"AtomsetRings\
+\"\>":>Documentation`HelpLookup[
+        "paclet:ChemTools/ref/AtomsetRings"], "\<\"AtomsetAromaticRings\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/ref/AtomsetAromaticRings"]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"SeeAlso"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "d95e8c8c-a175-4a08-a402-fc6a650c1568"],
+     "\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\
+\[ThickSpace]",
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "Related Guides",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "c67aabcc-d984-4c66-bccf-2f0fcc5b5b09"]
+         }],ExpressionUUID->"fda7371d-812f-42b1-bd91-05e427ba5022"],
+         StripOnInput->False], {"\<\"Chemistry Objects\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/guide/ChemObjects", 
+         EvaluationNotebook[]], "\<\"Atomset Object\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/guide/ChemAtomsetObject", 
+         EvaluationNotebook[]]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"MoreAbout"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "7ca62527-69ed-4984-90a1-4e58be16795e"],
+     "\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\
+\[ThickSpace]",
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "URL",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "010f2efa-9101-4f53-84fd-96cddd6fcd56"]
+         }],ExpressionUUID->"c16501da-3712-45e4-895a-1c0d54b4dcc1"],
+         StripOnInput->False], {
+        RowBox[{
+         RowBox[{"ChemTools", "/", "ref"}], "/", "AtomsetConjugatedSystems"}]:>
+        None, 
+        RowBox[{"Copy", " ", "Documentation", " ", "Center", " ", "URI"}]:>
+        CopyToClipboard["ChemTools/ref/AtomsetConjugatedSystems"], Delimiter, 
+        
+        RowBox[{"Copy", " ", "web", " ", "URL"}]:>CopyToClipboard[
+         Hyperlink[
+         "https://www.wolframcloud.com/objects/b3m2a1.paclets/reference/\
+ChemTools/ref/AtomsetConjugatedSystems"]], 
+        RowBox[{"Go", " ", "to", " ", "URL"}]:>SystemOpen[
+        "https://www.wolframcloud.com/objects/b3m2a1.paclets/reference/\
+ChemTools/ref/AtomsetConjugatedSystems"]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"URLMenu"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "2fc0ab5a-6ac2-4a8c-bdba-d2efc5d380d7"]
+    }], "AnchorBar",ExpressionUUID->"6b3f0b74-6d7c-4529-9e1b-7d8f2fa1a4f1"]}
+  }]], "AnchorBarGrid",
+ CellID->1,ExpressionUUID->"40a544b1-ac1b-4e15-a03a-99c8cc031579"],
+
+Cell["AtomsetConjugatedSystems", "ObjectName",
+ CellID->2,ExpressionUUID->"6ff8e5d5-a8f5-4e85-9116-938bbaf19947"],
+
+Cell[BoxData[GridBox[{
+   {"", Cell[TextData[{
+     Cell[BoxData[
+      RowBox[{Cell[BoxData[
+        TemplateBox[{Cell[
+           TextData["AtomsetConjugatedSystems"]],
+          "paclet:ChemTools/ref/AtomsetConjugatedSystems"},
+         "RefLink",
+         BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+        "ef41397b-8748-4505-92da-fa4f0b19de2b"], "[", 
+       StyleBox["atoms", "TI"], "]"}]], "InlineFormula",ExpressionUUID->
+      "3e85cca1-c4fa-489c-885b-6b5f99a46212"],
+     "\[LineSeparator]",
+     Cell[TextData[{
+      "Returns the collection of conjugated systems in ",
+      StyleBox["atomset", "TI", "TI"]
+     }], "InlineFormula",ExpressionUUID->
+      "71ed0e43-82ff-4865-a66b-621639d05501"]
+    }],ExpressionUUID->"208906e0-3621-4373-bdeb-ec15163e7151"]}
+  }]], "Usage",
+ CellID->3,ExpressionUUID->"109ea2fb-5a97-4da5-8511-3c81f0421a24"],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ Cell[BoxData[
+  DynamicBox[If[$VersionNumber < 11.1, "", 
+    Cell[
+     BoxData[
+      ToBoxes[
+       Toggler[
+        Dynamic[
+         MatchQ[
+          CurrentValue[
+           EvaluationNotebook[], {TaggingRules, "Openers", "NotesSection"}, 
+           Closed], 
+          Alternatives[Open, True]], (CurrentValue[
+            EvaluationNotebook[], {
+            TaggingRules, "Openers", "NotesSection"}] = #; Null)& , 
+         ImageSizeCache -> {14., {5., 9.}}], {True -> Style[
+           Graphics[{
+             Thickness[0.18], 
+             RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+             Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+            PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+           0.68 Inherited], False -> Rotate[
+           Style[
+            Graphics[{
+              Thickness[0.18], 
+              RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+              Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+             PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+            0.68 Inherited], Rational[1, 2] Pi, {-1.65, -1}]}]]]]],
+   ImageSizeCache->{14., {6., 15.}},
+   UpdateInterval->Infinity]],ExpressionUUID->
+  "1ff57763-a94e-402b-863d-5b9430d0a4fd"],
+ Cell["Details", "NotesFrameText",ExpressionUUID->
+  "5f38b5ce-a089-494b-80da-a0ac31965257"]
+}], "NotesSection",
+ WholeCellGroupOpener->True,
+ CellID->4,ExpressionUUID->"1ed3c877-c84f-4288-a627-a8ca3d5eacbc"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["AtomsetConjugatedSystems"]],
+    "paclet:ChemTools/ref/AtomsetConjugatedSystems"},
+   "RefLink",
+   BaseStyle->{"InlineFormula"}]],ExpressionUUID->
+  "970339f5-56b0-48d2-8660-12f632e2aaf6"],
+ " works by selecting component chunks which take part in at least one double \
+bond"
+}], "Notes",
+ CellID->5,ExpressionUUID->"e3f796f7-c197-4ff6-b3ed-0483e7cb6fc5"],
+
+Cell[BoxData[
+ ButtonBox[
+  DynamicBox[ToBoxes[
+    Overlay[{
+      Graphics[{}, Background -> If[
+         CurrentValue["MouseOver"], 
+         RGBColor[0.942, 0.978, 0.992], None], ImageSize -> {720, 70}, 
+       AspectRatio -> Full], 
+      Pane[
+       Grid[{{"", 
+          Spacer[10], 
+          Image[CompressedData["
+1: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
+fGzRPedp3yHcc3u21D1/CXhg7yV8Vs5s5U9uxHipey6QuudiiXiO8QlXV4iO
+14iBkGtwVSLHCoDWI5FY6p77HQGMGsCxqwF3c24Vd11mjbaVVbbcLL3X1NxR
+0tfydLz0/N2SsyODgz8NtbNutzS3s8ZKL14p7O6omOr6qb3qaknnMHv0THlF
+V281/yX1AD2erlJi6WZqU6gXBNy+pdFPBoF99lXKcfZVJlbH9A+vT0uNVqQe
+UXMFceYV6v6VyjpqGWS1atoulun2KgeTkyqmwR8/uqV0yOTbpNicBN9/Mq1t
+T2nQAT2KmkH5yuvwKdMo96+DG/M6Wu6cGT7dOHjuzNXKpoL2S/0X2wSdF1p7
++ppbO1vPn6tpmz7NGrp4rvB87eX2mYr2y3m3qwa6x0przp/p72nqZU1hBr//
+xEMrTnXHjDJyg6IDbBlapR8zQYC6hiLNyvNPXp+xn6v2GFISyS6qreDPNwN9
+KWRvSriGI13DMO6HffG7/7LfjurhZwtizDh66eYWXvaWSbZKyG1DE8Dc9LGJ
+F8POVlt7lpym3fik+3z3tcqbA3euD45UXzt7/lnNREvDrZrBeyNDzYMdFaPV
+9RdPtz5ovFV953rpwHD16GTx85pL1zsvN4wPjI30D1dOgTQ/SvPRXeX+vJCE
+MKopSNZM4G4aBfH6RQYNMRn7GLW7O/aHJtBrkx206SBdv1I3vDgj8RT177v7
+4rVZ8WVH3EOLThyq1rz+QD0poiElYXd6dEM0LTbC1xoMmQTFH2elR5TYUmmN
+YcQZW7SCsXmVed7IbpoE4Hlj9QR4pZmLQfeoVNUW/4p7fiKYOH2SN3EW5+Vu
+qvkBsOglP/NclKal7jkK3nCWsV+652KwIJJLF8akOjomrQI/7aKFx4Cj2EIL
+W2y9wz3HXn/uOfYL91z8tnuOLS78tnuOvcM9R4knl0vdc8lGoCJUYpVLvoL4
+Tfccfds9lyYSDz9fWvd8AoCn3m+ExodBJWu+3QGmFsX0yw9f5aCgLl3S4HqA
+WQ+i4T+90NfIXBL3/GuvPHK7PrMt3F3UY+F3wzm30VbxW6z0SIRhDzhBYW9o
+m1G/bltSajnskvIdBTQbtxYa53VadoLULRG5RpcOVx371qTMqJtSAZQ1ajuM
+W5KNagu+Cl4ST9ridOKnab/bWvNH7RdZrmaJGhr76UnuINrZYn8YiPhziA73
+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
+gUAgEAgEAvlV/gVVTVay
+           "], "Byte", ColorSpace -> "RGB", ImageSize -> 
+           All, Interleaving -> False, Magnification -> Automatic]}}, 
+        Spacings -> {0, 0}, Alignment -> {Center, Center}], 
+       ImageSize -> {720, 70}, Alignment -> {Left, Center}], 
+      If[
+       CurrentValue["MouseOver"], 
+       Image[CompressedData["
+1:eJzdmc9vE0cUxyNAosfeckGIXnujJy6tVKk9VOLStFVz4AIlRD00VQMSouXQ
+/hEIIfXAta0qFTggkBqpCA40CSUJtKX8ik1i4ti7XjuJfyQkw/uud52345nx
+7I+A1cM3tuPdnfeZN+/HjN869vXQiV0DAwMn36A/Q0dPvz8+fvTMJ2/Sh8/G
+Tn45OjZy/KOxUyOjI+OHju2mf74TaA9JCPG/kdfaTKr9pCOkC6TbpBJJBNoi
+FUk3SedIw6TBFGMplZJjnPQ7szmOrpNGXzPHWdLdhPbLukUae8UcB1PMfy9d
+JR14BRznTXaU1tbFvLMq/lmqirsLrpjMlcWf8yVf0/R+ZtEV/xZrIl+pC6ex
+oXtOjfQp3TMQV5YcP+rsX/AaYrZQ6dhsoykSeIsrLR3P+R3gUDIsrbbE7GI8
++1X6u1gV5brSP7FYenAo19ITdy21/Vx38mWxWG2oWIYy4DioYniwXMuUgStH
+8yON55L2peToyks7yRAKeUAa90oKjrNJ1hLi9z7FL+a1QDFcWtsQy6vrtGaa
+4rFbt84HhVpTZjmekCNS4xDTvcZ+sLxC8fpCVFpbEXmBws9LxHXvuWd81vQz
+R7iNF5zjRgKOb2RfmPLSFMVoe/7IzuZmx94Zdg/e+98F3+Pap7R+TCz/lVZk
+nwzH5IjEBeqDiQHz68nzTvZ2cYScgXBt3sAymSvJ+fhyDI79Xb4wrOlCrRXM
+72Ysf4QceP/Y0cfdw/Kq7JO9lhxH+H3oNcx+34qul/VtFq0/ePz4n6O+47qT
+d2SODy05LvD70C/p8pIf02y9VyQmFUd43fZr+/oFyme6+ZJ6lx8sOW5zDvRA
+qmcjt8p283Wvio9O/ATXyPGEuVeNNe9E6sklSw6+j/P7VtWzc24jErN8vXuG
++JBjiAu9sGos1F5m0z1Ljsh65L13JL59X7dt1YnfO+n37fpr/Xh31bkLtYbZ
+VEjCoVuzqNMYW/d9XMFHuhyMfMlsqlpybNlwFNc2fH9kxmGoJXOFiD+eWXIU
+Oce0Zl2hXwpjOYt15RnqCHIKs+kvS46bnAN7UdWzsZbDnNlV23R5l8W3Jwnf
+3dfkRqk/+dWS4xzn0OWQuQKrB5J94asq77ZZN4UncZeb+pySr0T2JN9Zcgxz
+DlP/E/ZVPOdymfqrSB9AelrR93DoKZhN71lyDHIOnGtMaZ6PfMgZqlIdUXJI
+9Q+vTkNfA2eofkk5dI8lB3TNpqZDTyhOIvWczbOuT5TXFM4ZdM+XavnPOgYN
+xyjnQH+jG6e9frdZtmPX3LeH/nhYUvdvEPYEbjOylzockwO6xVlMc+bnL8qZ
+jrTvU3GEa8/1/WDe60u+mDAxGDi+4hzYz+BsxjQubM1jPyL1XTyvlf2Yrmvj
+gQt1nO1tq6S3E3BAVzkLzpd6jQ3BRuRr+AhrDj3lI9oPoT7ocmsWLAaOA8G9
+LA9ne/6WJUuP88QhuXc01ZTXyWJxvtt1Nvp8pemfzfQTi+V5excLnoneB+ca
+SW1D7kDc257PmVhi/P7xMcmReZDLcK4Rxz/oP2F/WB9gW1qWmL9H7SNdkVl4
+zUTex14UfQv6SewfkKvgO8TWcn1deW9aloS/D35B+kPHE1MTYV7MiiUGR6jP
+SZcT2v+TF/QasCFLlgQcofaSPiB9T/qNNEtaJHmkHGmK9AvpW9K7pN1y3syK
+JSWHsfexVVKWOXYW0Q8cSViQ9/lvcv3CEYdFZug3DhsWFUM/cphYdAz9yqFi
+QUzrGEgX03LssDosBl1MUQf7haXD8BJ6c/TW
+        "], "Byte", ColorSpace -> "RGB", 
+        Interleaving -> True, Magnification -> 0.5], 
+       Image[CompressedData["
+1:eJztmctL1FEUx4cUbNnOjYht29mqTUFQi6BNU5ELN5omLZpIg6hc1B8hIrRo
+WxGULqQgoZzxAer4yPcDZJzxnY6Kb+Z2vsPMdOd67/3d30NnFh34huXv3ns+
+93HOubeL1U/9j875fL6G8/SHv+rF9fr6qpd3L9Bf7gcaHtcFamtuBZ7X1tXW
+X6kuoH+8nFIhiTH2X4yVkipJLaRe0ir7ZwnSMilIaiJVkIrzwGde9aQfzJl9
+J9Xl2P9G0qBD/0ULkQJn7H85cz7/VtZOKjsDhmadE7u7u2xhYYGNjY2xvr4+
+FgqFWGdnZ1JdXV1sYGCATU5OsqWlJXZ4eKjqZot0j9r47MqQ4Z1q4NXVVTY4
+OJjx2UTBYDDJu7W1peq2+RQ4pAzb29ssHA7b8l+m8fFxdnBw4JrFgkG6lyKR
+SHJO3TKk1d3dzdbX12VD+T3gKBc7TSQSbGpqyjP/RS0uLopD/iGVuOQ4EZdO
+k0HD0uaCo1G2l6x8wF4bHR1N+hKPx9ne3l4yjm1sbCTbm8aDzc1NcfgahxxZ
+OQ5n2uo8TE9Pq84rE/saGRnR9tXb28uOjo74Zr8ccDwTx9bFJZxRzLdoyBfp
+b/CzaNFoVMsyMzMjNqmwyZF1LpAfdAw7OzvSebfigK2srGj36P7+Pv95qw2O
+UnEs3Z6WrYMdDtj8/Lyy/7m5OfHzIkOOSr4RzqjuPOjMlAOxnP9WPCeC3TTk
+aOEboV5SrbnVmTblgK2trSnnS6hd3hpyZE0AaiBZ34itVmaHA2vS09MjHQtz
+ydlXQw7+HpesW2V9S3KVKw7YxMSEdCzkXs5+G3JkGV9780KOS/uqEt8WP+u+
+hanyLHINZzEnHKo9izyt+71dwXAvkf0O8ZKzuCFHwoQDceysOIaHh3mXIoYc
+y3wj3ONkfafzhpf7SpVHhJgSNuQI8o1UcR172crsnnP4KxtLqE8+G3I08Y1w
+nzbYs645jo+PlTFFiI2vDTkq+EaqPQuhbvWKIxaLWcaUlF0z5CjmG+FdQ1Wv
+C/HQMQfqc1UO7O/vFz8vNOSAvvENVTkdEnKtIw68Mxj2/1HFoOCo4xujvlGN
+A6H2dsoxOzur7Bd3Apwbzm7b5IBCpnMGIWaiRjLlwF6y6lNYiw4dg4bjCd8J
+alvMj25c+Iq6VeThDfOLe6DqPPBCTOTutiiELjnggNp5H/C+ZDU2BB9R8yHH
+IN4hbmK9kB9UsdULFg1HWaptxuCTHT+8kCmLhgPyi3sDc+zlW6JXLBYc0Im3
+Ubwv4c6ZTywGHFIW9Inax83aIHbg3Ju+z+lYDDmgO6QTj8l4m8G7hp31QWyD
+/+n8AN/cstjggEpIbSJL2pAzEfdxF0XdMjQ0lLw/IFZh7XC2hHopa33dsNjk
+SOsh6aeKx6Z1pHzJFQv0gNTq0P8PLFVrpHzINQtURLpBekP6QsJlNErCw/k8
+qY/0ifSKdJVUIImbXrG44dDWPqZyyoJzyFnOOZywIO4L/yeXFxx2WCQMecVh
+wqJgyDsOHYuGIS85ZCw40xqG9245TlkZFo3lO4MJS4bhL7E9ExQ=
+        "], "Byte", 
+        ColorSpace -> "RGB", Interleaving -> True, Magnification -> 0.5]]}, 
+     Alignment -> {-0.85, Center}], StandardForm],
+   ImageSizeCache->{720., {32., 38.}}],
+  Appearance->None,
+  ButtonFunction:>(CurrentValue[
+     EvaluationNotebook[], {TaggingRules, "Openers", "NotesSection"}] = Open),
+  
+  Evaluator->Automatic,
+  Method->"Preemptive"]], "NotesThumbnails",
+ CellOpen->FEPrivate`If[
+   FEPrivate`Less[FEPrivate`$VersionNumber, 11.1], False, 
+   FEPrivate`Not[
+    FEPrivate`Or[
+     FEPrivate`SameQ[
+      FrontEnd`CurrentValue[
+       FrontEnd`EvaluationNotebook[], {
+       TaggingRules, "Openers", "NotesSection"}], Open], 
+     FEPrivate`SameQ[
+      FrontEnd`CurrentValue[
+       FrontEnd`EvaluationNotebook[], {
+       TaggingRules, "Openers", "NotesSection"}], True]]]],
+ CellID->6,ExpressionUUID->"20eb720d-e91b-46e8-9b14-40fd10d6b1e0"]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "NotesSection"}, Closed]]]],
+
+Cell["", "PageDelimiter",
+ CellID->7,ExpressionUUID->"6a2447a7-9ffd-465b-8c68-f63da0b6b502"],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ Cell[BoxData[
+  DynamicBox[If[$VersionNumber < 11.1, "", 
+    Cell[
+     BoxData[
+      ToBoxes[
+       Toggler[
+        Dynamic[
+         MatchQ[
+          CurrentValue[
+           EvaluationNotebook[], {
+           TaggingRules, "Openers", "PrimaryExamplesSection"}, Closed], 
+          Alternatives[Open, True]], (CurrentValue[
+            EvaluationNotebook[], {
+            TaggingRules, "Openers", "PrimaryExamplesSection"}] = #; Null)& , 
+         ImageSizeCache -> {14., {5., 9.}}], {True -> Style[
+           Graphics[{
+             Thickness[0.18], 
+             RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+             Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+            PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+           0.68 Inherited], False -> Rotate[
+           Style[
+            Graphics[{
+              Thickness[0.18], 
+              RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+              Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+             PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+            0.68 Inherited], Rational[1, 2] Pi, {-1.65, -1}]}]]]]],
+   ImageSizeCache->{14., {12., 13.}},
+   UpdateInterval->Infinity]],ExpressionUUID->
+  "f8ed89a3-a56d-4d54-8157-d820944aa60d"],
+ "Examples"
+}], "PrimaryExamplesSection",
+ WholeCellGroupOpener->True,
+ CellID->8,ExpressionUUID->"ec67b6a8-26c9-4741-b18c-f5ec45323d0b"],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ Cell[BoxData[
+  DynamicBox[If[$VersionNumber < 11.1, "", 
+    Cell[
+     BoxData[
+      ToBoxes[
+       Toggler[
+        Dynamic[
+         MatchQ[
+          CurrentValue[
+           EvaluationNotebook[], {
+           TaggingRules, "Openers", "ExampleSection", "0"}, Closed], 
+          Alternatives[Open, True]], (CurrentValue[
+            EvaluationNotebook[], {
+            TaggingRules, "Openers", "ExampleSection", "0"}] = #; Null)& , 
+         ImageSizeCache -> {14., {5., 9.}}], {True -> Style[
+           Graphics[{
+             Thickness[0.18], 
+             RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+             Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+            PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+           0.68 Inherited], False -> Rotate[
+           Style[
+            Graphics[{
+              Thickness[0.18], 
+              RGBColor[0.8509803921568627, 0.396078431372549, 0], 
+              Line[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]}, AspectRatio -> 1, 
+             PlotRange -> {{-3, 4}, {-1, 1}}, ImageSize -> 20], Magnification -> 
+            0.68 Inherited], Rational[1, 2] Pi, {-1.65, -1}]}]]]]],
+   ImageSizeCache->{14., {12., 13.}},
+   UpdateInterval->Infinity]],ExpressionUUID->
+  "f5cb3d04-02b4-4a4b-adb1-9ef40bbae7ed"],
+ "Basic Examples"
+}], "ExampleSection",
+ WholeCellGroupOpener->True,
+ CellID->9,ExpressionUUID->"c35c713f-b074-4f9a-af29-4bc45d5bc896"],
+
+Cell["Find the conjugated systems in pentadiene:", "ExampleText",
+ CellID->10,ExpressionUUID->"ae200729-a704-464c-b17f-cd40d207fac0"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"pentadiene", "=", 
+   RowBox[{"First", "@", 
+    RowBox[{"ChemImport", "@", "\"\<pentadiene\>\""}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"conj", "=", 
+  RowBox[{"AtomsetConjugatedSystems", "@", "pentadiene"}]}]}], "Input",
+ CellChangeTimes->{{3.70018307818357*^9, 3.700183103231166*^9}, {
+  3.7001831363041162`*^9, 3.7001831977665377`*^9}, {3.700184080054349*^9, 
+  3.700184087078061*^9}},
+ CellLabel->"In[1]:=",
+ CellID->11,ExpressionUUID->"6330fb34-97a9-4633-a54d-d168ca18e783"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"{", 
+   RowBox[{
+    InterpretationBox[
+     RowBox[{
+      TagBox["ChemObject",
+       "SummaryHead"], "[", 
+      DynamicModuleBox[{Typeset`open$$ = False}, 
+       PanelBox[
+        PaneSelectorBox[{False->GridBox[{
+           {
+            PaneBox[
+             ButtonBox[
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "SquarePlusIconMedium"],
+               ImageSizeCache->{12., {0., 12.}}],
+              Appearance->None,
+              ButtonFunction:>(Typeset`open$$ = True),
+              Evaluator->Automatic,
+              Method->"Preemptive"],
+             Alignment->{Center, Center},
+             
+             ImageSize->
+              Dynamic[{
+               Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                AbsoluteCurrentValue[Magnification]}]], GridBox[{
+              {
+               RowBox[{
+                TagBox["\<\"Type: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox["\<\"Atom\"\>",
+                 "SummaryItem"]}]}
+             },
+             AutoDelete->False,
+             
+             BaseStyle->{
+              ShowStringCharacters -> False, NumberMarks -> False, 
+               PrintPrecision -> 3, ShowSyntaxStyles -> False},
+             
+             GridBoxAlignment->{
+              "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+             
+             GridBoxItemSize->{
+              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+             GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+          },
+          AutoDelete->False,
+          BaselinePosition->{1, 1},
+          GridBoxAlignment->{"Rows" -> {{Top}}},
+          
+          GridBoxItemSize->{
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], True->
+         GridBox[{
+           {
+            PaneBox[
+             ButtonBox[
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "SquareMinusIconMedium"]],
+              Appearance->None,
+              ButtonFunction:>(Typeset`open$$ = False),
+              Evaluator->Automatic,
+              Method->"Preemptive"],
+             Alignment->{Center, Center},
+             
+             ImageSize->
+              Dynamic[{
+               Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                AbsoluteCurrentValue[Magnification]}]], GridBox[{
+              {
+               RowBox[{
+                TagBox["\<\"Type: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox["\<\"Atom\"\>",
+                 "SummaryItem"]}]},
+              {
+               RowBox[{
+                TagBox["\<\"AtomicNumber: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox[
+                 TagBox["6",
+                  Short[#, 1]& ],
+                 "SummaryItem"]}]},
+              {
+               RowBox[{
+                TagBox["\<\"Bonds: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox[
+                 TagBox[
+                  RowBox[{"{", 
+                   
+                   RowBox[{"\<\"Bond-708\"\>", ",", "\<\"Bond-709\"\>", 
+                    ",", "\<\"Bond-710\"\>"}], "}"}],
+                  Short[#, 1]& ],
+                 "SummaryItem"]}]},
+              {
+               RowBox[{
+                TagBox["\<\"Color: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox[
+                 TagBox["Automatic",
+                  Short[#, 1]& ],
+                 "SummaryItem"]}]},
+              {
+               TagBox["\<\"\[Ellipsis]\"\>",
+                "SummaryItem"]}
+             },
+             AutoDelete->False,
+             
+             BaseStyle->{
+              ShowStringCharacters -> False, NumberMarks -> False, 
+               PrintPrecision -> 3, ShowSyntaxStyles -> False},
+             
+             GridBoxAlignment->{
+              "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+             
+             GridBoxItemSize->{
+              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+             GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+          },
+          AutoDelete->False,
+          BaselinePosition->{1, 1},
+          GridBoxAlignment->{"Rows" -> {{Top}}},
+          
+          GridBoxItemSize->{
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, Dynamic[
+         Typeset`open$$],
+         ImageSize->Automatic],
+        BaselinePosition->Baseline],
+       DynamicModuleValues:>{}], "]"}],
+     ChemTools`ChemObject[
+     "System-default-f69abdd0-759a-4d5e-b335-f8394bcdf855", 
+      "Atom-695-6abcd523-19be-4d04-aace-fc515e989ecd"],
+     Editable->False,
+     SelectWithContents->True,
+     Selectable->False], ",", 
+    InterpretationBox[
+     RowBox[{
+      TagBox["ChemObject",
+       "SummaryHead"], "[", 
+      DynamicModuleBox[{Typeset`open$$ = False}, 
+       PanelBox[
+        PaneSelectorBox[{False->GridBox[{
+           {
+            PaneBox[
+             ButtonBox[
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "SquarePlusIconMedium"],
+               ImageSizeCache->{12., {0., 12.}}],
+              Appearance->None,
+              ButtonFunction:>(Typeset`open$$ = True),
+              Evaluator->Automatic,
+              Method->"Preemptive"],
+             Alignment->{Center, Center},
+             
+             ImageSize->
+              Dynamic[{
+               Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                AbsoluteCurrentValue[Magnification]}]], GridBox[{
+              {
+               RowBox[{
+                TagBox["\<\"Type: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox["\<\"Atom\"\>",
+                 "SummaryItem"]}]}
+             },
+             AutoDelete->False,
+             
+             BaseStyle->{
+              ShowStringCharacters -> False, NumberMarks -> False, 
+               PrintPrecision -> 3, ShowSyntaxStyles -> False},
+             
+             GridBoxAlignment->{
+              "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+             
+             GridBoxItemSize->{
+              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+             GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+          },
+          AutoDelete->False,
+          BaselinePosition->{1, 1},
+          GridBoxAlignment->{"Rows" -> {{Top}}},
+          
+          GridBoxItemSize->{
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], True->
+         GridBox[{
+           {
+            PaneBox[
+             ButtonBox[
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "SquareMinusIconMedium"]],
+              Appearance->None,
+              ButtonFunction:>(Typeset`open$$ = False),
+              Evaluator->Automatic,
+              Method->"Preemptive"],
+             Alignment->{Center, Center},
+             
+             ImageSize->
+              Dynamic[{
+               Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                AbsoluteCurrentValue[Magnification]}]], GridBox[{
+              {
+               RowBox[{
+                TagBox["\<\"Type: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox["\<\"Atom\"\>",
+                 "SummaryItem"]}]},
+              {
+               RowBox[{
+                TagBox["\<\"AtomicNumber: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox[
+                 TagBox["6",
+                  Short[#, 1]& ],
+                 "SummaryItem"]}]},
+              {
+               RowBox[{
+                TagBox["\<\"Bonds: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox[
+                 TagBox[
+                  RowBox[{"{", 
+                   
+                   RowBox[{"\<\"Bond-709\"\>", ",", "\<\"Bond-714\"\>", 
+                    ",", "\<\"Bond-715\"\>"}], "}"}],
+                  Short[#, 1]& ],
+                 "SummaryItem"]}]},
+              {
+               RowBox[{
+                TagBox["\<\"Color: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox[
+                 TagBox["Automatic",
+                  Short[#, 1]& ],
+                 "SummaryItem"]}]},
+              {
+               TagBox["\<\"\[Ellipsis]\"\>",
+                "SummaryItem"]}
+             },
+             AutoDelete->False,
+             
+             BaseStyle->{
+              ShowStringCharacters -> False, NumberMarks -> False, 
+               PrintPrecision -> 3, ShowSyntaxStyles -> False},
+             
+             GridBoxAlignment->{
+              "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+             
+             GridBoxItemSize->{
+              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+             GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+          },
+          AutoDelete->False,
+          BaselinePosition->{1, 1},
+          GridBoxAlignment->{"Rows" -> {{Top}}},
+          
+          GridBoxItemSize->{
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, Dynamic[
+         Typeset`open$$],
+         ImageSize->Automatic],
+        BaselinePosition->Baseline],
+       DynamicModuleValues:>{}], "]"}],
+     ChemTools`ChemObject[
+     "System-default-f69abdd0-759a-4d5e-b335-f8394bcdf855", 
+      "Atom-697-4fb62c5c-0b5e-4941-aa5b-9b1d33d83ac1"],
+     Editable->False,
+     SelectWithContents->True,
+     Selectable->False], ",", 
+    InterpretationBox[
+     RowBox[{
+      TagBox["ChemObject",
+       "SummaryHead"], "[", 
+      DynamicModuleBox[{Typeset`open$$ = False}, 
+       PanelBox[
+        PaneSelectorBox[{False->GridBox[{
+           {
+            PaneBox[
+             ButtonBox[
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "SquarePlusIconMedium"],
+               ImageSizeCache->{12., {0., 12.}}],
+              Appearance->None,
+              ButtonFunction:>(Typeset`open$$ = True),
+              Evaluator->Automatic,
+              Method->"Preemptive"],
+             Alignment->{Center, Center},
+             
+             ImageSize->
+              Dynamic[{
+               Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                AbsoluteCurrentValue[Magnification]}]], GridBox[{
+              {
+               RowBox[{
+                TagBox["\<\"Type: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox["\<\"Atom\"\>",
+                 "SummaryItem"]}]}
+             },
+             AutoDelete->False,
+             
+             BaseStyle->{
+              ShowStringCharacters -> False, NumberMarks -> False, 
+               PrintPrecision -> 3, ShowSyntaxStyles -> False},
+             
+             GridBoxAlignment->{
+              "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+             
+             GridBoxItemSize->{
+              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+             GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+          },
+          AutoDelete->False,
+          BaselinePosition->{1, 1},
+          GridBoxAlignment->{"Rows" -> {{Top}}},
+          
+          GridBoxItemSize->{
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], True->
+         GridBox[{
+           {
+            PaneBox[
+             ButtonBox[
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "SquareMinusIconMedium"]],
+              Appearance->None,
+              ButtonFunction:>(Typeset`open$$ = False),
+              Evaluator->Automatic,
+              Method->"Preemptive"],
+             Alignment->{Center, Center},
+             
+             ImageSize->
+              Dynamic[{
+               Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                AbsoluteCurrentValue[Magnification]}]], GridBox[{
+              {
+               RowBox[{
+                TagBox["\<\"Type: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox["\<\"Atom\"\>",
+                 "SummaryItem"]}]},
+              {
+               RowBox[{
+                TagBox["\<\"AtomicNumber: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox[
+                 TagBox["6",
+                  Short[#, 1]& ],
+                 "SummaryItem"]}]},
+              {
+               RowBox[{
+                TagBox["\<\"Bonds: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox[
+                 TagBox[
+                  RowBox[{"{", 
+                   
+                   RowBox[{"\<\"Bond-714\"\>", ",", "\<\"Bond-716\"\>", 
+                    ",", "\<\"Bond-717\"\>"}], "}"}],
+                  Short[#, 1]& ],
+                 "SummaryItem"]}]},
+              {
+               RowBox[{
+                TagBox["\<\"Color: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox[
+                 TagBox["Automatic",
+                  Short[#, 1]& ],
+                 "SummaryItem"]}]},
+              {
+               TagBox["\<\"\[Ellipsis]\"\>",
+                "SummaryItem"]}
+             },
+             AutoDelete->False,
+             
+             BaseStyle->{
+              ShowStringCharacters -> False, NumberMarks -> False, 
+               PrintPrecision -> 3, ShowSyntaxStyles -> False},
+             
+             GridBoxAlignment->{
+              "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+             
+             GridBoxItemSize->{
+              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+             GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+          },
+          AutoDelete->False,
+          BaselinePosition->{1, 1},
+          GridBoxAlignment->{"Rows" -> {{Top}}},
+          
+          GridBoxItemSize->{
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, Dynamic[
+         Typeset`open$$],
+         ImageSize->Automatic],
+        BaselinePosition->Baseline],
+       DynamicModuleValues:>{}], "]"}],
+     ChemTools`ChemObject[
+     "System-default-f69abdd0-759a-4d5e-b335-f8394bcdf855", 
+      "Atom-698-439cde08-6df6-474b-b892-912167ce561f"],
+     Editable->False,
+     SelectWithContents->True,
+     Selectable->False], ",", 
+    InterpretationBox[
+     RowBox[{
+      TagBox["ChemObject",
+       "SummaryHead"], "[", 
+      DynamicModuleBox[{Typeset`open$$ = False}, 
+       PanelBox[
+        PaneSelectorBox[{False->GridBox[{
+           {
+            PaneBox[
+             ButtonBox[
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "SquarePlusIconMedium"],
+               ImageSizeCache->{12., {0., 12.}}],
+              Appearance->None,
+              ButtonFunction:>(Typeset`open$$ = True),
+              Evaluator->Automatic,
+              Method->"Preemptive"],
+             Alignment->{Center, Center},
+             
+             ImageSize->
+              Dynamic[{
+               Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                AbsoluteCurrentValue[Magnification]}]], GridBox[{
+              {
+               RowBox[{
+                TagBox["\<\"Type: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox["\<\"Atom\"\>",
+                 "SummaryItem"]}]}
+             },
+             AutoDelete->False,
+             
+             BaseStyle->{
+              ShowStringCharacters -> False, NumberMarks -> False, 
+               PrintPrecision -> 3, ShowSyntaxStyles -> False},
+             
+             GridBoxAlignment->{
+              "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+             
+             GridBoxItemSize->{
+              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+             GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+          },
+          AutoDelete->False,
+          BaselinePosition->{1, 1},
+          GridBoxAlignment->{"Rows" -> {{Top}}},
+          
+          GridBoxItemSize->{
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], True->
+         GridBox[{
+           {
+            PaneBox[
+             ButtonBox[
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "SquareMinusIconMedium"]],
+              Appearance->None,
+              ButtonFunction:>(Typeset`open$$ = False),
+              Evaluator->Automatic,
+              Method->"Preemptive"],
+             Alignment->{Center, Center},
+             ImageSize->
+              Dynamic[{
+               Automatic, 3.5 CurrentValue["FontCapHeight"]/
+                AbsoluteCurrentValue[Magnification]}]], GridBox[{
+              {
+               RowBox[{
+                TagBox["\<\"Type: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox["\<\"Atom\"\>",
+                 "SummaryItem"]}]},
+              {
+               RowBox[{
+                TagBox["\<\"AtomicNumber: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox[
+                 TagBox["6",
+                  Short[#, 1]& ],
+                 "SummaryItem"]}]},
+              {
+               RowBox[{
+                TagBox["\<\"Bonds: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox[
+                 TagBox[
+                  RowBox[{"{", 
+                   
+                   RowBox[{"\<\"Bond-716\"\>", ",", "\<\"Bond-718\"\>", 
+                    ",", "\<\"Bond-719\"\>"}], "}"}],
+                  Short[#, 1]& ],
+                 "SummaryItem"]}]},
+              {
+               RowBox[{
+                TagBox["\<\"Color: \"\>",
+                 "SummaryItemAnnotation"], "\[InvisibleSpace]", 
+                TagBox[
+                 TagBox["Automatic",
+                  Short[#, 1]& ],
+                 "SummaryItem"]}]},
+              {
+               TagBox["\<\"\[Ellipsis]\"\>",
+                "SummaryItem"]}
+             },
+             AutoDelete->False,
+             
+             BaseStyle->{
+              ShowStringCharacters -> False, NumberMarks -> False, 
+               PrintPrecision -> 3, ShowSyntaxStyles -> False},
+             
+             GridBoxAlignment->{
+              "Columns" -> {{Left}}, "Rows" -> {{Automatic}}},
+             
+             GridBoxItemSize->{
+              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+             GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{Automatic}}}]}
+          },
+          AutoDelete->False,
+          BaselinePosition->{1, 1},
+          GridBoxAlignment->{"Rows" -> {{Top}}},
+          
+          GridBoxItemSize->{
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]}, Dynamic[
+         Typeset`open$$],
+         ImageSize->Automatic],
+        BaselinePosition->Baseline],
+       DynamicModuleValues:>{}], "]"}],
+     ChemTools`ChemObject[
+     "System-default-f69abdd0-759a-4d5e-b335-f8394bcdf855", 
+      "Atom-699-3d365fec-052b-4e02-a7c9-404a700f5ffd"],
+     Editable->False,
+     SelectWithContents->True,
+     Selectable->False]}], "}"}], "}"}]], "Output",
+ CellLabel->"Out[2]=",
+ CellID->12,ExpressionUUID->"ee53ca5e-2bcf-40d1-99b1-e1f2a2d9f3cd"],
+
+Cell["Highlight these atoms:", "ExampleText",
+ CellID->13,ExpressionUUID->"9d897331-b35b-4fa3-9e73-12cb1ba13761"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"AtomColor", "[", 
+    RowBox[{"First", "@", "conj"}], "]"}], "=", "Yellow"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"pentadiene", "//", "ChemView"}]}], "Input",
+ CellChangeTimes->{{3.70018318262141*^9, 3.700183201869399*^9}, {
+  3.700184073910734*^9, 3.7001840934774303`*^9}},
+ CellLabel->"In[3]:=",
+ CellID->14,ExpressionUUID->"7cd9cde0-f9d7-43c1-9a51-8065a65f3f1c"],
+
+Cell[BoxData[
+ Graphics3DBox[{{
+    {RGBColor[1, 1, 0], SphereBox[{-1.1769, -0.4059, -0.0001}, 0.255]}, 
+    {RGBColor[0.564706, 0.564706, 0.564706], 
+     SphereBox[{-2.5154, 0.2568, 0.0001}, 0.255]}, 
+    {RGBColor[1, 1, 0], SphereBox[{-0.0151, 0.264, -0.0001}, 0.255]}, 
+    {RGBColor[1, 1, 0], SphereBox[{1.2729, -0.3894, 0.0001}, 0.255]}, 
+    {RGBColor[1, 1, 0], SphereBox[{2.4344, 0.2744, 0.}, 0.255]}, 
+    {RGBColor[0.93, 1, 1], SphereBox[{-1.1787, -1.4933, 0.0001}, 0.18]}, 
+    {RGBColor[0.93, 1, 1], SphereBox[{-3.0804, -0.0452, -0.8869}, 0.18]}, 
+    {RGBColor[0.93, 1, 1], SphereBox[{-2.4384, 1.3487, 0.0001}, 0.18]}, 
+    {RGBColor[0.93, 1, 1], SphereBox[{-3.0803, -0.0453, 0.8872}, 0.18]}, 
+    {RGBColor[0.93, 1, 1], SphereBox[{-0.0229, 1.3511, -0.0002}, 0.18]}, 
+    {RGBColor[0.93, 1, 1], SphereBox[{1.2921, -1.4759, 0.0003}, 0.18]}, 
+    {RGBColor[0.93, 1, 1], SphereBox[{3.374, -0.2681, 0.0002}, 0.18]}, 
+    {RGBColor[0.93, 1, 1], SphereBox[{2.4778, 1.3585, -0.0002}, 0.18]}}, {
+    {EdgeForm[None], 
+     {RGBColor[0.564706, 0.564706, 0.564706], 
+      CylinderBox[{{-1.1769, -0.4059, -0.0001}, {-1.8461500000000002`, \
+-0.07454999999999999, 0.}}, 0.05]}, 
+     {RGBColor[0.564706, 0.564706, 0.564706], 
+      CylinderBox[{{-1.8461500000000002`, -0.07454999999999999, 0.}, {-2.5154,
+        0.2568, 0.0001}}, 0.05]}}, 
+    {EdgeForm[None], 
+     {RGBColor[0.564706, 0.564706, 0.564706], 
+      CylinderBox[{{-1.1481778372936966`, -0.4557125222155296, -0.0001}, \
+{-0.5672778372936966, -0.12076252221552963`, -0.0001}}, 0.05], 
+      CylinderBox[{{-1.2056221627063035`, -0.35608747778447036`, -0.0001}, \
+{-0.6247221627063035, -0.021137477784470345`, -0.0001}}, 0.05]}, 
+     {RGBColor[0.564706, 0.564706, 0.564706], 
+      CylinderBox[{{-0.5672778372936966, -0.12076252221552963`, -0.0001}, {
+       0.01362216270630341, 0.21418747778447036`, -0.0001}}, 0.05], 
+      CylinderBox[{{-0.6247221627063035, -0.021137477784470345`, -0.0001}, \
+{-0.04382216270630341, 0.31381252221552963`, -0.0001}}, 0.05]}}, 
+    {EdgeForm[None], 
+     {RGBColor[0.564706, 0.564706, 0.564706], 
+      CylinderBox[{{-1.1769, -0.4059, -0.0001}, {-1.1778517288228652`, \
+-0.980849956657465, 5.747646985003669*^-6}}, 0.05]}, 
+     {RGBColor[0.93, 1, 1], 
+      CylinderBox[{{-1.1778517288228652`, -0.980849956657465, 
+       5.747646985003669*^-6}, {-1.1787, -1.4933, 0.0001}}, 0.05]}}, 
+    {EdgeForm[None], 
+     {RGBColor[0.564706, 0.564706, 0.564706], 
+      CylinderBox[{{-2.5154, 0.2568, 0.0001}, {-2.814036727983664, 
+       0.09717470468837762, -0.468733234905328}}, 0.05]}, 
+     {RGBColor[0.93, 1, 1], 
+      CylinderBox[{{-2.814036727983664, 
+       0.09717470468837762, -0.468733234905328}, {-3.0804, -0.0452, -0.8869}},
+        0.05]}}, 
+    {EdgeForm[None], 
+     {RGBColor[0.564706, 0.564706, 0.564706], 
+      CylinderBox[{{-2.5154, 0.2568, 0.0001}, {-2.4747017317333135`, 
+       0.8339225859791529, 0.0001}}, 0.05]}, 
+     {RGBColor[0.93, 1, 1], 
+      CylinderBox[{{-2.4747017317333135`, 0.8339225859791529, 
+       0.0001}, {-2.4384, 1.3487, 0.0001}}, 0.05]}}, 
+    {EdgeForm[None], 
+     {RGBColor[0.564706, 0.564706, 0.564706], 
+      CylinderBox[{{-2.5154, 0.2568, 0.0001}, {-2.8139830308643408`, 
+       0.09712229841721139, 0.468984770188983}}, 0.05]}, 
+     {RGBColor[0.93, 1, 1], 
+      CylinderBox[{{-2.8139830308643408`, 0.09712229841721139, 
+       0.468984770188983}, {-3.0803, -0.0453, 0.8872}}, 0.05]}}, 
+    {EdgeForm[None], 
+     {RGBColor[0.564706, 0.564706, 0.564706], 
+      CylinderBox[{{-0.0151, 0.264, -0.0001}, {0.6289, -0.0627, 0.}}, 
+       0.05]}, 
+     {RGBColor[0.564706, 0.564706, 0.564706], 
+      CylinderBox[{{0.6289, -0.0627, 0.}, {1.2729, -0.3894, 0.0001}}, 0.05]}}, 
+    {EdgeForm[None], 
+     {RGBColor[0.564706, 0.564706, 0.564706], 
+      CylinderBox[{{-0.0151, 0.264, -0.0001}, {-0.019224214630592745`, 
+       0.8387991955022271, -0.00015287454654606082`}}, 0.05]}, 
+     {RGBColor[0.93, 1, 1], 
+      CylinderBox[{{-0.019224214630592745`, 
+       0.8387991955022271, -0.00015287454654606082`}, {-0.0229, 
+       1.3511, -0.0002}}, 0.05]}}, 
+    {EdgeForm[None], 
+     {RGBColor[0.564706, 0.564706, 0.564706], 
+      CylinderBox[{{1.3014307660634068`, -0.4393223934658738, 0.0001}, {
+       1.882180766063407, -0.10742239346587382`, 0.00005}}, 0.05], 
+      CylinderBox[{{1.244369233936593, -0.33947760653412623`, 0.0001}, {
+       1.8251192339365931`, -0.007577606534126223, 0.00005}}, 0.05]}, 
+     {RGBColor[0.564706, 0.564706, 0.564706], 
+      CylinderBox[{{1.882180766063407, -0.10742239346587382`, 0.00005}, {
+       2.462930766063407, 0.22447760653412618`, 0.}}, 0.05], 
+      CylinderBox[{{1.8251192339365931`, -0.007577606534126223, 0.00005}, {
+       2.4058692339365932`, 0.32432239346587377`, 0.}}, 0.05]}}, 
+    {EdgeForm[None], 
+     {RGBColor[0.564706, 0.564706, 0.564706], 
+      CylinderBox[{{1.2729, -0.3894, 0.0001}, {
+       1.28305214572299, -0.963895121251495, 0.00020575151794781314`}}, 
+       0.05]}, 
+     {RGBColor[0.93, 1, 1], 
+      CylinderBox[{{1.28305214572299, -0.963895121251495, 
+       0.00020575151794781314`}, {1.2921, -1.4759, 0.0003}}, 0.05]}}, 
+    {EdgeForm[None], 
+     {RGBColor[0.564706, 0.564706, 0.564706], 
+      CylinderBox[{{2.4344, 0.2744, 0.}, {
+       2.931263022924621, -0.01247546821690812, 0.0001057605412781228}}, 
+       0.05]}, 
+     {RGBColor[0.93, 1, 1], 
+      CylinderBox[{{2.931263022924621, -0.01247546821690812, 
+       0.0001057605412781228}, {3.374, -0.2681, 0.0002}}, 0.05]}}, 
+    {EdgeForm[None], 
+     {RGBColor[0.564706, 0.564706, 0.564706], 
+      CylinderBox[{{2.4344, 0.2744, 0.}, {2.4573500364166776`, 
+       0.8476749880027712, -0.0001057605364823856}}, 0.05]}, 
+     {RGBColor[0.93, 1, 1], 
+      CylinderBox[{{2.4573500364166776`, 
+       0.8476749880027712, -0.0001057605364823856}, {2.4778, 
+       1.3585, -0.0002}}, 0.05]}}}, {}},
+  Boxed->False,
+  Lighting->"Neutral"]], "Output",
+ CellLabel->"Out[4]=",
+ CellID->15,ExpressionUUID->"f6cda515-f66e-479b-82f4-acfc76ecd77c"]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "ExampleSection", "0"}, 
+  Closed]]]]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "PrimaryExamplesSection"}, 
+  Closed]]]],
+
+Cell[CellGroupData[{
+
+Cell["See Also", "SeeAlsoSection",
+ CellID->16,ExpressionUUID->"9a0f0dc3-44f6-4284-800a-0bf61d16e685"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["AtomsetConnectedComponents"]],
+    "paclet:ChemTools/ref/AtomsetConnectedComponents"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"486fdd39-3d05-4232-a2b6-230d511626dd"],
+ "\[NonBreakingSpace]",
+ StyleBox["\[MediumSpace]\[FilledVerySmallSquare]\[MediumSpace]", 
+  "InlineSeparator"],
+ " ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["AtomsetRings"]],"paclet:ChemTools/ref/AtomsetRings"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"44832a25-255c-4fa3-b0bf-10d3f4d944e8"],
+ "\[NonBreakingSpace]",
+ StyleBox["\[MediumSpace]\[FilledVerySmallSquare]\[MediumSpace]", 
+  "InlineSeparator"],
+ " ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["AtomsetAromaticRings"]],
+    "paclet:ChemTools/ref/AtomsetAromaticRings"},
+   "RefLink",
+   BaseStyle->Dynamic[
+     If[$VersionNumber < 11.1, {"InlineFormula", FontFamily -> "Verdana"}, {
+      "InlineFormula"}], UpdateInterval -> DirectedInfinity[1]]]], 
+  "InlineFormula",ExpressionUUID->"0adc54b1-d60d-4ae6-97d6-064943f8c837"]
+}], "SeeAlso",
+ CellID->17,ExpressionUUID->"04b7f80d-12ea-4e9b-baac-cdaf1fc1946a"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Related Guides", "MoreAboutSection",
+ CellID->18,ExpressionUUID->"188e07b6-799d-4a12-87da-372171bba6c3"],
+
+Cell[BoxData[
+ DynamicBox[If[$VersionNumber < 11.1, 
+   TemplateBox[{
+     Cell[
+      TextData["Chemistry Objects"]], "paclet:ChemTools/guide/ChemObjects"}, 
+    "RefLink", BaseStyle -> {"InlineFormula", FontFamily -> "Verdana"}], 
+   TemplateBox[{
+     Cell[
+      TextData["Chemistry Objects"]], "paclet:ChemTools/guide/ChemObjects"}, 
+    "RefLinkPlain", BaseStyle -> {"InlineFormula"}]],
+  ImageSizeCache->{108., {4., 14.}},
+  UpdateInterval->Infinity]], "MoreAbout",
+ CellID->19,ExpressionUUID->"93287969-d373-4df2-ba27-51f5b5e92291"],
+
+Cell[BoxData[
+ DynamicBox[If[$VersionNumber < 11.1, 
+   TemplateBox[{
+     Cell[
+      TextData["Atomset Object"]], 
+     "paclet:ChemTools/guide/ChemAtomsetObject"}, "RefLink", 
+    BaseStyle -> {"InlineFormula", FontFamily -> "Verdana"}], 
+   TemplateBox[{
+     Cell[
+      TextData["Atomset Object"]], 
+     "paclet:ChemTools/guide/ChemAtomsetObject"}, "RefLinkPlain", 
+    BaseStyle -> {"InlineFormula"}]],
+  ImageSizeCache->{92., {4., 14.}},
+  UpdateInterval->Infinity]], "MoreAbout",
+ CellID->20,ExpressionUUID->"60f3d9f6-2a98-40fb-9ecb-5bcf375a21d5"]
+}, Open  ]],
+
+Cell["ChemTools Package Version 1.1", "History",
+ CellID->21,ExpressionUUID->"7d5c825d-c4db-450e-a828-78497555a059"],
+
+Cell[" ", "FooterCell",
+ CellID->22,ExpressionUUID->"c2bffeaf-28a2-4c3e-8dc5-311e09667c16"]
+},
+ClosingSaveDialog->False,
+Saveable->False,
+WindowSize->{808, 755},
+WindowMargins->{{314, Automatic}, {Automatic, 50}},
+WindowTitle->"AtomsetConjugatedSystems",
+TaggingRules->{
+ "ColorType" -> "SymbolColor", "ModificationHighlight" -> False, "LinkTrails" -> 
+  "", "HasOptions" -> False, "SearchTextTranslated" -> "", 
+  "Metadata" -> {
+   "built" -> "{2017, 7, 20, 2, 42, 40.655733}", 
+    "history" -> {"11.1", "", ""}, "context" -> "ChemTools`", 
+    "keywords" -> {
+     "atomsetconjugatedsystems", "atomset", "conjugated", "systems"}, 
+    "specialkeywords" -> Automatic, "tutorialcollectionlinks" -> {}, "index" -> 
+    True, "label" -> "ChemTools", "language" -> "ChemTools", "paclet" -> 
+    "Mathematica", "status" -> "None", "summary" -> 
+    "Returns the collection of conjugated systems for the atomset", 
+    "synonyms" -> {}, "tabletags" -> {}, "title" -> 
+    "AtomsetConjugatedSystems", "titlemodifier" -> "AtomsetConjugatedSystems",
+     "windowtitle" -> "AtomsetConjugatedSystems", "type" -> "Symbol", "uri" -> 
+    "ChemTools/ref/AtomsetConjugatedSystems"}, 
+  "Openers" -> {
+   "NotesSection" -> Closed, "PrimaryExamplesSection" -> Open, 
+    "ExampleSection" -> {"0" -> Open}}},
+FrontEndVersion->"11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (April 27, \
+2017)",
+StyleDefinitions->Notebook[{
+   Cell[
+    StyleData[
+    StyleDefinitions -> 
+     FrontEnd`FileName[{"Wolfram"}, "Reference.nb", CharacterEncoding -> 
+       "UTF-8"]]], 
+   Cell[
+    StyleData["Notebook"], DockedCells -> {
+      Cell[
+       BoxData[
+        PanelBox[
+         StyleBox[
+          TemplateBox[{
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {9, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            TemplateBox[{
+              TooltipBox[
+               DynamicModuleBox[{$CellContext`destination$$ = 0}, 
+                DynamicBox[
+                 FEPrivate`If[FEPrivate`HistoryList["Back"] === {}, 
+                  ButtonBox[
+                   DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "DisabledBackIcon.png"]]], Enabled -> False, Appearance -> 
+                   None, FrameMargins -> 0], 
+                  ButtonBox[
+                   PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "BackIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "BackIcon.png"]]]}, 
+                    Dynamic[
+                    CurrentValue["MouseOver"]]], ButtonFunction :> 
+                   FrontEndToken[
+                    FrontEnd`ButtonNotebook[], "HyperlinkGoBack"], Evaluator -> 
+                   None, Appearance -> None, FrameMargins -> 0]]], 
+                DynamicModuleValues :> {}], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipBack"]]], 
+              StyleBox[
+               
+               GraphicsBox[{}, ImageSize -> {2, 0}, BaselinePosition -> 
+                Baseline], "CacheGraphics" -> False], 
+              TooltipBox[
+               DynamicModuleBox[{$CellContext`destination$$ = 0}, 
+                DynamicBox[
+                 FEPrivate`If[FEPrivate`HistoryList["Forward"] === {}, 
+                  ButtonBox[
+                   DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "DisabledForwardIcon.png"]]], Enabled -> False, 
+                   Appearance -> None, FrameMargins -> 0], 
+                  ButtonBox[
+                   PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "ForwardIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "ForwardIcon.png"]]]}, 
+                    Dynamic[
+                    CurrentValue["MouseOver"]]], ButtonFunction :> 
+                   FrontEndToken[
+                    FrontEnd`ButtonNotebook[], "HyperlinkGoForward"], 
+                   Evaluator -> None, Appearance -> None, FrameMargins -> 
+                   0]]], DynamicModuleValues :> {}], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipForward"]]], 
+              TooltipBox[
+               DynamicBox[
+                ToBoxes[
+                 FEPrivate`GenerateHelpViewerActionMenu[], StandardForm]], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipHistory"]]], 
+              StyleBox[
+               
+               GraphicsBox[{}, ImageSize -> {13, 0}, BaselinePosition -> 
+                Baseline], "CacheGraphics" -> False], 
+              TooltipBox[
+               ButtonBox[
+                PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "HomeIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "HomeIcon.png"]]]}, 
+                 Dynamic[
+                  CurrentValue["MouseOver"]]], ButtonFunction :> 
+                Documentation`HelpLookup[
+                  CurrentValue[HomePage], 
+                  FrontEnd`ButtonNotebook[], 
+                  CurrentValue[Language]], Appearance -> None, Evaluator -> 
+                Automatic, Method -> "Preemptive"], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipHome"]]]}, "RowDefault"], 
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {39, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            FrameBox[
+             StyleBox[
+              DynamicBox[
+               FEPrivate`FrontEndResource[
+               "FEExpressions", "HelpViewerSearchField"]], 
+              InputFieldBoxOptions -> {
+               ImageSize -> 
+                Dynamic[AbsoluteCurrentValue[{WindowSize, 1}] - 220], 
+                FrameMargins -> 
+                FEPrivate`Switch[
+                 FEPrivate`$OperatingSystem, "MacOSX", {{3, 3}, {0, -1}}, 
+                  "Windows", {{0, 2}, {0, 2}}, 
+                  Blank[], {{2, 2}, {0, 0}}]}], FrameStyle -> None, 
+             FrameMargins -> {{0, 0}, {4, 0}}], 
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {12, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            TooltipBox[
+             ButtonBox[
+              PaneSelectorBox[{True -> DynamicBox[
+                  FEPrivate`ImportImage[
+                   
+                   FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "RevertIconHot.png"]]], False -> DynamicBox[
+                  FEPrivate`ImportImage[
+                   
+                   FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "RevertIcon.png"]]]}, 
+               Dynamic[
+                CurrentValue["MouseOver"]]], ButtonFunction :> FrontEndToken[
+                FrontEnd`ButtonNotebook[], "Revert", False], Evaluator -> 
+              None, Appearance -> None, Method -> "Preemptive"], 
+             DynamicBox[
+              FEPrivate`FrontEndResource[
+              "HelpToolbarText", "TooltipRefresh"]]]}, "RowDefault"], 
+          CacheGraphics -> False, 
+          ButtonBoxOptions -> {BaselinePosition -> (Baseline -> Baseline)}], 
+         Alignment -> {Left, Center}, Appearance -> Image[CompressedData["
+1:eJztyDkKAkEUhOFGE0OvIHgIU0PTEQ8ww7SDSQs9gnhXl3HBfbmC7Q0qeWDw
+f1CPqtcr5tm05ZyrO+lk+XIYY74ad9OYhHpWBV+OwsJXPg6Kdnr2U8qUX/8A
+AAAA+HtvyF6AgSdg4AHZHbIbYOAKGLhAdobsBBg4QnaAbA9ZAxjYAQa2gIEN
+ZGvIvp8pRMU=
+           "], "Byte", ColorSpace -> "RGB", Interleaving -> 
+           True], ImageSize -> {
+           Scaled[1], Full}]], "DockedCell", CellFrame -> 0, 
+       CellMargins -> {{0, -10}, {-2, -1}}, 
+       CellFrameMargins -> {{0, 0}, {0, 0}}, ShowCodeAssist -> False, 
+       Background -> None], 
+      Cell[
+      "", CellSize -> {1, 1}, CellOpen -> False, 
+       CellFrame -> {{0, 0}, {2, 0}}, CellFrameColor -> 
+       Hue[0.38, 0.64, 0.6]]}], 
+   Cell[
+    StyleData["DockedCell"], CellFrame -> {{0, 0}, {1, 0}}, CellFrameColor -> 
+    Hue[0.38, 0.64, 0.6]]}, Visible -> False, FrontEndVersion -> 
+  "11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (April 27, 2017)", 
+  StyleDefinitions -> "Default.nb"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[596, 21, 5299, 130, 70, "AnchorBarGrid", "ExpressionUUID" -> \
+"40a544b1-ac1b-4e15-a03a-99c8cc031579",
+ CellID->1],
+Cell[5898, 153, 113, 1, 70, "ObjectName", "ExpressionUUID" -> \
+"6ff8e5d5-a8f5-4e85-9116-938bbaf19947",
+ CellID->2],
+Cell[6014, 156, 859, 20, 70, "Usage", "ExpressionUUID" -> \
+"109ea2fb-5a97-4da5-8511-3c81f0421a24",
+ CellID->3],
+Cell[CellGroupData[{
+Cell[6898, 180, 1523, 36, 70, "NotesSection", "ExpressionUUID" -> \
+"1ed3c877-c84f-4288-a627-a8ca3d5eacbc",
+ CellID->4],
+Cell[8424, 218, 423, 11, 70, "Notes", "ExpressionUUID" -> \
+"e3f796f7-c197-4ff6-b3ed-0483e7cb6fc5",
+ CellID->5],
+Cell[8850, 231, 12083, 216, 70, "NotesThumbnails", "ExpressionUUID" -> \
+"20eb720d-e91b-46e8-9b14-40fd10d6b1e0",
+ CellOpen->FEPrivate`If[
+   FEPrivate`Less[FEPrivate`$VersionNumber, 11.1], False, 
+   FEPrivate`Not[
+    FEPrivate`Or[
+     FEPrivate`SameQ[
+      FrontEnd`CurrentValue[
+       FrontEnd`EvaluationNotebook[], {
+       TaggingRules, "Openers", "NotesSection"}], Open], 
+     FEPrivate`SameQ[
+      FrontEnd`CurrentValue[
+       FrontEnd`EvaluationNotebook[], {
+       TaggingRules, "Openers", "NotesSection"}], True]]]],
+ CellID->6]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "NotesSection"}, Closed]]]],
+Cell[21038, 451, 92, 1, 70, "PageDelimiter", "ExpressionUUID" -> \
+"6a2447a7-9ffd-465b-8c68-f63da0b6b502",
+ CellID->7],
+Cell[CellGroupData[{
+Cell[21155, 456, 1473, 35, 70, "PrimaryExamplesSection", "ExpressionUUID" -> \
+"ec67b6a8-26c9-4741-b18c-f5ec45323d0b",
+ CellID->8],
+Cell[CellGroupData[{
+Cell[22653, 495, 1465, 35, 70, "ExampleSection", "ExpressionUUID" -> \
+"c35c713f-b074-4f9a-af29-4bc45d5bc896",
+ CellID->9],
+Cell[24121, 532, 133, 1, 70, "ExampleText", "ExpressionUUID" -> \
+"ae200729-a704-464c-b17f-cd40d207fac0",
+ CellID->10],
+Cell[24257, 535, 526, 12, 70, "Input", "ExpressionUUID" -> \
+"6330fb34-97a9-4633-a54d-d168ca18e783",
+ CellID->11],
+Cell[24786, 549, 19514, 540, 70, "Output", "ExpressionUUID" -> \
+"ee53ca5e-2bcf-40d1-99b1-e1f2a2d9f3cd",
+ CellID->12],
+Cell[44303, 1091, 113, 1, 70, "ExampleText", "ExpressionUUID" -> \
+"9d897331-b35b-4fa3-9e73-12cb1ba13761",
+ CellID->13],
+Cell[44419, 1094, 420, 10, 70, "Input", "ExpressionUUID" -> \
+"7cd9cde0-f9d7-43c1-9a51-8065a65f3f1c",
+ CellID->14],
+Cell[44842, 1106, 6014, 115, 70, "Output", "ExpressionUUID" -> \
+"f6cda515-f66e-479b-82f4-acfc76ecd77c",
+ CellID->15]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "ExampleSection", "0"}, 
+  Closed]]]]
+}, Dynamic[CurrentValue[
+ EvaluationNotebook[], {TaggingRules, "Openers", "PrimaryExamplesSection"}, 
+  Closed]]]],
+Cell[CellGroupData[{
+Cell[51108, 1231, 102, 1, 70, "SeeAlsoSection", "ExpressionUUID" -> \
+"9a0f0dc3-44f6-4284-800a-0bf61d16e685",
+ CellID->16],
+Cell[51213, 1234, 1475, 36, 70, "SeeAlso", "ExpressionUUID" -> \
+"04b7f80d-12ea-4e9b-baac-cdaf1fc1946a",
+ CellID->17]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[52725, 1275, 110, 1, 70, "MoreAboutSection", "ExpressionUUID" -> \
+"188e07b6-799d-4a12-87da-372171bba6c3",
+ CellID->18],
+Cell[52838, 1278, 540, 12, 70, "MoreAbout", "ExpressionUUID" -> \
+"93287969-d373-4df2-ba27-51f5b5e92291",
+ CellID->19],
+Cell[53381, 1292, 557, 14, 70, "MoreAbout", "ExpressionUUID" -> \
+"60f3d9f6-2a98-40fb-9ecb-5bcf375a21d5",
+ CellID->20]
+}, Open  ]],
+Cell[53953, 1309, 116, 1, 70, "History", "ExpressionUUID" -> \
+"7d5c825d-c4db-450e-a828-78497555a059",
+ CellID->21],
+Cell[54072, 1312, 91, 1, 70, "FooterCell", "ExpressionUUID" -> \
+"c2bffeaf-28a2-4c3e-8dc5-311e09667c16",
+ CellID->22]
+}
+]
+*)
+
+(* End of internal cache information *)

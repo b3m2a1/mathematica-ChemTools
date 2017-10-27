@@ -1,0 +1,627 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     24615,        618]
+NotebookOptionsPosition[     13759,        369]
+NotebookOutlinePosition[     22619,        574]
+CellTagsIndexPosition[     22576,        571]
+WindowTitle->ChemUtilities
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[GridBox[{
+   {GridBox[{
+      {
+       DynamicBox[If[$VersionNumber < 11.1, 
+         Cell["GUIDE", "PacletNameCell", TextAlignment -> Center], 
+         ItemBox[
+          Cell[
+           BoxData[
+            RowBox[{
+              InterpretationBox[
+               StyleBox[
+                
+                GraphicsBox[{}, ImageSize -> {8, 0}, BaselinePosition -> 
+                 Baseline], "CacheGraphics" -> False], 
+               Spacer[8], Selectable -> False], 
+              Cell["GUIDE", "PacletNameCell", TextAlignment -> Center], 
+              InterpretationBox[
+               StyleBox[
+                
+                GraphicsBox[{}, ImageSize -> {8, 0}, BaselinePosition -> 
+                 Baseline], "CacheGraphics" -> False], 
+               Spacer[8], Selectable -> False]}]]], Background -> 
+          RGBColor[0.8, 0.4, 0], ItemSize -> Full]],
+        ImageSizeCache->{56., {5., 13.}},
+        UpdateInterval->Infinity], ""}
+     },
+     GridBoxAlignment->{"Rows" -> {{Center}}},
+     GridBoxItemSize->{"Columns" -> {Full, 
+         Scaled[0.02]}, "Rows" -> {{2.5}}}], Cell[TextData[{
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "Functions",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "9c31c78c-5d1f-4295-ab3f-7e0d576b1a1e"]
+         }],ExpressionUUID->"1973a1a7-b76b-4fbd-8992-b7084b1572dc"],
+         StripOnInput->False], {"\<\"ChemUtilsBondList\"\>":>
+        Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemUtilsBondList"], "\<\"ChemUtilsBondMatrix\"\
+\>":>Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemUtilsBondMatrix"], \
+"\<\"ChemUtilsCenter\"\>":>Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemUtilsCenter"], "\<\"ChemUtilsCenterOfMass\"\
+\>":>Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemUtilsCenterOfMass"], \
+"\<\"ChemUtilsGenerateMolTable\"\>":>Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemUtilsGenerateMolTable"], \
+"\<\"ChemUtilsGenerateZMatrix\"\>":>Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemUtilsGenerateZMatrix"], \
+"\<\"ChemUtilsGuessBonds\"\>":>Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemUtilsGuessBonds"], \
+"\<\"ChemUtilsInertialEigensystem\"\>":>Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemUtilsInertialEigensystem"], \
+"\<\"ChemUtilsInertialSymmetry\"\>":>Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemUtilsInertialSymmetry"], \
+"\<\"ChemUtilsInertialSystem\"\>":>Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemUtilsInertialSystem"], \
+"\<\"ChemUtilsIsotopologues\"\>":>Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemUtilsIsotopologues"], \
+"\<\"ChemUtilsPointGroup\"\>":>Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemUtilsPointGroup"], \
+"\<\"ChemUtilsRotorType\"\>":>Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemUtilsRotorType"], \
+"\<\"ChemUtilsSymmetryElements\"\>":>Documentation`HelpLookup[
+        "paclet:ChemTools/ref/ChemUtilsSymmetryElements"]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"GuideFunction"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "5c67856f-6016-4a48-b28e-6db54869e178"],
+     "\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\
+\[ThickSpace]",
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "Related Guides",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "bf42b50f-bb25-4816-af76-3135c9b07340"]
+         }],ExpressionUUID->"6205802e-a10d-4902-951e-0513e412cdff"],
+         StripOnInput->False], {"\<\"ChemTools Overview\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/guide/ChemTools", 
+         EvaluationNotebook[]], "\<\"Chemistry Data Framework\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/guide/ChemData", 
+         EvaluationNotebook[]], "\<\"Chemistry Services\"\>":>
+        Documentation`HelpLookup["paclet:ChemTools/guide/ChemServices", 
+         EvaluationNotebook[]]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"MoreAbout"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "f48a213b-6b17-4a20-8a39-ddccb6146bf7"],
+     "\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\[ThickSpace]\
+\[ThickSpace]",
+     Cell[BoxData[
+      TagBox[
+       ActionMenuBox[
+        FrameBox[Cell[TextData[{
+          "URL",
+          " ",
+          Cell[BoxData[
+           GraphicsBox[
+            {GrayLevel[0.66667], Thickness[0.13], 
+             LineBox[{{-1.8, 0.5}, {0, 0}, {1.8, 0.5}}]},
+            AspectRatio->1,
+            ImageSize->20,
+            PlotRange->{{-3, 4}, {-1, 1}}]],ExpressionUUID->
+           "17742e61-5a09-43ea-9e1e-16171c567b98"]
+         }],ExpressionUUID->"d944ea1d-18f1-4a40-bf0e-18c7a6451d11"],
+         StripOnInput->False], {"ChemUtilities":>None, 
+        RowBox[{"Copy", " ", "Documentation", " ", "Center", " ", "URI"}]:>
+        CopyToClipboard["ChemUtilities"], Delimiter, 
+        RowBox[{"Copy", " ", "web", " ", "URL"}]:>CopyToClipboard[
+         Hyperlink[
+         "https://www.wolframcloud.com/objects/b3m2a1.paclets/reference/\
+ChemUtilities"]], 
+        RowBox[{"Go", " ", "to", " ", "URL"}]:>SystemOpen[
+        "https://www.wolframcloud.com/objects/b3m2a1.paclets/reference/\
+ChemUtilities"]},
+        Appearance->None,
+        BaseStyle->"AnchorBarActionMenu",
+        MenuAppearance->Automatic,
+        MenuStyle->"URLMenu"],
+       MouseAppearanceTag["LinkHand"]]],
+      LineSpacing->{1.4, 0},ExpressionUUID->
+      "cbe5c04e-677a-4a01-8403-5f2d6e74c3e2"]
+    }], "AnchorBar",ExpressionUUID->"162bd25f-e267-448c-a849-638f733370cb"]}
+  }]], "AnchorBarGrid",
+ CellID->1,ExpressionUUID->"6dff9003-6a52-446d-aae4-092ef1fa89d7"],
+
+Cell[CellGroupData[{
+
+Cell["Chemistry Utilities", "GuideTitle",
+ CellID->2,ExpressionUUID->"6fc8ea0b-e003-4e29-a79d-2b2d0b6c8de0"],
+
+Cell["\<\
+ChemUtils provides a collection of generally useful functions that operate on \
+pure WL constructs.\
+\>", "GuideAbstract",ExpressionUUID->"25821bb9-dfeb-4477-b65b-3a8411aab6d3"],
+
+Cell["\t", "GuideDelimiterSubsection",ExpressionUUID->"810a694c-39de-48cd-9ba9-b90f43ed3b13"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Atomset Specification", "GuideFunctionsSubsection",ExpressionUUID->"0904d8bf-fc82-46ab-8cfc-5312625b5b27"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemUtilsGenerateMolTable"]],
+    "paclet:ChemTools/ref/ChemUtilsGenerateMolTable"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "c434f2d0-e244-476e-b28a-e46251874c70"],
+ ", ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemUtilsGenerateZMatrix"]],
+    "paclet:ChemTools/ref/ChemUtilsGenerateZMatrix"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "d84812ec-4082-4634-8c27-06eef2c1157b"],
+ StyleBox[" \[LongDash] ", "GuideEmDash"],
+ "Convert between MolTable and ZMatrix forms of a molecule"
+}], "GuideText",ExpressionUUID->"a04bd751-621b-4fb5-a721-e46c0e8b11e9"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemUtilsBondList"]],"paclet:ChemTools/ref/ChemUtilsBondList"},
+   
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "9706618f-f9b5-4327-a3f3-44631d5b9329"],
+ ", ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemUtilsBondMatrix"]],
+    "paclet:ChemTools/ref/ChemUtilsBondMatrix"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "2fdaa925-0d2f-48e3-a87d-b243dd759254"],
+ StyleBox[" \[LongDash] ", "GuideEmDash"],
+ "Convert between reference list and adjacency matrix forms for bond \
+specifications"
+}], "GuideText",ExpressionUUID->"840e29e9-7d99-400a-9c35-107c6566309a"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemUtilsGuessBonds"]],
+    "paclet:ChemTools/ref/ChemUtilsGuessBonds"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "5780deb0-5260-4535-ac4b-5e0be270e151"],
+ StyleBox[" \[LongDash] ", "GuideEmDash"],
+ "Attempt to guess the bonding structure of a bare set of atoms"
+}], "GuideText",ExpressionUUID->"f91577fb-468f-4eb4-a7b4-d2d1f665f90e"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Structural Operations", "GuideFunctionsSubsection",ExpressionUUID->"ae618ca9-ce47-46da-89e0-e833ca10387e"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemUtilsCenter"]],"paclet:ChemTools/ref/ChemUtilsCenter"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "872891c5-3ae3-4242-9c64-10a80d7c6d12"],
+ ", ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemUtilsCenterOfMass"]],
+    "paclet:ChemTools/ref/ChemUtilsCenterOfMass"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "a766c107-9f5a-4dd2-8ea7-496497cedcb4"],
+ StyleBox[" \[LongDash] ", "GuideEmDash"],
+ "Get a center for the atom list provided"
+}], "GuideText",ExpressionUUID->"30076334-0839-4fba-8107-4476ffd187a4"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemUtilsSymmetryElements"]],
+    "paclet:ChemTools/ref/ChemUtilsSymmetryElements"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "a1037668-4f93-49c8-993c-8f1d87b65828"],
+ ", ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemUtilsPointGroup"]],
+    "paclet:ChemTools/ref/ChemUtilsPointGroup"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "b928c17d-b039-4281-8931-ca48c378a9a9"],
+ StyleBox[" \[LongDash] ", "GuideEmDash"],
+ "Symmetry related operations"
+}], "GuideText",ExpressionUUID->"20121469-a3a6-4d2b-8f9b-34020cf78d9d"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemUtilsInertialEigensystem"]],
+    "paclet:ChemTools/ref/ChemUtilsInertialEigensystem"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "6f9ed839-1c57-4a12-b138-d637a44940e5"],
+ ", ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemUtilsInertialSymmetry"]],
+    "paclet:ChemTools/ref/ChemUtilsInertialSymmetry"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "9aad0407-cb41-45eb-b14e-b510ede095aa"],
+ ", ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemUtilsInertialSymmetry"]],
+    "paclet:ChemTools/ref/ChemUtilsInertialSymmetry"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "9ae5fd8d-1525-41a5-bbf8-eb384abd65ab"],
+ ", ",
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemUtilsRotorType"]],
+    "paclet:ChemTools/ref/ChemUtilsRotorType"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "f8249218-ff15-4a62-9dfc-1b74866686a8"],
+ StyleBox[" \[LongDash] ", "GuideEmDash"],
+ "Operations on the principal rotational system of an stomset "
+}], "GuideText",ExpressionUUID->"5a3a3358-e45d-401e-a2cb-f8cb9acd7544"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemUtilsIsotopologues"]],
+    "paclet:ChemTools/ref/ChemUtilsIsotopologues"},
+   "RefLink",
+   BaseStyle->"InlineFunctionSans"]],ExpressionUUID->
+  "04e3ad45-e342-45ad-96fb-38f40345741a"],
+ StyleBox[" \[LongDash] ", "GuideEmDash"],
+ "Enumerate the possible isotopologues of a list of atoms and their relative \
+abundances"
+}], "GuideText",ExpressionUUID->"cc9d1128-ee5f-47d7-a77f-9ffaa0de0242"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Related Guides", "GuideMoreAboutSection",
+ WholeCellGroupOpener->
+  True,ExpressionUUID->"d793c0c6-f944-4769-b02f-7acb5f67ead8"],
+
+Cell[BoxData[Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["ChemTools Overview"]],"paclet:ChemTools/guide/ChemTools"},
+   "RefLink",
+   BaseStyle->"GuideMoreAbout"]],ExpressionUUID->
+  "4fe7970a-a941-4b43-83b1-97ab5652cabe"]], "GuideMoreAbout",ExpressionUUID->\
+"0abbed8b-02cc-42b0-bc01-1b8e2ff09cd8"],
+
+Cell[BoxData[Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["Chemistry Data Framework"]],"paclet:ChemTools/guide/ChemData"},
+   
+   "RefLink",
+   BaseStyle->"GuideMoreAbout"]],ExpressionUUID->
+  "f3f67db2-9c47-45d7-ad5e-2e0fe1503085"]], "GuideMoreAbout",ExpressionUUID->\
+"6a228ea9-c77d-4320-b7c2-f7b7cdeeb4ff"],
+
+Cell[BoxData[Cell[BoxData[
+  TemplateBox[{Cell[
+     TextData["Chemistry Services"]],"paclet:ChemTools/guide/ChemServices"},
+   "RefLink",
+   BaseStyle->"GuideMoreAbout"]],ExpressionUUID->
+  "aaadc50d-d89c-47ad-99a4-97e7f94f876d"]], "GuideMoreAbout",ExpressionUUID->\
+"5287cc8c-7196-44b7-b029-459f8efdbab1"]
+}, Open  ]],
+
+Cell[" ", "FooterCell",
+ CellID->5,ExpressionUUID->"5f664d3a-92ff-4c59-aa72-c6c9e87a2467"]
+},
+ClosingSaveDialog->False,
+Saveable->False,
+WindowSize->{808, 755},
+WindowMargins->{{314, Automatic}, {Automatic, 50}},
+WindowTitle->"ChemUtilities",
+TaggingRules->{
+ "ColorType" -> "GuideColor", 
+  "Metadata" -> {
+   "built" -> "{2017, 7, 20, 12, 11, 48.788468}", 
+    "history" -> {"11.1", "", ""}, "context" -> "ChemTools`", 
+    "keywords" -> {"chemistry utilities", "chemistry utilities"}, 
+    "specialkeywords" -> Automatic, "tutorialcollectionlinks" -> {}, "index" -> 
+    True, "label" -> "Symbol", "language" -> "en", "paclet" -> "Mathematica", 
+    "status" -> "None", "summary" -> 
+    "ChemUtils provides a collection of generally useful functions that \
+operate on pure WL constructs.", "synonyms" -> {}, "tabletags" -> {}, "title" -> 
+    "Chemistry Utilities", "titlemodifier" -> "Chemistry Utilities", 
+    "windowtitle" -> "Chemistry Utilities", "type" -> "Guide", "uri" -> 
+    "ChemTools/guide/ChemUtilities"}},
+FrontEndVersion->"11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (April 27, \
+2017)",
+StyleDefinitions->Notebook[{
+   Cell[
+    StyleData[
+    StyleDefinitions -> 
+     FrontEnd`FileName[{"Wolfram"}, "Reference.nb", CharacterEncoding -> 
+       "UTF-8"]]], 
+   Cell[
+    StyleData["Notebook"], DockedCells -> {
+      Cell[
+       BoxData[
+        PanelBox[
+         StyleBox[
+          TemplateBox[{
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {9, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            TemplateBox[{
+              TooltipBox[
+               DynamicModuleBox[{$CellContext`destination$$ = 0}, 
+                DynamicBox[
+                 FEPrivate`If[FEPrivate`HistoryList["Back"] === {}, 
+                  ButtonBox[
+                   DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "DisabledBackIcon.png"]]], Enabled -> False, Appearance -> 
+                   None, FrameMargins -> 0], 
+                  ButtonBox[
+                   PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "BackIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "BackIcon.png"]]]}, 
+                    Dynamic[
+                    CurrentValue["MouseOver"]]], ButtonFunction :> 
+                   FrontEndToken[
+                    FrontEnd`ButtonNotebook[], "HyperlinkGoBack"], Evaluator -> 
+                   None, Appearance -> None, FrameMargins -> 0]]], 
+                DynamicModuleValues :> {}], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipBack"]]], 
+              StyleBox[
+               
+               GraphicsBox[{}, ImageSize -> {2, 0}, BaselinePosition -> 
+                Baseline], "CacheGraphics" -> False], 
+              TooltipBox[
+               DynamicModuleBox[{$CellContext`destination$$ = 0}, 
+                DynamicBox[
+                 FEPrivate`If[FEPrivate`HistoryList["Forward"] === {}, 
+                  ButtonBox[
+                   DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "DisabledForwardIcon.png"]]], Enabled -> False, 
+                   Appearance -> None, FrameMargins -> 0], 
+                  ButtonBox[
+                   PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "ForwardIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "ForwardIcon.png"]]]}, 
+                    Dynamic[
+                    CurrentValue["MouseOver"]]], ButtonFunction :> 
+                   FrontEndToken[
+                    FrontEnd`ButtonNotebook[], "HyperlinkGoForward"], 
+                   Evaluator -> None, Appearance -> None, FrameMargins -> 
+                   0]]], DynamicModuleValues :> {}], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipForward"]]], 
+              TooltipBox[
+               DynamicBox[
+                ToBoxes[
+                 FEPrivate`GenerateHelpViewerActionMenu[], StandardForm]], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipHistory"]]], 
+              StyleBox[
+               
+               GraphicsBox[{}, ImageSize -> {13, 0}, BaselinePosition -> 
+                Baseline], "CacheGraphics" -> False], 
+              TooltipBox[
+               ButtonBox[
+                PaneSelectorBox[{True -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "HomeIconHot.png"]]], False -> DynamicBox[
+                    FEPrivate`ImportImage[
+                    
+                    FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "HomeIcon.png"]]]}, 
+                 Dynamic[
+                  CurrentValue["MouseOver"]]], ButtonFunction :> 
+                Documentation`HelpLookup[
+                  CurrentValue[HomePage], 
+                  FrontEnd`ButtonNotebook[], 
+                  CurrentValue[Language]], Appearance -> None, Evaluator -> 
+                Automatic, Method -> "Preemptive"], 
+               DynamicBox[
+                FEPrivate`FrontEndResource[
+                "HelpToolbarText", "TooltipHome"]]]}, "RowDefault"], 
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {39, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            FrameBox[
+             StyleBox[
+              DynamicBox[
+               FEPrivate`FrontEndResource[
+               "FEExpressions", "HelpViewerSearchField"]], 
+              InputFieldBoxOptions -> {
+               ImageSize -> 
+                Dynamic[AbsoluteCurrentValue[{WindowSize, 1}] - 220], 
+                FrameMargins -> 
+                FEPrivate`Switch[
+                 FEPrivate`$OperatingSystem, "MacOSX", {{3, 3}, {0, -1}}, 
+                  "Windows", {{0, 2}, {0, 2}}, 
+                  Blank[], {{2, 2}, {0, 0}}]}], FrameStyle -> None, 
+             FrameMargins -> {{0, 0}, {4, 0}}], 
+            StyleBox[
+             
+             GraphicsBox[{}, ImageSize -> {12, 0}, BaselinePosition -> 
+              Baseline], "CacheGraphics" -> False], 
+            TooltipBox[
+             ButtonBox[
+              PaneSelectorBox[{True -> DynamicBox[
+                  FEPrivate`ImportImage[
+                   
+                   FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "RevertIconHot.png"]]], False -> DynamicBox[
+                  FEPrivate`ImportImage[
+                   
+                   FrontEnd`FileName[{"Toolbars", "DocCenter"}, 
+                    "RevertIcon.png"]]]}, 
+               Dynamic[
+                CurrentValue["MouseOver"]]], ButtonFunction :> FrontEndToken[
+                FrontEnd`ButtonNotebook[], "Revert", False], Evaluator -> 
+              None, Appearance -> None, Method -> "Preemptive"], 
+             DynamicBox[
+              FEPrivate`FrontEndResource[
+              "HelpToolbarText", "TooltipRefresh"]]]}, "RowDefault"], 
+          CacheGraphics -> False, 
+          ButtonBoxOptions -> {BaselinePosition -> (Baseline -> Baseline)}], 
+         Alignment -> {Left, Center}, Appearance -> Image[CompressedData["
+1:eJztyDkKAkEUhOFGE0OvIHgIU0PTEQ8ww7SDSQs9gnhXl3HBfbmC7Q0qeWDw
+f1CPqtcr5tm05ZyrO+lk+XIYY74ad9OYhHpWBV+OwsJXPg6Kdnr2U8qUX/8A
+AAAA+HtvyF6AgSdg4AHZHbIbYOAKGLhAdobsBBg4QnaAbA9ZAxjYAQa2gIEN
+ZGvIvp8pRMU=
+           "], "Byte", ColorSpace -> "RGB", Interleaving -> 
+           True], ImageSize -> {
+           Scaled[1], Full}]], "DockedCell", CellFrame -> 0, 
+       CellMargins -> {{0, -10}, {-2, -1}}, 
+       CellFrameMargins -> {{0, 0}, {0, 0}}, ShowCodeAssist -> False, 
+       Background -> None], 
+      Cell[
+      "", CellSize -> {1, 1}, CellOpen -> False, 
+       CellFrame -> {{0, 0}, {2, 0}}, CellFrameColor -> 
+       RGBColor[0.8, 0.4, 0]]}]}, Visible -> False, FrontEndVersion -> 
+  "11.1 for Mac OS X x86 (32-bit, 64-bit Kernel) (April 27, 2017)", 
+  StyleDefinitions -> "Default.nb"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[585, 21, 6467, 147, 70, "AnchorBarGrid", "ExpressionUUID" -> \
+"6dff9003-6a52-446d-aae4-092ef1fa89d7",
+ CellID->1],
+Cell[CellGroupData[{
+Cell[7077, 172, 108, 1, 70, "GuideTitle", "ExpressionUUID" -> \
+"6fc8ea0b-e003-4e29-a79d-2b2d0b6c8de0",
+ CellID->2],
+Cell[7188, 175, 187, 3, 70, "GuideAbstract", "ExpressionUUID" -> \
+"25821bb9-dfeb-4477-b65b-3a8411aab6d3"],
+Cell[7378, 180, 93, 0, 70, "GuideDelimiterSubsection", "ExpressionUUID" -> \
+"810a694c-39de-48cd-9ba9-b90f43ed3b13"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7508, 185, 112, 0, 70, "GuideFunctionsSubsection", "ExpressionUUID" -> \
+"0904d8bf-fc82-46ab-8cfc-5312625b5b27"],
+Cell[7623, 187, 689, 18, 70, "GuideText", "ExpressionUUID" -> \
+"a04bd751-621b-4fb5-a721-e46c0e8b11e9"],
+Cell[8315, 207, 689, 19, 70, "GuideText", "ExpressionUUID" -> \
+"840e29e9-7d99-400a-9c35-107c6566309a"],
+Cell[9007, 228, 430, 10, 70, "GuideText", "ExpressionUUID" -> \
+"f91577fb-468f-4eb4-a7b4-d2d1f665f90e"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9474, 243, 112, 0, 70, "GuideFunctionsSubsection", "ExpressionUUID" -> \
+"ae618ca9-ce47-46da-89e0-e833ca10387e"],
+Cell[9589, 245, 641, 17, 70, "GuideText", "ExpressionUUID" -> \
+"30076334-0839-4fba-8107-4476ffd187a4"],
+Cell[10233, 264, 650, 18, 70, "GuideText", "ExpressionUUID" -> \
+"20121469-a3a6-4d2b-8f9b-34020cf78d9d"],
+Cell[10886, 284, 1195, 34, 70, "GuideText", "ExpressionUUID" -> \
+"5a3a3358-e45d-401e-a2cb-f8cb9acd7544"],
+Cell[12084, 320, 462, 11, 70, "GuideText", "ExpressionUUID" -> \
+"cc9d1128-ee5f-47d7-a77f-9ffaa0de0242"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12583, 336, 134, 2, 70, "GuideMoreAboutSection", "ExpressionUUID" -> \
+"d793c0c6-f944-4769-b02f-7acb5f67ead8"],
+Cell[12720, 340, 304, 6, 70, "GuideMoreAbout", "ExpressionUUID" -> \
+"0abbed8b-02cc-42b0-bc01-1b8e2ff09cd8"],
+Cell[13027, 348, 313, 7, 70, "GuideMoreAbout", "ExpressionUUID" -> \
+"6a228ea9-c77d-4320-b7c2-f7b7cdeeb4ff"],
+Cell[13343, 357, 307, 6, 70, "GuideMoreAbout", "ExpressionUUID" -> \
+"5287cc8c-7196-44b7-b029-459f8efdbab1"]
+}, Open  ]],
+Cell[13665, 366, 90, 1, 70, "FooterCell", "ExpressionUUID" -> \
+"5f664d3a-92ff-4c59-aa72-c6c9e87a2467",
+ CellID->5]
+}
+]
+*)
+
+(* End of internal cache information *)
