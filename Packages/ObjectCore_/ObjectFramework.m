@@ -194,7 +194,7 @@ If[MatchQ[$ChemObjects,_Symbol],
 
 
 ChemAdd[
-	sys:chemSys,
+	sys:ChemSysPattern,
 	type:_String|{__String},
 	params:({__?OptionQ}..)
 	]:=
@@ -246,7 +246,7 @@ ChemAdd[
 
 
 ChemAdd[
-	sys:chemSys,
+	sys:ChemSysPattern,
 	type_String,
 	params__?OptionQ
 	]:=
@@ -254,24 +254,24 @@ ChemAdd[
 
 
 ChemAdd[
-	sys:chemSys,
+	sys:ChemSysPattern,
 	type_String,
 	n_Integer
 	]:=
 	ChemAdd[sys,type,Sequence@@ConstantArray[{},n]];
 
 
-ChemRemove[s:chemSys]:=
+ChemRemove[s:ChemSysPattern]:=
 	KeyDropFrom[$ChemicalSystems,First@s];
-ChemRemove[s:chemSysV]:=
+ChemRemove[s:ChemSysVectorPattern]:=
 	KeyDropFrom[$ChemicalSystems,First/@s];
 
 
-ChemRemove[s:chemObj]:=
+ChemRemove[s:ChemObjPattern]:=
 	With[{system=First@s},
 		KeyDropFrom[$ChemicalSystems[system],Last@s]
 		];
-ChemRemove[s:chemObjV]:=
+ChemRemove[s:ChemObjVectorPattern]:=
 	With[{objSets=GroupBy[s,First]},
 		KeyValueMap[
 			KeyDropFrom[$ChemicalSystems[#],Last/@#2]&,
@@ -280,7 +280,7 @@ ChemRemove[s:chemObjV]:=
 		];
 
 
-ChemCopy[obj:chemObj,
+ChemCopy[obj:ChemObjPattern,
 	replacements:_List|_Rule|_Association:{},
 	n:_Integer?Positive:1]:=
 	With[{system=First@obj,id=Last@obj},
@@ -313,7 +313,7 @@ ChemCopy[obj:chemObj,
 		];
 
 
-ChemCopy[objV:chemObjV,
+ChemCopy[objV:ChemObjVectorPattern,
 	replacements:_List|_Rule|_Association:{}]:=
 	With[{systemGroups=GroupBy[objV,First]},
 		KeyValueMap[
@@ -351,7 +351,7 @@ ChemCopy[objV:chemObjV,
 		]
 
 
-ChemDeepCopy[obj:chemObj]:=
+ChemDeepCopy[obj:ChemObjPattern]:=
 	With[{
 		refList=
 			DeleteDuplicates@Flatten@Prepend[ChemRecursiveReferences@obj,obj]
@@ -602,21 +602,21 @@ Format[s:ChemStore[obj_ChemObject,base:chemStoreBasePattern]]:=
 		];
 
 
-chemSave[s:ChemStore[obj:chemThings,base:chemStoreBasePattern]]:=
+chemSave[s:ChemStore[obj:ChemSinglePattern,base:chemStoreBasePattern]]:=
 	With[{store=ChemStoreObject@s},
 		Put[ChemAssociation[obj],
 			store
 			];
 		s
 		];
-chemSave[obj:chemThings,	
+chemSave[obj:ChemSinglePattern,	
 	base:chemStoreBasePattern:Automatic]:=
 	chemSave@
 		ChemStore[obj,base];
 
 
 chemSaveRecursive[
-	s:ChemStore[obj:chemThings,base:chemStoreBasePattern]
+	s:ChemStore[obj:ChemSinglePattern,base:chemStoreBasePattern]
 	]:=
 	With[{refs=ChemRecursiveReferences[obj]},
 		chemSave[#,base]&/@refs;
@@ -625,14 +625,14 @@ chemSaveRecursive[
 
 
 ChemSave[
-	spec:ChemStore[chemThings,chemStoreBasePattern],
+	spec:ChemStore[ChemSinglePattern,chemStoreBasePattern],
 	recurse:True|False:True
 	]:=
 	If[recurse,
 		chemSaveRecursive@spec,
 		chemSave@spec
 		];
-ChemSave[obj:chemThings,	
+ChemSave[obj:ChemSinglePattern,	
 	base:chemStoreBasePattern:Automatic,
 	recurse:True|False:True]:=
 	ChemSave[ChemStore[obj,base],recurse];
@@ -706,20 +706,20 @@ ChemLoad[obj:_ChemObject,
 	ChemLoad[ChemStore[obj,base],recurse];
 
 
-ChemAssociation[ob:chemObj|chemSys]:=
+ChemAssociation[ob:ChemObjPattern|ChemSysPattern]:=
 	$ChemicalSystems@@ob;
-ChemAssociation[v:chemObjV|chemSysV]:=
+ChemAssociation[v:ChemObjVectorPattern|ChemSysVectorPattern]:=
 	$ChemicalSystems@@@v;
 
 
-ChemApply[sys:chemSys,f_]:=
+ChemApply[sys:ChemSysPattern,f_]:=
 	With[{system=First@sys},
 		Replace[f@$ChemicalSystems[system],
 			new_Association:>
 				($ChemicalSystems[system]=new)
 			]
 		];
-ChemApply[sys:chemSysV,f_]:=
+ChemApply[sys:ChemSysVectorPattern,f_]:=
 	With[{systems=First/@sys},
 		Replace[Thread[systems->Map[f,Lookup[$ChemicalSystems,systems]]],
 			(k_->new_Association):>
@@ -728,14 +728,14 @@ ChemApply[sys:chemSysV,f_]:=
 		];
 
 
-ChemApply[obj:chemObj,f_]:=
+ChemApply[obj:ChemObjPattern,f_]:=
 	With[{system=First@obj,id=Last@obj},
 		Replace[f@$ChemicalSystems[system][id],
 			new_Association:>
 				($ChemicalSystems[system,id]=new)
 			];
 		];
-ChemApply[objV:chemObjV,f_]:=
+ChemApply[objV:ChemObjVectorPattern,f_]:=
 	With[{groups=
 		Map[Last]/@GroupBy[objV,First]
 		},
@@ -786,7 +786,7 @@ chemGetLookup[obs_,props_,default_]:=
 		];
 
 
-ChemGet[sys:chemSys,prop:Except[_List],default_:$ChemGetDefault]:=
+ChemGet[sys:ChemSysPattern,prop:Except[_List],default_:$ChemGetDefault]:=
 	With[{p=
 		chemGetLookup[$ChemicalSystems[First@sys],prop,default]
 			},
@@ -798,7 +798,7 @@ ChemGet[sys:chemSys,prop:Except[_List],default_:$ChemGetDefault]:=
 			p	
 			]
 		];
-ChemGet[sys:chemSys,prop:{__},default_:$ChemGetDefault]:=
+ChemGet[sys:ChemSysPattern,prop:{__},default_:$ChemGetDefault]:=
 	With[{p=
 		chemGetLookup[$ChemicalSystems[First@sys],prop,default]
 		},
@@ -813,7 +813,7 @@ ChemGet[sys:chemSys,prop:{__},default_:$ChemGetDefault]:=
 		];
 
 
-ChemGet[sysV:chemSysV,prop:Except[_List],default_:$ChemGetDefault]:=
+ChemGet[sysV:ChemSysVectorPattern,prop:Except[_List],default_:$ChemGetDefault]:=
 	With[{p=
 		Thread[
 			sysV->
@@ -828,7 +828,7 @@ ChemGet[sysV:chemSysV,prop:Except[_List],default_:$ChemGetDefault]:=
 			p	
 			]
 		];
-ChemGet[sysV:chemSysV,prop:{__},default_:$ChemGetDefault]:=
+ChemGet[sysV:ChemSysVectorPattern,prop:{__},default_:$ChemGetDefault]:=
 	MapThread[
 		If[$ChemFormatMethods//TrueQ,
 			Replace[#2,{
@@ -844,7 +844,7 @@ ChemGet[sysV:chemSysV,prop:{__},default_:$ChemGetDefault]:=
 			}];
 
 
-ChemGet[obj:chemObj,prop:Except[_List],default_:$ChemGetDefault]:=
+ChemGet[obj:ChemObjPattern,prop:Except[_List],default_:$ChemGetDefault]:=
 	With[{
 		system=First@obj,
 		id=Last@obj
@@ -862,7 +862,7 @@ ChemGet[obj:chemObj,prop:Except[_List],default_:$ChemGetDefault]:=
 				]
 			]
 		];
-ChemGet[obj:chemObj,props:{__},default_:$ChemGetDefault]:=
+ChemGet[obj:ChemObjPattern,props:{__},default_:$ChemGetDefault]:=
 		With[{
 		system=First@obj,
 		id=Last@obj
@@ -883,7 +883,7 @@ ChemGet[obj:chemObj,props:{__},default_:$ChemGetDefault]:=
 		];
 
 
-ChemGet[objV:chemObjV,prop:Except[_List],default_:$ChemGetDefault]:=
+ChemGet[objV:ChemObjVectorPattern,prop:Except[_List],default_:$ChemGetDefault]:=
 	With[{p=
 		Join@@Map[
 			chemGetLookup[
@@ -907,7 +907,7 @@ ChemGet[objV:chemObjV,prop:Except[_List],default_:$ChemGetDefault]:=
 			p	
 			]
 		];
-ChemGet[objV:chemObjV,prop:{__},default_:$ChemGetDefault]:=
+ChemGet[objV:ChemObjVectorPattern,prop:{__},default_:$ChemGetDefault]:=
 	MapThread[
 		If[$ChemFormatMethods//TrueQ,
 			Replace[#2,{
@@ -930,7 +930,7 @@ ChemGet[objV:chemObjV,prop:{__},default_:$ChemGetDefault]:=
 			}];
 
 
-ChemGet[obs:{chemObjAll..},props_,default_:$ChemGetDefault]:=
+ChemGet[obs:{ChemObjAllPattern..},props_,default_:$ChemGetDefault]:=
 	With[{objV=Flatten@obs},
 		With[{a=AssociationThread[objV,ChemGet[objV,props,default]]},
 			obs/.a
@@ -938,15 +938,15 @@ ChemGet[obs:{chemObjAll..},props_,default_:$ChemGetDefault]:=
 		];
 
 
-ChemGet[prop_][o:(chemObj|chemObjV|chemSys|chemSysV)]:=
+ChemGet[prop_][o:(ChemObjPattern|ChemObjVectorPattern|ChemSysPattern|ChemSysVectorPattern)]:=
 	ChemGet[o,prop];
 
 
-ChemSet[sys:chemSys,prop:Except[_List],val_]:=
+ChemSet[sys:ChemSysPattern,prop:Except[_List],val_]:=
 	With[{s=First@sys},
 		($ChemicalSystems[s][prop]=val;)
 		];
-ChemSet[sys:chemSys,prop:{__},val_]:=
+ChemSet[sys:ChemSysPattern,prop:{__},val_]:=
 	With[{s=First@sys},
 		AssociateTo[$ChemicalSystems[s],
 			#->val&/@prop
@@ -954,15 +954,15 @@ ChemSet[sys:chemSys,prop:{__},val_]:=
 		];
 
 
-ChemSet[sysV:chemSysV,prop_,val_]:=
+ChemSet[sysV:ChemSysVectorPattern,prop_,val_]:=
 	(Map[ChemSet[#,prop,val]&,sysV];);
 
 
-ChemSet[obj:chemObj,prop:Except[_List],val_]:=
+ChemSet[obj:ChemObjPattern,prop:Except[_List],val_]:=
 	With[{s=First@obj,i=Last@obj},
 		$ChemicalSystems[s][i][prop]=val;
 		];
-ChemSet[obj:chemObj,prop:{__},val_]:=
+ChemSet[obj:ChemObjPattern,prop:{__},val_]:=
 	With[{s=First@obj,i=Last@obj},
 		AssociateTo[$ChemicalSystems[s,i],
 			#->val&/@prop
@@ -970,7 +970,7 @@ ChemSet[obj:chemObj,prop:{__},val_]:=
 		];
 
 
-ChemSet[objV:chemObjV,prop_,val_]:=
+ChemSet[objV:ChemObjVectorPattern,prop_,val_]:=
 	With[{
 		groups=Map[Last]/@GroupBy[objV,First],
 		p=AssociationMap[val&,Flatten[{prop},1]]},
@@ -988,22 +988,22 @@ ChemSet[objV:chemObjV,prop_,val_]:=
 		];
 
 
-ChemSet[objV:{chemObjAll..},prop_,val_]:=
+ChemSet[objV:{ChemObjAllPattern..},prop_,val_]:=
 	(Map[ChemSet[#,prop,val]&,Flatten[objV,1]];);
 
 
-ChemSet[prop_,val_][o:(chemObj|chemObjV|chemSys|chemSysV)]:=
+ChemSet[prop_,val_][o:(ChemObjPattern|ChemObjVectorPattern|ChemSysPattern|ChemSysVectorPattern)]:=
 	ChemSet[o,prop,val];
 
 
 SetAttributes[ChemSetDelayed,HoldRest];
 
 
-ChemSetDelayed[sys:chemSys,prop_?(MatchQ[Except[_List]]),val_]:=
+ChemSetDelayed[sys:ChemSysPattern,prop_?(MatchQ[Except[_List]]),val_]:=
 	With[{s=First@sys},
 		$ChemicalSystems[s][prop]:=val
 		];
-ChemSetDelayed[sys:chemSys,id_,prop_?(MatchQ[{__}]),val_]:=
+ChemSetDelayed[sys:ChemSysPattern,id_,prop_?(MatchQ[{__}]),val_]:=
 	With[{s=First@sys},
 		AssociateTo[$ChemicalSystems[s],
 			#:>val&/@prop
@@ -1011,15 +1011,15 @@ ChemSetDelayed[sys:chemSys,id_,prop_?(MatchQ[{__}]),val_]:=
 		];
 
 
-ChemSetDelayed[sysV:chemSysV,prop_,val_]:=
+ChemSetDelayed[sysV:ChemSysVectorPattern,prop_,val_]:=
 	Map[ChemSetDelayed[#,prop,val]&,sysV]
 
 
-ChemSetDelayed[obj:chemObj,prop_?(MatchQ[Except[_List]]),val_]:=
+ChemSetDelayed[obj:ChemObjPattern,prop_?(MatchQ[Except[_List]]),val_]:=
 	With[{s=First@obj,i=Last@obj},
 		$ChemicalSystems[s][i][prop]:=val
 		];
-ChemSetDelayed[obj:chemObj,prop_?(MatchQ[{__}]),val_]:=
+ChemSetDelayed[obj:ChemObjPattern,prop_?(MatchQ[{__}]),val_]:=
 	With[{s=First@obj,i=Last@obj},
 		AssociateTo[$ChemicalSystems[s,i],
 			#:>val&/@prop
@@ -1027,7 +1027,7 @@ ChemSetDelayed[obj:chemObj,prop_?(MatchQ[{__}]),val_]:=
 		];
 
 
-ChemSetDelayed[objV:chemObjV,prop_,val_]:=
+ChemSetDelayed[objV:ChemObjVectorPattern,prop_,val_]:=
 	With[{
 		groups=Map[Last]/@GroupBy[objV,First],
 		p=Association@Map[#:>val&,Flatten[{prop},1]]},
@@ -1045,15 +1045,15 @@ ChemSetDelayed[objV:chemObjV,prop_,val_]:=
 		];
 
 
-ChemSetDelayed[objV:{chemObjAll..},prop_,val_]:=
+ChemSetDelayed[objV:{ChemObjAllPattern..},prop_,val_]:=
 	Map[ChemSetDelayed[#,prop,val]&,Flatten[objV,1]]
 
 
-ChemSetDelayed[prop_,val_][o:(chemObj|chemObjV|chemSys|chemSysV)]:=
+ChemSetDelayed[prop_,val_][o:(ChemObjPattern|ChemObjVectorPattern|ChemSysPattern|ChemSysVectorPattern)]:=
 	ChemSetDelayed[o,prop,val];
 
 
-ChemThreadSet[sys:chemSys,prop:{__},val:{__}]:=
+ChemThreadSet[sys:ChemSysPattern,prop:{__},val:{__}]:=
 	With[{s=First@sys},
 		AssociateTo[$ChemicalSystems[s],
 			Thread[prop->val]
@@ -1061,16 +1061,16 @@ ChemThreadSet[sys:chemSys,prop:{__},val:{__}]:=
 		];
 
 
-ChemThreadSet[sysV:chemSysV,prop:Except[_List],val:{__}]:=
+ChemThreadSet[sysV:ChemSysVectorPattern,prop:Except[_List],val:{__}]:=
 	(MapThread[AssociateTo[$ChemicalSystems[#],prop->#2];&,{
 		First/@sysV,
 		val
 		}];);
-ChemThreadSet[sysV:chemSysV,prop:{__},val:{__}]:=
+ChemThreadSet[sysV:ChemSysVectorPattern,prop:{__},val:{__}]:=
 	(Map[ChemThreadSet[#,prop,val]&,sysV];);
 
 
-ChemThreadSet[obj:chemObj,prop:{__},val:{__}]:=
+ChemThreadSet[obj:ChemObjPattern,prop:{__},val:{__}]:=
 	With[{s=First@obj,i=Last@obj},
 		AssociateTo[$ChemicalSystems[s,i],
 			Thread[prop->val]
@@ -1078,28 +1078,28 @@ ChemThreadSet[obj:chemObj,prop:{__},val:{__}]:=
 		];
 
 
-ChemThreadSet[objV:chemObjV,prop:Except[_List],val:{__}]:=
+ChemThreadSet[objV:ChemObjVectorPattern,prop:Except[_List],val:{__}]:=
 	(MapThread[AssociateTo[$ChemicalSystems[#,#2],prop->#3];&,{
 		First/@objV,
 		Last/@objV,
 		val
 		}];);
-ChemThreadSet[objV:chemObjV,prop:{__},val:{__}]:=
+ChemThreadSet[objV:ChemObjVectorPattern,prop:{__},val:{__}]:=
 	(Map[ChemThreadSet[#,prop,val]&,objV];);
 
 
-ChemThreadSet[objV:{chemObjAll..},prop_,val:{__}]:=
+ChemThreadSet[objV:{ChemObjAllPattern..},prop_,val:{__}]:=
 	ChemThreadSet[Flatten[objV,1],prop,Flatten[val,1]];
 
 
-ChemThreadSet[prop:{__},val:{__}][o:(chemObj|chemObjV|chemSys|chemSysV)]:=
+ChemThreadSet[prop:{__},val:{__}][o:(ChemObjPattern|ChemObjVectorPattern|ChemSysPattern|ChemSysVectorPattern)]:=
 	ChemThreadSet[o,prop,val];
 
 
 SetAttributes[ChemThreadSetDelayed,HoldRest];
 
 
-ChemThreadSetDelayed[sys:chemSys,prop:{__},val:{__}]:=
+ChemThreadSetDelayed[sys:ChemSysPattern,prop:{__},val:{__}]:=
 	With[{s=First@sys},
 		AssociateTo[$ChemicalSystems[s],
 			Thread[prop:>val]
@@ -1107,16 +1107,16 @@ ChemThreadSetDelayed[sys:chemSys,prop:{__},val:{__}]:=
 		];
 
 
-ChemThreadSetDelayed[sysV:chemSysV,prop:Except[_List],val:{__}]:=
+ChemThreadSetDelayed[sysV:ChemSysVectorPattern,prop:Except[_List],val:{__}]:=
 	(MapThread[AssociateTo[$ChemicalSystems[#],prop:>#2]&,{
 		First/@sysV,
 		val
 		}];);
-ChemThreadSetDelayed[sysV:chemSysV,prop:{__},val:{__}]:=
+ChemThreadSetDelayed[sysV:ChemSysVectorPattern,prop:{__},val:{__}]:=
 	(Map[ChemThreadSetDelayed[#,prop,val];&,sysV];)
 
 
-ChemThreadSetDelayed[obj:chemObj,prop:{__},val:{__}]:=
+ChemThreadSetDelayed[obj:ChemObjPattern,prop:{__},val:{__}]:=
 	With[{s=First@obj,i=Last@obj},
 		AssociateTo[$ChemicalSystems[s,i],
 			Thread[prop:>val]
@@ -1124,7 +1124,7 @@ ChemThreadSetDelayed[obj:chemObj,prop:{__},val:{__}]:=
 		];
 
 
-ChemThreadSetDelayed[objV:chemObjV,prop:Except[_List],val:{__}]:=
+ChemThreadSetDelayed[objV:ChemObjVectorPattern,prop:Except[_List],val:{__}]:=
 	(MapThread[
 		AssociateTo[$ChemicalSystems[#,#2],
 			Replace[#3,Hold[v_]:>(prop:>v)]];&,{
@@ -1132,28 +1132,28 @@ ChemThreadSetDelayed[objV:chemObjV,prop:Except[_List],val:{__}]:=
 		Last/@objV,
 		Thread@Hold[val]
 		}];);
-ChemThreadSetDelayed[objV:chemObjV,prop:{__},val:{__}]:=
+ChemThreadSetDelayed[objV:ChemObjVectorPattern,prop:{__},val:{__}]:=
 	(Map[ChemThreadSetDelayed[#,prop,val];&,objV];);
 
 
-ChemThreadSetDelayed[objV:{chemObjAll..},prop_,val:{__}]:=
+ChemThreadSetDelayed[objV:{ChemObjAllPattern..},prop_,val:{__}]:=
 	ChemThreadSetDelayed[Flatten[objV,1],prop,
 		Evaluate@Flatten[Thread@Hold[val],1]];
 
 
-ChemThreadSetDelayed[objV:{chemObjAll..},prop_,val:{__}]:=
+ChemThreadSetDelayed[objV:{ChemObjAllPattern..},prop_,val:{__}]:=
 	ChemThreadSetDelayed[Flatten[objV,1],prop,Flatten[val,1]];
 
 
-ChemThreadSetDelayed[prop:{__},val:{__}][o:(chemObj|chemObjV|chemSys|chemSysV)]:=
+ChemThreadSetDelayed[prop:{__},val:{__}][o:(ChemObjPattern|ChemObjVectorPattern|ChemSysPattern|ChemSysVectorPattern)]:=
 	ChemThreadSetDelayed[o,prop,val];
 
 
-ChemUnset[sys:chemSys]:=
+ChemUnset[sys:ChemSysPattern]:=
 	With[{s=First@sys},
 		$ChemicalSystems[s][prop]=.
 		];
-ChemUnset[sys:chemSys,prop:{__}]:=
+ChemUnset[sys:ChemSysPattern,prop:{__}]:=
 	With[{s=First@sys},
 		KeyDropFrom[$ChemicalSystems[s],
 			prop
@@ -1161,15 +1161,15 @@ ChemUnset[sys:chemSys,prop:{__}]:=
 		];
 
 
-ChemUnset[sysV:chemSysV,prop_]:=
+ChemUnset[sysV:ChemSysVectorPattern,prop_]:=
 	Map[ChemUnset[#,prop]&,sysV]
 
 
-ChemUnset[obj:chemObj,prop:Except[_List]]:=
+ChemUnset[obj:ChemObjPattern,prop:Except[_List]]:=
 	With[{s=First@obj,i=Last@obj},
 		$ChemicalSystems[s][i][prop]=.
 		];
-ChemUnset[obj:chemObj,prop:{__}]:=
+ChemUnset[obj:ChemObjPattern,prop:{__}]:=
 	With[{s=First@obj,i=Last@obj},
 		KeyDropFrom[$ChemicalSystems[s,i],
 			prop
@@ -1177,11 +1177,11 @@ ChemUnset[obj:chemObj,prop:{__}]:=
 		];
 
 
-ChemUnset[objV:chemObjV,prop_]:=
+ChemUnset[objV:ChemObjVectorPattern,prop_]:=
 	Map[ChemUnset[#,prop]&,objV]
 
 
-ChemUnset[prop_][o:(chemObj|chemObjV|chemSys|chemSysV)]:=
+ChemUnset[prop_][o:(ChemObjPattern|ChemObjVectorPattern|ChemSysPattern|ChemSysVectorPattern)]:=
 	ChemUnset[o,prop];
 
 
@@ -1421,15 +1421,15 @@ ChemObjectMutationHandler[
 		];
 
 
-ChemInstanceQ[o:chemObj,types:_String|{__String}]:=
+ChemInstanceQ[o:ChemObjPattern,types:_String|{__String}]:=
 	MemberQ[Flatten@{types},ChemGet[o,"ObjectType"]];
-ChemInstanceQ[obs:{chemObj..},types:_String|{__String}]:=
+ChemInstanceQ[obs:{ChemObjPattern..},types:_String|{__String}]:=
 	MemberQ[Flatten@{types},#]&/@ChemGet[obs,"ObjectType"];
 ChemInstanceQ[types_][obj_]:=
 	ChemInstanceQ[obj,types];
 
 
-ChemMerge[obj:chemObjAll,
+ChemMerge[obj:ChemObjAllPattern,
 	a:_Association|{__Association}|{__Rule}|_Rule,
 	mergeFunction_:Join
 	]:=
@@ -1439,7 +1439,7 @@ ChemMerge[obj:chemObjAll,
 			"ObjectKey"->#ObjectKey
 			]&
 		];
-ChemMerge[obj:chemObjAll,obj2:chemObjAll,mergeFunction_:Join]:=
+ChemMerge[obj:ChemObjAllPattern,obj2:ChemObjAllPattern,mergeFunction_:Join]:=
 	ChemMerge[obj,ChemAssociation@obj2,mergeFunction];
 
 
@@ -1447,9 +1447,9 @@ ChemJoin[{a__Association}]:=
 	ChemAdd[Join[a]];
 ChemJoin[a:{{__Association}..}]:=
 	ChemAdd@Apply[Join,a,{1}];
-ChemJoin[obj:chemObjAll]:=
+ChemJoin[obj:ChemObjAllPattern]:=
 	ChemAdd[Flatten@{ChemAssociation@obj}];
-ChemJoin[obj:{chemObjAll}]:=
+ChemJoin[obj:{ChemObjAllPattern}]:=
 	ChemAdd@Map[Flatten@{ChemAssociation@#}&,obj];
 
 
@@ -1459,28 +1459,28 @@ ChemReplaceAll[replacements_][o:chemThingsAll]:=
 	ChemReplaceAll[o,replacements];
 
 
-ChemMutate[obj:chemObj,prop:Except[_List],function_]:=
+ChemMutate[obj:ChemObjPattern,prop:Except[_List],function_]:=
 	ChemSet[obj,prop,
 		function@ChemGet[obj,prop]];
-ChemMutate[obj:chemObj,prop_List,function:Except[_List]]:=
+ChemMutate[obj:ChemObjPattern,prop_List,function:Except[_List]]:=
 	ChemThreadSet[obj,prop,
 		function/@ChemGet[obj,prop]];
-ChemMutate[obj:chemObj,prop_List,functions_List]:=
+ChemMutate[obj:ChemObjPattern,prop_List,functions_List]:=
 	ChemThreadSet[obj,prop,
 		MapThread[#[#2]&,
 			{functions,ChemGet[obj,prop]}]];
 
 
-ChemMutate[objV:chemObjV,prop:Except[_List],function:Except[_List]]:=
+ChemMutate[objV:ChemObjVectorPattern,prop:Except[_List],function:Except[_List]]:=
 	ChemThreadSet[objV,prop,
 		function/@ChemGet[objV,prop]];
-ChemMutate[objV:chemObjV,prop_List,function:Except[_List]]:=
+ChemMutate[objV:ChemObjVectorPattern,prop_List,function:Except[_List]]:=
 	ChemThreadSet[objV,prop,
 		Map[function,
 			ChemGet[objV,prop],
 			{2}]
 		];
-ChemMutate[objV:chemObjV,prop_,functions_List]:=
+ChemMutate[objV:ChemObjVectorPattern,prop_,functions_List]:=
 	ChemThreadSet[objV,prop,
 		MapThread[#[#2]&,
 		{
@@ -1491,7 +1491,7 @@ ChemMutate[objV:chemObjV,prop_,functions_List]:=
 		];
 
 
-ChemMutate[prop_,function_][obj:chemObj|chemObjV]:=
+ChemMutate[prop_,function_][obj:ChemObjPattern|ChemObjVectorPattern]:=
 	ChemMutate[obj,prop,function];
 
 
@@ -1516,13 +1516,13 @@ chemGeneralIncrement[obj_,val_]:=
 		];
 
 
-ChemIncrement[obj:chemObjAll,prop_,val_,function_]:=
+ChemIncrement[obj:ChemObjAllPattern,prop_,val_,function_]:=
 	ChemMutate[obj,prop,(function[#,val])&];
-ChemIncrement[obj:chemObjAll,prop_,val_]:=
+ChemIncrement[obj:ChemObjAllPattern,prop_,val_]:=
 	ChemMutate[obj,prop,(chemGeneralIncrement[#,val])&];
-ChemIncrement[prop_,val_,f_][obj:chemObjAll]:=
+ChemIncrement[prop_,val_,f_][obj:ChemObjAllPattern]:=
 	ChemIncrement[obj,prop,val,f]
-ChemIncrement[prop_,val_][obj:chemObjAll]:=
+ChemIncrement[prop_,val_][obj:ChemObjAllPattern]:=
 	ChemIncrement[obj,prop,val]
 
 
@@ -1541,38 +1541,38 @@ chemGeneralDecrement[obj_,val_]:=
 		];
 
 
-ChemDecrement[obj:chemObjAll,prop_,val_,function_]:=
+ChemDecrement[obj:ChemObjAllPattern,prop_,val_,function_]:=
 	ChemMutate[obj,prop,(function[#,val])&];
-ChemDecrement[obj:chemObjAll,prop_,val_]:=
+ChemDecrement[obj:ChemObjAllPattern,prop_,val_]:=
 	ChemMutate[obj,prop,(chemGeneralDecrement[#,val])&];
-ChemDecrement[prop_,val_,f_][obj:chemObjAll]:=
+ChemDecrement[prop_,val_,f_][obj:ChemObjAllPattern]:=
 	ChemDecrement[obj,prop,val,f]
-ChemDecrement[prop_,val_][obj:chemObjAll]:=
+ChemDecrement[prop_,val_][obj:ChemObjAllPattern]:=
 	ChemDecrement[obj,prop,val]
 
 
-ChemAppendTo[obj:chemObjAll,prop_,val_]:=
+ChemAppendTo[obj:ChemObjAllPattern,prop_,val_]:=
 	ChemIncrement[obj,prop,val,Append];
 
 
-ChemDeleteFrom[obj:chemObjAll,prop_,val_]:=
+ChemDeleteFrom[obj:ChemObjAllPattern,prop_,val_]:=
 	ChemDecrement[obj,prop,val,DeleteCases];
 
 
-ChemGetRecursive[obj:chemObjAll,props_]:=
+ChemGetRecursive[obj:ChemObjAllPattern,props_]:=
 	First@FixedPoint[
 		If[Length@#[[2]]>0,
 			With[{new=ChemGet[#[[2]],props,Nothing]},
 				{
 					Union[#[[1]],
 						Replace[new,
-							v:chemObjV:>
+							v:ChemObjVectorPattern:>
 								Sequence@@v,
 							1]
 						],
 					Complement[
-						Flatten@Cases[new,chemObjAll],
-						Flatten@Cases[#[[1]],chemObjAll]
+						Flatten@Cases[new,ChemObjAllPattern],
+						Flatten@Cases[#[[1]],ChemObjAllPattern]
 						]
 					}
 				],
@@ -1586,19 +1586,19 @@ ChemGetRecursive[obj:chemObjAll,props_]:=
 		];
 
 
-ChemAddReference[ob:chemObjAll,ref:chemObjAll]:=
+ChemAddReference[ob:ChemObjAllPattern,ref:ChemObjAllPattern]:=
 	ChemIncrement[ob,"ObjectReferences",ref,Flatten@*List];
 
 
-ChemRemoveReference[ob:chemObjAll,ref:chemObjAll]:=
+ChemRemoveReference[ob:ChemObjAllPattern,ref:ChemObjAllPattern]:=
 	ChemMutate[ob,"ObjectReferences",DeleteCases[Alternatives@@{ref}]];
 
 
-ChemReferences[obj:chemObjAll]:=
+ChemReferences[obj:ChemObjAllPattern]:=
 	ChemGet[obj,"ObjectReferences"]
 
 
-ChemRecursiveReferences[obj:chemObjAll]:=
+ChemRecursiveReferences[obj:ChemObjAllPattern]:=
 	First@FixedPoint[
 		If[Length@#[[2]]>0,
 			With[{new=Flatten@ChemGet[#[[2]],"ObjectReferences"]},
@@ -1616,15 +1616,15 @@ ChemRecursiveReferences[obj:chemObjAll]:=
 		];
 
 
-ChemRemoveRecursive[obj:chemObjAll]:=
+ChemRemoveRecursive[obj:ChemObjAllPattern]:=
 	With[{rs=Flatten@{obj,ChemRecursiveReferences[obj]}},
 		ChemRemove@rs
 		];
 
 
-ChemSelect[obj:chemObjAll,test_]:=
+ChemSelect[obj:ChemObjAllPattern,test_]:=
 	Select[obj,test];
-ChemSelect[obj:chemObjAll,props_,test_]:=
+ChemSelect[obj:ChemObjAllPattern,props_,test_]:=
 	Pick[obj,test/@ChemGet[obj,props]];
 
 

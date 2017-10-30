@@ -19,6 +19,19 @@
 
 
 
+PackageScopeBlock[
+	ChemSysPattern::usage="";
+	ChemSysVectorPattern::usage="";
+	ChemObjPattern::usage="";
+	ChemObjVectorPattern::usage="";
+	ChemObjAllPattern::usage="";
+	ChemSinglePattern::usage="";
+	ChemVectorPattern::usage="";
+	ChemAllPattern::usage="";
+	ChemOptionsPattern::usage="";
+	];
+
+
 $ChemicalSystems::usage="List of valid systems";
 $ChemDefaultSystem::usage="Default chemical system";
 CreateChemicalSystem::usage="Creates a ChemSystem object";
@@ -393,16 +406,17 @@ Begin["`Private`"];
 ToPython;
 
 
-chemSys=ChemObject[_]?ChemObjectQ;
-chemSysV={chemSys..};
-chemObj=ChemObject[_,_]?ChemObjectQ;
-chemObjV={chemObj..};
-chemObjAll=(chemObj|chemObjV);
-chemThings=(chemObj|chemSys);
-chemVecs=(chemObjV|chemSysV);
-chemThingsAll=(chemObj|chemObjV|chemSys|chemSysV);
+ChemSysPattern=ChemObject[_]?ChemObjectQ;
+ChemSysVectorPattern={ChemSysPattern..};
+ChemObjPattern=ChemObject[_,_]?ChemObjectQ;
+ChemObjVectorPattern={ChemObjPattern..};
+ChemObjAllPattern=(ChemObjPattern|ChemObjVectorPattern);
+ChemSinglePattern=(ChemObjPattern|ChemSysPattern);
+ChemVectorPattern=(ChemObjVectorPattern|ChemSysVectorPattern);
+ChemAllPattern=
+	(ChemObjPattern|ChemObjVectorPattern|ChemSysPattern|ChemSysVectorPattern);
 chemOptionsPatternBase=(_Rule|_RuleDelayed)...;
-chemOptionsPattern=
+ChemOptionsPattern=
 	chemOptionsPatternBase|{chemOptionsPatternBase}|{{chemOptionsPatternBase}..}
 
 
@@ -514,7 +528,7 @@ Format[AtomsetWrapper[a_?validAtomsetWrapperQ]]:=
 		];	
 
 
-manyObj=chemObjAll|{chemObjAll..};
+manyObj=ChemObjAllPattern|{ChemObjAllPattern..};
 
 
 ChemGetApply[obj:manyObj,prop_,args___]:=
@@ -629,7 +643,7 @@ ChemView[obj:manyObj,"Line",a___]:=
 
 ChemView[s:(_String|_Integer|{(_String|_Integer)..}),a___]:=
 	Replace[ChemImport@s,
-		c:chemObjAll:>
+		c:ChemObjAllPattern:>
 			With[{g=ChemView[c,a]},
 				ChemRemoveRecursive@c;
 				g
@@ -717,7 +731,7 @@ ChemSurface[g_Graphics3D,ops:OptionsPattern[]]:=
 				]
 			]
 		];
-ChemSurface[obj:chemObj,ops:OptionsPattern[]]:=
+ChemSurface[obj:ChemObjPattern,ops:OptionsPattern[]]:=
 	ChemSurface@ChemView[obj,"SpaceFilling"];
 
 
@@ -913,7 +927,7 @@ chemAnimationTime=
 	(_Times?(MatchQ[_Integer])|_Integer|_List|\[Infinity]);
 chemAnimationObjs=
 	manyObj|_Symbol?(MatchQ[manyObj])|
-		{((_Symbol?(MatchQ[chemObjAll]))|manyObj)..};
+		{((_Symbol?(MatchQ[ChemObjAllPattern]))|manyObj)..};
 
 
 ChemAnimate//ClearAll;
@@ -1542,7 +1556,7 @@ chemImport[
 ChemImport::noobj=
 	"Unable to construct ChemObject check input file or contact me";
 ChemImportString[
-	system:chemSys|Automatic:Automatic,
+	system:ChemSysPattern|Automatic:Automatic,
 	string_String,
 	format:"MolTable"|"ZMatrix"]:=
 	Switch[format,
@@ -1554,7 +1568,7 @@ ChemImportString[
 				chemImportZMatrix@ImportString[string,"Table"]]
 		];
 ChemImportString[
-	system:chemSys|Automatic:Automatic,
+	system:ChemSysPattern|Automatic:Automatic,
 	string_String,
 	Optional[Automatic,Automatic]]:=
 	With[{attempts=
@@ -1579,7 +1593,7 @@ ChemImportString[
 
 
 ChemImport[
-	system:chemSys|Automatic:Automatic,
+	system:ChemSysPattern|Automatic:Automatic,
 	file:_File|_String?FileExistsQ,
 	format:"MolTable"|"ZMatrix"|Automatic:Automatic]:=
 	With[{form=
@@ -1600,7 +1614,7 @@ ChemImport[
 
 
 ChemImport[
-	system:chemSys|Automatic:Automatic,
+	system:ChemSysPattern|Automatic:Automatic,
 	file:_URL|_String?(URLParse[#]["Scheme"]=!=None&),
 	format:"MolTable"|"ZMatrix"|Automatic:Automatic]:=
 	With[{f=URLDownload@file},
@@ -1616,7 +1630,7 @@ ChemImport::no3d=
 ChemImport::nostr=
 	"No structure found for identifier ``";
 ChemImport[
-	system:chemSys|Automatic:Automatic,
+	system:ChemSysPattern|Automatic:Automatic,
 	structure:
 		_PubChemCompound|
 		_PubChemSubstance|
@@ -1645,14 +1659,14 @@ ChemImport[
 
 
 ChemImport[
-	system:chemSys|Automatic:Automatic,
+	system:ChemSysPattern|Automatic:Automatic,
 	data_Graphics3D
 	]:=
 	chemImport[system,chemImportGraphics3D@data];
 
 
 (*ChemImport[
-	system:chemSys|Automatic:Automatic,
+	system:ChemSysPattern|Automatic:Automatic,
 	data_Graph
 	]:=
 	chemImport[system,chemImportGraph@data];*)
@@ -1666,18 +1680,18 @@ $ChemImportableTypes=
 		);
 
 
-ChemImport[system:chemSys|Automatic:Automatic,
+ChemImport[system:ChemSysPattern|Automatic:Automatic,
 	data:{$ChemImportableTypes..}
 	]:=
 	ChemImport[system,#]&/@data;
 
 
 ChemImport[
-	system:chemSys|Automatic:Automatic,
+	system:ChemSysPattern|Automatic:Automatic,
 	s_Symbol?(Not@*MatchQ[$ChemImportableTypes|{$ChemImportableTypes..}])
 	]:=
 	(s=ChemImport[system,SymbolName[Unevaluated[s]]]);
-ChemImport[system:chemSys|Automatic:Automatic,
+ChemImport[system:ChemSysPattern|Automatic:Automatic,
 	s_?(MatchQ[$ChemImportableTypes|{$ChemImportableTypes..}]),
 	o___
 	]:=
