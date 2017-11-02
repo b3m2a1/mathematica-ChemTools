@@ -76,6 +76,8 @@ ChemUtilsIsotopologues::usage=
 
 ChemUtilsSymmetryElements::usage=
 	"Finds all the symmetry elements of a collection of atoms";
+
+
 ChemUtilsSymmetryGraphics::usage=
 	"Plots a collection of symmetry elements";
 ChemUtilsInertialSymmetry::usage=
@@ -1220,6 +1222,10 @@ ChemUtilsGuessBonds[
 		]
 
 
+$ChemSymmetryTolerance=.1;
+$ChemSymmetryUniquenessThreshold=.05;
+
+
 rawTransformationFunctionFunction[tf_,
 	{vars___},
 	reps_
@@ -1359,26 +1365,23 @@ inversionTransform[point_]:=
 	AffineTransform@{ScalingMatrix[{-1,-1,-1}],2*point}
 
 
-ChemUtilsInversionCenterQ[point_, groups_, tol:_?NumericQ:0]:=
+ChemUtilsInversionCenterQ[point_, groups_, tol:(_?NumericQ|Automatic):Automatic]:=
 	With[{tf=Compile[{{p, _Real, 1}},(2*point-p)]},
-		symmetryOperationQ[tf,groups,tol]
+		symmetryOperationQ[tf,groups,
+			Replace[tol, Automatic:>$ChemSymmetryTolerance]
+			]
 		];
 
 
-$uniquenessThreshold=.005;
-
-
-With[{ut=$uniquenessThreshold},
-	uniqeAxesQComp=
-		Compile[{{center, _Real, 1}, {p, _Real, 1}, {q, _Real, 1}},
-			With[{n1=Normalize[p-center],n2=Normalize[q-center]},
-				Norm[n1-n2]>$uniquenessThreshold&&
-					Norm[n1+n2]>$uniquenessThreshold
-				]
+uniqeAxesQComp=
+	Compile[{{center, _Real, 1}, {p, _Real, 1}, {q, _Real, 1}, {tol, _Real}},
+		With[{n1=Normalize[p-center],n2=Normalize[q-center]},
+			Norm[n1-n2]>tol&&
+				Norm[n1+n2]>tol
 			]
-	];
+		];
 uniqeAxesQ[center_, p_,q_]:=
-	uniqeAxesQComp[center,p,q];
+	uniqeAxesQComp[center,p,q, $ChemSymmetryUniquenessThreshold];
 uniqeAxesQ[center_][p_,q_]:=
 	uniqeAxesQComp[center,p,q];
 
@@ -1389,10 +1392,13 @@ rotationTransform[{point1_,point2_}][order_]:=
 	rotationTransform[order,{point1,point2}];
 
 
+ChemUtilsRotationAxisOrder//Clear
+
+
 ChemUtilsRotationAxisOrder[
 	{point1_,point2_},
 	groups_,
-	tol:_?NumericQ:.000001,
+	tol:_?NumericQ|Automatic:Automatic,
 	linearQ:True|False:False
 	]:=
 	If[linearQ,
@@ -1410,11 +1416,11 @@ ChemUtilsRotationAxisOrder[
 							symmetryOperationQ[
 								rotationTransform[o, {point1, point2}],
 								groups,
-								tol
+								Replace[tol, Automatic:>$ChemSymmetryTolerance]
 								],
 							Return[o]
 							],
-						{o, Length@groups[[-1]], 2, -1}
+						{o, Length@es[[-1]], 2, -1}
 						]
 					},
 				If[ret>1//TrueQ,
@@ -1458,20 +1464,21 @@ upQ=
 	Compile[{
 		{center,_Real,1},
 		{p,_Real,2},
-		{q,_Real,2}
+		{q,_Real,2},
+		{tol, _Real}
 		},
 		With[{
 			n1=Normalize@Cross[p[[1]]-center,p[[2]]-center],
 			n2=Normalize@Cross[q[[1]]-center,q[[2]]-center]
 			},
-			Norm[n1-n2]>$uniquenessTolerance&&
-			Norm[n1+n2]>$uniquenessTolerance
+			Norm[n1-n2]>tol&&
+			Norm[n1+n2]>tol
 			]
 		];
 
 
 uniquePlanesQ[center_,p:{_,_},q:{_,_}]:=
-	upQ[center,p,q]
+	upQ[center,p,q, $ChemSymmetryUniquenessThreshold]
 uniquePlanesQ[center_][p_,q_]:=
 	uniquePlanesQ[center,p,q]
 
@@ -1521,7 +1528,7 @@ screwTransform[{center_,axisPoint_}][order_]:=
 ChemUtilsScrewAxisOrder[
 	{point1_,point2_},
 	groups_,
-	tol:_?NumericQ:.000001
+	tol:_?NumericQ|Automatic:Automatic
 	]:=
 	With[{es=SortBy[groups, Length]},
 		With[{
@@ -1531,7 +1538,7 @@ ChemUtilsScrewAxisOrder[
 						symmetryOperationQ[
 							screwTransform[o, {point1, point2}],
 							groups,
-							tol
+							Replace[tol, Automatic:>$ChemSymmetryTolerance]
 							],
 						Return[o]
 						],
@@ -1653,28 +1660,31 @@ ChemUtilsIdentifyPointGroup[
 	]
 
 
-ChemUtilsInertialSymmetry[c_,axes_,atoms_,tol:_?NumericQ:.05]:=
-	<|
-		"CenterSymmetric"->ChemUtilsInversionCenterQ[c,atoms,tol],
-		"ARotationOrder"->ChemUtilsRotationAxisOrder[{c,c+axes[[1]]},atoms,tol],
-		"BRotationOrder"->ChemUtilsRotationAxisOrder[{c,c+axes[[2]]},atoms,tol],
-		"CRotationOrder"->ChemUtilsRotationAxisOrder[{c,c+axes[[3]]},atoms,tol],
-		"ABSymmetric"->ChemUtilsPlaneOfSymmetryQ[{c,c+axes[[1]],c+axes[[2]]},atoms,tol],
-		"ACSymmetric"->ChemUtilsPlaneOfSymmetryQ[{c,c+axes[[1]],c+axes[[3]]},atoms,tol],
-		"BCSymmetric"->ChemUtilsPlaneOfSymmetryQ[{c,c+axes[[2]],c+axes[[3]]},atoms,tol],
-		"AScrewOrder"->
-			ChemUtilsScrewAxisOrder[{c,c+axes[[1]]},atoms,tol],
-		"BScrewOrder"->
-			ChemUtilsScrewAxisOrder[{c,c+axes[[2]]},atoms,tol],
-		"CScrewOrder"->
-			ChemUtilsScrewAxisOrder[{c,c+axes[[3]]},atoms,tol]
-		|>;
-ChemUtilsInertialSymmetry[atoms_,tol:_?NumericQ:.05]:=
+ChemUtilsInertialSymmetry[c_,axes_,atoms_,toler:_?NumericQ|Automatic:Automatic]:=
+	With[{tol=Replace[toler, Automatic:>$ChemSymmetryTolerance]},
+		<|
+			"CenterSymmetric"->ChemUtilsInversionCenterQ[c,atoms,tol],
+			"ARotationOrder"->ChemUtilsRotationAxisOrder[{c,c+axes[[1]]},atoms,tol],
+			"BRotationOrder"->ChemUtilsRotationAxisOrder[{c,c+axes[[2]]},atoms,tol],
+			"CRotationOrder"->ChemUtilsRotationAxisOrder[{c,c+axes[[3]]},atoms,tol],
+			"ABSymmetric"->ChemUtilsPlaneOfSymmetryQ[{c,c+axes[[1]],c+axes[[2]]},atoms,tol],
+			"ACSymmetric"->ChemUtilsPlaneOfSymmetryQ[{c,c+axes[[1]],c+axes[[3]]},atoms,tol],
+			"BCSymmetric"->ChemUtilsPlaneOfSymmetryQ[{c,c+axes[[2]],c+axes[[3]]},atoms,tol],
+			"AScrewOrder"->
+				ChemUtilsScrewAxisOrder[{c,c+axes[[1]]},atoms,tol],
+			"BScrewOrder"->
+				ChemUtilsScrewAxisOrder[{c,c+axes[[2]]},atoms,tol],
+			"CScrewOrder"->
+				ChemUtilsScrewAxisOrder[{c,c+axes[[3]]},atoms,tol]
+			|>
+		];
+ChemUtilsInertialSymmetry[atoms_,tol:_?NumericQ|Automatic:Automatic]:=
 	With[{
 		c=ChemUtilsCenterOfMass@atoms,
 		axes=Lookup[ChemUtilsInertialSystem@atoms,{"AAxis","BAxis","CAxis"}]
 		},
-		ChemUtilsInertialSymmetry[c,axes,atoms,tol]
+		ChemUtilsInertialSymmetry[c,axes,atoms,
+			Replace[tol, Automatic:>$ChemSymmetryTolerance]]
 		];
 
 
@@ -1698,14 +1708,12 @@ symmetryTestPositionCount[center_, positions_]:=
 	Length@positions^2;
 
 
-With[{ut=$uniquenessThreshold},
-	uniquePointsQComp=
-		Compile[{{pt1,_Real,1},{pt2,_Real,1}},
-			Norm[pt1-pt2]>ut
-			]
-	];
+uniquePointsQComp=
+	Compile[{{pt1,_Real,1},{pt2,_Real,1}, {tol,_Real}},
+		Norm[pt1-pt2]>tol
+		]
 uniquePointsQ[pt1_List, pt2_]:=
-	uniquePointsQComp[pt1, pt2];
+	uniquePointsQComp[pt1, pt2, $ChemSymmetryUniquenessThreshold];
 uniquePointsQ[___]:=False
 
 
@@ -1910,43 +1918,331 @@ enumerateScrewAxes[center_,groups_,tol_]:=
 		];
 
 
-ChemUtilsSymmetryElements[atoms_,tol:_?NumericQ:.05]:=
+ChemUtilsRawSymmetryElements[atoms_,tol:_?NumericQ|Automatic:Automatic]:=
 	With[{
 		center=
 			Round[ChemUtilsCenter@atoms,
-				.000001
-				],
-		axes=Last@ChemUtilsInertialEigensystem@atoms,
-		groups=
-			Round[
-				GroupBy[atoms,First->Last],
-				.000001
+				.0001
 				]
 		},
-		<|
-			"Center"->
-				center,
-			"CenterSymmetric"->
-				ChemUtilsInversionCenterQ[center,groups,tol],
-			"RotationAxes"->
-				enumerateRotationAxes[center,groups,tol],
-			"SymmetryPlanes"->
-				enumerateSymmetryPlanes[center,groups,tol],
-			"ScrewAxes"->
-				enumerateScrewAxes[center,groups,tol]
-			|>
+		With[{
+			axes=
+				Last@ChemUtilsInertialEigensystem@atoms,
+			groups=
+				Map[#-center&]/@
+					Round[
+						GroupBy[atoms,First->Last],
+						.0001
+						]
+			},
+			<|
+				"Center"->
+					center,
+				"CenterSymmetric"->
+					ChemUtilsInversionCenterQ[{0,0,0}(*center*),groups,
+						Replace[tol, Automatic:>$ChemSymmetryTolerance]
+						],
+				"RotationAxes"->
+					Replace[
+						enumerateRotationAxes[{0,0,0}(*center*),groups,
+							Replace[tol, Automatic:>$ChemSymmetryTolerance]
+							],
+						{o_, v_}:>
+							{o, v+center},
+						1
+						],
+				"SymmetryPlanes"->
+					Replace[
+						enumerateSymmetryPlanes[{0,0,0}(*center*),groups,
+							Replace[tol, Automatic:>$ChemSymmetryTolerance]
+							],
+						{v1_, v2_}:>
+							{v1+center, v2+center},
+						1
+						],
+				"ScrewAxes"->
+					Replace[
+						enumerateScrewAxes[{0,0,0}(*center*),groups,
+							Replace[tol, Automatic:>$ChemSymmetryTolerance]
+							],
+						{o_,v_}:>
+							{o, v+center},
+						1
+						]
+				|>
+			]
 		];
 
 
-ChemUtilsPointGroup[atoms_,tol:_?NumericQ:.05]:=
-	ChemUtilsIdentifyPointGroup@@ChemUtilsSymmetryElements[atoms,tol];
+ChemUtilsSymmetryElementFunction[
+	"InversionCenter",
+	center_
+	]:=
+	Minus;
+ChemUtilsSymmetryElementFunction[
+	"RotationAxes",
+	center_,
+	{order_, v_}
+	]:=
+	RotationTransform[2\[Pi]/order, v, center];
+ChemUtilsSymmetryElementFunction[
+	"SymmetryPlanes",
+	center_,
+	{v1_, v2_}
+	]:=
+	ReflectionTransform[
+		Cross[v1-center, v2-center],
+		center
+		];
+ChemUtilsSymmetryElementFunction[
+	"ScrewAxes",
+	center_,
+	{order_, v_}
+	]:=
+	Composition[
+		RotationTransform[2\[Pi]/order, v, center],
+		ReflectionTransform[
+			v,
+			center
+			]
+		]//Simplify
+
+
+ChemUtilsSymmetryElementFunctions[
+	rawEls_Association?(KeyMemberQ["Center"])
+	]:=
+	Association@
+	KeyValueMap[
+		Switch[#,
+			"CenterSymmetric",
+				If[#2,
+					"InversionCenter"->
+						ChemUtilsSymmetryElementFunction["InversionCenter", rawEls["Center"]],
+					Nothing
+					],
+			"RotationAxes",
+				#->
+					AssociationMap[
+						ChemUtilsSymmetryElementFunction["RotationAxes",
+							rawEls["Center"],
+							#
+							]&,
+						#2
+						],
+			"SymmetryPlanes",
+				#->
+					AssociationMap[
+						ChemUtilsSymmetryElementFunction["SymmetryPlanes",
+							rawEls["Center"],
+							#
+							]&,
+						#2
+						],
+			"ScrewAxes",
+				#->
+					AssociationMap[
+						ChemUtilsSymmetryElementFunction["ScrewAxes",
+							rawEls["Center"],
+							#
+							]&,
+						#2
+						],
+			_,
+				Nothing
+			]&,
+		rawEls
+		];
+ChemUtilsSymmetryElementFunctions[
+	atoms_,tol:_?NumericQ|Automatic:Automatic
+	]:=
+	ChemUtilsSymmetryElementFunctions@
+		ChemRawSymmetryElements[atoms, tol]
+
+
+ChemUtilsSymmetryElementGroup["RotationAxes",
+	axes_,
+	center_,
+	fns_
+	]:=
+	ConnectedComponents[
+		Graph@
+			Flatten@{
+				Map[#<->#&, axes],
+				Table[
+					With[{
+						fpl=(*Echo@*)FixedPointList[f, a[[2]], 3(*Length@axes*),
+							 SameTest->(Abs[#1-#2]<1*^-1&)]
+						},
+						With[{
+							order=a[[1]],
+							newPt=#
+							},
+							Replace[
+								SelectFirst[DeleteCases[axes,a],
+									order==#[[1]]&&!uniqueAxesQ[center, newPt, #[[2]]]&,
+									Nothing
+									],
+								l_List:>
+									a<->l
+								]
+							]&/@fpl
+						],
+					{a, axes},
+					{f, Flatten@Values@fns}
+					]
+					}
+				];
+ChemUtilsSymmetryElementGroup["ScrewAxes",
+	axes_,
+	center_,
+	fns_
+	]:=
+	ConnectedComponents[
+		Graph@
+			Flatten@{
+				Map[#<->#&, axes],
+				Table[
+					With[{
+						fpl=
+							FixedPointList[f, a[[2]], Length@axes,
+								SameTest->(Abs[#1-#2]<1*^-1&)
+								]
+						},
+						With[{
+							order=a[[1]],
+							newPt=#
+							},
+							Replace[
+								SelectFirst[DeleteCases[axes,a],
+									order==#[[1]]&&!uniqueAxesQ[center, newPt, #[[2]]]&,
+									Nothing
+									],
+								l_List:>
+									a<->l
+								]
+							]&/@fpl
+						],
+					{a, axes},
+					{f, Flatten@Values@fns}
+					]
+					}
+				];
+ChemUtilsSymmetryElementGroup["SymmetryPlanes",
+	axes_,
+	center_,
+	fns_
+	]:=
+	ConnectedComponents[
+		Graph@Flatten@
+			Join[
+				Map[#<->#&, axes],
+				Table[
+					With[{
+						fpl=
+							FixedPointList[Map[f],a, Length@axes,
+								SameTest->(Abs[#1-#2]<1*^-1&)
+								]
+						},
+						With[{
+							normal=
+								center+Cross[#[[1]]-center,#[[2]]-center]
+							},
+							Replace[
+								SelectFirst[DeleteCases[axes,a],
+									!uniqueAxesQ[
+										center,
+										normal,
+										center+Cross[#[[2]]-center,#[[1]]-center]
+										]&,
+									Nothing
+									],
+								l_List:>
+									a<->l
+								]
+							]&/@fpl
+						],
+					{a, axes},
+					{f, Flatten@Values@fns}
+					]
+				]
+			];
+ChemUtilsSymmetryElementGroup[_,k_,__]:=
+	k;
+ChemUtilsSymmetryElementGrouping[
+	elems_,
+	fns_,
+	tol_:Automatic
+	]:=
+	Block[
+		{
+			$ChemSymmetryUniquenessThreshold=
+				Replace[tol, Automatic:>$ChemSymmetryTolerance]
+			},
+		Association@
+			KeyValueMap[
+				#->
+					ChemUtilsSymmetryElementGroup[#, #2, elems["Center"], 
+						Flatten@Values@KeyDrop[fns, "InversionCenter"]
+						]&,
+				KeyDrop[elems, {"Center","CenterSymmetric"}]
+				]
+		]
+
+
+ChemUtilsSymmetryElements[atoms_, tol:_?NumericQ|Automatic:Automatic]:=
+	With[{
+		raw=ChemUtilsRawSymmetryElements[atoms, tol]
+		},
+		With[
+			{
+				fns=
+					ChemUtilsSymmetryElementFunctions@raw
+				},
+				<|
+					"Elements"->
+						raw,
+					"Classes"->
+						Association@
+						KeyValueMap[
+							#->
+								ReplaceAll[#2,
+									MapIndexed[#->#2[[1]]&, raw[#]]
+									]&,
+							ChemUtilsSymmetryElementGrouping[
+								raw, 
+								fns
+								]
+							],
+					"Functions"->
+						Association@
+						KeyValueMap[
+							#->
+								If[#=!="InversionCenter",
+									KeyMap[
+										Replace[MapIndexed[#->#2[[1]]&, raw[#]]],
+										#2
+										],
+									#2
+									]&,
+							fns
+							]
+					|>
+			]
+		]
+
+
+ChemUtilsPointGroup[atoms_,tol:_?NumericQ|Automatic:Automatic]:=
+	ChemUtilsIdentifyPointGroup@@
+		ChemUtilsSymmetryElements[atoms,
+			Replace[tol, Automatic:>$ChemSymmetryTolerance]
+			]["Elements"];
 
 
 ChemUtilsSymmetryGraphicsObjects[
-	symm_Association,
+	symmEls_Association,
 	boxSize_?NumericQ
 	]:=
-	With[{m=boxSize,M=boxSize+.15},
+	With[{symm=symmEls["Elements"],m=boxSize,M=boxSize+.15},
 		<|
 			"InversionCenter"->
 				If[symm["CenterSymmetric"],

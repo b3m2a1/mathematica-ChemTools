@@ -119,7 +119,7 @@ CreateCoordinatesAtomset[
 				],
 			{b, PadRight[#,3,1]&/@bonds}
 			];
-		atomset=CreateAtomset[Join@@ats];
+		atomset=CreateAtomset[ats];
 		AtomsetNormalizeBonds[atomset];
 		atomset
 		]
@@ -198,16 +198,14 @@ CreateHexagonalAtomset[
 	Module[
 		{
 			atoms=
-				{
-					CreateAtom@
-						MapThread[List,
-							{
-								els1,
-								Append[0]/@
-									CirclePoints[6]//N
-								}
-							]
-					},
+				CreateAtom@
+					MapThread[List,
+						{
+							els1,
+							Append[0]/@
+								CirclePoints[6]//N
+							}
+						],
 			oldBonds,
 			atomset
 			},
@@ -220,7 +218,7 @@ CreateHexagonalAtomset[
 					], 
 				{n, Length@atoms}
 				];
-			atomset=CreateAtomset[Join@@atoms];
+			atomset=CreateAtomset[atoms];
 			AtomsetNormalizeBonds[atomset];
 			atomset
 		]
@@ -329,30 +327,30 @@ CreateTrigonalPyrimidalAtomset[
 		]*)
 
 
-(*CreateTrigonalBipyrimidalAtomset[
+CreateTrigonalBipyrimidalAtomset[
 	check:True|False:False,
 	coreEl:_String|{_String,___}|ChemSinglePattern:"C",
-	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{6}]}
+	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{5}]}
 	]:=
-	With[{core=ChemImport["methane"]},
-		With[{
-			cCore=First@AtomsetGetAtoms[core,"C"],
-			hs=AtomsetGetAtoms[core,"H"],
-			newCore=CreateAtom@coreEl,
-			newOuter=CreateAtom/@elements,
-			oldBonds=ChemGet[core["Atoms"],"Bonds"]
+	Module[{
+		core=CreateAtom[coreEl, {0,0,0}],
+		others=
+			CreateAtom@
+				MapThread[List,
+					{
+						elements,
+						N@{
+							{0,0,1},{0,0,-1},
+							{Sqrt[3]/2,-(1/2),0},{0,1,0},{-(Sqrt[3]/2),-(1/2),0}
+							}
+						}],
+			atomset
 			},
-			AtomsetSubstituteAtom[
-				core,
-				Prepend[cCore->newCore]@
-					Thread[hs\[Rule]newOuter],
-				check
-				];
-			ChemRemove/@Flatten@{hs,cCore,oldBonds};
-			AtomsetNormalizeBonds[core];
-			core
-			]
-		]*)
+			Do[AtomCreateBond[core, a, 1, check], {a, others}];
+			atomset=CreateAtomset[Join[{core},others]];
+			AtomsetNormalizeBonds[atomset];
+			atomset
+		]
 
 
 (*CreateSquarePlanarAtomset[
@@ -381,30 +379,31 @@ CreateTrigonalPyrimidalAtomset[
 		]*)
 
 
-(*CreateOctahedralAtomset[
+CreateOctahedralAtomset[
 	check:True|False:False,
 	coreEl:_String|{_String,___}|ChemSinglePattern:"S",
 	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{6}]}
 	]:=
-	With[{core=ChemImport["methane"]},
-		With[{
-			cCore=First@AtomsetGetAtoms[core,"C"],
-			hs=AtomsetGetAtoms[core,"H"],
-			newCore=CreateAtom@coreEl,
-			newOuter=CreateAtom/@elements,
-			oldBonds=ChemGet[core["Atoms"],"Bonds"]
+	Module[{
+		core=CreateAtom[coreEl, {0,0,0}],
+		others=
+			CreateAtom@
+				MapThread[List,
+					{
+						elements,
+						{
+							{0.`,0.`,-1.},{0.`,0.`,1.},
+							{-1., 0.`,0.`},{0.`,1.,0.`},
+							{0.`,-1., 0.`},{1.,0.`,0.`}
+							}
+						}],
+			atomset
 			},
-			AtomsetSubstituteAtom[
-				core,
-				Prepend[cCore->newCore]@
-					Thread[hs\[Rule]newOuter],
-				check
-				];
-			ChemRemove/@Flatten@{hs,cCore,oldBonds};
-			AtomsetNormalizeBonds[core];
-			core
-			]
-		]*)
+			Do[AtomCreateBond[core, a, 1, check], {a, others}];
+			atomset=CreateAtomset[Join[{core},others]];
+			AtomsetNormalizeBonds[atomset];
+			atomset
+		]
 
 
 End[];
