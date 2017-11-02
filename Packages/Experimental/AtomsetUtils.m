@@ -31,7 +31,13 @@ $CreateGeometricAtomsetGeometries=
 		"Linear"->
 			CreateLinearAtomset,
 		"Bent"->
-			CreateLinearAtomset,
+			CreateBentAtomset,
+		"Diamond"->
+			CreateDiamondAtomset,
+		"Hexagonal"->
+			CreateHexagonalAtomset,
+		"TrigonalPlanar"->
+			CreateTrigonalPlanarAtomset,
 		"TrigonalPyrimidal"->
 			CreateTrigonalPyrimidalAtomset,
 		"Tetrahedral"->
@@ -43,21 +49,83 @@ $CreateGeometricAtomsetGeometries=
 		"SquarePyrimidal"->
 			CreateSquarePyrimidalAtomset,
 		"Octahedral"->
-			CreateOctahedralAtomset
-		|>
+			CreateOctahedralAtomset,
+		"Coordinates"->
+			CreateCoordinatesAtomset
+		|>;
+
+
+CreateGeometricAtomset//Clear
 
 
 CreateGeometricAtomset[
-	geom:Alternatives@@Keys@$CreateGeometricAtomsetGeometries,
+	geom_String,
 	check:True|False:False,
 	args___
 	]:=
-	With[{res=$CreateGeometricAtomsetGeometries[geom][check,args]},
+	With[{f=$CreateGeometricAtomsetGeometries[geom]},
+		With[{res=
+			If[MissingQ@f,
+				With[{
+					coords=
+						Replace[PolyhedronData[geom, "Vertices"],
+							f_Function:>f[1,1,1],
+							1
+							]},
+					If[ListQ@coords,
+						CreateCoordinatesAtomset[check,
+							coords,
+							args,
+							PolyhedronData[geom, "Edges"]
+							]
+						]
+					],
+				$CreateGeometricAtomsetGeometries[geom][check,args]
+				]
+			},
 		res/;ChemObjectQ@res
 		]
+	];
 
 
-CreateTetrahedralAtomset[
+PackageAddAutocompletions[CreateGeometricAtomset,
+	{Keys@$CreateGeometricAtomsetGeometries}
+	]
+
+
+CreateCoordinatesAtomset[
+	check:True|False:True,
+	coords:{{_,_,_}..},
+	els:{Repeated[_String|{_String,___}|ChemSinglePattern]},
+	bonds:{{_,_,___}...}:{}
+	]/;Length[coords]===Length[els]:=
+	Module[{
+		ats=
+			CreateAtom@
+				MapThread[List,
+					{
+						els,
+						coords
+						}
+					],
+		atomset
+		},
+		Do[
+			AtomCreateBond[
+				ats[[b[[1]]]],
+				ats[[b[[2]]]],
+				b[[3]],
+				check
+				],
+			{b, PadRight[#,3,1]&/@bonds}
+			];
+		atomset=CreateAtomset[Join@@ats];
+		AtomsetNormalizeBonds[atomset];
+		atomset
+		]
+
+
+CreateLinearAtomset[
 	check:True|False:False,
 	coreEl:_String|{_String,___}|ChemSinglePattern:"C",
 	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{4}]}
@@ -83,7 +151,133 @@ CreateTetrahedralAtomset[
 		]
 
 
+CreateDiamondAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern,{2}]},
+	els2:{Repeated[_String|{_String,___}|ChemSinglePattern,{2}]}
+	]:=
+	Module[
+		{
+			atoms=
+				{
+					CreateAtom@
+						MapThread[List,
+							{
+								els1,
+								{
+									{ 1, 0, 0},
+									{-1, 0, 0}
+									}
+								}
+							],
+					CreateAtom@
+						MapThread[List,
+							{
+								els2,
+								{
+									{0, 1, 0},
+									{0,-1, 0}
+									}
+								}
+							]
+					},
+			oldBonds,
+			atomset
+			},
+			Do[AtomCreateBond[a, b, 1, check], {a, atoms[[1]]}, {b, atoms[[2]]}];
+			atomset=CreateAtomset[Join@@atoms];
+			AtomsetNormalizeBonds[atomset];
+			atomset
+		]
+
+
+CreateHexagonalAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern,{6}]}
+	]:=
+	Module[
+		{
+			atoms=
+				{
+					CreateAtom@
+						MapThread[List,
+							{
+								els1,
+								Append[0]/@
+									CirclePoints[6]//N
+								}
+							]
+					},
+			oldBonds,
+			atomset
+			},
+			Do[
+				AtomCreateBond[
+					atoms[[n]], 
+					atoms[[Mod[n+1, Length@atoms, 1]]],
+					1, 
+					check
+					], 
+				{n, Length@atoms}
+				];
+			atomset=CreateAtomset[Join@@atoms];
+			AtomsetNormalizeBonds[atomset];
+			atomset
+		]
+
+
+CreateTrigonalPlanarAtomset[
+	check:True|False:False,
+	coreEl:_String|{_String,___}|ChemSinglePattern:"C",
+	elements:{Repeated[{Repeated[_String|{_String,___}|ChemSinglePattern,{2}]}, 2]}
+	]:=
+	Module[
+		{
+			atoms=
+				CreateAtom@
+						MapThread[List,
+							elements[[1]],
+							CirclePoints[3]
+							],
+			core=CreateAtom[coreEl, {0, 0, 0}],
+			atomset
+			},
+			Do[AtomCreateBond[core, b, 1, check], {b, atoms}];
+			atomset=CreateAtomset[Join[{core},atoms]];
+			AtomsetNormalizeBonds[atomset];
+			atomset
+		]
+
+
 CreateTetrahedralAtomset[
+	check:True|False:False,
+	coreEl:_String|{_String,___}|ChemSinglePattern:"C",
+	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{4}]}
+	]:=
+	Module[{
+		core=CreateAtom[coreEl, {0,0,0}],
+		others=
+			CreateAtom@
+				MapThread[List,
+					{
+						elements,
+						{
+							{0.`,0.`,0.6123724356957945`},
+							{-0.2886751345948129`,-0.5`,-0.20412414523193154`},
+							{-0.2886751345948129`,0.5`,-0.20412414523193154`},
+							{0.5773502691896258`,0.`,-0.20412414523193154`}
+							}
+						}],
+			atomset
+			},
+			Do[AtomCreateBond[core, a, 1, check], {a, others}];
+			atomset=CreateAtomset[Join[{core},others]];
+			AtomsetNormalizeBonds[atomset];
+			atomset
+		]
+
+
+CreateTrigonalPyrimidalAtomset[
 	check:True|False:False,
 	coreEl:_String|{_String,___}|ChemSinglePattern:"C",
 	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{4}]}
@@ -109,7 +303,7 @@ CreateTetrahedralAtomset[
 		]
 
 
-CreateTetrahedralAtomset[
+(*CreateBentAtomset[
 	check:True|False:False,
 	coreEl:_String|{_String,___}|ChemSinglePattern:"C",
 	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{4}]}
@@ -125,20 +319,20 @@ CreateTetrahedralAtomset[
 			AtomsetSubstituteAtom[
 				core,
 				Prepend[cCore->newCore]@
-					Thread[hs->newOuter],
+					Thread[hs\[Rule]newOuter],
 				check
 				];
 			ChemRemove/@Flatten@{hs,cCore,oldBonds};
 			AtomsetNormalizeBonds[core];
 			core
 			]
-		]
+		]*)
 
 
-CreateTetrahedralAtomset[
+(*CreateTrigonalBipyrimidalAtomset[
 	check:True|False:False,
 	coreEl:_String|{_String,___}|ChemSinglePattern:"C",
-	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{4}]}
+	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{6}]}
 	]:=
 	With[{core=ChemImport["methane"]},
 		With[{
@@ -151,43 +345,17 @@ CreateTetrahedralAtomset[
 			AtomsetSubstituteAtom[
 				core,
 				Prepend[cCore->newCore]@
-					Thread[hs->newOuter],
+					Thread[hs\[Rule]newOuter],
 				check
 				];
 			ChemRemove/@Flatten@{hs,cCore,oldBonds};
 			AtomsetNormalizeBonds[core];
 			core
 			]
-		]
+		]*)
 
 
-CreateTetrahedralAtomset[
-	check:True|False:False,
-	coreEl:_String|{_String,___}|ChemSinglePattern:"C",
-	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{4}]}
-	]:=
-	With[{core=ChemImport["methane"]},
-		With[{
-			cCore=First@AtomsetGetAtoms[core,"C"],
-			hs=AtomsetGetAtoms[core,"H"],
-			newCore=CreateAtom@coreEl,
-			newOuter=CreateAtom/@elements,
-			oldBonds=ChemGet[core["Atoms"],"Bonds"]
-			},
-			AtomsetSubstituteAtom[
-				core,
-				Prepend[cCore->newCore]@
-					Thread[hs->newOuter],
-				check
-				];
-			ChemRemove/@Flatten@{hs,cCore,oldBonds};
-			AtomsetNormalizeBonds[core];
-			core
-			]
-		]
-
-
-CreateSquarePlanarAtomset[
+(*CreateSquarePlanarAtomset[
 	check:True|False:False,
 	coreEl:_String|{_String,___}|ChemSinglePattern:"C",
 	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{4}]}
@@ -203,17 +371,17 @@ CreateSquarePlanarAtomset[
 			AtomsetSubstituteAtom[
 				core,
 				Prepend[cCore->newCore]@
-					Thread[hs->newOuter],
+					Thread[hs\[Rule]newOuter],
 				check
 				];
 			ChemRemove/@Flatten@{hs,cCore,oldBonds};
 			AtomsetNormalizeBonds[core];
 			core
 			]
-		]
+		]*)
 
 
-CreateOctahedralAtomset[
+(*CreateOctahedralAtomset[
 	check:True|False:False,
 	coreEl:_String|{_String,___}|ChemSinglePattern:"S",
 	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{6}]}
@@ -229,14 +397,14 @@ CreateOctahedralAtomset[
 			AtomsetSubstituteAtom[
 				core,
 				Prepend[cCore->newCore]@
-					Thread[hs->newOuter],
+					Thread[hs\[Rule]newOuter],
 				check
 				];
 			ChemRemove/@Flatten@{hs,cCore,oldBonds};
 			AtomsetNormalizeBonds[core];
 			core
 			]
-		]
+		]*)
 
 
 End[];

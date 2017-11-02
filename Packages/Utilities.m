@@ -94,7 +94,9 @@ Begin["`Private`"];
 ChemDataIsotopeQ[s_String]:=
 	ChemDataSource[s]===IsotopeData;
 ChemDataAtomQ[s_String]:=
-	MatchQ[ChemDataSource[s],ElementData|IsotopeData];
+	MatchQ[ChemDataSource[s],
+		ElementData|IsotopeData|"CustomAtoms"
+		];
 ChemDataIsotopeQ[__]:=False
 
 
@@ -1218,21 +1220,138 @@ ChemUtilsGuessBonds[
 		]
 
 
-symmetricPointQ[p_,{el_,opos_},atoms_,tol_]:=
-	AnyTrue[Cases[atoms,{el,_}],
-		Between[#[[2,1]],p[[1]]+{-tol,tol}]&&
-		Between[#[[2,2]],p[[2]]+{-tol,tol}]&&
-		Between[#[[2,3]],p[[3]]+{-tol,tol}]
-		&]
+rawTransformationFunctionFunction[tf_,
+	{vars___},
+	reps_
+	]:=
+	With[{
+		base=
+			TransformationMatrix[tf]//.{
+				Conjugate[x_]:>x
+				}
+		},
+		With[{
+			mx=base[[;;3,;;3]],
+			anchor=base[[;;3, 4]],
+			huh=base[[4, ;;3]],
+			scale=base[[4,4]]
+			},
+			With[{
+				m=mx, 
+				trans=anchor
+				},
+				Compile@@
+					ReplaceAll[
+						Hold[
+							{{rawTransfPt,_Real,1}, vars },
+							Module[{doT=trans=!={0., 0., 0.}},
+								If[m==={{1., 0., 0.},{0., 1., 0.},{0.,0.,1.}},
+									If[doT,
+										m.(rawTransfPt-trans)+trans,
+										m.rawTransfPt
+										],
+									rawTransfPt+trans
+									]
+								],
+							RuntimeAttributes -> {Listable},
+							RuntimeOptions -> {
+								"EvaluateSymbolically" -> False,
+								"RuntimeErrorHandler" -> ($Failed&)
+								}
+							],
+						reps
+						]
+				]
+			]
+		];
 
 
-symmetryOperationQ[transform_,atoms_,tol_]:=
-	AllTrue[atoms,
-		Replace[transform@Last@#,
+rawRotationTranformationFunction:=
+	rawTransformationFunctionFunction[
+		RotationTransform[a,{b,c,d},{e,f,g}],
+		{{theta, _Real}, {axis, _Real, 1}, {center, _Real, 1}},
+		{
+			a:>theta,
+			b:>axis[[1]],c:>axis[[2]],d:>axis[[3]],
+			e:>center[[1]],e:>center[[2]],g:>center[[3]]
+			}
+		]
+
+
+rawTranslationTranformationFunction:=
+	rawTransformationFunctionFunction[
+		TranslationTransform[{a, b, c}],
+		{{trans, _Real, 1}},
+		{
+			a:>trans[[1]],
+			b:>trans[[2]],
+			c:>trans[[3]]
+			}
+		]
+
+
+rawReflectionTranformationFunction:=
+	rawTransformationFunctionFunction[
+		ReflectionTransform[{a, b, c},{d, e, f}],
+		{{normal, _Real, 1}, {center, _Real, 1}},
+		{
+			a:>normal[[1]],
+			b:>normal[[2]],
+			c:>normal[[3]],
+			d:>center[[1]],
+			e:>center[[2]],
+			f:>center[[3]]
+			}
+		]
+
+
+(* ::Text:: *)
+(*Might be worth having a symmetry tester for each group*)
+
+
+
+symmetricPointQ=
+	Compile[
+		{
+			{p, _Real, 1},
+			{opos, _Real, 1},
+			{positions, _Real, 2},
+			{tol, _Real}
+			},
+		Block[
 			{
-				p_List:>symmetricPointQ[p,#,atoms,tol],
-				_->False
-				}]&
+				flag=False,
+				idx=1,
+				len=Length@positions
+				},
+			While[
+				idx<=len&&
+					Not[
+						flag=
+							p[[1]]-tol<=positions[[idx, 1]]<=p[[1]]+tol&&
+							p[[2]]-tol<=positions[[idx, 2]]<=p[[2]]+tol&&
+							p[[3]]-tol<=positions[[idx, 3]]<=p[[3]]+tol
+						],
+				idx++
+				];
+			If[flag, 1, 0]
+			]
+		];
+
+
+symmetryOperationQ[transform_, pts_List, tol_]:=
+	AllTrue[pts,
+		With[
+			{
+				tp=
+					transform@#
+				},
+			ListQ@tp&&(symmetricPointQ[tp, #, pts, tol]===1)
+			]&
+		];
+symmetryOperationQ[transform_,grps_Association,tol_]:=
+	AllTrue[grps,
+		symmetryOperationQ[transform, #, tol]&
 		]
 
 
@@ -1240,57 +1359,99 @@ inversionTransform[point_]:=
 	AffineTransform@{ScalingMatrix[{-1,-1,-1}],2*point}
 
 
-ChemUtilsInversionCenterQ[point_,
-	atoms_,tol:_?NumericQ:0]:=
-	symmetryOperationQ[(2*point-#)&,atoms,tol];
-
-
-$uniquenessTolerance=.005;
-
-
-uniqueAxesQ[center_,p_,q_]:=
-	With[{n1=Normalize[p-center],n2=Normalize[q-center]},
-		Norm[n1-n2]>$uniquenessTolerance&&
-			Norm[n1+n2]>$uniquenessTolerance
+ChemUtilsInversionCenterQ[point_, groups_, tol:_?NumericQ:0]:=
+	With[{tf=Compile[{{p, _Real, 1}},(2*point-p)]},
+		symmetryOperationQ[tf,groups,tol]
 		];
+
+
+$uniquenessThreshold=.005;
+
+
+With[{ut=$uniquenessThreshold},
+	uniqeAxesQComp=
+		Compile[{{center, _Real, 1}, {p, _Real, 1}, {q, _Real, 1}},
+			With[{n1=Normalize[p-center],n2=Normalize[q-center]},
+				Norm[n1-n2]>$uniquenessThreshold&&
+					Norm[n1+n2]>$uniquenessThreshold
+				]
+			]
+	];
+uniqeAxesQ[center_, p_,q_]:=
+	uniqeAxesQComp[center,p,q];
 uniqeAxesQ[center_][p_,q_]:=
-	uniqueAxesQ[center,p,q];
+	uniqeAxesQComp[center,p,q];
 
 
-rotationTransform[order_,{point1_,point2_}]:=
-	RotationTransform[2.\[Pi]/order,point2-point1,point1];
+rotationTransform[order_, {point1_, point2_}]:=
+	RotationTransform[2.\[Pi]/order, point2-point1, point1];
 rotationTransform[{point1_,point2_}][order_]:=
 	rotationTransform[order,{point1,point2}];
 
 
-ChemUtilsRotationAxisOrder[{point1_,point2_},
-	atoms_,tol:_?NumericQ:0]:=
-	If[ChemUtilsRotorType@atoms==="Linear",
+ChemUtilsRotationAxisOrder[
+	{point1_,point2_},
+	groups_,
+	tol:_?NumericQ:.000001,
+	linearQ:True|False:False
+	]:=
+	If[linearQ,
 		If[
-			uniqueAxesQ[point1,atoms[[1,2]],point2]||
-				uniqueAxesQ[point1,atoms[[-1,2]],point2],
+			uniqueAxesQ[point1, groups[[1,1]], point2]||
+				uniqueAxesQ[point1, groups[[1,-1]], point2],
 			1,
 			\[Infinity]
 			],
-		With[{
-			es=Last@Sort@Counts@Map[First,atoms]
-			},
-			FirstCase[Range[es,2,-1],
-				_?(symmetryOperationQ[rotationTransform[#,{point1,point2}],atoms,tol]&),
-				1]
+		With[{es=SortBy[groups, Length]},
+			With[{
+				ret=
+					Do[
+						If[
+							symmetryOperationQ[
+								rotationTransform[o, {point1, point2}],
+								groups,
+								tol
+								],
+							Return[o]
+							],
+						{o, Length@groups[[-1]], 2, -1}
+						]
+					},
+				If[ret>1//TrueQ,
+					ret,
+					1
+					]
+				]
 			]
 		];
 
 
-reflectionTransform[{point1_,point2_,point3_}]:=
-	With[{norm=Normalize@Cross[point2-point1,point3-point1]},
-		ReflectionTransform[norm,point1]
+ChemUtilsPlaneOfSymmetryQ[
+	point1_,
+	norm_,
+	grps_,
+	tol:_?NumericQ:0.000001
+	]:=
+	symmetryOperationQ[
+		ReflectionTransform[
+			norm,
+			point1
+			],
+		grps,
+		tol
 		];
-
-
-ChemUtilsPlaneOfSymmetryQ[{point1_,point2_,point3_},
-	atoms_,tol:_?NumericQ:0]:=
-	symmetryOperationQ[reflectionTransform@{point1,point2,point3},atoms,tol]
+ChemUtilsPlaneOfSymmetryQ[
+	point1_,
+	{point2_,point3_},
+	grps_,
+	tol:_?NumericQ:0.000001
+	]:=
+	ChemUtilsPlaneOfSymmetryQ[
+		point1,
+		Normalize@Cross[point2-point1,point3-point1],
+		grps,
+		tol
+		]
 
 
 upQ=
@@ -1346,7 +1507,7 @@ screwTransform[{center_,axisPoint_}][order_]:=
 	screwTransform[order,{center,axisPoint}]
 
 
-ChemUtilsScrewAxisOrder[{center_,axisPoint_},
+(*ChemUtilsScrewAxisOrder[{center_,axisPoint_},
 	atoms_,tol:_?NumericQ:0]:=
 	With[{
 			es=Last@Sort@Counts@Map[First,atoms]
@@ -1354,7 +1515,35 @@ ChemUtilsScrewAxisOrder[{center_,axisPoint_},
 			FirstCase[Range[es,3,-1],
 				_?(symmetryOperationQ[screwTransform[#,{center,axisPoint}],atoms,tol]&),
 				0]
+			]*)
+
+
+ChemUtilsScrewAxisOrder[
+	{point1_,point2_},
+	groups_,
+	tol:_?NumericQ:.000001
+	]:=
+	With[{es=SortBy[groups, Length]},
+		With[{
+			ret=
+				Do[
+					If[
+						symmetryOperationQ[
+							screwTransform[o, {point1, point2}],
+							groups,
+							tol
+							],
+						Return[o]
+						],
+					{o, Length@groups[[-1]], 3, -1}
+					]
+				},
+			If[ret>0//TrueQ,
+				ret,
+				0
+				]
 			]
+		];
 
 
 ChemUtilsIdentifyPointGroup[
@@ -1489,124 +1678,262 @@ ChemUtilsInertialSymmetry[atoms_,tol:_?NumericQ:.05]:=
 		];
 
 
-enumeratePositions[center_,positions_]:=
-	DeleteDuplicates@DeleteCases[Join[positions,Mean/@Tuples[positions,2]],center]
-
-
-enumeratePlanesSimple[center_,positions_]:=
-	Select[
-		DeleteDuplicates[Sort/@
-			Tuples[positions,2]
-			],
-		Apply@uniqeAxesQ[center]
-		]
-
-
-enumerateAxes[center_,positions_]:=
-	DeleteDuplicates@
-		Join[enumeratePositions[center,positions],
-			Map[center+Cross[#[[1]]-center,#[[2]]-center]&,
-				enumeratePlanesSimple[center,positions]
-				]
+enumeratePositionsIter[positions_, n_, plen_]:=
+	With[
+		{
+			i=1+Floor[(n-1)/plen],
+			j=Mod[n, plen, 1]
+			},
+		If[i>j,
+			-1,
+			Mean[{
+				positions[[i]],
+				positions[[j]]
+				}]
 			]
+		];
+symmetryTestPosition[center_, positions_, n_]:=
+	enumeratePositionsIter[positions, n, Length@positions];
+symmetryTestPositionCount[center_, positions_]:=
+	Length@positions^2;
 
 
-enumeratePlanes[center_,positions_]:=
-	enumeratePlanesSimple[center,enumerateAxes[center,positions]]
+With[{ut=$uniquenessThreshold},
+	uniquePointsQComp=
+		Compile[{{pt1,_Real,1},{pt2,_Real,1}},
+			Norm[pt1-pt2]>ut
+			]
+	];
+uniquePointsQ[pt1_List, pt2_]:=
+	uniquePointsQComp[pt1, pt2];
+uniquePointsQ[___]:=False
 
 
-enumerateRotationAxes[center_,atoms_,tol_]:=
-	With[{positions=Map[Last,atoms]},
-		With[{possibleAxes=
-			DeleteDuplicates[
-				enumerateAxes[center,positions],
-				Not@*uniqeAxesQ[center]
-				]},
-			DeleteCases[
-				Map[
-					{ChemUtilsRotationAxisOrder[{center,#},atoms,tol],#}&,
-					possibleAxes
-					],
-				{1,_}
+enumeratePlanesIter[center_, positions_, n_, plen_]:=
+	With[
+		{
+			i=1+Floor[(n-1)/(plen^2)],
+			j=Mod[n, plen^2, 1]
+			},
+		If[i>=j,
+			-1,
+			With[{pt1=symmetryTestPosition[center, positions, i ]},
+				If[(uniquePointsQ[pt1, center]&&ListQ[pt1])//TrueQ,
+					With[{pt2=symmetryTestPosition[center, positions, j ]},
+						If[(uniquePointsQ[pt2, center]&&ListQ[pt2])//TrueQ,
+							{pt1, pt2},
+							-1
+							]
+						],
+					-1
+					]
 				]
 			]
 		];
+enumeratePlanesIter2[center_, positions_, n_, plen_]:=
+	With[
+		{
+			i=1+Floor[(n-1)/(plen^2)],
+			j=Mod[n, (plen^2), 1]
+			},(*
+		If[i>=j,
+			-1,*)
+			With[{pt1=symmetryTestAxis[center, positions, i + plen^2]},
+				If[(uniquePointsQ[pt1, center]&&ListQ[pt1])//TrueQ,
+					With[{pt2=symmetryTestAxis[center, positions, j ]},
+						If[(uniquePointsQ[pt2,center]&&ListQ[pt2])//TrueQ,
+							{pt1, pt2},
+							-1
+							]
+						],
+					-1
+					]
+				](*
+			]*)
+		];
+symmetryTestPlane[center_, positions_, n_]:=
+	With[{len=Length@positions},
+		If[ n <= len^4,
+			enumeratePlanesIter[center, positions, n, len],
+			enumeratePlanesIter2[center, positions, n, len]
+			]
+		];
+symmetryTestPlaneCount[positions_]:=
+	Length@positions^4+Length@positions^4;
 
 
-enumerateSymmetryPlanes[center_,atoms_,tol_]:=
-	With[{positions=Map[Last,atoms]},
-		With[{possiblePlanes=
-			DeleteDuplicates[
-				enumeratePlanes[center,positions],
-				Not@*uniquePlanesQ[center]
+enumerateAxesIter[center_, positions_, n_, posLen_]:=
+	With[{p=
+		If[n<=posLen^2,
+			symmetryTestPosition[center, positions, n],
+			With[{s=symmetryTestPlane[center, positions, n - posLen]},
+				If[ListQ[s],
+					center+Cross[s[[1]]-center, s[[2]]-center],
+					s
+					]
 				]
+			]
+			},
+		If[uniquePointsQ[p,center], p, 1]
+		];
+symmetryTestAxis[center_, positions_, n_]:=
+	enumerateAxesIter[center, positions, n, Length@positions];
+symmetryTestAxisCount[positions_]:=
+	Length@positions^4+Length@positions
+
+
+enumerateRotationAxes[center_,groups_,tol_]:=
+	With[{positions=Join@@Values[groups]},
+		Block[
+			{
+				triedAxes=Range[symmetryTestAxisCount[positions]],
+				testAx,
+				linearQ=
+					ChemUtilsRotorType[KeyValueMap[Thread, groups]]==="Linear"
 				},
-			Select[possiblePlanes,
-				ChemUtilsPlaneOfSymmetryQ[Prepend[#,center],atoms,tol]&
-				]
+			Table[
+				testAx=symmetryTestAxis[center, positions, n];
+				If[
+					ListQ@testAx&&
+					AllTrue[
+						Range[n-1], 
+							(
+								!ListQ[triedAxes[[#]]]||
+									uniqueAxesQ[center, triedAxes[[#, 2]], testAx]
+								)&
+						],
+					With[{
+						o=
+							ChemUtilsRotationAxisOrder[
+								{center, testAx},
+								groups,
+								tol,
+								linearQ
+								]
+						},
+						If[o>1,
+							triedAxes[[n]]={o, testAx}
+							]
+						]
+					],
+				{n, triedAxes}
+				];
+			Select[triedAxes, ListQ]
 			]
 		];
 
 
-enumerateScrewAxes[center_,atoms_,tol_]:=
-	With[{positions=Map[Last,atoms]},
-		With[{possibleAxes=
-			DeleteDuplicates[
-				enumerateAxes[center,positions],
-				Not@*uniqeAxesQ[center]
-				]},
-			DeleteCases[
-				Map[
-					{ChemUtilsScrewAxisOrder[{center,#},atoms,tol],#}&,
-					possibleAxes
+enumerateSymmetryPlanes[center_,groups_,tol_]:=
+	With[{positions=Join@@Values[groups]},
+		Block[
+			{
+				triedPlanes=Range[symmetryTestPlaneCount[positions]],
+				testPlane
+				},
+			Table[
+				testPlane=symmetryTestPlane[center, positions, n];
+				If[ListQ@testPlane,
+					testPlane=
+						triedPlanes[[n]]=
+							{
+								Cross[testPlane[[1]]-center, testPlane[[2]]-center],
+								testPlane
+								}
+					];
+				If[ListQ@testPlane&&testPlane[[1]]!={0,0,0}&&
+					AllTrue[
+						Range[n-1], 
+							(
+								!ListQ[triedPlanes[[#]]]||
+									uniqueAxesQ[center,
+										If[triedPlanes[[#, 1]]===True,
+											triedPlanes[[#, 2, 1]],
+											triedPlanes[[#, 1]]
+											], 
+										testPlane[[1]]
+										]
+								)&
+						],
+					If[
+							ChemUtilsPlaneOfSymmetryQ[
+								center,
+								testPlane[[1]],
+								groups,
+								tol
+								],
+						triedPlanes[[n]]=
+							{True, testPlane}
+						]
 					],
-				{0,_}
-				]
+				{n, triedPlanes}
+				];
+			Cases[triedPlanes, {True, {_, p_}}:>p]
+			]
+		];
+
+
+enumerateScrewAxes[center_,groups_,tol_]:=
+	With[{positions=Join@@Values[groups]},
+		Block[
+			{
+				triedAxes=Range[symmetryTestAxisCount[positions]],
+				testAx
+				},
+			Table[
+				testAx=symmetryTestAxis[center, positions, n];
+				If[
+					ListQ@testAx&&
+					AllTrue[
+						Range[n-1], 
+							(
+								!ListQ[triedAxes[[#]]]||
+									uniqueAxesQ[center, triedAxes[[#, 2]], testAx]
+								)&
+						],
+					With[{
+						o=
+							ChemUtilsScrewAxisOrder[
+								{center, testAx},
+								groups,
+								tol
+								]
+						},
+						If[o>0,
+							triedAxes[[n]]={o, testAx}
+							]
+						]
+					],
+				{n, triedAxes}
+				];
+			Select[triedAxes, ListQ]
 			]
 		];
 
 
 ChemUtilsSymmetryElements[atoms_,tol:_?NumericQ:.05]:=
 	With[{
-		center=ChemUtilsCenter@atoms,
-		axes=Last@ChemUtilsInertialEigensystem@atoms},
+		center=
+			Round[ChemUtilsCenter@atoms,
+				.000001
+				],
+		axes=Last@ChemUtilsInertialEigensystem@atoms,
+		groups=
+			Round[
+				GroupBy[atoms,First->Last],
+				.000001
+				]
+		},
 		<|
-			"Center"->center,
-			"CenterSymmetric"->ChemUtilsInversionCenterQ[center,atoms,tol],
+			"Center"->
+				center,
+			"CenterSymmetric"->
+				ChemUtilsInversionCenterQ[center,groups,tol],
 			"RotationAxes"->
-				DeleteDuplicates[
-					Join[
-						enumerateRotationAxes[center,atoms,tol],
-						DeleteCases[
-							{ChemUtilsRotationAxisOrder[{center,#},atoms,tol],#}&/@axes,
-							{1,_}
-							];{}
-						],
-					Not@*uniqueAxesQ[center][Last@#,Last@#2]&
-					],
+				enumerateRotationAxes[center,groups,tol],
 			"SymmetryPlanes"->
-				DeleteDuplicates[
-					Join[
-						enumerateSymmetryPlanes[center,atoms,tol],
-						Select[
-							DeleteDuplicatesBy[Tuples[axes,2],Sort],
-							Not@*Equal@@#&&
-								ChemUtilsPlaneOfSymmetryQ[Prepend[#,center],atoms,tol]&
-							]
-						],
-					Not@*uniquePlanesQ[center]
-					],
+				enumerateSymmetryPlanes[center,groups,tol],
 			"ScrewAxes"->
-				DeleteDuplicates[
-					Join[
-						enumerateScrewAxes[center,atoms,tol],
-						DeleteCases[
-							{ChemUtilsScrewAxisOrder[{center,#},atoms,tol],#}&/@axes,
-							{0,_}
-							]
-						],
-					Not@*uniqueAxesQ[center][Last@#,Last@#2]&
-					]
+				enumerateScrewAxes[center,groups,tol]
 			|>
 		];
 

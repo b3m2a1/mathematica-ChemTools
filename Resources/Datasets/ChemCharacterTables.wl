@@ -1,0 +1,19725 @@
+(* ::Package:: *)
+
+(* ::Text:: *)
+(*Cleaned from here: *)
+
+
+(*NewlineateCodeRecursive[ctabs, _Association|_Rule|_List]*)
+
+
+<|
+	"Cs"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"Cs",
+					"Type"->
+							"C",
+					"Order"->
+							None,
+					"Modifier"->
+							"s",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"\"s\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"\[Sigma]h",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"h",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[Sigma]\"", "\"h\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A'",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A''",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1
+						},
+					{
+						1,
+						-1
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalX],
+						\[FormalY],
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						\[FormalZ],
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						 \[FormalX]^2,
+						 \[FormalY]^2,
+						 \[FormalZ]^2,
+						\[FormalX] \[FormalY]
+						},
+					{
+						\[FormalY] \[FormalZ],
+						\[FormalX] \[FormalZ]
+						}
+					}
+			|>,
+	"Ci"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"Ci",
+					"Type"->
+							"C",
+					"Order"->
+							None,
+					"Modifier"->
+							"\[Infinity]",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"\"\[Infinity]\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"i",
+						"ID"->
+								"i",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"i\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"Ag",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Au",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1
+						},
+					{
+						1,
+						-1
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]],
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						\[FormalX],
+						\[FormalY],
+						\[FormalZ] 
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						 \[FormalX]^2,
+						 \[FormalY]^2,
+						 \[FormalZ]^2,
+						\[FormalX] \[FormalY],
+						\[FormalX] \[FormalZ],
+						\[FormalY] \[FormalZ]
+						},
+					{}
+					}
+			|>,
+	"C1"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C1",
+					"Type"->
+							"C",
+					"Order"->
+							1,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"1","\"\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1
+						}
+					},
+			"LinearFunctions"->
+					{
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{}
+					}
+			|>,
+	"C2"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C2",
+					"Type"->
+							"C",
+					"Order"->
+							2,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"2","\"\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B",
+						"Type"->
+								"B",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"B\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1
+						},
+					{
+						1,
+						-1
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalZ],
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						\[FormalX],
+						\[FormalY],
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						 \[FormalX]^2,
+						 \[FormalY]^2,
+						 \[FormalZ]^2,
+						\[FormalX] \[FormalY]
+						},
+					{
+						\[FormalY] \[FormalZ],
+						\[FormalX] \[FormalZ]
+						}
+					}
+			|>,
+	"C3"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C3",
+					"Type"->
+							"C",
+					"Order"->
+							3,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"3","\"\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "3"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C32",
+						"Order"->
+								3,
+						"Degree"->
+								2,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "3"], "2"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1
+						},
+					{
+						2,
+						0,
+						0
+						},
+					{
+						1,
+						 E^((2 I \[Pi])/3),
+						 E^(-((2 I \[Pi])/3)) 
+						},
+					{
+						1,
+						 E^(-((2 I \[Pi])/3)),
+						 E^((2 I \[Pi])/3) 
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalZ],
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							},
+						\[FormalX] \[FormalZ],
+						\[FormalY] \[FormalZ]
+						},
+					{}
+					}
+			|>,
+	"C4"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C4",
+					"Type"->
+							"C",
+					"Order"->
+							4,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"4","\"\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "4"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C43",
+						"Order"->
+								4,
+						"Degree"->
+								3,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "4"], "3"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B",
+						"Type"->
+								"B",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"B\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1
+						},
+					{
+						2,
+						0,
+						-2,
+						0
+						},
+					{
+						1,
+						i,
+						-1,
+						-i
+						},
+					{
+						1,
+						-i,
+						-1,
+						i 
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalZ],
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{
+						\[FormalX]^2-\[FormalY]^2,
+						\[FormalX] \[FormalY]
+						},
+					{},
+					{
+						{
+							\[FormalY] \[FormalZ],
+							\[FormalX] \[FormalZ]
+							}
+						},
+					{}
+					}
+			|>,
+	"C8"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C8",
+					"Type"->
+							"C",
+					"Order"->
+							8,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"8","\"\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C8",
+						"Order"->
+								8,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "8"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "4"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C83",
+						"Order"->
+								8,
+						"Degree"->
+								3,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "8"], "3"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C85",
+						"Order"->
+								8,
+						"Degree"->
+								5,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "8"], "5"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C43",
+						"Order"->
+								4,
+						"Degree"->
+								3,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "4"], "3"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C87",
+						"Order"->
+								8,
+						"Degree"->
+								7,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "8"], "7"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B",
+						"Type"->
+								"B",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"B\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E3",
+						"Type"->
+								"E",
+						"Index"->
+								3,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"3", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E3",
+						"Type"->
+								"E",
+						"Index"->
+								3,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"3", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1
+						},
+					{
+						1,
+						 E^((I \[Pi])/4),
+						i,
+						-E^(-((I \[Pi])/4)),
+						-1,
+						-E^(((I \[Pi])/4)),
+						-i,
+						 E^(-((I \[Pi])/4)) 
+						},
+					{
+						1,
+						 E^(-((I \[Pi])/4)),
+						-i,
+						-E^(((I \[Pi])/4)),
+						-1,
+						-E^(-((I \[Pi])/4)),
+						i,
+						 E^((I \[Pi])/4) 
+						},
+					{
+						2,
+						0,
+						-2,
+						0,
+						2,
+						0,
+						-2,
+						0
+						},
+					{
+						1,
+						i,
+						-1,
+						-i,
+						1,
+						i,
+						-1,
+						-i
+						},
+					{
+						1,
+						-i,
+						-1,
+						i,
+						1,
+						-i,
+						-1,
+						i 
+						},
+					{
+						1,
+						-E^(((I \[Pi])/4)),
+						i,
+						 E^(-((I \[Pi])/4)),
+						-1,
+						 E^((I \[Pi])/4),
+						-i,
+						-E^(-((I \[Pi])/4))
+						},
+					{
+						1,
+						-E^(-((I \[Pi])/4)),
+						-i,
+						 E^((I \[Pi])/4),
+						-1,
+						 E^(-((I \[Pi])/4)),
+						i,
+						-E^(((I \[Pi])/4))
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalZ],
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						},
+					{},
+					{},
+					{}
+					}
+			|>,
+	"C5"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C5",
+					"Type"->
+							"C",
+					"Order"->
+							5,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"5","\"\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C5",
+						"Order"->
+								5,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "5"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C52",
+						"Order"->
+								5,
+						"Degree"->
+								2,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "5"], "2"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C53",
+						"Order"->
+								5,
+						"Degree"->
+								3,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "5"], "3"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C54",
+						"Order"->
+								5,
+						"Degree"->
+								4,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "5"], "4"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						 E^((2 I \[Pi])/5),
+						2 E^((2 I \[Pi])/5),
+						2 E^((2 I \[Pi])/5),
+						 E^(-((2 I \[Pi])/5)) 
+						},
+					{
+						1,
+						 E^(-((2 I \[Pi])/5)),
+						2 E^((2 I \[Pi])/5),
+						2 E^((2 I \[Pi])/5),
+						 E^((2 I \[Pi])/5) 
+						},
+					{
+						1,
+						2 E^((2 I \[Pi])/5),
+						 E^(-((2 I \[Pi])/5)),
+						 E^((2 I \[Pi])/5),
+						2 E^((2 I \[Pi])/5)
+						},
+					{
+						1,
+						2 E^((2 I \[Pi])/5),
+						 E^((2 I \[Pi])/5),
+						 E^(-((2 I \[Pi])/5)),
+						2 E^((2 I \[Pi])/5)
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalZ],
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{},
+					{},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{
+						{
+							\[FormalY] \[FormalZ],
+							\[FormalX] \[FormalZ]
+							}
+						},
+					{},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						},
+					{}
+					}
+			|>,
+	"C6"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C6",
+					"Type"->
+							"C",
+					"Order"->
+							6,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"6","\"\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C6",
+						"Order"->
+								6,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "6"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "3"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C32",
+						"Order"->
+								3,
+						"Degree"->
+								2,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "3"], "2"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C65",
+						"Order"->
+								6,
+						"Degree"->
+								5,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "6"], "5"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B",
+						"Type"->
+								"B",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"B\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1
+						},
+					{
+						1,
+						 E^((I \[Pi])/3),
+						-E^(-((I \[Pi])/3)),
+						-1,
+						-E^(((I \[Pi])/3)),
+						 E^(-((I \[Pi])/3)) 
+						},
+					{
+						1,
+						 E^(-((I \[Pi])/3)),
+						-E^(((I \[Pi])/3)),
+						-1,
+						-E^(-((I \[Pi])/3)),
+						 E^((I \[Pi])/3) 
+						},
+					{
+						2,
+						-1,
+						-1,
+						2,
+						-1,
+						-1
+						},
+					{
+						1,
+						-E^(-((I \[Pi])/3)),
+						-E^(((I \[Pi])/3)),
+						1,
+						-E^(-((I \[Pi])/3)),
+						-E^(((I \[Pi])/3))
+						},
+					{
+						1,
+						-E^(((I \[Pi])/3)),
+						-E^(-((I \[Pi])/3)),
+						1,
+						-E^(((I \[Pi])/3)),
+						-E^(-((I \[Pi])/3))
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalZ],
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{},
+					{},
+					{},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						},
+					{}
+					}
+			|>,
+	"C7"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C7",
+					"Type"->
+							"C",
+					"Order"->
+							7,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"7","\"\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C7",
+						"Order"->
+								7,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "7"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C72",
+						"Order"->
+								7,
+						"Degree"->
+								2,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "7"], "2"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C73",
+						"Order"->
+								7,
+						"Degree"->
+								3,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "7"], "3"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C74",
+						"Order"->
+								7,
+						"Degree"->
+								4,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "7"], "4"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C75",
+						"Order"->
+								7,
+						"Degree"->
+								5,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "7"], "5"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C76",
+						"Order"->
+								7,
+						"Degree"->
+								6,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "7"], "6"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E3",
+						"Type"->
+								"E",
+						"Index"->
+								3,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"3", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E3",
+						"Type"->
+								"E",
+						"Index"->
+								3,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"3", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						 E^((2 I \[Pi])/7),
+						2 E^((2 I \[Pi])/7),
+						3 E^((2 I \[Pi])/7),
+						3 E^((2 I \[Pi])/7),
+						2 E^((2 I \[Pi])/7),
+						 E^(-((2 I \[Pi])/7)) 
+						},
+					{
+						1,
+						 E^(-((2 I \[Pi])/7)),
+						2 E^((2 I \[Pi])/7),
+						3 E^((2 I \[Pi])/7),
+						3 E^((2 I \[Pi])/7),
+						2 E^((2 I \[Pi])/7),
+						 E^((2 I \[Pi])/7) 
+						},
+					{
+						1,
+						2 E^((2 I \[Pi])/7),
+						3 E^((2 I \[Pi])/7),
+						 E^(-((2 I \[Pi])/7)),
+						 E^((2 I \[Pi])/7),
+						3 E^((2 I \[Pi])/7),
+						2 E^((2 I \[Pi])/7)
+						},
+					{
+						1,
+						2 E^((2 I \[Pi])/7),
+						3 E^((2 I \[Pi])/7),
+						 E^((2 I \[Pi])/7),
+						 E^(-((2 I \[Pi])/7)),
+						3 E^((2 I \[Pi])/7),
+						2 E^((2 I \[Pi])/7)
+						},
+					{
+						1,
+						3 E^((2 I \[Pi])/7),
+						 E^(-((2 I \[Pi])/7)),
+						2 E^((2 I \[Pi])/7),
+						2 E^((2 I \[Pi])/7),
+						 E^((2 I \[Pi])/7),
+						3 E^((2 I \[Pi])/7)
+						},
+					{
+						1,
+						3 E^((2 I \[Pi])/7),
+						 E^((2 I \[Pi])/7),
+						2 E^((2 I \[Pi])/7),
+						2 E^((2 I \[Pi])/7),
+						 E^(-((2 I \[Pi])/7)),
+						3 E^((2 I \[Pi])/7)
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalZ],
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{},
+					{},
+					{},
+					{},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						},
+					{},
+					{},
+					{}
+					}
+			|>,
+	"D2"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"D2",
+					"Type"->
+							"D",
+					"Order"->
+							2,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"D\"\>", 
+TemplateBox[{"2","\"\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2(z)",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"(z)",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"(z)\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2(y)",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"(y)",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"(y)\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2(x)",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"(x)",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"(x)\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B1",
+						"Type"->
+								"B",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B2",
+						"Type"->
+								"B",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B3",
+						"Type"->
+								"B",
+						"Index"->
+								3,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"3", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						-1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1
+						},
+					{
+						1,
+						-1,
+						-1,
+						1
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						\[FormalZ],
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						\[FormalY],
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{
+						\[FormalX],
+						\[FormalCapitalR][\[FormalX]]
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						 \[FormalX]^2,
+						 \[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{
+						\[FormalX] \[FormalY]
+						},
+					{
+						\[FormalX] \[FormalZ]
+						},
+					{
+						\[FormalY] \[FormalZ]
+						}
+					}
+			|>,
+	"D3"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"D3",
+					"Type"->
+							"D",
+					"Order"->
+							3,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"D\"\>", 
+TemplateBox[{"3","\"\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "3"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"3C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"C\"", "2"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						-1
+						},
+					{
+						2,
+						-1,
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						\[FormalZ],
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							},
+						\[FormalX] \[FormalZ],
+						\[FormalY] \[FormalZ]
+						}
+					}
+			|>,
+	"D4"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"D4",
+					"Type"->
+							"D",
+					"Order"->
+							4,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"D\"\>", 
+TemplateBox[{"4","\"\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "4"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2(=C42)",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C2'",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "2"]}],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C2''",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "2"]}],"\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B1",
+						"Type"->
+								"B",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B2",
+						"Type"->
+								"B",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						-1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1
+						},
+					{
+						2,
+						0,
+						-2,
+						0,
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						\[FormalZ],
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						\[FormalX]^2-\[FormalY]^2
+						},
+					{
+						\[FormalX] \[FormalY]
+						},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						}
+					}
+			|>,
+	"D5"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"D5",
+					"Type"->
+							"D",
+					"Order"->
+							5,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"D\"\>", 
+TemplateBox[{"5","\"\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C5",
+						"Order"->
+								5,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "5"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C52",
+						"Order"->
+								5,
+						"Degree"->
+								2,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", TemplateBox[{SubscriptBox["\"C\"", "5"], "2"}, "Superscript", SyntaxForm -> SuperscriptBox]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"5C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								5,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"5", " ", SubscriptBox["\"C\"", "2"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						-1
+						},
+					{
+						2,
+						1/2 (-1+Sqrt[5]),
+						1/2 (-1-Sqrt[5]),
+						0
+						},
+					{
+						2,
+						1/2 (-1-Sqrt[5]),
+						1/2 (-1+Sqrt[5]),
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						\[FormalZ],
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						}
+					}
+			|>,
+	"D6"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"D6",
+					"Type"->
+							"D",
+					"Order"->
+							6,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"D\"\>", 
+TemplateBox[{"6","\"\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C6",
+						"Order"->
+								6,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "6"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "3"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"3C2'",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"C\"", "2"]}],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"3C2''",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"C\"", "2"]}],"\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B1",
+						"Type"->
+								"B",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B2",
+						"Type"->
+								"B",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						-1,
+						1
+						},
+					{
+						2,
+						1,
+						-1,
+						-2,
+						0,
+						0
+						},
+					{
+						2,
+						-1,
+						-1,
+						2,
+						0,
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						\[FormalZ],
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						}
+					}
+			|>,
+	"C2h"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C2h",
+					"Type"->
+							"C",
+					"Order"->
+							2,
+					"Modifier"->
+							"h",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"2","\"h\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"i",
+						"ID"->
+								"i",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"i\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"\[Sigma]h",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"h",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[Sigma]\"", "\"h\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"Ag",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Bg",
+						"Type"->
+								"B",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Au",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Bu",
+						"Type"->
+								"B",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1
+						},
+					{
+						1,
+						1,
+						-1,
+						-1
+						},
+					{
+						1,
+						-1,
+						-1,
+						1
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{
+						\[FormalZ] 
+						},
+					{
+						\[FormalX],
+						\[FormalY] 
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						 \[FormalX]^2,
+						 \[FormalY]^2,
+						 \[FormalZ]^2,
+						\[FormalX] \[FormalY]
+						},
+					{
+						\[FormalX] \[FormalZ],
+						\[FormalY] \[FormalZ]
+						},
+					{},
+					{}
+					}
+			|>,
+	"C3h"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C3h",
+					"Type"->
+							"C",
+					"Order"->
+							3,
+					"Modifier"->
+							"h",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"3","\"h\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "3"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C32",
+						"Order"->
+								3,
+						"Degree"->
+								2,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "3"], "2"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"\[Sigma]h",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"h",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[Sigma]\"", "\"h\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"S\"", "3"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S35",
+						"Order"->
+								3,
+						"Degree"->
+								5,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"S\"", "3"], "5"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A'",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E'",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E'",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E'",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A''",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E''",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E''",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						2,
+						0,
+						0,
+						2,
+						0,
+						0
+						},
+					{
+						1,
+						 E^((2 I \[Pi])/3),
+						 E^(-((2 I \[Pi])/3)),
+						1,
+						 E^((2 I \[Pi])/3),
+						 E^(-((2 I \[Pi])/3)) 
+						},
+					{
+						1,
+						 E^(-((2 I \[Pi])/3)),
+						 E^((2 I \[Pi])/3),
+						1,
+						 E^(-((2 I \[Pi])/3)),
+						 E^((2 I \[Pi])/3) 
+						},
+					{
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1
+						},
+					{
+						1,
+						 E^((2 I \[Pi])/3),
+						 E^(-((2 I \[Pi])/3)),
+						-1,
+						-E^(((2 I \[Pi])/3)),
+						-E^(-((2 I \[Pi])/3))
+						},
+					{
+						1,
+						 E^(-((2 I \[Pi])/3)),
+						 E^((2 I \[Pi])/3),
+						-1,
+						-E^(-((2 I \[Pi])/3)),
+						-E^(((2 I \[Pi])/3))
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							}
+						},
+					{},
+					{
+						\[FormalZ] 
+						},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
+						},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{}
+					}
+			|>,
+	"C4h"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C4h",
+					"Type"->
+							"C",
+					"Order"->
+							4,
+					"Modifier"->
+							"h",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"4","\"h\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "4"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C43",
+						"Order"->
+								4,
+						"Degree"->
+								3,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "4"], "3"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"i",
+						"ID"->
+								"i",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"i\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S43",
+						"Order"->
+								4,
+						"Degree"->
+								3,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"S\"", "4"], "3"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"\[Sigma]h",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"h",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[Sigma]\"", "\"h\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"S\"", "4"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"Ag",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Bg",
+						"Type"->
+								"B",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eg",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eg",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eg",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Au",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Bu",
+						"Type"->
+								"B",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eu",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eu",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eu",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1
+						},
+					{
+						2,
+						0,
+						-2,
+						0,
+						2,
+						0,
+						-2,
+						0
+						},
+					{
+						1,
+						i,
+						-1,
+						-i,
+						1,
+						i,
+						-1,
+						-i
+						},
+					{
+						1,
+						-i,
+						-1,
+						i,
+						1,
+						-i,
+						-1,
+						i 
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						-1,
+						1,
+						-1,
+						1
+						},
+					{
+						2,
+						0,
+						-2,
+						0,
+						-2,
+						0,
+						2,
+						0
+						},
+					{
+						1,
+						i,
+						-1,
+						-i,
+						-1,
+						-i,
+						1,
+						i 
+						},
+					{
+						1,
+						-i,
+						-1,
+						i,
+						-1,
+						i,
+						1,
+						-i
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
+						},
+					{},
+					{
+						\[FormalZ] 
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							}
+						},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{
+						\[FormalX]^2-\[FormalY]^2,
+						\[FormalX] \[FormalY]
+						},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{}
+					}
+			|>,
+	"C5h"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C5h",
+					"Type"->
+							"C",
+					"Order"->
+							5,
+					"Modifier"->
+							"h",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"5","\"h\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C5",
+						"Order"->
+								5,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "5"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C52",
+						"Order"->
+								5,
+						"Degree"->
+								2,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "5"], "2"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C53",
+						"Order"->
+								5,
+						"Degree"->
+								3,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "5"], "3"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C54",
+						"Order"->
+								5,
+						"Degree"->
+								4,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "5"], "4"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"\[Sigma]h",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"h",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[Sigma]\"", "\"h\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S5",
+						"Order"->
+								5,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"S\"", "5"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S57",
+						"Order"->
+								5,
+						"Degree"->
+								7,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"S\"", "5"], "7"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S53",
+						"Order"->
+								5,
+						"Degree"->
+								3,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"S\"", "5"], "3"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S59",
+						"Order"->
+								5,
+						"Degree"->
+								9,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"S\"", "5"], "9"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A'",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1'",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1'",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2'",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2'",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A''",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1''",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1''",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2''",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2''",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						 E^((2 I \[Pi])/5),
+						2 E^((2 I \[Pi])/5),
+						2 E^((2 I \[Pi])/5),
+						 E^(-((2 I \[Pi])/5)),
+						1,
+						 E^((2 I \[Pi])/5),
+						2 E^((2 I \[Pi])/5),
+						2 E^((2 I \[Pi])/5),
+						 E^(-((2 I \[Pi])/5)) 
+						},
+					{
+						1,
+						 E^(-((2 I \[Pi])/5)),
+						2 E^((2 I \[Pi])/5),
+						2 E^((2 I \[Pi])/5),
+						 E^((2 I \[Pi])/5),
+						1,
+						 E^(-((2 I \[Pi])/5)),
+						2 E^((2 I \[Pi])/5),
+						2 E^((2 I \[Pi])/5),
+						 E^((2 I \[Pi])/5) 
+						},
+					{
+						1,
+						2 E^((2 I \[Pi])/5),
+						 E^(-((2 I \[Pi])/5)),
+						 E^((2 I \[Pi])/5),
+						2 E^((2 I \[Pi])/5),
+						1,
+						2 E^((2 I \[Pi])/5),
+						 E^(-((2 I \[Pi])/5)),
+						 E^((2 I \[Pi])/5),
+						2 E^((2 I \[Pi])/5)
+						},
+					{
+						1,
+						2 E^((2 I \[Pi])/5),
+						 E^((2 I \[Pi])/5),
+						 E^(-((2 I \[Pi])/5)),
+						2 E^((2 I \[Pi])/5),
+						1,
+						2 E^((2 I \[Pi])/5),
+						 E^((2 I \[Pi])/5),
+						 E^(-((2 I \[Pi])/5)),
+						2 E^((2 I \[Pi])/5)
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1,
+						-1
+						},
+					{
+						1,
+						 E^((2 I \[Pi])/5),
+						2 E^((2 I \[Pi])/5),
+						2 E^((2 I \[Pi])/5),
+						 E^(-((2 I \[Pi])/5)),
+						-1,
+						-E^(((2 I \[Pi])/5)),
+						-2 E^((2 I \[Pi])/5),
+						-2 E^((2 I \[Pi])/5),
+						-E^(-((2 I \[Pi])/5))
+						},
+					{
+						1,
+						 E^(-((2 I \[Pi])/5)),
+						2 E^((2 I \[Pi])/5),
+						2 E^((2 I \[Pi])/5),
+						 E^((2 I \[Pi])/5),
+						-1,
+						-E^(-((2 I \[Pi])/5)),
+						-2 E^((2 I \[Pi])/5),
+						-2 E^((2 I \[Pi])/5),
+						-E^(((2 I \[Pi])/5))
+						},
+					{
+						1,
+						2 E^((2 I \[Pi])/5),
+						 E^(-((2 I \[Pi])/5)),
+						 E^((2 I \[Pi])/5),
+						2 E^((2 I \[Pi])/5),
+						-1,
+						-2 E^((2 I \[Pi])/5),
+						-E^(-((2 I \[Pi])/5)),
+						-E^(((2 I \[Pi])/5)),
+						-2 E^((2 I \[Pi])/5)
+						},
+					{
+						1,
+						2 E^((2 I \[Pi])/5),
+						 E^((2 I \[Pi])/5),
+						 E^(-((2 I \[Pi])/5)),
+						2 E^((2 I \[Pi])/5),
+						-1,
+						-2 E^((2 I \[Pi])/5),
+						-E^(((2 I \[Pi])/5)),
+						-E^(-((2 I \[Pi])/5)),
+						-2 E^((2 I \[Pi])/5)
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							}
+						},
+					{},
+					{},
+					{},
+					{
+						\[FormalZ] 
+						},
+					{
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{},
+					{},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{},
+					{},
+					{}
+					}
+			|>,
+	"C6h"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C6h",
+					"Type"->
+							"C",
+					"Order"->
+							6,
+					"Modifier"->
+							"h",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"6","\"h\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C6",
+						"Order"->
+								6,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "6"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "3"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C32",
+						"Order"->
+								3,
+						"Degree"->
+								2,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "3"], "2"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C65",
+						"Order"->
+								6,
+						"Degree"->
+								5,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "6"], "5"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"i",
+						"ID"->
+								"i",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"i\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S35",
+						"Order"->
+								3,
+						"Degree"->
+								5,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"S\"", "3"], "5"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S65",
+						"Order"->
+								6,
+						"Degree"->
+								5,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"S\"", "6"], "5"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"\[Sigma]h",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"h",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[Sigma]\"", "\"h\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S6",
+						"Order"->
+								6,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"S\"", "6"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"S\"", "3"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"Ag",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Bg",
+						"Type"->
+								"B",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1g",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1g",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2g",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2g",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2g",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Au",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Bu",
+						"Type"->
+								"B",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1u",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1u",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2u",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2u",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1
+						},
+					{
+						1,
+						 E^((I \[Pi])/3),
+						-E^(-((I \[Pi])/3)),
+						-1,
+						-E^(((I \[Pi])/3)),
+						 E^(-((I \[Pi])/3)),
+						1,
+						 E^((I \[Pi])/3),
+						-E^(-((I \[Pi])/3)),
+						-1,
+						-E^(((I \[Pi])/3)),
+						 E^(-((I \[Pi])/3)) 
+						},
+					{
+						1,
+						 E^(-((I \[Pi])/3)),
+						-E^(((I \[Pi])/3)),
+						-1,
+						-E^(-((I \[Pi])/3)),
+						 E^((I \[Pi])/3),
+						1,
+						 E^(-((I \[Pi])/3)),
+						-E^(((I \[Pi])/3)),
+						-1,
+						-E^(-((I \[Pi])/3)),
+						 E^((I \[Pi])/3) 
+						},
+					{
+						2,
+						-1,
+						-1,
+						2,
+						-1,
+						-1,
+						2,
+						-1,
+						-1,
+						2,
+						-1,
+						-1
+						},
+					{
+						1,
+						-E^(-((I \[Pi])/3)),
+						-E^(((I \[Pi])/3)),
+						1,
+						-E^(-((I \[Pi])/3)),
+						-E^(((I \[Pi])/3)),
+						1,
+						-E^(-((I \[Pi])/3)),
+						-E^(((I \[Pi])/3)),
+						1,
+						-E^(-((I \[Pi])/3)),
+						-E^(((I \[Pi])/3))
+						},
+					{
+						1,
+						-E^(((I \[Pi])/3)),
+						-E^(-((I \[Pi])/3)),
+						1,
+						-E^(((I \[Pi])/3)),
+						-E^(-((I \[Pi])/3)),
+						1,
+						-E^(((I \[Pi])/3)),
+						-E^(-((I \[Pi])/3)),
+						1,
+						-E^(((I \[Pi])/3)),
+						-E^(-((I \[Pi])/3))
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1,
+						-1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1
+						},
+					{
+						1,
+						 E^((I \[Pi])/3),
+						-E^(-((I \[Pi])/3)),
+						-1,
+						-E^(((I \[Pi])/3)),
+						 E^(-((I \[Pi])/3)),
+						-1,
+						-E^(((I \[Pi])/3)),
+						 E^(-((I \[Pi])/3)),
+						1,
+						 E^((I \[Pi])/3),
+						-E^(-((I \[Pi])/3))
+						},
+					{
+						1,
+						 E^(-((I \[Pi])/3)),
+						-E^(((I \[Pi])/3)),
+						-1,
+						-E^(-((I \[Pi])/3)),
+						 E^((I \[Pi])/3),
+						-1,
+						-E^(-((I \[Pi])/3)),
+						 E^((I \[Pi])/3),
+						1,
+						 E^(-((I \[Pi])/3)),
+						-E^(((I \[Pi])/3))
+						},
+					{
+						1,
+						-E^(-((I \[Pi])/3)),
+						-E^(((I \[Pi])/3)),
+						1,
+						-E^(-((I \[Pi])/3)),
+						-E^(((I \[Pi])/3)),
+						-1,
+						 E^(-((I \[Pi])/3)),
+						 E^((I \[Pi])/3),
+						-1,
+						 E^(-((I \[Pi])/3)),
+						 E^((I \[Pi])/3) 
+						},
+					{
+						1,
+						-E^(((I \[Pi])/3)),
+						-E^(-((I \[Pi])/3)),
+						1,
+						-E^(((I \[Pi])/3)),
+						-E^(-((I \[Pi])/3)),
+						-1,
+						 E^((I \[Pi])/3),
+						 E^(-((I \[Pi])/3)),
+						-1,
+						 E^((I \[Pi])/3),
+						 E^(-((I \[Pi])/3)) 
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
+						},
+					{},
+					{},
+					{},
+					{},
+					{
+						\[FormalZ] 
+						},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							}
+						},
+					{},
+					{},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{}
+					}
+			|>,
+	"C2v"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C2v",
+					"Type"->
+							"C",
+					"Order"->
+							2,
+					"Modifier"->
+							"v",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"2","\"v\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"\[Sigma]v(xz)",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"v",
+						"Modifier"->
+								"(xz)",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[Sigma]\"", "\"v\""],"\"(xz)\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"\[Sigma]v'(yz)",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"v",
+						"Modifier"->
+								"'(yz)",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[Sigma]\"", "\"v\""],"\"'(yz)\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B1",
+						"Type"->
+								"B",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B2",
+						"Type"->
+								"B",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						-1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1
+						},
+					{
+						1,
+						-1,
+						-1,
+						1
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalZ] 
+						},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						\[FormalX],
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{
+						\[FormalY],
+						\[FormalCapitalR][\[FormalX]]
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						 \[FormalX]^2,
+						 \[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{
+						\[FormalX] \[FormalY]
+						},
+					{
+						\[FormalX] \[FormalZ]
+						},
+					{
+						\[FormalY] \[FormalZ]
+						}
+					}
+			|>,
+	"C3v"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C3v",
+					"Type"->
+							"C",
+					"Order"->
+							3,
+					"Modifier"->
+							"v",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"3","\"v\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "3"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"3\[Sigma]v",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"v",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"\[Sigma]\"", "\"v\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						-1
+						},
+					{
+						2,
+						-1,
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalZ] 
+						},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							},
+						\[FormalX] \[FormalZ],
+						\[FormalY] \[FormalZ]
+						}
+					}
+			|>,
+	"C4v"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C4v",
+					"Type"->
+							"C",
+					"Order"->
+							4,
+					"Modifier"->
+							"v",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"4","\"v\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "4"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"2\[Sigma]v",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"v",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"\[Sigma]\"", "\"v\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"2\[Sigma]d",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"d",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"\[Sigma]\"", "\"d\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B1",
+						"Type"->
+								"B",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B2",
+						"Type"->
+								"B",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						-1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1
+						},
+					{
+						2,
+						0,
+						-2,
+						0,
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalZ] 
+						},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						\[FormalX]^2-\[FormalY]^2
+						},
+					{
+						\[FormalX] \[FormalY]
+						},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						}
+					}
+			|>,
+	"C5v"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C5v",
+					"Type"->
+							"C",
+					"Order"->
+							5,
+					"Modifier"->
+							"v",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"5","\"v\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C5",
+						"Order"->
+								5,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "5"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C52",
+						"Order"->
+								5,
+						"Degree"->
+								2,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", TemplateBox[{SubscriptBox["\"C\"", "5"], "2"}, "Superscript", SyntaxForm -> SuperscriptBox]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"5\[Sigma]v",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								5,
+						"Orientation"->
+								"v",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"5", " ", SubscriptBox["\"\[Sigma]\"", "\"v\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						-1
+						},
+					{
+						2,
+						1/2 (-1+Sqrt[5]),
+						1/2 (-1-Sqrt[5]),
+						0
+						},
+					{
+						2,
+						1/2 (-1-Sqrt[5]),
+						1/2 (-1+Sqrt[5]),
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalZ] 
+						},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						}
+					}
+			|>,
+	"C6v"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C6v",
+					"Type"->
+							"C",
+					"Order"->
+							6,
+					"Modifier"->
+							"v",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"6","\"v\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C6",
+						"Order"->
+								6,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "6"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "3"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"3\[Sigma]v",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"v",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"\[Sigma]\"", "\"v\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"3\[Sigma]d",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"d",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"\[Sigma]\"", "\"d\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B1",
+						"Type"->
+								"B",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B2",
+						"Type"->
+								"B",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						-1,
+						1
+						},
+					{
+						2,
+						1,
+						-1,
+						-2,
+						0,
+						0
+						},
+					{
+						2,
+						-1,
+						-1,
+						2,
+						0,
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalZ] 
+						},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						}
+					}
+			|>,
+	"Civ"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"C\[Infinity]v",
+					"Type"->
+							"C",
+					"Order"->
+							None,
+					"Modifier"->
+							"\[Infinity]v",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"C\"\>", 
+TemplateBox[{"\"\[Infinity]v\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C\[Infinity]\[CapitalPhi]",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"\[Infinity]\[CapitalPhi]",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", "\"C\""}],"\"\[Infinity]\[CapitalPhi]\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Ellipsis]",
+						"ID"->
+								"\[Ellipsis]",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Ellipsis]\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Infinity]",
+						"ID"->
+								"\[Infinity]\[Sigma]v",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"\[Sigma]v",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Infinity]\"","\"\[Sigma]v\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1 = \[Sum]+",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								" = \[Sum]+",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\" = \[Sum]+\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2 = \[Sum] -",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								" = \[Sum] -",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\" = \[Sum] -\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1 = \[CapitalPi]",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								" = \[CapitalPi]",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\" = \[CapitalPi]\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2 = \[CapitalDelta]",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								" = \[CapitalDelta]",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\" = \[CapitalDelta]\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E3 = \[CapitalPhi]",
+						"Type"->
+								"E",
+						"Index"->
+								3,
+						"Parity"->
+								"",
+						"Modifier"->
+								" = \[CapitalPhi]",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"3", "\"\""}, "RowDefault"]],"\" = \[CapitalPhi]\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"\[Ellipsis]",
+						"Type"->
+								"\[Ellipsis]",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Ellipsis]\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						\[Ellipsis],
+						1
+						},
+					{
+						1,
+						1,
+						\[Ellipsis],
+						-1
+						},
+					{
+						2,
+						2 Cos[\[FormalCapitalPhi]],
+						\[Ellipsis],
+						0
+						},
+					{
+						2,
+						2 Cos[2 \[FormalCapitalPhi]],
+						\[Ellipsis],
+						0
+						},
+					{
+						2,
+						2 Cos[3 \[FormalCapitalPhi]],
+						\[Ellipsis],
+						0
+						},
+					{
+						\[Ellipsis],
+						\[Ellipsis],
+						\[Ellipsis],
+						\[Ellipsis] 
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalZ] 
+						},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{},
+					{},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						},
+					{},
+					{}
+					}
+			|>,
+	"D2d"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"D2d",
+					"Type"->
+							"D",
+					"Order"->
+							2,
+					"Modifier"->
+							"d",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"D\"\>", 
+TemplateBox[{"2","\"d\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"S\"", "4"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C2'",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "2"]}],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"2\[Sigma]d",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"d",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"\[Sigma]\"", "\"d\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B1",
+						"Type"->
+								"B",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B2",
+						"Type"->
+								"B",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						-1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1
+						},
+					{
+						2,
+						0,
+						-2,
+						0,
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{
+						\[FormalZ] 
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						\[FormalX]^2-\[FormalY]^2
+						},
+					{
+						\[FormalX] \[FormalY]
+						},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						}
+					}
+			|>,
+	"D3d"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"D3d",
+					"Type"->
+							"D",
+					"Order"->
+							3,
+					"Modifier"->
+							"d",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"D\"\>", 
+TemplateBox[{"3","\"d\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "3"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"3C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"C\"", "2"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"i",
+						"ID"->
+								"i",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"i\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S6",
+						"Order"->
+								6,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"S\"", "6"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"3\[Sigma]d",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"d",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"\[Sigma]\"", "\"d\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1g",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2g",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eg",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A1u",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2u",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eu",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						-1,
+						1,
+						1,
+						-1
+						},
+					{
+						2,
+						-1,
+						0,
+						2,
+						-1,
+						0
+						},
+					{
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1
+						},
+					{
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						1
+						},
+					{
+						2,
+						-1,
+						0,
+						-2,
+						1,
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{},
+					{
+						\[FormalZ] 
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							}
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							},
+						\[FormalX] \[FormalZ],
+						\[FormalY] \[FormalZ]
+						},
+					{},
+					{},
+					{}
+					}
+			|>,
+	"D4d"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"D4d",
+					"Type"->
+							"D",
+					"Order"->
+							4,
+					"Modifier"->
+							"d",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"D\"\>", 
+TemplateBox[{"4","\"d\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S8",
+						"Order"->
+								8,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"S\"", "8"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "4"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S83",
+						"Order"->
+								8,
+						"Degree"->
+								3,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", TemplateBox[{SubscriptBox["\"S\"", "8"], "3"}, "Superscript", SyntaxForm -> SuperscriptBox]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"4C2'",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								4,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"4", " ", SubscriptBox["\"C\"", "2"]}],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"4\[Sigma]d",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								4,
+						"Orientation"->
+								"d",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"4", " ", SubscriptBox["\"\[Sigma]\"", "\"d\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B1",
+						"Type"->
+								"B",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B2",
+						"Type"->
+								"B",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E3",
+						"Type"->
+								"E",
+						"Index"->
+								3,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"3", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1
+						},
+					{
+						2,
+						 Sqrt[2],
+						0,
+						-Sqrt[2],
+						-2,
+						0,
+						0
+						},
+					{
+						2,
+						0,
+						-2,
+						0,
+						2,
+						0,
+						0
+						},
+					{
+						2,
+						-Sqrt[2],
+						0,
+						 Sqrt[2],
+						-2,
+						0,
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{
+						\[FormalZ] 
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							}
+						},
+					{},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{},
+					{},
+					{},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						}
+					}
+			|>,
+	"D5d"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"D5d",
+					"Type"->
+							"D",
+					"Order"->
+							5,
+					"Modifier"->
+							"d",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"D\"\>", 
+TemplateBox[{"5","\"d\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C5",
+						"Order"->
+								5,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "5"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C52",
+						"Order"->
+								5,
+						"Degree"->
+								2,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", TemplateBox[{SubscriptBox["\"C\"", "5"], "2"}, "Superscript", SyntaxForm -> SuperscriptBox]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"5C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								5,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"5", " ", SubscriptBox["\"C\"", "2"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"i",
+						"ID"->
+								"i",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"i\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S103",
+						"Order"->
+								10,
+						"Degree"->
+								3,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", TemplateBox[{SubscriptBox["\"S\"", "10"], "3"}, "Superscript", SyntaxForm -> SuperscriptBox]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S10",
+						"Order"->
+								10,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"S\"", "10"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"5\[Sigma]d",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								5,
+						"Orientation"->
+								"d",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"5", " ", SubscriptBox["\"\[Sigma]\"", "\"d\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1g",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2g",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1g",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2g",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A1u",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2u",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1u",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2u",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						-1,
+						1,
+						1,
+						1,
+						-1
+						},
+					{
+						2,
+						1/2 (-1+Sqrt[5]),
+						1/2 (-1-Sqrt[5]),
+						0,
+						2,
+						1/2 (-1+Sqrt[5]),
+						1/2 (-1-Sqrt[5]),
+						0
+						},
+					{
+						2,
+						1/2 (-1-Sqrt[5]),
+						1/2 (-1+Sqrt[5]),
+						0,
+						2,
+						1/2 (-1-Sqrt[5]),
+						1/2 (-1+Sqrt[5]),
+						0
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1
+						},
+					{
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1,
+						1
+						},
+					{
+						2,
+						1/2 (-1+Sqrt[5]),
+						1/2 (-1-Sqrt[5]),
+						0,
+						-2,
+						1/2 (1-Sqrt[5]),
+						1/2 (1+Sqrt[5]),
+						0
+						},
+					{
+						2,
+						1/2 (-1-Sqrt[5]),
+						1/2 (-1+Sqrt[5]),
+						0,
+						-2,
+						1/2 (1+Sqrt[5]),
+						1/2 (1-Sqrt[5]),
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
+						},
+					{},
+					{},
+					{
+						\[FormalZ] 
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							}
+						},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						},
+					{},
+					{},
+					{},
+					{}
+					}
+			|>,
+	"D6d"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"D6d",
+					"Type"->
+							"D",
+					"Order"->
+							6,
+					"Modifier"->
+							"d",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"D\"\>", 
+TemplateBox[{"6","\"d\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S12",
+						"Order"->
+								1,
+						"Degree"->
+								2,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", TemplateBox[{"\"S\"", "2"}, "Superscript", SyntaxForm -> SuperscriptBox]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C6",
+						"Order"->
+								6,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "6"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"S\"", "4"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "3"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S125",
+						"Order"->
+								12,
+						"Degree"->
+								5,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", TemplateBox[{SubscriptBox["\"S\"", "12"], "5"}, "Superscript", SyntaxForm -> SuperscriptBox]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"6C2'",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								6,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"6", " ", SubscriptBox["\"C\"", "2"]}],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"6\[Sigma]d",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								6,
+						"Orientation"->
+								"d",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"6", " ", SubscriptBox["\"\[Sigma]\"", "\"d\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B1",
+						"Type"->
+								"B",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B2",
+						"Type"->
+								"B",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E3",
+						"Type"->
+								"E",
+						"Index"->
+								3,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"3", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E4",
+						"Type"->
+								"E",
+						"Index"->
+								4,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"4", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E5",
+						"Type"->
+								"E",
+						"Index"->
+								5,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"5", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1
+						},
+					{
+						2,
+						 Sqrt[3],
+						1,
+						0,
+						-1,
+						-Sqrt[3],
+						-2,
+						0,
+						0
+						},
+					{
+						2,
+						1,
+						-1,
+						-2,
+						-1,
+						1,
+						2,
+						0,
+						0
+						},
+					{
+						2,
+						0,
+						-2,
+						0,
+						2,
+						0,
+						-2,
+						0,
+						0
+						},
+					{
+						2,
+						-1,
+						-1,
+						2,
+						-1,
+						-1,
+						2,
+						0,
+						0
+						},
+					{
+						2,
+						-Sqrt[3],
+						1,
+						0,
+						-1,
+						 Sqrt[3],
+						-2,
+						0,
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{
+						\[FormalZ] 
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							}
+						},
+					{},
+					{},
+					{},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{},
+					{},
+					{},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						}
+					}
+			|>,
+	"D2h"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"D2h",
+					"Type"->
+							"D",
+					"Order"->
+							2,
+					"Modifier"->
+							"h",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"D\"\>", 
+TemplateBox[{"2","\"h\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2(z)",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"(z)",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"(z)\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2(y)",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"(y)",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"(y)\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2(x)",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"(x)",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"(x)\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"i",
+						"ID"->
+								"i",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"i\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"\[Sigma](xy)",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"(xy)",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Sigma]\"","\"(xy)\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"\[Sigma](xz)",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"(xz)",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Sigma]\"","\"(xz)\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"\[Sigma](yz)",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"(yz)",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Sigma]\"","\"(yz)\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"Ag",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B1g",
+						"Type"->
+								"B",
+						"Index"->
+								1,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"1", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B2g",
+						"Type"->
+								"B",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B3g",
+						"Type"->
+								"B",
+						"Index"->
+								3,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"3", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Au",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B1u",
+						"Type"->
+								"B",
+						"Index"->
+								1,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"1", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B2u",
+						"Type"->
+								"B",
+						"Index"->
+								2,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"2", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B3u",
+						"Type"->
+								"B",
+						"Index"->
+								3,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"3", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						-1,
+						-1,
+						1,
+						1,
+						-1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1
+						},
+					{
+						1,
+						-1,
+						-1,
+						1,
+						1,
+						-1,
+						-1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1
+						},
+					{
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1,
+						1,
+						1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						-1,
+						1,
+						-1,
+						1
+						},
+					{
+						1,
+						-1,
+						-1,
+						1,
+						-1,
+						1,
+						1,
+						-1
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{
+						\[FormalCapitalR][\[FormalX]]
+						},
+					{},
+					{
+						\[FormalZ] 
+						},
+					{
+						\[FormalY] 
+						},
+					{
+						\[FormalX] 
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						 \[FormalX]^2,
+						 \[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{
+						\[FormalX] \[FormalY]
+						},
+					{
+						\[FormalX] \[FormalZ]
+						},
+					{
+						\[FormalY] \[FormalZ]
+						},
+					{},
+					{},
+					{},
+					{}
+					}
+			|>,
+	"D3h"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"D3h",
+					"Type"->
+							"D",
+					"Order"->
+							3,
+					"Modifier"->
+							"h",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"D\"\>", 
+TemplateBox[{"3","\"h\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "3"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"3C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"C\"", "2"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"\[Sigma]h",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"h",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[Sigma]\"", "\"h\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"S\"", "3"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"3\[Sigma]v",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"v",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"\[Sigma]\"", "\"v\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1'",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2'",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E'",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A1''",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2''",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E''",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						-1,
+						1,
+						1,
+						-1
+						},
+					{
+						2,
+						-1,
+						0,
+						2,
+						-1,
+						0
+						},
+					{
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1
+						},
+					{
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						1
+						},
+					{
+						2,
+						-1,
+						0,
+						-2,
+						1,
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							}
+						},
+					{},
+					{
+						\[FormalZ] 
+						},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						}
+					}
+			|>,
+	"D4h"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"D4h",
+					"Type"->
+							"D",
+					"Order"->
+							4,
+					"Modifier"->
+							"h",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"D\"\>", 
+TemplateBox[{"4","\"h\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "4"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C2'",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "2"]}],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C2''",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "2"]}],"\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"i",
+						"ID"->
+								"i",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"i\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"S\"", "4"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"\[Sigma]h",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"h",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[Sigma]\"", "\"h\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"2\[Sigma]v",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"v",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"\[Sigma]\"", "\"v\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"2\[Sigma]d",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"d",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"\[Sigma]\"", "\"d\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1g",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2g",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B1g",
+						"Type"->
+								"B",
+						"Index"->
+								1,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"1", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B2g",
+						"Type"->
+								"B",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eg",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A1u",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2u",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B1u",
+						"Type"->
+								"B",
+						"Index"->
+								1,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"1", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B2u",
+						"Type"->
+								"B",
+						"Index"->
+								2,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"2", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eu",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						1,
+						1,
+						1,
+						-1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						1,
+						-1,
+						1,
+						-1,
+						1
+						},
+					{
+						2,
+						0,
+						-2,
+						0,
+						0,
+						2,
+						0,
+						-2,
+						0,
+						0
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1,
+						-1
+						},
+					{
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1,
+						-1,
+						1,
+						1
+						},
+					{
+						1,
+						-1,
+						1,
+						1,
+						-1,
+						-1,
+						1,
+						-1,
+						-1,
+						1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1
+						},
+					{
+						2,
+						0,
+						-2,
+						0,
+						0,
+						-2,
+						0,
+						2,
+						0,
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
+						},
+					{},
+					{
+						\[FormalZ] 
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							}
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						\[FormalX]^2-\[FormalY]^2
+						},
+					{
+						\[FormalX] \[FormalY]
+						},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{},
+					{},
+					{},
+					{},
+					{}
+					}
+			|>,
+	"D5h"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"D5h",
+					"Type"->
+							"D",
+					"Order"->
+							5,
+					"Modifier"->
+							"h",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"D\"\>", 
+TemplateBox[{"5","\"h\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C5",
+						"Order"->
+								5,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "5"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C52",
+						"Order"->
+								5,
+						"Degree"->
+								2,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", TemplateBox[{SubscriptBox["\"C\"", "5"], "2"}, "Superscript", SyntaxForm -> SuperscriptBox]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"5C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								5,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"5", " ", SubscriptBox["\"C\"", "2"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"\[Sigma]h",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"h",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[Sigma]\"", "\"h\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S5",
+						"Order"->
+								5,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"S\"", "5"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S52",
+						"Order"->
+								5,
+						"Degree"->
+								2,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", TemplateBox[{SubscriptBox["\"S\"", "5"], "2"}, "Superscript", SyntaxForm -> SuperscriptBox]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"5\[Sigma]v",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								5,
+						"Orientation"->
+								"v",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"5", " ", SubscriptBox["\"\[Sigma]\"", "\"v\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1'",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2'",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1'",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2'",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A1''",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2''",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1''",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2''",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						-1,
+						1,
+						1,
+						1,
+						-1
+						},
+					{
+						2,
+						1/2 (-1+Sqrt[5]),
+						1/2 (-1-Sqrt[5]),
+						0,
+						2,
+						1/2 (-1+Sqrt[5]),
+						1/2 (-1-Sqrt[5]),
+						0
+						},
+					{
+						2,
+						1/2 (-1-Sqrt[5]),
+						1/2 (-1+Sqrt[5]),
+						0,
+						2,
+						1/2 (-1-Sqrt[5]),
+						1/2 (-1+Sqrt[5]),
+						0
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1
+						},
+					{
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1,
+						1
+						},
+					{
+						2,
+						1/2 (-1+Sqrt[5]),
+						1/2 (-1-Sqrt[5]),
+						0,
+						-2,
+						1/2 (1-Sqrt[5]),
+						1/2 (1+Sqrt[5]),
+						0
+						},
+					{
+						2,
+						1/2 (-1-Sqrt[5]),
+						1/2 (-1+Sqrt[5]),
+						0,
+						-2,
+						1/2 (1+Sqrt[5]),
+						1/2 (1-Sqrt[5]),
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							}
+						},
+					{},
+					{},
+					{
+						\[FormalZ] 
+						},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
+						},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{}
+					}
+			|>,
+	"D6h"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"D6h",
+					"Type"->
+							"D",
+					"Order"->
+							6,
+					"Modifier"->
+							"h",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"D\"\>", 
+TemplateBox[{"6","\"h\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C6",
+						"Order"->
+								6,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "6"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "3"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"3C2'",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"C\"", "2"]}],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"3C2''",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"C\"", "2"]}],"\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"i",
+						"ID"->
+								"i",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"i\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"S\"", "3"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S6",
+						"Order"->
+								6,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"S\"", "6"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"\[Sigma]h",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"h",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[Sigma]\"", "\"h\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"3\[Sigma]d",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"d",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"\[Sigma]\"", "\"d\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"3\[Sigma]v",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"v",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"\[Sigma]\"", "\"v\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1g",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2g",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B1g",
+						"Type"->
+								"B",
+						"Index"->
+								1,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"1", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B2g",
+						"Type"->
+								"B",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1g",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2g",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A1u",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2u",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B1u",
+						"Type"->
+								"B",
+						"Index"->
+								1,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"1", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B2u",
+						"Type"->
+								"B",
+						"Index"->
+								2,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"2", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1u",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2u",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						-1,
+						1,
+						1,
+						-1,
+						1,
+						-1,
+						-1,
+						1
+						},
+					{
+						2,
+						1,
+						-1,
+						-2,
+						0,
+						0,
+						2,
+						1,
+						-1,
+						-2,
+						0,
+						0
+						},
+					{
+						2,
+						-1,
+						-1,
+						2,
+						0,
+						0,
+						2,
+						-1,
+						-1,
+						2,
+						0,
+						0
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1,
+						-1,
+						-1
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1,
+						-1,
+						-1,
+						1,
+						1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						1,
+						-1
+						},
+					{
+						2,
+						1,
+						-1,
+						-2,
+						0,
+						0,
+						-2,
+						-1,
+						1,
+						2,
+						0,
+						0
+						},
+					{
+						2,
+						-1,
+						-1,
+						2,
+						0,
+						0,
+						-2,
+						1,
+						1,
+						-2,
+						0,
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
+						},
+					{},
+					{},
+					{
+						\[FormalZ] 
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							}
+						},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{}
+					}
+			|>,
+	"D8h"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"D8h",
+					"Type"->
+							"D",
+					"Order"->
+							8,
+					"Modifier"->
+							"h",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"D\"\>", 
+TemplateBox[{"8","\"h\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C8",
+						"Order"->
+								8,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "8"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C83",
+						"Order"->
+								8,
+						"Degree"->
+								3,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", TemplateBox[{SubscriptBox["\"C\"", "8"], "3"}, "Superscript", SyntaxForm -> SuperscriptBox]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"C\"", "4"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"4C2'",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								4,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"'",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"4", " ", SubscriptBox["\"C\"", "2"]}],"\"'\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"4C2''",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								4,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"''",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"4", " ", SubscriptBox["\"C\"", "2"]}],"\"''\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"i",
+						"ID"->
+								"i",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"i\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S83",
+						"Order"->
+								8,
+						"Degree"->
+								3,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", TemplateBox[{SubscriptBox["\"S\"", "8"], "3"}, "Superscript", SyntaxForm -> SuperscriptBox]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S8",
+						"Order"->
+								8,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"S\"", "8"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", SubscriptBox["\"S\"", "4"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"\[Sigma]h",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"h",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[Sigma]\"", "\"h\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"4\[Sigma]d",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								4,
+						"Orientation"->
+								"d",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"4", " ", SubscriptBox["\"\[Sigma]\"", "\"d\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"4\[Sigma]v",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								4,
+						"Orientation"->
+								"v",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"4", " ", SubscriptBox["\"\[Sigma]\"", "\"v\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1g",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2g",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B1g",
+						"Type"->
+								"B",
+						"Index"->
+								1,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"1", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B2g",
+						"Type"->
+								"B",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1g",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2g",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E3g",
+						"Type"->
+								"E",
+						"Index"->
+								3,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"3", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A1u",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2u",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B1u",
+						"Type"->
+								"B",
+						"Index"->
+								1,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"1", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B2u",
+						"Type"->
+								"B",
+						"Index"->
+								2,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"B\"", TemplateBox[{"2", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1u",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2u",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E3u",
+						"Type"->
+								"E",
+						"Index"->
+								3,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"3", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1
+						},
+					{
+						1,
+						-1,
+						-1,
+						1,
+						1,
+						1,
+						-1,
+						1,
+						-1,
+						-1,
+						1,
+						1,
+						1,
+						-1
+						},
+					{
+						1,
+						-1,
+						-1,
+						1,
+						1,
+						-1,
+						1,
+						1,
+						-1,
+						-1,
+						1,
+						1,
+						-1,
+						1
+						},
+					{
+						2,
+						 Sqrt[2],
+						-Sqrt[2],
+						0,
+						-2,
+						0,
+						0,
+						2,
+						 Sqrt[2],
+						-Sqrt[2],
+						0,
+						-2,
+						0,
+						0
+						},
+					{
+						2,
+						0,
+						0,
+						-2,
+						2,
+						0,
+						0,
+						2,
+						0,
+						0,
+						-2,
+						2,
+						0,
+						0
+						},
+					{
+						2,
+						-Sqrt[2],
+						 Sqrt[2],
+						0,
+						-2,
+						0,
+						0,
+						2,
+						-Sqrt[2],
+						 Sqrt[2],
+						0,
+						-2,
+						0,
+						0
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1,
+						-1,
+						-1,
+						-1
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1,
+						-1,
+						-1,
+						-1,
+						1,
+						1
+						},
+					{
+						1,
+						-1,
+						-1,
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						1
+						},
+					{
+						1,
+						-1,
+						-1,
+						1,
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						1,
+						-1,
+						-1,
+						1,
+						-1
+						},
+					{
+						2,
+						 Sqrt[2],
+						-Sqrt[2],
+						0,
+						-2,
+						0,
+						0,
+						-2,
+						-Sqrt[2],
+						 Sqrt[2],
+						0,
+						2,
+						0,
+						0
+						},
+					{
+						2,
+						0,
+						0,
+						-2,
+						2,
+						0,
+						0,
+						-2,
+						0,
+						0,
+						2,
+						-2,
+						0,
+						0
+						},
+					{
+						2,
+						-Sqrt[2],
+						 Sqrt[2],
+						0,
+						-2,
+						0,
+						0,
+						-2,
+						 Sqrt[2],
+						-Sqrt[2],
+						0,
+						2,
+						0,
+						0
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
+						},
+					{},
+					{},
+					{},
+					{
+						\[FormalZ] 
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							}
+						},
+					{},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{}
+					}
+			|>,
+	"Dih"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"D\[Infinity]h",
+					"Type"->
+							"D",
+					"Order"->
+							None,
+					"Modifier"->
+							"\[Infinity]h",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"D\"\>", 
+TemplateBox[{"\"\[Infinity]h\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"2C\[Infinity]\[CapitalPhi]",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"\[Infinity]\[CapitalPhi]",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", "\"C\""}],"\"\[Infinity]\[CapitalPhi]\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Ellipsis]",
+						"ID"->
+								"\[Ellipsis]",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Ellipsis]\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Infinity]",
+						"ID"->
+								"\[Infinity]\[Sigma]v",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"\[Sigma]v",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Infinity]\"","\"\[Sigma]v\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"i",
+						"ID"->
+								"i",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"i\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"2S\[Infinity]\[CapitalPhi]",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								2,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"\[Infinity]\[CapitalPhi]",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"2", " ", "\"S\""}],"\"\[Infinity]\[CapitalPhi]\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Ellipsis]",
+						"ID"->
+								"\[Ellipsis]",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Ellipsis]\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Infinity]",
+						"ID"->
+								"\[Infinity]C2",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"C2",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Infinity]\"","\"C2\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"\[Sum]g+",
+						"Type"->
+								"\[Sum]",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"+",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[Sum]\"", "\"g\""],"\"+\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"\[Sum]g-",
+						"Type"->
+								"\[Sum]",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"-",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[Sum]\"", "\"g\""],"\"-\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"\[CapitalPi]g",
+						"Type"->
+								"\[CapitalPi]",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[CapitalPi]\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"\[CapitalDelta]g",
+						"Type"->
+								"\[CapitalDelta]",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[CapitalDelta]\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"\[Ellipsis]",
+						"Type"->
+								"\[Ellipsis]",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Ellipsis]\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"\[Sum]u+",
+						"Type"->
+								"\[Sum]",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"+",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[Sum]\"", "\"u\""],"\"+\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"\[Sum]u-",
+						"Type"->
+								"\[Sum]",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"-",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[Sum]\"", "\"u\""],"\"-\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"\[CapitalPi]u",
+						"Type"->
+								"\[CapitalPi]",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[CapitalPi]\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"\[CapitalDelta]u",
+						"Type"->
+								"\[CapitalDelta]",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"\[CapitalDelta]\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"\[Ellipsis]",
+						"Type"->
+								"\[Ellipsis]",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Ellipsis]\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						\[Ellipsis],
+						1,
+						1,
+						1,
+						\[Ellipsis],
+						1
+						},
+					{
+						1,
+						1,
+						\[Ellipsis],
+						-1,
+						1,
+						1,
+						\[Ellipsis],
+						-1
+						},
+					{
+						2,
+						2 Cos[\[FormalCapitalPhi]],
+						\[Ellipsis],
+						0,
+						2,
+						-2 Cos[\[FormalCapitalPhi]],
+						\[Ellipsis],
+						0
+						},
+					{
+						2,
+						2 Cos[2 \[FormalCapitalPhi]],
+						\[Ellipsis],
+						0,
+						2,
+						2 Cos[2 \[FormalCapitalPhi]],
+						\[Ellipsis],
+						0
+						},
+					{
+						\[Ellipsis],
+						\[Ellipsis],
+						\[Ellipsis],
+						\[Ellipsis],
+						\[Ellipsis],
+						\[Ellipsis],
+						\[Ellipsis],
+						\[Ellipsis] 
+						},
+					{
+						1,
+						1,
+						\[Ellipsis],
+						1,
+						-1,
+						-1,
+						\[Ellipsis],
+						-1
+						},
+					{
+						1,
+						1,
+						\[Ellipsis],
+						-1,
+						-1,
+						-1,
+						\[Ellipsis],
+						1
+						},
+					{
+						2,
+						2 Cos[\[FormalCapitalPhi]],
+						\[Ellipsis],
+						0,
+						-2,
+						2 Cos[\[FormalCapitalPhi]],
+						\[Ellipsis],
+						0
+						},
+					{
+						2,
+						2 Cos[2 \[FormalCapitalPhi]],
+						\[Ellipsis],
+						0,
+						-2,
+						-2 Cos[2 \[FormalCapitalPhi]],
+						\[Ellipsis],
+						0
+						},
+					{
+						\[Ellipsis],
+						\[Ellipsis],
+						\[Ellipsis],
+						\[Ellipsis],
+						\[Ellipsis],
+						\[Ellipsis],
+						\[Ellipsis],
+						\[Ellipsis] 
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
+						},
+					{},
+					{},
+					{
+						\[FormalZ] 
+						},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							}
+						},
+					{},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{}
+					}
+			|>,
+	"S4"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"S4",
+					"Type"->
+							"S",
+					"Order"->
+							4,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"S\"\>", 
+TemplateBox[{"4","\"\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"S\"", "4"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S43",
+						"Order"->
+								4,
+						"Degree"->
+								3,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"S\"", "4"], "3"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B",
+						"Type"->
+								"B",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"B\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1
+						},
+					{
+						2,
+						0,
+						-2,
+						0
+						},
+					{
+						1,
+						i,
+						-1,
+						-i
+						},
+					{
+						1,
+						-i,
+						-1,
+						i 
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						\[FormalZ] 
+						},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]]
+						},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{
+						\[FormalX]^2-\[FormalY]^2,
+						\[FormalX] \[FormalY]
+						},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{}
+					}
+			|>,
+	"S6"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"S6",
+					"Type"->
+							"S",
+					"Order"->
+							6,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"S\"\>", 
+TemplateBox[{"6","\"\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "3"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C32",
+						"Order"->
+								3,
+						"Degree"->
+								2,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "3"], "2"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"i",
+						"ID"->
+								"i",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"i\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S65",
+						"Order"->
+								6,
+						"Degree"->
+								5,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"S\"", "6"], "5"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S6",
+						"Order"->
+								6,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"S\"", "6"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"Ag",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eg",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eg",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eg",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Au",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eu",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eu",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						2,
+						0,
+						0,
+						2,
+						0,
+						0
+						},
+					{
+						1,
+						 E^((I \[Pi])/3),
+						 E^(-((I \[Pi])/3)),
+						1,
+						 E^((I \[Pi])/3),
+						 E^(-((I \[Pi])/3)) 
+						},
+					{
+						1,
+						 E^(-((I \[Pi])/3)),
+						 E^((I \[Pi])/3),
+						1,
+						 E^(-((I \[Pi])/3)),
+						 E^((I \[Pi])/3) 
+						},
+					{
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1
+						},
+					{
+						1,
+						 E^((I \[Pi])/3),
+						 E^(-((I \[Pi])/3)),
+						-1,
+						-E^(((I \[Pi])/3)),
+						-E^(-((I \[Pi])/3))
+						},
+					{
+						1,
+						 E^(-((I \[Pi])/3)),
+						 E^((I \[Pi])/3),
+						-1,
+						-E^(-((I \[Pi])/3)),
+						-E^(((I \[Pi])/3))
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
+						},
+					{},
+					{
+						\[FormalZ] 
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							}
+						},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							},
+						\[FormalX] \[FormalZ],
+						\[FormalY] \[FormalZ]
+						},
+					{},
+					{},
+					{},
+					{}
+					}
+			|>,
+	"S8"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"S8",
+					"Type"->
+							"S",
+					"Order"->
+							8,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"S\"\>", 
+TemplateBox[{"8","\"\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S8",
+						"Order"->
+								8,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"S\"", "8"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "4"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S83",
+						"Order"->
+								8,
+						"Degree"->
+								3,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"S\"", "8"], "3"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"C\"", "2"],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S85",
+						"Order"->
+								8,
+						"Degree"->
+								5,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"S\"", "8"], "5"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"C43",
+						"Order"->
+								4,
+						"Degree"->
+								3,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"C\"", "4"], "3"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"S87",
+						"Order"->
+								8,
+						"Degree"->
+								7,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{TemplateBox[{SubscriptBox["\"S\"", "8"], "7"}, "Superscript", SyntaxForm -> SuperscriptBox],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"B",
+						"Type"->
+								"B",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"B\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E1",
+						"Type"->
+								"E",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E2",
+						"Type"->
+								"E",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E3",
+						"Type"->
+								"E",
+						"Index"->
+								3,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"3", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E3",
+						"Type"->
+								"E",
+						"Index"->
+								3,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", TemplateBox[{"3", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						1,
+						-1
+						},
+					{
+						1,
+						 E^((I \[Pi])/4),
+						i,
+						-E^(-((I \[Pi])/4)),
+						-1,
+						-E^(((I \[Pi])/4)),
+						-i,
+						 E^(-((I \[Pi])/4)) 
+						},
+					{
+						1,
+						 E^(-((I \[Pi])/4)),
+						-i,
+						-E^(((I \[Pi])/4)),
+						-1,
+						-E^(-((I \[Pi])/4)),
+						i,
+						 E^((I \[Pi])/4) 
+						},
+					{
+						2,
+						0,
+						-2,
+						0,
+						2,
+						0,
+						-2,
+						0
+						},
+					{
+						1,
+						i,
+						-1,
+						-i,
+						1,
+						i,
+						-1,
+						-i
+						},
+					{
+						1,
+						-i,
+						-1,
+						i,
+						1,
+						-i,
+						-1,
+						i 
+						},
+					{
+						1,
+						-E^(-((I \[Pi])/4)),
+						-i,
+						 E^((I \[Pi])/4),
+						-1,
+						 E^(-((I \[Pi])/4)),
+						i,
+						-E^(((I \[Pi])/4))
+						},
+					{
+						1,
+						-E^(((I \[Pi])/4)),
+						i,
+						 E^(-((I \[Pi])/4)),
+						-1,
+						 E^((I \[Pi])/4),
+						-i,
+						-E^(-((I \[Pi])/4))
+						}
+					},
+			"LinearFunctions"->
+					{
+					{
+						\[FormalCapitalR][\[FormalZ]]
+						},
+					{
+						\[FormalZ] 
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY] 
+							}
+						},
+					{},
+					{},
+					{},
+					{},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
+						},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2,
+						 \[FormalZ]^2 
+						},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{},
+					{},
+					{
+						{
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY]
+							}
+						},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{}
+					}
+			|>,
+	"T"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"T",
+					"Type"->
+							"T",
+					"Order"->
+							None,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox["\<\"T\"\>",
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"4C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								4,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"4", " ", SubscriptBox["\"C\"", "3"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"4C32",
+						"Order"->
+								3,
+						"Degree"->
+								2,
+						"Count"->
+								4,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"4", " ", TemplateBox[{SubscriptBox["\"C\"", "3"], "2"}, "Superscript", SyntaxForm -> SuperscriptBox]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"3C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"C\"", "2"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"T",
+						"Type"->
+								"T",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"T\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						2,
+						0,
+						0,
+						2
+						},
+					{
+						1,
+						 E^((2 I \[Pi])/None),
+						 E^(-((2 I \[Pi])/Conjugate[None])),
+						1
+						},
+					{
+						1,
+						 E^(-((2 I \[Pi])/Conjugate[None])),
+						 E^((2 I \[Pi])/None),
+						1
+						},
+					{
+						3,
+						0,
+						0,
+						-1
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{},
+					{},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY],
+							\[FormalZ] 
+							},
+						\[FormalCapitalR][\[FormalX]],
+						\[FormalCapitalR][\[FormalY]],
+						\[FormalCapitalR][\[FormalZ]]
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2+\[FormalZ]^2
+						},
+					{},
+					{
+						{
+							-\[FormalX]^2-\[FormalY]^2+2 \[FormalZ]^2,
+							\[FormalX]^2-\[FormalY]^2
+							}
+						},
+					{},
+					{
+						{
+							\[FormalX] \[FormalY],
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						}
+					}
+			|>,
+	"Th"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"Th",
+					"Type"->
+							"T",
+					"Order"->
+							None,
+					"Modifier"->
+							"h",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"T\"\>", 
+TemplateBox[{"\"h\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"4C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								4,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"4", " ", SubscriptBox["\"C\"", "3"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"4C32",
+						"Order"->
+								3,
+						"Degree"->
+								2,
+						"Count"->
+								4,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"4", " ", TemplateBox[{SubscriptBox["\"C\"", "3"], "2"}, "Superscript", SyntaxForm -> SuperscriptBox]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"3C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"C\"", "2"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"i",
+						"ID"->
+								"i",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"i\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"4S65",
+						"Order"->
+								6,
+						"Degree"->
+								5,
+						"Count"->
+								4,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"4", " ", TemplateBox[{SubscriptBox["\"S\"", "6"], "5"}, "Superscript", SyntaxForm -> SuperscriptBox]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"4S6",
+						"Order"->
+								6,
+						"Degree"->
+								1,
+						"Count"->
+								4,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"4", " ", SubscriptBox["\"S\"", "6"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"3\[Sigma]h",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"h",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"\[Sigma]\"", "\"h\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"Ag",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eg",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eg",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eg",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Tg",
+						"Type"->
+								"T",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"T\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Au",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eu",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eu",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Tu",
+						"Type"->
+								"T",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"T\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						2,
+						0,
+						0,
+						2,
+						2,
+						0,
+						0,
+						2
+						},
+					{
+						1,
+						 E^((2 I \[Pi])/None),
+						 E^(-((2 I \[Pi])/Conjugate[None])),
+						1,
+						1,
+						 E^((2 I \[Pi])/None),
+						 E^(-((2 I \[Pi])/Conjugate[None])),
+						1
+						},
+					{
+						1,
+						 E^(-((2 I \[Pi])/Conjugate[None])),
+						 E^((2 I \[Pi])/None),
+						1,
+						1,
+						 E^(-((2 I \[Pi])/Conjugate[None])),
+						 E^((2 I \[Pi])/None),
+						1
+						},
+					{
+						3,
+						0,
+						0,
+						-1,
+						3,
+						0,
+						0,
+						-1
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1
+						},
+					{
+						1,
+						 E^((2 I \[Pi])/None),
+						 E^(-((2 I \[Pi])/Conjugate[None])),
+						1,
+						-1,
+						-E^(((2 I \[Pi])/None)),
+						-E^(-((2 I \[Pi])/Conjugate[None])),
+						-1
+						},
+					{
+						1,
+						 E^(-((2 I \[Pi])/Conjugate[None])),
+						 E^((2 I \[Pi])/None),
+						1,
+						-1,
+						-E^(-((2 I \[Pi])/Conjugate[None])),
+						-E^(((2 I \[Pi])/None)),
+						-1
+						},
+					{
+						3,
+						0,
+						0,
+						-1,
+						-3,
+						0,
+						0,
+						1
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{},
+					{},
+					{},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]],
+							\[FormalCapitalR][\[FormalZ]]
+							}
+						},
+					{},
+					{},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY],
+							\[FormalZ] 
+							}
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2+\[FormalZ]^2
+						},
+					{},
+					{
+						{
+							-\[FormalX]^2-\[FormalY]^2+2 \[FormalZ]^2,
+							\[FormalX]^2-\[FormalY]^2
+							}
+						},
+					{},
+					{
+						{
+							\[FormalX] \[FormalY],
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{},
+					{},
+					{},
+					{}
+					}
+			|>,
+	"Td"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"Td",
+					"Type"->
+							"T",
+					"Order"->
+							None,
+					"Modifier"->
+							"d",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"T\"\>", 
+TemplateBox[{"\"d\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"8C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								8,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"8", " ", SubscriptBox["\"C\"", "3"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"3C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"C\"", "2"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"6S4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								6,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"6", " ", SubscriptBox["\"S\"", "4"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"6\[Sigma]d",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								6,
+						"Orientation"->
+								"d",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"6", " ", SubscriptBox["\"\[Sigma]\"", "\"d\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"T1",
+						"Type"->
+								"T",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"T\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"T2",
+						"Type"->
+								"T",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"T\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						-1,
+						-1
+						},
+					{
+						2,
+						-1,
+						2,
+						0,
+						0
+						},
+					{
+						3,
+						0,
+						-1,
+						1,
+						-1
+						},
+					{
+						3,
+						0,
+						-1,
+						-1,
+						1
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{},
+					{},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]],
+							\[FormalCapitalR][\[FormalZ]]
+							}
+						},
+					{
+						{
+							\[FormalX],
+							\[FormalY],
+							\[FormalZ] 
+							}
+						}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2+\[FormalZ]^2
+						},
+					{},
+					{
+						{
+							-\[FormalX]^2-\[FormalY]^2+2 \[FormalZ]^2,
+							\[FormalX]^2-\[FormalY]^2
+							}
+						},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ],
+							\[FormalX] \[FormalY]
+							}
+						}
+					}
+			|>,
+	"O"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"O",
+					"Type"->
+							"O",
+					"Order"->
+							None,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox["\<\"O\"\>",
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"8C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								8,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"8", " ", SubscriptBox["\"C\"", "3"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"3C2(=C42)",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"C\"", "2"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"6C4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								6,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"6", " ", SubscriptBox["\"C\"", "4"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"6C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								6,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"6", " ", SubscriptBox["\"C\"", "2"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"E",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"T1",
+						"Type"->
+								"T",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"T\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"T2",
+						"Type"->
+								"T",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"T\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						-1,
+						-1
+						},
+					{
+						2,
+						-1,
+						2,
+						0,
+						0
+						},
+					{
+						3,
+						0,
+						-1,
+						1,
+						-1
+						},
+					{
+						3,
+						0,
+						-1,
+						-1,
+						1
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{},
+					{},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]],
+							\[FormalCapitalR][\[FormalZ]]
+							},
+						\[FormalX],
+						\[FormalY],
+						\[FormalZ] 
+						},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2+\[FormalZ]^2
+						},
+					{},
+					{
+						{
+							-\[FormalX]^2-\[FormalY]^2+2 \[FormalZ]^2,
+							\[FormalX]^2-\[FormalY]^2
+							}
+						},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ],
+							\[FormalX] \[FormalY]
+							}
+						}
+					}
+			|>,
+	"Oh"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"Oh",
+					"Type"->
+							"O",
+					"Order"->
+							None,
+					"Modifier"->
+							"h",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"O\"\>", 
+TemplateBox[{"\"h\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"8C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								8,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"8", " ", SubscriptBox["\"C\"", "3"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"6C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								6,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"6", " ", SubscriptBox["\"C\"", "2"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"6C4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								6,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"6", " ", SubscriptBox["\"C\"", "4"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"3C2(=C42)",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"C\"", "2"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"i",
+						"ID"->
+								"i",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"i\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"6S4",
+						"Order"->
+								4,
+						"Degree"->
+								1,
+						"Count"->
+								6,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"6", " ", SubscriptBox["\"S\"", "4"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"8S6",
+						"Order"->
+								6,
+						"Degree"->
+								1,
+						"Count"->
+								8,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"8", " ", SubscriptBox["\"S\"", "6"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"3\[Sigma]h",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								3,
+						"Orientation"->
+								"h",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"3", " ", SubscriptBox["\"\[Sigma]\"", "\"h\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"6\[Sigma]d",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								6,
+						"Orientation"->
+								"d",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"6", " ", SubscriptBox["\"\[Sigma]\"", "\"d\""]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A1g",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2g",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eg",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"T1g",
+						"Type"->
+								"T",
+						"Index"->
+								1,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"T\"", TemplateBox[{"1", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"T2g",
+						"Type"->
+								"T",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"T\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A1u",
+						"Type"->
+								"A",
+						"Index"->
+								1,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"1", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"A2u",
+						"Type"->
+								"A",
+						"Index"->
+								2,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", TemplateBox[{"2", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Eu",
+						"Type"->
+								"E",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"E\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"T1u",
+						"Type"->
+								"T",
+						"Index"->
+								1,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"T\"", TemplateBox[{"1", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"T2u",
+						"Type"->
+								"T",
+						"Index"->
+								2,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"T\"", TemplateBox[{"2", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						1,
+						1,
+						-1,
+						-1,
+						1,
+						1,
+						-1,
+						1,
+						1,
+						-1
+						},
+					{
+						2,
+						-1,
+						0,
+						0,
+						2,
+						2,
+						0,
+						-1,
+						2,
+						0
+						},
+					{
+						3,
+						0,
+						-1,
+						1,
+						-1,
+						3,
+						1,
+						0,
+						-1,
+						-1
+						},
+					{
+						3,
+						0,
+						1,
+						-1,
+						-1,
+						3,
+						-1,
+						0,
+						-1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1,
+						-1
+						},
+					{
+						1,
+						1,
+						-1,
+						-1,
+						1,
+						-1,
+						1,
+						-1,
+						-1,
+						1
+						},
+					{
+						2,
+						-1,
+						0,
+						0,
+						2,
+						-2,
+						0,
+						1,
+						-2,
+						0
+						},
+					{
+						3,
+						0,
+						-1,
+						1,
+						-1,
+						-3,
+						-1,
+						0,
+						1,
+						1
+						},
+					{
+						3,
+						0,
+						1,
+						-1,
+						-1,
+						-3,
+						1,
+						0,
+						1,
+						-1
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{},
+					{},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]],
+							\[FormalCapitalR][\[FormalZ]]
+							}
+						},
+					{},
+					{},
+					{},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY],
+							\[FormalZ] 
+							}
+						},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2+\[FormalZ]^2
+						},
+					{},
+					{
+						{
+							-\[FormalX]^2-\[FormalY]^2+2 \[FormalZ]^2,
+							\[FormalX]^2-\[FormalY]^2
+							}
+						},
+					{},
+					{
+						{
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ],
+							\[FormalX] \[FormalY]
+							}
+						},
+					{},
+					{},
+					{},
+					{},
+					{}
+					}
+			|>,
+	"I"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"I",
+					"Type"->
+							"I",
+					"Order"->
+							None,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox["\<\"I\"\>",
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"12C5",
+						"Order"->
+								5,
+						"Degree"->
+								1,
+						"Count"->
+								12,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"12", " ", SubscriptBox["\"C\"", "5"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"12C52",
+						"Order"->
+								5,
+						"Degree"->
+								2,
+						"Count"->
+								12,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"12", " ", TemplateBox[{SubscriptBox["\"C\"", "5"], "2"}, "Superscript", SyntaxForm -> SuperscriptBox]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"20C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								20,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"20", " ", SubscriptBox["\"C\"", "3"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"15C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								15,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"15", " ", SubscriptBox["\"C\"", "2"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"A",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"A\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"T1",
+						"Type"->
+								"T",
+						"Index"->
+								1,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"T\"", TemplateBox[{"1", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"T2",
+						"Type"->
+								"T",
+						"Index"->
+								2,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"T\"", TemplateBox[{"2", "\"\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"G",
+						"Type"->
+								"G",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"G\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"H",
+						"Type"->
+								"H",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"H\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						3,
+						1/2 (1+Sqrt[5]),
+						1/2 (1-Sqrt[5]),
+						0,
+						-1
+						},
+					{
+						3,
+						1/2 (1-Sqrt[5]),
+						1/2 (1+Sqrt[5]),
+						0,
+						-1
+						},
+					{
+						4,
+						-1,
+						-1,
+						1,
+						0
+						},
+					{
+						5,
+						0,
+						0,
+						-1,
+						1
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]],
+							\[FormalCapitalR][\[FormalZ]]
+							},
+						\[FormalX],
+						\[FormalY],
+						\[FormalZ] 
+						},
+					{},
+					{},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2+\[FormalZ]^2
+						},
+					{},
+					{},
+					{},
+					{
+						{
+							-\[FormalX]^2-\[FormalY]^2+2 \[FormalZ]^2,
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ],
+							\[FormalX] \[FormalY]
+							}
+						}
+					}
+			|>,
+	"Ih"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"Ih",
+					"Type"->
+							"I",
+					"Order"->
+							None,
+					"Modifier"->
+							"h",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"I\"\>", 
+TemplateBox[{"\"h\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"12C5",
+						"Order"->
+								5,
+						"Degree"->
+								1,
+						"Count"->
+								12,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"12", " ", SubscriptBox["\"C\"", "5"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"12C52",
+						"Order"->
+								5,
+						"Degree"->
+								2,
+						"Count"->
+								12,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"12", " ", TemplateBox[{SubscriptBox["\"C\"", "5"], "2"}, "Superscript", SyntaxForm -> SuperscriptBox]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"20C3",
+						"Order"->
+								3,
+						"Degree"->
+								1,
+						"Count"->
+								20,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"20", " ", SubscriptBox["\"C\"", "3"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"C",
+						"ID"->
+								"15C2",
+						"Order"->
+								2,
+						"Degree"->
+								1,
+						"Count"->
+								15,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"15", " ", SubscriptBox["\"C\"", "2"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"i",
+						"ID"->
+								"i",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"i\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"12S10",
+						"Order"->
+								10,
+						"Degree"->
+								1,
+						"Count"->
+								12,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"12", " ", SubscriptBox["\"S\"", "10"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"12S103",
+						"Order"->
+								10,
+						"Degree"->
+								3,
+						"Count"->
+								12,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"12", " ", TemplateBox[{SubscriptBox["\"S\"", "10"], "3"}, "Superscript", SyntaxForm -> SuperscriptBox]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"S",
+						"ID"->
+								"20S6",
+						"Order"->
+								6,
+						"Degree"->
+								1,
+						"Count"->
+								20,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"20", " ", SubscriptBox["\"S\"", "6"]}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Sigma]",
+						"ID"->
+								"15\[Sigma]",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								15,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{RowBox[{"15", " ", "\"\[Sigma]\""}],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"Ag",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"T1g",
+						"Type"->
+								"T",
+						"Index"->
+								1,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"T\"", TemplateBox[{"1", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"T2g",
+						"Type"->
+								"T",
+						"Index"->
+								2,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"T\"", TemplateBox[{"2", "\"g\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Gg",
+						"Type"->
+								"G",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"G\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Hg",
+						"Type"->
+								"H",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"H\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Au",
+						"Type"->
+								"A",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"A\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"T1u",
+						"Type"->
+								"T",
+						"Index"->
+								1,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"T\"", TemplateBox[{"1", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"T2u",
+						"Type"->
+								"T",
+						"Index"->
+								2,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"T\"", TemplateBox[{"2", "\"u\""}, "RowDefault"]],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Gu",
+						"Type"->
+								"G",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"G\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Hu",
+						"Type"->
+								"H",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"H\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						3,
+						1/2 (1+Sqrt[5]),
+						1/2 (1-Sqrt[5]),
+						0,
+						-1,
+						3,
+						1/2 (1-Sqrt[5]),
+						1/2 (1+Sqrt[5]),
+						0,
+						-1
+						},
+					{
+						3,
+						1/2 (1-Sqrt[5]),
+						1/2 (1+Sqrt[5]),
+						0,
+						-1,
+						3,
+						1/2 (1+Sqrt[5]),
+						1/2 (1-Sqrt[5]),
+						0,
+						-1
+						},
+					{
+						4,
+						-1,
+						-1,
+						1,
+						0,
+						4,
+						-1,
+						-1,
+						1,
+						0
+						},
+					{
+						5,
+						0,
+						0,
+						-1,
+						1,
+						5,
+						0,
+						0,
+						-1,
+						1
+						},
+					{
+						1,
+						1,
+						1,
+						1,
+						1,
+						-1,
+						-1,
+						-1,
+						-1,
+						-1
+						},
+					{
+						3,
+						1/2 (1+Sqrt[5]),
+						1/2 (1-Sqrt[5]),
+						0,
+						-1,
+						-3,
+						1/2 (-1+Sqrt[5]),
+						1/2 (-1-Sqrt[5]),
+						0,
+						1
+						},
+					{
+						3,
+						1/2 (1-Sqrt[5]),
+						1/2 (1+Sqrt[5]),
+						0,
+						-1,
+						-3,
+						1/2 (-1-Sqrt[5]),
+						1/2 (-1+Sqrt[5]),
+						0,
+						1
+						},
+					{
+						4,
+						-1,
+						-1,
+						1,
+						0,
+						-4,
+						1,
+						1,
+						-1,
+						0
+						},
+					{
+						5,
+						0,
+						0,
+						-1,
+						1,
+						-5,
+						0,
+						0,
+						1,
+						-1
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]],
+							\[FormalCapitalR][\[FormalZ]]
+							}
+						},
+					{},
+					{},
+					{},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY],
+							\[FormalZ] 
+							}
+						},
+					{},
+					{},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2+\[FormalZ]^2
+						},
+					{},
+					{},
+					{},
+					{
+						{
+							-\[FormalX]^2-\[FormalY]^2+2 \[FormalZ]^2,
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ],
+							\[FormalX] \[FormalY]
+							}
+						},
+					{},
+					{},
+					{},
+					{},
+					{}
+					}
+			|>,
+	"K"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"K",
+					"Type"->
+							"K",
+					"Order"->
+							None,
+					"Modifier"->
+							"",
+					"Formatted"->
+							\!\(\*
+StyleBox["\<\"K\"\>",
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Infinity]",
+						"ID"->
+								"\[Infinity]C\[Infinity]\[CapitalPhi]",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"C\[Infinity]\[CapitalPhi]",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Infinity]\"","\"C\[Infinity]\[CapitalPhi]\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"S",
+						"Type"->
+								"S",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"S\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"P",
+						"Type"->
+								"P",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"P\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"D",
+						"Type"->
+								"D",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"D\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"F",
+						"Type"->
+								"F",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"F\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"\[Ellipsis]",
+						"Type"->
+								"\[Ellipsis]",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Ellipsis]\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1
+						},
+					{
+						3,
+						1+2 Cos[\[FormalCapitalPhi]]
+						},
+					{
+						5,
+						1+2 Cos[\[FormalCapitalPhi]]+2 Cos[2 \[FormalCapitalPhi]]
+						},
+					{
+						7,
+						1+2 Cos[\[FormalCapitalPhi]]+2 Cos[2 \[FormalCapitalPhi]]+2 Cos[3 \[FormalCapitalPhi]]
+						},
+					{
+						\[Ellipsis],
+						\[Ellipsis] 
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]],
+							\[FormalCapitalR][\[FormalZ]]
+							},
+						\[FormalX],
+						\[FormalY],
+						\[FormalZ] 
+						},
+					{},
+					{},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2+\[FormalZ]^2
+						},
+					{},
+					{
+						{
+							\[FormalX]^2+\[FormalY]^2-2 \[FormalZ]^2,
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY],
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{},
+					{}
+					}
+			|>,
+	"Kh"->
+			<|
+			"PointGroup"->
+					<|
+					"ID"->
+							"Kh",
+					"Type"->
+							"K",
+					"Order"->
+							None,
+					"Modifier"->
+							"h",
+					"Formatted"->
+							\!\(\*
+StyleBox[
+SubscriptBox["\<\"K\"\>", 
+TemplateBox[{"\"h\""},
+"RowDefault"]],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+					|>,
+			"SymmetryClasses"->
+					{
+					<|
+						"Type"->
+								"E",
+						"ID"->
+								"E",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"E\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Infinity]",
+						"ID"->
+								"\[Infinity]C\[Infinity]\[CapitalPhi]",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"C\[Infinity]\[CapitalPhi]",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Infinity]\"","\"C\[Infinity]\[CapitalPhi]\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"i",
+						"ID"->
+								"i",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"i\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"Type"->
+								"\[Infinity]",
+						"ID"->
+								"\[Infinity]S\[Infinity]\[CapitalPhi]",
+						"Order"->
+								1,
+						"Degree"->
+								1,
+						"Count"->
+								1,
+						"Orientation"->
+								"",
+						"Modifier"->
+								"S\[Infinity]\[CapitalPhi]",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Infinity]\"","\"S\[Infinity]\[CapitalPhi]\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"IrreducibleRepresentations"->
+					{
+					<|
+						"ID"->
+								"Sg",
+						"Type"->
+								"S",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"S\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Pg",
+						"Type"->
+								"P",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"P\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Dg",
+						"Type"->
+								"D",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"D\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Fg",
+						"Type"->
+								"F",
+						"Index"->
+								0,
+						"Parity"->
+								"g",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"F\"", "\"g\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"\[Ellipsis]",
+						"Type"->
+								"\[Ellipsis]",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Ellipsis]\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Su",
+						"Type"->
+								"S",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"S\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Pu",
+						"Type"->
+								"P",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"P\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Du",
+						"Type"->
+								"D",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"D\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"Fu",
+						"Type"->
+								"F",
+						"Index"->
+								0,
+						"Parity"->
+								"u",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{SubscriptBox["\"F\"", "\"u\""],"\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>,
+					<|
+						"ID"->
+								"\[Ellipsis]",
+						"Type"->
+								"\[Ellipsis]",
+						"Index"->
+								0,
+						"Parity"->
+								"",
+						"Modifier"->
+								"",
+						"Formatted"->
+								\!\(\*
+StyleBox[
+TemplateBox[{"\"\[Ellipsis]\"","\"\""},
+"RowDefault"],
+StripOnInput->False,
+ShowStringCharacters->False]\)
+						|>
+					},
+			"CharacterTable"->
+					{
+					{
+						1,
+						1,
+						1,
+						1
+						},
+					{
+						3,
+						1+2 Cos[\[FormalCapitalPhi]],
+						3,
+						1-2 Cos[\[FormalCapitalPhi]]
+						},
+					{
+						5,
+						1+2 Cos[\[FormalCapitalPhi]]+2 Cos[2 \[FormalCapitalPhi]],
+						5,
+						1-2 Cos[\[FormalCapitalPhi]]+2 Cos[2 \[FormalCapitalPhi]]
+						},
+					{
+						7,
+						1+2 Cos[\[FormalCapitalPhi]]+2 Cos[2 \[FormalCapitalPhi]]+2 Cos[3 \[FormalCapitalPhi]],
+						7,
+						1-2 Cos[\[FormalCapitalPhi]]+2 Cos[2 \[FormalCapitalPhi]-2 Cos[3 \[FormalCapitalPhi]]]
+						},
+					{
+						\[Ellipsis],
+						\[Ellipsis],
+						\[Ellipsis],
+						\[Ellipsis] 
+						},
+					{
+						1,
+						1,
+						-1,
+						-1
+						},
+					{
+						3,
+						1+2 Cos[\[FormalCapitalPhi]],
+						-3,
+						-1+2 Cos[\[FormalCapitalPhi]]
+						},
+					{
+						5,
+						1+2 Cos[\[FormalCapitalPhi]]+2 Cos[2 \[FormalCapitalPhi]],
+						-5,
+						-1+2 Cos[\[FormalCapitalPhi]-2 Cos[2 \[FormalCapitalPhi]]]
+						},
+					{
+						7,
+						1+2 Cos[\[FormalCapitalPhi]]+2 Cos[2 \[FormalCapitalPhi]]+2 Cos[3 \[FormalCapitalPhi]],
+						-7,
+						-1+2 Cos[3 \[FormalCapitalPhi]]+2 Cos[\[FormalCapitalPhi]-2 Cos[2 \[FormalCapitalPhi]]]
+						},
+					{
+						\[Ellipsis],
+						\[Ellipsis],
+						Null,
+						\[Ellipsis] 
+						}
+					},
+			"LinearFunctions"->
+					{
+					{},
+					{
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]],
+							\[FormalCapitalR][\[FormalZ]]
+							}
+						},
+					{},
+					{},
+					{},
+					{},
+					{
+						{
+							\[FormalX],
+							\[FormalY],
+							\[FormalZ] 
+							}
+						},
+					{},
+					{},
+					{}
+					},
+			"NonLinearFunctions"->
+					{
+					{
+						\[FormalX]^2+\[FormalY]^2+\[FormalZ]^2
+						},
+					{},
+					{
+						{
+							\[FormalX]^2+\[FormalY]^2-2 \[FormalZ]^2,
+							\[FormalX]^2-\[FormalY]^2,
+							\[FormalX] \[FormalY],
+							\[FormalX] \[FormalZ],
+							\[FormalY] \[FormalZ]
+							}
+						},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{}
+					}
+			|>
+	|>

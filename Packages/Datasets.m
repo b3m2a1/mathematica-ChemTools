@@ -20,11 +20,13 @@
 
 
 PackageScopeBlock[
+	$ChemCustomAtoms::usage="";
 	$ChemAtomColors::usage="";
 	$ChemElements::usage="";
 	$ChemSpaceGroups::usage="";
 	$ChemBondDistances::usage="";
 	$ChemElementValences::usage="";
+	$ChemCharacterTables::usage="";
 	$ChemMMMFF94AtomTypes::usage="";
 	$ChemMMMFF94BondData::usage="";
 	$ChemMMFF94BondAngleData::usage="";
@@ -34,6 +36,13 @@ PackageScopeBlock[
 
 
 Begin["`Private`"];
+
+
+If[!MatchQ[OwnValues[$ChemCustomAtoms],{_:>_Association?AssociationQ}],
+	$ChemCustomAtoms:=
+		$ChemCustomAtoms=
+			Import@PackageFilePath["Resources","Datasets","ChemCustomAtoms.wl"]
+	];
 
 
 If[!MatchQ[OwnValues[$ChemAtomColors],{_:>_Association?AssociationQ}],
@@ -68,6 +77,13 @@ If[!MatchQ[OwnValues[$ChemElementValences],{_:>_Association?AssociationQ}],
 	$ChemElementValences:=
 		$ChemElementValences=
 			Import@PackageFilePath["Resources","Datasets","ChemElementValences.wl"];
+	];
+
+
+If[!MatchQ[OwnValues[$ChemCharacterTables],{_:>_Association?AssociationQ}],
+	$ChemCharacterTables:=
+		$ChemCharacterTables=
+			Import@PackageFilePath["Resources","Datasets","ChemCharacterTables.wl"];
 	];
 
 
