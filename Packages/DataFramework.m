@@ -1143,7 +1143,7 @@ CDSourceMass[query_,___]:=
 
 
 chemDataSourceAdd[
-	"AtomicMass"->
+	"Mass"->
 		ChemData[
 			CDSourceMass,
 			$Failed&,

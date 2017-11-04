@@ -23,9 +23,9 @@ CharacterTable::usage="Storage class for character table data";
 CharacterTableData::usage="Looks up char table data";
 CharacterTableSymmetryFunctions::usage=
 	"Determines the functions that describe the symmetry classes";
-CharacterTableRepresentationsList::usage=
+CharacterTableReducibleRepresentationsList::usage=
 	"";
-CharacterTableRepresentationsGrid::usage=
+CharacterTableReducibleRepresentationsGrid::usage=
 	"Formats a grid for the reducible reps";
 CharacterTableTotalRepresentation::usage=
 	"Computes the total of a representation list";
@@ -1045,7 +1045,7 @@ charTableTransfCloseEnough[transfed_, v_, tol_:.25]:=
 		];
 
 
-CharacterTableRepresentationsList//Clear
+CharacterTableReducibleRepresentationsList//Clear
 
 
 charTableRepListCoordVecPat=
@@ -1054,7 +1054,7 @@ charTableRepListCoordPat=
 	{({_,_,_}|{{_,_,_},_})..};
 
 
-CharacterTableRepresentationsList[
+CharacterTableReducibleRepresentationsList[
 	mapping_Association?(Not@*KeyMemberQ["Center"]),
 	coordsAndVecs:charTableRepListCoordVecPat
 	]:=
@@ -1103,31 +1103,31 @@ CharacterTableRepresentationsList[
 			],
 		{v, coordsAndVecs}
 		];
-CharacterTableRepresentationsList[
+CharacterTableReducibleRepresentationsList[
 	mapping_Association?(Not@*KeyMemberQ["Center"]),
 	coords:{{_,_,_}..},
 	vecs:charTableRepListCoordPat:IdentityMatrix[3]
 	]:=
-	CharacterTableRepresentationsList[mapping,
+	CharacterTableReducibleRepresentationsList[mapping,
 		Map[#->vecs&, coords]
 		];
-CharacterTableRepresentationsList[
+CharacterTableReducibleRepresentationsList[
 	ct_, 
 	sops_Association?(KeyMemberQ["Center"]),
 	coords:{{_,_,_}..},
 	coordinateVectors:charTableRepListCoordPat:IdentityMatrix[3]
 	]:=
-	CharacterTableRepresentationsList[
+	CharacterTableReducibleRepresentationsList[
 		CharacterTableSymmetryFunctions[ct, sops],
 		coords,
 		coordinateVectors
 		];
-CharacterTableRepresentationsList[
+CharacterTableReducibleRepresentationsList[
 	ct_, 
 	sops_Association?(KeyMemberQ["Center"]),
 	coordsAndVecs:charTableRepListCoordVecPat
 	]:=
-	CharacterTableRepresentationsList[
+	CharacterTableReducibleRepresentationsList[
 		CharacterTableSymmetryFunctions[ct, sops],
 		coordsAndVecs
 		];
@@ -1186,7 +1186,7 @@ CharacterTableReducibleRepresentationsGrid[
 	]:=
 	CharacterTableReducibleRepresentationsGrid[
 		ct,
-		CharacterTableRepresentationsList[
+		CharacterTableReducibleRepresentationsList[
 			fmapping,
 			coordAndVecs
 			],
@@ -1201,7 +1201,7 @@ CharacterTableReducibleRepresentationsGrid[
 	]:=
 	CharacterTableReducibleRepresentationsGrid[
 		ct,
-		CharacterTableRepresentationsList[
+		CharacterTableReducibleRepresentationsList[
 			fmapping,
 			coords, 
 			coordVecs
@@ -1216,7 +1216,7 @@ CharacterTableReducibleRepresentationsGrid[
 	]:=
 	CharacterTableReducibleRepresentationsGrid[
 		ct,
-		CharacterTableRepresentationsList[
+		CharacterTableReducibleRepresentationsList[
 			CharacterTableSymmetryFunctions[ct, symOps],
 			coordAndVecs
 			],
@@ -1231,7 +1231,7 @@ CharacterTableReducibleRepresentationsGrid[
 	]:=
 	CharacterTableReducibleRepresentationsGrid[
 		ct,
-		CharacterTableRepresentationsList[
+		CharacterTableReducibleRepresentationsList[
 			CharacterTableSymmetryFunctions[ct, symOps],
 			coords,
 			coordVecs
@@ -1252,14 +1252,14 @@ CharacterTableTotalRepresentation[
 	coordVecs:charTableRepListCoordVecPat
 	]:=
 	CharacterTableTotalRepresentation@
-		CharacterTableRepresentationsList[fmapping, coordVecs];
+		CharacterTableReducibleRepresentationsList[fmapping, coordVecs];
 CharacterTableTotalRepresentation[
 	fmapping_Association?(Not@*KeyMemberQ["Center"]),
 	coords_List,
 	coordVecs:charTableRepListCoordPat:IdentityMatrix[3]
 	]:=
 	CharacterTableTotalRepresentation@
-		CharacterTableRepresentationsList[fmapping, coords, coordVecs];
+		CharacterTableReducibleRepresentationsList[fmapping, coords, coordVecs];
 CharacterTableTotalRepresentation[
 	ct_,
 	symOps_Association?(KeyMemberQ["Center"]),
@@ -1512,24 +1512,41 @@ CharacterTableSALCs[
 	With[
 		{
 			irreps=
-				CharacterTableSymmetryAdaptedProjection[
-					ct,
-					sMapping,
-					#
-					]&/@coords[[All,2]],
+					CharacterTableSymmetryAdaptedProjection[
+						ct,
+						sMapping,
+						#
+						]&/@coords[[All,2]]//Transpose,
 			coordSys=	
 				coords[[All,2]]//Transpose,
 			coordVars=
 				coords[[All,1]]
 			},
-		Map[
-			MapThread[
-				#->LinearSolve[coordSys,#2]&,
-					{
-						coordVars,
-						Echo@#
-					}]&,
-			irreps
+		Association@MapThread[
+			#2->
+				DeleteDuplicates[
+					Map[
+							coordVars.
+								If[MatrixQ@coordVars,
+									Identity,
+									Round[#, .1]/.{
+										i_Real?(FractionalPart[#]==0&):>IntegerPart[i]
+										}&
+									][
+									Normalize[
+										LinearSolve[coordSys,#]/.{
+											n_Real?(FractionalPart[#]==0&):>IntegerPart[n]
+											}
+										]
+									]&,
+						#
+						],
+					#==-#2&
+					]&,
+			{
+				irreps,
+				CharacterTableData[ct, "IrreducibleRepresentations"]
+				}
 			]
 		];
 CharacterTableSALCs[
