@@ -176,12 +176,16 @@ Note that these are all implemented in  top-level Mathematica code, and some may
 	ChemUtilsSymmetryGraphics[
 	  AtomsetElementPositions@water] // AbsoluteTiming
 
+	(*Out:*)
+	
+ ![title-2495216512333191222](project/img/title-2495216512333191222.png)
+
 	ChemUtilsSymmetryGraphics[
 	  AtomsetElementPositions@benzene] // AbsoluteTiming
 
 	(*Out:*)
 	
- ![title-2583737187657759442](project/img/title-2583737187657759442.png)
+ ![title-8741352710220477349](project/img/title-8741352710220477349.png)
 
 This can be accelerated by only considering the heavy atoms. The atom set version provides that as a default:
 
@@ -189,7 +193,36 @@ This can be accelerated by only considering the heavy atoms. The atom set versio
 
 	(*Out:*)
 	
- ![title-4096607379669752931](project/img/title-4096607379669752931.png)
+ ![title-4345856255436803276](project/img/title-4345856255436803276.png)
+
+The algorithm depends on being able to reduce the problem by symmetry, though, so for unsymmetric systems, performance is negatively impacted:
+
+	ChemView["phenylamine", "SymmetryElements" -> All] // AbsoluteTiming
+
+	(*Out:*)
+	
+ ![title-7496145490262263288](project/img/title-7496145490262263288.png)
+
+And for particularly large species it fails completely:
+
+	buckyball = ChemImport["~/Downloads/110185.mol"];
+	ChemView[buckyball, "SymmetryElements" -> All] // AbsoluteTiming
+
+
+<div class='mma-message'>
+	<span class='mma-message-name'>General::nomem:</span>
+	<span class='mma-message-text'>The current computation was aborted because there was insufficient memory available to complete the computation.</span>
+</div>
+
+
+<div class='mma-message'>
+	<span class='mma-message-name'>Throw::sysexc:</span>
+	<span class='mma-message-text'>Uncaught SystemException returned to top level. Can be caught with Catch[…, _SystemException].</span>
+</div>
+
+	(*Out:*)
+	
+	SystemException["MemoryAllocationFailure"]
 
 ---
 
