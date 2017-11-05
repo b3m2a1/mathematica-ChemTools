@@ -1466,9 +1466,20 @@ AtomsetPrincipalAxes[obj:ChemObjPattern]:=
 		];
 
 
-AtomsetSymmetryElements[obj:ChemObjPattern,atomPattern_:_]:=
-	ChemUtilsSymmetryElements@
-		Cases[AtomsetElementPositions[obj],atomPattern];
+AtomsetSymmetryElements//Clear
+
+
+Options[AtomsetSymmetryElements]=
+	Options[ChemUtilsSymmetryElements];
+AtomsetSymmetryElements[
+	obj:ChemObjPattern,
+	atomPattern:Except[_?OptionQ]:_,
+	ops:OptionsPattern[]
+	]:=
+	ChemUtilsSymmetryElements[
+		Cases[AtomsetElementPositions[obj],atomPattern],
+		ops
+		]
 
 
 AtomsetInertialSymmetry[obj:ChemObjPattern]:=
@@ -1476,9 +1487,20 @@ AtomsetInertialSymmetry[obj:ChemObjPattern]:=
 		AtomsetElementPositions@obj;
 
 
-AtomsetPointGroup[obj:ChemObjPattern,atomPattern_:_]:=
-	ChemUtilsPointGroup@
-		Cases[AtomsetElementPositions[obj],atomPattern];
+AtomsetPointGroup//Clear
+
+
+Options[AtomsetPointGroup]=
+	Options[ChemUtilsPointGroup];
+AtomsetPointGroup[
+	obj:ChemObjPattern,
+	atomPattern:Except[_?OptionQ]:_,
+	ops:OptionsPattern[]
+	]:=
+	ChemUtilsPointGroup[
+		Cases[AtomsetElementPositions[obj],atomPattern],
+		ops
+		];
 
 
 Options[AtomsetVdWSurface]=
@@ -2242,7 +2264,10 @@ AtomsetEnergyScan[
 
 
 Options[AtomsetGraphic]=
-	Join[Options@AtomGraphic,Options@BondGraphic];
+	Join[
+		Options@AtomGraphic,
+		Options@BondGraphic
+		];
 AtomsetGraphic[obj:ChemObjPattern,ops:OptionsPattern[]]:=
 	With[{a=DeleteDuplicates@ChemGet[obj,"Atoms"]},
 		With[{b=
@@ -2304,21 +2329,26 @@ axesGraphics[as_,
 		]
 
 
-Options[AtomsetGraphic3D]=
-	Normal@Merge[{
-		Options[AtomsetGraphic],
-		"UseAxes"->Automatic,
-		"UseOrigin"->Automatic,
-		"InertialAxes"->False,
-		"SymmetryElements"->None,
-		"SymmetryAtoms"->
-			Except["H"|"D"|"H2"|"T"|"H3"],
-		"SymmetryCoordinates"->
-			_,
-		"CenterOfMass"->False,
-		"OriginFunction"->Point
-		},
-		Last];
+Options[AtomsetGraphic3D]:=
+	Options[AtomsetGraphic3D]=
+	Normal@
+		Merge[Flatten@{
+			Options@AtomGraphic3D,
+			Options@BondGraphic3D,
+			Options[AtomsetGraphic],
+			"UseAxes"->Automatic,
+			"UseOrigin"->Automatic,
+			"InertialAxes"->False,
+			"SymmetryElements"->None,
+			"SymmetryAtoms"->
+				Except["H"|"D"|"H2"|"T"|"H3"],
+			"SymmetryCoordinates"->
+				_,
+			"CenterOfMass"->False,
+			"OriginFunction"->Point
+			},
+		Last
+		];
 AtomsetGraphic3D[obj:ChemObjPattern,ops:OptionsPattern[]]:=
 	With[{a=DeleteDuplicates@ChemGet[obj,"Atoms"]},
 		With[{b=

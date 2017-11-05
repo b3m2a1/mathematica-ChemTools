@@ -170,33 +170,26 @@ Get the isotopologues of vinyl chloride with greater than 1% relative abundance:
 	{"Hydrogen1", {2.2396, -0.1941, 0.}}, {"Hydrogen1", {1.2208, 1.36, 
 	     0.}}} -> 0.2368|>
 
-Note that these are all implemented in unoptimized top-level Mathematica code, and some may not operate well on large systems. For instance, computing symmetry elements gets prohibitively slow for larger systems:
+Note that these are all implemented in  top-level Mathematica code, and some may not operate well on large systems. For instance, computing symmetry elements gets prohibitively slow for larger systems:
 
 	ChemImport[water];
 	ChemUtilsSymmetryGraphics[
 	  AtomsetElementPositions@water] // AbsoluteTiming
-
-	(*Out:*)
-	
- ![title-868687359619662019](project/img/title-868687359619662019.png)
 
 	ChemUtilsSymmetryGraphics[
 	  AtomsetElementPositions@benzene] // AbsoluteTiming
 
 	(*Out:*)
 	
- ![title-7856029329870057807](project/img/title-7856029329870057807.png)
+ ![title-2583737187657759442](project/img/title-2583737187657759442.png)
 
-This can be accelerated by only considering the heavy atoms. The atomset version provides that as an option:
+This can be accelerated by only considering the heavy atoms. The atom set version provides that as a default:
 
-	ChemView[benzene,
-	   "SymmetryElements" -> All,
-	   "SymmetryAtoms" -> "C"
-	   ] // AbsoluteTiming
+	ChemView[benzene, "SymmetryElements" -> All] // AbsoluteTiming
 
 	(*Out:*)
 	
- ![title-6825475048784163360](project/img/title-6825475048784163360.png)
+ ![title-4096607379669752931](project/img/title-4096607379669752931.png)
 
 ---
 
@@ -245,7 +238,7 @@ Configure a simple scan in Psi4:
 
 	(*Out:*)
 	
- ![title-5322378964561367582](project/img/title-5322378964561367582.png)
+ ![title-4847461953510582721](project/img/title-4847461953510582721.png)
 
 Extract the input file string:
 

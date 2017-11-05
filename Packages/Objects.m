@@ -570,7 +570,8 @@ ChemView[obj:manyObj,mode:"2D"|"3D":"3D",
 		"2D",
 			Graphics[{
 				directives,
-				ChemGetApply[obj,"Graphic",
+				ChemGetApply[obj,
+					"Graphic",
 					FilterRules[{ops},
 						Except[Alternatives@@Map[First,Options@Graphics]]
 						]
