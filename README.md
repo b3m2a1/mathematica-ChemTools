@@ -208,18 +208,6 @@ And for particularly large species it fails completely:
 	buckyball = ChemImport["~/Downloads/110185.mol"];
 	ChemView[buckyball, "SymmetryElements" -> All] // AbsoluteTiming
 
-
-<div class='mma-message'>
-	<span class='mma-message-name'>General::nomem:</span>
-	<span class='mma-message-text'>The current computation was aborted because there was insufficient memory available to complete the computation.</span>
-</div>
-
-
-<div class='mma-message'>
-	<span class='mma-message-name'>Throw::sysexc:</span>
-	<span class='mma-message-text'>Uncaught SystemException returned to top level. Can be caught with Catch[…, _SystemException].</span>
-</div>
-
 	(*Out:*)
 	
 	SystemException["MemoryAllocationFailure"]
