@@ -208,6 +208,10 @@ And for particularly large species it fails completely:
 	buckyball = ChemImport["~/Downloads/110185.mol"];
 	ChemView[buckyball, "SymmetryElements" -> All] // AbsoluteTiming
 
+	General::nomem
+
+	Throw::sysexc
+
 	(*Out:*)
 	
 	SystemException["MemoryAllocationFailure"]

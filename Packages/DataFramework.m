@@ -827,6 +827,37 @@ chemDataSourceAdd[key_->val_]:=
 
 
 chemDataSourceAdd[
+	"CustomAtoms"->
+		ChemData[
+			CDSourceMass,
+			$Failed&,
+			<|
+				"X"->
+					<|
+						"AtomicMass":>
+							ChemDataLookup["X", "Mass"]
+						|>,
+				"Invisible"->
+					<|
+						"AtomicMass":>
+							ChemDataLookup["Invisible", "Mass"]
+						|>,
+				"Black"->
+					<|
+						"AtomicMass":>
+							ChemDataLookup["Black", "Mass"]
+						|>,
+				"White"->
+					<|
+						"AtomicMass":>
+							ChemDataLookup["White", "Mass"]
+						|>
+				|>
+			]
+	]
+
+
+chemDataSourceAdd[
 	"AtomColors"->
 			ChemData[$ChemAtomColors,
 			(ElementData[#,"IconColor"]&)

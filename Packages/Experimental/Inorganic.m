@@ -23,14 +23,25 @@ CharacterTable::usage="Storage class for character table data";
 CharacterTableData::usage="Looks up char table data";
 CharacterTableSymmetryFunctions::usage=
 	"Determines the functions that describe the symmetry classes";
+CharacterTableSymmetryFunctionsFormatted::usage="";
+
+
 CharacterTableReducibleRepresentationsList::usage=
 	"";
 CharacterTableReducibleRepresentationsGrid::usage=
 	"Formats a grid for the reducible reps";
+
+
 CharacterTableTotalRepresentation::usage=
 	"Computes the total of a representation list";
 CharacterTableReduceRepresentation::usage=
 	"Reduces a reducible representation in a character table's irreps";
+
+
+CharacterTableFormatReducedRepresentation::usage=
+	"Displays an association of irreps as a sum";
+
+
 CharacterTableModeRepresentations::usage=
 	"Represents the translational, vibrational, and rotational irreps";
 
@@ -42,9 +53,26 @@ CharacterTableSymmetryAdaptedProjection::usage=
 	"Applies a SALC-type projection"
 CharacterTableSALCs::usage=
 	"Generates the symmetry adapted linear combinations of whatever coordinates are supplied";
+CharacterTableFormatSALCs::usage=
+	"Formats SALCs for readbility";
+
+
+ChemUtilsVibrationalCoordinates::usage=
+	"Determines bend-stretch-wag coordinates for a collection of atoms";
+AtomsetVibrationalCoordinates::usage=
+	"Determines bend-stretch-wag coordinates for an atomset";
+
+
+AtomsetVibrationalAnalysis::usage=
+	"A kitchen sink function for vibrational analyses";
 
 
 Begin["`Private`"];
+
+
+(* ::Subsection:: *)
+(*Character Table Data*)
+
 
 
 (*normalizeCTName[ct_]:=
@@ -754,6 +782,417 @@ PackageAddAutocompletions["CharacterTableData",
 	]
 
 
+CharacterTableFindIrreducibleRepresentation[
+	ct_,
+	key_->crit_
+	]:=
+	Pick[
+		CharacterTableData[ct,"IrreducibleRepresentations"],
+		crit/@
+			CharacterTableData[ct, key]
+		]
+
+
+(* ::Subsection:: *)
+(*Vibrational Coordinates*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*Determining Coordinates*)
+
+
+
+(* ::Text:: *)
+(*The idea here is to take a number of atoms, index them, and rewrite the positions as either 2-tuples (stretch), 3-tuples (bend), or 4-tuples (wag)
+
+These are simply a vector, angle, and dihedral angle, similar to what may be supplied to a z-matrix
+
+The primary thing that needs to be determined is what the stretches should be.  Angles and dihedrals will be determined relative to the components of the stretches.
+
+There should be one fewer stretch, bend, and wag coordinate, than atoms, as there will always be an implicitly fixed atom. This leads to 3n-3 coordinates. Degeneracy of coordinates should then be checked.*)
+
+
+
+ravelUnwraveledIndex[n_, len_]:=
+	{ Floor[(n-1)/len], Mod[n, len] };
+
+
+(*deleteDegenerateStretches[str_]:=
+	;*)
+
+
+(* ::Text:: *)
+(*To delete degenerate bends, we take our collection of bends, b = {{a11, a12, a13}, {a21, a22, a23}, ...} and remove any {ai1, ai2, ai3} such that  there is some {aj1, aj2, aj3} where aj2 = ai2 and either aj1 = ai1 or an3 = ai3 and {ai1, ai2, aj3} or {aj1, ai2, ai3} is in b*)
+
+
+
+deleteDegenerateBends[bends_]:=
+	DeleteDuplicates[bends,
+		MatchQ[#, {#2[[1]], #2[[2]], _}|{_, #2[[2]], #2[[3]]}]&&
+			MemberQ[bends, {#2[[1]], #2[[2]], #[[3]]}|{#[[1]], #2[[2]], #2[[3]]}]&
+		];
+
+
+(* ::Text:: *)
+(*To delete degenerate wags, we simply delete by the wagging coordinate*)
+
+
+
+deleteDegenerateWags[wags_]:=
+	DeleteDuplicatesBy[wags, First];
+
+
+ChemUtilsVibrationalCoordinates//Clear
+
+
+ChemUtilsVibrationalCoordinates[
+	atoms:{__},
+	bonds:{{_,_}...}:{}
+	]:=
+	Module[
+		{
+			requiredCoordinates=
+				3*Length[atoms]-3,
+			atomNum=Length[atoms],
+			stretches=
+				Take[
+					Sort@DeleteDuplicates[Sort/@bonds],
+					UpTo[Length[atoms]]
+					],
+			stretchGraph,
+			center,
+			bends,
+			wags
+			},
+		If[Length@stretches<atomNum,
+			stretches=
+				Take[
+					Join[
+						stretches,
+						DeleteCases[
+							Subsets[atoms,{2}]
+							(*Inefficient, sure, but this whole system isn't built for anything big enough to crush this*), 
+							Alternatives@@stretches
+							]
+						],
+					atomNum
+					]
+			];
+		stretchGraph=Graph[UndirectedEdge@@@stretches];
+		center=VertexList[stretchGraph][[Last@Ordering@VertexDegree@stretchGraph]];
+		bends=
+			Join@@
+				Map[
+					Insert[#,2]/@
+						Subsets[
+							Rest@
+								VertexOutComponent[stretchGraph, #, 1],
+							{2}
+							]&,
+					VertexList[stretchGraph]
+					];
+		bends=deleteDegenerateBends@bends;
+		wags=
+			Join@@
+				Map[
+					Prepend[#]/@
+						Subsets[
+							Rest@
+								VertexOutComponent[stretchGraph, #, 1],
+							{3}
+							]&,
+					VertexList[stretchGraph]
+					];
+		wags=deleteDegenerateWags@wags;
+		<|
+			"Center"->center,
+			"Stretches"->stretches,
+			"Bends"->bends,
+			"Wags"->wags
+			|>
+		];
+
+
+vibrationalCoordinateKeys=
+	"Coordinates"|"CoordinatesIndexed"|"Values"|"Directions";
+
+
+ChemUtilsVibrationalCoordinates[
+	atoms:{{_,_,_}..},
+	bonds:{{_,_}...}:{},
+	return:vibrationalCoordinateKeys|All|{vibrationalCoordinateKeys..}:All
+	]:=
+	Module[
+		{
+			order=
+				Ordering@
+					With[{center=Mean[atoms]},
+						Norm[#-center]&/@atoms
+						],
+			sortedAts,
+			orderMap,
+			coords,
+			doKeys=
+				Replace[Flatten@List@return, 
+					{All}->
+						 {"Coordinates", "CoordinatesIndexed", "Values", "Directions"}
+					 ]
+			},
+		sortedAts=
+			atoms[[order]];
+		orderMap=
+			MapIndexed[
+				#2[[1]]->#&,
+				order
+				];
+		coords=
+			ChemUtilsVibrationalCoordinates[
+				order,
+				SortBy[bonds, Map[Position[order, #]&]]
+				];
+			<|
+				If[MemberQ[doKeys, "CoordinatesIndexed"],
+					"CoordinatesIndexed"->
+						coords,
+					Sequence@@{}
+					],
+				If[MemberQ[doKeys, "Coordinates"],
+					"Coordinates"->
+						(coords/.MapIndexed[#2[[1]]->#&, atoms]),
+					Sequence@@{}
+					],
+				If[MemberQ[doKeys, "Values"],
+					"Values"->
+						<|
+							"Stretches"->
+								Map[
+									Subtract@@Reverse@atoms[[#]]&,
+									coords["Stretches"]
+									],
+							"Bends"->
+								Map[
+									Function[
+										With[{a=atoms[[#]]},
+											VectorAngle[a[[2]]-a[[1]], a[[3]]-a[[1]]]
+											]
+										],
+									coords["Bends"]
+									],
+							"Wags"->
+								Map[
+									Function[
+										With[{a=atoms[[#]]},
+											Projection[
+												a[[1]],
+												Cross[a[[3]]-a[[2]], a[[3]]-a[[1]]]
+												]
+											]
+										],
+									coords["Wags"]
+									]
+							|>,
+					Sequence@@{}
+					],
+			If[MemberQ[doKeys, "Directions"],
+				"Directions"->
+					<|
+						"Stretches"->
+							Map[Function[Subtract@@Reverse@atoms[[#]]], coords["Stretches"]],
+						"Bends"->
+							Map[
+								Function[
+									With[{a=atoms[[#]]},
+										Mean[a]
+										]
+									],
+								coords["Bends"]
+								],
+						"Wags"->
+							Map[
+								Function[
+									With[{a=atoms[[#]]},
+										Cross[a[[3]]-a[[2]], a[[3]]-a[[1]]]
+										]
+									],
+								coords["Wags"]
+								]
+						|>,
+					Sequence@@{}
+					]
+				|>
+			]
+
+
+AtomsetVibrationalCoordinates//Clear
+
+
+AtomsetVibrationalCoordinates[
+	as:ChemObjPattern,
+	return:vibrationalCoordinateKeys|All|"Functions"|
+		{(vibrationalCoordinateKeys|"Functions")..}:All
+	]:=
+	With[{ats=ChemGet[as, "Atoms"]},
+		If[return===All||MemberQ[Flatten@List@return, "Functions"],
+			Append[
+				"Functions"->
+					<|
+						"Values"->
+							<|
+								"Stretches"->
+									Function[
+										Subtract@@Reverse@ChemGet[ChemGet[as, "Atoms"], "Position"][[#]]
+										],
+								"Bends"->
+									Function[
+										With[{a=ChemGet[ChemGet[as, "Atoms"], "Position"][[#]]},
+											VectorAngle[a[[2]]-a[[1]], a[[3]]-a[[1]]]
+											]
+										],
+								"Wags"->
+									Function[
+										With[{a=ChemGet[ChemGet[as, "Atoms"], "Position"][[#]]},
+											Projection[
+												a[[1]],
+												Cross[a[[3]]-a[[2]], a[[3]]-a[[1]]]
+												]
+											]
+										]
+								|>,
+						"Directions"->
+							<|
+								"Stretches"->
+									Function[
+										Subtract@@Reverse@ChemGet[ChemGet[as, "Atoms"], "Position"][[#]]
+										],
+								"Bends"->
+									Function[
+										With[{a=ChemGet[ChemGet[as, "Atoms"], "Position"][[#]]},
+											Mean[a]
+											]
+										],
+								"Wags"->
+									Function[
+										With[{a=ChemGet[ChemGet[as, "Atoms"], "Position"][[#]]},
+											Cross[a[[3]]-a[[2]], a[[3]]-a[[1]]]
+											]
+										]
+								|>
+						|>
+				],
+			Identity
+			]@ChemUtilsVibrationalCoordinates[
+				ChemGet[ChemGet[as, "Atoms"], "Position"],
+				AtomsetBondsIndexed[as][[All,;;2]],
+				return
+				]
+		]
+
+
+(* ::Subsubsection::Closed:: *)
+(*Coordinate Visualizations*)
+
+
+
+(* ::Text:: *)
+(*Pulled from here: https://mathematica.stackexchange.com/a/10958/38205*)
+
+
+
+ClearAll[sjoerdSplineCircle];
+sjoerdSplineCircle[m_List,r_,angles_List: {0,2 \[Pi]}]:=
+	Module[{seg,\[Phi],start,end,pts,w,k},
+		{start,end}=Mod[angles//N,2 \[Pi]];
+If[end<=start,end+=2 \[Pi]];
+seg=Quotient[end-start//N,\[Pi]/2];
+\[Phi]=Mod[end-start//N,\[Pi]/2];
+If[seg==4,seg=3;\[Phi]=\[Pi]/2];
+pts=
+			r RotationMatrix[start].#&/@
+				Join[
+					Take[{{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1},{0,-1}}, 2 seg+1],
+					RotationMatrix[seg \[Pi]/2].#&/@{{1,Tan[\[Phi]/2]},{Cos[\[Phi]],Sin[\[Phi]]}}];
+If[Length[m]==2,
+			pts=m+#&/@pts,
+			pts=m+#&/@Transpose[Append[Transpose[pts],ConstantArray[0,Length[pts]]]]
+			];
+w=Join[Take[{1,1/Sqrt[2],1,1/Sqrt[2],1,1/Sqrt[2],1},2 seg+1],{Cos[\[Phi]/2],1}];
+k=Join[{0,0,0},Riffle[#,#]&@Range[seg+1],{seg+1}];
+BSplineCurve[pts,SplineDegree->2,SplineKnots->k,SplineWeights->w]
+		]/;Length[m]==2||Length[m]==3
+
+
+ChemUtilsVibrationalCoordinateGraphicsObject//Clear
+
+
+ChemUtilsVibrationalCoordinateGraphicsObject[
+	"Stretches",
+	{p1_List, p2_List}
+	]:=
+	{
+		Arrow[{p1, p2(*Normalize[p2-p1]+p1*)}],
+		Blue,
+		Point[p1],
+		Pink,
+		Point[p2]
+		};
+ChemUtilsVibrationalCoordinateGraphicsObject[
+	"Bends",
+	{p1_, p2_, p3_}
+	]:=
+	{
+		Red,
+		Line[{p2, .5*Normalize[p1-p2]+p2}],
+		Line[{p2, .5*Normalize[p3-p2]+p2}],
+		sjoerdSplineCircle[p2, 
+			.25,
+			VectorAngle[p1-p2, {1, 0, 0}]+
+				Sort@{0, Rescale[VectorAngle[p1-p2, p3-p2], {2\[Pi], 0}, {-\[Pi], \[Pi]} ]}
+			]
+		};
+ChemUtilsVibrationalCoordinateGraphicsObject[
+	k_,
+	l:{{__List}..}
+	]:=
+	Map[ChemUtilsVibrationalCoordinateGraphicsObject[k, #]&, l]
+
+
+ChemUtilsVibrationalCoordinateGraphics//Clear
+
+
+ChemUtilsVibrationalCoordinateGraphics[
+	crds_Association,
+	show_:"Stretches"|"Bends"
+	]:=
+	{
+		Arrowheads[
+			{{-.02,0},{.02,1}},
+			Appearance->"Projected"
+			],
+		KeyValueMap[
+			Switch[#,
+				show,
+					ChemUtilsVibrationalCoordinateGraphicsObject[#,
+						#2
+						],
+				_,
+					Sequence@@{}
+				]&,
+			crds["Coordinates"]
+			]
+		}
+
+
+(* ::Subsection:: *)
+(*Reducible Representations*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*CharacterTableSymmetryFunctions*)
+
+
+
 CharacterTableSymmetryFunctions[ct_, sops_]:=
 	Module[{
 		rots=sops["Elements","RotationAxes"],
@@ -848,6 +1287,7 @@ CharacterTableSymmetryFunctions[ct_, sops_]:=
 				],
 		center=sops["Elements", "Center"],
 		primaryAxis,
+		secondaryAxis,
 		ind,
 		cur
 		},
@@ -864,10 +1304,44 @@ CharacterTableSymmetryFunctions[ct_, sops_]:=
 				Last@FirstPosition[sops["Classes", "ScrewAxes"], #[[2]]]&
 				];
 		primaryAxis=
-			MaximalBy[
-				MaximalBy[rots, First][[All, 2]],
-				#[[3]]&
-				][[1]];
+			Normalize[
+				MaximalBy[
+					MaximalBy[rots, First][[All, 2]],
+					#[[3]]&
+					][[1]]-center
+				];
+		secondaryAxis=
+			SelectFirst[
+				Map[#-center&, SortBy[rots, First][[All,2]]],
+				.4<(Mod[VectorAngle[#, primaryAxis], \[Pi]]/\[Pi])<.6&
+				];
+		If[!ListQ@secondaryAxis,
+			secondaryAxis=
+				SelectFirst[
+					Map[
+						Cross[#[[1]]-center, #[[2]]-center]&,
+						planes
+						],
+					.1<(Mod[VectorAngle[#, primaryAxis], \[Pi]]/\[Pi])<.9&
+					];
+			If[!ListQ@secondaryAxis,
+				secondaryAxis=
+					SelectFirst[
+						Map[#-center&, SortBy[rots, First][[All,2]]],
+						.1<(Mod[VectorAngle[#, primaryAxis], \[Pi]]/\[Pi])<.9&
+						];
+				If[!ListQ@secondaryAxis,
+					secondaryAxis=
+						Cross[primaryAxis, {1, 0, 0}];
+					If[Norm[secondaryAxis]<.1, 
+						secondaryAxis=
+							Cross[primaryAxis, {0, 1, 0}]
+						]
+					],
+				secondaryAxis-=Projection[secondaryAxis, primaryAxis]
+				]
+			];
+		secondaryAxis=Normalize[secondaryAxis];
 		AssociationMap[
 			Switch[#["Type"],
 				"E",
@@ -955,10 +1429,10 @@ CharacterTableSymmetryFunctions[ct_, sops_]:=
 										With[{c=#["Count"]},
 											Select[planes, planeClassOrder[#]===c&]
 											],	
-										{pt1:{_,_,_}, pt2_}/;\[Pi]/1.4>VectorAngle[
+										{pt1:{_,_,_}, pt2_}/;.6>(VectorAngle[
 											primaryAxis, 
 											Cross[pt1-center, pt2-center]
-											]>\[Pi]/2.4,
+											]/\[Pi])>.4,
 										{1}
 										][[1]],
 							_,
@@ -1021,13 +1495,41 @@ CharacterTableSymmetryFunctions[ct_, sops_]:=
 											]
 								],
 							cur=screwClasses[screws[[ind]]];
-							screws=DeleteCases[screws,Alternatives@@screwClassesElements@screws[[ind]]];
+							screws=DeleteCases[screws, Alternatives@@screwClassesElements@screws[[ind]]];
 							cur
 							]
 				]&,
 			ct["SymmetryClasses"]
-			]
+			]//Join[
+					<|
+						"Center"->sops["Elements", "Center"], 
+						"PrincipalAxes"->
+							{
+								secondaryAxis,
+								Normalize@Cross[primaryAxis, secondaryAxis],
+								primaryAxis
+								}
+						|>,
+					#
+					]& 
 		]
+
+
+(* ::Subsubsection::Closed:: *)
+(*CharacterTableSymmetryFunctionsFormatted*)
+
+
+
+CharacterTableSymmetryFunctionsFormatted[symFs_]:=
+	Dataset@
+		Map[Replace[{{l_}:>l, l_List:>MatrixForm[l]}]]@
+		KeyMap[Key["Formatted"]]@
+		KeyDrop[symFs, {"Center", "PrincipalAxes"}]
+
+
+(* ::Subsubsection::Closed:: *)
+(*CharacterTableReducibleRepresentationsList*)
+
 
 
 charTableTransfCloseEnough[transfed_, v_, tol_:.25]:=
@@ -1049,13 +1551,20 @@ CharacterTableReducibleRepresentationsList//Clear
 
 
 charTableRepListCoordVecPat=
-	{({_,_,_}->{({_,_,_}|{{_,_,_},_})..})..};
+	{({{_,_,_}..}->{({_,_,_}|{{_,_,_},_})..})..};
 charTableRepListCoordPat=
-	{({_,_,_}|{{_,_,_},_})..};
+	{{_,_,_}..}|Automatic;
+
+
+CharacterTableReducibleRepresentationsList//Clear
+
+
+CharacterTableReducibleRepresentationsList::badsign=
+	"Transformed direction `` is not +- original direction ``";
 
 
 CharacterTableReducibleRepresentationsList[
-	mapping_Association?(Not@*KeyMemberQ["Center"]),
+	mapping_Association?(Not@*KeyMemberQ["Elements"]),
 	coordsAndVecs:charTableRepListCoordVecPat
 	]:=
 	GroupBy[First->Last]@
@@ -1067,55 +1576,54 @@ CharacterTableReducibleRepresentationsList[
 					Replace[Null->0]@
 					Do[
 						With[{
-							newpt=f[v[[1]]],
-							olddir=If[Length[i]===2, i[[1]], i],
-							newdir=f[If[Length[i]===2, i[[1]], i]],
-							testFn=If[Length[i]===2, i[[2]], Identity]
+							oldpt=Mean@v[[1]],
+							newpt=f@Mean@v[[1]],
+							olddir=Normalize@If[Length[i]===2, i[[1]], i],
+							newdir=
+								Normalize@(
+									f[mapping["Center"]+If[Length[i]===2, i[[1]], i]]-
+										mapping["Center"]
+										)
 							},
 							Which[
-								!charTableTransfCloseEnough[v[[1]],newpt],
+								(Norm[oldpt]*Norm[newpt]==0&&Norm[oldpt]+Norm[newpt]!=0)||
+									(Norm[oldpt]!=0&&oldpt.newpt/(Norm[oldpt]*Norm[newpt])<.9),
 									0,
-								With[{old=testFn@olddir,new=testFn@newdir},
-									Length[old]===Length[new]&&
-										If[Length[old]===3,
-											charTableTransfCloseEnough[old, new],
-											old==new
-											]
-									],
-									(*m[[1, "Count"]]*)Return@1,
-								With[{old=testFn@olddir,new=testFn@newdir},
-									Length[old]===Length[new]&&
-										If[Length[old]===3,
-											charTableTransfCloseEnough[old, -new],
-											old==-new
-											]
-									],
-								 (*m[[1, "Count"]]**)Return@-1, 
+								Norm[olddir]==Norm[newdir]==0,
+									1,
+								Sign[olddir.newdir]>0,
+									Return@1,
+								Sign[olddir.newdir]<0,
+									Return@-1, 
 								True, 
+									Message[CharacterTableReducibleRepresentationsList::badsign,
+										olddir,
+										newdir
+										];
 									0
 								]
 							],
 						{f, Flatten@List@m[[2]]}
 						],
-					{m, Normal@mapping}
+					{m, Normal@KeyDrop[mapping, {"Center", "PrincipalAxes"}]}
 					],
 			{i, v[[2]]}
 			],
 		{v, coordsAndVecs}
 		];
 CharacterTableReducibleRepresentationsList[
-	mapping_Association?(Not@*KeyMemberQ["Center"]),
+	mapping_Association?(Not@*KeyMemberQ["Elements"]),
 	coords:{{_,_,_}..},
-	vecs:charTableRepListCoordPat:IdentityMatrix[3]
+	vecs:charTableRepListCoordPat:Automatic
 	]:=
 	CharacterTableReducibleRepresentationsList[mapping,
-		Map[#->vecs&, coords]
+		Map[{#}->Replace[vecs, Automatic->mapping["PrincipalAxes"]]&, coords]
 		];
 CharacterTableReducibleRepresentationsList[
 	ct_, 
-	sops_Association?(KeyMemberQ["Center"]),
+	sops_Association?(KeyMemberQ["Elements"]),
 	coords:{{_,_,_}..},
-	coordinateVectors:charTableRepListCoordPat:IdentityMatrix[3]
+	coordinateVectors:charTableRepListCoordPat:Automatic
 	]:=
 	CharacterTableReducibleRepresentationsList[
 		CharacterTableSymmetryFunctions[ct, sops],
@@ -1124,37 +1632,73 @@ CharacterTableReducibleRepresentationsList[
 		];
 CharacterTableReducibleRepresentationsList[
 	ct_, 
-	sops_Association?(KeyMemberQ["Center"]),
+	sops_Association?(KeyMemberQ["Elements"]),
 	coordsAndVecs:charTableRepListCoordVecPat
 	]:=
 	CharacterTableReducibleRepresentationsList[
 		CharacterTableSymmetryFunctions[ct, sops],
 		coordsAndVecs
 		];
+CharacterTableReducibleRepresentationsList[
+	args__,
+	coords_Association?(KeyMemberQ["Coordinates"]),
+	which:("Stretches"|"Bends"|"Wags"|{("Stretches"|"Bends"|"Wags")..}):
+		{"Stretches", "Bends", "Wags"}
+	]:=
+	With[{
+		bleh=
+			Join@@
+				MapThread[
+					MapThread[Rule[#, {#2}]&, {##}]&,
+					{
+						Lookup[coords["Coordinates"], Flatten@List@which],
+						Lookup[coords["Directions"], Flatten@List@which]
+						}
+					]
+			},
+		If[Length@bleh>0,
+			CharacterTableReducibleRepresentationsList[args,bleh],
+			{}
+			]
+		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*CharacterTableReducibleRepresentationsGrid*)
+
 
 
 CharacterTableReducibleRepresentationsGrid//Clear
 
 
+charTableLabListPat=
+	{(Except[_List|_Association]|{Except[_?NumericQ]..})..}
+
+
 CharacterTableReducibleRepresentationsGrid[
 	ct_,
 	gamma_Association?(AllTrue[ListQ]@*Keys),
-	labels:{__String}:{"x","y","z"}
+	labels:charTableLabListPat:{{"x","y","z"}}
 	]:=
 	With[{grid=
 		Panel@
 			With[{
 				core=
 					MapIndexed[
-						With[{l=#, num=ToString@First@#2},
+						With[
+							{
+								l=#, 
+								num=ToString@First@#2,
+								labs=labels[[Mod[#2[[1]], Length[labels], 1]]]
+								},
 							MapThread[
 								Prepend[#,
-									Subscript[#2,num]
+									If[StringQ@#2, Subscript[#2,num], #2]
 									]&,
 								{
 									l,
 									Take[
-										Join@@ConstantArray[labels, Length@l],
+										Join@@ConstantArray[labs, Length@l],
 										Length@l
 										]
 									}]
@@ -1180,9 +1724,9 @@ CharacterTableReducibleRepresentationsGrid[
 	];
 CharacterTableReducibleRepresentationsGrid[
 	ct_,
-	fmapping_Association?(Not@*KeyMemberQ["Center"]),
+	fmapping_Association?(Not@*KeyMemberQ["Elements"]),
 	coordAndVecs:charTableRepListCoordVecPat,
-	labels:{__String}:{"x","y","z"}
+	labels:charTableLabListPat:{{"x","y","z"}}
 	]:=
 	CharacterTableReducibleRepresentationsGrid[
 		ct,
@@ -1194,10 +1738,10 @@ CharacterTableReducibleRepresentationsGrid[
 		];
 CharacterTableReducibleRepresentationsGrid[
 	ct_,
-	fmapping_Association?(Not@*KeyMemberQ["Center"]),
+	fmapping_Association?(Not@*KeyMemberQ["Elements"]),
 	coords:{{___?NumericQ}..},
-	coordVecs:charTableRepListCoordPat:IdentityMatrix[3],
-	labels:{__String}:{"x","y","z"}
+	coordVecs:charTableRepListCoordPat:Automatic,
+	labels:charTableLabListPat:{{"x","y","z"}}
 	]:=
 	CharacterTableReducibleRepresentationsGrid[
 		ct,
@@ -1210,9 +1754,9 @@ CharacterTableReducibleRepresentationsGrid[
 		];
 CharacterTableReducibleRepresentationsGrid[
 	ct_,
-	symOps_Association?(KeyMemberQ["Center"]),
+	symOps_Association?(KeyMemberQ["Elements"]),
 	coordAndVecs:charTableRepListCoordVecPat,
-	labels:{__String}:{"x","y","z"}
+	labels:charTableLabListPat:{{"x","y","z"}}
 	]:=
 	CharacterTableReducibleRepresentationsGrid[
 		ct,
@@ -1224,10 +1768,10 @@ CharacterTableReducibleRepresentationsGrid[
 		];
 CharacterTableReducibleRepresentationsGrid[
 	ct_,
-	symOps_Association?(KeyMemberQ["Center"]),
+	symOps_Association?(KeyMemberQ["Elements"]),
 	coords:{{___?NumericQ}..},
-	coordVecs:charTableRepListCoordPat:IdentityMatrix[3],
-	labels:{__String}:{"x","y","z"}
+	coordVecs:charTableRepListCoordPat:Automatic,
+	labels:charTableLabListPat:{{"x","y","z"}}
 	]:=
 	CharacterTableReducibleRepresentationsGrid[
 		ct,
@@ -1238,6 +1782,28 @@ CharacterTableReducibleRepresentationsGrid[
 			],
 		labels
 		];
+CharacterTableReducibleRepresentationsGrid[
+	ct_,
+	a___,
+	coords_Association?(KeyMemberQ["Coordinates"]),
+	which:("Stretches"|"Bends"|"Wags"|{("Stretches"|"Bends"|"Wags")..}):
+		{"Stretches", "Bends", "Wags"},
+	labels:charTableLabListPat:{{"r","\[Theta]","\[CurlyPhi]"}}
+	]:=
+	CharacterTableReducibleRepresentationsGrid[
+		ct,
+		CharacterTableReducibleRepresentationsList[
+			a,
+			coords,
+			which
+			],
+		labels
+		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*CharacterTableTotalRepresentation*)
+
 
 
 CharacterTableTotalRepresentation//Clear
@@ -1248,38 +1814,47 @@ CharacterTableTotalRepresentation[
 	]:=
 	Transpose[Join@@Values[gamma]]//Map[Total];
 CharacterTableTotalRepresentation[
-	fmapping_Association?(Not@*KeyMemberQ["Center"]),
+	fmapping_Association?(Not@*KeyMemberQ["Elements"]),
 	coordVecs:charTableRepListCoordVecPat
 	]:=
-	CharacterTableTotalRepresentation@
-		CharacterTableReducibleRepresentationsList[fmapping, coordVecs];
+	With[{r=CharacterTableReducibleRepresentationsList[fmapping, coordVecs]},
+		If[Length@r>0,
+			CharacterTableTotalRepresentation@r,
+			{}
+			]
+		];
 CharacterTableTotalRepresentation[
-	fmapping_Association?(Not@*KeyMemberQ["Center"]),
+	fmapping_Association?(Not@*KeyMemberQ["Elements"]),
 	coords_List,
-	coordVecs:charTableRepListCoordPat:IdentityMatrix[3]
+	coordVecs:charTableRepListCoordPat:Automatic
 	]:=
 	CharacterTableTotalRepresentation@
 		CharacterTableReducibleRepresentationsList[fmapping, coords, coordVecs];
 CharacterTableTotalRepresentation[
-	ct_,
-	symOps_Association?(KeyMemberQ["Center"]),
-	coordVecs:charTableRepListCoordVecPat
+	a__,
+	coords_Association?(KeyMemberQ["Coordinates"]),
+	which:("Stretches"|"Bends"|"Wags"|{("Stretches"|"Bends"|"Wags")..}):
+		{"Stretches", "Bends", "Wags"}
 	]:=
-	CharacterTableTotalRepresentation[ct,
-		CharacterTableSymmetryFunctions[ct, symOps],
-		coordVecs
-		];
+	CharacterTableTotalRepresentation@
+		CharacterTableReducibleRepresentationsList[a, coords, which];
 CharacterTableTotalRepresentation[
 	ct_,
-	symOps_Association?(KeyMemberQ["Center"]),
-	coords_List,
-	coordVecs:charTableRepListCoordPat:IdentityMatrix[3]
+	symOps_Association?(KeyMemberQ["Elements"]),
+	b__
 	]:=
-	CharacterTableTotalRepresentation[ct,
+	CharacterTableTotalRepresentation[
 		CharacterTableSymmetryFunctions[ct, symOps],
-		coords,
-		coordVecs
+		b
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*CharacterTableReduceRepresentation*)
+
+
+
+CharacterTableReduceRepresentation//Clear
 
 
 CharacterTableReduceRepresentationCoefficients[
@@ -1300,7 +1875,7 @@ CharacterTableReduceRepresentationCoefficients[
 					]&,
 			ctRows
 			];
-CharacterTableReduceRepresentation[ct_CharacterTable, rep_]:=
+CharacterTableReduceRepresentation[ct_CharacterTable, rep:{__Integer}]:=
 	With[
 		{
 			characterRows=
@@ -1319,6 +1894,12 @@ CharacterTableReduceRepresentation[ct_CharacterTable, rep_]:=
 				]
 			]
 		];
+CharacterTableReduceRepresentation[ct_CharacterTable, {}]:={}
+
+
+(* ::Subsubsection::Closed:: *)
+(*CharacterTableModeRepresentations*)
+
 
 
 CharacterTableModeRepresentations[
@@ -1395,9 +1976,9 @@ CharacterTableModeRepresentations[
 		];
 CharacterTableModeRepresentations[
 	ct_,
-	fmapping_Association?(Not@*KeyMemberQ["Center"]),
+	fmapping_Association?(Not@*KeyMemberQ["Elements"]),
 	coords_List,
-	coordVecs:charTableRepListCoordPat:IdentityMatrix[3]
+	coordVecs:charTableRepListCoordPat:Automatic
 	]:=
 	CharacterTableModeRepresentations[ct,
 		CharacterTableReduceRepresentation[
@@ -1411,7 +1992,7 @@ CharacterTableModeRepresentations[
 		];
 CharacterTableModeRepresentations[
 	ct_,
-	fmapping_Association?(Not@*KeyMemberQ["Center"]),
+	fmapping_Association?(Not@*KeyMemberQ["Elements"]),
 	coordVecs:charTableRepListCoordVecPat
 	]:=
 	CharacterTableModeRepresentations[ct,
@@ -1425,15 +2006,30 @@ CharacterTableModeRepresentations[
 		];
 
 
-CharacterTableFindIrreducibleRepresentation[
-	ct_,
-	key_->crit_
-	]:=
-	Pick[
-		CharacterTableData[ct,"IrreducibleRepresentations"],
-		crit/@
-			CharacterTableData[ct, key]
+(* ::Subsection:: *)
+(*Formatting*)
+
+
+
+CharacterTableFormatReducedRepresentation[irrepAssoc_]:=
+	Interpretation[
+		Total@KeyValueMap[#["Formatted"]*#2&, irrepAssoc],
+		irrepAssoc
 		]
+
+
+CharacterTableFormatSALCs[salcs_]:=
+	salcs//Map[KeyMap[Key@"Formatted"]]//Dataset
+
+
+(* ::Subsection:: *)
+(*SALCs*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*SymmetryAdaptedProjection*)
+
 
 
 charTabIrrepDims=
@@ -1448,34 +2044,49 @@ charTabIrrepDims=
 CharacterTableSymmetryAdaptedProjection//Clear
 
 
+$CharacterTableSALCRounding=.1
+
+
 CharacterTableSymmetryAdaptedProjection[
+	center_,
 	symmetryFunctions_List,
 	irrepRow_List,
 	irrepDim_Integer,
-	vec_
+	vec:{Repeated[_?NumericQ,{3}]},
+	coords:{Repeated[{Repeated[_?NumericQ,{3}]},{1,\[Infinity]}]}
 	]:=
-	(1/irrepDim)*
-		Total[
-			MapThread[
-				If[ListQ@#,
-					Sequence@@(#2*Through[#@vec]),
-					#2*#@vec
-					]&,
-				{
-					symmetryFunctions,
-					irrepRow
-					}
-				]
-			];
+	Total[
+		MapThread[
+			If[ListQ@#,
+				Sequence@@(#2*Map[#-center&, Through[#@(vec+center)]]),
+				#2*(#[vec+center]-center)
+				]&,
+			{
+				symmetryFunctions,
+				irrepRow
+				}
+			](*//Last@Echo@{vec, #, coords}&*)
+		];
 
 
 CharacterTableSymmetryAdaptedProjection[
 	ct_CharacterTable,
+	repsToTry:_String|{__String}|All,
 	sMapping_Association,
-	vec:{Except[_List],_,_}
+	vec:{Repeated[_?NumericQ,{3}]},
+	coords:{Repeated[{Repeated[_?NumericQ,{3}]},{1,\[Infinity]}]}
 	]:=
 	With[
 		{
+			irrepPos=
+				If[repsToTry===All,
+					All,
+					Position[
+						CharacterTableData[ct, "IrreducibleRepresentations"],
+						_Association?(StringMatchQ[Alternatives@@Flatten@{repsToTry}]@*Key["ID"]),
+						{1}
+						][[All,1]]
+					],
 			irreps=
 				CharacterTableData[ct, "IrreducibleRepresentations"],
 			cTab=
@@ -1488,17 +2099,37 @@ CharacterTableSymmetryAdaptedProjection[
 			},
 		MapThread[
 			CharacterTableSymmetryAdaptedProjection[
+				sMapping["Center"],
 				symmetryFunctions,
 				#2,
 				charTabIrrepDims[#["Type"]],
-				vec
+				vec,
+				coords
 				]&,
 			{
-				irreps,
-				cTab
+				irreps[[irrepPos]],
+				cTab[[irrepPos]]
 				}
 			]
 		];
+CharacterTableSymmetryAdaptedProjection[
+	ct_CharacterTable,
+	repsToTry:_String|{__String}|All,
+	sMapping_Association,
+	coords:{Repeated[{Repeated[_?NumericQ,{3}]},{1,\[Infinity]}]}
+	]:=
+	Map[
+		CharacterTableSymmetryAdaptedProjection[ct,repsToTry,
+			sMapping,
+			#,
+			coords
+			]&,
+		coords
+		]
+
+
+charTableSalcCoordsPat=
+	{(_->{_,_,_})..};
 
 
 CharacterTableSALCs//Clear
@@ -1506,61 +2137,148 @@ CharacterTableSALCs//Clear
 
 CharacterTableSALCs[
 	ct_CharacterTable,
+	repsToTry:_String|{__String}|All:All,
 	sMapping_Association,
-	coords:{(_->{Except[_List],_,_})..}
+	testCoords:{{_,_,_}..}|Automatic:Automatic,
+	coords:charTableSalcCoordsPat
 	]:=
 	With[
 		{
 			irreps=
+				Map[
 					CharacterTableSymmetryAdaptedProjection[
 						ct,
+						repsToTry,
 						sMapping,
-						#
-						]&/@coords[[All,2]]//Transpose,
+						#,
+						coords[[All,2]]
+						]&,
+					Replace[testCoords, Automatic:>coords[[All,2]]]
+					]//Transpose(*//Round[#, $CharacterTableSALCRounding]&*),
 			coordSys=	
-				coords[[All,2]]//Transpose,
+				Transpose@coords[[All,2]](*//Round[#, $CharacterTableSALCRounding]&*),
 			coordVars=
 				coords[[All,1]]
 			},
-		Association@MapThread[
-			#2->
-				DeleteDuplicates[
+		Association@
+			MapThread[
+				#2->
+					Replace[{i_}:>i]@
 					Map[
-							coordVars.
-								If[MatrixQ@coordVars,
-									Identity,
-									Round[#, .1]/.{
-										i_Real?(FractionalPart[#]==0&):>IntegerPart[i]
-										}&
-									][
-									Normalize[
-										LinearSolve[coordSys,#]/.{
-											n_Real?(FractionalPart[#]==0&):>IntegerPart[n]
-											}
-										]
-									]&,
-						#
-						],
-					#==-#2&
-					]&,
-			{
-				irreps,
-				CharacterTableData[ct, "IrreducibleRepresentations"]
-				}
-			]
+						Dot[coordVars, #]&,
+						DeleteDuplicates[
+							Normalize@Round[LeastSquares[coordSys,#], 1]&/@#,
+							#==-#2||#==#2&
+							]
+						]&,
+				{
+					irreps,
+					If[repsToTry===All,
+						CharacterTableData[ct, "IrreducibleRepresentations"],
+						Select[
+							CharacterTableData[ct, "IrreducibleRepresentations"],
+							StringMatchQ[Alternatives@@Flatten@{repsToTry}]@*Key["ID"]
+							]
+						]
+					}
+				]
 		];
 CharacterTableSALCs[
 	ct_CharacterTable,
+	repsToTry:_String|{__String}|All:All,
 	sMapping_Association,
-	coords:{{Except[_List],_,_}..}
+	coords_Association?(KeyMemberQ["Directions"]),
+	which:("Stretches"|"Bends"|"Wags"|{("Stretches"|"Bends"|"Wags")..}):
+		{"Stretches", "Bends", "Wags"}
 	]:=
-	CharacterTableSALCs[
-		ct,
-		sMapping,
-		MapIndexed[
-			\[FormalR][#2[[1]]]->#&,
-			coords
+	DeleteCases[None]@
+		AssociationMap[
+			With[{crds=
+				With[{type=Switch[#, "Stretches", \[FormalR], "Bends", \[FormalTheta], "Wags", \[FormalCurlyPhi]]},
+						MapIndexed[
+							type[#2[[1]]]->#&,
+							coords["Directions", #]
+							]
+						]
+				},
+				If[Length@crds>0,
+					CharacterTableSALCs[
+						ct,
+						repsToTry,
+						sMapping,
+						crds
+						],
+					None
+					]
+				]&,
+			DeleteDuplicates@Flatten@{which}
 			]
+			
+
+
+(* ::Subsection:: *)
+(*VMA*)
+
+
+
+Options[AtomsetVibrationalAnalysis]=
+	{
+		"VibrationalCoordinates"->Automatic,
+		"ModeBreakdown"->True,
+		"VibrationalBreakdown"->True,
+		"SALCs"->True
+		};
+AtomsetVibrationalAnalysis[as_]:=
+	Module[
+		{
+			symEls=AtomsetSymmetryElements[as],
+			pg,
+			ct,
+			symFs,
+			vibCrds,
+			totalRep,
+			vibRep,
+			salcs
+			},
+		pg=ChemUtilsPointGroup[symEls];
+		ct=CharacterTableData[pg];
+		symFs=CharacterTableSymmetryFunctions[ct, symEls];
+		vibCrds=AtomsetVibrationalCoordinates[as, {"Coordinates", "Directions"}];
+		totalRep=
+			CharacterTableModeRepresentations[ct,
+				CharacterTableReduceRepresentation[ct,
+					CharacterTableTotalRepresentation[
+						symFs, 
+						ChemGet[ChemGet[as,"Atoms"], "Position"],
+						Lookup[
+							AtomsetInertialSystem[as],
+							{"AAxis", "BAxis", "CAxis"}
+							]
+						]
+					]
+				];
+		vibRep=
+			AssociationMap[
+				CharacterTableReduceRepresentation[ct,
+					CharacterTableTotalRepresentation[
+						symFs, 
+						vibCrds,
+						#
+						]
+					]&,
+				{"Stretches", "Bends", "Wags"}
+				];
+		salcs=CharacterTableSALCs[ct, symFs, vibCrds];
+		<|
+			"PointGroup"->pg,
+			"SymmetryElements"->symEls,
+			"CharacterTable"->ct,
+			"CharacterTableFunctions"->symFs,
+			"VibrationalCoordinates"->vibCrds,
+			"ModeIrreducibleRepresentations"->totalRep,
+			"VibrationalIrreducibleRepresentations"->vibRep,
+			"SALCs"->salcs
+			|>
 		]
 
 
