@@ -38,11 +38,15 @@ Cartesian1DDVRPoints[points:{_Integer},
 	Subdivide@@Flatten@{N@X,points-1}
 
 
-Cartesian1DDVRKineticMatrix[grid_,OptionsPattern@{"M"->1,"\[HBar]"->1}]:=
+Options[Cartesian1DDVRKineticMatrix]=
+	{"M"->1,"\[HBar]"->1};
+
+
+Cartesian1DDVRKineticMatrix[grid_,OptionsPattern[]]:=
 	With[{xmin=Min@grid,xmax=Max@grid,points=Length@grid},
 		With[{dx=(xmax-xmin)/points,m=OptionValue@"M",\[HBar]=OptionValue@"\[HBar]"},
 			With[{f=(1.)*If[#==#2,\[Pi]^2/3,2/(#-#2)^2]*(\[HBar] (-1)^(#-#2))/(2m dx^2)&},
-				If[Length@points>2500,
+				If[points>100000,
 					ParallelTable[f[i,j],{i,points},{j,points}],
 					Table[f[i,j],{i,points},{j,points}]
 					]

@@ -30,6 +30,9 @@ Cartesian2DDVRWavefunctions::usage=""
 Cartesian2DDVRPlotFunction::usage=""
 
 
+ChemDVRNeeds/@{"Cartesian1DDVR"};
+
+
 Begin["`Private`"];
 
 
@@ -44,42 +47,58 @@ Cartesian2DDVRPoints[
 		]
 
 
-(* ::Text:: *)
-(*We\[CloseCurlyQuote]ll be lazy and claim we can just do a summation of the 1D DVRs *)
-
-
-
-Cartesian2DDVRKineticMatrix[grid_,OptionsPattern@{"M"->1,"\[HBar]"->1}]:=
-	With[{
-		xmin=Min@grid[[1]],xmax=Max@grid[[1]],xpoints=Length@grid[[1]],
-		ymin=Min@grid[[2]],yxmax=Max@grid[[2]],ypoints=Length@grid[[2]]
-		},
-		With[{
-			dx=(xmax-xmin)/xpoints,
-			dy=(xmax-xmin)/ypoints,
-			m=OptionValue@"M",
-			\[HBar]=OptionValue@"\[HBar]"
-			},
-			If[xpoints*ypoints>100000,
-				ParallelTable,
-				Table
-				][
-				With[{
-					ix=Floor[(i-1)/xpoints*ypoints], jx=Mod[i, xpoints, 1],
-					iy=Floor[(j-1)/xpoints*ypoints], jy=Mod[j, ypoints, 1]
-					},(*
-					If[iy\[Equal]jy, 
-						0.,*)
-						If[ix==jx, \[Pi]^2/3., 2./(ix-jx)^2]*(\[HBar] (-1)^(ix-jx))/(2.m dx^2)+
-						(*]*)(*+
-					If[ix\[Equal]jx, 
-						0.,*)
-						If[iy==jy, \[Pi]^2/3., 2./(iy-jy)^2]*(\[HBar] (-1)^(iy-jy))/(2.m dy^2)(*
-						]*)
+Options[Cartesian2DDVRKineticMatrix]=
+	{
+		"m1"->1,
+		"m2"->1,
+		"\[HBar]"->1
+		};
+Cartesian2DDVRKineticMatrix[grid_, ops:OptionsPattern[]]:=
+	Module[
+		{
+			cartDVR1=
+				Cartesian1DDVRKineticMatrix[
+					grid[[All, 1, 1]], 
+					FilterRules[{
+						"M"->OptionValue["m1"],
+						ops
+						},
+						Options[Cartesian1DDVRKineticMatrix]
+						]
 					],
-				{i,xpoints*ypoints},
-				{j,xpoints*ypoints}
-				]
+			cartDVR2=
+				Cartesian1DDVRKineticMatrix[
+					grid[[1, All, 2]],
+					FilterRules[{
+						"M"->OptionValue["m2"],
+						ops
+						},
+						Options[Cartesian1DDVRKineticMatrix]
+						]
+					],
+			ptsX=Length@grid,
+			ptsY=Length@grid[[1]]
+			},
+		If[(ptsX*ptsY)>100000,
+			ParallelTable,
+			Table
+			][
+			With[
+				{
+					ix=1+Floor[(i-1)/(ptsY)], jx=1+Floor[(j-1)/(ptsY)],
+					iy=Mod[i, ptsY, 1], jy=Mod[j, ptsY, 1]
+					},
+				If[iy==jy,
+						0,
+						cartDVR1[[ix, jx]]
+						]+
+				If[ix==jx,
+						0,
+						cartDVR2[[iy, jy]]
+						]
+				],
+			{i, ptsX*ptsY},
+			{j, ptsX*ptsY}
 			]
 		]
 
@@ -104,11 +123,11 @@ Options[Cartesian2DDVRPlotFunction]=
 		"EnergyDigits"->3,
 		"ZeroPointEnergy"->0,
 		LabelingFunction->Automatic,
-		"CutOff"->10^-4,
+		"CutOff"->Automatic,
 		Manipulate->True,
 		PlotRange->Automatic,
 		"SquareWavefunction"->False,
-		FilterRules[Options[ListLinePlot],
+		FilterRules[Options[ListPlot3D],
 			Except[AxesOrigin|PlotRange|LabelingFunction]
 			]
 		};
@@ -138,7 +157,13 @@ Cartesian2DDVRPlotFunction[
 				None->False}],
 		plotWave,
 		waveSet,
-		Ec=OptionValue["CutOff"],
+		Ec=
+			Replace[OptionValue["CutOff"],
+				Automatic:>
+					10^-(
+						RealExponent[Length[grid2D]*Length[grid2D[[1]]]]
+						)
+				],
 		wavePlot,potentialPlot,
 		\[Lambda]Plot,plotRange,len,
 		grid=Flatten[grid2D, 1]
@@ -146,50 +171,56 @@ Cartesian2DDVRPlotFunction[
 		{\[CapitalLambda],X}=solutions;
 		len=Length@X;
 		num=
-			Replace[num,
+			Flatten@List@Replace[num,
 				{
 					All:>Range[1,len],
 					_List:>num,
 					_Integer:>Range[1,num],
-					_->1
+					_->{1}
 					}];
 		\[Psi]=Function[MapThread[Append[#1, If[squared,#2^2,#2]]&,{grid, X[[#]]}]];
+		plotWave[n_]:=
+			With[{psiReal=Select[\[Psi][n], Abs[#[[3]]]>=Ec&]},
+				If[OptionValue["ShowEnergy"]//TrueQ,
+					With[{
+						s={1, 1, scale},
+						\[Lambda]={0,0, \[CapitalLambda][[n]]}
+						},
+						\[Lambda]+s*#&/@psiReal
+						],
+					With[{s={1, 1,scale},\[Lambda]={0,0,\[CapitalLambda][[n]]}},
+						s*#&/@psiReal
+						]
+					]
+			];
 		waveSet=\[Psi]/@num;
 		dataRange=
 			CoordinateBounds@
-				Select[Flatten[waveSet,1],Abs[#[[3]]]>=Ec&];
-		plotWave[n_]:=
-			If[OptionValue["ShowEnergy"]//TrueQ,
-				With[{s={1, 1, scale},\[Lambda]={0,0,\[CapitalLambda][[n]]}},
-					\[Lambda]+s*#&/@\[Psi][n]
-					],
-				With[{s={1, 1,scale},\[Lambda]={0,0,\[CapitalLambda][[n]]}},
-					s*#&/@\[Psi][n]
-					]
-				];
+				Select[Flatten[waveSet,1], Abs[#[[3]]]>=Ec&];
 		waveSet=
 			Select[#,
 				dataRange[[1,1]]<=#[[1]]<=dataRange[[1,2]]&&
 					dataRange[[2,1]]<=#[[2]]<=dataRange[[2,2]]&
 				]&/@(plotWave/@num);
-		wavePlot[sel_,lFunc_:lf]:=
+		wavePlot[sel_, lFunc_:lf]:=
 			ListPlot3D[
 				waveSet[[sel]],
 				FilterRules[{
 					ops,
 					PlotRange->
-						dataRange,
+						{dataRange[[1]], dataRange[[2]], All},
 					PlotLegends->
 						If[lFunc===False,
 							None,
 							(lFunc@@#)&/@
 								Thread@{
-									num[[ If[IntegerQ@sel,{sel},sel] ]],
-									\[CapitalLambda][[ num[[ If[IntegerQ@sel===0,{sel},sel] ]] ]]
+									num[[ sel ]],
+									\[CapitalLambda][[ num[[ sel ]] ]]
 									}
-							]
+							],
+					ClippingStyle->None
 					},
-					Options@ListLinePlot
+					Options@ListPlot3D
 					]
 				];
 		potentialPlot=
@@ -197,59 +228,70 @@ Cartesian2DDVRPlotFunction[
 				If[op===None,
 					Nothing,
 					ListPlot3D[
-						MapThread[Append, {grid,potential}],
-						PlotRange->
-							dataRange,
+						MapThread[Append, {grid, potential}],
 						PlotStyle->
 							Replace[op,
 								Automatic->
 									Directive[Opacity[.1], Gray]
-								]
+								],
+						ClippingStyle->
+							None
 						]
 					]
 				];
 		\[Lambda]Plot[sel_]:=
 			ListPlot3D[
 				MapThread[Append, {grid, ConstantArray[#, Length[grid]]}],
-				PlotStyle->Directive[Opacity[.1], Red],
-				PlotRange->
-					dataRange
+				PlotStyle->
+					Directive[Opacity[.1], Red],
+				ClippingStyle->
+					None
 				]&/@\[CapitalLambda][[ num[[sel]] ]];
-		plotRange=Automatic;
 		If[Length@num>1,
 			If[OptionValue@Manipulate,
-				With[{wp=wavePlot,N=num,
+				With[{
+					wp=wavePlot,N=num,
 					lF=With[{f=lf[#1,#2]},f&],
 					potPlot=potentialPlot,L=\[CapitalLambda],
-					\[Lambda]P=\[Lambda]Plot,pR=plotRange},
-				Manipulate[
-					Show[
-						wp[N[[i]],lF],
-						{
-							potPlot,
-							If[OptionValue["ShowEnergy"]//TrueQ,\[Lambda]P[{i}],Sequence@@{}]
-							},
-						FilterRules[{ops,PlotRange->pR},Options[Plot]]
-						],
-					{{i,1,""},1,Length@N,1}
-					]
-				],
-				Show[wavePlot[All],
-					{potentialPlot,
+					\[Lambda]P=\[Lambda]Plot
+					},
+					Manipulate[
+						Show[
+							wp[N[[i]],lF],
+							{
+								potPlot,
+								If[OptionValue["ShowEnergy"]//TrueQ,\[Lambda]P[{i}],Sequence@@{}]
+								},
+							FilterRules[{ops}, Options[Graphics3D]]
+							],
+						{{i,1,""},1,Length@N,1}
+						]
+					],
+				Show[
+					wavePlot[All],
+					{
+						potentialPlot,
 						If[OptionValue["ShowEnergy"]//TrueQ,
 							\[Lambda]Plot[All],
 							Sequence@@{}
 							]
-							},
-					FilterRules[{ops,PlotRange->plotRange},
-						Options[Plot]
+						},
+					FilterRules[{ops},
+						Options[Graphics3D]
 						]
 					]
 			],
-			Show[wavePlot[All],
-				{potentialPlot,\[Lambda]Plot[All]},
-				FilterRules[{ops,PlotRange->plotRange},
-					Options[Plot]
+			Show[
+				wavePlot[All],
+				{
+					potentialPlot,
+					If[OptionValue["ShowEnergy"]//TrueQ,
+						\[Lambda]Plot[All],
+						Sequence@@{}
+						]
+					},
+				FilterRules[{ops(*, PlotRange->plotRange*)},
+					Options[Graphics3D]
 					]
 				]
 			]

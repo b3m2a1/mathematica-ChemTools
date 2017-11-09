@@ -7203,8 +7203,10 @@ ShowStringCharacters->False]\)
 							\[FormalX],
 							\[FormalY] 
 							},
-						\[FormalCapitalR][\[FormalX]],
-						\[FormalCapitalR][\[FormalY]]
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
 						}
 					},
 			"NonLinearFunctions"->
@@ -7514,8 +7516,10 @@ ShowStringCharacters->False]\)
 							\[FormalX],
 							\[FormalY] 
 							},
-						\[FormalCapitalR][\[FormalX]],
-						\[FormalCapitalR][\[FormalY]]
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
 						}
 					},
 			"NonLinearFunctions"->
@@ -7774,8 +7778,10 @@ ShowStringCharacters->False]\)
 							\[FormalX],
 							\[FormalY] 
 							},
-						\[FormalCapitalR][\[FormalX]],
-						\[FormalCapitalR][\[FormalY]]
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
 						},
 					{}
 					},
@@ -8145,8 +8151,10 @@ ShowStringCharacters->False]\)
 							\[FormalX],
 							\[FormalY] 
 							},
-						\[FormalCapitalR][\[FormalX]],
-						\[FormalCapitalR][\[FormalY]]
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
 						},
 					{}
 					},
@@ -8458,8 +8466,10 @@ ShowStringCharacters->False]\)
 							\[FormalX],
 							\[FormalY] 
 							},
-						\[FormalCapitalR][\[FormalX]],
-						\[FormalCapitalR][\[FormalY]]
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
 						},
 					{},
 					{},
@@ -8778,8 +8788,10 @@ ShowStringCharacters->False]\)
 							\[FormalX],
 							\[FormalY] 
 							},
-						\[FormalCapitalR][\[FormalX]],
-						\[FormalCapitalR][\[FormalY]]
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
 						}
 					},
 			"NonLinearFunctions"->
@@ -9140,8 +9152,10 @@ ShowStringCharacters->False]\)
 						\[FormalCapitalR][\[FormalZ]]
 						},
 					{
-						\[FormalCapitalR][\[FormalX]],
-						\[FormalCapitalR][\[FormalY]]
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
 						},
 					{},
 					{
@@ -15133,8 +15147,10 @@ ShowStringCharacters->False]\)
 							\[FormalX],
 							\[FormalY] 
 							},
-						\[FormalCapitalR][\[FormalX]],
-						\[FormalCapitalR][\[FormalY]]
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]]
+							}
 						},
 					{}
 					},
@@ -16348,9 +16364,11 @@ ShowStringCharacters->False]\)
 							\[FormalY],
 							\[FormalZ] 
 							},
-						\[FormalCapitalR][\[FormalX]],
-						\[FormalCapitalR][\[FormalY]],
-						\[FormalCapitalR][\[FormalZ]]
+						{
+							\[FormalCapitalR][\[FormalX]],
+							\[FormalCapitalR][\[FormalY]],
+							\[FormalCapitalR][\[FormalZ]]
+							}
 						}
 					},
 			"NonLinearFunctions"->

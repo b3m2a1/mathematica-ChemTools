@@ -103,14 +103,22 @@ the kinetic energy matrix for the DVR\
 
 Cell[BoxData[
  RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "Cartesian1DDVRKineticMatrix", "]"}], "=", "\n", 
+   "\t", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"\"\<M\>\"", "->", "1"}], ",", 
+     RowBox[{"\"\<\[HBar]\>\"", "->", "1"}]}], "}"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.7189844853755617`*^9, 
+  3.7189844912631063`*^9}},ExpressionUUID->"fe5264fe-f177-458d-9031-\
+007a765679e2"],
+
+Cell[BoxData[
+ RowBox[{
   RowBox[{"Cartesian1DDVRKineticMatrix", "[", 
    RowBox[{"grid_", ",", 
-    RowBox[{"OptionsPattern", "@", 
-     RowBox[{"{", 
-      RowBox[{
-       RowBox[{"\"\<M\>\"", "->", "1"}], ",", 
-       RowBox[{"\"\<\[HBar]\>\"", "->", "1"}]}], "}"}]}]}], "]"}], ":=", "\n",
-   "\t", 
+    RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", "\n", "\t", 
   RowBox[{"With", "[", 
    RowBox[{
     RowBox[{"{", 
@@ -165,9 +173,7 @@ Cell[BoxData[
         "\n", "\t\t\t\t", 
         RowBox[{"If", "[", 
          RowBox[{
-          RowBox[{
-           RowBox[{"Length", "@", "points"}], ">", "2500"}], ",", "\n", 
-          "\t\t\t\t\t", 
+          RowBox[{"points", ">", "100000"}], ",", "\n", "\t\t\t\t\t", 
           RowBox[{"ParallelTable", "[", 
            RowBox[{
             RowBox[{"f", "[", 
@@ -188,10 +194,11 @@ Cell[BoxData[
          "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", 
      "]"}]}], "\n", "\t\t", "]"}]}]], "CodeInput",
  CellChangeTimes->{{3.699200204109901*^9, 3.6992002446128483`*^9}, {
-  3.699201703464225*^9, 
-  3.699201842336369*^9}},ExpressionUUID->"83694f47-d13a-4c3e-99f9-\
+  3.699201703464225*^9, 3.699201842336369*^9}, {3.718984489178988*^9, 
+  3.7189844900394487`*^9}, {3.718985143500957*^9, 
+  3.718985150355731*^9}},ExpressionUUID->"83694f47-d13a-4c3e-99f9-\
 61a940272020"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 

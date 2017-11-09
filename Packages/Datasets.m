@@ -27,6 +27,7 @@ PackageScopeBlock[
 	$ChemBondDistances::usage="";
 	$ChemElementValences::usage="";
 	$ChemCharacterTables::usage="";
+	$ChemTanabeSuganoData::usage="";
 	$ChemMMMFF94AtomTypes::usage="";
 	$ChemMMMFF94BondData::usage="";
 	$ChemMMFF94BondAngleData::usage="";
@@ -84,6 +85,13 @@ If[!MatchQ[OwnValues[$ChemCharacterTables],{_:>_Association?AssociationQ}],
 	$ChemCharacterTables:=
 		$ChemCharacterTables=
 			Import@PackageFilePath["Resources","Datasets","ChemCharacterTables.wl"];
+	];
+
+
+If[!MatchQ[OwnValues[$ChemTanabeSuganoData],{_:>_Association?AssociationQ}],
+	$ChemTanabeSuganoData:=
+		$ChemTanabeSuganoData=
+			Import@PackageFilePath["Resources","Datasets","ChemTanabeSuganoDiagrams.wl"];
 	];
 
 
