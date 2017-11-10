@@ -31,8 +31,8 @@ $CreateGeometricAtomsetGeometries=
 			CreateHexagonalAtomset,
 		"TrigonalPlanar"->
 			CreateTrigonalPlanarAtomset,
-		"TrigonalPyrimidal"->
-			CreateTrigonalPyrimidalAtomset,
+		"TrigonalPyramidal"->
+			CreateTrigonalPyramidalAtomset,
 		"Tetrahedral"->
 			CreateTetrahedralAtomset,
 		"CisTrigonalBipyramidal"->
@@ -47,8 +47,8 @@ $CreateGeometricAtomsetGeometries=
 			CreateCisSquarePlanarAtomset,
 		"TransSquarePlanar"->
 			CreateTransSquarePlanarAtomset,
-		"SquarePyrimidal"->
-			CreateSquarePyrimidalAtomset,
+		"SquarePyramidal"->
+			CreateSquarePyramidalAtomset,
 		"Octahedral"->
 			CreateOctahedralAtomset,
 		"FacialOctahedral"->
@@ -372,7 +372,7 @@ CreateTetrahedralAtomset[
 		]
 
 
-CreateTrigonalPyrimidalAtomset[
+CreateTrigonalPyramidalAtomset[
 	check:True|False:False,
 	coreEl:_String|{_String,___}|ChemSinglePattern:"C",
 	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{4}]}

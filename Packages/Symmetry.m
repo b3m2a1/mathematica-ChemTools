@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-
+$packageHeader
 
 ChemUtilsSymmetryElements::usage=
 	"Finds all the symmetry elements of a collection of atoms";
@@ -1738,6 +1738,7 @@ ChemUtilsSymmetryElementGroup[
 									(Norm[#-#2]<.1&)
 									]&,
 								{a[[2]]},
+								Length[axes],
 								SameTest->(Round[#,.01]==Round[#2,.01]&)
 								]
 						},
@@ -1810,6 +1811,7 @@ ChemUtilsSymmetryElementGroup["SymmetryPlanes",
 										]&
 									]&,
 								{a},
+								Length[planes],
 								SameTest->(Round[#,.01]==Round[#2,.01]&)
 								]
 						},

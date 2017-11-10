@@ -62,14 +62,18 @@ AtomsetVibrationalAnalysis::usage=
 
 ElectronConfiguration::usage=
 	"Symbolic wrapper for an electron configuration";
-(*ElectronOrbitalConfiguration::usage=
+(*ElectronOrbital::usage=
 	"Symbolic wrapper for an orbital inside an electron configuration";*)
 ElectronConfigurationData::usage=
 	"Returns a collection of properties for a configuration";
-ElectronConfigurationOctahedralField::usage=
-	"A wrapper representing an octahedral field, changing how the configuration is read";
+ElectronConfigurationCrystalField::usage=
+	"A wrapper representing a crystal field, changing how the configuration is read";
 ElectronConfigurationGraphics::usage=
 	"Plots an electron configuration";
+ElectronConfigurationEdit::usage=
+	"Tweaks an electron configuration";
+ElectronConfigurationMoveElectrons::usage=
+	"Moves electrons in an electron configuration";
 
 
 TanabeSuganoData::usage="Extracts the Tanabe-Sugano data for a d-electron count";
@@ -2657,6 +2661,11 @@ AtomsetVibrationalAnalysis[as_,
 		]
 
 
+(* ::Subsection:: *)
+(*Electron Configurations*)
+
+
+
 (* ::Subsubsection::Closed:: *)
 (*validOrbitalConfiguration*)
 
@@ -2666,14 +2675,14 @@ validOrbitalConfiguration//Clear
 
 
 electronConfigOrbitalPat=
-	(_ElectronOrbitalConfiguration|_ElectronOctahedralOrbitalConfiguration)?
+	(_ElectronOrbital|_ElectronCrystalFieldOrbital)?
 		validOrbitalConfiguration
 
 
 validOrbitalConfiguration[
 	(
-		ElectronOrbitalConfiguration|
-		ElectronOctahedralOrbitalConfiguration
+		ElectronOrbital|
+		ElectronCrystalFieldOrbital
 		)[a:KeyValuePattern[{"Type"->_, "Count"->_, "Level"->_}]]
 	]:=True;
 validOrbitalConfiguration[___]:=
@@ -2720,50 +2729,60 @@ parseInternalElectronConfiguration[l_List]:=
 
 
 (* ::Subsubsection::Closed:: *)
-(*OrbitalConfiguration*)
+(*Orbital*)
 
 
 
-ElectronOrbitalConfiguration[s_String]:=
+ElectronOrbital[s_String]:=
 	Replace[
 		parseOrbitalConfigurationExplicit[s],
 		{
-			StringExpression[a_Association]:>ElectronOrbitalConfiguration[a],
+			StringExpression[a_Association]:>ElectronOrbital[a],
 			e_String:>
 				Replace[
 					parseOrbitalConfigurationImplicit[e],
 					{
 						a:{__Association}:>
-							Thread[ElectronOrbitalConfiguration[a]],
+							Thread[ElectronOrbital[a]],
 						_->$Failed
 						}
 					]
 			}
 		];
-ElectronOrbitalConfiguration[a_Association, b_Association]:=
-	ElectronOrbitalConfiguration[Join[b,a]];
-ElectronOrbitalConfiguration[a_Association][k__]:=
+ElectronOrbital[a_Association, b_Association]:=
+	ElectronOrbital[Join[b,a]];
+ElectronOrbital[a_Association][k__]:=
 	a[k];
-ElectronOrbitalConfiguration/:
-	Normal[ElectronOrbitalConfiguration[a_Association]]:=a;
+ElectronOrbital/:
+	Normal[ElectronOrbital[a_Association]]:=a;
 Format[
-	ElectronOrbitalConfiguration[a:KeyValuePattern[{"Type"->_, "Count"->_, "Level"->_}]]
+	ElectronOrbital[a:KeyValuePattern[{"Type"->_, "Count"->_, "Level"->_}]]
 	]:=
 	RawBoxes@
 		TemplateBox[
-			ToBoxes/@Append[Lookup[a, {"Level","Type", "Count"}], a],
-			"ElectronOrbitalConfiguration",
+			ToBoxes/@
+				Join[
+					Lookup[a, {"Level", "Type", "Count"}],
+					{
+						Lookup[a, "Formatted", Lookup[a, "Type"]],
+						a
+						}],
+			"ElectronOrbital",
 			DisplayFunction->
 				Function[
 					StyleBox[
-						RowBox[{#,"\[InvisibleSpace]",SuperscriptBox[#2,#3]}],
+						RowBox[{
+							#,
+							"\[InvisibleSpace]",
+							SuperscriptBox[#4,#3]
+							}],
 						ShowStringCharacters->False
 						]
 					],
 			InterpretationFunction->
 				Function[
 					RowBox[{
-						"ElectronOrbitalConfiguration","[",
+						"ElectronOrbital","[",
 						ToBoxes@
 							<|
 								"Level"->RawBoxes@#,
@@ -2771,7 +2790,7 @@ Format[
 								"Count"->RawBoxes@#3
 								|>,
 						",",
-						#4,
+						#5,
 						"]"
 						}]
 					]
@@ -2779,31 +2798,51 @@ Format[
 
 
 (* ::Subsubsection::Closed:: *)
-(*OctahedralOrbitalConfiguration*)
+(*CystalFieldOrbital*)
 
 
 
-ElectronOctahedralOrbitalConfiguration[a_Association, b_Association]:=
-	ElectronOctahedralOrbitalConfiguration[Join[b,a]];
-ElectronOctahedralOrbitalConfiguration[a_Association][k__]:=
+ElectronCrystalFieldOrbital[a_Association, b_Association]:=
+	ElectronCrystalFieldOrbital[Join[b,a]];
+ElectronCrystalFieldOrbital[a_Association][k__]:=
 	a[k];
-ElectronOctahedralOrbitalConfiguration/:
-	Normal[ElectronOctahedralOrbitalConfiguration[a_Association]]:=a;
+ElectronCrystalFieldOrbital/:
+	Normal[ElectronCrystalFieldOrbital[a_Association]]:=a;
 Format[
-	ElectronOctahedralOrbitalConfiguration[
-		a:KeyValuePattern[{"Type"->_, "Count"->_, "Level"->_, "FieldStrength"->_}]
+	ElectronCrystalFieldOrbital[
+		a:KeyValuePattern[{
+			"Type"->_,
+			"Count"->_,
+			"Level"->_,
+			"FieldStrength"->_,
+			"FieldType"->_
+			}]
 		]
 	]:=
 	RawBoxes@
 		TemplateBox[
-			ToBoxes/@Append[Lookup[a, {"Level","Type", "Count"}], a],
-			"ElectronOctahedralOrbitalConfiguration",
+			ToBoxes/@
+				Join[
+					Lookup[a, {"Level", "Type", "Count"}],
+					{
+						Lookup[a, "Formatted", Lookup[a, "Type"]],
+						Replace[Lookup[a, "FieldType"],{
+							"Octahedral"->Subscript["O","h"],
+							"Tetrahedral"->Subscript["T","d"]
+							}],
+						a
+						}],
+			"ElectronCrystalFieldOrbital",
 			DisplayFunction->
 				Function[
 					StyleBox[
 						SubscriptBox[
-							RowBox[{#,"\[InvisibleSpace]",SuperscriptBox[#2,#3]}],
-							SubscriptBox["\"O\"", "\"h\""]
+							RowBox[{
+								#,
+								"\[InvisibleSpace]",
+								SuperscriptBox[#4,#3]
+								}],
+							#5
 							],
 						ShowStringCharacters->False
 						]
@@ -2811,7 +2850,7 @@ Format[
 			InterpretationFunction->
 				Function[
 					RowBox[{
-						"ElectronOctahedralOrbitalConfiguration","[",
+						"ElectronCrystalFieldOrbital","[",
 						ToBoxes@
 							<|
 								"Level"->RawBoxes@#,
@@ -2819,7 +2858,7 @@ Format[
 								"Count"->RawBoxes@#3
 								|>,
 						",",
-						#4,
+						#6,
 						"]"
 						}]
 					]
@@ -2834,8 +2873,8 @@ Format[
 electronConfigurationVectorPattern=
 	{
 		(
-			_ElectronOrbitalConfiguration|
-			_ElectronOctahedralOrbitalConfiguration
+			_ElectronOrbital|
+			_ElectronCrystalFieldOrbital
 			)?validOrbitalConfiguration..
 		};
 
@@ -2864,7 +2903,7 @@ ElectronConfiguration//Clear
 
 ElectronConfiguration[s_String]:=
 	With[{
-		eBase=ElectronOrbitalConfiguration/@StringSplit[s]//Flatten
+		eBase=ElectronOrbital/@StringSplit[s]//Flatten
 		},
 		ElectronConfiguration[
 			sortElectronConfiguration[eBase]
@@ -2904,6 +2943,15 @@ ElectronConfiguration/:
 ElectronConfiguration/:
 	Map[f_, ElectronConfiguration[a_]]:=
 		Map[f, a];
+ElectronConfiguration/:
+	Select[ElectronConfiguration[a_], f_]:=
+		Select[a, f];
+ElectronConfiguration/:
+	Cases[ElectronConfiguration[a_], p__]:=
+		Cases[a, p];
+ElectronConfiguration/:
+	Fold[f_, s_, ElectronConfiguration[a_]]:=
+		Fold[f, s, a];
 Format[
 	ElectronConfiguration[
 		o:electronConfigurationVectorPattern
@@ -2937,6 +2985,86 @@ Format[
 
 
 (* ::Subsubsection::Closed:: *)
+(*ElectronConfigurationEdit*)
+
+
+
+ElectronConfigurationEdit[
+	orb:electronConfigOrbitalPat,
+	props:_Association|_?OptionQ
+	]:=
+	Head[orb]@
+		Merge[{Normal@orb, props},
+			Replace[{
+				{p_, f_Function}:>f[p],
+				{___, e_}:>e
+				}]
+			];
+ElectronConfigurationEdit[
+	ec_ElectronConfiguration,
+	type_String,
+	props_
+	]:=
+	ElectronConfiguration@
+		Map[
+			If[StringMatchQ[ToString[#["Level"]]<>#["Type"], type],
+				ElectronConfigurationEdit[#, props],
+				#
+				]&,
+			ec
+			];
+ElectronConfigurationEdit[
+	ec_ElectronConfiguration,
+	propTypes:_List?OptionQ
+	]:=
+	Fold[
+		ElectronConfigurationEdit[
+			#, 
+			#2[[1]],
+			#2[[2]]
+			]&,
+		ec,
+		propTypes
+		]
+
+
+(* ::Subsubsection::Closed:: *)
+(*ElectronConfigurationMoveElectrons*)
+
+
+
+ElectronConfigurationMoveElectrons[
+	ec_ElectronConfiguration,
+	moveRules:_List?OptionQ
+	]:=
+	ElectronConfigurationEdit[ec,
+		Flatten@Replace[moveRules,
+			{
+				(t1_String->t2_String):>
+					{
+						t1->{ "Count"->Function[#-1] },
+						t2->{ "Count"->Function[#+1] }
+						},
+				(t1_String->{t2_String, n_Integer}):>
+					{
+						t1->{ "Count"->Function[#-n] },
+						t2->{ "Count"->Function[#+n] }
+						}
+				},
+			1
+			]
+		];
+ElectronConfigurationMoveElectrons[
+	ec_ElectronConfiguration,
+	moveRules:_?OptionQ
+	]:=
+	ElectronConfigurationMoveElectrons[
+		ec,
+		Flatten@List@Normal@moveRules
+		]
+
+
+(* ::Subsubsection::Closed:: *)
 (*orbitalTypeIndexed*)
 
 
@@ -2947,7 +3075,7 @@ orbitalTypeIndexed[t_]:=
 			1,
 		"p",
 			2,
-		"d",
+		"d"|"eg"|"t2"|"t2g"|"e",
 			3,
 		"f",
 			4,
@@ -2989,15 +3117,15 @@ orbitalTypeDegOrbitalCount//Clear
 orbitalTypeDegOrbitalCount[t_]:=
 	Replace[t,
 		{
-			Subscript["e", "g"]->2,
-			Subscript["t", "2g"]->3,
-			e_ElectronOctahedralOrbitalConfiguration:>
+			"eg"|"e"->2,
+			"t2g"|"t2"->3,
+			e_ElectronCrystalFieldOrbital:>
 				orbitalTypeDegOrbitalCount[e["Type"]],
 			i_Integer:>
 				1+2*(i-1),
 			s_String:>
 				orbitalTypeDegOrbitalCount[orbitalTypeIndexed[s]],
-			o_ElectronOrbitalConfiguration:>
+			o_ElectronOrbital:>
 				orbitalTypeDegOrbitalCount[orbitalTypeIndexed@o["Type"]]
 			}
 		]
@@ -3076,8 +3204,9 @@ electronConfigTermSymbols[config_, moms_]:=
 		base=
 			<|
 				"TermSymbol"->
-					If[MatchQ[config, _ElectronOctahedralOrbitalConfiguration],
-						Replace[config["Type"],{
+					If[MatchQ[config, _ElectronCrystalFieldOrbital],
+						Replace[
+							Lookup[Normal@config, "Formatted", config["Type"]],{
 							Subscript[t_, l_]:>
 								Subscript[ToUpperCase[t], l],
 							s_String:>ToUpperCase[s]
@@ -3104,6 +3233,30 @@ electronConfigTermSymbols[config_, moms_]:=
 
 
 (* ::Subsubsection::Closed:: *)
+(*Frontier Orbitals*)
+
+
+
+electronConfigFrontierElectronCount[e_ElectronConfiguration]:=
+	With[{
+		c=
+		MaximalBy[
+			Select[
+				Normal@e,
+				MatchQ[#["Type"],
+					"d"|Subscript["e","g"]|Subscript["t","2g"]]&
+				],
+			#["Level"]
+			]
+		},
+	If[Length[c]>0,
+		c[[1, "Count"]],
+		0
+		]
+	];
+
+
+(* ::Subsubsection::Closed:: *)
 (*ElectronConfigurationData*)
 
 
@@ -3118,14 +3271,14 @@ ElectronConfigurationData[e_ElectronConfiguration]:=
 			terms
 			},
 		freeDenegeracies=
-			AssociationMap[electronConfigElectronArrangements, Keys[unfilled]];
+			AssociationMap[
+				electronConfigElectronArrangements, 
+				Keys[unfilled]
+				];
 		momenta=
 			electronConfigOrbAngMomenta[microstates];
 		terms=
-			Map[
-				electronConfigTermSymbols[#, momenta]&,
-				e
-				];
+			electronConfigTermSymbols[e, momenta];
 		<|
 			"UnfilledOrbitals"->
 				unfilled,
@@ -3146,9 +3299,14 @@ ElectronConfigurationData[e_ElectronConfiguration]:=
 
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*Atomic Orbital*)
+
+
+
 ElectronConfigurationGraphicsObjects[
 	"OrbitalLines",
-	orb_ElectronOrbitalConfiguration,
+	orb:_ElectronOrbital|_ElectronCrystalFieldOrbital,
 	pos:{_, _}:{0, 0},
 	lineSize_:.1, lineGap_:.025,
 	arrowSize_. 1, arrowGap_:.025
@@ -3166,7 +3324,7 @@ ElectronConfigurationGraphicsObjects[
 
 ElectronConfigurationGraphicsObjects[
 	"ElectronArrows",
-	orb_ElectronOrbitalConfiguration,
+	orb:_ElectronOrbital|_ElectronCrystalFieldOrbital,
 	pos:{_, _}:{0, 0},
 	lineSize_:.1, lineGap_:.025,
 	arrowSize_:.1, arrowGap_:.025
@@ -3197,6 +3355,47 @@ ElectronConfigurationGraphicsObjects[
 			}
 		]
 		]
+
+
+electronGraphicsFieldCorrection[
+	e_ElectronCrystalFieldOrbital,
+	baseHeight_
+	]:=
+	Switch[{e["Type"], e["FieldType"], e["FieldStrength"]},
+		{"eg", "Octahedral", "Weak"}|
+			{"t2g", "Octahedral", "Strong"},
+			baseHeight,
+		{"t2g", "Octahedral", "Weak"}|
+			{"eg", "Octahedral", "Strong"},
+			0,
+		{"t2g", "Tetrahedral", _},
+			0,
+		{"e", "Tetrahedral", _},
+			baseHeight,
+		_,
+			0
+		];
+electronGraphicsFieldCorrection[___]:=
+	0
+
+
+electronGraphicsTypeSpacingCorrection[
+	e_ElectronCrystalFieldOrbital,
+	baseWidth_
+	]:=
+	Switch[e["Type"],
+		"eg"|"e",
+			baseWidth/2,
+		_,
+			0
+		]
+electronGraphicsTypeSpacingCorrection[___]:=
+	0
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Main*)
+
 
 
 ElectronConfigurationGraphics//Clear
@@ -3235,12 +3434,14 @@ ElectronConfigurationGraphics[
 					{
 						cent=
 							{
+								electronGraphicsTypeSpacingCorrection[#, arrowSize+arrowGap]+
 								(lineSize+2*lineGap)*
 									Total@
 										Map[
 											orbitalTypeDegOrbitalCount,
 											Range[orbitalTypeIndexed[#["Type"]]-1]
 											],
+								electronGraphicsFieldCorrection[#, arrowSize+arrowGap]+
 								ef[#["Level"]]*(arrowSize+arrowGap)+
 									orbitalTypeIndexed[#["Type"]]*arrowSize
 								}
@@ -3248,7 +3449,7 @@ ElectronConfigurationGraphics[
 					Prepend[
 						Text[ReplacePart[#, {1, "Count"}->""],
 							{lineGap, 0}+cent,
-							Left
+							{Left, Top}
 							]
 						]@
 					Table[
@@ -3278,60 +3479,126 @@ ElectronConfigurationGraphics[
 
 
 
-ElectronConfigurationOctahedralField[
+ElectronConfigurationCrystalField[
+	fieldType:"Tetrahedral"|"Octahedral":"Octahedral",
+	fieldStrength:"Weak"|"Strong":"Weak"
+	][e_]:=
+	ElectronConfigurationCrystalField[e,
+		fieldType,
+		fieldStrength
+		];
+ElectronConfigurationCrystalField[
 	e_ElectronConfiguration,
-	fieldType:"Weak"|"Strong":"Weak"
+	fieldType:"Tetrahedral"|"Octahedral":"Octahedral",
+	fieldStrength:"Weak"|"Strong":"Weak"
 	]:=
 	ElectronConfiguration@
 		Map[
-			ElectronConfigurationOctahedralField[#, fieldType]&,
+			ElectronConfigurationCrystalField[#,
+				fieldType,
+				fieldStrength
+				]&,
 			e
 			];
-ElectronConfigurationOctahedralField[
-	e_ElectronOrbitalConfiguration,
-	fieldType:"Weak"|"Strong"
+ElectronConfigurationCrystalField[
+	e_ElectronOrbital,
+	fieldType:"Octahedral",
+	fieldStrength:"Weak"|"Strong"
 	]:=
 	If[e["Type"]==="d",
-		Sequence@@Map[ElectronOctahedralOrbitalConfiguration]@
-			If[fieldType==="Weak", Reverse, Identity]@
+		Sequence@@Map[ElectronCrystalFieldOrbital]@
+			If[fieldStrength==="Weak", Reverse, Identity]@
 			{
 				Join[
 					Normal[e],
 					<|
-						"Type"->Subscript["e","g"],
+						"Type"->"eg",
+						"Formatted"->Subscript["e","g"],
 						"Count"->
-							If[fieldType==="Weak",
-								Max@{e["Count"]-6,0},
-								Min@{e["Count"], 4}
+							If[fieldStrength==="Weak",
+								Max@{e["Count"]-6, 0},
+								Min@{e["Count"],   4}
 								],
-						"FieldStrength"->fieldType
+						"FieldType"->fieldType,
+						"FieldStrength"->fieldStrength
 						|>
 					],
 				Join[
 					Normal[e],
 					<|
-						"Type"->Subscript["t","2g"],
+						"Type"->"t2g",
+						"Formatted"->Subscript["t","2g"],
 						"Count"->
-							If[fieldType==="Weak",
-								Min@{e["Count"], 6},
+							If[fieldStrength==="Weak",
+								Min@{e["Count"],   6},
 								Max@{e["Count"]-4, 0}
 								],
-						"FieldStrength"->fieldType
+						"FieldType"->fieldType,
+						"FieldStrength"->fieldStrength
 						|>
 					]
 				},
-		ElectronOctahedralOrbitalConfiguration[
-			Append[Normal[e], "FieldStrength"->fieldType]
+		ElectronCrystalFieldOrbital[
+			Join[Normal[e],
+				<|
+					"FieldStrength"->fieldStrength,
+					"FieldType"->fieldType
+					|>]
 			]
-		]
+		];
+ElectronConfigurationCrystalField[
+	e_ElectronOrbital,
+	fieldType:"Tetrahedral",
+	fieldStrength:"Weak"|"Strong"
+	]:=
+	If[e["Type"]==="d",
+		Sequence@@Map[ElectronCrystalFieldOrbital]@
+			{
+				Join[
+					Normal[e],
+					<|
+						"Type"->"t2",
+						"Formatted"->Subscript["t","2"],
+						"Count"->
+								Max@{e["Count"]-4, 0},
+						"FieldStrength"->fieldStrength,
+						"FieldType"->fieldType
+						|>
+					],
+				Join[
+					Normal[e],
+					<|
+						"Type"->"e",
+						"Count"->
+								Min@{e["Count"], 4},
+						"FieldStrength"->fieldStrength,
+						"FieldType"->fieldType
+						|>
+					]
+				},
+		ElectronCrystalFieldOrbital[
+			Join[Normal[e], 
+				<|
+					"FieldStrength"->fieldStrength,
+					"FieldType"->fieldType
+					|>
+				]
+			]
+		];
+
+
+TanabeSuganoData//Clear
 
 
 TanabeSuganoData[dElectrons:Alternatives@@Range[2,8]]:=
 	$ChemTanabeSuganoData[[dElectrons]];
-TanabeSuganoData[ec_]:=
-	With[{els=DElectronCount[ec]},
+TanabeSuganoData[ec_ElectronConfiguration]:=
+	With[{els=electronConfigFrontierElectronCount[ec]},
 		TanabeSuganoData[ec]/;2<=els<=8
 		]
+
+
+TanabeSuganoDiagram//Clear
 
 
 Options[TanabeSuganoDiagram]=
@@ -3371,7 +3638,8 @@ TanabeSuganoDiagram[
 		LabelStyle->{Background->White}
 		]
 	];
-TanabeSuganoDiagram[ec_,
+TanabeSuganoDiagram[
+	ec:_Integer|_ElectronConfiguration,
 	selection:{__String}|All:All,
 	ops:OptionsPattern[]
 	]:=
@@ -3381,6 +3649,9 @@ TanabeSuganoDiagram[ec_,
 			ops
 			]/;AssociationQ[dats]
 		]
+
+
+TanabeSuganoDiagramInteractive//Clear
 
 
 Options[TanabeSuganoDiagramInteractive]=
@@ -3409,7 +3680,7 @@ DynamicModule[
 				Dynamic@
 				Labeled[
 					Show[
-					TanabeSuganoDiagram[data, sel , ops],
+					TanabeSuganoDiagram[data, selection, ops],
 					ListLinePlot[{
 						{{linePoint,0},{linePoint,max}},
 						{{0,yLinePoint},{maxX,yLinePoint}},
