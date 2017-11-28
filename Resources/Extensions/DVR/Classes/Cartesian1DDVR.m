@@ -47,9 +47,9 @@ Cartesian1DDVRKineticMatrix[grid_,OptionsPattern[]]:=
 		With[{dx=(xmax-xmin)/points,m=OptionValue@"M",\[HBar]=OptionValue@"\[HBar]"},
 			With[{f=(1.)*If[#==#2,\[Pi]^2/3,2/(#-#2)^2]*(\[HBar] (-1)^(#-#2))/(2m dx^2)&},
 				If[points>100000,
-					ParallelTable[f[i,j],{i,points},{j,points}],
-					Table[f[i,j],{i,points},{j,points}]
-					]
+					ParallelTable,
+					Table
+					][f[i,j],{i,points},{j,points}]
 				]
 			]
 		]

@@ -26,6 +26,14 @@ ChemDVRPotentials::usage="Lists all matching files in ChemDVRDirectory[\"Potenti
 $ChemDVRPotentials::usage="Alias for ChemDVRPotentials[\"*@.@*\"]";
 
 
+PackageScopeBlock[
+	ChemDVRDefaultFormatGrid::usage="";
+	ChemDVRDefaultWavefunctions::usage="";
+	ChemDVRDefaultGridWavefunctions::usage="";
+	ChemDVRDefaultInterpolatingWavefunctions::usage=""
+	];
+
+
 ChemDVRCreate::usage="OOP constructor for a ChemDVR";
 ChemDVRObject::usage="General object wrapper for ChemDVR stuff";
 ChemDVRGet::usage="Gets an attribute for a ChemDVR instance";
@@ -169,17 +177,22 @@ Options[ChemDVRDefaultWavefunctions]=
 	Join[
 		Options@Eigensystem,
 		{
-			"NumberOfWavefunctions"->All
+			"NumberOfWavefunctions"->All,
+			"CorrectPhase"->True,
+			"SortEnergies"->True
 			}
 		];
 ChemDVRDefaultWavefunctions[T_,V_,ops:OptionsPattern[]]:=
-	Module[{
-		nwfs=OptionValue["NumberOfWavefunctions"],
-		wfns,
-		phase
-		},
+	Module[
+		{
+			nwfs=OptionValue["NumberOfWavefunctions"],
+			sort=OptionValue["SortEnergies"]=!=False,
+			rephase=OptionValue["CorrectPhase"]=!=False,
+			wfns,
+			phase
+			},
 		wfns=
-				#[[{1,2},Ordering[First@#]]]&@
+				If[sort, #[[{1,2},Ordering[First@#]]], #]&@
 					Eigensystem[T+V,
 						Replace[nwfs,
 							All:>Sequence@@{}
@@ -191,8 +204,11 @@ ChemDVRDefaultWavefunctions[T_,V_,ops:OptionsPattern[]]:=
 							Except[Method]
 							]
 						];
-		phase=Sign@wfns[[2,1]];
-		{First@wfns,phase*#&/@Last@wfns}
+		If[rephase,
+			phase=Sign@wfns[[2, Ordering[First@wfns][[1]]]];
+			{First@wfns,phase*#&/@Last@wfns},
+			wfns
+			]
 		];
 
 
@@ -463,7 +479,11 @@ ChemDVRKineticEnergy[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 				If[tryLoad,
 					If[FileExistsQ@ChemDVRFile[$dvrke,obj],
 						Import@ChemDVRFile[$dvrke,obj],
-						ChemDVRKineticEnergy[obj,"Load"->False,ops]
+						ChemDVRKineticEnergy[obj,
+							"LoadKineticEnergy"->False,
+							"Load"->False,
+							ops
+							]
 						],
 					With[{ke=dvrCalcKE[obj,ops]},
 						If[MatrixQ[ke],
@@ -531,7 +551,10 @@ ChemDVRPotentialEnergy[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 				If[tryLoad,
 					If[FileExistsQ@ChemDVRFile[$dvrpe,obj],
 						dvrLoadPotential[obj,ChemDVRFile[$dvrpe,obj],ops],
-						ChemDVRPotentialEnergy[obj,"Load"->False,ops]
+						ChemDVRPotentialEnergy[obj,
+							"LoadPotentialEnergy"->False,
+							"Load"->False,
+							ops]
 						],
 					With[{pe=dvrCalcPE[obj,ops]},
 						If[MatrixQ[pe],
@@ -697,7 +720,11 @@ ChemDVRWavefunctions[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 		If[tryLoad,
 			If[FileExistsQ@ChemDVRFile[$dvrwf,obj],
 				Import@ChemDVRFile[$dvrwf,obj],
-				ChemDVRWavefunctions[obj,"Load"->False,ops]
+				ChemDVRWavefunctions[obj,
+					"LoadWavefunctions"->False,
+					"Load"->False,
+					ops
+					]
 				],
 			With[{wf=dvrCalcWFs[obj,ops]},
 				If[Length@wf==2&&MatrixQ[Last@wf,NumericQ],
@@ -847,7 +874,7 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 
 
 ChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
-	With[{m=If[$Notebooks,dvrOpsLookup[ops,Monitor,Automatic],False]},
+	With[{m=If[$Notebooks,dvrOpsLookup[ops,Monitor,False],False]},
 		Switch[m,
 			Automatic|True,	
 				With[{start=Now,clock=Unique@"clock$"},
@@ -1259,7 +1286,8 @@ ChemDVRNewClass[ops:OptionsPattern[]]:=
 
 ChemDVRBegin[context_:""]:=
 	If[$Context=!=Context[ChemDVRBegin],
-		BeginPackage[Context[ChemDVRBegin]]
+		BeginPackage[Context[ChemDVRBegin]];
+		Echo@AppendTo[$ContextPath, Context[ChemDVRDefaultWavefunctions]]
 		];
 
 

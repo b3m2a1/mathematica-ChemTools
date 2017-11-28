@@ -2,7 +2,6 @@
 
 {
 	"RemovePaths" -> {
-		"Extensions",
 		"Private",
 		".git"
 		},

@@ -5,3 +5,5 @@ BeginPackage[
   FileBaseName[DirectoryName@$InputFileName]<>"`"
   ];
 EndPackage[]
+
+FrontEnd`Private`GetUpdatedSymbolContexts[]
