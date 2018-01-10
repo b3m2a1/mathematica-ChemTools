@@ -391,7 +391,7 @@ If[MatchQ[$ChemFormatObjects,Except[True|False]],$ChemFormatObjects=True];
 Format[o_ChemObject/;($ChemFormatObjects&&ChemObjectQ@o)]:=
 	With[{properties=Normal@o},
 		RawBoxes@BoxForm`ArrangeSummaryBox[
-			ChemObject,
+			"ChemObject",
 			o,
 			Replace[
 				If[MissingQ@ChemGet[o,"Graphics3D"],
@@ -399,9 +399,7 @@ Format[o_ChemObject/;($ChemFormatObjects&&ChemObjectQ@o)]:=
 					ChemView[o,ImageSize->{28,28}]
 					],{
 				g_Graphics3D:>
-					Graphics[{
-						Inset[g]
-						},
+					Graphics[{Inset[g]},
 						ImageSize->{32,32},
 						Frame->True,
 						FrameTicks->False,
@@ -445,7 +443,7 @@ Format[o_ChemObject/;($ChemFormatObjects&&ChemObjectQ@o)]:=
 
 Format[m:ChemMethod[f_]/;$ChemFormatObjects]:=
 	RawBoxes@BoxForm`ArrangeSummaryBox[
-		ChemMethod,
+		"ChemMethod",
 		m,
 		None,
 		{
@@ -475,7 +473,7 @@ Format[m:ChemProperty[f_]]/;$ChemFormatObjects:=
 
 Format[AtomsetWrapper[a_?validAtomsetWrapperQ]]:=
 	RawBoxes@BoxForm`ArrangeSummaryBox[
-		AtomsetWrapper,
+		"AtomsetWrapper",
 		AtomsetWrapper[a],
 		None,
 		{

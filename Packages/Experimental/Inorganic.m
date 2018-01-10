@@ -110,8 +110,12 @@ AtomsetVibrationalAnalysis::usage=
 
 ElectronConfiguration::usage=
 	"Symbolic wrapper for an electron configuration";
-(*ElectronOrbital::usage=
-	"Symbolic wrapper for an orbital inside an electron configuration";*)
+ElectronOrbital::usage=
+	"Symbolic wrapper for an orbital inside an electron configuration";
+ElectronCrystalFieldOrbital::usage=
+	"Symbolic wrapper for an orbital inside an electron configuration";
+ElectronMolecularOrbital::usage=
+	"Symbolic wrapper for an orbital inside an electron configuration";
 ElectronConfigurationData::usage=
 	"Returns a collection of properties for a configuration";
 ElectronConfigurationCrystalField::usage=
@@ -3684,22 +3688,29 @@ ParseOrbitalConfiguration[s_]:=
 
 
 
+ElectronOrbital//Clear
+
+
 ElectronOrbital[s_String]:=
 	Replace[
 		ParseOrbitalConfiguration[s],
 		{
 			a_Association:>
-				Which[
-					KeyMemberQ[a, "FieldType"],
-						ElectronCrystalFieldOrbital[a],
-					KeyMemberQ[a, "BondingOrbital"],
-						ElectronMolecularOrbital[a],
-					True,
-						ElectronOrbital[a]
-					],
+				ElectronOrbital[a],
 			a:{__Association}:>
 				Thread[ElectronOrbital[a]]
 			}];
+e:ElectronOrbital[ass_Association?(Not@*TrueQ@*Key["_Constructed"])]:=
+	With[{a=Append[ass, "_Constructed"->True]},
+		Which[
+			KeyMemberQ[a, "FieldType"],
+				ElectronCrystalFieldOrbital[a],
+			KeyMemberQ[a, "BondingOrbital"],
+				ElectronMolecularOrbital[a],
+			True,
+				ElectronOrbital[a]
+			]
+		];
 ElectronOrbital[a_Association, b_Association]:=
 	ElectronOrbital[Join[b,a]];
 ElectronOrbital[a_Association][k__]:=
@@ -4011,17 +4022,34 @@ ElectronConfiguration//Clear
 
 
 ElectronConfiguration[s_String]:=
-	With[{
-		eBase=ElectronOrbital/@StringSplit[s]//Flatten
-		},
-		ElectronConfiguration[
-			sortElectronConfiguration[eBase]
-			]/;AllTrue[eBase, validOrbitalConfiguration]
+	With[{name=s/.$ElectronConfigurationsNameToPg},
+		With[{
+			conf=
+				If[
+					KeyMemberQ[$ElectronConfigurationsSpecial, name],
+						ElectronConfiguration[
+							$ElectronConfigurationsSpecial[name]
+							],
+					With[{
+						eBase=ElectronOrbital/@StringSplit[s]//Flatten
+						},
+						ElectronConfiguration[
+							sortElectronConfiguration[eBase]
+							]
+						]
+					]
+				},
+			conf/;(
+				AllTrue[Normal[conf], validOrbitalConfiguration]
+				)
+			]
 		];
 ElectronConfiguration[TextCell[s_]]:=
 	ElectronConfiguration[s];
 ElectronConfiguration[s_String, ops_?OptionQ]:=
 	ElectronConfiguration[ElectronConfiguration[s], ops];
+ElectronConfiguration[a:{__Association}]:=
+	ElectronConfiguration[Map[ElectronOrbital, a]];
 ElectronConfiguration[
 	l:electronConfigurationVectorPattern,
 	ops_?OptionQ
@@ -4086,6 +4114,212 @@ Format[
 						]
 					]
 			]
+
+
+(* ::Subsubsection::Closed:: *)
+(*Special Configurations*)
+
+
+
+$ElectronConfigurationsNameToPg=
+	<|
+		"Octahedral"->"Oh",
+		"TrigonalBipyramidal"->"D3h",
+		"Tetrahedral"->"Td"
+		|>;
+$ElectronConfigurationsSpecial=
+	<|
+	
+		|>;
+
+
+$ElectronConfigurationsSpecial["Oh"]=
+	Block[
+		{idx=0},
+		Join[
+			Table[
+				<|
+					"Level"->"","Count"->"","Type"->"\[Sigma]",
+					"BondingOrbital"->True,"Index"->idx++
+					|>,
+				3
+				],
+				Table[
+					<|
+						"Level"->"",
+						"Count"->"","Type"->"\[Pi]",
+						"BondingOrbital"->True,
+						"Index"->idx++|>,
+						2
+						],
+					{
+						<|
+								"Level"->"","Count"->"",
+								"Type"->
+									CharacterTableParse["IrreducibleRepresentation"]["T2g"],
+								"FieldType"->
+									CharacterTableParse["PointGroup"]["Oh"],
+								"FieldStrength"->1,
+								"Index"->idx++
+								|>,
+						<|
+							"Level"->"","Count"->"",
+							"Type"->
+								CharacterTableParse["IrreducibleRepresentation"]["Eg"],
+							"FieldType"->
+								CharacterTableParse["PointGroup"]["Oh"],
+							"FieldStrength"->1,
+							"Index"->idx++
+							|>
+						},
+				Table[
+					<|
+						"Level"->"",
+						"Count"->"","Type"->"\[Pi]",
+						"BondingOrbital"->False,
+						"Index"->idx++|>,
+						2
+						],
+					Table[
+						<|
+							"Level"->"",
+							"Count"->"","Type"->"\[Sigma]",
+							"BondingOrbital"->False,
+							"Index"->idx++
+							|>,
+							3
+							]
+						]
+			];
+
+
+$ElectronConfigurationsSpecial["Td"]=
+	Block[
+		{idx=0},
+		Join[
+			Table[
+				<|
+					"Level"->"","Count"->"","Type"->"\[Sigma]",
+					"BondingOrbital"->True,"Index"->idx++
+					|>,
+				3
+				],
+				Table[
+					<|
+						"Level"->"",
+						"Count"->"","Type"->"\[Pi]",
+						"BondingOrbital"->True,
+						"Index"->idx++|>,
+						2
+						],
+					{
+						<|
+								"Level"->"","Count"->"",
+								"Type"->
+									CharacterTableParse["IrreducibleRepresentation"]["T2"],
+								"FieldType"->
+									CharacterTableParse["PointGroup"]["Td"],
+								"FieldStrength"->1,
+								"Index"->idx++
+								|>,
+						<|
+							"Level"->"","Count"->"",
+							"Type"->
+								CharacterTableParse["IrreducibleRepresentation"]["E"],
+							"FieldType"->
+								CharacterTableParse["PointGroup"]["Td"],
+							"FieldStrength"->1,
+							"Index"->idx++
+							|>
+						},
+				Table[
+					<|
+						"Level"->"",
+						"Count"->"","Type"->"\[Pi]",
+						"BondingOrbital"->False,
+						"Index"->idx++|>,
+						2
+						],
+					Table[
+						<|
+							"Level"->"",
+							"Count"->"","Type"->"\[Sigma]",
+							"BondingOrbital"->False,
+							"Index"->idx++
+							|>,
+							3
+							]
+						]
+			];
+
+
+$ElectronConfigurationsSpecial["D3h"]=
+	Block[
+		{idx=0},
+		Join[
+			Table[
+				<|
+					"Level"->"","Count"->"","Type"->"\[Sigma]",
+					"BondingOrbital"->True,"Index"->idx++
+					|>,
+				3
+				],
+				Table[
+					<|
+						"Level"->"",
+						"Count"->"","Type"->"\[Pi]",
+						"BondingOrbital"->True,
+						"Index"->idx++|>,
+						2
+						],
+					{
+						<|
+								"Level"->"","Count"->"",
+								"Type"->
+									CharacterTableParse["IrreducibleRepresentation"]["E'"],
+								"FieldType"->
+									CharacterTableParse["PointGroup"]["D3h"],
+								"FieldStrength"->1,
+								"Index"->idx++
+								|>,
+						<|
+							"Level"->"","Count"->"",
+							"Type"->
+								CharacterTableParse["IrreducibleRepresentation"]["E''"],
+							"FieldType"->
+								CharacterTableParse["PointGroup"]["D3h"],
+							"FieldStrength"->1,
+							"Index"->idx++
+							|>,
+						<|
+							"Level"->"","Count"->"",
+							"Type"->
+								CharacterTableParse["IrreducibleRepresentation"]["A1'"],
+							"FieldType"->
+								CharacterTableParse["PointGroup"]["D3h"],
+							"FieldStrength"->1,
+							"Index"->idx++
+							|>
+						},
+				Table[
+					<|
+						"Level"->"",
+						"Count"->"","Type"->"\[Pi]",
+						"BondingOrbital"->False,
+						"Index"->idx++|>,
+						2
+						],
+					Table[
+						<|
+							"Level"->"",
+							"Count"->"","Type"->"\[Sigma]",
+							"BondingOrbital"->False,
+							"Index"->idx++
+							|>,
+							3
+							]
+						]
+			];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -4267,16 +4501,30 @@ orbitalDefaultEnergyBondingCorrection[bo_, type_]:=
 
 
 orbitalDefaultEnergyFieldCorrection[type_, fieldType_, fieldStrength_]:=	
-	Switch[{
-		ToLowerCase@Replace[type, a_Association:>a["Type"]], fieldType, fieldStrength},
-		{"e", "Oh", _},
-			.5,
-		{"t", "Oh", _},
-			-1/3.,
-		{"t", "Td", _},
-			1/3.,
-		{"e", "Td", _},
-			-.5,
+	Switch[
+		{
+			ToLowerCase@
+				Replace[type,
+					a_Association:>a["Type"]
+					], 
+			fieldType, 
+			type["Modifier"],
+			type["Index"]
+			},
+		{"e", "Oh", __},
+			.5*Replace[fieldStrength, Except[_?NumericQ]->1],
+		{"t", "Oh", __},
+			-1/3.*Replace[fieldStrength, Except[_?NumericQ]->1],
+		{"t", "Td", __},
+			1/3.*Replace[fieldStrength, Except[_?NumericQ]->1],
+		{"e", "Td", __},
+			-.5*Replace[fieldStrength, Except[_?NumericQ]->1],
+		{"e", "D3h", "'",  ___},
+			0*Replace[fieldStrength, Except[_?NumericQ]->1],
+		{"e", "D3g", "''", ___},
+			-.5*Replace[fieldStrength, Except[_?NumericQ]->1],
+		{"a", "D3g", _, 1, ___},
+			.5*Replace[fieldStrength, Except[_?NumericQ]->1],
 		_,
 			0
 		];
@@ -4289,9 +4537,10 @@ orbitalDefaultEnergyFunction[orb_]:=
 			type=orb["Type"],
 			bo=orb["BondingOrbital"],
 			ft=Replace[orb["FieldType"], a_Association:>a["ID"]],
-			fs=orb["FieldStrength"]
+			fs=orb["FieldStrength"],
+			index=Replace[orb["Index"], Except[_?NumericQ]->0]
 			},
-		50*(1-1/(l)^.1)+
+		50*(1-1/l^.1)+index+
 			Which[
 				BooleanQ[bo],
 					orbitalDefaultEnergyBondingCorrection[bo, type],
@@ -4430,6 +4679,15 @@ electronConfigTotalCount[ec_]:=
 
 
 (* ::Subsubsection::Closed:: *)
+(*electronOrbElectronCount*)
+
+
+
+electronOrbElectronCount[e_]:=
+	Replace[e["Count"], Except[_?NumericQ]->0]
+
+
+(* ::Subsubsection::Closed:: *)
 (*ElectronConfigurationOptimize*)
 
 
@@ -4527,7 +4785,7 @@ ElectronConfigurationEnumerate[
 electronConfigOrbMicrostates[e:electronConfigOrbitalPat]:=
 	With[
 		{
-			o=e["Count"],
+			o=electronOrbElectronCount[e],
 			d=orbitalTypeDegOrbitalCount[e]
 			},
 		With[{keys=Range[-Floor[d/2], Floor[d/2]]},
@@ -4570,7 +4828,8 @@ orbSymmDirectProductTerm[keys_, vals_]:=
 		If[Length@types>0,
 			If[Length[#]>0, Keys[#][[1]], Automatic]&@
 				Select[
-					CharacterTableDirectProduct[Replace[field,{ {f_,___}:>f, {}->"Oh"}],
+					CharacterTableDirectProduct[
+						Replace[field,{ {f_,___}:>f, {}->"Oh"}],
 						types
 						],
 					GreaterThan[0]
@@ -4809,10 +5068,10 @@ ElectronConfigurationGraphicsObjects[
 			],
 		{n, 
 			Join[
-				Range[Min@{orb["Count"], ord}],
+				Range[Min@{electronOrbElectronCount@orb, ord}],
 				Range[
 					-1,
-					ord-orb["Count"],
+					ord-electronOrbElectronCount@orb["Count"],
 					-1
 					]
 				]
@@ -4859,7 +5118,8 @@ ElectronConfigurationGraphics[
 			es=
 				OptionValue["EnergyScaling"],
 			enDegs,
-			orbCents
+			orbCents,
+			maxOrbDeg
 			},
 		enDegs=	
 			Map[
@@ -4867,6 +5127,8 @@ ElectronConfigurationGraphics[
 					{es*orbitalEnergy[#, ef], orbitalTypeDegOrbitalCount[#]}&,
 				e
 				];
+		maxOrbDeg=
+			Max@enDegs[[All, 2, 2]];
 		enDegs=
 			SortBy[#[[2, 1]]&]/@
 				Gather[enDegs,
@@ -4894,14 +5156,10 @@ ElectronConfigurationGraphics[
 											xSpacing;
 										xAdd=
 											Switch[orbs[[#2[[1]]]]["Type"],
-												"eg"|"e",
-													1/2,
-												"\[Sigma]",
-													2,
-												"\[Pi]",
-													1,
+												"s"|"p"|"d",
+													0,
 												_,
-													0
+													(maxOrbDeg-degs[[#2[[1]]]])/2
 												];
 										xSpacing+=
 											2*xAdd+degs[[#2[[1]]]];
@@ -4995,7 +5253,7 @@ ElectronConfigurationCrystalField[
 						"Count"->
 							If[fieldStrength==="Weak",
 								Max@{e["Count"]-6, 0},
-								Min@{e["Count"],   4}
+								Min@{electronOrbElectronCount@e["Count"],   4}
 								],
 						"FieldType"->fieldType,
 						"FieldStrength"->fieldStrength
@@ -5462,10 +5720,10 @@ DynamicModule[
 
 Options[TanabeSuganoSCCData]=
 	{
-		Scaled->3
+		Scaled->1
 		};
 TanabeSuganoSCCData[
-	dSpec_, sel_,dq_,
+	dSpec_, sel_, dq_,
 	ops:OptionsPattern[]
 	]:=
 	Module[
@@ -5477,7 +5735,7 @@ TanabeSuganoSCCData[
 			parabolaHeights,
 			parabolaCenters,
 			parabolaData,
-			scaling=Replace[OptionValue[Scaled], Except[_?NumericQ]->3]
+			scaling=Replace[OptionValue[Scaled], Except[_?NumericQ]->1]
 			},
 			parabolaParams=
 				First/@
@@ -5529,7 +5787,6 @@ TanabeSuganoSCCDiagram[
 					PlotLegends->Lookup[Select[AssociationQ]@Keys@parabolaData, "Formatted"],
 					AxesLabel->{"\!\(\*SubscriptBox[\(Q\), SubscriptBox[\(A\), \(1\[InvisibleSpace]g\)]]\)", "E"},
 					Ticks->{False, False},
-					PlotRange->{0,50},
 					AxesOrigin->{dq+Mean@qRange,0}
 					},
 				Options@Plot
@@ -5539,29 +5796,66 @@ TanabeSuganoSCCDiagram[
 
 
 (* ::Subsubsection::Closed:: *)
-(*TanabeSuganoSCCDiagramInteractive*)
+(*TanabeSuganoSCCMultiDiagram*)
 
+
+
+TanabeSuganoSCCMultiDiagram//Clear
 
 
 Options[TanabeSuganoSCCMultiDiagram]=
-	Options[TanabeSuganoSCCDiagram]
+	Join[
+		Options[TanabeSuganoSCCDiagram],
+		{
+			"TSStyle"->Automatic,
+			"SCCStyle"->Automatic
+			}
+		];
 TanabeSuganoSCCMultiDiagram[dSpec_, sel_, dqb_, ops:OptionsPattern[]]:=
-	Show[
-		TanabeSuganoDiagram[dSpec,sel, 1. dqb, 
-			FilterRules[{ops}, Options@TanabeSuganoDiagram]
-			],
-		First@TanabeSuganoSCCDiagram[3,sel,dqb,
-			{-50-dqb, 50-dqb},
-			FilterRules[{ops}, Options@TanabeSuganoSCCDiagram]
+	With[{r=MinMax@TanabeSuganoData[dSpec][[2]]},
+		Show[
+			TanabeSuganoDiagram[dSpec,sel, 1. dqb, 
+				FilterRules[
+					Flatten@{
+						Replace[OptionValue["TSStyle"],
+							{
+								Automatic|None->Nothing,
+								e_:>
+									(PlotStyle->e)
+								}
+							],
+						ops
+						}, 
+					Options@TanabeSuganoDiagram
+					]
+				],
+			First@TanabeSuganoSCCDiagram[dSpec,sel,dqb,
+				{r[[1]]-dqb, r[[2]]-dqb},
+				FilterRules[
+					Flatten@{
+						Replace[OptionValue["SCCStyle"],
+							{
+								Automatic|None->Nothing,
+								e_:>
+									(PlotStyle->e)
+								}
+							],
+						ops
+						},
+					Options@TanabeSuganoSCCDiagram
+					]
+				]
 			]
 		]
 
 
+Options[TanabeSuganoSCCDiagramInteractive]=
+	Options[TanabeSuganoSCCMultiDiagram]
 TanabeSuganoSCCDiagramInteractive[dSpec_, sel_, ops:OptionsPattern[]]:=
 	Manipulate[
 		Show[
 			TanabeSuganoDiagram[dSpec,sel,1. dqb],
-			TanabeSuganoSCCDiagram[3,sel,dqb,
+			TanabeSuganoSCCDiagram[dSpec,sel,dqb,
 				{-dqb, 50-dqb},
 				ops,
 				Scaled->s

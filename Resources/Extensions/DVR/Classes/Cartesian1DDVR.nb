@@ -101,7 +101,7 @@ This should take the grid generated in grid points function and turn it into \
 the kinetic energy matrix for the DVR\
 \>", "Text",ExpressionUUID->"d2659771-e943-4864-8191-db9d352e2346"],
 
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
   RowBox[{
    RowBox[{"Options", "[", "Cartesian1DDVRKineticMatrix", "]"}], "=", "\n", 
@@ -109,12 +109,7 @@ Cell[BoxData[
    RowBox[{"{", 
     RowBox[{
      RowBox[{"\"\<M\>\"", "->", "1"}], ",", 
-     RowBox[{"\"\<\[HBar]\>\"", "->", "1"}]}], "}"}]}], ";"}]], "CodeInput",
- CellChangeTimes->{{3.7189844853755617`*^9, 
-  3.7189844912631063`*^9}},ExpressionUUID->"fe5264fe-f177-458d-9031-\
-007a765679e2"],
-
-Cell[BoxData[
+     RowBox[{"\"\<HBar\>\"", "->", "1"}]}], "}"}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{"Cartesian1DDVRKineticMatrix", "[", 
    RowBox[{"grid_", ",", 
@@ -140,28 +135,29 @@ Cell[BoxData[
         RowBox[{"m", "=", 
          RowBox[{"OptionValue", "@", "\"\<M\>\""}]}], ",", 
         RowBox[{"\[HBar]", "=", 
-         RowBox[{"OptionValue", "@", "\"\<\[HBar]\>\""}]}]}], "}"}], ",", 
-      "\n", "\t\t\t", 
-      RowBox[{"With", "[", 
+         RowBox[{"OptionValue", "@", "\"\<HBar\>\""}]}]}], "}"}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"With", "[", "\n", "\t\t\t\t", 
        RowBox[{
-        RowBox[{"{", 
-         RowBox[{"f", "=", 
+        RowBox[{"{", "\n", "\t\t\t\t\t", 
+         RowBox[{"f", "=", "\n", "\t\t\t\t\t\t", 
           RowBox[{
            RowBox[{
-            RowBox[{"(", "1.", ")"}], "*", 
+            RowBox[{"(", "1.", ")"}], "*", "\n", "\t\t\t\t\t\t\t", 
             RowBox[{"If", "[", 
              RowBox[{
-              RowBox[{"#", "\[Equal]", "#2"}], ",", 
+              RowBox[{"#", "\[Equal]", "#2"}], ",", " ", 
               RowBox[{
-               RowBox[{"\[Pi]", "^", "2"}], "/", "3"}], ",", 
+               RowBox[{"\[Pi]", "^", "2"}], "/", "3"}], ",", " ", 
               RowBox[{"2", "/", 
                RowBox[{
                 RowBox[{"(", 
                  RowBox[{"#", "-", "#2"}], ")"}], "^", "2"}]}]}], "]"}], "*", 
-            
+            "\n", "\t\t\t\t\t\t\t", 
             RowBox[{
              RowBox[{"(", 
-              RowBox[{"\[HBar]", " ", 
+              RowBox[{
+               RowBox[{"\[HBar]", "^", "2"}], 
                RowBox[{
                 RowBox[{"(", 
                  RowBox[{"-", "1"}], ")"}], "^", 
@@ -169,8 +165,8 @@ Cell[BoxData[
                  RowBox[{"#", "-", "#2"}], ")"}]}]}], ")"}], "/", 
              RowBox[{"(", 
               RowBox[{"2", "m", " ", 
-               RowBox[{"dx", "^", "2"}]}], ")"}]}]}], "&"}]}], "}"}], ",", 
-        "\n", "\t\t\t\t", 
+               RowBox[{"dx", "^", "2"}]}], ")"}]}]}], "&"}]}], "\n", 
+         "\t\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t", 
         RowBox[{"If", "[", 
          RowBox[{
           RowBox[{"points", ">", "100000"}], ",", "\n", "\t\t\t\t\t", 
@@ -192,12 +188,10 @@ Cell[BoxData[
             RowBox[{"{", 
              RowBox[{"j", ",", "points"}], "}"}]}], "]"}]}], "\n", 
          "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", 
-     "]"}]}], "\n", "\t\t", "]"}]}]], "CodeInput",
- CellChangeTimes->{{3.699200204109901*^9, 3.6992002446128483`*^9}, {
-  3.699201703464225*^9, 3.699201842336369*^9}, {3.718984489178988*^9, 
-  3.7189844900394487`*^9}, {3.718985143500957*^9, 
-  3.718985150355731*^9}},ExpressionUUID->"83694f47-d13a-4c3e-99f9-\
-61a940272020"]
+     "]"}]}], "\n", "\t\t", "]"}]}]}], "CodeInput",
+ CellChangeTimes->{{3.7189844853755617`*^9, 3.7189844912631063`*^9}, {
+  3.7244491081828423`*^9, 
+  3.72444911751787*^9}},ExpressionUUID->"fe5264fe-f177-458d-9031-007a765679e2"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -768,7 +762,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"175b9d87-ebdf-4990-abf4-\
 f2e40fb52d02"]
 },
 WindowSize->{713, 755},
-WindowMargins->{{91, Automatic}, {3, Automatic}},
+WindowMargins->{{28, Automatic}, {Automatic, 50}},
 FrontEndVersion->"11.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
 10, 2017)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

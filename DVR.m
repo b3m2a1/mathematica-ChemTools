@@ -6,4 +6,4 @@ BeginPackage[
   ];
 EndPackage[]
 
-FrontEnd`Private`GetUpdatedSymbolContexts[]
+(*FrontEnd`Private`GetUpdatedSymbolContexts[]*)

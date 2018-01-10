@@ -24,8 +24,11 @@ $ChemExtensions::usage=
 
 
 PackageScopeBlock[
+	ChemExtensionFile::usage="Picks a file matching a pattern";
 	ChemExtensionDir::usage="Directory for an extension";
 	ChemExtensionBin::usage="Binary executable for an extension";
+	$ChemExtensionsApp::usage="";
+	$ChemExtensionsDev::usage="";
 	]
 
 
@@ -60,13 +63,15 @@ $ChemExtensionsDev=
 $ChemExtensionsApp=
 	With[{baseD=
 		Replace[
-			$InputFileName,{
-				"":>NotebookDirectory[],
-				e_:>DirectoryName@e
-				}]
+			$InputFileName,
+			{
+				"":>ParentDirectory@NotebookDirectory[],
+				e_:>$PackageDirectory
+				}
+			]
 		},
-		If[DirectoryQ@FileNameJoin@{ParentDirectory@baseD, "Resources", "Extensions"},
-			FileNameJoin@{ParentDirectory@baseD, "Resources", "Extensions"},
+		If[DirectoryQ@FileNameJoin@{baseD, "Resources", "Extensions"},
+			FileNameJoin@{baseD, "Resources", "Extensions"},
 			baseD
 			]
 		];
@@ -88,6 +93,19 @@ ChemExtensionDir[thing_]:=
 			$ChemExtensionsApp
 			},
 			DirectoryQ@FileNameJoin@{#,thing}&,
+			$ChemExtensions
+			],
+		thing
+		};
+ChemExtensionFile[thing_]:=
+	FileNameJoin@{
+		SelectFirst[{
+			"/usr/local/bin",
+			"/usr/bin",
+			$ChemExtensionsDev,
+			$ChemExtensionsApp
+			},
+			FileExistsQ@FileNameJoin@{#,thing}&,
 			$ChemExtensions
 			],
 		thing

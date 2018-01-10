@@ -144,76 +144,20 @@ harmonicCombination[k:_Real|_Complex:1,harmonics__List]:=
 
 angularWavefunction[l_,m_]:=
 	Evaluate@
-		Switch[{l,m},
-			{0, 0},
-				sphericalHarmonic[{0, 0}][#, #2],
-			{1, -1},
-				1/Sqrt[2]*(
-					sphericalHarmonic[{1, 1}][#, #2] -
-						sphericalHarmonic[{1, -1}][#, #2]
+		Which[
+			m==0,
+				sphericalHarmonic[{l, 0}][#, #2],
+			m>0,
+				1/Sqrt[2](
+					sphericalHarmonic[{l, m}][#, #2]+
+						(-1)^m sphericalHarmonic[{l, -m}][#, #2]
 					),
-			{1, 0},
-				sphericalHarmonic[{1, 0}][#, #2],
-			{1, 1},
-				1/Sqrt[2]*(
-					sphericalHarmonic[{1, -1}][#, #2] +
-						sphericalHarmonic[{1, 1}][#, #2]
-						),
-			{2, -2},
-				1/Sqrt[2]*I*(
-					sphericalHarmonic[{2, -2}][#, #2] -
-						sphericalHarmonic[{2, 2}][#, #2]
-						),
-			{2, -1},
-			1/Sqrt[2]*	(
-					sphericalHarmonic[{2, -1}][#, #2] -
-						sphericalHarmonic[{2, 1}][#, #2]
-						),
-			{2, 0},
-				sphericalHarmonic[{2, 0}][#, #2],
-			{2, 1},
-			1/Sqrt[2]*	I(
-					sphericalHarmonic[{2, -1}][#, #2] +
-						sphericalHarmonic[{2, 1}][#, #2]
-						),
-			{2, 2},
-				1/Sqrt[2]*(
-					sphericalHarmonic[{2, -2}][#, #2] +
-						sphericalHarmonic[{2, 2}][#, #2]
-						),
-			{3, -3},
-				1/Sqrt[2]*I*(
-					sphericalHarmonic[{3, -3}][#, #2] -
-						sphericalHarmonic[{3, 3}][#, #2]
-						),
-			{3, -2},
-			1/Sqrt[2]*(
-					sphericalHarmonic[{3, -2}][#, #2] -
-						sphericalHarmonic[{3, 2}][#, #2]
-						),
-			{3, -1},
-			1/Sqrt[2]*(
-					sphericalHarmonic[{3, -1}][#, #2] -
-						sphericalHarmonic[{3, 1}][#, #2]
-						),
-			{3, 0},
-				sphericalHarmonic[{3, 0}][#, #2],
-			{3, 1},
-			1/Sqrt[2]*	I(
-					sphericalHarmonic[{3, -1}][#, #2] +
-						sphericalHarmonic[{3, 1}][#, #2]
-						),
-			{3, 2},
-				1/Sqrt[2]*(
-					sphericalHarmonic[{3, -2}][#, #2] +
-						sphericalHarmonic[{3, 2}][#, #2]
-						),
-			{3, 3},
-				1/Sqrt[2]*(
-					sphericalHarmonic[{3, -3}][#, #2] +
-						sphericalHarmonic[{3, 3}][#, #2]
-						),
-			_,
+			m<0,
+				-I/Sqrt[2](
+					sphericalHarmonic[{l, -m}][#, #2]-
+						(-1)^m sphericalHarmonic[{l, m}][#, #2]
+					),
+			True,
 				sphericalHarmonic[{l, m}][#, #2]
 			]&
 
@@ -288,7 +232,15 @@ ChemHAngularWavefunctionPlot//Clear
 
 
 Options[ChemHAngularWavefunctionPlot]=
-	Options[SphericalPlot3D];
+	Join[
+		{
+			ColorFunctionScaling->Automatic
+			},
+		Options[ParametricPlot3D],
+		{
+			"PlotSquare"->True
+			}
+		];
 ChemHAngularWavefunctionPlot[
 	qns:{m_Integer|_String,l_},
 	r:_?NumericQ:1,
@@ -296,56 +248,51 @@ ChemHAngularWavefunctionPlot[
 	ops:OptionsPattern[]
 	]:=
 	With[{qn=ChemHQuantumNumbers[m,l]},
-		ParametricPlot3D[
-			With[{wfn=ChemHAngularWavefunction[Sequence@@qn][\[Theta], \[Phi]]^2},
-				center+r*wfn*{
+		With[{wfn=ChemHAngularWavefunction[Sequence@@qn]},
+			ParametricPlot3D[
+				center+r*Power[wfn[\[Theta], \[Phi]], If[OptionValue["PlotSquare"]//TrueQ, 2, 1]]*{
 					Sin[\[Theta]]*Cos[\[Phi]],
 					Sin[\[Theta]]*Sin[\[Phi]],
 					Cos[\[Theta]]
-					}
-				]//Evaluate,
-			{\[Theta], 0, \[Pi]},
-			{\[Phi], 0, 2\[Pi]},
-			ColorFunction->
-				Replace[OptionValue[ColorFunction],
-					Automatic:>
-						With[{
-							baseCols=
-								Replace[OptionValue[PlotStyle],{
-									c:(_?ColorQ|_Directive|_Opacity)|{(_?ColorQ|_Directive|_Opacity)..}:>
-										Flatten@ConstantArray[c, 2],
-									_->{Red, Blue}
-									}]
-							},
-							Switch[qn,
-								{1, -1},
-									If[#>.5, baseCols[[1]], baseCols[[2]]]&,
-								{1, 0},
-									If[#3>.5, baseCols[[1]], baseCols[[2]]]&,
-								{1, 1},
-									If[#2>.5, baseCols[[1]], baseCols[[2]]]&,
-								{2, -2},
-									If[.5<#&&.5<#2||.5>#&&.5>#2, baseCols[[1]], baseCols[[2]]]&,
-								{2, -1},
-									If[.5<#&&.5<#3||.5>#&&.5>#3, baseCols[[1]], baseCols[[2]]]&,
-								{2, 0},
-									If[!(.25<#4<.75), baseCols[[1]], baseCols[[2]]]&,
-								{2, 1},
-									If[(.5<#5&&.5<#4||.5>#5&&.5>#4), baseCols[[1]], baseCols[[2]]]&,
-								{2, 2},
-									If[.125<=#5&&.325>=#5||.625<=#5&&.825>=#5, 
-										baseCols[[1]], baseCols[[2]]]&,
-								_,
-									Automatic
+					}//Evaluate,
+				{\[Theta], 0, \[Pi]},
+				{\[Phi], 0, 2\[Pi]},
+				ColorFunction->
+					Replace[OptionValue[ColorFunction],
+						Automatic:>
+							With[
+								{
+									baseCols=
+										Replace[OptionValue[PlotStyle],{
+											c:(_?ColorQ|_Directive|_Opacity)|
+													{(_?ColorQ|_Directive|_Opacity)..}:>
+												Flatten@ConstantArray[c, 2],
+											_->{Red, Blue}
+											}]
+									},
+								Function@
+									If[r*wfn[#4, #5]>0,
+										baseCols[[1]], 
+										baseCols[[2]]
+										]
 								]
-							]
-					],
-			PlotStyle->
-				Replace[OptionValue[PlotStyle],
-					Automatic->Red
-					],
-			ops,
-			PlotRange->All
+						],
+				ColorFunctionScaling->
+					Replace[
+						OptionValue[ColorFunctionScaling],
+						Except[True]:>
+							Replace[OptionValue[ColorFunction],
+								Automatic->False
+								]
+						],
+				PlotStyle->
+					Replace[OptionValue[PlotStyle],
+						Automatic->Red
+						],
+				Sequence@@
+					FilterRules[{ops}, Options@ParametricPlot3D]//Evaluate,
+				PlotRange->All
+				]
 			]
 		];
 ChemHAngularWavefunctionPlot[
@@ -373,12 +320,23 @@ ChemHAngularWavefunctionPlot[
 		states
 		];
 ChemHAngularWavefunctionPlot[
-	type:"s"|"p"|"d",
+	type:_Integer|"s"|"p"|"d"|_String?(StringMatchQ[LetterCharacter?LowerCaseQ]),
 	r:_?NumericQ:1,
 	center:{_?NumericQ,_,_}:{0,0,0},
 	ops:OptionsPattern[]
 	]:=
-	With[{l=Switch[type, "s", 0, "p", 1, "d", 2]},
+	With[
+		{
+			l=
+				Switch[type, 
+					_Integer,
+						type,
+					"s", 0, "p", 1, "d", 2, "f", 3,
+					_String,
+						LetterNumber[type]-
+							LetterNumber["f"]
+					]
+			},
 		ChemHAngularWavefunctionPlot[
 			Table[
 				{l, ml},
@@ -388,7 +346,7 @@ ChemHAngularWavefunctionPlot[
 			center,
 			ops
 			]
-		]
+		];
 
 
 (* ::Subsubsection::Closed:: *)

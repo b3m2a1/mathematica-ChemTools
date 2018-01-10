@@ -88,11 +88,11 @@ Cartesian2DDVRKineticMatrix[grid_, ops:OptionsPattern[]]:=
 					ix=1+Floor[(i-1)/(ptsY)], jx=1+Floor[(j-1)/(ptsY)],
 					iy=Mod[i, ptsY, 1], jy=Mod[j, ptsY, 1]
 					},
-				If[iy==jy,
+				If[iy!=jy,
 						0,
 						cartDVR1[[ix, jx]]
 						]+
-				If[ix==jx,
+				If[ix!=jx,
 						0,
 						cartDVR2[[iy, jy]]
 						]

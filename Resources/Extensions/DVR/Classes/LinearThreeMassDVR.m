@@ -43,7 +43,7 @@ LinearThreeMass2DDVRKineticMatrix[grid_,
 		"m1"->1,
 		"m2"->1,
 		"m3"->1,
-		"\[HBar]"->1
+		"HBar"->1
 		}
 	]:=
 	Module[
@@ -87,11 +87,11 @@ LinearThreeMass2DDVRKineticMatrix[grid_,
 					ix=1+Floor[(i-1)/(ptsY)], jx=1+Floor[(j-1)/(ptsY)],
 					iy=Mod[i, ptsY, 1], jy=Mod[j, ptsY, 1]
 					},
-				If[iy==jy,
+				If[iy!=jy,
 						0,
 						cartDVR1[[ix, jx]]
 						]+
-				If[ix==jx,
+				If[ix!=jx,
 						0,
 						cartDVR2[[iy, jy]]
 						]
