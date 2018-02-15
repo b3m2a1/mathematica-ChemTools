@@ -1,0 +1,183 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      5914,        175]
+NotebookOptionsPosition[      4121,        137]
+NotebookOutlinePosition[      4481,        153]
+CellTagsIndexPosition[      4438,        150]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["$Name$", "Section",
+ CellChangeTimes->{{3.725751243008831*^9, 
+  3.725751272385955*^9}},ExpressionUUID->"19e90e08-f9db-4d00-be4d-\
+51d839f8646f"],
+
+Cell[CellGroupData[{
+
+Cell["Load", "Subsubsection",ExpressionUUID->"d19171b6-eabe-4a41-acc6-7fea415d0e0b"],
+
+Cell[TextData[{
+ "The ",
+ ButtonBox["ChemDVRObject",
+  BaseStyle->"Link",
+  ButtonData->"paclet:ChemTools/ref/ChemDVRObject"],
+ " has been saved (using ",
+ ButtonBox["ChemDVRSave",
+  BaseStyle->"Link",
+  ButtonData->"paclet:ChemTools/ref/ChemDVRSave"],
+ ") so now you can simply reload the instance like this:"
+}], "Text",
+ CellChangeTimes->{{3.72575138879088*^9, 
+  3.725751421377014*^9}},ExpressionUUID->"3ad68f39-6ca6-4b1d-a1de-\
+331dfb6734c1"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Needs", "[", "\"\<ChemTools`\>\"", "]"}], ";"}]], "Input",Expressio\
+nUUID->"7cc59a9a-ff49-4c86-a211-04d8c2bf7a16"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$obj", "=", "$Object$"}], ";"}]], "Input",
+ CellChangeTimes->{{3.7257512638638487`*^9, 
+  3.7257512823941708`*^9}},ExpressionUUID->"a6989d2c-766e-4e35-8659-\
+4d041d3096d7"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Settings", "Subsubsection",ExpressionUUID->"baec078d-184e-4e63-8cd7-28a228081409"],
+
+Cell[TextData[{
+ "Load/Save settings can be configured using the ",
+ ButtonBox["$ChemDVRManager",
+  BaseStyle->"Link",
+  ButtonData->"paclet:ChemTools/ref/$ChemDVRManager"],
+ " as such:"
+}], "Text",
+ CellChangeTimes->{{3.725751397468605*^9, 
+  3.725751407665937*^9}},ExpressionUUID->"9b44a857-4771-413e-a536-\
+ec7209a0739e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$ChemDVRManager", "[", 
+   RowBox[{"\"\<Settings\>\"", ",", "\"\<LoadWavefunctions\>\""}], "]"}], "=",
+   "True", ";"}]], "Input",ExpressionUUID->"45842e0b-faa2-48eb-9a9e-\
+0f4d2ed877f9"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Separate Kernels", "Subsubsection",ExpressionUUID->"b97387d7-95fb-4671-a8ce-a3ce2f6c53d8"],
+
+Cell[TextData[{
+ "Long runs should be done in a separate kernel. Information on setting up \
+separate kernels can be found ",
+ Cell[BoxData[
+  TemplateBox[{
+   "\"here\"","paclet:guide/WolframSystemSetup",
+    "paclet:guide/WolframSystemSetup","Link",{"HyperlinkActive"},
+    BaseStyle -> {"Text"}},
+   "HyperlinkTemplate"]],ExpressionUUID->
+  "ed424202-f0bc-4591-a473-42aa2382bd31"],
+ " under the section under ",
+ ButtonBox["Remote Kernels",
+  BaseStyle->"Link",
+  ButtonData->"paclet:guide/WolframSystemSetup#229161832"]
+}], "Text",
+ CellChangeTimes->{{3.7257514796446733`*^9, 
+  3.725751479649659*^9}},ExpressionUUID->"57c46df4-26d3-4a3a-9278-\
+bb8fe2654458"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Run", "Subsubsection",ExpressionUUID->"26f49b60-dba0-4379-a8c0-5835367db982"],
+
+Cell[TextData[{
+ "The most basic run form using the ",
+ ButtonBox["ChemDVRRun",
+  BaseStyle->"Link",
+  ButtonData->"paclet:ChemTools/ref/ChemDVRRun"],
+ " function:"
+}], "Text",
+ CellChangeTimes->{{3.725751365363455*^9, 
+  3.725751365368469*^9}},ExpressionUUID->"a36511d5-2285-4a1a-a98b-\
+50d42f99634a"],
+
+Cell[BoxData[
+ RowBox[{"ChemDVRRun", "[", "$obj", "]"}]], "Input",ExpressionUUID->"c6caac0d-8687-41bf-97a3-e1021171b43f"],
+
+Cell["\<\
+A long run should only return and save the wavefunctions and shouldn't have \
+the monitor turned on\
+\>", "Text",ExpressionUUID->"4f045e06-0c0e-4424-b9f4-1d76d377b7bb"],
+
+Cell[BoxData[
+ RowBox[{"ChemDVRRun", "[", "$obj", ",", 
+  RowBox[{"Return", "\[Rule]", "\"\<Wavefunctions\>\""}], ",", 
+  RowBox[{"Monitor", "->", "False"}], "]"}]], "Input",ExpressionUUID->\
+"8e0532e1-250f-462e-ad74-340d91bb4da5"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{808, 755},
+WindowMargins->{{195, Automatic}, {Automatic, 10}},
+FrontEndVersion->"11.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
+10, 2017)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 151, 3, 67, "Section",ExpressionUUID->"19e90e08-f9db-4d00-be4d-51d839f8646f"],
+Cell[CellGroupData[{
+Cell[756, 29, 84, 0, 45, "Subsubsection",ExpressionUUID->"d19171b6-eabe-4a41-acc6-7fea415d0e0b"],
+Cell[843, 31, 447, 13, 58, "Text",ExpressionUUID->"3ad68f39-6ca6-4b1d-a1de-331dfb6734c1"],
+Cell[1293, 46, 150, 3, 30, "Input",ExpressionUUID->"7cc59a9a-ff49-4c86-a211-04d8c2bf7a16"],
+Cell[1446, 51, 207, 5, 30, "Input",ExpressionUUID->"a6989d2c-766e-4e35-8659-4d041d3096d7"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1690, 61, 88, 0, 45, "Subsubsection",ExpressionUUID->"baec078d-184e-4e63-8cd7-28a228081409"],
+Cell[1781, 63, 324, 9, 35, "Text",ExpressionUUID->"9b44a857-4771-413e-a536-ec7209a0739e"],
+Cell[2108, 74, 222, 5, 30, "Input",ExpressionUUID->"45842e0b-faa2-48eb-9a9e-0f4d2ed877f9"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2367, 84, 96, 0, 45, "Subsubsection",ExpressionUUID->"b97387d7-95fb-4671-a8ce-a3ce2f6c53d8"],
+Cell[2466, 86, 663, 17, 60, "Text",ExpressionUUID->"57c46df4-26d3-4a3a-9278-bb8fe2654458"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3166, 108, 83, 0, 45, "Subsubsection",ExpressionUUID->"26f49b60-dba0-4379-a8c0-5835367db982"],
+Cell[3252, 110, 302, 9, 35, "Text",ExpressionUUID->"a36511d5-2285-4a1a-a98b-50d42f99634a"],
+Cell[3557, 121, 121, 1, 30, "Input",ExpressionUUID->"c6caac0d-8687-41bf-97a3-e1021171b43f"],
+Cell[3681, 124, 178, 3, 35, "Text",ExpressionUUID->"4f045e06-0c0e-4424-b9f4-1d76d377b7bb"],
+Cell[3862, 129, 231, 4, 30, "Input",ExpressionUUID->"8e0532e1-250f-462e-ad74-340d91bb4da5"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

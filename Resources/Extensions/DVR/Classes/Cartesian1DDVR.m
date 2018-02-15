@@ -39,16 +39,39 @@ Cartesian1DDVRPoints[points:{_Integer},
 
 
 Options[Cartesian1DDVRKineticMatrix]=
-	{"M"->1,"HBar"->1};
+	{
+		"Mass"->1,
+		"HBar"->1,
+		"ScalingFactor"->1,
+		"UseExact"->False
+		};
 Cartesian1DDVRKineticMatrix[grid_,OptionsPattern[]]:=
 	With[{xmin=Min@grid,xmax=Max@grid,points=Length@grid},
-		With[{dx=(xmax-xmin)/points,m=OptionValue@"M",\[HBar]=OptionValue@"HBar"},
+		With[
+			{
+				dx=(xmax-xmin)/(points-1),
+				m=OptionValue@"Mass",
+				\[HBar]=OptionValue@"HBar",
+				scl=OptionValue@"ScalingFactor",
+				ex=TrueQ@OptionValue@"UseExact"
+				},
 			With[
 				{
 					f=
-						(1.)*
-							If[#==#2, \[Pi]^2/3, 2/(#-#2)^2]*
-							(\[HBar]^2(-1)^(#-#2))/(2m dx^2)&
+						If[ex,
+							scl*
+								If[#==#2, 
+									\[Pi]^2/3, 
+									2/(#-#2)^2
+									]*
+									(\[HBar]^2(-1)^(#-#2))/(2m dx^2)&,
+							scl*
+								If[#==#2, 
+									\[Pi]^2./3.,
+									2./(#-#2)^2
+									]*
+									(\[HBar]^2.(-1)^(#-#2))/(2.m dx^2)&
+							]
 					},
 				If[points>100000,
 					ParallelTable[f[i,j],{i,points},{j,points}],

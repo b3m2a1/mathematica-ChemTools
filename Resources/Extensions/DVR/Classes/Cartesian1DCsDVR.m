@@ -58,48 +58,46 @@ Cartesian1DCsDVRPoints[
 
 Options[Cartesian1DCsDVRKineticMatrix]=
 	{
-		"M"->1,
-		"\[HBar]"->1
+		"Mass"->1,
+		"HBar"->1,
+		"ScalingFactor"->1,
+		"UseExact"->False
 		};
 
 
 Cartesian1DCsDVRKineticMatrix[grid_,ops:OptionsPattern[]]:=
-	With[{xmin=Min@grid,xmax=Max@grid,points=Length@grid},
-		With[{dx=(xmax-xmin)/points,m=OptionValue@"M",\[HBar]=OptionValue@"\[HBar]"},
-			With[{
-				f1=
-					Compile[
-						{{i, _Integer}, {j, _Integer}, {p, _Integer}},
-						1./Sqrt[2]*(\[HBar] (-1)^(i-j))/(2.m dx^2)*
-							(
-								If[i==j,
-									\[Pi]^2/3.,
-									2/(i-j)^2
-									]+2./( i + j - ( 2*p +1 ))^2
-								)
-						],
-				f2=
-					Compile[
-						{{i, _Integer}, {j, _Integer}, {p, _Integer}},
-						1./Sqrt[2]*(\[HBar] (-1)^(i-j))/(2m dx^2)*
-							(
-								If[i==j,
-									\[Pi]^2/3.,
-									2./(i-j)^2
-									]-2./( i + j - ( 2*p +1 ))^2
-								)
-						],
-				head=
-					If[points>100000, ParallelTable, Table]
-				},
+	With[{
+			xmin=Min@grid,
+			xmax=Max@grid,
+			points=Length@grid,
+			m=OptionValue@"Mass",
+			\[HBar]=OptionValue@"HBar",
+			scl=OptionValue@"ScalingFactor",
+			ex=TrueQ@OptionValue@"UseExact"
+			},
+		With[{dx=(xmax-xmin)/points},
 				{
-					head[
-						f1[i, j, points],
+					If[points>100000, ParallelTable, Table][
+						If[ex, 1, 1.]*scl*
+							1/Sqrt[2]*(\[HBar] (-1)^(i-j))/(2m dx^2)*
+								(
+									If[i==j,
+										\[Pi]^2/3,
+										2/(i-j)^2
+										]+2/( i + j - ( 2*points +1 ))^2
+									),
 						{i, points},
 						{j, points}
 						],
-					head[
-						f2[i, j, points],
+					If[points>100000, ParallelTable, Table][
+						If[ex, 1, 1.]scl*
+							1/Sqrt[2]*(\[HBar] (-1)^(i-j))/(2m dx^2)*
+							(
+								If[i==j,
+									\[Pi]^2/3,
+									2/(i-j)^2
+									]-2/( i + j - ( 2*points +1 ))^2
+								),
 						{i, points, 1, -1},
 						{j, points, 1, -1}
 						]

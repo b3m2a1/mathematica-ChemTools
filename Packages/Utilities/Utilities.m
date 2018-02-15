@@ -998,11 +998,12 @@ ChemUtilsAxisAlignmentTransform[
 		rotation1=
 			Replace[a,
 				(ax1_->ax2_):>
-					Replace[{ax1,ax2},{
-						"X"->{1,0,0},
-						"Y"->{0,1,0},
-						"Z"->{0,0,1}
-						},
+					Replace[{ax1,ax2},
+						{
+							"X"->{1,0,0},
+							"Y"->{0,1,0},
+							"Z"->{0,0,1}
+							},
 						1]
 				],
 		center=
@@ -1012,57 +1013,74 @@ ChemUtilsAxisAlignmentTransform[
 					"Y"->{0,1,0},
 					"Z"->{0,0,1}
 					}
+				],
+		rotation2=
+			Replace[b,
+				(ax1_->ax2_):>
+					Replace[{ax1,ax2},
+						{
+							"X"->{1,0,0},
+							"Y"->{0,1,0},
+							"Z"->{0,0,1}
+							},
+						1]
 				]
 		},
-		Replace[b,{
-			(ax1_->ax2_):>
-				With[{
-					t1=
-						If[MatchQ[rotation1,{_List,_List}],
-							If[MatrixRank@rotation1==2,
-								RotationTransform[rotation1,center],
-								Identity
-								],
-							Identity
-							]
-					},
-					With[{
-						t2=
-							RotationTransform[
-								{t1@First@#,Last@#}&@
-									Replace[{ax1,ax2},
-										{
-											"X"->{1,0,0},
-											"Y"->{0,1,0},
-											"Z"->{0,0,1}
-											},
-										1],
-								center
+		Replace[b,
+		{	
+				(ax1_->ax2_):>
+					With[
+						{
+							t1=
+								If[MatchQ[rotation1,{_List,_List}],
+									If[MatrixRank@rotation1==2,
+										RotationTransform[rotation1,center],
+										Identity
+										],
+									Identity
+									]
+							},
+						With[{
+							t2=
+								With[{r2=t1@rotation2[[1]]},
+									RotationTransform[
+										VectorAngle[
+											r2-
+												Projection[
+													r2,
+													rotation1[[2]]
+													],
+											rotation2[[2]]
+											],
+										rotation1[[2]],
+										center
+										]
+									]
+							},
+							If[t1===Identity,
+								t2,
+								Simplify@Composition[t2,t1]
 								]
-						},
-						If[t1===Identity,
-							t2,
-							Simplify@Composition[t2,t1]
 							]
+						],
+				_->(* just need to set up a single rotation *)
+					Replace[rotation1,
+						{u_,v_}:>
+							Which[
+								MatrixRank@{u,v}==2,
+									RotationTransform[{u,v},center],
+								u==-v,
+									(*
+								Need a better way to handle this. 
+								Should maybe be some form of inversion? 
+								*)
+									RotationTransform[{u,v},center],
+								True,
+									None
+								]
 						]
-					],
-			_->
-				Replace[rotation1,
-					{u_,v_}:>
-						Which[
-							MatrixRank@{u,v}==2,
-								RotationTransform[{u,v},center],
-							u==-v,
-								(*
-							Need a better way to handle this. 
-							Should maybe be some form of inversion? 
-							*)
-								RotationTransform[{u,v},center],
-							True,
-								None
-							]
-					]
-			}]
+				}
+			]
 	]
 
 

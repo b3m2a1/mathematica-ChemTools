@@ -48,37 +48,74 @@ Cartesian2DDVRPoints[
 
 
 Options[Cartesian2DDVRKineticMatrix]=
-	{
-		"m1"->1,
-		"m2"->1,
-		"\[HBar]"->1
-		};
+	Join[
+		FilterRules[
+			Options[Cartesian1DDVRKineticMatrix],
+			Except@"Mass"
+			],
+		{
+			"Mass1"->1,
+			"Mass2"->1
+			}
+		];
 Cartesian2DDVRKineticMatrix[grid_, ops:OptionsPattern[]]:=
 	Module[
 		{
 			cartDVR1=
 				Cartesian1DDVRKineticMatrix[
 					grid[[All, 1, 1]], 
-					FilterRules[{
-						"M"->OptionValue["m1"],
-						ops
-						},
+					FilterRules[
+						{
+							"Mass"->
+								OptionValue["Mass1"],
+							ops
+							},
 						Options[Cartesian1DDVRKineticMatrix]
 						]
 					],
 			cartDVR2=
 				Cartesian1DDVRKineticMatrix[
 					grid[[1, All, 2]],
-					FilterRules[{
-						"M"->OptionValue["m2"],
-						ops
-						},
+					FilterRules[
+						{
+							"Mass"->
+								OptionValue["Mass2"],
+							ops
+							},
 						Options[Cartesian1DDVRKineticMatrix]
 						]
 					],
 			ptsX=Length@grid,
-			ptsY=Length@grid[[1]]
+			ptsY=Length@grid[[1]],
+			k1SparseRules,
+			k2SparseRules
 			},
+			Echo@"wut";
+			k1SparseRules=
+				Flatten[
+					Table[
+						Band[{(i-1)*ptsY+1, (j-1)*ptsY+1},{i*ptsY, j*ptsY}]->
+						cartDVR1[[i, j]],
+						{i, ptsX},
+						{j, ptsX}
+						],
+					1
+					];
+			k2SparseRules=
+				{
+					Band[{1, 1}]->
+						ConstantArray[cartDVR2, ptsX]
+					};
+			With[{k3=SparseArray[k2SparseRules]},
+				SparseArray[k1SparseRules, Dimensions[k3]]+k3
+				]
+		]
+
+
+	(*
+	This was my old n^4 implementation. Much, much worse.
+	*)
+	(*Developer`ToPackedArray@
 		If[(ptsX*ptsY)>100000,
 			ParallelTable,
 			Table
@@ -89,30 +126,29 @@ Cartesian2DDVRKineticMatrix[grid_, ops:OptionsPattern[]]:=
 					iy=Mod[i, ptsY, 1], jy=Mod[j, ptsY, 1]
 					},
 				If[iy!=jy,
-						0,
+						0.,
 						cartDVR1[[ix, jx]]
 						]+
 				If[ix!=jx,
-						0,
+						0.,
 						cartDVR2[[iy, jy]]
 						]
 				],
 			{i, ptsX*ptsY},
 			{j, ptsX*ptsY}
-			]
-		]
+			]*)
 
 
 Options[Cartesian2DDVRPotentialMatrix]={Function->(Norm[(#/2)^2]&)};
 Cartesian2DDVRPotentialMatrix[grid_,ops:OptionsPattern[]]:=
 	With[{func=OptionValue@Function},
 		With[{A=func/@Flatten[grid,1]},
-			DiagonalMatrix@A
+			SparseArray[Band[{1,1}->A]]
 			]
 		]
 
 
-Options[Cartesian2DDVRPlotFunction]=
+Options[Cartesian2DDVRListPlot]=
 	DeleteDuplicatesBy[First]@
 	Flatten@{
 		"WavefunctionSelection"->Automatic,
@@ -126,12 +162,14 @@ Options[Cartesian2DDVRPlotFunction]=
 		"CutOff"->Automatic,
 		Manipulate->True,
 		PlotRange->Automatic,
+		"PlotList"->
+			Automatic,
 		"SquareWavefunction"->False,
 		FilterRules[Options[ListPlot3D],
 			Except[AxesOrigin|PlotRange|LabelingFunction]
 			]
 		};
-Cartesian2DDVRPlotFunction[
+Cartesian2DDVRListPlot[
 	solutions_,
 	grid2D_,
 	potentialMatrix_,
@@ -253,32 +291,49 @@ Cartesian2DDVRPlotFunction[
 					wp=wavePlot,N=num,
 					lF=With[{f=lf[#1,#2]},f&],
 					potPlot=potentialPlot,L=\[CapitalLambda],
-					\[Lambda]P=\[Lambda]Plot
+					\[Lambda]P=\[Lambda]Plot, pl=TrueQ@OptionValue@"PlotList"
 					},
 					Manipulate[
-						Show[
-							wp[N[[i]],lF],
-							{
-								potPlot,
-								If[OptionValue["ShowEnergy"]//TrueQ,\[Lambda]P[{i}],Sequence@@{}]
-								},
-							FilterRules[{ops}, Options[Graphics3D]]
+						If[!pl||pl (* just here for when I decided what to do with it *),
+							Show[
+								wp[N[[i]],lF],
+								{
+									potPlot,
+									If[OptionValue["ShowEnergy"]//TrueQ,\[Lambda]P[{i}],Sequence@@{}]
+									},
+								FilterRules[{ops}, Options[Graphics3D]]
+								]
 							],
 						{{i,1,""},1,Length@N,1}
 						]
 					],
-				Show[
-					wavePlot[All],
-					{
-						potentialPlot,
-						If[OptionValue["ShowEnergy"]//TrueQ,
-							\[Lambda]Plot[All],
-							Sequence@@{}
+				If[OptionValue@"PlotList"===False,
+					Show[
+						wavePlot[All],
+						{
+							potentialPlot,
+							If[OptionValue["ShowEnergy"]//TrueQ,
+								\[Lambda]Plot[All],
+								Sequence@@{}
+								]
+							},
+						FilterRules[{ops},
+							Options[Graphics3D]
 							]
-						},
-					FilterRules[{ops},
-						Options[Graphics3D]
-						]
+						],
+					Show[
+						wavePlot[#, lf],
+						{
+							potentialPlot,
+							If[OptionValue["ShowEnergy"]//TrueQ,
+								\[Lambda]Plot[All],
+								Sequence@@{}
+								]
+							},
+						FilterRules[{ops},
+							Options[Graphics3D]
+							]
+						]&/@num
 					]
 			],
 			Show[
@@ -296,6 +351,182 @@ Cartesian2DDVRPlotFunction[
 				]
 			]
 	];
+
+
+Cartesian2DDVRPlotFunction::inpfl=
+	"Failed to construct appropriate InterpolatingFunctions";
+
+
+Options[Cartesian2DDVRDensityPlot]=
+	DeleteDuplicatesBy[First]@
+	Flatten@{
+		"WavefunctionSelection"->Automatic,
+		"InterpolatingWavefunctions"->Automatic,
+		Scaled->1,
+		"ShowEnergy"->True,
+		"PotentialStyle"->Automatic,
+		"EnergyDigits"->3,
+		"ZeroPointEnergy"->0,
+		LabelingFunction->Automatic,
+		"CutOff"->Automatic,
+		Manipulate->True,
+		PlotRange->Automatic,
+		"SquareWavefunction"->False,
+		"PlotList"->
+			Automatic,
+		FilterRules[Options[DensityPlot],
+			Except[AxesOrigin|PlotRange|LabelingFunction]
+			]
+		};
+Cartesian2DDVRDensityPlot[
+	solutions_,
+	grid2D_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	Module[
+		{
+			engs,
+			funcs,
+			cutoff=
+				Replace[
+					OptionValue["CutOff"], 
+					Automatic:>
+						If[OptionValue[ColorFunctionScaling]=!=False,
+							.1,
+							10^-(
+								RealExponent[Length[grid2D]*Length[grid2D[[1]]]]
+								)
+							]
+					],
+			cf=
+				Replace[OptionValue["ColorFunction"],
+					{
+						Automatic->ColorData["Rainbow"],
+						s:_String|_List:>ColorData[s]
+						}
+					],
+			oppp,
+			listup=
+				Replace[OptionValue["PlotList"],
+					Except[True|False]:>
+						!TrueQ@OptionValue[Manipulate]
+					]
+			},
+		funcs=
+			Flatten@List@
+			Replace[OptionValue["InterpolatingWavefunctions"],
+				Except[{((_->_InterpolatingFunction)|_InterpolatingFunction)..}]:>
+					ChemDVRDefaultInterpolatingWavefunctions[
+						grid2D,
+						solutions,
+						FilterRules[{ops},
+							Options@ChemDVRDefaultInterpolatingWavefunctions
+							]
+						]
+				];
+		oppp=
+			DeleteDuplicatesBy[First]@
+			FilterRules[
+					{
+						If[NumberQ@cutoff,
+							ColorFunction->
+								With[{cut=cutoff, col=cf},
+									Function[
+										If[#>cut, col[##], White(*GrayLevel[1, 0]*)]
+										]
+									],
+							ColorFunction->
+								cf
+							],
+						ops,
+						PlotRange->All
+						},
+					Options@DensityPlot
+					];
+		engs=
+			Replace[funcs,
+				{
+					(e_->_InterpolatingFunction):>e,
+					_->Indeterminate
+					},
+				1
+				];
+		funcs=
+			Replace[
+				funcs,
+				(_->f_InterpolatingFunction):>f,
+				1
+				];
+		If[MatchQ[funcs, {__InterpolatingFunction}],
+			With[{reg=funcs[[1, 1]], opp=oppp, funs=funcs},
+				If[TrueQ@OptionValue[Manipulate],
+					Manipulate[
+						DensityPlot[
+							funs[[i]][x,y]^2//Evaluate,
+							{x, reg[[1,1]], reg[[1,2]]},
+							{y, reg[[2,1]], reg[[2,2]]},
+							opp
+							],
+						{{i, 1, ""}, 1, Length@funs, 1}
+						],
+					If[Length@#>0,
+						#,
+						#[[1]]
+						]&@
+						Map[
+							DensityPlot[
+								#[x,y]^2(*//Echo*)//Evaluate,
+								{x, reg[[1,1]], reg[[1,2]]}(*//Echo//Evaluate*),
+								{y, reg[[2,1]], reg[[2,2]]}(*//Echo//Evaluate*),
+								oppp(*//Echo*)//Evaluate
+								]&,
+							funcs
+							]
+					]
+				],
+			Message[Cartesian2DDVRPlotFunction::inpfl];
+			$Failed
+			]
+		]
+
+
+Cartesian2DDVRPlotFunction::nomet=
+	"Method `` not understood";
+
+
+Options[Cartesian2DDVRPlotFunction]=
+	Join[
+		Options[Cartesian2DDVRListPlot],
+		Options[Cartesian2DDVRDensityPlot],
+		{
+			"PlotMethod"->ListPlot3D
+			}
+		];
+Cartesian2DDVRPlotFunction[
+	solutions_,
+	grid2D_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	With[{m=OptionValue["PlotMethod"]},
+		Switch[m,
+			ListPlot3D,
+				Cartesian2DDVRListPlot[solutions, grid2D, potentialMatrix,
+					FilterRules[{ops},
+						Options[Cartesian2DDVRListPlot]
+						]
+					],
+			DensityPlot,
+				Cartesian2DDVRDensityPlot[solutions, grid2D, potentialMatrix,
+					FilterRules[{ops},
+						Options[Cartesian2DDVRDensityPlot]
+						]
+					],
+			_,
+				Message[Cartesian2DDVRPlotFunction::nomet, m]
+			]
+		]
 
 
 End[];

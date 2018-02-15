@@ -1194,18 +1194,34 @@ chemDataSourceAdd[
 
 CDSourceMass[query_,___]:=
 	If[ChemDataIsotopeQ@query,
-		With[{n=ChemDataLookup[query,"AtomicNumber",IsotopeData]},
+		With[{n=ChemDataLookup[query, "AtomicNumber", IsotopeData]},
 			Quantity[
 				$ChemIsotopicMasses[n, 
-					n+ChemDataLookup[query,"NeutronNumber",IsotopeData]],
+					ChemDataLookup[query, "MassNumber", IsotopeData],
+					"Mass"
+					],
 				"AtomicMassUnit"
 				]
 			],
-		Quantity[
-			$ChemIsotopicMasses[
-				ChemDataLookup[query,"AtomicNumber", ElementData]
-				][[1, "Mass"]],
-			"AtomicMassUnit"
+		With[
+			{
+				n = 
+					ChemDataLookup[query, "AtomicNumber", ElementData],
+				m =
+					MaximalBy[
+						Thread[
+							{
+								ChemDataLookup[query, "MassNumber", IsotopeData],
+								ChemDataLookup[query, "IsotopeAbundance", IsotopeData]
+								}
+							],
+						Last
+						][[1, 1]]
+				},
+			Quantity[
+				$ChemIsotopicMasses[n, m, "Mass"],
+				"AtomicMassUnit"
+				]
 			]
 		]
 

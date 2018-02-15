@@ -8,6 +8,107 @@ Cell["Bond", "CodeSection",
 
 Cell[CellGroupData[{
 
+Cell["Bond Class", "CodeSubsection",
+ CellChangeTimes->{{3.726973188555375*^9, 
+  3.7269731901472054`*^9}},ExpressionUUID->"a98e8a0f-ef5c-4d0c-8bb6-\
+ebca6cd7b8fd"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"$ChemObjectDefaults", "[", "\"\<Bond\>\"", "]"}], "=."}], 
+  "*)"}]], "CodeInput",
+ CellChangeTimes->{
+  3.72697522512689*^9},ExpressionUUID->"d4667345-e180-4c66-b22c-f4d9b573c83d"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"If", "[", 
+   RowBox[{
+    RowBox[{"!", 
+     RowBox[{"KeyMemberQ", "[", 
+      RowBox[{"$ChemObjectDefaults", ",", " ", "\"\<Bond\>\""}], "]"}]}], ",",
+     "\n", "\t", 
+    RowBox[{
+     RowBox[{"$ChemObjectDefaults", "[", "\"\<Bond\>\"", "]"}], "=", "\n", 
+     "\t\t\t\t", 
+     RowBox[{"<|", "\n", "\t\t\t\t\t", 
+      RowBox[{
+       RowBox[{"\"\<Atoms\>\"", "\[Rule]", 
+        RowBox[{"{", "}"}]}], ",", "\n", "\t", "\t\t\t\t", 
+       RowBox[{"\"\<Type\>\"", "\[Rule]", "1"}], ",", "\n", "\t", "\t\t\t\t", 
+       
+       RowBox[{"\"\<Strength\>\"", "\[Rule]", "Automatic"}], ",", "\n", 
+       "\t\t\t\t\t", 
+       RowBox[{"\"\<Color\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"Automatic", ",", "Automatic"}], "}"}]}], ",", "\n", 
+       "\t\t\t\t\t", "\n", "\t\t\t\t\t", 
+       RowBox[{"\"\<Rotate\>\"", "->", 
+        RowBox[{"ChemMethod", "[", "BondRotate", "]"}]}], ",", "\n", 
+       "\t\t\t\t\t", 
+       RowBox[{"\"\<Move\>\"", "\[Rule]", 
+        RowBox[{"ChemMethod", "[", "BondMove", "]"}]}], ",", "\n", 
+       "\t\t\t\t\t", 
+       RowBox[{"\"\<Transform\>\"", "->", 
+        RowBox[{"ChemMethod", "[", "BondTransform", "]"}]}], ",", "\n", 
+       "\t\t\t\t\t", "\n", "\t\t\t\t\t", 
+       RowBox[{"\"\<Graphic\>\"", "\[Rule]", 
+        RowBox[{"ChemMethod", "[", "\n", "\t\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"With", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"o", "=", 
+              RowBox[{"{", "##", "}"}]}], "}"}], ",", "\n", "\t\t\t\t\t\t\t", 
+            
+            RowBox[{"BondGraphic", "[", 
+             RowBox[{
+              RowBox[{"First", "@", "o"}], ",", "\n", "\t\t\t\t\t\t\t\t", 
+              RowBox[{"Sequence", "@@", 
+               RowBox[{"FilterRules", "[", 
+                RowBox[{
+                 RowBox[{"Rest", "@", "o"}], ",", 
+                 RowBox[{"Options", "@", "BondGraphic"}]}], "]"}]}]}], 
+             "]"}]}], "\n", "\t\t\t\t\t\t\t\t", "]"}], "&"}], "\n", 
+         "\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t", 
+       RowBox[{"\"\<Graphic3D\>\"", "\[Rule]", 
+        RowBox[{"ChemMethod", "[", "\n", "\t\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"With", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"o", "=", 
+              RowBox[{"{", "##", "}"}]}], "}"}], ",", "\n", "\t\t\t\t\t\t\t", 
+            
+            RowBox[{"BondGraphic3D", "[", 
+             RowBox[{
+              RowBox[{"First", "@", "o"}], ",", "\n", "\t\t\t\t\t\t\t\t", 
+              RowBox[{"Sequence", "@@", 
+               RowBox[{"FilterRules", "[", 
+                RowBox[{
+                 RowBox[{"Rest", "@", "o"}], ",", 
+                 RowBox[{"Options", "@", "BondGraphic3D"}]}], "]"}]}]}], 
+             "]"}]}], "\n", "\t\t\t\t\t\t\t", "]"}], "&"}], "\n", 
+         "\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t", "|>"}]}]}], "\n", "  ", 
+   "]"}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.7269718460174503`*^9, 3.726971866710965*^9}, {
+  3.72697192852835*^9, 3.726971937213673*^9}, {3.7269729527788763`*^9, 
+  3.726973043721567*^9}, {3.726973123572806*^9, 3.726973139627715*^9}, {
+  3.726973205774446*^9, 3.726973217416877*^9}, {3.7269752202273197`*^9, 
+  3.726975222346209*^9}},ExpressionUUID->"ccacee57-673e-4439-ad3d-\
+bcaf26c9322e"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Bond Props", "CodeSubsection",
+ CellChangeTimes->{{3.726973178204859*^9, 
+  3.726973179395465*^9}},ExpressionUUID->"1df88cca-5781-4afd-bc82-\
+248ea1dc9747"],
+
+Cell[CellGroupData[{
+
 Cell["Create", "CodeSubsubsection",
  CellChangeTimes->{{3.6924087308448763`*^9, 
   3.692408731631301*^9}},ExpressionUUID->"d0df5e94-da4f-4fd9-91d5-\
@@ -3217,16 +3318,17 @@ Cell[BoxData[{
    3.720380596662034*^9}},ExpressionUUID->"bbb6a6a8-c534-4336-8f59-\
 6530217a2057"]
 }, Open  ]]
+}, Open  ]]
 }, Open  ]],
 
 Cell["", "SectionSeparator",ExpressionUUID->"b86ec000-b97b-452d-ab9d-\
 b5c88b99871e"]
 },
 WindowSize->{808, 755},
-WindowMargins->{{Automatic, 275}, {Automatic, 0}},
+WindowMargins->{{147, Automatic}, {0, Automatic}},
 FrontEndVersion->"11.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
 10, 2017)",
-StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackagePlain.nb", 
   CharacterEncoding -> "UTF-8"]
 ]
 

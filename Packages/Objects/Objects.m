@@ -41,7 +41,7 @@ ChemMethod::usage=
 	"Inert head that specifies a method should be constructed";
 ChemProperty::usage=
 	"Inert head that specifies a method should be called";
-$ChemObjects::usage=
+$ChemObjectDefaults::usage=
 	"Register of name->function|association pairs for defaulting new objects";
 
 
@@ -382,63 +382,97 @@ ChemOptionsPattern=
 	chemOptionsPatternBase|{chemOptionsPatternBase}|{{chemOptionsPatternBase}..}
 
 
-Get/@FileNames["*.m",PackageFilePath["Packages","Objects","ObjectCore_"]]
+Get/@
+	SortBy[
+		FileNames["*.m",
+			PackageFilePath["Packages","Objects","ObjectCore_"]
+			],
+		Switch[FileBaseName[#],
+			"ObjectFramework",
+				1,
+			"Atom",
+				2,
+			"Bond",
+				3,
+			"Atomset",
+				4,
+			_,
+				5
+			]&
+		]
 
 
 If[MatchQ[$ChemFormatObjects,Except[True|False]],$ChemFormatObjects=True];
 
 
 Format[o_ChemObject/;($ChemFormatObjects&&ChemObjectQ@o)]:=
-	With[{properties=Normal@o},
-		RawBoxes@BoxForm`ArrangeSummaryBox[
-			"ChemObject",
-			o,
-			Replace[
-				If[MissingQ@ChemGet[o,"Graphics3D"],
-					None,
-					ChemView[o,ImageSize->{28,28}]
-					],{
-				g_Graphics3D:>
-					Graphics[{Inset[g]},
-						ImageSize->{32,32},
-						Frame->True,
-						FrameTicks->False,
-						Background->GrayLevel[.95],
-						FrameStyle->GrayLevel[.8]
+	RawBoxes@
+	(*If[False(*MissingQ@ChemGet[o,"Graphic3D"]*),*)
+		With[{properties=Normal@o},
+			BoxForm`ArrangeSummaryBox[
+				"ChemObject",
+				o,
+				None,
+				{
+					BoxForm`MakeSummaryItem[{"Type: ",
+						("ObjectType"/.properties)},StandardForm]
+					},
+				Append[
+					Replace[
+						Take[
+							Normal@
+								KeySortBy[Switch[#,"ObjectReferences",1,_,0]&]@
+								KeyDrop[properties,{"ObjectType","ObjectKey"}],
+							UpTo[3]],
+						(Rule|RuleDelayed)[key_,prop_]:>
+							BoxForm`MakeSummaryItem[{
+								TemplateApply["``: ",key],
+								Short[prop/.{
+									ChemObject[s_,k_]:>
+										StringJoin@StringSplit[k,"-"->"-"][[;;-11]],
+									ChemObject[s_]:>
+										StringJoin@StringSplit[s,"-"->"-"][[;;-11]]
+									},1]
+								},StandardForm],
+						1
 						],
-				_->None
-				}],
-			{
-				BoxForm`MakeSummaryItem[{"Type: ",
-					("ObjectType"/.properties)},StandardForm]
-				},
-			Append[
-				Replace[
-					Take[
-						Normal@
-							KeySortBy[Switch[#,"ObjectReferences",1,_,0]&]@
-							KeyDrop[properties,{"ObjectType","ObjectKey"}],
-						UpTo[3]],
-					(Rule|RuleDelayed)[key_,prop_]:>
-						BoxForm`MakeSummaryItem[{
-							TemplateApply["``: ",key],
-							Short[prop/.{
-								ChemObject[s_,k_]:>
-									StringJoin@StringSplit[k,"-"->"-"][[;;-11]],
-								ChemObject[s_]:>
-									StringJoin@StringSplit[s,"-"->"-"][[;;-11]]
-								},1]
-							},StandardForm],
-					1
+					If[Length@properties>5,
+						"\[Ellipsis]",
+						Nothing
+						]
 					],
-				If[Length@properties>5,
-					"\[Ellipsis]",
-					Nothing
-					]
-				],
-			StandardForm
-			]
-		];
+				StandardForm
+				]
+			](*,
+		With[
+			{
+				graphic=
+					ToBoxes@Deploy@
+						 ChemView[
+							o,
+							SphericalRegion\[Rule]True,
+							Method\[Rule]{"ShrinkWrap"\[Rule]True},
+							Prolog\[Rule]
+								{
+									GrayLevel[.98],
+									EdgeForm[GrayLevel[.8]],
+									Disk[Scaled[{.5,.5}], Scaled[.45]]
+									},
+							ImageSize\[Rule]Small
+							],
+				boxes=
+					Block[{$ChemFormatObjects=False}, ToBoxes@o]
+				},
+			TemplateBox[
+				{boxes, graphic},
+				"ChemObject",
+				DisplayFunction->
+					Function[TooltipBox[#2, #]],
+				InterpretationFunction\[Rule]
+					Function@#
+				]
+			]*)
+(*	];*)
 
 
 Format[m:ChemMethod[f_]/;$ChemFormatObjects]:=
@@ -486,6 +520,31 @@ Format[AtomsetWrapper[a_?validAtomsetWrapperQ]]:=
 			},
 		StandardForm
 		];	
+
+
+Format[s:ChemStore[obj_ChemObject,base:chemStoreBasePattern]]:=
+	RawBoxes@BoxForm`ArrangeSummaryBox[
+		"ChemStore",
+		s,
+		None,
+		{
+			BoxForm`MakeSummaryItem[{"Name: ",
+				StringJoin@
+					Riffle[
+						Reverse[
+							Riffle[Drop[#,-5;;-1],"-"]&/@
+								StringSplit[List@@obj,"-"]
+							],
+						"@"
+						]
+				},StandardForm]
+			},
+		{
+			BoxForm`MakeSummaryItem[{"Object: ",obj},StandardForm],
+			BoxForm`MakeSummaryItem[{"Base: ",base},StandardForm]
+			},
+		StandardForm
+		];
 
 
 End[];

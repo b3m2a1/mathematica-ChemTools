@@ -19,6 +19,51 @@
 
 
 
+(*$ChemObjectDefaults["Atom"]=.*)
+
+
+If[!KeyMemberQ[$ChemObjectDefaults, "Atom"],
+	$ChemObjectDefaults["Atom"]=
+			<|
+					"Element"->"H",
+					"Bonds"->{},
+					"Mass"->
+						ChemDataLookup[Key["Element"],"AtomicMass"],
+					"MaxValence"->
+						ChemDataLookup[Key["Element"],"ElementValences"],
+					"Color"->Automatic,
+					"Valence"->ChemProperty[AtomValence],
+					"AtomicNumber"->
+						ChemDataLookup[Key["Element"],"AtomicNumber"],
+					"Radius"->
+						UnitConvert[
+							ChemDataLookup[Key["Element"],"Radius"],
+							"Angstroms"],
+					"Electronegativity"->
+						ChemDataLookup[Key["Element"],"Electronegativity"],
+					"Position"->{0.,0.,0.},
+					"Rotate"->ChemMethod[AtomRotate],
+					"Move"->ChemMethod[AtomMove],
+					"Transform"->ChemMethod[AtomTransform],
+					"Graphic"->
+						ChemMethod[
+							With[{o={##}},
+								AtomGraphic[First@o,
+									Sequence@@FilterRules[Rest@o, Options@AtomGraphic]
+									]
+								]&
+							],
+					"Graphic3D"->
+						ChemMethod[
+							With[{o={##}},
+								AtomGraphic3D[First@o,
+									Sequence@@FilterRules[Rest@o,Options@AtomGraphic3D]]
+									]&
+							]
+					|>
+  ];
+
+
 chemAtomProps[
 	element:_String|Automatic:Automatic,
 	mass:_?NumberQ|_Quantity|Automatic:Automatic,
@@ -672,7 +717,11 @@ AtomGraphic3D[obj:ChemObjAllPattern,ops:OptionsPattern[]]:=
 				Automatic:>AtomColor@obj
 				],
 		position=
-			Flatten[List@ChemGet[obj,"Position"], 1],
+			Replace[ChemGet[obj, "Position"], 
+				{
+					l:{__?NumericQ}:>{l}
+					}
+				],
 		style=
 			Replace[OptionValue["AtomStyle"],
 				Automatic:>None

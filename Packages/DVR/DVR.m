@@ -124,43 +124,67 @@ If[!MatchQ[$ChemDVRManager,_Association],
 	];
 
 
+$ChemDVRRoot:=
+	$ChemDVRManager["Directories", $dvroot];
+$ChemDVRPath:=
+	Prepend[
+		$ChemDVRManager["Directories", $dvalt],
+		$ChemDVRRoot
+		]
+
+
+Options[ChemDVRDirectory]=
+	{
+		"Root":>$ChemDVRRoot,
+		"Path":>$ChemDVRPath
+		};
 ChemDVRDirectory[
 	dSpec_?(KeyMemberQ[$ChemDVRManager["Directories"],#]&),
-	alt:True|False:False
+	alt:True|False:False,
+	ops:OptionsPattern[]
 	]:=
 	With[{d=$ChemDVRManager["Directories", dSpec]},
 		If[!alt,
-			If[Not@DirectoryQ@d,
-				(If[Not@DirectoryQ@#,
-					CreateDirectory[#,CreateIntermediateDirectories->True]
-					];#)&@
-					FileNameJoin@{$ChemDVRManager["Directories", $dvroot],dSpec},
+			If[Not@DirectoryQ@ExpandFileName@d,
+				(
+					If[Not@DirectoryQ@#,
+						CreateDirectory[#, CreateIntermediateDirectories->True]
+						];
+					#
+					)&@
+						FileNameJoin@{OptionValue["Root"], dSpec},
 				d
 				],
 			FileNameJoin@{#,dSpec}&/@
-				Prepend[
-					$ChemDVRManager["Directories", $dvalt],
-					$ChemDVRManager["Directories", $dvroot]
-					]
+				OptionValue["Path"]
 			]
 		];
 
 
+ChemDVRFile//Clear
+
+
+Options[ChemDVRFile]=
+	Options@ChemDVRDirectory;
 ChemDVRFile[
 	dSpec_String?(KeyMemberQ[$ChemDVRManager["Directories"],#]&),
-	fspec__String
+	fspec__String,
+	o:OptionsPattern[]
 	]:=
 	With[
 		{
 			ops=
 				FileNameJoin@{#,fspec}&/@
-					ChemDVRDirectory[dSpec, True]
+					ChemDVRDirectory[dSpec, True, o]
 			},
 		SelectFirst[ops, FileExistsQ, Last@ops]
 		];
-ChemDVRFile[dSpec_String?(KeyMemberQ[$ChemDVRManager["Directories"],#]&),
-	ChemDVRObject[uuid_]]:=
-	ChemDVRFile[dSpec,
+ChemDVRFile[
+	dSpec_String?(KeyMemberQ[$ChemDVRManager["Directories"],#]&),
+	ChemDVRObject[uuid_]
+	]:=
+	ChemDVRFile[
+		dSpec,
 		uuid<>If[MatchQ[dSpec,$dvrke|$dvrpe|$dvrwf],".mx",".m"]
 		]
 ChemDVRFile[ChemDVRObject[uuid_]]:=
@@ -173,129 +197,6 @@ ChemDVRPotentials[
 	]:=
 	If[nameTake,Map@FileNameTake,Identity]@
 		FileNames[pat,ChemDVRDirectory[$dvrpe]];
-
-
-ChemDVRDefaultFormatGrid[grid_,points_,___]:=
-	grid;
-
-
-ChemDVRDefaultNamedPotential[name_:"HarmonicOscillator"]:=
-	Switch[name,
-		"HarmonicOscillator",
-			Norm@((#/2)^2&)
-		];
-
-
-Options[ChemDVRDefaultPotential]=
-	{
-		"PotentialFunction"->Automatic,
-		Function->Automatic
-		};
-ChemDVRDefaultPotential[grid_,ops___]:=
-	DiagonalMatrix@
-		Map[
-			Replace[OptionValue["PotentialFunction"],
-				Automatic:>
-					Replace[OptionValue[Function],
-						Automatic:>ChemDVRDefaultNamedPotential[]
-						]
-				],
-			grid
-			];
-
-
-Options[ChemDVRDefaultWavefunctions]=
-	Join[
-		Options@Eigensystem,
-		{
-			"NumberOfWavefunctions"->All,
-			"CorrectPhase"->True,
-			"SortEnergies"->True
-			}
-		];
-ChemDVRDefaultWavefunctions[T_,V_,ops:OptionsPattern[]]:=
-	Module[
-		{
-			nwfs=OptionValue["NumberOfWavefunctions"],
-			sort=OptionValue["SortEnergies"]=!=False,
-			rephase=OptionValue["CorrectPhase"]=!=False,
-			wfns,
-			phase
-			},
-		wfns=
-				If[sort, #[[{1,2},Ordering[First@#]]], #]&@
-					Eigensystem[T+V,
-						Replace[nwfs,
-							All:>Sequence@@{}
-							],
-						Method->
-							Replace[OptionValue[Method], Automatic:>"FEAST"],
-						FilterRules[
-							FilterRules[{ops},Alternatives@@Keys@Options@Eigensystem],
-							Except[Method]
-							]
-						];
-		If[rephase,
-			phase=Sign@wfns[[2, Ordering[First@wfns][[1]]]];
-			{First@wfns,phase*#&/@Last@wfns},
-			wfns
-			]
-		];
-
-
-Options[ChemDVRDefaultGridWavefunctions]=
-	{
-		"GridPrepFunction"->Identity,
-		"WavefunctionSelection"->All
-		};
-ChemDVRDefaultGridWavefunctions[grid_,wfs_,OptionsPattern[]]:=
-	With[{
-		coreGridPoints=
-			If[Depth@grid<=3,
-				OptionValue["GridPrepFunction"]@grid,
-				Flatten[
-					OptionValue["GridPrepFunction"]@grid,
-					Depth[grid]-3
-					]
-				]
-		},
-		MapThread[
-			#->Thread[{coreGridPoints,#2}]&,
-			With[{sel=OptionValue["WavefunctionSelection"]},
-				If[sel=!=All,
-					wfs[[All, OptionValue["WavefunctionSelection"]]],
-					wfs
-					]
-				]
-			]
-		];
-
-
-Options[ChemDVRDefaultInterpolatingWavefunctions]=
-	Options@ChemDVRDefaultGridWavefunctions;
-ChemDVRDefaultInterpolatingWavefunctions[grid_,wfs_,
-	ops:OptionsPattern[]
-	]:=
-	With[{
-		coreGridPoints=
-			If[Depth@grid<=3,
-				OptionValue["GridPrepFunction"]@grid,
-				Flatten[
-					OptionValue["GridPrepFunction"]@grid,
-					Depth[grid]-3
-					]
-				]
-		},
-		MapThread[
-			#->Interpolation@MapThread[Flatten@*List,{coreGridPoints,#2}]&,
-			With[{sel=OptionValue["WavefunctionSelection"]},
-				If[sel=!=All,
-					wfs[[All, OptionValue["WavefunctionSelection"]]],
-					wfs
-					]
-				]
-			]
-		];
 
 
 ChemDVRCreate::norng="No range function provided";
@@ -367,45 +268,213 @@ ChemDVRCreate[dvr_String?(Not@*FileExistsQ)]:=
 		];
 
 
-ChemDVRSave[$dvrinst,name_String,a_Association]:=
-	Block[{$ContextPath={"System`"}},Export[ChemDVRFile[$dvrinst,name],a]];
-ChemDVRSave[$dvrke,name_String,ke_List]:=
-	Export[ChemDVRFile[$dvrke,name],ke];
-ChemDVRSave[$dvrpe,name_String,pe_List]:=
-	Export[ChemDVRFile[$dvrpe,name],pe];
-ChemDVRSave[$dvrwf,name_String,wf_List]:=
-	Export[ChemDVRFile[$dvrwf,name],wf];
+ChemDVRSave//Clear
 
 
-ChemDVRSave[Optional[$dvrinst,$dvrinst],ChemDVRObject[uuid_]]:=
-	ChemDVRSave[$dvrinst,uuid<>".m",$ChemDVRManager["Objects",uuid]];
-ChemDVRSave[$dvrke,ChemDVRObject[uuid_],ke_List]:=
-	ChemDVRSave[$dvrke,uuid<>".mx",ke];
-ChemDVRSave[$dvrpe,ChemDVRObject[uuid_],pe_List]:=
-	ChemDVRSave[$dvrpe,uuid<>".mx",pe];
-ChemDVRSave[$dvrwf,ChemDVRObject[uuid_],wf_List]:=
-	ChemDVRSave[$dvrwf,uuid<>".mx",wf];
+Options[ChemDVRSave]=
+	Options@ChemDVRFile;
+ChemDVRSave[
+	$dvrinst,
+	name_String,
+	a_Association,
+	o:OptionsPattern[]
+	]:=
+	Block[{$ContextPath={"System`"}},
+		Export[ChemDVRFile[$dvrinst, name, o],a]
+		];
+ChemDVRSave[
+	prop:$dvrke|$dvrpe|$dvrwf, 
+	name_String, 
+	mx_List?MatrixQ,
+	o:OptionsPattern[]
+	]:=
+	Export[	
+		ChemDVRFile[prop, name, o],
+		mx
+		];
 
 
+ChemDVRSave[
+	Optional[$dvrinst,$dvrinst],
+	ChemDVRObject[uuid_],
+	o:OptionsPattern[]
+	]:=
+	ChemDVRSave[
+		$dvrinst,
+		uuid<>".m",
+		$ChemDVRManager["Objects",uuid],
+		o
+		];
+ChemDVRSave[
+	prop:$dvrke|$dvrpe|$dvrwf, 
+	ChemDVRObject[uuid_],
+	mx_List?MatrixQ,
+	o:OptionsPattern[]
+	]:=
+	ChemDVRSave[
+		prop,
+		uuid<>".mx",
+		mx,
+		o
+		];
 
-ChemDVRClear[$dvrinst,name_String]:=
-	Quiet@DeleteFile@ChemDVRFile[$dvrinst,name];
-ChemDVRClear[$dvrke,name_String]:=
-	Quiet@DeleteFile@ChemDVRFile[$dvrke,name];
-ChemDVRClear[$dvrpe,name_String]:=
-	Quiet@DeleteFile@ChemDVRFile[$dvrpe,name];
-ChemDVRClear[$dvrwf,name_String]:=
-	Quiet@DeleteFile@ChemDVRFile[$dvrwf,name];
+
+Options[ChemDVRClear]=
+	Options@ChemDVRFile;
+ChemDVRClear[prop:$dvrinst|$dvrke|$dvrpe|$dvrwf, name_String,
+	ops:OptionsPattern[]
+	]:=
+	Quiet@DeleteFile@ChemDVRFile[prop,name, ops];
 
 
-ChemDVRClear[Optional[$dvrinst,$dvrinst],ChemDVRObject[uuid_]]:=
-	ChemDVRClear[$dvrinst,uuid<>".m"];
-ChemDVRClear[$dvrke,ChemDVRObject[uuid_]]:=
-	ChemDVRClear[$dvrke,uuid<>".mx"];
-ChemDVRClear[$dvrpe,ChemDVRObject[uuid_]]:=
-	ChemDVRClear[$dvrpe,uuid<>".mx"];
-ChemDVRClear[$dvrwf,ChemDVRObject[uuid_]]:=
-	ChemDVRClear[$dvrwf,uuid<>".mx"];
+ChemDVRClear[
+	prop:$dvrinst|$dvrke|$dvrpe|$dvrwf,$dvrinst,
+	ChemDVRObject[uuid_],
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRClear[prop,
+		uuid<>".m",
+		ops
+		];
+
+
+ChemDVRDefaultFormatGrid[grid_,points_,___]:=
+	grid;
+
+
+ChemDVRDefaultNamedPotential[name_:"HarmonicOscillator"]:=
+	Switch[name,
+		"HarmonicOscillator",
+			Norm@((#/2)^2&)
+		];
+
+
+Options[ChemDVRDefaultPotential]=
+	{
+		"PotentialFunction"->Automatic,
+		Function->Automatic
+		};
+ChemDVRDefaultPotential[grid_,ops___]:=
+	DiagonalMatrix@
+		Map[
+			Replace[OptionValue["PotentialFunction"],
+				Automatic:>
+					Replace[OptionValue[Function],
+						Automatic:>ChemDVRDefaultNamedPotential[]
+						]
+				],
+			grid
+			];
+
+
+Options[ChemDVRDefaultWavefunctions]=
+	Join[
+		Options@Eigensystem,
+		{
+			"NumberOfWavefunctions"->Automatic,
+			"CorrectPhase"->True,
+			"SortEnergies"->True
+			}
+		];
+ChemDVRDefaultWavefunctions[T_,V_,ops:OptionsPattern[]]:=
+	Module[
+		{
+			ham=T+V,
+			nwfs=OptionValue["NumberOfWavefunctions"],
+			sort=OptionValue["SortEnergies"]=!=False,
+			rephase=OptionValue["CorrectPhase"]=!=False,
+			wfns,
+			phase
+			},
+		wfns=
+				If[sort, #[[{1,2},Ordering[First@#]]], #]&@
+					Eigensystem[
+						ham,
+						Replace[nwfs,
+							{
+								All:>Sequence@@{},
+								Automatic:>
+									If[Head@ham===SparseArray, 
+										Min@{Max@{Length@ham/10, 20}, Length@ham, 50},
+										Sequence@@{}
+										]
+								}
+							],
+						Method->
+							Replace[OptionValue[Method], Automatic:>"FEAST"],
+						FilterRules[
+							FilterRules[{ops},Alternatives@@Keys@Options@Eigensystem],
+							Except[Method]
+							]
+						];
+		If[rephase,
+			phase=Sign@wfns[[2, Ordering[First@wfns][[1]]]];
+			{First@wfns,phase*#&/@Last@wfns},
+			wfns
+			]
+		];
+
+
+Options[ChemDVRDefaultGridWavefunctions]=
+	{
+		"GridPrepFunction"->Identity,
+		"WavefunctionSelection"->All
+		};
+ChemDVRDefaultGridWavefunctions[grid_,wfs_,OptionsPattern[]]:=
+	With[{
+		coreGridPoints=
+			If[Depth@grid<=3,
+				OptionValue["GridPrepFunction"]@grid,
+				Flatten[
+					OptionValue["GridPrepFunction"]@grid,
+					Depth[grid]-3
+					]
+				]
+		},
+		MapThread[
+			#->Thread[{coreGridPoints,#2}]&,
+			With[{sel=OptionValue["WavefunctionSelection"]},
+				If[sel=!=All,
+					wfs[[All, OptionValue["WavefunctionSelection"]]],
+					wfs
+					]
+				]
+			]
+		];
+
+
+Options[ChemDVRDefaultInterpolatingWavefunctions]=
+	Options@ChemDVRDefaultGridWavefunctions;
+ChemDVRDefaultInterpolatingWavefunctions[
+	grid_,
+	wfs_,
+	ops:OptionsPattern[]
+	]:=
+	With[
+		{
+			coreGridPoints=
+				If[Depth@grid<=3,
+					OptionValue["GridPrepFunction"]@grid,
+					Flatten[
+						OptionValue["GridPrepFunction"]@grid,
+						Depth[grid]-3
+						]
+					]
+			},
+		MapThread[
+			#->Interpolation@MapThread[Flatten@*List,{coreGridPoints,#2}]&,
+			With[{sel=OptionValue["WavefunctionSelection"]},
+				If[sel=!=All,
+					wfs[[All, 
+						Replace[OptionValue["WavefunctionSelection"],
+							i_Integer:>Range[i]
+							]
+						]],
+					wfs
+					]
+				]
+			]
+		];
 
 
 chemDVRValidQ[uuid_String]:=
@@ -813,8 +882,13 @@ ChemDVRView[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 			dvrOpsLookup[ops,"PotentialEnergy",
 				ChemDVRPotentialEnergy[obj,"Grid"->g,ops]]},
 			With[{wfs=
-				dvrOpsLookup[ops,"Wavefunction",
-					ChemDVRWavefunctions[obj,"Grid"->g,"PotentialEnergy"->pe,ops]
+				dvrOpsLookup[ops,
+					"Wavefunctions",
+					ChemDVRWavefunctions[obj,
+						"Grid"->g,
+						"PotentialEnergy"->pe,
+						ops
+						]
 					]},
 					ChemDVRGet[obj,"View"][wfs,g,pe,
 						Sequence@@FilterRules[{ops},Options@ChemDVRGet[obj,"View"]]
@@ -832,8 +906,9 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 				Flatten[
 					{
 						ops,
-						DVRGet[obj, "RunTimeOptions", {}]
-					}],
+						ChemDVRGet[obj, "RunTimeOptions", {}]
+						}
+					],
 		RunCheckPoint=None,
 		RunEndPoint=dvrOpsLookup[ops,Return,"View"],
 		RunRange=None,
@@ -856,10 +931,17 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 		If[RunEndPoint=!="PotentialEnergy"&&
 			!ListQ@dvrOpsLookup[ops, "Wavefunctions", None],
 			RunKineticEnergy=
-				dvrOpsLookup[ops,"KineticEnergy",None];
+				dvrOpsLookup[ops, "KineticEnergy", None];
 			If[RunKineticEnergy===None,
 				RunKineticEnergy=
-					ChemDVRKineticEnergy[obj,"Grid"->RunGrid,RunTimeOptions]];
+					ChemDVRKineticEnergy[obj,
+						"Grid"->RunGrid,
+						Sequence@@
+							dvrOpsLookup[{RunTimeOptions}, "KineticEnergyOptions",
+								{RunTimeOptions}
+								]
+						]
+				];
 			];
 		If[RunEndPoint==="KineticEnergy",Return@RunKineticEnergy];
 		RunCheckPoint="KineticEnergy";
@@ -867,7 +949,15 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 		RunPotentialEnergy=
 			dvrOpsLookup[ops,"PotentialEnergy",None];
 		If[RunPotentialEnergy===None,
-			RunPotentialEnergy=ChemDVRPotentialEnergy[obj,"Grid"->RunGrid,RunTimeOptions]];
+			RunPotentialEnergy=
+				ChemDVRPotentialEnergy[obj,
+					"Grid"->RunGrid,
+					Sequence@@dvrOpsLookup[{RunTimeOptions}, 
+						"PotentialEnergyOptions",
+						{RunTimeOptions}
+						]
+					]
+				];
 		If[RunEndPoint==="PotentialEnergy",Return@RunPotentialEnergy];
 		RunCheckPoint="PotentialEnergy";
 		(*---------- Wavefunctions ---------*)
@@ -879,7 +969,11 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 				ChemDVRWavefunctions[obj,
 					"KineticEnergy"->ke,
 					"PotentialEnergy"->pe,
-					RunTimeOptions
+					Sequence@@
+						dvrOpsLookup[{RunTimeOptions}, 
+							"WavefunctionsOptions",
+							{RunTimeOptions}
+							]
 					];
 				]
 			];
@@ -892,14 +986,22 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 				ChemDVRGridWavefunctions[obj,
 					"Wavefunctions"->RunWavefunctions,
 					"Grid"->RunGrid,
-					RunTimeOptions
+					Sequence@@
+						dvrOpsLookup[{RunTimeOptions}, 
+							"GridWavefunctionsOptions",
+							{RunTimeOptions}
+							]
 					],
 			"InterpolatingWavefunctions",
 				(*----------  Wavefunction Grid ---------*)
 				ChemDVRInterpolatingWavefunctions[obj,
 					"Wavefunctions"->RunWavefunctions,
 					"Grid"->RunGrid,
-					RunTimeOptions
+					Sequence@@
+						dvrOpsLookup[{RunTimeOptions}, 
+							"InterpolatingWavefunctionsOptions",
+							{RunTimeOptions}
+							]
 					],
 			_,
 				(*---------- View ---------*)
@@ -907,7 +1009,11 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 					"Wavefunctions"->RunWavefunctions,
 					"PotentialEnergy"->RunPotentialEnergy,
 					"Grid"->RunGrid,
-					RunTimeOptions
+					Sequence@@
+						dvrOpsLookup[{RunTimeOptions}, 
+							"ViewOptions",
+							{RunTimeOptions}
+							]
 					]
 			]
 		];
@@ -953,47 +1059,40 @@ ChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 		]
 
 
-ChemDVRNotebook[obj:dvrObjPattern]:=
-	(
-		ChemDVRSave@obj;
-		CreateDocument@Notebook[{
-			Cell[ChemDVRGet[obj,"Name"],"Section"],
-			Cell["Load","Subsubsection"],
-			Cell["The ChemDVR instance has been saved (using ChemDVRSave) \
-so now you can simply reload the instance\
- like this:",
-				"Text"
-				],
-			Cell[BoxData@"Needs[\"ChemTools`\"];","Input"],
-			Cell[BoxData@RowBox@{RowBox@{"$obj","=",ToBoxes@obj},";"},"Input"],
-			Cell["Settings","Subsubsection"],
-			Cell["Load/Save settings can be configured using the ChemDVR manager as such:",
-				"Text"],
-			Cell[BoxData@
-				RowBox@{
-					RowBox@{"$ChemDVRManager","[",RowBox@{"\"Settings\"",",",
-					"\"LoadWavefunctions\""},"]"},"=","True",";"},
-				"Input"
-				],
-			Cell["Separate Kernels","Subsubsection"],
-			Cell[TextData@{
-			"Long runs should be done in a separate kernel. Information on setting up\
- separate kernels can be found ",
-		 Cell[BoxData@ToBoxes@
- 			Hyperlink["here","paclet:guide/WolframSystemSetup",BaseStyle->"Text"]],
- " under the section under Remote Kernels"},"Text"],
-			Cell["Run","Subsubsection"],
-			Cell["The most basic run form using the ChemDVRRun function:","Text"],
-			Cell[BoxData@RowBox@{"ChemDVRRun","[","$obj","]"},"Input"],
-			Cell["A long run should only return and save the wavefunctions and\
- shouldn't have the monitor turned on","Text"],
- 		Cell[BoxData@RowBox@{"ChemDVRRun","[","$obj",",",
- 			RowBox@{"Return","\[Rule]","\"Wavefunctions\""},",",
- 			RowBox@{"Monitor","->","False"},"]"},"Input"]
+ChemDVRNotebook//Clear
+
+
+Options[ChemDVRNotebook]=
+	Join[
+		{
+			"SaveObject"->True
 			},
-			WindowTitle->ChemDVRGet[obj,"UUID"]
-			]
-		)
+		Options@Notebook
+		];
+ChemDVRNotebook[
+	obj:dvrObjPattern,
+	ops:OptionsPattern[]
+	]:=
+	With[
+		{
+			so=OptionValue["SaveObject"]
+			},
+		If[so,
+			ChemDVRSave@obj
+			];
+		CreateDocument@
+			Notebook[
+				First@
+					Get[PackageFilePath["Resources", "Templates", "DVRNotebook.nb"]],
+				FilterRules[
+					{
+						ops,
+						WindowTitle->ChemDVRGet[obj,"UUID"]
+						},
+					Options@Notebook
+					]
+				]
+		]
 
 
 ChemDVRObject[uuid_?chemDVRValidQ][a___?OptionQ]:=
@@ -1680,7 +1779,7 @@ $ChemDVRCartesianKineticBaseCompiled:=
 		];
 
 
-Options[Cartesian1DDVRKineticMatrix]=
+(*Options[ChemDVRDefaultCartesianKineticMatrix]=
 	{
 		"M"->1,
 		"HBar"->1
@@ -1692,7 +1791,7 @@ ChemDVRDefaultCartesianKineticMatrix[grid_]:=
 		If[NumericQ@grid[[1, 1]],
 			$ChemDVRCartesianKineticBaseCompiled[pts, dx, m, hb]
 			]
-		]
+		]*)
 
 
 End[];

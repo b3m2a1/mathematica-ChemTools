@@ -64,20 +64,20 @@ symmTCMBit=
 		If[ix == jx,
 			 (
 					(-1)^(iy - jy)*\[HBar]^2*
-					If[iy == jy,
-					 	Pi^2/3,
-					 	2/(iy - jy)^2
-						]
+						If[iy == jy,
+						 	Pi^2/3,
+						 	2/(iy - jy)^2
+							]
 					)/(2*dy^2*my),
 				0
 				] +
 		If[iy == jy,
 			 (
 					(-1)^(ix - jx)*\[HBar]^2*
-					If[ix == jx,
-					 	Pi^2/3,
-					 	2/(ix - jx)^2
-						]
+						If[ix == jx,
+						 	Pi^2/3,
+						 	2/(ix - jx)^2
+							]
 					)/(2*dx^2*mx),
 				0
 				]
@@ -184,20 +184,22 @@ symmMinus=
 
 Options[Cartesian2DC2DVRKineticMatrix]=
 	{
-		"m1"->1,
-		"m2"->1,
-		"\[HBar]"->1
+		"Mass1"->1,
+		"Mass2"->1,
+		"HBar"->1,
+		"ScalingFactor"->1,
+		"UseExact"->False
 		};
 Cartesian2DC2DVRKineticMatrix[grid_,ops:OptionsPattern[]]:=
 	Module[
 		{
-			\[HBar]=OptionValue["\[HBar]"],
+			\[HBar]=OptionValue["HBar"],
 			dx=Abs@*Subtract@@MinMax@grid[[All, 1, 1]], 
 			xPoints=Length@grid,
-			mx=OptionValue@"m1", 
+			mx=OptionValue@"Mass1", 
 			dy=Abs@*Subtract@@MinMax@grid[[1, All, 2]],
 			yPoints=Length@grid[[1]],
-			my=OptionValue@"m2",
+			my=OptionValue@"Mass2",
 			head
 			},
 		With[{f1=symmPlus, f2=symmMinus, Np=xPoints*yPoints},
@@ -281,7 +283,7 @@ Cartesian2DC2DVRPlotFunction[
 		solutions,
 		Join[
 			Map[
-				{-1, 1}*#&,
+				{-1, -1}*#&,
 				Reverse[grid],
 				{2}
 				],
@@ -289,8 +291,8 @@ Cartesian2DC2DVRPlotFunction[
 			],
 		ArrayFlatten[
 			{
-				{potentialMatrices[[1]], 0},
-				{0, potentialMatrices[[2]]}
+				{potentialMatrices[[2]], 0},
+				{0, potentialMatrices[[1]]}
 				}
 			],
 		ops
@@ -302,7 +304,7 @@ End[];
 
 $Cartesian2DC2DVR=
 	<|
-		"Name"->"Cartesian 2D",
+		"Name"->"Symmetric Cartesian C2 2D",
 		"Dimension"->2,
 		"PointLabels"->{"x"|"y"|"z", "x"|"y"|"z"},
 		"Range"->{{-10,10}, {-10, 10}},

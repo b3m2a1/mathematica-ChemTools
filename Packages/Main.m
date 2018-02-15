@@ -77,7 +77,7 @@ ChemGetApply[obj:ChemManyPattern,prop_,args___]:=
 		];
 
 
-ChemMove[obj:ChemManyPattern,pt_,mode:"Set"|"Add":"Add"]:=
+ChemMove[obj:ChemManyPattern, pt_,mode:"Set"|"Add":"Add"]:=
 	(ChemGetApply[obj,"Move",pt,mode];);
 ChemMove[pt_,mode:"Set"|"Add":"Add"][obj:ChemManyPattern]:=
 	ChemMove[obj,pt,mode];
@@ -118,7 +118,9 @@ ChemView[obj:ChemManyPattern,mode:"2D"|"3D":"3D",
 		"3D",
 			Graphics3D[{
 				directives,
-				ChemGetApply[obj,"Graphic3D",
+				ChemGetApply[
+					obj,
+					"Graphic3D",
 					FilterRules[{ops},
 						Except[Alternatives@@Map[First,Options@Graphics3D]]
 						]
@@ -247,7 +249,7 @@ Options[ChemSurface]=
 		Options[BoundaryDiscretizeRegion],
 		Options[DiscretizeGraphics]
 		];
-ChemSurface[g_Graphics3D,ops:OptionsPattern[]]:=
+ChemSurface[g_Graphics3D, ops:OptionsPattern[]]:=
 	With[{c=Cases[g,_Sphere,\[Infinity]]/.Sphere->Ball},
 		If[Length@c>0,
 			BoundaryDiscretizeRegion[
@@ -266,7 +268,7 @@ ChemSurface[g_Graphics3D,ops:OptionsPattern[]]:=
 			]
 		];
 ChemSurface[obj:ChemObjPattern,ops:OptionsPattern[]]:=
-	ChemSurface@ChemView[obj,"SpaceFilling"];
+	ChemSurface[ChemView[obj,"SpaceFilling"], ops];
 
 
 (*Options[ChemSurfacePlot]={
@@ -382,7 +384,8 @@ ChemSurfacePlot[
 						Boxed->False,
 						Axes->False
 						},
-					Options@SliceDensityPlot3D]
+					Options@SliceDensityPlot3D
+					]
 			},
 			With[{h=
 				Hold@
@@ -406,7 +409,8 @@ ChemSurfacePlot[f_,
 	With[{
 		s=
 		ChemSurface[obj,
-			FilterRules[{ops},Options@ChemSurface]],
+			FilterRules[{ops},Options@ChemSurface]
+			],
 		opacity=
 			Lookup[
 				FilterRules[{ops},
@@ -450,7 +454,9 @@ ChemSurfacePlot[f_,
 			Replace[
 				ChemSurfacePlot[pf,s,pops],
 				p:Except[_ChemSurfacePlot]:>
-					Show[p,ChemView[obj]]
+					Show[p,
+						ChemView[obj, ops]
+						]
 				]
 			]
 		];

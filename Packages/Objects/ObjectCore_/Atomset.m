@@ -19,6 +19,120 @@
 
 
 
+(*$ChemObjectDefaults["Atomset"]=.*)
+
+
+If[!KeyMemberQ[$ChemObjectDefaults, "Atomset"],
+	$ChemObjectDefaults["Atomset"]=
+			<|
+				"Atoms"->{},
+				
+				"Join"->
+					ChemMethod[AtomsetJoin],
+				"GetAtom"->
+					ChemMethod[AtomsetGetAtoms],
+				"AddAtom"->
+					ChemMethod[AtomsetAddAtom],
+				"RemoveAtom"->
+					ChemMethod[AtomsetRemoveAtom],
+				"SubstitueAtom"->
+					ChemMethod[AtomsetSubstitueAtom],
+					
+				"Bonds"->
+					ChemProperty[AtomsetBonds],
+				"BondVectors"->
+					ChemProperty[AtomsetBondVectors],
+				"BondsIndexed"->
+					ChemProperty[AtomsetBondsIndexed],
+				"SetBondLength"->
+					ChemMethod[AtomsetSetBondLength],
+				"NormalizeBonds"->
+					ChemMethod[NormalizeBonds],
+					
+				"Center"->
+					ChemProperty[AtomsetCenter],
+				"CenterOfMass"->
+					ChemProperty[AtomsetCenterOfMass],
+				"MassPositions"->
+					ChemProperty[AtomsetMassPositions],
+				"Bounds"->
+					ChemProperty[AtomsetBounds],
+				
+				"Rotate"->
+					ChemMethod[AtomsetRotate],
+				"Move"->
+					ChemMethod[AtomsetMove],
+				"Transform"->
+					ChemMethod[AtomsetTransform],
+				"Align"->
+					ChemMethod[AtomsetAlign],
+				"AxisAlign"->
+					ChemMethod[AtomsetAxisAlign],
+				
+				"IntertialTensor"->
+					ChemProperty[AtomsetIntertialTensor],
+				"InertialEigensystem"->
+					ChemProperty[AtomsetInertialEigensystem],
+				"InertialSystem"->
+					ChemProperty[AtomsetInertialSystem],
+				"PrincipalAxes"->
+					ChemProperty[AtomsetPrincipalAxes],
+
+				"EmpiricalFormula"->
+					ChemProperty[EmpiricalFormula],
+				
+				"AdjacencyMatrix"->
+					ChemProperty[AtomsetAdjacencyMatrix],
+				"ConnectedComponents"->
+					ChemProperty[AtomsetConnectedComponents],
+				"Graph"->
+					ChemProperty[AtomsetGraph],
+				"GraphScan"->
+					ChemMethod[AtomsetGraphScan],
+				"NeighborMap"->
+					ChemProperty[AtomsetNeighborMap],
+				"Rings"->
+					ChemProperty[AtomsetRings],
+				"AromaticRings"->
+					ChemProperty[AtomsetAromaticRings],
+				"AtomMemberQ"->
+					ChemProperty[AtomsetAtomMemberQ],
+				"AromaticQ"->
+					ChemMethod[AtomsetAromaticQ],
+				
+				"Surface"->
+					ChemMethod[AtomsetVdWSurface],
+				"Volume"->
+					ChemMethod[AtomsetVdWVolume],
+				
+				"ElectricPotential"->
+					ChemMethod[AtomsetElectricPotential],
+				"ElectricPotentialMap"->
+					ChemMethod[AtomsetElectricPotentialMap],
+				
+				"Orbitals"->
+					ChemMethod[AtomsetOrbitals],
+				"OrbitalsPlot"->
+					ChemMethod[AtomsetOrbitalsPlot],
+					
+				"Graphic"->ChemMethod[
+					With[{o={##}},
+						AtomsetGraphic[First@o,
+							Sequence@@FilterRules[Rest@o, Options@AtomsetGraphic]
+							]
+						]&
+					],
+				"Graphic3D"->ChemMethod[
+					With[{o={##}},
+						AtomsetGraphic3D[First@o,
+							Sequence@@FilterRules[Rest@o, Options@AtomsetGraphic3D]
+							]
+						]&
+					]
+				|>
+  ];
+
+
 parseToAtoms[system_,{{a_,b_},o__}]:=
 	With[{atoms=
 			CreateAtom[system, 
@@ -1439,6 +1553,11 @@ AtomsetTransform[obj:ChemObjPattern,
 		];
 
 
+(* ::Text:: *)
+(*Essentially we should take the first axis, rotate it into the new one, and then take the second one and rotate it around the first spec in to the second*)
+
+
+
 axisPatternBase=
 	(
 		ChemObjPattern?(ChemInstanceQ["Bond"])|
@@ -1453,17 +1572,20 @@ AtomsetAxisAlignmentTransform[
 	b:((axisPattern->axisPattern)|None):None,
 	center:"Center"|"CenterOfMass":"CenterOfMass"
 	]:=
-	With[{
-		com=
-			Replace[center,{
-				"CenterOfMass":>
-					AtomsetCenterOfMass@obj,
-				"Center":>
-					AtomsetCenter@obj
-				}],
-		coords=ChemGet[ChemGet[obj,"Atoms"],"Position"],
-		abc=AtomsetInertialSystem[obj][[{"AAxis","BAxis","CAxis"}]]
-		},
+	With[
+		{
+			com=
+				Replace[center,
+					{
+						"CenterOfMass":>
+							AtomsetCenterOfMass@obj,
+						"Center":>
+							AtomsetCenter@obj
+						}
+					],
+			coords=ChemGet[ChemGet[obj,"Atoms"],"Position"],
+			abc=AtomsetInertialSystem[obj][[{"AAxis","BAxis","CAxis"}]]
+			},
 		ChemUtilsAxisAlignmentTransform[
 			Replace[a,
 				(ax1_->ax2_):>
@@ -2005,7 +2127,8 @@ AtomsetElectricPotentialMap[
 				f,
 				obj,
 				ops,
-				ColorFunction->ColorData@{"DarkRainbow","Reverse"}
+				ColorFunction->
+					ColorData@{"DarkRainbow","Reverse"}
 				]
 		}];
 

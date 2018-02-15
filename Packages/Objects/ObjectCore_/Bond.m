@@ -19,6 +19,37 @@
 
 
 
+(*$ChemObjectDefaults["Bond"]=.*)
+
+
+If[!KeyMemberQ[$ChemObjectDefaults, "Bond"],
+	$ChemObjectDefaults["Bond"]=
+				<|
+					"Atoms"->{},
+					"Type"->1,
+					"Strength"->Automatic,
+					"Color"->{Automatic,Automatic},
+					
+					"Rotate"->ChemMethod[BondRotate],
+					"Move"->ChemMethod[BondMove],
+					"Transform"->ChemMethod[BondTransform],
+					
+					"Graphic"->ChemMethod[
+						With[{o={##}},
+							BondGraphic[First@o,
+								Sequence@@FilterRules[Rest@o,Options@BondGraphic]]
+								]&
+						],
+					"Graphic3D"->ChemMethod[
+						With[{o={##}},
+							BondGraphic3D[First@o,
+								Sequence@@FilterRules[Rest@o,Options@BondGraphic3D]]
+							]&
+						]
+				|>
+  ];
+
+
 CreateBond[sys:ChemSysPattern|Automatic:Automatic,
 	atom1:ChemObjPattern,atom2:ChemObjPattern,
 	btype_:Automatic,

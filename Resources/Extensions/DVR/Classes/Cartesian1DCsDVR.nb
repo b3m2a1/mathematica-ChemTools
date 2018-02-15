@@ -135,171 +135,158 @@ Cell[BoxData[
    "\t", 
    RowBox[{"{", "\n", "\t\t", 
     RowBox[{
-     RowBox[{"\"\<M\>\"", "->", "1"}], ",", "\n", "\t\t", 
-     RowBox[{"\"\<\[HBar]\>\"", "->", "1"}]}], "\n", "\t\t", "}"}]}], 
-  ";"}]], "CodeInput",
+     RowBox[{"\"\<Mass\>\"", "->", "1"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<HBar\>\"", "->", "1"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<ScalingFactor\>\"", "\[Rule]", "1"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<UseExact\>\"", "\[Rule]", "False"}]}], "\n", "\t\t", 
+    "}"}]}], ";"}]], "CodeInput",
  CellChangeTimes->{{3.7189844853755617`*^9, 3.7189844912631063`*^9}, 
    3.719765030964806*^9, {3.7197651099766607`*^9, 3.719765113072352*^9}, 
-   3.7211647262691307`*^9},ExpressionUUID->"fe5264fe-f177-458d-9031-\
+   3.7211647262691307`*^9, 
+   3.727566185390235*^9},ExpressionUUID->"fe5264fe-f177-458d-9031-\
 007a765679e2"],
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"Cartesian1DCsDVRKineticMatrix", "[", 
-   RowBox[{"grid_", ",", 
-    RowBox[{"ops", ":", 
-     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
-  RowBox[{"With", "[", 
+  RowBox[{
    RowBox[{
-    RowBox[{"{", 
-     RowBox[{
-      RowBox[{"xmin", "=", 
-       RowBox[{"Min", "@", "grid"}]}], ",", 
-      RowBox[{"xmax", "=", 
-       RowBox[{"Max", "@", "grid"}]}], ",", 
-      RowBox[{"points", "=", 
-       RowBox[{"Length", "@", "grid"}]}]}], "}"}], ",", "\n", "\t\t", 
+    RowBox[{"Cartesian1DCsDVRKineticMatrix", "[", 
+     RowBox[{"grid_", ",", 
+      RowBox[{"ops", ":", 
+       RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
     RowBox[{"With", "[", 
      RowBox[{
-      RowBox[{"{", 
+      RowBox[{"{", "\n", "\t\t\t", 
        RowBox[{
-        RowBox[{"dx", "=", 
-         RowBox[{
-          RowBox[{"(", 
-           RowBox[{"xmax", "-", "xmin"}], ")"}], "/", "points"}]}], ",", 
+        RowBox[{"xmin", "=", 
+         RowBox[{"Min", "@", "grid"}]}], ",", "\n", "\t\t\t", 
+        RowBox[{"xmax", "=", 
+         RowBox[{"Max", "@", "grid"}]}], ",", "\n", "\t\t\t", 
+        RowBox[{"points", "=", 
+         RowBox[{"Length", "@", "grid"}]}], ",", "\n", "\t\t\t", 
         RowBox[{"m", "=", 
-         RowBox[{"OptionValue", "@", "\"\<M\>\""}]}], ",", 
+         RowBox[{"OptionValue", "@", "\"\<Mass\>\""}]}], ",", "\n", "\t\t\t", 
+        
         RowBox[{"\[HBar]", "=", 
-         RowBox[{"OptionValue", "@", "\"\<\[HBar]\>\""}]}]}], "}"}], ",", 
-      "\n", "\t\t\t", 
+         RowBox[{"OptionValue", "@", "\"\<HBar\>\""}]}], ",", "\n", "\t\t\t", 
+        
+        RowBox[{"scl", "=", 
+         RowBox[{"OptionValue", "@", "\"\<ScalingFactor\>\""}]}], ",", "\n", 
+        "\t\t\t", 
+        RowBox[{"ex", "=", 
+         RowBox[{"TrueQ", "@", 
+          RowBox[{"OptionValue", "@", "\"\<UseExact\>\""}]}]}]}], "\n", 
+       "\t\t\t", "}"}], ",", "\n", "\t\t", 
       RowBox[{"With", "[", 
        RowBox[{
-        RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"dx", "=", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"xmax", "-", "xmin"}], ")"}], "/", "points"}]}], "}"}], 
+        ",", "\n", "\t\t\t\t", 
+        RowBox[{"{", "\n", "\t\t\t\t\t", 
          RowBox[{
-          RowBox[{"f1", "=", "\n", "\t\t\t\t\t", 
-           RowBox[{"Compile", "[", "\n", "\t\t\t\t\t\t", 
-            RowBox[{
-             RowBox[{"{", 
-              RowBox[{
-               RowBox[{"{", 
-                RowBox[{"i", ",", " ", "_Integer"}], "}"}], ",", " ", 
-               RowBox[{"{", 
-                RowBox[{"j", ",", " ", "_Integer"}], "}"}], ",", " ", 
-               RowBox[{"{", 
-                RowBox[{"p", ",", " ", "_Integer"}], "}"}]}], "}"}], ",", 
-             "\n", "\t\t\t\t\t\t", 
-             RowBox[{
-              RowBox[{"1.", "/", 
-               RowBox[{"Sqrt", "[", "2", "]"}]}], "*", 
-              RowBox[{
-               RowBox[{"(", 
-                RowBox[{"\[HBar]", 
-                 RowBox[{
-                  RowBox[{"(", 
-                   RowBox[{"-", "1"}], ")"}], "^", 
-                  RowBox[{"(", 
-                   RowBox[{"i", "-", "j"}], ")"}]}]}], ")"}], "/", 
-               RowBox[{"(", 
-                RowBox[{"2.", "m", " ", 
-                 RowBox[{"dx", "^", "2"}]}], ")"}]}], "*", "\n", 
-              "\t\t\t\t\t\t\t", 
-              RowBox[{"(", "\n", "\t\t\t\t\t\t\t\t", 
-               RowBox[{
-                RowBox[{"If", "[", 
-                 RowBox[{
-                  RowBox[{"i", "\[Equal]", "j"}], ",", "\n", 
-                  "\t\t\t\t\t\t\t\t\t", 
-                  RowBox[{
-                   RowBox[{"\[Pi]", "^", "2"}], "/", "3."}], ",", "\n", 
-                  "\t\t\t\t\t\t\t\t\t", 
-                  RowBox[{"2", "/", 
-                   RowBox[{
-                    RowBox[{"(", 
-                    RowBox[{"i", "-", "j"}], ")"}], "^", "2"}]}]}], "\n", 
-                 "\t\t\t\t\t\t\t\t\t", "]"}], "+", 
-                RowBox[{"2.", "/", 
-                 RowBox[{
-                  RowBox[{"(", " ", 
-                   RowBox[{"i", " ", "+", " ", "j", " ", "-", " ", 
-                    RowBox[{"(", " ", 
-                    RowBox[{
-                    RowBox[{"2", "*", "p"}], " ", "+", "1"}], " ", ")"}]}], 
-                   ")"}], "^", "2"}]}]}], "\n", "\t\t\t\t\t\t\t\t", ")"}]}]}],
-             "\n", "\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t", 
-          RowBox[{"f2", "=", "\n", "\t\t\t\t\t", 
-           RowBox[{"Compile", "[", "\n", "\t\t\t\t\t\t", 
-            RowBox[{
-             RowBox[{"{", 
-              RowBox[{
-               RowBox[{"{", 
-                RowBox[{"i", ",", " ", "_Integer"}], "}"}], ",", " ", 
-               RowBox[{"{", 
-                RowBox[{"j", ",", " ", "_Integer"}], "}"}], ",", " ", 
-               RowBox[{"{", 
-                RowBox[{"p", ",", " ", "_Integer"}], "}"}]}], "}"}], ",", 
-             "\n", "\t\t\t\t\t\t", 
-             RowBox[{
-              RowBox[{"1.", "/", 
-               RowBox[{"Sqrt", "[", "2", "]"}]}], "*", 
-              RowBox[{
-               RowBox[{"(", 
-                RowBox[{"\[HBar]", " ", 
-                 RowBox[{
-                  RowBox[{"(", 
-                   RowBox[{"-", "1"}], ")"}], "^", 
-                  RowBox[{"(", 
-                   RowBox[{"i", "-", "j"}], ")"}]}]}], ")"}], "/", 
-               RowBox[{"(", 
-                RowBox[{"2", "m", " ", 
-                 RowBox[{"dx", "^", "2"}]}], ")"}]}], "*", "\n", 
-              "\t\t\t\t\t\t\t", 
-              RowBox[{"(", "\n", "\t\t\t\t\t\t\t\t", 
-               RowBox[{
-                RowBox[{"If", "[", 
-                 RowBox[{
-                  RowBox[{"i", "\[Equal]", "j"}], ",", "\n", 
-                  "\t\t\t\t\t\t\t\t\t", 
-                  RowBox[{
-                   RowBox[{"\[Pi]", "^", "2"}], "/", "3."}], ",", "\n", 
-                  "\t\t\t\t\t\t\t\t\t", 
-                  RowBox[{"2.", "/", 
-                   RowBox[{
-                    RowBox[{"(", 
-                    RowBox[{"i", "-", "j"}], ")"}], "^", "2"}]}]}], "\n", 
-                 "\t\t\t\t\t\t\t\t\t", "]"}], "-", 
-                RowBox[{"2.", "/", 
-                 RowBox[{
-                  RowBox[{"(", " ", 
-                   RowBox[{"i", " ", "+", " ", "j", " ", "-", " ", 
-                    RowBox[{"(", " ", 
-                    RowBox[{
-                    RowBox[{"2", "*", "p"}], " ", "+", "1"}], " ", ")"}]}], 
-                   ")"}], "^", "2"}]}]}], "\n", "\t\t\t\t\t\t\t\t", ")"}]}]}],
-             "\n", "\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t", 
-          RowBox[{"head", "=", "\n", "\t\t\t\t\t", 
+          RowBox[{
            RowBox[{"If", "[", 
             RowBox[{
              RowBox[{"points", ">", "100000"}], ",", " ", "ParallelTable", 
-             ",", " ", "Table"}], "]"}]}]}], "\n", "\t\t\t\t", "}"}], ",", 
-        "\n", "\t\t\t\t", 
-        RowBox[{"{", "\n", "\t\t\t\t\t", 
-         RowBox[{
-          RowBox[{"head", "[", "\n", "\t\t\t\t\t\t", 
+             ",", " ", "Table"}], "]"}], "[", "\n", "\t\t\t\t\t\t", 
            RowBox[{
-            RowBox[{"f1", "[", 
-             RowBox[{"i", ",", " ", "j", ",", " ", "points"}], "]"}], ",", 
-            "\n", "\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"If", "[", 
+              RowBox[{"ex", ",", " ", "1", ",", " ", "1."}], "]"}], "*", 
+             "scl", "*", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{"1", "/", 
+              RowBox[{"Sqrt", "[", "2", "]"}]}], "*", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"\[HBar]", 
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{"-", "1"}], ")"}], "^", 
+                 RowBox[{"(", 
+                  RowBox[{"i", "-", "j"}], ")"}]}]}], ")"}], "/", 
+              RowBox[{"(", 
+               RowBox[{"2", "m", " ", 
+                RowBox[{"dx", "^", "2"}]}], ")"}]}], "*", "\n", "\t", 
+             "\t\t\t\t\t\t\t", 
+             RowBox[{"(", "\n", "\t", "\t\t\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"i", "\[Equal]", "j"}], ",", "\n", "\t", "\t", 
+                 "\t\t\t\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"\[Pi]", "^", "2"}], "/", "3"}], ",", "\n", "\t", 
+                 "\t", "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"2", "/", 
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{"i", "-", "j"}], ")"}], "^", "2"}]}]}], "\n", 
+                "\t", "\t", "\t\t\t\t\t\t\t\t", "]"}], "+", 
+               RowBox[{"2", "/", 
+                RowBox[{
+                 RowBox[{"(", " ", 
+                  RowBox[{"i", " ", "+", " ", "j", " ", "-", " ", 
+                   RowBox[{"(", " ", 
+                    RowBox[{
+                    RowBox[{"2", "*", "points"}], " ", "+", "1"}], " ", 
+                    ")"}]}], ")"}], "^", "2"}]}]}], "\n", "\t", 
+              "\t\t\t\t\t\t\t\t", ")"}]}], ",", "\n", "\t\t\t\t\t\t", 
             RowBox[{"{", 
              RowBox[{"i", ",", " ", "points"}], "}"}], ",", "\n", 
             "\t\t\t\t\t\t", 
             RowBox[{"{", 
              RowBox[{"j", ",", " ", "points"}], "}"}]}], "\n", "\t\t\t\t\t\t",
             "]"}], ",", "\n", "\t\t\t\t\t", 
-          RowBox[{"head", "[", "\n", "\t\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"points", ">", "100000"}], ",", " ", "ParallelTable", 
+             ",", " ", "Table"}], "]"}], "[", "\n", "\t\t\t\t\t\t", 
            RowBox[{
-            RowBox[{"f2", "[", 
-             RowBox[{"i", ",", " ", "j", ",", " ", "points"}], "]"}], ",", 
-            "\n", "\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"If", "[", 
+              RowBox[{"ex", ",", " ", "1", ",", " ", "1."}], "]"}], "scl", 
+             "*", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{"1", "/", 
+              RowBox[{"Sqrt", "[", "2", "]"}]}], "*", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"\[HBar]", " ", 
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{"-", "1"}], ")"}], "^", 
+                 RowBox[{"(", 
+                  RowBox[{"i", "-", "j"}], ")"}]}]}], ")"}], "/", 
+              RowBox[{"(", 
+               RowBox[{"2", "m", " ", 
+                RowBox[{"dx", "^", "2"}]}], ")"}]}], "*", "\n", 
+             "\t\t\t\t\t\t\t", 
+             RowBox[{"(", "\n", "\t\t\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"i", "\[Equal]", "j"}], ",", "\n", 
+                 "\t\t\t\t\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"\[Pi]", "^", "2"}], "/", "3"}], ",", "\n", 
+                 "\t\t\t\t\t\t\t\t\t", 
+                 RowBox[{"2", "/", 
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{"i", "-", "j"}], ")"}], "^", "2"}]}]}], "\n", 
+                "\t\t\t\t\t\t\t\t\t", "]"}], "-", 
+               RowBox[{"2", "/", 
+                RowBox[{
+                 RowBox[{"(", " ", 
+                  RowBox[{"i", " ", "+", " ", "j", " ", "-", " ", 
+                   RowBox[{"(", " ", 
+                    RowBox[{
+                    RowBox[{"2", "*", "points"}], " ", "+", "1"}], " ", 
+                    ")"}]}], ")"}], "^", "2"}]}]}], "\n", "\t\t\t\t\t\t\t\t", 
+              ")"}]}], ",", "\n", "\t\t\t\t\t\t", 
             RowBox[{"{", 
              RowBox[{"i", ",", " ", "points", ",", " ", "1", ",", " ", 
               RowBox[{"-", "1"}]}], "}"}], ",", "\n", "\t\t\t\t\t\t", 
@@ -307,7 +294,7 @@ Cell[BoxData[
              RowBox[{"j", ",", " ", "points", ",", " ", "1", ",", " ", 
               RowBox[{"-", "1"}]}], "}"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], 
          "\n", "\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t", "]"}]}], "\n", 
-     "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}]], "CodeInput",
+     "\t\t\t", "]"}]}], "\n"}], "\t\t", "]"}]], "CodeInput",
  CellChangeTimes->{{3.699200204109901*^9, 3.6992002446128483`*^9}, {
    3.699201703464225*^9, 3.699201842336369*^9}, {3.718984489178988*^9, 
    3.7189844900394487`*^9}, {3.718985143500957*^9, 3.718985150355731*^9}, 
@@ -329,8 +316,10 @@ Cell[BoxData[
    3.719872309936858*^9, 3.71987234375274*^9}, {3.7198724214365597`*^9, 
    3.71987251740014*^9}, {3.719873417323709*^9, 3.719873490380157*^9}, {
    3.719873540521762*^9, 3.719873551006381*^9}, {3.7198762661570168`*^9, 
-   3.719876273554902*^9}, 
-   3.721164726284852*^9},ExpressionUUID->"83694f47-d13a-4c3e-99f9-\
+   3.719876273554902*^9}, 3.721164726284852*^9, {3.727566192787773*^9, 
+   3.727566199263708*^9}, 3.727566419005581*^9, {3.727566663649043*^9, 
+   3.7275668589898653`*^9}, {3.7275670450752373`*^9, 
+   3.7275670745934467`*^9}},ExpressionUUID->"83694f47-d13a-4c3e-99f9-\
 61a940272020"]
 }, Open  ]],
 
@@ -659,7 +648,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"175b9d87-ebdf-4990-abf4-\
 f2e40fb52d02"]
 },
 WindowSize->{713, 755},
-WindowMargins->{{Automatic, 12}, {4, Automatic}},
+WindowMargins->{{Automatic, 300}, {Automatic, 3}},
 FrontEndVersion->"11.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
 10, 2017)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackagePlain.nb", 

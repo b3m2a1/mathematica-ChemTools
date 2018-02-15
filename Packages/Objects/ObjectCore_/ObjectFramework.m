@@ -106,93 +106,6 @@ $ChemDefaultSystem=
 	CreateChemicalSystem["System-default-"];
 
 
-(*$ChemObjects//Clear*)
-
-
-If[MatchQ[$ChemObjects,_Symbol],
-	$ChemObjects=
-		<|
-			"Atom"->
-				<|
-					"Element"->"H",
-					"Bonds"->{},
-					"Mass"->
-						ChemDataLookup[Key["Element"],"AtomicMass"],
-					"MaxValence"->
-						ChemDataLookup[Key["Element"],"ElementValences"],
-					"Color"->Automatic,
-					"Valence"->ChemProperty[AtomValence],
-					"AtomicNumber"->
-						ChemDataLookup[Key["Element"],"AtomicNumber"],
-					"Radius"->
-						UnitConvert[
-							ChemDataLookup[Key["Element"],"Radius"],
-							"Angstroms"],
-					"Electronegativity"->
-						ChemDataLookup[Key["Element"],"Electronegativity"],
-					"Position"->{0.,0.,0.},
-					"Rotate"->ChemMethod[AtomRotate],
-					"Move"->ChemMethod[AtomMove],
-					"Transform"->ChemMethod[AtomTransform],
-					"Graphic"->
-						ChemMethod[
-							With[{o={##}},
-								AtomGraphic[First@o,
-									Sequence@@FilterRules[Rest@o,Options@AtomGraphic]
-									]
-								]&
-							],
-					"Graphic3D"->
-						ChemMethod[
-							With[{o={##}},
-								AtomGraphic3D[First@o,
-									Sequence@@FilterRules[Rest@o,Options@AtomGraphic3D]]
-									]&
-							]
-					|>,
-			"Bond"->
-				<|
-					"Atoms"->{},
-					"Type"->1,
-					"Strength"->Automatic,
-					"Color"->{Automatic,Automatic},
-					"Rotate"->ChemMethod[BondRotate],
-					"Move"->ChemMethod[BondMove],
-					"Transform"->ChemMethod[BondTransform],
-					
-					"Graphic"->ChemMethod[
-						With[{o={##}},
-							BondGraphic[First@o,
-								Sequence@@FilterRules[Rest@o,Options@BondGraphic]]
-								]&
-						],
-					"Graphic3D"->ChemMethod[
-						With[{o={##}},
-							BondGraphic3D[First@o,
-								Sequence@@FilterRules[Rest@o,Options@BondGraphic3D]]
-							]&
-						]
-				|>,
-				
-			"Atomset"->
-				<|
-					"Atoms"->{},
-					
-					"Rotate"->ChemMethod[AtomsetRotate],
-					"Move"->ChemMethod[AtomsetMove],
-					"Transform"->ChemMethod[AtomsetTransform],
-					
-					"Graphic"->ChemMethod[
-						With[{o={##}},AtomsetGraphic[First@o,Sequence@@Rest@o]]&
-						],
-					"Graphic3D"->ChemMethod[
-						With[{o={##}},AtomsetGraphic3D[First@o,Sequence@@Rest@o]]&
-						]
-					|>
-			|>
-		];
-
-
 ChemAdd[
 	sys:ChemSysPattern,
 	type:_String|{__String},
@@ -207,7 +120,7 @@ ChemAdd[
 						MapThread[
 							Join[
 								<|"ObjectType"->#2,"ObjectReferences"->{}|>,
-								Lookup[$ChemObjects,#2,<||>],
+								Lookup[$ChemObjectDefaults,#2,<||>],
 								Association@Flatten@{#}
 								]&,
 							{
@@ -383,6 +296,17 @@ ChemClear[pat_:"*"]:=
 				$ChemDefaultSystem=
 					CreateChemicalSystem["System-default-"]
 			]
+		];
+
+
+(*$ChemObjectDefaults//Clear*)
+
+
+If[MatchQ[$ChemObjectDefaults,_Symbol],
+	$ChemObjectDefaults=
+		<| 
+			(* Each of the individual classes will populate the list in turn *)
+			|>
 		];
 
 
@@ -575,31 +499,6 @@ With[{chemStore=ChemStore[_ChemObject,chemStoreBasePattern]},
 		HoldPattern[SetPermissions[s:chemStore,p_]]:=
 			SetPermissions[ChemStoreObject[s],p];
 	];
-
-
-Format[s:ChemStore[obj_ChemObject,base:chemStoreBasePattern]]:=
-	RawBoxes@BoxForm`ArrangeSummaryBox[
-		"ChemStore",
-		s,
-		None,
-		{
-			BoxForm`MakeSummaryItem[{"Name: ",
-				StringJoin@
-					Riffle[
-						Reverse[
-							Riffle[Drop[#,-5;;-1],"-"]&/@
-								StringSplit[List@@obj,"-"]
-							],
-						"@"
-						]
-				},StandardForm]
-			},
-		{
-			BoxForm`MakeSummaryItem[{"Object: ",obj},StandardForm],
-			BoxForm`MakeSummaryItem[{"Base: ",base},StandardForm]
-			},
-		StandardForm
-		];
 
 
 chemSave[s:ChemStore[obj:ChemSinglePattern,base:chemStoreBasePattern]]:=
@@ -1207,6 +1106,12 @@ eChemObjectConstructor~SetAttributes~HoldAllComplete;
 	Block[{$eChemObjectConstructor=True},
 		System`Private`SetNoEntry[obj]
 		]*)
+
+
+(obj:ChemObject[_,_]?ChemObjectQ)["Properties"]:=
+	Keys@ChemAssociation@obj;
+(obj:ChemObject[_,_]?ChemObjectQ)["Association"]:=
+	ChemAssociation@obj;
 
 
 ChemObject/:(obj:ChemObject[_,_]?ChemObjectQ)[[bits___]]:=

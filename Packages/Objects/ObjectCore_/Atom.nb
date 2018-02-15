@@ -8,6 +8,141 @@ Cell["Atom", "CodeSection",
 
 Cell[CellGroupData[{
 
+Cell["Class", "CodeSubsection",
+ CellChangeTimes->{{3.72697311249339*^9, 
+  3.726973112949582*^9}},ExpressionUUID->"b487ad14-defd-4784-ba76-\
+2056621433a4"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"$ChemObjectDefaults", "[", "\"\<Atom\>\"", "]"}], "=."}], 
+  "*)"}]], "CodeInput",
+ CellChangeTimes->{
+  3.726975211999032*^9},ExpressionUUID->"592caab9-63ea-4368-949c-\
+363e2b66a74e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"If", "[", 
+   RowBox[{
+    RowBox[{"!", 
+     RowBox[{"KeyMemberQ", "[", 
+      RowBox[{"$ChemObjectDefaults", ",", " ", "\"\<Atom\>\""}], "]"}]}], ",",
+     "\n", "\t", 
+    RowBox[{
+     RowBox[{"$ChemObjectDefaults", "[", "\"\<Atom\>\"", "]"}], "=", "\n", 
+     "\t\t\t", 
+     RowBox[{"<|", "\n", "\t\t\t\t\t", 
+      RowBox[{
+       RowBox[{"\"\<Element\>\"", "\[Rule]", "\"\<H\>\""}], ",", "\n", 
+       "\t\t\t\t\t", 
+       RowBox[{"\"\<Bonds\>\"", "\[Rule]", 
+        RowBox[{"{", "}"}]}], ",", "\n", "\t\t\t\t\t", 
+       RowBox[{"\"\<Mass\>\"", "->", "\n", "\t\t\t\t\t\t", 
+        RowBox[{"ChemDataLookup", "[", 
+         RowBox[{
+          RowBox[{"Key", "[", "\"\<Element\>\"", "]"}], ",", 
+          "\"\<AtomicMass\>\""}], "]"}]}], ",", "\n", "\t\t\t\t\t", 
+       RowBox[{"\"\<MaxValence\>\"", "->", "\n", "\t\t\t\t\t\t", 
+        RowBox[{"ChemDataLookup", "[", 
+         RowBox[{
+          RowBox[{"Key", "[", "\"\<Element\>\"", "]"}], ",", 
+          "\"\<ElementValences\>\""}], "]"}]}], ",", "\n", "\t\t\t\t\t", 
+       RowBox[{"\"\<Color\>\"", "\[Rule]", "Automatic"}], ",", "\n", 
+       "\t\t\t\t\t", 
+       RowBox[{"\"\<Valence\>\"", "->", 
+        RowBox[{"ChemProperty", "[", "AtomValence", "]"}]}], ",", "\n", 
+       "\t\t\t\t\t", 
+       RowBox[{"\"\<AtomicNumber\>\"", "->", "\n", "\t\t\t\t\t\t", 
+        RowBox[{"ChemDataLookup", "[", 
+         RowBox[{
+          RowBox[{"Key", "[", "\"\<Element\>\"", "]"}], ",", 
+          "\"\<AtomicNumber\>\""}], "]"}]}], ",", "\n", "\t\t\t\t\t", 
+       RowBox[{"\"\<Radius\>\"", "->", "\n", "\t\t\t\t\t\t", 
+        RowBox[{"UnitConvert", "[", "\n", "\t\t\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"ChemDataLookup", "[", 
+           RowBox[{
+            RowBox[{"Key", "[", "\"\<Element\>\"", "]"}], ",", 
+            "\"\<Radius\>\""}], "]"}], ",", "\n", "\t\t\t\t\t\t\t", 
+          "\"\<Angstroms\>\""}], "]"}]}], ",", "\n", "\t\t\t\t\t", 
+       RowBox[{"\"\<Electronegativity\>\"", "\[Rule]", "\n", "\t\t\t\t\t\t", 
+        RowBox[{"ChemDataLookup", "[", 
+         RowBox[{
+          RowBox[{"Key", "[", "\"\<Element\>\"", "]"}], ",", 
+          "\"\<Electronegativity\>\""}], "]"}]}], ",", "\n", "\t\t\t\t\t", 
+       RowBox[{"\"\<Position\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"0.", ",", "0.", ",", "0."}], "}"}]}], ",", "\n", 
+       "\t\t\t\t\t", 
+       RowBox[{"\"\<Rotate\>\"", "->", 
+        RowBox[{"ChemMethod", "[", "AtomRotate", "]"}]}], ",", "\n", 
+       "\t\t\t\t\t", 
+       RowBox[{"\"\<Move\>\"", "\[Rule]", 
+        RowBox[{"ChemMethod", "[", "AtomMove", "]"}]}], ",", "\n", 
+       "\t\t\t\t\t", 
+       RowBox[{"\"\<Transform\>\"", "->", 
+        RowBox[{"ChemMethod", "[", "AtomTransform", "]"}]}], ",", "\n", 
+       "\t\t\t\t\t", 
+       RowBox[{"\"\<Graphic\>\"", "\[Rule]", "\n", "\t\t\t\t\t\t", 
+        RowBox[{"ChemMethod", "[", "\n", "\t\t\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"With", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"o", "=", 
+              RowBox[{"{", "##", "}"}]}], "}"}], ",", "\n", "\t", 
+            "\t\t\t\t\t\t\t", 
+            RowBox[{"AtomGraphic", "[", 
+             RowBox[{
+              RowBox[{"First", "@", "o"}], ",", "\n", "\t", 
+              "\t\t\t\t\t\t\t\t", 
+              RowBox[{"Sequence", "@@", 
+               RowBox[{"FilterRules", "[", 
+                RowBox[{
+                 RowBox[{"Rest", "@", "o"}], ",", " ", 
+                 RowBox[{"Options", "@", "AtomGraphic"}]}], "]"}]}]}], "\n", 
+             "\t", "\t\t\t\t\t\t\t\t", "]"}]}], "\n", "\t", "\t\t\t\t\t\t\t", 
+           "]"}], "&"}], "\n", "\t\t\t\t\t\t\t", "]"}]}], ",", "\n", 
+       "\t\t\t\t\t", 
+       RowBox[{"\"\<Graphic3D\>\"", "\[Rule]", "\n", "\t\t\t\t\t\t", 
+        RowBox[{"ChemMethod", "[", "\n", "\t\t\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"With", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"o", "=", 
+              RowBox[{"{", "##", "}"}]}], "}"}], ",", "\n", "\t", 
+            "\t\t\t\t\t\t\t", 
+            RowBox[{"AtomGraphic3D", "[", 
+             RowBox[{
+              RowBox[{"First", "@", "o"}], ",", "\n", "\t", 
+              "\t\t\t\t\t\t\t\t", 
+              RowBox[{"Sequence", "@@", 
+               RowBox[{"FilterRules", "[", 
+                RowBox[{
+                 RowBox[{"Rest", "@", "o"}], ",", 
+                 RowBox[{"Options", "@", "AtomGraphic3D"}]}], "]"}]}]}], 
+             "]"}]}], "\n", "\t", "\t\t\t\t\t\t\t\t", "]"}], "&"}], "\n", 
+         "\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t", "|>"}]}]}], "\n", 
+   "  ", "]"}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.7269718460174503`*^9, 3.726971866710965*^9}, {
+   3.72697192852835*^9, 3.726971937213673*^9}, {3.7269729527788763`*^9, 
+   3.726973043721567*^9}, {3.726973123572806*^9, 3.726973139627715*^9}, 
+   3.726975204620026*^9},ExpressionUUID->"65caf789-10e5-41fb-a08b-\
+9cb24b569a1c"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Props", "CodeSubsection",
+ CellChangeTimes->{{3.726973105919379*^9, 
+  3.7269731110052023`*^9}},ExpressionUUID->"7cf5020f-605e-4fae-b055-\
+96899d08ea24"],
+
+Cell[CellGroupData[{
+
 Cell["Create", "CodeSubsubsection",
  CellChangeTimes->{{3.6924074254930153`*^9, 
   3.6924074261894913`*^9}},ExpressionUUID->"decb4a61-0307-448b-b93d-\
@@ -2164,7 +2299,7 @@ Cell[BoxData[{
    3.7203756872288103`*^9, 3.72037573681534*^9}, 
    3.720380106821875*^9},ExpressionUUID->"d2cb5c36-4121-495c-aed9-\
 eb903def0266"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -2282,12 +2417,18 @@ Cell[BoxData[{
            RowBox[{"AtomColor", "@", "obj"}]}]}], "\n", "\t\t\t\t", "]"}]}], 
        ",", "\n", "\t\t", 
        RowBox[{"position", "=", "\n", "\t\t\t", 
-        RowBox[{"Flatten", "[", 
+        RowBox[{"Replace", "[", 
          RowBox[{
-          RowBox[{"List", "@", 
-           RowBox[{"ChemGet", "[", 
-            RowBox[{"obj", ",", "\"\<Position\>\""}], "]"}]}], ",", " ", 
-          "1"}], "]"}]}], ",", "\n", "\t\t", 
+          RowBox[{"ChemGet", "[", 
+           RowBox[{"obj", ",", " ", "\"\<Position\>\""}], "]"}], ",", " ", 
+          "\n", "\t\t\t\t", 
+          RowBox[{"{", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"l", ":", 
+             RowBox[{"{", 
+              RowBox[{"__", "?", "NumericQ"}], "}"}]}], "\[RuleDelayed]", 
+            RowBox[{"{", "l", "}"}]}], "\n", "\t\t\t\t\t", "}"}]}], "\n", 
+         "\t\t\t\t", "]"}]}], ",", "\n", "\t\t", 
        RowBox[{"style", "=", "\n", "\t\t\t", 
         RowBox[{"Replace", "[", 
          RowBox[{
@@ -2396,9 +2537,10 @@ Cell[BoxData[{
    3.7203732363105583`*^9}, {3.720373281409993*^9, 3.720373290036377*^9}, {
    3.720373371733418*^9, 3.7203733826294394`*^9}, {3.7203747845765*^9, 
    3.720374825910017*^9}, {3.7203752763197527`*^9, 3.7203753053024387`*^9}, {
-   3.720375780524135*^9, 
-   3.720375797363598*^9}},ExpressionUUID->"a9544352-00a8-4c34-ba59-\
+   3.720375780524135*^9, 3.720375797363598*^9}, {3.726975484923246*^9, 
+   3.7269755101607943`*^9}},ExpressionUUID->"a9544352-00a8-4c34-ba59-\
 78720bcebf9c"]
+}, Open  ]]
 }, Open  ]]
 }, Open  ]],
 
@@ -2406,10 +2548,10 @@ Cell["", "SectionSeparator",ExpressionUUID->"65838215-05fd-4728-b51c-\
 ae803a0eff38"]
 },
 WindowSize->{808, 754},
-WindowMargins->{{146, Automatic}, {0, Automatic}},
+WindowMargins->{{58, Automatic}, {8, Automatic}},
 FrontEndVersion->"11.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
 10, 2017)",
-StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackagePlain.nb", 
   CharacterEncoding -> "UTF-8"]
 ]
 
