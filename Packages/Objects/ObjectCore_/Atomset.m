@@ -1590,43 +1590,52 @@ AtomsetAxisAlignmentTransform[
 			Replace[a,
 				(ax1_->ax2_):>
 					Rule@@
-						Replace[{ax1,ax2},
-							{
-								bond:ChemObjPattern?(InstanceQ["Bond"]):>
-									BondVector[bond],
-								-bond:ChemObjPattern?(InstanceQ["Bond"]):>
-									-BondVector[bond],
-								"Center"|"CenterOfMass"->com,
-								-"Center"|"CenterOfMass"->-com,
-								"A"->abc["AAxis"],
-								-"A"->-abc["AAxis"],
-								"B"->abc["BAxis"],
-								-"B"->-abc["BAxis"],
-								"C"->abc["CAxis"],
-								-"C"->-abc["CAxis"]
-								},
-							1
+						Plus[
+							{com, 0},
+							Replace[
+								{ax1, ax2},
+								{
+									bond:ChemObjPattern?(ChemInstanceQ["Bond"]):>
+										BondVector[bond],
+									-bond:ChemObjPattern?(ChemInstanceQ["Bond"]):>
+										-BondVector[bond],
+									"Center"|"CenterOfMass"->com,
+									-"Center"|"CenterOfMass"->-com,
+									"A"->abc["AAxis"],
+									-"A"->-abc["AAxis"],
+									"B"->abc["BAxis"],
+									-"B"->-abc["BAxis"],
+									"C"->abc["CAxis"],
+									-"C"->-abc["CAxis"]
+									},
+								1
+								]
 							]
 				],
 			Replace[b,
 				(ax1_->ax2_):>
 					Rule@@
-						Replace[{ax1,ax2},
-							{
-								bond:ChemObjPattern?(InstanceQ["Bond"]):>
-									BondVector[bond],
-								-bond:ChemObjPattern?(InstanceQ["Bond"]):>
-									-BondVector[bond],
-								"Center"|"CenterOfMass"->com,
-								-"Center"|"CenterOfMass"->-com,
-								"A"->abc["AAxis"],
-								-"A"->-abc["AAxis"],
-								"B"->abc["BAxis"],
-								-"B"->-abc["BAxis"],
-								"C"->abc["CAxis"],
-								-"C"->-abc["CAxis"]
-								},
-							1]
+						Plus[
+							{com, 0},
+							Replace[
+								{ax1,ax2},
+								{
+									bond:ChemObjPattern?(ChemInstanceQ["Bond"]):>
+										BondVector[bond],
+									-bond:ChemObjPattern?(ChemInstanceQ["Bond"]):>
+										-BondVector[bond],
+									"Center"|"CenterOfMass"->com,
+									-"Center"|"CenterOfMass"->-com,
+									"A"->abc["AAxis"],
+									-"A"->-abc["AAxis"],
+									"B"->abc["BAxis"],
+									-"B"->-abc["BAxis"],
+									"C"->abc["CAxis"],
+									-"C"->-abc["CAxis"]
+									},
+								1
+								]
+							]
 				],
 			com
 			]

@@ -66,9 +66,10 @@ If[!KeyMemberQ[$ChemObjectDefaults, "Atom"],
 
 chemAtomProps[
 	element:_String|Automatic:Automatic,
-	mass:_?NumberQ|_Quantity|Automatic:Automatic,
+	mass:_?NumericQ|_Quantity|Automatic:Automatic,
 	position:
-		{_?NumberQ|_Quantity,_?NumberQ|_Quantity,_?NumberQ|_Quantity}|
+		{
+			_?NumericQ|_Quantity,_?NumericQ|_Quantity,_?NumericQ|_Quantity}|
 		_QuantityArray|Automatic:Automatic,
 	others___Rule
 	]:=
@@ -77,9 +78,9 @@ chemAtomProps[
 			With[{props=
 				DeleteCases[{
 					"Element"->
-						ChemDataLookup[e,"Symbol"],
+						ChemDataLookup[e, "Symbol"],
 					"Mass"->
-						ChemDataLookup[e,"Mass"],
+						ChemDataLookup[e, "Mass"],
 					"Position"->position,
 					"NeutronNumber"->
 						If[iq,
@@ -105,9 +106,9 @@ CreateAtom[sys:ChemSysPattern|Automatic:Automatic,
 
 CreateAtom[sys:ChemSysPattern|Automatic:Automatic,
 	element:_String|Automatic:Automatic,
-	mass:_?NumberQ|_Quantity|Automatic:Automatic,
+	mass:_?NumericQ|_Quantity|Automatic:Automatic,
 	position:
-		{_?NumberQ|_Quantity,_?NumberQ|_Quantity,_?NumberQ|_Quantity}|
+		{_?NumericQ|_Quantity,_?NumericQ|_Quantity,_?NumericQ|_Quantity}|
 		_QuantityArray|Automatic:Automatic,
 	others___Rule
 	]:=
@@ -116,9 +117,9 @@ CreateAtom[sys:ChemSysPattern|Automatic:Automatic,
 	props:{
 		{
 			Optional[_String|Automatic,Automatic],
-			Optional[_?NumberQ|_Quantity|Automatic,Automatic],
+			Optional[_?NumericQ|_Quantity|Automatic,Automatic],
 			Optional[
-				{_?NumberQ|_Quantity,_?NumberQ|_Quantity,_?NumberQ|_Quantity}|
+				{_?NumericQ|_Quantity,_?NumericQ|_Quantity,_?NumericQ|_Quantity}|
 				_QuantityArray|Automatic,
 				Automatic
 				],
@@ -165,7 +166,7 @@ AtomCanBondQ[obj:ChemObjPattern,ob2:ChemObjPattern,btype_:1]:=
 		ChemGet[Flatten@{obj,ob2},"Valence"];
 AtomCanBondQ[obj:ChemObjPattern,obv:ChemObjVectorPattern,btype_:1]:=
 	Apply[
-		!MatchQ[btype,_?NumberQ]||#+#2-2*btype>=0&,
+		!MatchQ[btype,_?NumericQ]||#+#2-2*btype>=0&,
 		Partition[
 			Riffle[Rest@#,First@#]&ChemGet[Flatten@{obj,obv},"Valence"],
 			2]
@@ -263,13 +264,13 @@ AtomValenceChoices[a:ChemObjAllPattern]:=
 AtomValence[obj:ChemObjPattern]:=
 	First@ChemGet[obj,"MaxValence"]-
 		Total@Map[
-			Replace[Except[_?NumberQ]:>0],
+			Replace[Except[_?NumericQ]:>0],
 			ChemGet[ChemGet[obj,"Bonds"],"Type"]
 			];
 AtomValence[obj:ChemObjVectorPattern]:=
 	First/@ChemGet[obj,"MaxValence"]-
 		Total/@Map[
-			Replace[#,Except[_?NumberQ]:>{0},1]&,
+			Replace[#,Except[_?NumericQ]:>{0},1]&,
 			ChemGet["Type"]/@ChemGet[obj,"Bonds"]
 			];
 

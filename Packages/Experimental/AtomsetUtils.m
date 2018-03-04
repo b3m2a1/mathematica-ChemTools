@@ -28,6 +28,8 @@ Begin["`Private`"];
 
 $CreateGeometricAtomsetGeometries=
 	<|
+		"FromCoordinates"->
+			CreateCoordinatesAtomset,
 		"Linear"->
 			CreateLinearAtomset,
 		"Bent"->
@@ -71,36 +73,33 @@ $CreateGeometricAtomsetGeometries=
 		"FacialOctahedral"->
 			CreateFacialOctahedralAtomset,
 		"MeridionalOctahedral"->
-			CreateMeridionalOctahedralAtomset,
-		"Coordinates"->
-			CreateCoordinatesAtomset
+			CreateMeridionalOctahedralAtomset
 		|>;
 
 
 CreateGeometricAtomset//Clear
 
 
+CreateGeometricAtomset::numats="Atomset geometry `` expects `` atoms, `` provided";
+
+
 CreateGeometricAtomset[
 	geom_String,
 	check:True|False:False,
-	args___
+	args:Except[_?OptionQ]...,
+	ops:OptionsPattern[]
 	]:=
-	With[{f=$CreateGeometricAtomsetGeometries[geom]},
+	With[
+		{
+			f=$CreateGeometricAtomsetGeometries[geom]
+			},
 		With[{res=
 			If[MissingQ@f,
-				With[{
-					coords=
-						Replace[PolyhedronData[geom, "Vertices"],
-							f_Function:>f[1,1,1],
-							1
-							]},
-					If[ListQ@coords,
-						CreateCoordinatesAtomset[check,
-							coords,
-							args,
-							PolyhedronData[geom, "Edges"]
-							]
-						]
+				CreatePolyhedronAtomset[
+					geom, 
+					Flatten[{args}, 1],
+					check,
+					ops
 					],
 				$CreateGeometricAtomsetGeometries[geom][check,args]
 				]
@@ -110,9 +109,56 @@ CreateGeometricAtomset[
 	];
 
 
-PackageAddAutocompletions[CreateGeometricAtomset,
-	{Keys@$CreateGeometricAtomsetGeometries}
+PackageAddAutocompletions[
+	CreateGeometricAtomset,
+		{
+			Join[
+				Keys@$CreateGeometricAtomsetGeometries,
+				Replace[PolyhedronData[], l_List:>ToString[l, InputForm], 1]	
+				]
+			}
 	]
+
+
+Options[CreatePolyhedronAtomset]=
+	{
+		"DefaultRadius"->1
+		};
+CreatePolyhedronAtomset[geom_, ats_, check:True|False:True, ops:OptionsPattern[]]:=
+	With[{defrad=OptionValue["DefaultRadius"]},
+		With[
+			{
+				coords=
+					Replace[
+						PolyhedronData[geom, "Vertices"],
+						{
+							f2_Function:>f2[defrad]
+							},
+						1
+						],
+				atlen=
+					Length@ats
+				},
+			If[ListQ@coords&&atlen==Length@coords,
+				Quiet[
+					CreateCoordinatesAtomset[check,
+						coords,
+						ats,
+						PolyhedronData[geom, "Edges"]
+						],
+					N::meprec
+					],
+				If[ListQ@coords&&atlen!=Length@coords,
+					Message[CreateGeometricAtomset::numats, 
+						geom,
+						Length@coords,
+						atlen
+						];
+					$Failed
+					]
+				]
+			]
+		]
 
 
 CreateCoordinatesAtomset[
@@ -168,7 +214,7 @@ CreateLinearAtomset[
 		atomset=CreateAtomset[atoms];
 		AtomsetNormalizeBonds[atomset];
 		atomset
-		]
+		];
 
 
 CreateSquareAtomset[
@@ -207,23 +253,71 @@ CreateSquareAtomset[
 			atomset=CreateAtomset[Join@@atoms];
 			AtomsetNormalizeBonds[atomset];
 			atomset
-		]
+		];
+CreateSquareAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern]}
+	]:=
+	(
+		Message[
+			CreateGeometricAtomset::numats,
+			"Square",
+			4,
+			Length@els1
+			];
+		$Failed
+		)
 
 
 CreateCisSquareAtomset[
 	check:True|False:False,
 	els1:
 		{
-		{Repeated[_String|{_String,___}|ChemSinglePattern,{2}]},
-		{Repeated[_String|{_String,___}|ChemSinglePattern,{2}]}
-		}
+			Repeated[_String|{_String,___}|ChemSinglePattern,{4}]
+			}
 	]:=
 	CreateSquareAtomset[
 		check,
-		RotateRight@Flatten[els1]
-		]
+		RotateRight@els1
+		];
+CreateCisSquareAtomset[
+	check:True|False:False,
+	els1:
+		{
+			{Repeated[_String|{_String,___}|ChemSinglePattern,{2}]},
+			{Repeated[_String|{_String,___}|ChemSinglePattern,{2}]}
+			}
+	]:=
+	CreateCisSquareAtomset[
+		check,
+		Flatten@els1
+		];
+CreateCisSquareAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern]}
+	]:=
+	(
+		Message[
+			CreateGeometricAtomset::numats,
+			"CisSquare",
+			4,
+			Length@els1
+			];
+		$Failed
+		)
 
 
+CreateTransSquareAtomset[
+	check:True|False:False,
+	els1:
+		{
+			Repeated[_String|{_String,___}|ChemSinglePattern,{4}]
+			}
+	]:=
+	CreateSquareAtomset[
+		check,
+		els1
+		];
 CreateTransSquareAtomset[
 	check:True|False:False,
 	els1:
@@ -232,10 +326,23 @@ CreateTransSquareAtomset[
 		{Repeated[_String|{_String,___}|ChemSinglePattern,{2}]}
 		}
 	]:=
-	CreateSquareAtomset[
+	CreateTransSquareAtomset[
 		check,
 		Flatten[els1]
-		]
+		];
+CreateTransSquareAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern]}
+	]:=
+	(
+		Message[
+			CreateGeometricAtomset::numats,
+			"TransSquare",
+			4,
+			Length@els1
+			];
+		$Failed
+		)
 
 
 CreateDiamondAtomset[
@@ -274,9 +381,33 @@ CreateDiamondAtomset[
 			atomset=CreateAtomset[Join@@atoms];
 			AtomsetNormalizeBonds[atomset];
 			atomset
-		]
+		];
+CreateDiamondAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern]}
+	]:=
+	(
+		Message[
+			CreateGeometricAtomset::numats,
+			"Diamond",
+			4,
+			Length@els1
+			];
+		$Failed
+		)
 
 
+CreateCisDiamondAtomset[
+	check:True|False:False,
+	els1:
+		{
+			Repeated[_String|{_String,___}|ChemSinglePattern, {4}]
+			}
+	]:=
+	CreateDiamondAtomset[
+		check,
+		RotateRight@els1
+		];
 CreateCisDiamondAtomset[
 	check:True|False:False,
 	els1:
@@ -285,24 +416,61 @@ CreateCisDiamondAtomset[
 		{Repeated[_String|{_String,___}|ChemSinglePattern,{2}]}
 		}
 	]:=
-	CreateDiamondAtomset[
+	CreateCisDiamondAtomset[
 		check,
-		RotateRight@Flatten[els1]
-		]
+		Flatten[els1]
+		];
+CreateCisDiamondAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern]}
+	]:=
+	(
+		Message[
+			CreateGeometricAtomset::numats,
+			"CisDiamond",
+			4,
+			Length@els1
+			];
+		$Failed
+		)
 
 
 CreateTransDiamondAtomset[
 	check:True|False:False,
 	els1:
 		{
-		{Repeated[_String|{_String,___}|ChemSinglePattern,{2}]},
-		{Repeated[_String|{_String,___}|ChemSinglePattern,{2}]}
-		}
+			Repeated[_String|{_String,___}|ChemSinglePattern,{4}]
+			}
 	]:=
 	CreateDiamondAtomset[
 		check,
-		Flatten[els1]
-		]
+		els1
+		];
+CreateTransDiamondAtomset[
+	check:True|False:False,
+	els1:
+		{
+			{Repeated[_String|{_String,___}|ChemSinglePattern,{2}]},
+			{Repeated[_String|{_String,___}|ChemSinglePattern,{2}]}
+			}
+	]:=
+	CreateTransDiamondAtomset[
+		check,
+		Flatten@els1
+		];
+CreateTransDiamondAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern]}
+	]:=
+	(
+		Message[
+			CreateGeometricAtomset::numats,
+			"TransDiamond",
+			4,
+			Length@els1
+			];
+		$Failed
+		)
 
 
 CreateHexagonalAtomset[
@@ -335,7 +503,20 @@ CreateHexagonalAtomset[
 			atomset=CreateAtomset[atoms];
 			AtomsetNormalizeBonds[atomset];
 			atomset
-		]
+		];
+CreateHexagonalAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern]}
+	]:=
+	(
+		Message[
+			CreateGeometricAtomset::numats,
+			"TransSquare",
+			6,
+			Length@els1
+			];
+		$Failed
+		)
 
 
 CreateTrigonalPlanarAtomset[
@@ -358,7 +539,20 @@ CreateTrigonalPlanarAtomset[
 			atomset=CreateAtomset[Join[{core},atoms]];
 			AtomsetNormalizeBonds[atomset];
 			atomset
-		]
+		];
+CreateTrigonalPlanarAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern]}
+	]:=
+	(
+		Message[
+			CreateGeometricAtomset::numats,
+			"TrigonalPlanar",
+			3,
+			Length@els1
+			];
+		$Failed
+		)
 
 
 CreateTetrahedralAtomset[
@@ -374,10 +568,10 @@ CreateTetrahedralAtomset[
 					{
 						elements,
 						{
-							{0.`,0.`,0.6123724356957945`},
-							{-0.2886751345948129`,-0.5`,-0.20412414523193154`},
-							{-0.2886751345948129`,0.5`,-0.20412414523193154`},
-							{0.5773502691896258`,0.`,-0.20412414523193154`}
+							{0,0,Sqrt[2/3]-1/(2 Sqrt[6])},
+							{-(1/(2 Sqrt[3])),-(1/2),-(1/(2 Sqrt[6]))},
+							{-(1/(2 Sqrt[3])),1/2,-(1/(2 Sqrt[6]))},
+							{1/Sqrt[3],0,-(1/(2 Sqrt[6]))}
 							}
 						}],
 			atomset
@@ -386,7 +580,28 @@ CreateTetrahedralAtomset[
 			atomset=CreateAtomset[Join[{core},others]];
 			AtomsetNormalizeBonds[atomset];
 			atomset
-		]
+		];
+CreateTetrahedralAtomset[
+	check:True|False:False,
+	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{5}]}
+	]:=
+	CreateTetrahedralAtomset[check,
+		elements[[1]],
+		Rest@elements
+		];
+CreateTetrahedralAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern]}
+	]:=
+	(
+		Message[
+			CreateGeometricAtomset::numats,
+			"Tetrahedral",
+			5,
+			Length@els1
+			];
+		$Failed
+		)
 
 
 CreateTrigonalPyramidalAtomset[
@@ -412,7 +627,28 @@ CreateTrigonalPyramidalAtomset[
 			AtomsetNormalizeBonds[core];
 			core
 			]
-		]
+		];
+CreateTrigonalPyramidalAtomset[
+	check:True|False:False,
+	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{5}]}
+	]:=
+	CreateTrigonalPyramidalAtomset[check,
+		elements[[1]],
+		Rest@elements
+		];
+CreateTrigonalPyramidalAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern]}
+	]:=
+	(
+		Message[
+			CreateGeometricAtomset::numats,
+			"TrigonalPyramidal",
+			5,
+			Length@els1
+			];
+		$Failed
+		)
 
 
 (*CreateBentAtomset[
@@ -464,9 +700,38 @@ CreateTrigonalBipyramidalAtomset[
 			atomset=CreateAtomset[Join[{core},others]];
 			AtomsetNormalizeBonds[atomset];
 			atomset
-		]
+		];
+CreateTrigonalBipyramidalAtomset[
+	check:True|False:False,
+	elements:{Repeated[_String|{_String,___}|ChemSinglePattern, {6}]}
+	]:=
+	CreateTrigonalBipyramidalAtomset[check,
+		elements[[1]],
+		Rest@elements
+		];
+CreateTrigonalBipyramidalAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern]}
+	]:=
+	(
+		Message[
+			CreateGeometricAtomset::numats,
+			"TrigonalBipyramidal",
+			6,
+			Length@els1
+			];
+		$Failed
+		)
 
 
+CreateCisTrigonalBipyramidalAtomset[
+	check:True|False:False,
+	elements:{Repeated[_String|{_String,___}|ChemSinglePattern, {6}]}
+	]:=
+	CreateTrigonalBipyramidalAtomset[check,
+		elements[[1]],
+		Rest@elements
+		];
 CreateCisTrigonalBipyramidalAtomset[
 	check:True|False:False,
 	coreEl:_String|{_String,___}|ChemSinglePattern:"C",
@@ -476,9 +741,24 @@ CreateCisTrigonalBipyramidalAtomset[
 		}
 	]:=
 CreateTrigonalBipyramidalAtomset[check,
-	coreEl,
-	RotateRight@Flatten[elements]
-	]
+	Prepend[
+		RotateRight@Flatten[elements],
+		coreEl
+		]
+	];
+CreateTrigonalBipyramidalAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern]}
+	]:=
+	(
+		Message[
+			CreateGeometricAtomset::numats,
+			"CisTrigonalBipyramidal",
+			6,
+			Length@els1
+			];
+		$Failed
+		)
 
 
 CreateTransTrigonalBipyramidalAtomset[
@@ -520,7 +800,29 @@ CreateSquarePlanarAtomset[
 			atomset=CreateAtomset[Join[{core},others]];
 			AtomsetNormalizeBonds[atomset];
 			atomset
-		]
+		];
+CreateSquarePlanarAtomset[
+	check:True|False:False,
+	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{5}]}
+	]:=
+	CreateSquarePlanarAtomset[
+		check,
+		elements[[1]],
+		Rest@elements
+		];
+CreateSquarePlanarAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern]}
+	]:=
+	(
+		Message[
+			CreateGeometricAtomset::numats,
+			"SquarePlanar",
+			5,
+			Length@els1
+			];
+		$Failed
+		)
 
 
 CreateCisSquarePlanarAtomset[
@@ -565,7 +867,29 @@ CreateSquarePyramidalAtomset[
 			atomset=CreateAtomset[Join[{core},others]];
 			AtomsetNormalizeBonds[atomset];
 			atomset
-		]
+		];
+CreateSquarePyramidalAtomset[
+	check:True|False:False,
+	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{6}]}
+	]:=
+	CreateSquarePyramidalAtomset[
+		check,
+		elements[[1]],
+		Rest@elements
+		];
+CreateSquarePyramidalAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern]}
+	]:=
+	(
+		Message[
+			CreateGeometricAtomset::numats,
+			"SquarePyramidal",
+			6,
+			Length@els1
+			];
+		$Failed
+		)
 
 
 CreateOctahedralAtomset[
@@ -592,9 +916,43 @@ CreateOctahedralAtomset[
 			atomset=CreateAtomset[Join[{core},others]];
 			AtomsetNormalizeBonds[atomset];
 			atomset
-		]
+		];
+CreateOctahedralAtomset[
+	check:True|False:False,
+	elements:{Repeated[_String|{_String,___}|ChemSinglePattern,{7}]}
+	]:=
+	CreateOctahedralAtomset[check,
+		elements[[1]],
+		Rest@elements
+		];
+CreateOctahedralAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern]}
+	]:=
+	(
+		Message[
+			CreateGeometricAtomset::numats,
+			"Octahedral",
+			7,
+			Length@els1
+			];
+		$Failed
+		)
 
 
+CreateFacialOctahedralAtomset[
+	check:True|False:False,
+	elements:{
+		Repeated[_String|{_String,___}|ChemSinglePattern, {7}]
+		}
+	]:=
+	CreateOctahedralAtomset[
+		check,
+		Prepend[
+			RotateRight[Rest@elements],
+			elements[[1]]
+			]
+		];
 CreateFacialOctahedralAtomset[
 	check:True|False:False,
 	coreEl:_String|{_String,___}|ChemSinglePattern:"S",
@@ -607,9 +965,32 @@ CreateFacialOctahedralAtomset[
 		check,
 		coreEl,
 		RotateRight@Flatten[faces]
-		]
+		];
+CreateFacialOctahedralAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern]}
+	]:=
+	(
+		Message[
+			CreateGeometricAtomset::numats,
+			"FacialOctahedral",
+			7,
+			Length@els1
+			];
+		$Failed
+		)
 
 
+CreateMeridionalOctahedralAtomset[
+	check:True|False:False,
+	elements:{
+		Repeated[_String|{_String,___}|ChemSinglePattern, {7}]
+		}
+	]:=
+	CreateOctahedralAtomset[
+		check,
+		elements
+		];
 CreateMeridionalOctahedralAtomset[
 	check:True|False:False,
 	coreEl:_String|{_String,___}|ChemSinglePattern:"S",
@@ -622,7 +1003,20 @@ CreateMeridionalOctahedralAtomset[
 		check,
 		coreEl,
 		Flatten[faces]
-		]
+		];
+CreateMeridonialOctahedralAtomset[
+	check:True|False:False,
+	els1:{Repeated[_String|{_String,___}|ChemSinglePattern]}
+	]:=
+	(
+		Message[
+			CreateGeometricAtomset::numats,
+			"MeridonialOctahedral",
+			7,
+			Length@els1
+			];
+		$Failed
+		)
 
 
 End[];

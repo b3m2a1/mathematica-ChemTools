@@ -34,6 +34,8 @@ If[!KeyMemberQ[$ChemObjectDefaults, "Bond"],
 					"Move"->ChemMethod[BondMove],
 					"Transform"->ChemMethod[BondTransform],
 					
+					"Vector"->ChemProperty[BondMove],
+					
 					"Graphic"->ChemMethod[
 						With[{o={##}},
 							BondGraphic[First@o,

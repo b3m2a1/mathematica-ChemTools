@@ -985,8 +985,20 @@ ChemUtilsCoordinateBounds[
 ChemUtilsAxisAlignmentTransform//Clear
 
 
-axisPattern=
+axisReplacements=
+	{
+		"X"->{1,0,0},
+		-"X"->{-1,0,0},
+		"Y"->{0,1,0},
+		-"Y"->{0,-1,0},
+		"Z"->{0,0,1},
+		-"Z"->{0,0,-1}
+		};
+
+
+axisPatternBase=
 	"X"|"Y"|"Z"|{_?NumericQ,_?NumericQ,_?NumericQ};
+axisPattern=axisPatternBase|-axisPatternBase;
 
 
 ChemUtilsAxisAlignmentTransform[
@@ -998,31 +1010,20 @@ ChemUtilsAxisAlignmentTransform[
 		rotation1=
 			Replace[a,
 				(ax1_->ax2_):>
-					Replace[{ax1,ax2},
-						{
-							"X"->{1,0,0},
-							"Y"->{0,1,0},
-							"Z"->{0,0,1}
-							},
+					Replace[
+						{ax1,ax2},
+						axisReplacements,
 						1]
 				],
 		center=
 			Replace[point,
-				{
-					"X"->{1,0,0},
-					"Y"->{0,1,0},
-					"Z"->{0,0,1}
-					}
+				axisReplacements
 				],
 		rotation2=
 			Replace[b,
 				(ax1_->ax2_):>
 					Replace[{ax1,ax2},
-						{
-							"X"->{1,0,0},
-							"Y"->{0,1,0},
-							"Z"->{0,0,1}
-							},
+						axisReplacements,
 						1]
 				]
 		},
@@ -1032,9 +1033,9 @@ ChemUtilsAxisAlignmentTransform[
 					With[
 						{
 							t1=
-								If[MatchQ[rotation1,{_List,_List}],
+								If[MatchQ[rotation1, {_List,_List}],
 									If[MatrixRank@rotation1==2,
-										RotationTransform[rotation1,center],
+										RotationTransform[rotation1, center],
 										Identity
 										],
 									Identity

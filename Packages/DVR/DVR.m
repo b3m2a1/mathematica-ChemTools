@@ -342,6 +342,22 @@ ChemDVRDefaultFormatGrid[grid_,points_,___]:=
 	grid;
 
 
+Options[ChemDVRDefaultGridPointList]=
+	{
+		"GridPrepFunction"->Identity
+		};
+ChemDVRDefaultGridPointList[grid_, o:OptionsPattern[]]:=
+	With[{dims=Dimensions[grid]},
+		If[Depth@grid<=3,
+			OptionValue["GridPrepFunction"]@grid,
+			Flatten[
+				OptionValue["GridPrepFunction"]@grid,
+				Depth[grid]-3
+				]
+			]
+		];
+
+
 ChemDVRDefaultNamedPotential[name_:"HarmonicOscillator"]:=
 	Switch[name,
 		"HarmonicOscillator",
@@ -350,21 +366,155 @@ ChemDVRDefaultNamedPotential[name_:"HarmonicOscillator"]:=
 
 
 Options[ChemDVRDefaultPotential]=
-	{
-		"PotentialFunction"->Automatic,
-		Function->Automatic
-		};
-ChemDVRDefaultPotential[grid_,ops___]:=
-	DiagonalMatrix@
-		Map[
-			Replace[OptionValue["PotentialFunction"],
-				Automatic:>
-					Replace[OptionValue[Function],
-						Automatic:>ChemDVRDefaultNamedPotential[]
+	Join[
+		{
+			"PotentialFunction"->Automatic,
+			Function->Automatic
+			},
+		Options@ChemDVRDefaultGridPointList
+		];
+ChemDVRDefaultPotential[grid_, ops___]:=
+	SparseArray[
+		Band[{1, 1}]->
+			Map[
+				Replace[OptionValue["PotentialFunction"],
+					Automatic:>
+						Replace[OptionValue[Function],
+							Automatic:>ChemDVRDefaultNamedPotential[]
+							]
+					],
+				grid
+				]
+		];
+
+
+If[Length@OwnValues[dvrKGetValues]==0,
+	dvrKGetValues := 
+		dvrKGetValues=
+			Compile[
+				{
+					{k1row, _Real, 1}, {blockvals, _Real, 2}, 
+					{diagidx, _Integer, 1}, {i, _Integer}
+					},
+		   Block[{A},
+		    A =
+		    	Join[
+			      Table[
+								Compile`GetElement[k1row, k], 
+								{l, 1, Dimensions[blockvals][[1]]}, 
+								{k, 1, i}
+								],
+			      blockvals,
+			      Table[
+								Compile`GetElement[k1row, k], 
+								{l, 1, Dimensions[blockvals][[1]]}, 
+								{k, i + 2, Length[k1row]}
+								],
+			      2
+			      ];
+		    Do[
+					A[[k, Compile`GetElement[diagidx, k] + i]] += 
+						Compile`GetElement[k1row, i + 1], 
+					{k, 1, Length[blockvals]}
+					];
+		    A
+		    ],
+		   RuntimeAttributes -> {Listable},
+		   Parallelization -> True,
+		   CompilationTarget -> "C",
+		   RuntimeOptions -> "Speed"
+		   ]
+	]
+
+
+If[Length@OwnValues[dvrKGetColumnIndices]==0,
+	dvrKGetColumnIndices := 
+		dvrKGetColumnIndices=
+			Compile[{
+		    {blockci, _Integer, 3}, {diagci, _Integer, 
+		     3}, {m, _Integer}, {n, _Integer}, {i, _Integer}
+		    },
+		   If[i > 0,
+		    If[i < m - 1,
+		     Join[
+						diagci[[All, 1 ;; i]], 
+						blockci + i n, 
+						diagci[[All, i + 1 ;; m - 1]] + (n), 
+						2
+						],
+		     Join[
+						diagci[[All, 1 ;; i]], 
+						blockci + i n, 
+						2
 						]
-				],
-			grid
-			];
+		     ],
+		    Join[
+		    	blockci + i n, 
+		    	diagci[[All, i + 1 ;; m - 1]] + (n), 
+		    	2
+		    	]
+		    ],
+		   RuntimeAttributes -> {Listable},
+		   Parallelization -> True,
+		   CompilationTarget -> "C",
+		   RuntimeOptions -> "Speed"
+		   ]
+	];
+
+
+dvrKToSparseArrayData[b_?MatrixQ] := {
+  Partition[SparseArray[b]["ColumnIndices"], Dimensions[b][[2]]],
+  b,
+  Dimensions[b][[2]],
+  Range[Dimensions[b][[2]]]
+  }
+
+dvrKToSparseArray[X_] := 
+ With[{d1 = Dimensions[X[[1]]][[1]], d2 = Dimensions[X[[1]]][[2]]},
+  SparseArray @@ {Automatic, {d1, d1}, 0,
+    {1, {Range[0, d1 d2, d2], Flatten[X[[1]], 1]}, Flatten[X[[2]]]}}
+  ]
+
+
+dvrKIteration[X_, a_] := With[{
+   m = Length[a],
+   blockci = X[[1]],
+   blockvals = X[[2]],
+   n = X[[3]],
+   diagidx = X[[4]]
+   },
+  With[{ran = Range[0, m - 1]},
+   {
+    Join @@ 
+    	dvrKGetColumnIndices[blockci, 
+    		Transpose[Partition[Partition[Range[(m - 1) n], 1], n]], 
+    		m, 
+    		n, 
+    		ran
+    		],
+    Join @@ dvrKGetValues[a, blockvals, diagidx, ran],
+    m n,
+    Join @@ Outer[Plus, ran, diagidx]
+    }
+   ]
+  ]
+
+
+ChemDVRDefaultKineticEnergy[keMats:{__List}]:=
+	dvrKToSparseArray[
+		Fold[dvrKIteration, 
+			dvrKToSparseArrayData[keMats[[1]]], 
+			Rest[keMats]
+			]
+		]
+
+
+(*ChemDVRDefaultKineticEnergy[
+	grid_, 
+	keFunctions:{(_Symbol|_Function)..},
+	o:OptionsPattern[]
+	]:=
+	With[{grids=Flatten[grid, Depth[grid]-1]*)
 
 
 Options[ChemDVRDefaultWavefunctions]=
@@ -416,19 +566,17 @@ ChemDVRDefaultWavefunctions[T_,V_,ops:OptionsPattern[]]:=
 
 
 Options[ChemDVRDefaultGridWavefunctions]=
-	{
-		"GridPrepFunction"->Identity,
-		"WavefunctionSelection"->All
-		};
-ChemDVRDefaultGridWavefunctions[grid_,wfs_,OptionsPattern[]]:=
+	Join[
+		{
+			"WavefunctionSelection"->All
+			},
+		Options[ChemDVRDefaultGridPointList]
+		];
+ChemDVRDefaultGridWavefunctions[grid_,wfs_, o:OptionsPattern[]]:=
 	With[{
 		coreGridPoints=
-			If[Depth@grid<=3,
-				OptionValue["GridPrepFunction"]@grid,
-				Flatten[
-					OptionValue["GridPrepFunction"]@grid,
-					Depth[grid]-3
-					]
+			ChemDVRDefaultGridPointList[grid, 
+				FilterRules[{o}, Options@ChemDVRDefaultGridPointList]
 				]
 		},
 		MapThread[
@@ -517,12 +665,35 @@ ChemDVRGet[obj:ChemDVRClass[a_Association],attribute_,default_]:=
 	Lookup[a,attribute,default];
 
 
-ChemDVRSet[obj:dvrObjPattern,attribute_,value_]:=
-	With[{k=First@obj},
-		AssociateTo[$ChemDVRManager["Objects",k],
-			attribute->value];
-		value
+ChemDVRMutate//ClearAll
+ChemDVRMutate~SetAttributes~HoldAll;
+With[{obPat=dvrObjPattern},
+	ChemDVRMutate[(obj:obPat)[at___], fn_, args___]:=
+		With[{k=First@obj},
+			fn[
+				$ChemDVRManager["Objects", k, at],
+				args
+				]
+			];
+	ChemDVRMutate[(obj:obPat)[[at___]], fn_, args___]:=
+		With[{k=First@obj},
+			fn[
+				$ChemDVRManager[["Objects", k, at]],
+				args
+				]
+			]
 		];
+
+
+ChemDVRSet//Clear
+
+
+ChemDVRSet[obj:dvrObjPattern, attribute__, value_]:=
+	ChemDVRMutate[
+		obj[attribute],
+		Set,
+		value
+		]
 
 
 ChemDVROptions[obj:dvrObjPattern, method_String]:=
@@ -1106,7 +1277,68 @@ ChemDVRObject[uuid_?chemDVRValidQ][a___?OptionQ]:=
 (obj:_ChemDVRObject?chemDVRValidQ)["Wavefunctions",args___?OptionQ]:=
 	ChemDVRWavefunctions[obj,args];
 (obj:_ChemDVRObject?chemDVRValidQ)["GridWavefunctions",args___?OptionQ]:=
-	ChemDVRGridWavefunctions[obj,args]
+	ChemDVRGridWavefunctions[obj,args];
+(obj:_ChemDVRObject?chemDVRValidQ)["Properties"]:=
+	Keys@ChemDVRAssociation[obj];
+(obj:_ChemDVRObject?chemDVRValidQ)["Association"]:=
+	Keys@ChemDVRAssociation[obj];
+(obj:_ChemDVRObject?chemDVRValidQ)[k:Except[_?OptionQ]..]:=
+	ChemDVRGet[obj, k];
+ChemDVRObject/:
+	(obj:_ChemDVRObject?chemDVRValidQ)[[k:Except[_?OptionQ]..]]:=
+		ChemDVRGet[obj, k];
+
+
+ChemDVRObjMutate//ClearAll;
+ChemDVRObjMutate~SetAttributes~HoldAllComplete;
+$ChemDVROneArgMutators=
+	Set|SetDelayed|TimesBy|DivideBy|AddTo|SubtractFrom|
+		PrependTo|AppendTo|AssociateTo|KeyDropFrom;
+$ChemDVRBaseNoArgMutators=
+	Increment|Decrement;
+ChemDVRObject/:(m:Set|SetDelayed)[
+	obj_ChemDVRObject?chemDVRValidQ[k:Except[_?OptionQ]..],
+	v_]:=
+	ChemDVRMutate[obj[k], m, v];
+With[{oneArgs=$ChemDVROneArgMutators, noArg=$ChemDVRNoArgMutators},
+	ChemDVRObjMutate[
+		(m:oneArgs)[
+			(obj:(_Symbol|_ChemDVRObject)?chemDVRValidQ)[k:Except[_?OptionQ]..],
+			a_
+			]
+		]:=
+		With[{o=obj},
+			ChemDVRMutate[o[k], m, a]
+			];
+	ChemDVRObjMutate[
+		(m:oneArgs)[
+			(obj:(_Symbol|_ChemDVRObject)?chemDVRValidQ)[[k:Except[_?OptionQ]..]],
+			a_
+			]
+		]:=
+		With[{o=obj},
+			ChemDVRMutate[o[[k]], m, a]
+			];
+	ChemDVRObjMutate[
+		(m:noArg)[
+			(obj:(_Symbol|_ChemDVRObject)?chemDVRValidQ)[k:Except[_?OptionQ]..]
+			]
+		]:=
+		With[{o=obj},
+			ChemDVRMutate[o[k], m]
+			];
+	ChemDVRObjMutate[
+		(m:noArg)[
+			(obj:(_Symbol|_ChemDVRObject)?chemDVRValidQ)[[k:Except[_?OptionQ]..]]
+			]
+		]:=
+		With[{o=obj},
+			ChemDVRMutate[o[[k]], m]
+			];
+		];
+
+
+Language`SetMutationHandler[ChemDVRObject, ChemDVRObjMutate]
 
 
 $dvrimg=
@@ -1701,97 +1933,6 @@ Format[ChemDVRClass[a_Association]]:=
 				],
 			StandardForm
 			];
-
-
-$ChemDVRCompiledModCoords:=
-	$ChemDVRCompiledModCoords
-	Compile[
-		{{i, _Integer}, {pts, _Integer, 1}, {tots, _Integer, 1}},
-		MapThread[
-			Mod[
-				1+Quotient[i, #2],
-				#,
-				1
-				]&, 
-			{
-				pts,
-				tots
-				}
-			]
-		];
-
-
-$ChemDVRDefaultAddFlattenMXCompiled:=
-	$ChemDVRDefaultAddFlattenMXCompiled=
-	With[
-		{
-			quotModCoords=$ChemDVRCompiledModCoords
-			},
-		Compile[
-			{
-				{pts, _Integer, 1},
-				{mx, _Real, 3}
-				},
-			Module[
-				{
-					nTot=Times@@pts,
-					nTots,
-					len=Length@mx
-					},
-				nTots=Table[Times@@Take[pts, i-1],{i, nTot}];
-				Table[
-					With[
-						{
-							is=quotModCoords[n, pts, nTots],
-							js=quotModCoords[m, pts, nTots]
-							},
-						With[{flags=#==1&/@is/js},
-							Total@Table[
-								If[And@@Delete[flags, i],
-									0,
-									mx[[is[[i]], js[[i]]]]
-									],
-								{i, len}
-								]
-							]
-						],
-					{n, nTot},
-					{m, nTot}
-					]
-				]
-			]
-		];
-
-
-$ChemDVRCartesianKineticBaseCompiled:=
-	$ChemDVRCartesianKineticBaseCompiled=
-	Compile[
-		{
-			{pts, _Integer},
-			{dx, _Real},
-			{m, _Real},
-			{hb, _Real}
-			},
-		Array[
-			(1.)*If[#==#2,\[Pi]^2/3,2/(#-#2)^2]*(hb*(-1)^(#-#2))/(2m dx^2)&,
-			{pts, pts}
-			]
-		];
-
-
-(*Options[ChemDVRDefaultCartesianKineticMatrix]=
-	{
-		"M"->1,
-		"HBar"->1
-		};
-ChemDVRDefaultCartesianKineticMatrix[grid_]:=
-	With[
-		{
-			},
-		If[NumericQ@grid[[1, 1]],
-			$ChemDVRCartesianKineticBaseCompiled[pts, dx, m, hb]
-			]
-		]*)
 
 
 End[];
