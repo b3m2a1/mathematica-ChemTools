@@ -19,6 +19,11 @@
 
 
 
+(* ::Subsection:: *)
+(*Management*)
+
+
+
 $ChemDVRManager::usage="Manager interface for ChemDVR things";
 ChemDVRDirectory::usage="Directory finder";
 ChemDVRFile::usage="Simple combination of FileNameJoin and ChemDVRDirectory";
@@ -28,6 +33,8 @@ $ChemDVRPotentials::usage="Alias for ChemDVRPotentials[\"*@.@*\"]";
 
 PackageScopeBlock[
 	ChemDVRDefaultFormatGrid::usage="";
+	ChemDVRDefaultPotentialEnergy::usage="";
+	ChemDVRDefaultKineticEnergy::usage="";
 	ChemDVRDefaultWavefunctions::usage="";
 	ChemDVRDefaultGridWavefunctions::usage="";
 	ChemDVRDefaultInterpolatingWavefunctions::usage=""
@@ -55,6 +62,11 @@ ChemDVREnd::usage="Wrapper for all EndPackage stuff";
 $ChemDVRLoaded::usage="The set of packages loaded already";
 ChemDVRNeeds::usage="Needs type loader for stuff";
 ChemDVRReload::usage="Reloads a ChemDVR file";
+
+
+(* ::Subsection:: *)
+(*Usage*)
+
 
 
 ChemDVRDimension::usage=
@@ -89,6 +101,10 @@ $dvrinst="Instances";
 $dvrke="KineticEnergy";
 $dvrpe="PotentialEnergy";
 $dvrwf="Wavefunctions";
+$dvrgr="Grid";
+$dvrgrwf="GridWavefunctions";
+$dvrintwf="InterpolatingWavefunctions";
+$dvrvw="View";
 
 
 If[!MatchQ[$ChemDVRManager,_Association],
@@ -545,13 +561,19 @@ ChemDVRDefaultWavefunctions[T_,V_,ops:OptionsPattern[]]:=
 								All:>Sequence@@{},
 								Automatic:>
 									If[Head@ham===SparseArray, 
-										Min@{Max@{Length@ham/10, 20}, Length@ham, 50},
+										-Abs[Min@{Max@{Length@ham/10, 20}, Length@ham, 25}],
 										Sequence@@{}
 										]
 								}
 							],
 						Method->
-							Replace[OptionValue[Method], Automatic:>"FEAST"],
+							Replace[OptionValue[Method], 
+								Automatic:>
+									If[Head@ham===SparseArray, 
+										Automatic,
+										"FEAST"
+										]
+								],
 						FilterRules[
 							FilterRules[{ops},Alternatives@@Keys@Options@Eigensystem],
 							Except[Method]
@@ -704,6 +726,19 @@ ChemDVROptions[obj:dvrObjPattern, Optional[All, All]]:=
 	ChemDVROptions[obj, 
 		{"Grid", "KineticEnergy", "PotentialEnergy", "Wavefunctions", "View"}
 		]
+
+
+PackageAddAutocompletions[
+	ChemDVROptions,
+	{
+		None,
+		{
+			$dvrgr,
+			$dvrke, $dvrpe, $dvrwf,
+			$dvrvw
+			}
+		}
+	]
 
 
 ChemDVRDimension[obj:dvrObjPattern]:=
@@ -1227,7 +1262,30 @@ ChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 			_,
 				iChemDVRRun[obj,ops]
 			]
+		];
+ChemDVRRun[obj:dvrObjPattern,
+	ret:
+		$dvrke|$dvrpe|$dvrwf|
+			$dvrgr|$dvrgrwf|$dvrintwf,
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRRun[
+		obj,
+		Return->ret,
+		ops
 		]
+
+
+PackageAddAutocompletions[
+	ChemDVRRun,
+	{
+		None,
+		{
+			$dvrke, $dvrpe, $dvrwf,
+			$dvrgr, $dvrgrwf, $dvrintwf
+			}
+		}
+	]
 
 
 ChemDVRNotebook//Clear

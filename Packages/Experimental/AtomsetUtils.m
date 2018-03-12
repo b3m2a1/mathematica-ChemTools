@@ -89,35 +89,69 @@ CreateGeometricAtomset[
 	args:Except[_?OptionQ]...,
 	ops:OptionsPattern[]
 	]:=
-	With[
-		{
-			f=$CreateGeometricAtomsetGeometries[geom]
-			},
+	Block[{$CurrentGeometricAtomsetGeom=geom},
 		With[{res=
-			If[MissingQ@f,
-				CreatePolyhedronAtomset[
-					geom, 
-					Flatten[{args}, 1],
-					check,
-					ops
-					],
-				$CreateGeometricAtomsetGeometries[geom][check,args]
+			Which[
+				KeyExistsQ[$CreateGeometricAtomsetGeometries, geom],
+					$CreateGeometricAtomsetGeometries[geom][check,args],
+				KeyExistsQ[$GeometicAtomsetCoordinates, geom],
+					With[{ve=$GeometicAtomsetCoordinates[geom]},
+						CreateCoordinatesAtomset[
+							check,
+							Lookup[ve, "Vertices"],
+							Flatten[{args}, 1],
+							Lookup[ve, "Edges", {}]
+							]
+						],
+				True,
+					CreatePolyhedronAtomset[
+						geom, 
+						Flatten[{args}, 1],
+						check,
+						ops
+						]
 				]
-			},
-		res/;ChemObjectQ@res
-		]
-	];
+				},
+			res/;ChemObjectQ@res
+			]	
+		];
 
 
-PackageAddAutocompletions[
-	CreateGeometricAtomset,
-		{
-			Join[
-				Keys@$CreateGeometricAtomsetGeometries,
-				Replace[PolyhedronData[], l_List:>ToString[l, InputForm], 1]	
-				]
-			}
-	]
+$GeometicAtomsetCoordinates=<||>;
+
+
+(* ::Text:: *)
+(*Specify vertices and edges here*)
+
+
+
+$GeometicAtomsetCoordinates["Bowtie"]=
+	<|
+		"Vertices"->
+			{
+				{0, 0, 0},
+				{3/2, -(Sqrt[3]/2), 0}, {3/2, Sqrt[3]/2, 0},
+				{-(3/2), -(Sqrt[3]/2), 0}, {-(3/2), Sqrt[3]/2, 0}
+				},
+		"Edges"->
+			{
+				{1, 2}, {1, 3}, {2, 3},
+				{1, 4}, {1, 5}, {4, 5}
+				}
+		|>;
+
+
+$GeometicAtomsetCoordinates["BowtieD2D"]=
+	<|
+		"Vertices"->
+			{
+				{0, 0, 0},
+				{3/2, -(Sqrt[3]/2), 0}, {3/2, Sqrt[3]/2, 0},
+				{-(3/2), 0, -(Sqrt[3]/2)}, {-(3/2), 0, Sqrt[3]/2}
+				},
+		"Edges"->
+			$GeometicAtomsetCoordinates["Bowtie", "Edges"]
+		|>;
 
 
 Options[CreatePolyhedronAtomset]=
@@ -161,6 +195,9 @@ CreatePolyhedronAtomset[geom_, ats_, check:True|False:True, ops:OptionsPattern[]
 		]
 
 
+CreateCoordinatesAtomset//Clear
+
+
 CreateCoordinatesAtomset[
 	check:True|False:True,
 	coords:{{_,_,_}..},
@@ -190,7 +227,23 @@ CreateCoordinatesAtomset[
 		atomset=CreateAtomset[ats];
 		AtomsetNormalizeBonds[atomset];
 		atomset
-		]
+		];
+CreateCoordinatesAtomset[
+	check:True|False:True,
+	coords:{{_,_,_}..},
+	els:{Repeated[_String|{_String,___}|ChemSinglePattern]},
+	bonds:{{_,_,___}...}:{}
+	]/;Length[coords]=!=Length[els]:=
+	(
+		Message[CreateGeometricAtomset::numats,
+				Replace[$CurrentGeometricAtomsetGeom,
+					Except[_String]->"Coordinate Set"
+					],
+				Length[coords],
+				Length[els]
+				];
+		$Failed
+		);
 
 
 CreateLinearAtomset[
@@ -1017,6 +1070,18 @@ CreateMeridonialOctahedralAtomset[
 			];
 		$Failed
 		)
+
+
+PackageAddAutocompletions[
+	CreateGeometricAtomset,
+		{
+			Join[
+				Keys@$CreateGeometricAtomsetGeometries,
+				Keys@$GeometicAtomsetCoordinates,
+				Replace[PolyhedronData[], l_List:>ToString[l, InputForm], 1]	
+				]
+			}
+	]
 
 
 End[];

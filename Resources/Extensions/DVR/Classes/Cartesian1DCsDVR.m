@@ -48,7 +48,7 @@ Cartesian1DCsDVRPoints[
 		},
 		Take[
 			Cartesian1DDVRPoints[
-				points*2,
+				points*2-1,
 				X
 				],
 			points[[1]]
@@ -75,7 +75,7 @@ Cartesian1DCsDVRKineticMatrix[grid_,ops:OptionsPattern[]]:=
 			scl=OptionValue@"ScalingFactor",
 			ex=TrueQ@OptionValue@"UseExact"
 			},
-		With[{dx=(xmax-xmin)/points},
+		With[{dx=(xmax-xmin)/(points-1)},
 				{
 					If[points>100000, ParallelTable, Table][
 						If[ex, 1, 1.]*scl*
@@ -104,7 +104,6 @@ Cartesian1DCsDVRKineticMatrix[grid_,ops:OptionsPattern[]]:=
 					}
 				]
 			]
-		]
 
 
 Options[Cartesian1DCsDVRPotentialMatrix]=

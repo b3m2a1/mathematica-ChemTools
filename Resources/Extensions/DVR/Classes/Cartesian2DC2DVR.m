@@ -51,36 +51,71 @@ Cartesian2DC2DVRPoints[
 		]
 
 
-symmTCMBit=
+symmTCMYBit=
 	Compile[
 		{
 			{ix, _Integer}, {jx, _Integer},
 			{iy, _Integer}, {jy, _Integer},
-			{Np, _Integer},
-			{\[HBar], _Real},
-			{dx, _Real},{mx, _Real},
-			{dy, _Real},{my, _Real}
+			{Np, _Integer}, 
+			{cX, _Real},
+			{cY, _Real}
 			},
 		If[ix == jx,
-			 (
-					(-1)^(iy - jy)*\[HBar]^2*
-						If[iy == jy,
-						 	Pi^2/3,
-						 	2/(iy - jy)^2
-							]
-					)/(2*dy^2*my),
+				(-1)^(iy - jy)*cY*
+					If[iy == jy,
+					 	Pi^2/3,
+					 	2/(iy - jy)^2
+						],
 				0
-				] +
+				]
+		]
+
+
+symmTCMXBit=
+	Compile[
+		{
+			{ix, _Integer}, {jx, _Integer},
+			{iy, _Integer}, {jy, _Integer},
+			{Np, _Integer}, 
+			{cX, _Real},
+			{cY, _Real}
+			},
 		If[iy == jy,
 			 (
-					(-1)^(ix - jx)*\[HBar]^2*
+					(-1)^(ix - jx)*cX*
 						If[ix == jx,
 						 	Pi^2/3,
 						 	2/(ix - jx)^2
 							]
-					)/(2*dx^2*mx),
+					),
 				0
 				]
+		]
+
+
+With[{symmTCMXBit=symmTCMXBit,symmTCMYBit=symmTCMYBit},
+	symmTCMBit=
+		Compile[
+			{
+				{ix, _Integer}, {jx, _Integer},
+				{iy, _Integer}, {jy, _Integer},
+				{Np, _Integer}, 
+				{cX, _Real},
+				{cY, _Real}
+				},
+			symmTCMYBit[
+				ix, jx,
+				iy, jy,
+				Np,
+				cX, cY
+				] +
+			symmTCMXBit[
+				ix, jx,
+				iy, jy,
+				Np,
+				cX, cY
+				]
+			]
 		]
 
 
@@ -93,47 +128,45 @@ symmPlus=
 			{iy, _Integer}, {jy, _Integer},
 			{iNy, _Integer}, {jNy, _Integer},
 			{Np, _Integer},
-			{\[HBar], _Real},
-			{dx, _Real},
-			{mx, _Real},
-			{dy, _Real},
-			{my, _Real}
+			{Nx, _Integer}, {Ny, _Integer},
+			{cX, _Real}, {cY, _Real}
 			},
 			1/2*(
-				symmTCMBit[
+				2*symmTCMBit[
 					ix, jx, 
 					iy, jy, 
-					Np, \[HBar], 
-					dx, mx,
-					dy, my
-					]+
+					Np, 
+					cX, cY
+					]+(*
 				symmTCMBit[
 					iNx, jx, 
 					iNy, jy, 
-					Np, \[HBar], 
-					dx, mx,
-					dy, my
-					]+
-				symmTCMBit[
+					Np, 
+					cX, cY
+					]+*)
+				2*symmTCMBit[
 					ix, jNx, 
 					iy, jNy, 
-					Np, \[HBar], 
-					dx, mx,
-					dy, my
-					]+
+					Np, 
+					cX, cY
+					](*+
 				symmTCMBit[
 					iNx, jNx, 
 					iNy, jNy, 
-					Np, \[HBar], 
-					dx, mx,
-					dy, my
-					]
+					Np, 
+					cX, cY
+					]*)
 				)
 		]
 	];
 
 
-With[{symmTCMBit=symmTCMBit},
+With[
+	{
+		symmTCMBit=symmTCMBit,
+		symmTCMXBit=symmTCMXBit,
+		symmTCMYBit=symmTCMYBit
+		},
 symmMinus=
 	Compile[
 		{
@@ -142,40 +175,36 @@ symmMinus=
 			{iy, _Integer}, {jy, _Integer},
 			{iNy, _Integer}, {jNy, _Integer},
 			{Np, _Integer},
-			{\[HBar], _Real},
-			{dx, _Real},
-			{mx, _Real},
-			{dy, _Real},
-			{my, _Real}
+			{Nx, _Integer}, {Ny, _Integer},
+			{cX, _Real}, {cY, _Real}
 			},
 			1/2*(
-				symmTCMBit[
-					ix, jx, 
-					iy, jy, 
-					Np, \[HBar], 
-					dx, mx,
-					dy, my
-					]-
-				symmTCMBit[
-					iNx, jx, 
-					iNy, jy, 
-					Np, \[HBar], 
-					dx, mx,
-					dy, my
-					]-
-				symmTCMBit[
+				If[ix!=jx&&ix+jx>Nx, -1, 1]*
+					(
+						symmTCMXBit[
+							ix, jx, 
+							iy, jy, 
+							Np, 
+							cX, cY
+							]+
+						symmTCMXBit[
+							iNx, jx, 
+							iNy, jy, 
+							Np, 
+							cX, cY
+							]
+						)+
+				symmTCMYBit[
 					ix, jNx, 
 					iy, jNy, 
-					Np, \[HBar], 
-					dx, mx,
-					dy, my
+					Np, 
+					cX, cY
 					]+
-				symmTCMBit[
+				symmTCMYBit[
 					iNx, jNx, 
 					iNy, jNy, 
-					Np, \[HBar], 
-					dx, mx,
-					dy, my
+					Np, 
+					cX, cY
 					]
 				)
 		]
@@ -194,13 +223,14 @@ Cartesian2DC2DVRKineticMatrix[grid_,ops:OptionsPattern[]]:=
 	Module[
 		{
 			\[HBar]=OptionValue["HBar"],
-			dx=Abs@*Subtract@@MinMax@grid[[All, 1, 1]], 
+			dx=Abs[Subtract@@Sort[grid[[All, 1, 1]]][[;;2]]], 
 			xPoints=Length@grid,
 			mx=OptionValue@"Mass1", 
-			dy=Abs@*Subtract@@MinMax@grid[[1, All, 2]],
+			dy=Abs[Subtract@@Sort[grid[[1, All, 2]]][[;;2]]],
 			yPoints=Length@grid[[1]],
 			my=OptionValue@"Mass2",
-			head
+			head,
+			sf=OptionValue["ScalingFactor"]
 			},
 		With[{f1=symmPlus, f2=symmMinus, Np=xPoints*yPoints},
 			head=
@@ -214,17 +244,18 @@ Cartesian2DC2DVRKineticMatrix[grid_,ops:OptionsPattern[]]:=
 							iy=Mod[i, yPoints, 1], jy=Mod[j, yPoints, 1],
 							iNy=Mod[Np-i+1, yPoints, 1], jNy=Mod[Np-j+1, yPoints, 1]
 							},
+						(* 
+					Why this 1/5 was necessary I don't really know
+					*)
+						(*If[i!=j, 1/5, 1]**)
 						f1[
 							ix, jx,
 							iNx, jNx,
 							iy, jy,
 							iNy, jNy,
-							Np,
-							\[HBar], 
-							dx,
-							mx,
-							dy,
-							my
+							Np, xPoints, yPoints,
+							sf*(\[HBar]^2)/(2*mx*dx^2),
+							sf*(\[HBar]^2)/(2*my*dy^2)
 							]
 						],
 					{i, xPoints*yPoints},
@@ -238,17 +269,18 @@ Cartesian2DC2DVRKineticMatrix[grid_,ops:OptionsPattern[]]:=
 							iy=Mod[i, yPoints, 1], jy=Mod[j, yPoints, 1],
 							iNy=Mod[Np-i+1, yPoints, 1], jNy=Mod[Np-j+1, yPoints, 1]
 							},
+						(* 
+					Why this 1/5 was necessary I don't really know
+					*)
+						(*If[i!=j, 1/5, 1]**)
 						f2[
 							ix, jx,
 							iNx, jNx,
 							iy, jy,
 							iNy, jNy,
-							Np,
-							\[HBar], 
-							dx,
-							mx,
-							dy,
-							my
+							Np, xPoints, yPoints,
+							sf*(\[HBar]^2)/(2*mx*dx^2),
+							sf*(\[HBar]^2)/(2*my*dy^2)
 							]
 						],
 					{i, xPoints*yPoints, 1, -1},

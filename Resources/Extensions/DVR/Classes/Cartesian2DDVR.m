@@ -90,7 +90,6 @@ Cartesian2DDVRKineticMatrix[grid_, ops:OptionsPattern[]]:=
 			k1SparseRules,
 			k2SparseRules
 			},
-			Echo@"wut";
 			k1SparseRules=
 				Flatten[
 					Table[
@@ -143,7 +142,7 @@ Options[Cartesian2DDVRPotentialMatrix]={Function->(Norm[(#/2)^2]&)};
 Cartesian2DDVRPotentialMatrix[grid_,ops:OptionsPattern[]]:=
 	With[{func=OptionValue@Function},
 		With[{A=func/@Flatten[grid,1]},
-			SparseArray[Band[{1,1}->A]]
+			SparseArray[Band[{1,1}]->A]
 			]
 		]
 
