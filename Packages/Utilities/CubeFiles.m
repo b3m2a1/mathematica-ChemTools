@@ -19,27 +19,35 @@
 
 
 
-PackageScopeBlock[
-	CubeFiles::usage="Pulls the cube files from a Psi4Output association";
-	CubeFileRead::usage="Reads in a cube file";
-	CubeFileGrid::usage=
-		"Calculates the grid defined by the cube file";
-	CubeFileFunction::usage=
-		"Creates an interpolating function from the cube file grid";
-	CubeFileCuboid::usage=
-		"Finds the bounding box of the cube grid and returns the cuboid of it";
-	CubeFileMinMax::usage=
-		"Provides the min and max points on the cube grid";
-	CubeFileIsoSurface::usage=
-		"Finds an isosurface over the cube file grid";
-	CubeFileDensityPlot::usage=
-		"Plots the ListDensityPlot of the cube file";
-	CubeFileContourPlot::usage=
-		"Plots the ListContourPlot of the cube file";
-	]
+CubeFiles::usage="Pulls the cube files from a Psi4Output association";
+CubeFileRead::usage="Reads in a cube file";
+CubeFileGrid::usage=
+	"Calculates the grid defined by the cube file";
+CubeFileFunction::usage=
+	"Creates an interpolating function from the cube file grid";
+CubeFileCuboid::usage=
+	"Finds the bounding box of the cube grid and returns the cuboid of it";
+CubeFileMinMax::usage=
+	"Provides the min and max points on the cube grid";
+CubeFileIsoSurface::usage=
+	"Finds an isosurface over the cube file grid";
+CubeFileDensityPlot::usage=
+	"Plots the ListDensityPlot of the cube file";
+CubeFileContourPlot::usage=
+	"Plots the ListContourPlot of the cube file";
 
 
 Begin["`Private`"];
+
+
+(* ::Subsection:: *)
+(*Cube files*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*Cache*)
+
 
 
 If[!AssociationQ@$CubeFileCache,$CubeFileCache=<||>];
@@ -80,8 +88,18 @@ CubeFileCacheLookup[key_,prop_]:=
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Files*)
+
+
+
 CubeFiles[a_Association|Psi4Output[a_Association]]:=
 	Select[Keys@a["OutputFiles"],StringMatchQ["*.cube"]]
+
+
+(* ::Subsubsection::Closed:: *)
+(*Read*)
+
 
 
 iCubeFileRead[stream_InputStream]:=
@@ -186,6 +204,11 @@ CubeFileRead[
 	CubeFileRead@a["OutputFiles",CubeFiles[a][[key]]]
 
 
+(* ::Subsubsection::Closed:: *)
+(*Scaling*)
+
+
+
 CubeFileScaling[a_Association,atomPositions_]:=
 	With[{aps=Cases[atomPositions,{_?NumericQ,_?NumericQ,_?NumericQ},\[Infinity]]},
 		Replace[
@@ -204,6 +227,11 @@ CubeFileScaling[a_Association,atomPositions_]:=
 			}
 			]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Grid*)
+
 
 
 CubeFileGrid[a_Association?(KeyMemberQ["Origin"])]:=
@@ -269,6 +297,11 @@ CubeFileGrid[a_Association?(KeyMemberQ["Origin"])]:=
 			];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Function*)
+
+
+
 iCubeFileFunction[grid:{{_?NumericQ,_?NumericQ,_?NumericQ,_?NumericQ},__}]:=
 	With[{f=Interpolation@grid},
 		Compile[{{pos,_Real,1}},
@@ -309,6 +342,11 @@ CubeFileFunction[a_Association?(KeyMemberQ["Origin"])]:=
 		]
 
 
+(* ::Subsubsection::Closed:: *)
+(*Cuboid*)
+
+
+
 iCubeFileCuboid[
 	grid:{{_?NumericQ,_?NumericQ,_?NumericQ,_?NumericQ},__}
 	]:=
@@ -335,6 +373,11 @@ CubeFileCuboid[a_Association?(KeyMemberQ["Origin"])]:=
 	CubeFileCuboid@CubeFileGrid[a];
 
 
+(* ::Subsubsection::Closed:: *)
+(*MinMax*)
+
+
+
 CubeFileMinMax[grid_]:=
 	With[{flat=Flatten[grid,2]},
 		{MinimalBy[flat,Last],MaximalBy[flat,Last]}
@@ -344,6 +387,11 @@ CubeFileMinMax[a_Association?(KeyMemberQ["PointValues"]),scaling:_Real:1.]:=
 CubeFileMinMax[a_Association?(KeyMemberQ["PointValues"]),atomset_List,
 	isoVal_Real,tolerance:_Real|Automatic:Automatic]:=
 	CubeFileMinMax@CubeFileGrid[a,CubeFileScaling[a,atomset]];
+
+
+(* ::Subsubsection::Closed:: *)
+(*IsoSurface*)
+
 
 
 CubeFileIsoSurface[grid_List,
@@ -372,6 +420,11 @@ CubeFileIsoSurface[a_Association,atomset_List,
 	isoVal:_Real|Automatic:Automatic,tolerance:_Real|Automatic:Automatic]:=
 	CubeFileIsoSurface[a,CubeFileScaling[a,atomset],
 		isoVal,tolerance];
+
+
+(* ::Subsubsection::Closed:: *)
+(*DensityPlot*)
+
 
 
 Options[CubeFileDensityPlot]=Options@ListDensityPlot3D;
@@ -416,6 +469,11 @@ CubeFileDensityPlot[
 		]
 
 
+(* ::Subsubsection::Closed:: *)
+(*ContourPlot*)
+
+
+
 Options[CubeFileContourPlot]=Options@ListContourPlot3D;
 
 
@@ -455,6 +513,37 @@ CubeFileContourPlot[
 		CubeFileGrid[a],
 		ops
 		]
+
+
+(* ::Subsection:: *)
+(*Import*)
+
+
+
+(*Map[
+	ImportExport`RegisterImport[
+		"CubeFile",
+		{
+			"Association":>
+				Function[
+					{"Association"->CubeFileGrid@CubeFileRead[##]}
+					],
+			"Grid":>
+				Function[
+					{"Grid"->CubeFileGrid@CubeFileRead[##]}
+					],
+			"InterpolatingFunction":>
+				Function[
+					{"InterpolatingFunction"->CubeFileFunction@CubeFileRead[##]}
+					],
+			"Elements":>
+				Function[{"Elements"->{"Association", "Grid", "InterpolatingFunction"}}],
+			CubeFileRead
+			},
+		"FunctionChannels"->{"Streams"}
+		]&,
+	{"cube", "CubeFile"}
+	]*)
 
 
 End[];

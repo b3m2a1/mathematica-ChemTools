@@ -81,7 +81,7 @@ $PackageDeclared=
 	TrueQ[$PackageDeclared];
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*Scoping*)
 
 
@@ -141,8 +141,7 @@ $PackageLoadSpecs=
 $AllowPackageRescoping=
 	Replace[
 		Lookup[$PackageLoadSpecs, "AllowRescoping"],
-		Except[True|False]->
-			$TopLevelLoad
+		Except[True|False]->$TopLevelLoad
 		];
 $AllowPackageRecoloring=
 	Replace[
@@ -373,7 +372,7 @@ PackageDeclarePackage[pkgFile_->syms_]:=
 		];
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*PackageLoadDeclare*)
 
 
@@ -381,40 +380,62 @@ PackageLoadDeclare[pkgFile_String]:=
 	If[!MemberQ[$LoadedPackages,pkgFile],
 		If[!KeyMemberQ[$DeclaredPackages,pkgFile],
 			PackageDeclarePackage@
-					PackagePullDeclarations[pkgFile]
+				PackagePullDeclarations[pkgFile]
 			],
 		PackageAppGet[pkgFile]
 		];
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*PackageAppLoad*)
+
+
+packageAppLoad[dir_, listing_]:=
+	With[
+		{
+			fileNames=
+				Select[
+					FileNames["*", dir],
+					DirectoryQ@#||MatchQ[FileExtension[#], "m"|"wl"]&
+					]
+			},
+		Replace[
+			Select[fileNames, 
+				StringMatchQ[
+					ToLowerCase@FileNameTake[#],
+					"__pre__."~~("m"|"wl")
+					]&
+				],
+			{f_}:>Get[f]
+			];
+		PackageAppLoad[
+			$PackageListing[listing]=
+				Select[fileNames, StringFreeQ["__"]@*FileBaseName]
+			];
+		Replace[
+			Select[fileNames, 
+				StringMatchQ[
+					ToLowerCase@FileNameTake[#], 
+					"__Post__."~~("m"|"wl")
+					]&
+				],
+			{f_}:>Get[f]
+			];
+		];
 
 
 PackageAppLoad[dir_String?DirectoryQ]:=
 	If[StringMatchQ[FileBaseName@dir,(WordCharacter|"$")..],
 		Begin["`"<>FileBaseName[dir]<>"`"];
-		AppendTo[$PackageContexts,$Context];
-		PackageAppLoad[
-			$PackageListing[FileNameDrop[dir,FileNameDepth[$PackageDirectory]+1]]=
-				Select[
-					FileNames["*",dir],
-					DirectoryQ@#||MatchQ[FileExtension[#],"m"|"wl"]&
-					]
-			];
+		AppendTo[$PackageContexts, $Context];
+		packageAppLoad[dir, FileNameDrop[dir,FileNameDepth[$PackageDirectory]+1]];
 		End[];
 		];
 PackageAppLoad[file_String?FileExistsQ]:=
 	PackageLoadDeclare[file];
 PackageAppLoad[]:=
 	PackageExecute@
-	PackageAppLoad[
-		$PackageListing[$PackageName]=
-			Select[
-				FileNames["*",FileNameJoin@{$PackageDirectory,"Packages"}],
-				DirectoryQ@#||MatchQ[FileExtension[#],"m"|"wl"]&
-				]
-			];
+		packageAppLoad[FileNameJoin@{$PackageDirectory,"Packages"}, $PackageName];
 PackageAppLoad~SetAttributes~Listable;
 
 
@@ -478,8 +499,19 @@ PackageAppNeeds[pkg_String]:=
 
 
 $PackageScopeBlockEvalExpr=TrueQ[$PackageScopeBlockEvalExpr];
-PackageScopeBlock[e_,scope_String:"Package"]/;TrueQ[$AllowPackageRescoping]:=
-	With[{newcont="ChemTools`PackageScope`"<>StringTrim[scope,"`"]<>"`"},
+PackageScopeBlock[
+	e_,
+	scope:_String?(StringFreeQ["`"]):"Package",
+	context:_String?(StringEndsQ["`"]):"`PackageScope`"
+	]/;TrueQ[$AllowPackageRescoping]:=
+	With[{
+		newcont=
+			If[StringStartsQ[context, "`"],
+				"ChemTools"<>context<>scope<>"`",
+				context<>scope<>"`"
+				],
+		res=If[$PackageScopeBlockEvalExpr,e]
+		},
 		If[!MemberQ[$PackageContexts,newcont],
 			Unprotect[$PackageContexts];
 			AppendTo[$PackageContexts,newcont];
@@ -515,7 +547,7 @@ PackageScopeBlock[e_,scope_String:"Package"]/;TrueQ[$AllowPackageRescoping]:=
 						Function[Null,
 							Quiet[
 								Check[
-									Set[Context[#],newcont],
+									Set[Context[#], newcont],
 									Remove[#],
 									Context::cxdup
 									],
@@ -527,11 +559,11 @@ PackageScopeBlock[e_,scope_String:"Package"]/;TrueQ[$AllowPackageRescoping]:=
 						]//ReleaseHold;
 					]
 			];
-		If[$PackageScopeBlockEvalExpr,e]
+		res
 		];
 PackageScopeBlock[e_, scope_String:"Package"]/;Not@TrueQ[$AllowPackageRescoping]:=
 	If[$PackageScopeBlockEvalExpr,e];
-PackageScopeBlock~SetAttributes~HoldAllComplete;
+PackageScopeBlock~SetAttributes~HoldFirst;
 
 
 (* ::Subsubsection::Closed:: *)
@@ -540,15 +572,20 @@ PackageScopeBlock~SetAttributes~HoldAllComplete;
 
 PackageDecontext[
 	pkgFile_String?(KeyMemberQ[$DeclaredPackages,#]&),
-	scope_String:"Package"
+	scope:_String?(StringFreeQ["`"]):"Package",
+	context:_String?(StringEndsQ["`"]):"`PackageScope`"
 	]/;TrueQ[$AllowPackageRescoping]:=
 	With[{
 		names=$DeclaredPackages[pkgFile],
-		ctx="ChemTools`PackageScope`"<>StringTrim[scope,"`"]<>"`"
+		ctx=
+		 If[StringStartsQ[context, "`"],
+			"ChemTools"<>context<>scope<>"`",
+			context<>scope<>"`"
+			]
 		},
 		Replace[names,
 			Verbatim[HoldPattern][s_]:>
-				Set[Context[s],ctx],
+				Set[Context[s], ctx],
 			1
 			]
 		];
@@ -770,123 +807,6 @@ PackageSetAutocompletionData[]:=
 						}
 					]
 		];
-(* ::Subsection:: *)
-(*SyntaxInformation*)
-
-
-(* ::Subsubsection::Closed:: *)
-(*$PackageSyntaxInformationSet*)
-
-
-If[!AssociationQ@$PackageSyntaxInformationSet,
-	$PackageSyntaxInformationSet=<|
-		
-		|>
-	];
-
-
-(* ::Subsubsection::Closed:: *)
-(*PackageGetSyntaxInformation*)
-
-
-PackageGetSyntaxInformation[Except[HoldPattern][pats___]]:=
-	ReplaceRepeated[HoldPattern[#],{
-		Verbatim[Pattern][_,b_]:>b,
-		_Optional:>(_.),
-		Verbatim[PatternTest][p_,_]:>p,
-		Verbatim[Blank][s_]:>_,
-		Verbatim[BlankSequence][s_]:>__,
-		Verbatim[BlankNullSequence][s_]:>___,
-		Verbatim[OptionsPattern][s__]:>OptionsPattern[]
-		}]&/@Hold[pats]//Thread[List@@#,HoldPattern]&//ReleaseHold;
-PackageGetSyntaxInformation[Verbatim[HoldPattern][pat_]]:=
-	PackageGetSyntaxInformation[pat];
-PackageGetSyntaxInformation[Verbatim[HoldPattern][pats___]]:=
-	PackageGetSyntaxInformation[Hold[pats]];
-PackageGetSyntaxInformation[pat_Symbol]:=
-	Replace[DownValues[pat],
-		(Verbatim[HoldPattern][p_]:>_):>
-			PackageGetSyntaxInformation[p],
-		1
-		];
-PackageGetSyntaxInformation~SetAttributes~HoldFirst;
-
-
-(* ::Subsubsection::Closed:: *)
-(*PackageSetSyntaxInformation*)
-
-
-PackageSetSyntaxInformation[Verbatim[HoldPattern][f_Symbol[pats___]],o___]:=
-	PackageSetSyntaxInformation[f[pats],o];
-PackageSetSyntaxInformation[f_Symbol[pats___],o___]:=
-	If[!Lookup[$PackageSyntaxInformationSet,f,False],
-		$PackageSyntaxInformationSet[f]=True;
-		SyntaxInformation[f]={
-			"ArgumentsPattern"->PackageGetSyntaxInformation[f[pats]],
-			o
-			};
-		];
-PackageSetSyntaxInformation~SetAttributes~HoldFirst;
-
-
-PackageSetSyntaxInformation[f_Symbol,o___]:=
-	If[!Lookup[$PackageSyntaxInformationSet,f,False],
-		With[{d=
-			First@
-				MaximalBy[
-					Length@Extract[#,1,Unevaluated]&
-					]@
-				MaximalBy[First/@DownValues[f],
-					Length@Cases[#,_Optional|_Default|_OptionsPattern,\[Infinity]]&
-					]},
-			PackageSetSyntaxInformation[d,o]
-			]
-		];
-
-
-(* ::Subsubsection::Closed:: *)
-(*PackageClearSyntaxInformation*)
-
-
-PackageClearSyntaxInformation[f_Symbol]:=
-	(SyntaxInformation[f]=.;$PackageSyntaxInformationSet[f]=False;);
-PackageClearSyntaxInformation[f_Symbol[pats___]]:=
-	(SyntaxInformation[f]=.;$PackageSyntaxInformationSet[f]=False;);
-(* ::Subsection:: *)
-(*Usage*)
-
-
-(* ::Subsubsection::Closed:: *)
-(*PackageAddUsage*)
-
-
-PackageAddUsage[sym_Symbol,usage_String]:=
-	(sym::usages=
-		StringTrim@StringRiffle[{
-			StringReplace[
-				Replace[sym::usages,
-					Except[_String]->""
-					],
-				usage->""
-				],
-			usage},
-			"\n"]);
-PackageAddUsage[pat:Except[_Missing],usage_String]:=
-	PackageAddUsage[
-		Evaluate@FirstCase[Hold[pat],
-			s_Symbol?(
-				Function[Null,
-				Context[#]==("ChemTools`"),
-				HoldFirst]):>s,
-			Missing["NotFound"],
-			Infinity,
-			Heads->True
-			],
-		ToString[Unevaluated[pat]]<>" "<>usage
-		];
-PackageAddUsage[pat:Except[_Missing],usage_]:=
-	PackageAddUsage[pat,ToString[usage]];
-PackageAddUsage~SetAttributes~HoldFirst;
 (* ::Subsection:: *)
 (*FrontEnd*)
 
@@ -1151,125 +1071,6 @@ PackageFERehidePackage[
 		];
 PackageFERehidePackage[spec:_String|_List,a___]/;TrueQ[$AllowPackageRecoloring]:=
 	PackageFERehidePackage[PackageFilePath@Flatten@{"Packages",spec},a];
-(* ::Subsection:: *)
-(*Objects*)
-
-
-(* ::Subsubsection::Closed:: *)
-(*$PackageObjectBase*)
-
-
-$PackageObjectBase=PackageFilePath["Objects"];
-
-
-(* ::Subsubsection::Closed:: *)
-(*PackageLocalObject*)
-
-
-PackageLocalObject[name_]:=
-	LocalObject[name,$PackageObjectBase];
-
-
-(* ::Subsubsection::Closed:: *)
-(*PackageLocalFile*)
-
-
-PackageLocalFile[name_,path_]:=
-	FileNameJoin@{
-		$PackageObjectBase,
-		name,
-		path
-		};
-
-
-PackageLocalFile[name_]:=
-	PackageLocalFile[
-		name,
-		Key["ExternalData"]@
-			Get@PackageLocalFile["object.wl"]
-		];
-
-
-(* ::Subsubsection::Closed:: *)
-(*PackageLocalPut*)
-
-
-PackageLocalPut[expr__,name_]:=
-	Put[
-		Unevaluated@expr,
-		PackageLocalObject[name]
-		];
-
-
-(* ::Subsubsection::Closed:: *)
-(*PackageLocalExport*)
-
-
-PackageLocalExport[name_,e__]:=
-	Export[
-		PackageLocalObject[name],
-		e
-		];
-
-
-(* ::Subsubsection::Closed:: *)
-(*PackageLocalEncode*)
-
-
-PackageLocalEncode[name_]:=
-	(
-		Put[
-			ReplacePart[Get@PackageLocalFile[name,"object.wl"],
-				"ExternalData"->"encoded.mx"
-				],
-			PackageLocalFile[name,"object.wl"]
-			];
-		Encode[
-			PackageLocalFile[name],
-			PackageLocalFile[name,"encoded.mx"]
-			];
-		PackageLocalObject[name]
-		);
-
-
-PackageLocalEncode[name_,key_]:=
-	(
-		Put[
-			ReplacePart[Get@PackageLocalFile[name,"object.wl"],
-				"ExternalData"->"encoded.mx"
-				],
-			PackageLocalFile[name,"object.wl"]
-			];
-		Encode[
-			PackageLocalFile[name],
-			PackageLocalFile[name,"encoded.mx"],
-			key
-			];
-		PackageLocalObject[name]
-		);
-
-
-(* ::Subsubsection::Closed:: *)
-(*PackageLocalGet*)
-
-
-PackageLocalGet[name_]:=
-	Get@PackageLocalObject[name];
-
-
-PackageLocalGet[name_,key_]:=
-	Get[PackageLocalObject[name],key];
-
-
-(* ::Subsubsection::Closed:: *)
-(*PackageLocalImport*)
-
-
-PackageLocalImport[name_,e___]:=
-	Import[
-		PackageLocalObject[name],
-		e
-		];
 
 
 (* ::Subsection:: *)

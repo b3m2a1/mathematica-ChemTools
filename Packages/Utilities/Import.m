@@ -19,544 +19,50 @@
 
 
 
-ChemMove::usage=
-	"Generalizes \[Star]Move operations";
-ChemRotate::usage=
-	"Generalizes \[Star]Rotate operations";
-ChemTransform::usage=
-	"Generalizes \[Star]Transform operations";
+ChemImportMolTable::usage="Imports MolTable data";
+ChemImportZMatrix::usage="Imports ZMatrix data";
 
 
-ChemView::usage="Views a ChemObject";
-ChemViewList::usage=
-	"ChemView / Manipulate combo";
-
-
-ChemSurface::usage="Generates a surface from a graphic or ChemObject";
-ChemSurfacePlot::usage="Plots a function on a surface";
-
-
-ChemAnimate::usage=
-	"Animates a command and view expression. 
-Just ListAnimate / Table / Interpretation joined";
-ChemSaveAnimation::usage=
-	"Exports a set of frames to a file";
-
-
-ChemImportString::usage=
+ChemImportObjectString::usage=
 	"Imports a chemical structure or structures from a string";
-ChemImport::usage=
-	"Routes imports to ChemImportString";
+ChemImportObject::usage=
+	"Routes imports to ChemImportObjectString";
 
 
-ChemEvaluate::usage=
-	"An evaluation tag for ChemCompile";
-ChemCompile::usage=
-	"Compiles a function replacing the ChemTools` scope";
-$ChemCompilePoint::usage=
-	"The point used in ChemPointCompile";
-$ChemCompileObject::usage=
-	"The object using in ChemPointCompile";
-ChemPointCompile::usage=
-	"Compiles a function using a coordinate as the default argument";
+If[!TrueQ[`Private`$MainImportsRegistered],
+(*
+	Register formats 
+	*)
+ImportExport`RegisterImport[
+	"MolTable",
+	ChemImportMolTable,
+	"FunctionChannels"->{"Streams"}
+	];
+ImportExport`RegisterImport[
+	"ZMatrix",
+	ChemImportZMatrix,
+	"FunctionChannels"->{"Streams"}
+	];
+ImportExport`RegisterImport[
+	"ChemObject",
+	ChemImportObject
+	];
+`Private`$MainImportsRegistered=True
+
+];
 
 
 Begin["`Private`"];
 
 
-ChemGetApply[obj:ChemManyPattern,prop_,args___]:=
-	With[{attrs=
-		Block[{$ChemFormatMethods=True},
-			ChemGet[Flatten@obj,prop]
-			]
-		},
-		If[ListQ@attrs,
-			Through[Map[Apply,attrs][{args}]],
-			attrs[args]
-			]
-		];
+(* ::Subsection:: *)
+(*Import Lower-Level*)
 
 
-ChemMove[obj:ChemManyPattern, pt_,mode:"Set"|"Add":"Add"]:=
-	(ChemGetApply[obj,"Move",pt,mode];);
-ChemMove[pt_,mode:"Set"|"Add":"Add"][obj:ChemManyPattern]:=
-	ChemMove[obj,pt,mode];
 
+(* ::Subsubsection::Closed:: *)
+(*String Patterns*)
 
-ChemRotate[obj:ChemManyPattern,theta_,axis_:{0.,0.,1.},pt_:{0.,0.,0.}]:=
-	(ChemGetApply[obj,"Rotate",
-		theta,axis,pt];);
-ChemRotate[theta_,axis_:{0.,0.,1.},pt_:{0.,0.,0.}][obj:ChemManyPattern]:=
-	ChemRotate[obj,theta,axis,pt];
-
-
-ChemTransform[obj:ChemManyPattern,transf_]:=
-	(ChemGetApply[obj,"Transform",transf];);
-ChemTransform[transf_][obj:ChemManyPattern]:=
-	ChemTransform[obj,transf];
-
-
-ChemView[obj:ChemManyPattern,mode:"2D"|"3D":"3D",
-	directives:(Except[_String|_Rule|_RuleDelayed])...,
-	ops:OptionsPattern[]]:=
-	Switch[mode,
-		"2D",
-			Graphics[{
-				directives,
-				ChemGetApply[obj,
-					"Graphic",
-					FilterRules[{ops},
-						Except[Alternatives@@Map[First,Options@Graphics]]
-						]
-					]
-				},
-				FilterRules[
-					{ops},
-					Options@Graphics
-					]
-				],
-		"3D",
-			Graphics3D[{
-				directives,
-				ChemGetApply[
-					obj,
-					"Graphic3D",
-					FilterRules[{ops},
-						Except[Alternatives@@Map[First,Options@Graphics3D]]
-						]
-					]
-				},
-				FilterRules[
-					{ops,"Lighting"->"Neutral",Boxed->False},
-					Options@Graphics3D
-					]
-				]
-		];
-
-
-ChemView[obj:ChemManyPattern,"Atoms",a___]:=
-	ChemView[obj,"3D",
-		a,
-		"AtomicRadius"->.15,
-		"BondThickness"->0
-		];
-ChemView[obj:ChemManyPattern,"Bonds",a___]:=
-	ChemView[obj,"3D",
-		a,
-		"AtomicRadius"->0.,
-		"BondThickness"->.1
-		];
-ChemView[obj:ChemManyPattern,"SpaceFilling",a___]:=
-	ChemView[obj,"3D",
-		a,
-		"RadiusScaling"->1,
-		"AtomicRadius"->Automatic
-		];
-ChemView[obj:ChemManyPattern,"TraditionalForm",a___]:=
-	ChemView[obj,"3D",
-		Specularity[White,100],
-		a
-		];
-ChemView[obj:ChemManyPattern,"Tube",a___]:=
-	ChemView[obj,"3D",
-		Specularity[White,100],
-		a,
-		"AtomicRadius"->.15,
-		"BondThickness"->.15,
-		"DoubleBondSeparation"->None,
-		"TripleBondSeparation"->None
-		];
-ChemView[obj:ChemManyPattern,"Line",a___]:=
-	ChemView[obj,"3D",
-		Specularity[White,100],
-		a,
-		"AtomicRadius"->.01,
-		"BondThickness"->.01,
-		"DoubleBondSeparation"->None,
-		"TripleBondSeparation"->None
-		];
-
-
-ChemView[s:(_String|_Integer|{(_String|_Integer)..}),a___]:=
-	Replace[ChemImport@s,
-		c:ChemObjAllPattern:>
-			With[{g=ChemView[c,a]},
-				ChemRemoveRecursive@c;
-				g
-				]
-		];	
-
-
-ChemViewList[l_List,ops___]:=
-	With[{
-		len=Length@l,
-		barSize=Rasterize[Slider[],"RasterSize"],
-		bW=25
-		},
-		Manipulate[
-			ChemView[l[[i]],ops],
-			Framed[
-				Grid[
-					{
-						{
-							Button[
-								Style["\[LeftTriangleBar]",Gray],
-								i=1,
-								Appearance->"AbuttingRight"(*,
-								ImageSize\[Rule]{bW,Last@barSize},
-								Alignment\[Rule]{0,Last@barSize}*)],
-							Button[
-								Style["\[LeftTriangle]",Gray],
-								i=Max@{i-1,1},
-								Appearance->"AbuttingLeftRight"(*,
-								ImageSize\[Rule]{bW,Last@barSize},
-								Alignment\[Rule]{0,Last@barSize}*)],
-							Framed[
-								Control@{{i,1,""},1,Length@l,1,
-									ControlType->Manipulator},
-								FrameMargins->{{0,10},{-1,-1}},
-								FrameStyle->Directive[Thin,GrayLevel[.9]]
-								],
-							Button[
-								Style["\[RightTriangle]",Gray],
-								i=Min@{i+1,len},
-								Appearance->"AbuttingLeftRight"(*,
-								ImageSize\[Rule]{bW,Last@barSize},
-								Alignment\[Rule]{0,Last@barSize}*)],
-							Button[
-								Style["\[RightTriangleBar]",Gray],
-								i=len,
-								Appearance->"AbuttingLeft",
-								FrameMargins->{{0,3},{-1,0}}(*,
-								ImageSize\[Rule]{bW,Last@barSize},
-								Alignment\[Rule]{0,.5}*)]
-							}
-						},
-					Spacings->0,
-					Alignment->Top
-					],
-				RoundingRadius->5,
-				FrameMargins->{{-2,-2},{-3,-2}},
-				Background->White,
-				FrameStyle->GrayLevel[.9]
-				]
-			]
-		];
-
-
-Options[ChemSurface]=
-	Join[
-		Options[BoundaryDiscretizeRegion],
-		Options[DiscretizeGraphics]
-		];
-ChemSurface[g_Graphics3D, ops:OptionsPattern[]]:=
-	With[{c=Cases[g,_Sphere,\[Infinity]]/.Sphere->Ball},
-		If[Length@c>0,
-			BoundaryDiscretizeRegion[
-				RegionUnion@@c,
-				FilterRules[{ops},
-					Options@BoundaryDiscretizeRegion
-					],
-				PlotTheme->"SmoothShading"
-				],
-			DiscretizeGraphics[g,
-				FilterRules[{ops},
-					Options@DiscretizeGraphics
-					],
-				PlotTheme->"SmoothShading"
-				]
-			]
-		];
-ChemSurface[obj:ChemObjPattern,ops:OptionsPattern[]]:=
-	ChemSurface[ChemView[obj,"SpaceFilling"], ops];
-
-
-(*Options[ChemSurfacePlot]={
-	Function\[Rule]Compile[{{p,_Real,1}},Norm@p],
-	InterpolatingFunction\[Rule]Compile[{{c,_Real,1}},Mean@c],
-	ColorFunction\[Rule](Hue[1-.8*#]&),
-	ColorFunctionScaling\[Rule]True
-	};
-ChemSurfacePlot[
-	surface_?RegionQ,
-	ops:OptionsPattern[]
-	]:=
-	With[{
-		coordinateFunction=OptionValue@Function,
-		interpolationFunction=OptionValue@InterpolatingFunction,
-		colorFunction=OptionValue@ColorFunction,
-		csScaling=TrueQ[OptionValue@ColorFunctionScaling]
-		},
-	Block[{
-		csPlotCoordinateValues=coordinateFunction/@MeshCoordinates@surface,
-		csPlotMinMax,csPlotMin,csPlotDiff,
-		csPlotCellStyling},
-		csPlotMinMax=MinMax@csPlotCoordinateValues;
-		csPlotMin=First@csPlotMinMax;
-		csPlotDiff=Abs@First@Differences@csPlotMinMax;
-		csPlotCoordinateValues=
-			Association@
-				If[csScaling,
-					If[csPlotDiff==0,
-						MapIndexed[First@#2\[Rule].5&,
-							csPlotCoordinateValues],
-						MapIndexed[First@#2\[Rule](#-csPlotMin)/csPlotDiff&,
-							csPlotCoordinateValues]
-						],
-					MapIndexed[First@#2\[Rule]#&,csPlotCoordinateValues]
-					];
-		csPlotCellStyling=
-			With[{cf=
-				colorFunction/.HoldPattern@ColorData[a__]\[RuleDelayed]
-					RuleCondition[ColorData[a],True]},
-			MapIndexed[
-				Style[{2,First@#2},
-					cf@interpolationFunction[First@#/.csPlotCoordinateValues]
-					]&,
-				MeshCells[surface,2]
-				]
-			];
-		HighlightMesh[surface,
-			csPlotCellStyling,
-			PlotTheme\[Rule]"SmoothShading"
-			]
-		]
-	];
-ChemSurfacePlot[system_String,id_,f_,
-	a___
-	]:=
-	With[{
-		s=ChemSurface[system,id],
-		ops=
-			Sequence@@
-				Normal@
-					With[{op=Association@{
-						ColorFunction\[Rule]({ColorData["TemperatureMap"]@#,Opacity[.65]}&),
-						a
-						}},
-						If[FreeQ[op[ColorFunction],_Opacity],
-							With[{cf=op[ColorFunction]},
-								Append[op,ColorFunction\[Rule](Flatten@{cf@#,Opacity[.65]}&)]
-								],
-							op
-							]
-						]
-			},
-		Replace[
-			ChemSurfacePlot[s,
-				If[FreeQ[Hold[f],Point],
-					f,
-					AtomsetPointCompile[system,id,
-						f
-						]
-					],
-				ops
-				],
-			p:Except[_ChemSurfacePlot]:>
-				Show[
-					p,
-					ChemView[system,id]
-					]
-			]
-		];
-ChemSurfacePlot[ChemObject[system_,id_],a__]:=
-	ChemSurfacePlot[system,id,a];
-ChemSurfacePlot~SetAttributes~HoldRest;*)
-
-
-Options[ChemSurfacePlot]=
-	Join[
-		Options@SliceDensityPlot3D,
-		Options@ChemSurface,{
-		Quiet->True
-		}];
-ChemSurfacePlot[
-	function_,
-	surface_?RegionQ,
-	ops:OptionsPattern[]
-	]:=
-	With[{m=MinMax@MeshCoordinates@surface},
-		With[{
-			drops=
-				Sequence@@
-					FilterRules[{ops,
-						ColorFunction->ColorData["TemperatureMap"],
-						Boxed->False,
-						Axes->False
-						},
-					Options@SliceDensityPlot3D
-					]
-			},
-			With[{h=
-				Hold@
-					SliceDensityPlot3D[function@{x,y,z},surface,
-						{x,First@m,Last@m},
-						{y,First@m,Last@m},
-						{z,First@m,Last@m},
-						drops
-						]
-				},
-				If[OptionValue@Quiet//TrueQ,
-					Quiet[ReleaseHold@h,CompiledFunction::cfta],
-					ReleaseHold@h
-					]
-				]
-			]
-		];
-ChemSurfacePlot[f_,
-	obj_?ChemObjectQ,
-	ops:OptionsPattern[]]:=
-	With[{
-		s=
-		ChemSurface[obj,
-			FilterRules[{ops},Options@ChemSurface]
-			],
-		opacity=
-			Lookup[
-				FilterRules[{ops},
-					Opacity],
-				Opacity,
-				.85]
-			},
-		With[{
-			pf=
-				If[FreeQ[Hold[f],$ChemCompilePoint|$ChemCompileObject],
-					f,
-					Replace[Unevaluated[f],{
-						c_ChemPointCompile:>
-							c[obj],
-						_:>
-							Replace[ChemPointCompile[f],{
-								c:Except[_CompiledFunction]:>
-									c[obj]
-								}]
-						}]
-					],
-			pops=
-				Sequence@@
-					Replace[
-						FilterRules[
-							{
-								ops,
-								ColorFunction->ColorData["TemperatureMap"]
-								},
-							Options@ChemSurfacePlot],
-						(ColorFunction->v_):>
-							With[{cfOld=Replace[v,{_String|_Integer:>ColorData[v]}]},
-								ColorFunction->
-									(Directive[
-										cfOld@#,
-										Opacity[opacity]
-										]&)
-								],
-						1]
-			},
-			Replace[
-				ChemSurfacePlot[pf,s,pops],
-				p:Except[_ChemSurfacePlot]:>
-					Show[p,
-						ChemView[obj, ops]
-						]
-				]
-			]
-		];
-ChemSurfacePlot~SetAttributes~HoldFirst;
-
-
-chemAnimationTime=
-	(_Times?(MatchQ[_Integer])|_Integer|_List|\[Infinity]);
-chemAnimationObjs=
-	ChemManyPattern|_Symbol?(MatchQ[ChemManyPattern])|
-		{((_Symbol?(MatchQ[ChemObjAllPattern]))|ChemManyPattern)..};
-
-
-ChemAnimate//ClearAll;
-Options[ChemAnimate]=
-	Join[
-		Options@ListAnimate,{
-		Prolog->{},
-		Epilog->{},
-		"AnimationTime"->10.,
-		"ChemViewOptions"->{}
-		}];
-ChemAnimate[
-	cmd_,
-	steps:chemAnimationTime:10,
-	ops:OptionsPattern[]]:=
-	With[{
-		frames=
-			Join[
-				Flatten@{OptionValue@Prolog},
-				If[MatchQ[steps,_Integer|\[Infinity]],{cmd},{}],
-				With[{
-					start=Now,
-					anmQ=
-						Quantity[
-							Replace[OptionValue@"AnimationTime",Except[_?NumericQ]->0],
-							"Seconds"]
-						},
-					If[steps===\[Infinity],
-						Reap[
-							While[Now-start<anmQ,
-								Sow@cmd
-								]
-							][[2,1]],
-						Table[
-							If[Now-start<anmQ,
-								cmd,
-								Nothing
-								],
-							steps
-							]
-						]
-					],
-				Flatten@{OptionValue@Epilog}
-				]},
-		Interpretation[
-			ListAnimate[frames,
-				FilterRules[{ops},Options@ListAnimate]],
-			frames
-			]
-		];
-ChemAnimate[
-	obj:chemAnimationObjs,
-	mutate_,
-	steps:chemAnimationTime:10,
-	ops:OptionsPattern[]]:=
-	With[{cvops=
-		Sequence@@
-			Flatten@{OptionValue@"ChemViewOptions"}
-			},
-		ChemAnimate[
-			mutate@obj;
-			ChemView[obj,cvops],
-			steps,
-			ops,
-			Prolog->{ChemView[obj,cvops]}
-			]
-		];
-SyntaxInformation[ChemAnimate]=
-	{
-		"ArgumentsPattern"->{_,_.,_.,OptionsPattern[]},
-		"LocalVariables"->{Table,{2,3}}
-		};
-ChemAnimate~SetAttributes~HoldAll;
-
-
-ChemSaveAnimation[file_,
-	frames_List|Interpretation[_,frames_List],
-	ops:OptionsPattern[]]:=
-	With[{images=
-		Rasterize[#,"Image",FilterRules[{ops},Options@Rasterize]]&/@
-			frames
-			},
-		With[{dims=ImageDimensions@First@images},
-   	 Export[file,
-   	 	ImageResize[ColorConvert[#, "RGB"], dims] & /@ images,
-   	 	ops
-   	 	]
-    	]
-    ]
 
 
 ZMatrixStringPattern1=
@@ -616,7 +122,12 @@ ChemDataBondBlockStringPattern=
 	(BondLineStringPattern~~EndOfLine)..;
 
 
-chemImportZMatrix[table_]:=
+(* ::Subsubsection::Closed:: *)
+(*ZMatrix*)
+
+
+
+ChemImportZMatrix[table:{__List}]:=
 	With[{chunks=
 		SequenceCases[SplitBy[table,MatchQ@{_String,___}],
 			s:{ {{_String,___},___},{{_Integer,___},___} }|{{{_String,___},___}}:>
@@ -636,18 +147,31 @@ chemImportZMatrix[table_]:=
 			{t,chunks}
 			]
 		];
+ChemImportZMatrix[s_String?(Not@*FileExistsQ)]:=
+	ChemImportZMatrix@ImportString[s,"Table"];
+ChemImportZMatrix[file_String?FileExistsQ]:=
+	ChemImportZMatrix@Import[file, "Table"];
+ChemImportZMatrix[stream_InputStream]:=
+	ChemImportZMatrix@Import[stream, "Table"];
 
 
-chemImportMolTable[string_String]:=
-	chemImportMolTableString/@
+(* ::Subsubsection::Closed:: *)
+(*MolTable*)
+
+
+
+ChemImportMolTable[string_String?(Not@*FileExistsQ)]:=
+	ChemImportMolTableString/@
 		Select[
 			StringSplit[string,
 				"$$$$"
 				],
 			StringContainsQ["V2000"|"V3000"]
 			];
-chemImportMolTable[l_List]:=
-	chemImportMolTableList/@
+ChemImportMolTable[stream_InputStream]:=
+	ChemImportMolTable@ReadString[stream];
+ChemImportMolTable[l_List]:=
+	ChemImportMolTableList/@
 		DeleteCases[{"$$$$"}]@
 			Split[
 				l,
@@ -689,7 +213,7 @@ basicDigitPattern=
 		(" "~~DigitCharacter)|
 		DigitCharacter
 		);
-chemImportMolTableString[s_String]:=
+ChemImportMolTableString[s_String]:=
 	With[{blockChunks=
 		Join[
 			StringCases[
@@ -778,8 +302,8 @@ chemImportMolTableString[s_String]:=
 		];
 
 
-ChemImport::molst="Unable to find beginning of MolTable block";
-chemImportMolTableList[table_List]:=
+ChemImportObject::molst="Unable to find beginning of MolTable block";
+ChemImportMolTableList[table_List]:=
 	Block[{$atomBondCount={\[Infinity],\[Infinity]}},
 		Replace[
 			Reap[
@@ -828,7 +352,7 @@ chemImportMolTableList[table_List]:=
 				{
 					e:Except[{{___,"START",___}}]:>(
 						Print@e;
-						Message[ChemImport::molst];
+						Message[ChemImportObject::molst];
 						$Failed
 						),
 					e_:>(parseMolTable@First@e)
@@ -867,6 +391,11 @@ parseMolTable[atomList:{___,"START",__}]:=
 					]
 				}	
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Graphics3D*)
+
 
 
 getElemColors[]:=
@@ -1070,6 +599,11 @@ chemImportGraphics3D[data_Graphics3D]:=
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Graph*)
+
+
+
 (*chemImportGraph[data_Graph]:=
 	With[{
 		nodes=VertexList@data,
@@ -1078,6 +612,11 @@ chemImportGraphics3D[data_Graphics3D]:=
 		Vertex coordinates would have to be explicitly specified, though.
 		
 		];*)
+
+
+(* ::Subsubsection::Closed:: *)
+(*generalizedImport*)
+
 
 
 chemImport[
@@ -1093,21 +632,32 @@ chemImport[
 		];
 
 
-ChemImport::noobj=
+(* ::Subsection:: *)
+(*ImportString*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*ImportString*)
+
+
+
+ChemImportObject::noobj=
 	"Unable to construct ChemObject check input file or contact me";
-ChemImportString[
+ChemImportObjectString[
 	system:ChemSysPattern|Automatic:Automatic,
 	string_String,
-	format:"MolTable"|"ZMatrix"]:=
+	format:"MolTable"|"ZMatrix"
+	]:=
 	Switch[format,
 		"MolTable",
-			chemImport[system,
+			chemObjectImport[system,
 				chemImportMolTable@string],
 		"ZMatrix",
-			chemImport[system,
-				chemImportZMatrix@ImportString[string,"Table"]]
+			chemObjectImport[system,
+				chemImportZMatrix@string]
 		];
-ChemImportString[
+ChemImportObjectString[
 	system:ChemSysPattern|Automatic:Automatic,
 	string_String,
 	Optional[Automatic,Automatic]]:=
@@ -1118,13 +668,13 @@ ChemImportString[
 			]
 		},
 		Replace[
-			ChemImportString[system,string,First@attempts],{
+			ChemImportObjectString[system,string,First@attempts],{
 			Except[_ChemObject|{__ChemObject}]:>
 				Replace[
 					Quiet@
-						ChemImportString[system,string,Last@attempts],
+						ChemImportObjectString[system,string,Last@attempts],
 					e:Except[_ChemObject|{__ChemObject}]:>(
-						Message[ChemImport::noobj];
+						Message[ChemImportObject::noobj];
 						$Failed
 						)
 					]
@@ -1132,44 +682,67 @@ ChemImportString[
 		]
 
 
-ChemImport[
+(* ::Subsection:: *)
+(*Import*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*Import From FIle*)
+
+
+
+ChemImportObject[
 	system:ChemSysPattern|Automatic:Automatic,
 	file:_File|_String?FileExistsQ,
-	format:"MolTable"|"ZMatrix"|Automatic:Automatic]:=
+	format:"MolTable"|"ZMatrix"|Automatic:Automatic
+	]:=
 	With[{form=
 		Replace[format,
 			Automatic:>
 				Switch[FileExtension@file,
 					"mol"|"sdf",
 						"MolTable",
-					"gjf",
+					"zmat",
 						"ZMatrix",
+					"gjf",
+						"GaussianJob",
 					_,
 						Automatic
 					]
 				]
 			},
-		ChemImportString[system,Import[file,"Text"],form]
+		ChemImportObjectString[system, Import[file,"Text"],form]
 		];
 
 
-ChemImport[
+(* ::Subsubsection::Closed:: *)
+(*URL*)
+
+
+
+ChemImportObject[
 	system:ChemSysPattern|Automatic:Automatic,
 	file:_URL|_String?(URLParse[#]["Scheme"]=!=None&),
 	format:"MolTable"|"ZMatrix"|Automatic:Automatic]:=
 	With[{f=URLDownload@file},
 		If[FileExistsQ@f,
-			ChemImport[system,f,format],
+			ChemImportObject[system,f,format],
 			$Failed
 			]
 		];	
 
 
-ChemImport::no3d=
+(* ::Subsubsection::Closed:: *)
+(*Graphics3D*)
+
+
+
+ChemImportObject::no3d=
 	"No 3D structure found for identifier ``. Attempting to use a 2D structure instead";
-ChemImport::nostr=
+ChemImportObject::nostr=
 	"No structure found for identifier ``";
-ChemImport[
+ChemImportObject[
 	system:ChemSysPattern|Automatic:Automatic,
 	structure:
 		_PubChemCompound|
@@ -1185,31 +758,38 @@ ChemImport[
 		Replace[
 			Quiet[ChemDataLookup[structure,"SDFFiles"],ServiceExecute::serrormsg],
 			$Failed:>(
-				Message[ChemImport::no3d, structure];
+				Message[ChemImportObject::no3d, structure];
 				ChemDataLookup[structure,"2DStructures",
 					"Overwrite"->True]
 				)
-			],{
-		mol_String:>
-			ChemImportString[system,mol,"MolTable"],
-		mols:{__String}:>
-			Map[ChemImportString[system,#,"MolTable"]&,mols],
-		_:>(Message[ChemImport::nostr,structure];$Failed)
-		}];
+			],
+		{
+			mol_String:>
+				ChemImportObjectString[system,mol,"MolTable"],
+			mols:{__String}:>
+				Map[ChemImportObjectString[system,#,"MolTable"]&,mols],
+			_:>(Message[ChemImportObject::nostr,structure];$Failed)
+			}
+		];
 
 
-ChemImport[
+ChemImportObject[
 	system:ChemSysPattern|Automatic:Automatic,
 	data_Graphics3D
 	]:=
-	chemImport[system,chemImportGraphics3D@data];
+	chemObjectImport[system,chemImportGraphics3D@data];
 
 
-(*ChemImport[
+(*ChemImportObject[
 	system:ChemSysPattern|Automatic:Automatic,
 	data_Graph
 	]:=
-	chemImport[system,chemImportGraph@data];*)
+	chemObjectImport[system,chemImportGraph@data];*)
+
+
+(* ::Subsubsection::Closed:: *)
+(*Importable Types*)
+
 
 
 $ChemImportableTypes=
@@ -1220,33 +800,37 @@ $ChemImportableTypes=
 		);
 
 
-ChemImport[system:ChemSysPattern|Automatic:Automatic,
+ChemImportObject[system:ChemSysPattern|Automatic:Automatic,
 	data:{$ChemImportableTypes..}
 	]:=
-	ChemImport[system,#]&/@data;
+	ChemImportObject[system,#]&/@data;
 
 
-ChemImport[
+(*ChemImportObject[
 	system:ChemSysPattern|Automatic:Automatic,
 	s_Symbol?(Not@*MatchQ[$ChemImportableTypes|{$ChemImportableTypes..}])
 	]:=
-	(s=ChemImport[system,SymbolName[Unevaluated[s]]]);
-ChemImport[system:ChemSysPattern|Automatic:Automatic,
+	(s=ChemImportObject[system,SymbolName[Unevaluated[s]]]);*)
+
+
+ChemImportObject[system:ChemSysPattern|Automatic:Automatic,
 	s_?(MatchQ[$ChemImportableTypes|{$ChemImportableTypes..}]),
 	o___
 	]:=
-	ChemImport[system,s,o];
-ChemImport[
+	ChemImportObject[system,s,o];
+
+
+ChemImportObject[
 	a___
 	]/;!TrueQ[$ChemImportInImport]:=
 	Block[{$ChemImportInImport=True},
 		With[{l={a}},
-			ChemImport@@l
+			ChemImportObject@@l
 			]
 		]
 
 
-ChemImport~SetAttributes~HoldFirst;
+(*ChemImportObject~SetAttributes~HoldFirst;*)
 
 
 End[];
