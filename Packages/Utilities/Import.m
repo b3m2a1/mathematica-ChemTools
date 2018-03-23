@@ -29,29 +29,6 @@ ChemImportObject::usage=
 	"Routes imports to ChemImportObjectString";
 
 
-If[!TrueQ[`Private`$MainImportsRegistered],
-(*
-	Register formats 
-	*)
-ImportExport`RegisterImport[
-	"MolTable",
-	ChemImportMolTable,
-	"FunctionChannels"->{"Streams"}
-	];
-ImportExport`RegisterImport[
-	"ZMatrix",
-	ChemImportZMatrix,
-	"FunctionChannels"->{"Streams"}
-	];
-ImportExport`RegisterImport[
-	"ChemObject",
-	ChemImportObject
-	];
-`Private`$MainImportsRegistered=True
-
-];
-
-
 Begin["`Private`"];
 
 
@@ -615,15 +592,26 @@ chemImportGraphics3D[data_Graphics3D]:=
 
 
 (* ::Subsubsection::Closed:: *)
+(*Gaussian*)
+
+
+
+gaussianImportObjectData[file:_String?FileExistsQ|_InputStream, "GaussianJob"]:=
+	List@ImportGaussianJob[file, "MolTable"];
+gaussianImportObjectData[file:_String?FileExistsQ|_InputStream, "FormattedCheckpoint"]:=
+	List@ImportFormattedCheckpointFile[file, "MolTable"];
+
+
+(* ::Subsubsection::Closed:: *)
 (*generalizedImport*)
 
 
 
-chemImport[
+chemObjectImport[
 	system:_String|ChemObject[_]|Automatic:Automatic,
 	atomSets_List
 	]:=
-	With[{sys=Replace[system,Automatic:>$ChemDefaultSystem]},
+	With[{sys=Replace[system, Automatic:>$ChemDefaultSystem]},
 		Replace[
 			CreateAtomset[sys,#]&/@atomSets//Flatten,{
 			{}->None,
@@ -647,7 +635,7 @@ ChemImportObject::noobj=
 ChemImportObjectString[
 	system:ChemSysPattern|Automatic:Automatic,
 	string_String,
-	format:"MolTable"|"ZMatrix"
+	format:"MolTable"|"ZMatrix"|"GaussianJob"|"FormattedCheckpoint"
 	]:=
 	Switch[format,
 		"MolTable",
@@ -655,7 +643,14 @@ ChemImportObjectString[
 				chemImportMolTable@string],
 		"ZMatrix",
 			chemObjectImport[system,
-				chemImportZMatrix@string]
+				chemImportZMatrix@string],
+		"GaussianJob"|"FormattedCheckpoint",
+			chemObjectImport[system,
+				gaussianImportObjectData[
+					StringToStream@string,
+					format
+					]
+				]
 		];
 ChemImportObjectString[
 	system:ChemSysPattern|Automatic:Automatic,
@@ -695,7 +690,7 @@ ChemImportObjectString[
 ChemImportObject[
 	system:ChemSysPattern|Automatic:Automatic,
 	file:_File|_String?FileExistsQ,
-	format:"MolTable"|"ZMatrix"|Automatic:Automatic
+	format:"MolTable"|"ZMatrix"|"GaussianJob"|"FormattedCheckpoint"|Automatic:Automatic
 	]:=
 	With[{form=
 		Replace[format,
@@ -707,12 +702,24 @@ ChemImportObject[
 						"ZMatrix",
 					"gjf",
 						"GaussianJob",
+					"fchk",
+						"FormattedCheckpoint",
 					_,
 						Automatic
 					]
 				]
 			},
-		ChemImportObjectString[system, Import[file,"Text"],form]
+		Switch[form,	
+			"MolTable"|"ZMatrix",
+				ChemImportObjectString[system, Import[file,"Text"], form],
+			"GaussianJob"|"FormattedCheckpoint",
+				chemObjectImport[system,
+					gaussianImportObjectData[
+						file,
+						form
+						]
+					]
+			]
 		];
 
 

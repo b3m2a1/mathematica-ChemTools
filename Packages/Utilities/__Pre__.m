@@ -78,14 +78,26 @@ Map[
 	Map[
 		ImportExport`RegisterImport[
 			#,
-			ImportGaussianJob
+			{
+				"MolTable":>
+					Function[{"MolTable"->ImportGaussianJob[#, "MolTable"]}],
+				"Elements":>
+					Function[{"Elements"->{"MolTable"}}],
+				ImportGaussianJob
+				}
 			]&,
 		{"GJF", "GaussianJob"}
 		];
 	Map[
 		ImportExport`RegisterImport[
 			#,
-			ImportFormattedCheckpointFile,
+			{
+				"MolTable":>
+					Function[{"MolTable"->ImportFormattedCheckpointFile[#, "MolTable"]}],
+				"Elements":>
+					Function[{"Elements"->{"MolTable"}}],
+				ImportFormattedCheckpointFile
+				},
 			"FunctionChannels"->{"Streams"}
 			]&,
 		{"FCHK", "FormattedCheckpoint"}

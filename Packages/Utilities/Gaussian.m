@@ -36,24 +36,60 @@ Begin["`Private`"];
 
 
 iGaussianReadLink0[link0Block_]:=
-	StringSplit[StringTrim@link0Block, "%"|Whitespace];
+	Map[
+		If[StringContainsQ[#, "="],
+			Rule@@StringSplit[#, "=", 2],
+			#
+			]&,
+		Select[
+			StringSplit[StringTrim@link0Block, "%"|Whitespace],
+			Not@*StringMatchQ[""|Whitespace]
+			]
+		];
 
 
 iGaussianReadDirectives[directives_]:=
-	StringSplit[StringTrim@directives, "#"|Whitespace];
+	Map[
+		If[StringContainsQ[#, "="],
+			Rule@@StringSplit[#, "=", 2],
+			#
+			]&,
+		Select[
+			StringSplit[StringTrim@directives, "#"|Whitespace],
+			Not@*StringMatchQ[""|Whitespace]
+			]
+		];
 
 
 iGaussianJobReadChargeAndMultiplicity[mult_]:=
 	Map[
-		If[StringMatchQ[#, NumberString], ToExpression[#], #]&,
+		Which[
+			StringMatchQ[#, NumberString], 
+				ToExpression[#], 
+			StringMatchQ[#, Whitespace|""],
+				Nothing,
+			True,
+				#
+			]&,
 		StringTrim@StringSplit[mult, ","|" "]
 		];
 iGaussianJobReadAtoms[atoms_]:=
 	ImportString[atoms, "Table"];
 iGaussianJobReadVariables[vars_]:=
-	Map[StringSplit, StringSplit[vars, "\n"]];
-iGaussianJobReadConstants[consts_]:=
-	Map[StringSplit, StringSplit[consts, "\n"]];
+	Map[
+		Map[
+			Which[
+				StringMatchQ[#, NumberString], 
+					ToExpression[#], 
+				StringMatchQ[#, Whitespace|""],
+					Nothing,
+				True,
+					#
+				]&,
+			StringSplit[StringTrim@#]
+			]&, 
+		StringSplit[vars, "\n"]
+		];
 iGaussianJobReadBonds[bonds_]:=
 	ImportString[bonds, "Table"];
 
@@ -117,7 +153,7 @@ iGaussianJobReadSystem[systemSpec_]:=
 			"Variables"->
 				iGaussianJobReadVariables@vars,
 			"Constants"->
-				iGaussianJobReadConstants@consts,
+				iGaussianJobReadVariables@consts,
 			"Bonds"->
 				iGaussianJobReadBonds@bonds
 			|>
@@ -125,7 +161,7 @@ iGaussianJobReadSystem[systemSpec_]:=
 
 
 iGaussianJobRead[cleanText_]:=
-	With[{baseSplit=StringSplit[cleanText, "\n".., 4]},
+	With[{baseSplit=StringTrim@StringSplit[cleanText, Repeated["\n", {2, \[Infinity]}], 4]},
 		<|
 			"Header"->
 				<|
@@ -140,13 +176,29 @@ iGaussianJobRead[cleanText_]:=
 iGaussianJobRead1[fullText_]:=
 	iGaussianJobRead@
 		StringTrim@
-			StringDelete[fullText, "!"~~Except["\n"]..];
+			StringReplace[Repeated["\n", {3, \[Infinity]}]->"\n\n"]@
+				Fold[
+					StringDelete,
+					fullText,
+					{
+						(StartOfLine~~"!"~~Except["\n"]...~~"\n"),
+						"!"~~Except["\n"]..
+						}
+					];
 
 
 ImportGaussianJob[file:_String?FileExistsQ|_InputStream]:=
 	ImportGaussianJob[ReadString@file];
 ImportGaussianJob[str_String?(Not@*FileExistsQ)]:=
 	iGaussianJobRead1[str];
+ImportGaussianJob[file:_String|_InputStream, "MolTable"]:=
+	With[{dats=ImportGaussianJob[file]},
+		Join[
+			{{Length@dats["Atoms"], Length@dats["Bonds"]}},
+			Lookup[dats, "Atoms", {}],
+			Lookup[dats, "Bonds", {}]
+			]
+		]
 
 
 (* ::Subsection:: *)
@@ -154,29 +206,56 @@ ImportGaussianJob[str_String?(Not@*FileExistsQ)]:=
 
 
 
+(* ::Subsubsection::Closed:: *)
+(*iFormattedCheckpointRead*)
+
+
+
 Clear[iFormattedCheckpointRead];
 ImportFormattedCheckpointFile::misfmt=
-	"Misformatted fchk file or failed to extract from block appropriately. `` isn't an appropriate line specification.";
+	"Misformatted fchk file or failed to extract from block appropriately. \
+`` isn't an appropriate line specification.";
 iFormattedCheckpointRead[
 	stream_InputStream, 
-	keys:_?StringPattern`StringPatternQ|All
+	keys:_?StringPattern`StringPatternQ|{__?StringPattern`StringPatternQ}|All
 	]:=
 	Module[
 		{
+			validKeys=
+				Replace[keys, 
+					{
+						"*"|Verbatim[__]->All,
+						{p__}:>Alternatives[p]
+						}
+					],
 			header,
 			line,
 			lineParts,
 			keyRaw,
 			key,
+			subspec,
 			type,
 			results=<||>
-				},
-			header=ReadList[stream,String, 2];
+			},
+			header=Internal`Bag[];
 			Do[
 				line=ReadList[stream, String, 1];
 				(* If we've hit the end of the file we just return *)
 				If[line==={}, Return[EndOfFile], line=line[[1]] ];
-				(* If we've specified a subset of keys we make sure we're taking one of those *)
+				(* test to see if we've read the header yet *)
+				If[header=!=None,
+					(* while in the header *)
+					If[StringFreeQ[line, "Number of atoms"~~__~~" I "],
+						(* stuff the bag *)
+						Internal`StuffBag[header, line];
+						Continue[],
+						(* exit the header *)
+						results["Header"]=
+							StringRiffle[Internal`BagPart[header, All], "\n"];
+						header=None;
+						]
+					];
+				(* if the line is malformatted we fail out *)
 				If[StringStartsQ[line, " "],
 					Message[ImportFormattedCheckpointFile::misfmt, line];
 					results=Return[$Failed]
@@ -187,29 +266,103 @@ iFormattedCheckpointRead[
 				keyRaw=lineParts[[1]];
 				(* We'll reformat it to be more Mathematica appropriate *)
 				key=
-				StringJoin@
-				Map[
-					With[{base=Last@StringSplit[StringTrim[#, "/"],"/"]},
-						ToUpperCase@StringTake[base, 1]<>StringDrop[base, 1]
-						]&,
-					 StringSplit[lineParts[[1]], " "]
+					StringJoin@
+						Map[
+							With[{base=Last@StringSplit[StringTrim[#, "/"],"/"]},
+								ToUpperCase@StringTake[base, 1]<>StringDrop[base, 1]
+								]&,
+							 StringSplit[lineParts[[1]], " "]
+							];
+				If[MatchQ[lineParts[[2]], "I"|"R"|"C"|"L"],
+					subspec=None,
+					(* subspec is the second *)
+					subspec=
+						StringJoin@
+							Map[
+								With[{base=Last@StringSplit[StringTrim[#, "/"],"/"]},
+									ToUpperCase@StringTake[base, 1]<>StringDrop[base, 1]
+									]&,
+								 StringSplit[lineParts[[2]], " "]
+								];
+					(* Shift so that the type is the second *)
+					lineParts=Delete[lineParts, 2]
 					];
-				If[keys=!=All&&!StringMatchQ[key, keys],Continue[]];
 				(* The type is the second *)
 				type=lineParts[[2]];
-				(* Check if we're starting a block *)
-				results[key]=
-				If[lineParts[[3]]=="N=",
-					Developer`ToPackedArray@
-					ReadList[stream, Number, 
-						ToExpression[lineParts[[4]]]
-						],
-					ToExpression@
-					If[type=="R"&&
-							StringLength[lineParts[[3]]]>4&&
-							StringTake[lineParts[[3]], {-4}]=="E",
-						StringReplacePart[lineParts[[3]], "*10^", {-4, -4}],
-						lineParts[[3]]
+				(* If we've specified a subset of keys we make sure we're taking one of those *)
+				If[validKeys===All||StringMatchQ[key, validKeys],
+					(* Check if we're starting a block *)
+					With[{res=
+						If[lineParts[[3]]=="N=",
+							With[{n=ToExpression[lineParts[[4]]]},
+								Switch[type,
+									"R"|"I",
+									If[n>100,
+										RawArray[
+											If[type=="R", "Real64", "Integer32"],
+											ReadList[stream, Number, n]
+											],
+										ReadList[stream, Number, n]
+										],
+									"C",
+										ReadList[stream, Word, n],
+									"H",
+										(* Gaussian encodes this without whitespace padding so it requires lower-level tricks *)
+										Replace[
+											With[{lines=Quotient[n, 72], extras=Mod[n, 72]},
+												Flatten[{
+													ReadList[stream,
+														ConstantArray[Character, 75],
+														Quotient[n, 72]
+														][[All, 3;;74]],
+													ReadList[stream, 
+														ConstantArray[Character, 3+extras], 
+														1][[All, 3;;2+extras]]
+													}]
+												],
+											{
+												"1"->True,
+												"0"->False,
+												" "->Nothing,
+												_->Indeterminate
+												},
+											1
+											]
+									]
+								],
+							Which[
+								type=="R"&&
+									StringLength[lineParts[[3]]]>4&&
+									StringTake[lineParts[[3]], {-4}]=="E",
+									ToExpression@
+										StringReplacePart[lineParts[[3]], "*10^", {-4, -4}],
+								MatchQ[type, "I"|"R"],
+									ToExpression@lineParts[[3]],
+								MatchQ[type, "L"],
+									Switch[lineParts[[3]], "0", False, "1", True, _, Indeterminate],
+								MatchQ[type, "C"],
+									lineParts[[3]]
+								]
+							]
+						},
+						If[subspec===None,
+							results[key]=res,
+							If[!KeyExistsQ[results, key],
+								results[key]=<|subspec->res|>,
+								results[key, subspec]=res
+								]
+							]
+						];,
+					(* we place the break here so subspec keys aren't missed *)
+					If[ListQ@keys&&Sort[keys]==Sort[Keys[results]],
+						Break[]
+						];
+					(* skip if necessary *)
+					If[lineParts[[3]]=="N=",
+						Skip[stream, 
+							Number, 
+							ToExpression[lineParts[[4]]]
+							]
 						]
 					],
 				{i, \[Infinity]}
@@ -235,25 +388,51 @@ iFormattedCheckpointRead[
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*iFormattedCheckpointCleanResults*)
+
+
+
 Clear[iFormattedCheckpointCleanResults];
-iFormattedCheckpointCleanResults[results_]:=
+iFormattedCheckpointCleanResults[results_Association?AssociationQ]:=
 	Association@
 		KeyValueMap[
 			#->
-			Which[
-				StringEndsQ[#, "Density"],
-					With[{sq=Sqrt[Length[#2]]},
-						If[IntegerQ@sq&&Positive[sq], Partition[#2, sq], #2]
-						],
-				StringContainsQ[#, "Coordinates"],
-					QuantityArray[Partition[#2, 3], "BohrRadius"],
-				StringEndsQ[#, "Energy"],
-					Quantity[#2, "Hartrees"],
-				True,
-					#2
-				]&,
+				If[AssociationQ@#2,
+					iFormattedCheckpointCleanResults[#2],
+					Which[
+						StringEndsQ[#, "Density"],
+							With[{sq=Sqrt[Length[#2]]},
+								If[IntegerQ@sq&&Positive[sq], 
+									RawArray[
+										Developer`RawArrayType@#2,
+										Partition[Normal@#2, sq]
+										], 
+									#2
+									]
+								],
+						StringContainsQ[#, "Coordinates"],
+							QuantityArray[
+								Partition[Normal@#2, 3], 
+								"BohrRadius"
+								],
+						StringEndsQ[#, "Energy"|"Energies"],
+							If[Length@#==0,
+								Quantity[#2, "Hartrees"],
+								QuantityArray[Normal@#2, "Hartrees"]
+								],
+						True,
+							#2
+						]
+					]&,
 			results
 			];
+iFormattedCheckpointCleanResults[_]:=$Failed
+
+
+(* ::Subsubsection::Closed:: *)
+(*ImportFormattedCheckpointFile*)
+
 
 
 Options[ImportFormattedCheckpointFile]=
@@ -271,34 +450,54 @@ ImportFormattedCheckpointFile[
 			]
 		];
 ImportFormattedCheckpointFile[
-	str:_String ,
+	file:_String?FileExistsQ|_InputStream,
+	"MolTable",
 	ops:OptionsPattern[]
 	]:=
-	ImportFormattedCheckpointFile[StringToStream[str], ops];
-
-
-(* ::Subsection:: *)
-(*Register*)
-
-
-
-(*Map[
-	ImportExport`RegisterImport[
-		#,
-		ImportGaussianJob
-		]&,
-	{"GJF", "GaussianJob"}
-	]*)
-
-
-(*Map[
-	ImportExport`RegisterImport[
-		#,
-		ImportFormattedCheckpointFile,
-		"FunctionChannels"->{"Streams"}
-		]&,
-	{"FCHK", "FormattedCheckpoint"}
-	]*)
+	With[
+		{
+			dats=
+				ImportFormattedCheckpointFile[file, 
+					"KeyPattern"->
+						{
+							"CurrentCartesianCoordinates", 
+							"AtomicNumbers", 
+							"IBond"
+							}, 
+					ops
+					]
+			},
+			With[
+				{
+					bonds=
+						DeleteDuplicates@
+							Flatten[
+								MapIndexed[
+									Map[Sort]@Thread[{#2[[1]],DeleteCases[#, 0]}]&,
+									Partition[dats["IBond"], Length@dats["AtomicNumbers"]-1]
+									],
+								1
+								]
+					},
+				Join[
+					{{Length@dats["AtomicNumbers"], Length@bonds}},
+					Thread[
+						{
+							ChemDataLookup[dats["AtomicNumbers"], "Symbol"],
+							QuantityMagnitude@
+								UnitConvert[dats["CurrentCartesianCoordinates"], "Angstroms"]
+							}
+						],
+					bonds
+					]
+				]
+		];
+ImportFormattedCheckpointFile[
+	str:_String,
+	keys___String,
+	ops:OptionsPattern[]
+	]:=
+	ImportFormattedCheckpointFile[StringToStream[str], keys, ops];
 
 
 End[];
