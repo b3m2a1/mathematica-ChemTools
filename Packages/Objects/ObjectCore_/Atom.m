@@ -24,43 +24,44 @@
 
 If[!KeyMemberQ[$ChemObjectDefaults, "Atom"],
 	$ChemObjectDefaults["Atom"]=
-			<|
-					"Element"->"H",
-					"Bonds"->{},
-					"Mass"->
-						ChemDataLookup[Key["Element"],"AtomicMass"],
-					"MaxValence"->
-						ChemDataLookup[Key["Element"],"ElementValences"],
-					"Color"->Automatic,
-					"Valence"->ChemProperty[AtomValence],
-					"AtomicNumber"->
-						ChemDataLookup[Key["Element"],"AtomicNumber"],
-					"Radius"->
-						UnitConvert[
-							ChemDataLookup[Key["Element"],"Radius"],
-							"Angstroms"],
-					"Electronegativity"->
-						ChemDataLookup[Key["Element"],"Electronegativity"],
-					"Position"->{0.,0.,0.},
-					"Rotate"->ChemMethod[AtomRotate],
-					"Move"->ChemMethod[AtomMove],
-					"Transform"->ChemMethod[AtomTransform],
-					"Graphic"->
-						ChemMethod[
-							With[{o={##}},
-								AtomGraphic[First@o,
-									Sequence@@FilterRules[Rest@o, Options@AtomGraphic]
-									]
+		<|
+				"Element"->"H",
+				"Bonds"->{},
+				"Mass"->
+					ChemDataLookup[Key["Element"],"AtomicMass"],
+				"MaxValence"->
+					ChemDataLookup[Key["Element"],"ElementValences"],
+				"Color"->Automatic,
+				"Valence"->ChemProperty[AtomValence],
+				"AtomicNumber"->
+					ChemDataLookup[Key["Element"],"AtomicNumber"],
+				"Radius"->
+					UnitConvert[
+						ChemDataLookup[Key["Element"],"Radius"],
+						"Angstroms"],
+				"Electronegativity"->
+					ChemDataLookup[Key["Element"],"Electronegativity"],
+				"Position"->{0.,0.,0.},
+				"View"->ChemMethod[ChemView],
+				"Rotate"->ChemMethod[AtomRotate],
+				"Move"->ChemMethod[AtomMove],
+				"Transform"->ChemMethod[AtomTransform],
+				"Graphic"->
+					ChemMethod[
+						With[{o={##}},
+							AtomGraphic[First@o,
+								Sequence@@FilterRules[Rest@o, Options@AtomGraphic]
+								]
+							]&
+						],
+				"Graphic3D"->
+					ChemMethod[
+						With[{o={##}},
+							AtomGraphic3D[First@o,
+								Sequence@@FilterRules[Rest@o,Options@AtomGraphic3D]]
 								]&
-							],
-					"Graphic3D"->
-						ChemMethod[
-							With[{o={##}},
-								AtomGraphic3D[First@o,
-									Sequence@@FilterRules[Rest@o,Options@AtomGraphic3D]]
-									]&
-							]
-					|>
+						]
+				|>
   ];
 
 
@@ -519,7 +520,7 @@ AtomGraphEvents[obj:ChemObjAllPattern,
 	With[{g=AtomGraph[obj]},
 		With[{
 			as=VertexList@g,
-			bs=EdgeList@g/.e:(a_<->b_):>(
+			bs=EdgeList@g/.e:(a_\[UndirectedEdge]b_):>(
 				(e|Reverse@e)->First@AtomGetBonds[a,b]
 				),
 			basevs=

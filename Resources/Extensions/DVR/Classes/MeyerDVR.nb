@@ -126,7 +126,7 @@ Cell[BoxData[
    3.715997903862156*^9, 3.715997940136242*^9}, 
    3.7159993129112463`*^9},ExpressionUUID->"a59f0a81-fc64-4427-a5ec-\
 6dcef05f3638"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -136,67 +136,82 @@ Cell["Kinetic Energy Function", \
 Cell[BoxData[{
  RowBox[{
   RowBox[{
-   RowBox[{"Options", "[", "MeyerDVRK", "]"}], "=", 
-   RowBox[{"{", 
-    RowBox[{"\"\<\[HBar]\>\"", "->", "1"}], "}"}]}], ";"}], "\n", 
+   RowBox[{"Options", "[", "MeyerDVRK", "]"}], "=", "\n", "\t", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"\"\<Mass\>\"", "->", "1"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<HBar\>\"", "->", "1"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<ScalingFactor\>\"", "\[Rule]", "1"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<UseExact\>\"", "\[Rule]", "False"}]}], "\n", "\t\t", 
+    "}"}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{
    RowBox[{"MeyerDVRK", "[", 
     RowBox[{"gridpoints_", ",", 
      RowBox[{"ops", ":", 
       RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
-   RowBox[{"With", "[", 
+   RowBox[{"With", "[", "\n", "\t\t", 
     RowBox[{
-     RowBox[{"{", 
+     RowBox[{"{", "\n", "\t\t\t", 
       RowBox[{
-       RowBox[{"X", "=", "gridpoints"}], ",", 
+       RowBox[{"X", "=", "gridpoints"}], ",", "\n", "\t\t\t", 
        RowBox[{"p", "=", 
-        RowBox[{"Length", "@", "gridpoints"}]}], ",", 
+        RowBox[{"Length", "@", "gridpoints"}]}], ",", "\n", "\t\t\t", 
        RowBox[{"\[HBar]", "=", 
-        RowBox[{"OptionValue", "@", "\"\<\[HBar]\>\""}]}]}], "}"}], ",", "\n",
-      "\t\t", 
-     RowBox[{"N", "@", 
-      RowBox[{"Table", "[", "\n", "\t\t\t", 
+        RowBox[{"OptionValue", "@", "\"\<HBar\>\""}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"m", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Mass\>\"", "]"}]}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"ex", "=", 
+        RowBox[{"TrueQ", "@", 
+         RowBox[{"OptionValue", "[", "\"\<UseExact\>\"", "]"}]}]}], ",", "\n",
+        "\t\t\t", 
+       RowBox[{"s", "=", 
+        RowBox[{"OptionValue", "[", "\"\<ScalingFactor\>\"", "]"}]}]}], "\n", 
+      "\t\t\t", "}"}], ",", "\n", "\t", 
+     RowBox[{"Table", "[", "\n", "\t\t\t", 
+      RowBox[{
        RowBox[{
-        RowBox[{
-         RowBox[{"(", "\[HBar]", ")"}], "*", "\n", "\t\t\t", 
-         RowBox[{"If", "[", 
+        RowBox[{"(", 
+         RowBox[{"s", "*", "\[HBar]"}], ")"}], "*", "\n", "\t\t\t", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"i", "==", "j"}], ",", "\n", "\t\t\t\t", 
           RowBox[{
-           RowBox[{"i", "==", "j"}], ",", "\n", "\t\t\t\t", 
-           RowBox[{
-            RowBox[{"(", 
+           RowBox[{"(", 
+            RowBox[{
              RowBox[{
-              RowBox[{
-               RowBox[{"p", "^", "2"}], "/", "2"}], "+", "1"}], ")"}], "*", 
-            RowBox[{"1", "/", "6"}]}], ",", "\n", "\t\t\t\t", 
-           RowBox[{
-            RowBox[{"(", 
+              RowBox[{"p", "^", "2"}], "/", "2"}], "+", "1"}], ")"}], "*", 
+           RowBox[{"1", "/", "6"}]}], ",", "\n", "\t\t\t\t", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"-", "1"}], ")"}], "^", 
+             RowBox[{"(", 
+              RowBox[{"i", "-", "j"}], ")"}]}], ")"}], "/", "\n", 
+           "\t\t\t\t\t", 
+           RowBox[{"(", 
+            RowBox[{"2", "*", 
              RowBox[{
-              RowBox[{"(", 
-               RowBox[{"-", "1"}], ")"}], "^", 
-              RowBox[{"(", 
-               RowBox[{"i", "-", "j"}], ")"}]}], ")"}], "/", 
-            RowBox[{"(", 
-             RowBox[{"2", "*", 
-              RowBox[{
-               RowBox[{"Sin", "[", 
-                RowBox[{
-                 RowBox[{"(", 
-                  RowBox[{"\[Pi]", "*", 
-                   RowBox[{"(", 
-                    RowBox[{"i", "-", "j"}], ")"}]}], ")"}], "/", "p"}], 
-                "]"}], "^", "2"}]}], ")"}]}]}], "\n", "\t\t\t\t", "]"}]}], 
-        ",", "\n", "\t\t\t", 
-        RowBox[{"{", 
-         RowBox[{"i", ",", "p"}], "}"}], ",", "\n", "\t\t\t", 
-        RowBox[{"{", 
-         RowBox[{"j", ",", "p"}], "}"}]}], "]"}]}]}], "\n", "\t\t", "]"}]}], 
-  ";"}]}], "CodeInput",
+              RowBox[{"Sin", "[", 
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{"\[Pi]", "*", 
+                  RowBox[{"(", 
+                   RowBox[{"i", "-", "j"}], ")"}]}], ")"}], "/", "p"}], "]"}],
+               "^", "2"}]}], ")"}]}]}], "\n", "\t\t\t\t", "]"}]}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "p"}], "}"}], ",", "\n", "\t\t\t", 
+       RowBox[{"{", 
+        RowBox[{"j", ",", "p"}], "}"}]}], "\n", "\t\t\t", "]"}]}], "\n", 
+    "\t\t", "]"}]}], ";"}]}], "CodeInput",
  CellChangeTimes->{{3.69923372404648*^9, 3.6992338389489393`*^9}, {
-  3.6992350059651327`*^9, 
-  3.699235006844495*^9}},ExpressionUUID->"976917fb-3228-49cc-bab8-\
+  3.6992350059651327`*^9, 3.699235006844495*^9}, {3.731098263877746*^9, 
+  3.731098340399467*^9}},ExpressionUUID->"976917fb-3228-49cc-bab8-\
 682afb778d85"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -700,8 +715,8 @@ Cell["", "SectionSeparator",ExpressionUUID->"619f87b4-ca02-4398-a2f4-\
 },
 WindowSize->{808, 755},
 WindowMargins->{{63, Automatic}, {29, Automatic}},
-FrontEndVersion->"11.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
-10, 2017)",
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
   CharacterEncoding -> "UTF-8"]
 ]

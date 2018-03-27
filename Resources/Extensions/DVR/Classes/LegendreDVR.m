@@ -33,8 +33,18 @@ LegendreDVRPlot::usage="The Legendre view function";
 Begin["`Private`"];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Grid Formatting*)
+
+
+
 LegendreDVRFormatGrid[grid_,points_]:=
 	grid;
+
+
+(* ::Subsubsection::Closed:: *)
+(*Grid Points*)
+
 
 
 (*legX[i_,j_]:=
@@ -81,21 +91,56 @@ LegendreDVRPoints[{\[Theta]Points_},r_]:=
 		]
 
 
+(* ::Subsubsection::Closed:: *)
+(*Kinetic Energy Matrix*)
+
+
+
+(* ::Text:: *)
+(*
+
+	I can\[CloseCurlyQuote]t actually remember the derivation for this one...
+		not good.
+*)
+
+
+
 Clear["LegendreDVRK"]
 Options[LegendreDVRK]=
-	{"\[HBar]"->1,"m"->1};
+	{
+		"Mass"->1,
+		"HBar"->1,
+		"ScalingFactor"->1,
+		"UseExact"->False
+		};
 LegendreDVRK[eigensystem_,ops:OptionsPattern[]]:=
 	With[
 		{
-			m=OptionValue["m"],\[HBar]=OptionValue@"\[HBar]",
-			T=Last@eigensystem,\[CapitalLambda]=First@eigensystem
+			m=OptionValue["Mass"], \[HBar]=OptionValue@"HBar",
+			s=OptionValue["ScalingFactor"], ex=TrueQ@OptionValue["UseExact"],
+			T=Last@eigensystem, \[CapitalLambda]=First@eigensystem
 			},
-		Replace[OptionValue@"\[HBar]",Except[_?NumericQ]->1.]*
+		Replace[
+			s*\[HBar],
+			Except[_?NumericQ]->1.
+			]*
 			Dot[T,
-				DiagonalMatrix@Array[(#-1)(#)&,Length[\[CapitalLambda]]],
-				Transpose@T]+
-				DiagonalMatrix@Map[m^2/(1-#^2)&,\[CapitalLambda]]
+				If[ex,
+					DiagonalMatrix@Array[(#-1)(#)&,Length[\[CapitalLambda]]],
+					DiagonalMatrix@Array[N@(#-1)(#)&,Length[\[CapitalLambda]]]
+					],
+				Transpose@T
+				]+
+				If[ex,
+					DiagonalMatrix@Map[m^2/(1-#^2)&,\[CapitalLambda]],
+					DiagonalMatrix@N@Map[m^2/(1-#^2)&,\[CapitalLambda]]
+					]
 		]
+
+
+(* ::Subsubsection::Closed:: *)
+(*Potential Energy Matrix*)
+
 
 
 Clear["LegendreDVRV"]
@@ -105,17 +150,20 @@ LegendreDVRV[eigensystem_,ops:OptionsPattern[]]:=
 	With[
 		{
 			\[CapitalLambda]=First@eigensystem,T=Last@eigensystem,
-			P=OptionValue[Function]},
-		SparseArray[{i_,i_}:>P[ArcCos[\[CapitalLambda][[i]]]],{Length[\[CapitalLambda]],Length[\[CapitalLambda]]}]
-		];
-
-
-LegendreDVRWavefunctions[T_,V_]:=
-	With[{S=#[[{1,2},Ordering[First@#]]]&@Eigensystem[T+V]},
-		With[{phase=Sign@S[[2,1]]},
-			{First@S,phase*#&/@Last@S}
+			P=OptionValue[Function]
+			},
+		SparseArray[
+			Band[{1,1}]->
+				Replace[P[ArcCos[\[CapitalLambda]]],
+					_P:>Map[P, ArcCos[\[CapitalLambda]]]
+					]
 			]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Plotting Function*)
+
 
 
 Options[LegendreDVRPlot]=

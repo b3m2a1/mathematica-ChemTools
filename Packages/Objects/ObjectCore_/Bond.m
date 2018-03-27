@@ -24,31 +24,39 @@
 
 If[!KeyMemberQ[$ChemObjectDefaults, "Bond"],
 	$ChemObjectDefaults["Bond"]=
-				<|
-					"Atoms"->{},
-					"Type"->1,
-					"Strength"->Automatic,
-					"Color"->{Automatic,Automatic},
-					
-					"Rotate"->ChemMethod[BondRotate],
-					"Move"->ChemMethod[BondMove],
-					"Transform"->ChemMethod[BondTransform],
-					
-					"Vector"->ChemProperty[BondMove],
-					
-					"Graphic"->ChemMethod[
-						With[{o={##}},
-							BondGraphic[First@o,
-								Sequence@@FilterRules[Rest@o,Options@BondGraphic]]
-								]&
-						],
-					"Graphic3D"->ChemMethod[
-						With[{o={##}},
-							BondGraphic3D[First@o,
-								Sequence@@FilterRules[Rest@o,Options@BondGraphic3D]]
+			<|
+				"Atoms"->{},
+				"Type"->1,
+				"Strength"->Automatic,
+				"Color"->{Automatic,Automatic},
+				
+				"Form"->ChemMethod[BondForm],
+				"Break"->ChemMethod[BondBreak],
+				"CanForm"->ChemProperty[BondCanFormQ],
+				"Formed"->ChemProperty[BondFormedQ],
+				
+				"Rotate"->ChemMethod[BondRotate],
+				"Move"->ChemMethod[BondMove],
+				"Transform"->ChemMethod[BondTransform],
+				
+				"Center"->ChemProperty[BondCenter],
+				"CenterOfMass"->ChemProperty[BondCenterOfMass],
+				"Vector"->ChemProperty[BondVector],
+				"Normal"->ChemProperty[BondNormal],
+				
+				"Graphic"->ChemMethod[
+					With[{o={##}},
+						BondGraphic[First@o,
+							Sequence@@FilterRules[Rest@o,Options@BondGraphic]]
 							]&
-						]
-				|>
+					],
+				"Graphic3D"->ChemMethod[
+					With[{o={##}},
+						BondGraphic3D[First@o,
+							Sequence@@FilterRules[Rest@o,Options@BondGraphic3D]]
+						]&
+					]
+			|>
   ];
 
 

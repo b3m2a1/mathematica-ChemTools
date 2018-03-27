@@ -44,17 +44,33 @@ MeyerDVRPoints[{points_Integer},
 		]
 
 
-Options[MeyerDVRK]={"\[HBar]"->1};
+Options[MeyerDVRK]=
+	{
+		"Mass"->1,
+		"HBar"->1,
+		"ScalingFactor"->1,
+		"UseExact"->False
+		};
 MeyerDVRK[gridpoints_,ops:OptionsPattern[]]:=
-	With[{X=gridpoints,p=Length@gridpoints,\[HBar]=OptionValue@"\[HBar]"},
-		N@Table[
-			(\[HBar])*
+	With[
+		{
+			X=gridpoints,
+			p=Length@gridpoints,
+			\[HBar]=OptionValue@"HBar",
+			m=OptionValue["Mass"],
+			ex=TrueQ@OptionValue["UseExact"],
+			s=OptionValue["ScalingFactor"]
+			},
+	Table[
+			(s*\[HBar])*
 			If[i==j,
 				(p^2/2+1)*1/6,
-				((-1)^(i-j))/(2*Sin[(\[Pi]*(i-j))/p]^2)
+				((-1)^(i-j))/
+					(2*Sin[(\[Pi]*(i-j))/p]^2)
 				],
 			{i,p},
-			{j,p}]
+			{j,p}
+			]
 		];
 
 

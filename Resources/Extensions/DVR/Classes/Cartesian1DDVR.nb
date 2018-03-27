@@ -243,50 +243,6 @@ Cell[BoxData[{
   3.724794250601122*^9}, {3.727710917819077*^9, 3.727710950346139*^9}, {
   3.7277112596699533`*^9, 
   3.72771128348699*^9}},ExpressionUUID->"fe5264fe-f177-458d-9031-007a765679e2"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["Potential Matrix Function", \
-"CodeSubsubsection",ExpressionUUID->"f80479ff-ab0e-4983-92bc-518c9e11cf1a"],
-
-Cell["\<\
-This should take the grid generated in grid points function and turn it into \
-the potential energy matrix for the DVR\
-\>", "Text",ExpressionUUID->"c1a67afe-2832-48ce-b6c8-9378ef99dc34"],
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{
-   RowBox[{"Options", "[", "Cartesian1DDVRPotentialMatrix", "]"}], "=", 
-   RowBox[{"{", 
-    RowBox[{"Function", "->", 
-     RowBox[{"(", 
-      RowBox[{
-       RowBox[{
-        RowBox[{"(", 
-         RowBox[{"#", "/", "2"}], ")"}], "^", "2"}], "&"}], ")"}]}], "}"}]}], 
-  ";"}], "\n", 
- RowBox[{
-  RowBox[{"Cartesian1DDVRPotentialMatrix", "[", 
-   RowBox[{"grid_", ",", 
-    RowBox[{"ops", ":", 
-     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
-  RowBox[{"With", "[", 
-   RowBox[{
-    RowBox[{"{", 
-     RowBox[{"func", "=", 
-      RowBox[{"OptionValue", "@", "Function"}]}], "}"}], ",", "\n", "\t\t", 
-    RowBox[{"With", "[", 
-     RowBox[{
-      RowBox[{"{", 
-       RowBox[{"A", "=", 
-        RowBox[{"func", "/@", "grid"}]}], "}"}], ",", "\n", "\t\t\t", 
-      RowBox[{"DiagonalMatrix", "@", "A"}]}], "\n", "\t\t\t", "]"}]}], "\n", 
-   "\t\t", "]"}]}]}], "CodeInput",
- CellChangeTimes->{{3.6992002609897614`*^9, 
-  3.699200262978724*^9}},ExpressionUUID->"d9f0364a-53a5-4cbd-886e-\
-2a5bc6efd817"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -668,8 +624,8 @@ Cell[BoxData[{
                   RowBox[{"If", "[", 
                    RowBox[{
                     RowBox[{
-                    RowBox[{"OptionValue", "[", "\"\<ShowEnergy\>\"", "]"}], "//",
-                     "TrueQ"}], ",", 
+                    RowBox[{"OptionValue", "[", "\"\<ShowEnergy\>\"", "]"}], 
+                    "//", "TrueQ"}], ",", 
                     RowBox[{"\[Lambda]P", "[", 
                     RowBox[{"{", "i", "}"}], "]"}], ",", 
                     RowBox[{"Sequence", "@@", 
@@ -779,17 +735,21 @@ Cell[BoxData[
     RowBox[{"\"\<Grid\>\"", "->", "Cartesian1DDVRPoints"}], ",", "\n", "\t", 
     "\t", 
     RowBox[{"\"\<KineticEnergy\>\"", "->", "Cartesian1DDVRKineticMatrix"}], 
-    ",", "\n", "\t", "\t", 
-    RowBox[{
-    "\"\<PotentialEnergy\>\"", "->", "Cartesian1DDVRPotentialMatrix"}], ",", 
-    "\n", "\t\t", 
-    RowBox[{"\"\<View\>\"", "->", "Cartesian1DDVRPlotFunction"}]}], "\n", 
-   "\t", "\t", "|>"}]}]], "CodeInput",
+    ",", "\n", "\t\t", 
+    RowBox[{"\"\<View\>\"", "->", "Cartesian1DDVRPlotFunction"}], ",", "\n", 
+    "\t\t", 
+    RowBox[{"\"\<Defaults\>\"", "->", "\n", "\t\t\t", 
+     RowBox[{"{", "\n", "\t\t\t\t", 
+      RowBox[{
+      "\"\<PotentialFunction\>\"", "\[Rule]", "\"\<HarmonicOscialltor\>\""}], 
+      "\n", "\t\t\t\t", "}"}]}]}], "\n", "\t\t", "|>"}]}]], "CodeInput",
  CellChangeTimes->{{3.699200278013855*^9, 3.6992003570101633`*^9}, {
-  3.699200549451913*^9, 3.699200572585655*^9}, {3.699201461131833*^9, 
-  3.6992014765432796`*^9}, {3.699206458337839*^9, 3.699206479116613*^9}, {
-  3.699241987640071*^9, 3.699241995817466*^9}, {3.718048606105678*^9, 
-  3.7180486086994123`*^9}},ExpressionUUID->"8aceb883-c792-425d-ba7c-\
+   3.699200549451913*^9, 3.699200572585655*^9}, {3.699201461131833*^9, 
+   3.6992014765432796`*^9}, {3.699206458337839*^9, 3.699206479116613*^9}, {
+   3.699241987640071*^9, 3.699241995817466*^9}, {3.718048606105678*^9, 
+   3.7180486086994123`*^9}, {3.731159533317487*^9, 3.731159534046062*^9}, 
+   3.7311595651250877`*^9, {3.731159647016672*^9, 
+   3.731159651542239*^9}},ExpressionUUID->"8aceb883-c792-425d-ba7c-\
 f5d9c3311e15"]
 }, Open  ]],
 
@@ -814,8 +774,8 @@ f2e40fb52d02"]
 },
 WindowSize->{713, 755},
 WindowMargins->{{154, Automatic}, {Automatic, 0}},
-FrontEndVersion->"11.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
-10, 2017)",
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackagePlain.nb", 
   CharacterEncoding -> "UTF-8"]
 ]

@@ -136,7 +136,7 @@ Cell[BoxData[
    3.699234968992999*^9, 3.699234969751259*^9}, {3.718940038062653*^9, 
    3.718940123790215*^9}},ExpressionUUID->"5b122caf-413f-4b04-be9d-\
 789fc99f84b4"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -391,60 +391,7 @@ Cell[BoxData[
  CellChangeTimes->{{3.7276744400748*^9, 
   3.7276744548363028`*^9}},ExpressionUUID->"3cbe645b-4628-4b8b-9e0c-\
 7b139a56fbaa"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["Potential Matrix Function", \
-"CodeSubsubsection",ExpressionUUID->"ac455a5a-7803-46bc-95c1-a36ef259f5d5"],
-
-Cell["\<\
-This should take the grid generated in grid points function and turn it into \
-the potential energy matrix for the DVR\
-\>", "Text",ExpressionUUID->"6cfb555d-d3e1-4868-baa2-8544bfaba1e0"],
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{
-   RowBox[{"Options", "[", "Cartesian2DDVRPotentialMatrix", "]"}], "=", 
-   RowBox[{"{", 
-    RowBox[{"Function", "->", 
-     RowBox[{"(", 
-      RowBox[{
-       RowBox[{"Norm", "[", 
-        RowBox[{
-         RowBox[{"(", 
-          RowBox[{"#", "/", "2"}], ")"}], "^", "2"}], "]"}], "&"}], ")"}]}], 
-    "}"}]}], ";"}], "\n", 
- RowBox[{
-  RowBox[{"Cartesian2DDVRPotentialMatrix", "[", 
-   RowBox[{"grid_", ",", 
-    RowBox[{"ops", ":", 
-     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
-  RowBox[{"With", "[", 
-   RowBox[{
-    RowBox[{"{", 
-     RowBox[{"func", "=", 
-      RowBox[{"OptionValue", "@", "Function"}]}], "}"}], ",", "\n", "\t\t", 
-    RowBox[{"With", "[", 
-     RowBox[{
-      RowBox[{"{", 
-       RowBox[{"A", "=", 
-        RowBox[{"func", "/@", 
-         RowBox[{"Flatten", "[", 
-          RowBox[{"grid", ",", "1"}], "]"}]}]}], "}"}], ",", "\n", "\t\t\t", 
-      RowBox[{"SparseArray", "[", 
-       RowBox[{
-        RowBox[{"Band", "[", 
-         RowBox[{"{", 
-          RowBox[{"1", ",", "1"}], "}"}], "]"}], "->", "A"}], "]"}]}], "\n", 
-     "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}]}], "CodeInput",
- CellChangeTimes->{{3.6992002609897614`*^9, 3.699200262978724*^9}, {
-  3.7189411952173033`*^9, 3.71894125048838*^9}, {3.727632505161215*^9, 
-  3.7276325125388393`*^9}, {3.729142574254582*^9, 
-  3.729142575403521*^9}},ExpressionUUID->"8dfb8177-62cb-4a94-b296-\
-e199ad76c2bf"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1017,7 +964,7 @@ Cell[BoxData[{
    3.727050564657452*^9, 
    3.7270505921966248`*^9}},ExpressionUUID->"8edcee07-92a4-4a7d-a5a8-\
 f10be9cb805d"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1440,7 +1387,7 @@ Cell[BoxData[{
   3.7247948538577003`*^9, 
   3.724795076163619*^9}},ExpressionUUID->"425ad7d9-e436-407c-9d34-\
 04c9b046da4c"]
-}, Open  ]]
+}, Closed]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1477,18 +1424,21 @@ Cell[BoxData[
     RowBox[{"\"\<Grid\>\"", "->", "Cartesian2DDVRPoints"}], ",", "\n", "\t\t", 
     RowBox[{"\"\<KineticEnergy\>\"", "->", "Cartesian2DDVRKineticMatrix"}], 
     ",", "\n", "\t\t", 
-    RowBox[{
-    "\"\<PotentialEnergy\>\"", "->", "Cartesian2DDVRPotentialMatrix"}], ",", 
-    "\n", "\t\t", 
-    RowBox[{"\"\<View\>\"", "->", "Cartesian2DDVRPlotFunction"}]}], "\n", 
-   "\t\t", "|>"}]}]], "CodeInput",
+    RowBox[{"\"\<View\>\"", "->", "Cartesian2DDVRPlotFunction"}], ",", "\n", 
+    "\t\t", 
+    RowBox[{"\"\<Defaults\>\"", "->", "\n", "\t\t\t", 
+     RowBox[{"{", "\n", "\t\t\t\t", 
+      RowBox[{
+      "\"\<PotentialFunction\>\"", "\[Rule]", "\"\<HarmonicOscillator\>\""}], 
+      "\n", "\t\t\t\t", "}"}]}]}], "\n", "\t\t", "|>"}]}]], "CodeInput",
  CellChangeTimes->{{3.699200278013855*^9, 3.6992003570101633`*^9}, {
    3.699200549451913*^9, 3.699200572585655*^9}, {3.699201461131833*^9, 
    3.6992014765432796`*^9}, {3.699206458337839*^9, 3.699206479116613*^9}, {
    3.699241987640071*^9, 3.699241995817466*^9}, {3.718048606105678*^9, 
    3.7180486086994123`*^9}, {3.718940038142994*^9, 3.718940038168366*^9}, {
-   3.718940566265512*^9, 3.71894058093381*^9}, 
-   3.718941224883973*^9},ExpressionUUID->"8aceb883-c792-425d-ba7c-\
+   3.718940566265512*^9, 3.71894058093381*^9}, 3.718941224883973*^9, {
+   3.73116113006952*^9, 
+   3.731161143451269*^9}},ExpressionUUID->"8aceb883-c792-425d-ba7c-\
 f5d9c3311e15"]
 }, Open  ]],
 
@@ -1512,15 +1462,15 @@ f2e40fb52d02"]
 },
 WindowSize->{713, 755},
 WindowMargins->{{Automatic, 287}, {Automatic, 0}},
-FrontEndVersion->"11.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
-10, 2017)",
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
 StyleDefinitions->Notebook[{
    Cell[
     StyleData[
     StyleDefinitions -> 
      FrontEnd`FileName[{"BTools"}, "CodePackagePlain.nb", CharacterEncoding -> 
        "UTF-8"]]]}, Visible -> False, FrontEndVersion -> 
-  "11.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (September 10, 2017)", 
+  "11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, 2018)", 
   StyleDefinitions -> "PrivateStylesheetFormatting.nb"]
 ]
 

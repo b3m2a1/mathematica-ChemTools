@@ -43,15 +43,47 @@ RadialDVRPoints[
 	Subdivide@@Flatten@{N@X,points-1}
 
 
-Options[RadialDVRK]={"\[HBar]"->1};
-RadialDVRK[gridpoints_,ops:OptionsPattern[]]:=
-	With[{p=Length@gridpoints,\[HBar]=OptionValue@"\[HBar]"},
-		N@Table[
-			\[HBar]*If[i==j,
-				\[Pi]^2/3,
-				(2*(-1)^(i-j))/(i-j)^2],
-			{i,p},
-			{j,p}]
+Options[RadialDVRK]=
+	{
+		"Mass"->1,
+		"HBar"->1,
+		"ScalingFactor"->1,
+		"UseExact"->False
+		};
+RadialDVRK[grid_,ops:OptionsPattern[]]:=
+With[{rmin=Min@grid,rmax=Max@grid,points=Length@grid},
+		With[
+			{
+				dr=(rmax-rmin)/(points-1),
+				m=OptionValue@"Mass",
+				\[HBar]=OptionValue@"HBar",
+				scl=OptionValue@"ScalingFactor",
+				ex=TrueQ@OptionValue@"UseExact"
+				},
+			With[
+				{
+					f=
+						If[ex,
+							scl*
+								If[#==#2, 
+									\[Pi]^2./3.-1/#^2,
+									2./(#-#2)^2-2./(#+#2)^2
+									]*
+									(\[HBar]^2.(-1)^(#-#2))/(2.m dr^2)&,
+							scl*
+								If[#==#2, 
+									\[Pi]^2./3.-1/#^2,
+									2./(#-#2)^2-2./(#+#2)^2
+									]*
+									(\[HBar]^2.(-1)^(#-#2))/(2.m dr^2)&
+							]
+					},
+				If[points>100000,
+					ParallelTable[f[i,j],{i,points},{j,points}],
+					Table[f[i,j],{i,points},{j,points}]
+					]
+				]
+			]
 		]
 
 
@@ -62,19 +94,12 @@ With[{P=OptionValue[Function],X=gridpoints,p=Length@gridpoints},
 	];
 
 
-RadialDVRWavefunctions[T_,V_]:=
-	With[{S=#[[{1,2},Ordering[First@#]]]&@Eigensystem[T+V]},
-		With[{phase=Sign@S[[2,1]]},
-			{First@S,phase*#&/@Last@S}
-			]
-		];
-
-
 Options[RadialDVRPlot]=
 	DeleteDuplicatesBy[First]@
 	Flatten@{
 		"WavefunctionSelection"->Automatic,
 		AxesOrigin->{0,0},
+		Scaled->Automatic,
 		"EnergyDigits"->3,
 		"ZeroPointEnergy"->0,
 		LabelingFunction->Automatic,
@@ -88,6 +113,11 @@ Options[RadialDVRPlot]=
 RadialDVRPlot[solutions_,grid_,potentialMatrix_,ops:OptionsPattern[]]:=
 	Module[
 		{\[CapitalLambda],X,\[Psi],
+		scale=
+			Replace[OptionValue[Scaled],
+				Automatic:>
+					Max@{1/10*Max[Abs/@MinMax[Flatten@potentialMatrix]], 10}
+				],
 		num=
 			Replace[OptionValue["WavefunctionSelection"],
 				Automatic:>If[TrueQ@OptionValue@Manipulate,All,5]
@@ -99,8 +129,7 @@ RadialDVRPlot[solutions_,grid_,potentialMatrix_,ops:OptionsPattern[]]:=
 				potentialMatrix],
 		squared=OptionValue@"SquareWavefunction",
 		lf=Replace[OptionValue@LabelingFunction,{
-				Automatic->(Row@{Subscript["\[Psi]",#1],": E=",
-					NumberForm[#2,OptionValue["EnergyDigits"]]}&),
+				Automatic->(Row@{Subscript["\[Psi]",#1],": E=",#2}&),
 				None->False}],
 		plotWave,waveSet,Ec=OptionValue["CutOff"],
 		wavePlot,potentialPlot,
@@ -121,8 +150,8 @@ RadialDVRPlot[solutions_,grid_,potentialMatrix_,ops:OptionsPattern[]]:=
 					{Min[\[CurlyPhi][[All,1]]],Max[\[CurlyPhi][[All,1]]]}
 					];
 		plotWave[n_]:=
-			With[{\[Lambda]={0,\[CapitalLambda][[n]]}},
-				\[Lambda]+#&/@\[Psi][n]
+			With[{s={1,scale}, \[Lambda]={0,\[CapitalLambda][[n]]}},
+				\[Lambda]+s*#&/@\[Psi][n]
 				];
 		waveSet=
 			Select[#,Between[dataRange]@*First]&/@(plotWave/@num);
@@ -197,7 +226,6 @@ $RadialDVR=
 		"Grid"->RadialDVRPoints,
 		"KineticEnergy"->RadialDVRK,
 		"PotentialEnergy"->RadialDVRV,
-		"Wavefunctions"->RadialDVRWavefunctions,
 		"View"->RadialDVRPlot
 		|>
 

@@ -19,6 +19,16 @@
 
 
 
+(* ::Subsection:: *)
+(*Useful Tests*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*ObjectQ*)
+
+
+
 ChemObjectQ[ChemObject[s_String]]:=
 	KeyMemberQ[$ChemicalSystems,s];
 ChemObjectQ[ChemObject[s_String,i_String]]:=
@@ -30,9 +40,19 @@ ChemObjectQ[_]:=
 	False;
 
 
+(* ::Subsubsection::Closed:: *)
+(*SymObjectQ*)
+
+
+
 ChemSymObjectQ[s_]:=
 	MatchQ[OwnValues[s],{_:>_ChemObject?ChemObjectQ,___}];
 ChemSymObjectQ~SetAttributes~HoldAllComplete;
+
+
+(* ::Subsubsection::Closed:: *)
+(*ChemToolsSym*)
+
 
 
 With[{cont=StringJoin@Take[StringSplit[$Context,"`"->"`"],2]},
@@ -44,6 +64,16 @@ ChemToolsSym[e:Except[_Symbol]?(MatchQ[_Symbol])]:=
 	With[{s=Evaluate@e},
 		ChemToolsSym[s]
 		];
+
+
+(* ::Subsection:: *)
+(*Systems*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*Create*)
+
 
 
 If[MatchQ[$ChemicalSystems,_Symbol],$ChemicalSystems=<||>];
@@ -106,6 +136,16 @@ $ChemDefaultSystem=
 	CreateChemicalSystem["System-default-"];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Add*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*MultiAddition*)
+
+
+
 ChemAdd[
 	sys:ChemSysPattern,
 	type:_String|{__String},
@@ -120,7 +160,8 @@ ChemAdd[
 						MapThread[
 							Join[
 								<|"ObjectType"->#2,"ObjectReferences"->{}|>,
-								Lookup[$ChemObjectDefaults,#2,<||>],
+								Lookup[$ChemObjectDefaults, "Common" ,<||>],
+								Lookup[$ChemObjectDefaults, #2 ,<||>],
 								Association@Flatten@{#}
 								]&,
 							{
@@ -146,7 +187,8 @@ ChemAdd[
 									|>]
 							]
 					]&/@props},
-				AssociateTo[$ChemicalSystems[system], 
+				AssociateTo[
+					$ChemicalSystems[system], 
 					Map[#ObjectKey->#&,obs]
 					];
 				If[Length@#==1,
@@ -158,6 +200,11 @@ ChemAdd[
 			];
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*Single Addition*)
+
+
+
 ChemAdd[
 	sys:ChemSysPattern,
 	type_String,
@@ -166,12 +213,22 @@ ChemAdd[
 	ChemAdd[sys,{type},{params}];
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*Copy Addition*)
+
+
+
 ChemAdd[
 	sys:ChemSysPattern,
 	type_String,
 	n_Integer
 	]:=
 	ChemAdd[sys,type,Sequence@@ConstantArray[{},n]];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Remove*)
+
 
 
 ChemRemove[s:ChemSysPattern]:=
@@ -191,6 +248,11 @@ ChemRemove[s:ChemObjVectorPattern]:=
 			objSets
 			]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Copy*)
+
 
 
 ChemCopy[obj:ChemObjPattern,
@@ -264,6 +326,11 @@ ChemCopy[objV:ChemObjVectorPattern,
 		]
 
 
+(* ::Subsubsection::Closed:: *)
+(*DeepCopy*)
+
+
+
 ChemDeepCopy[obj:ChemObjPattern]:=
 	With[{
 		refList=
@@ -277,6 +344,11 @@ ChemDeepCopy[obj:ChemObjPattern]:=
 			Lookup[Thread[refList->copies],obj]
 			]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Clear*)
+
 
 
 ChemClear[pat_:"*"]:=
@@ -299,6 +371,16 @@ ChemClear[pat_:"*"]:=
 		];
 
 
+(* ::Subsection:: *)
+(*Classes*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*Defaults*)
+
+
+
 (*$ChemObjectDefaults//Clear*)
 
 
@@ -306,8 +388,34 @@ If[MatchQ[$ChemObjectDefaults,_Symbol],
 	$ChemObjectDefaults=
 		<| 
 			(* Each of the individual classes will populate the list in turn *)
+			"Common"->
+				<|
+					"View"->ChemMethod[ChemView],
+					"Copy"->ChemMethod[ChemCopy],
+					"References"->ChemProperty[ChemReferences],
+					"InstanceQ"->ChemMethod[ChemInstanceQ],
+					"Association"->ChemProperty[ChemAssociation],
+					"AddReference"->ChemMethod[ChemAddReference],
+					"Save"->ChemMethod[ChemSave],
+					"Remove"->ChemMethod[ChemRemove]
+					|>
 			|>
 		];
+
+
+(* ::Subsection:: *)
+(*Persistence*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*ChemStore*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Config*)
+
 
 
 If[!ValueQ@$ChemLocalStore,
@@ -348,6 +456,11 @@ If[!ValueQ@$ChemStoreAliases,
 	];
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*$ChemStores*)
+
+
+
 chemStoreBasePattern=
 	Automatic|LocalObject|CloudObject|_CloudObject|
 		_String?DirectoryQ|
@@ -378,6 +491,11 @@ ChemStores[base_]:=
 			ChemStore/@
 				LocalObjects[$ChemStoreAliases[s]]
 		}];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*DownValues*)
+
 
 
 chemStorePath[ChemObject[p__]]:=
@@ -424,6 +542,11 @@ HoldPattern@ChemStore[CloudObject[path_]]:=
 				]
 			]
 		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*UpValues*)
+
 
 
 ChemStore/:
@@ -501,6 +624,11 @@ With[{chemStore=ChemStore[_ChemObject,chemStoreBasePattern]},
 	];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Save*)
+
+
+
 chemSave[s:ChemStore[obj:ChemSinglePattern,base:chemStoreBasePattern]]:=
 	With[{store=ChemStoreObject@s},
 		Put[ChemAssociation[obj],
@@ -535,6 +663,11 @@ ChemSave[obj:ChemSinglePattern,
 	base:chemStoreBasePattern:Automatic,
 	recurse:True|False:True]:=
 	ChemSave[ChemStore[obj,base],recurse];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Load*)
+
 
 
 chemLoad[s:ChemStore[ChemObject[sys_],base:chemStoreBasePattern]]:=
@@ -605,10 +738,25 @@ ChemLoad[obj:_ChemObject,
 	ChemLoad[ChemStore[obj,base],recurse];
 
 
+(* ::Subsection:: *)
+(*Properties*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*Association*)
+
+
+
 ChemAssociation[ob:ChemObjPattern|ChemSysPattern]:=
 	$ChemicalSystems@@ob;
 ChemAssociation[v:ChemObjVectorPattern|ChemSysVectorPattern]:=
 	$ChemicalSystems@@@v;
+
+
+(* ::Subsubsection::Closed:: *)
+(*Apply*)
+
 
 
 ChemApply[sys:ChemSysPattern,f_]:=
@@ -668,6 +816,11 @@ ChemApply[objV:ChemObjVectorPattern,f_]:=
 					}]
 			]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Get*)
+
 
 
 ChemGet[{},__]:=
@@ -841,6 +994,11 @@ ChemGet[prop_][o:(ChemObjPattern|ChemObjVectorPattern|ChemSysPattern|ChemSysVect
 	ChemGet[o,prop];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Set*)
+
+
+
 ChemSet[sys:ChemSysPattern,prop:Except[_List],val_]:=
 	With[{s=First@sys},
 		($ChemicalSystems[s][prop]=val;)
@@ -893,6 +1051,11 @@ ChemSet[objV:{ChemObjAllPattern..},prop_,val_]:=
 
 ChemSet[prop_,val_][o:(ChemObjPattern|ChemObjVectorPattern|ChemSysPattern|ChemSysVectorPattern)]:=
 	ChemSet[o,prop,val];
+
+
+(* ::Subsubsection::Closed:: *)
+(*SetDelayed*)
+
 
 
 SetAttributes[ChemSetDelayed,HoldRest];
@@ -952,6 +1115,11 @@ ChemSetDelayed[prop_,val_][o:(ChemObjPattern|ChemObjVectorPattern|ChemSysPattern
 	ChemSetDelayed[o,prop,val];
 
 
+(* ::Subsubsection::Closed:: *)
+(*ThreadSet*)
+
+
+
 ChemThreadSet[sys:ChemSysPattern,prop:{__},val:{__}]:=
 	With[{s=First@sys},
 		AssociateTo[$ChemicalSystems[s],
@@ -993,6 +1161,11 @@ ChemThreadSet[objV:{ChemObjAllPattern..},prop_,val:{__}]:=
 
 ChemThreadSet[prop:{__},val:{__}][o:(ChemObjPattern|ChemObjVectorPattern|ChemSysPattern|ChemSysVectorPattern)]:=
 	ChemThreadSet[o,prop,val];
+
+
+(* ::Subsubsection::Closed:: *)
+(*ThreadSetDelayed*)
+
 
 
 SetAttributes[ChemThreadSetDelayed,HoldRest];
@@ -1048,6 +1221,11 @@ ChemThreadSetDelayed[prop:{__},val:{__}][o:(ChemObjPattern|ChemObjVectorPattern|
 	ChemThreadSetDelayed[o,prop,val];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Unset*)
+
+
+
 ChemUnset[sys:ChemSysPattern]:=
 	With[{s=First@sys},
 		$ChemicalSystems[s][prop]=.
@@ -1084,6 +1262,16 @@ ChemUnset[prop_][o:(ChemObjPattern|ChemObjVectorPattern|ChemSysPattern|ChemSysVe
 	ChemUnset[o,prop];
 
 
+(* ::Subsection:: *)
+(*Overrides*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*ChemTestObjectQ*)
+
+
+
 Clear@ChemTestObjectQ;
 ChemTestObjectQ[o_ChemObject]:=
 	ChemObjectQ[o];
@@ -1095,6 +1283,11 @@ ChemTestObjectQ[s_Symbol]:=
 ChemTestObjectQ[_]:=
 	False;
 ChemTestObjectQ~SetAttributes~HoldFirst;
+
+
+(* ::Subsubsection::Closed:: *)
+(*Lookup*)
+
 
 
 eChemObjectConstructor[obj_]:=
@@ -1161,19 +1354,59 @@ ChemObject/:(obj:ChemObject[_,_]?ChemObjectQ)[[bits___]]:=
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Normal*)
+
+
+
 ChemObject/:HoldPattern[Normal@ChemObject[s_]]:=
 	$ChemicalSystems[s];
 ChemObject/:HoldPattern[Normal@ChemObject[s_,i_]]:=
 	$ChemicalSystems[s][i];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Equal*)
+
+
+
 ChemObject/:HoldPattern[Equal[a:ChemObject[__],b:ChemObject[__]]]:=
 	(Normal@a===Normal@b);
+
+
+(* ::Subsubsection::Closed:: *)
+(*Join*)
+
+
+
+(* ::Text:: *)
+(*Not Implemented*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*Merge*)
+
+
+
+(* ::Text:: *)
+(*Not implemented yet*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*MessageName*)
+
 
 
 (*Unprotect@MessageName;
 $ChemMessageNameOverride=True;
 $ChemInMessageName;*)
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Clear UpValues*)
+
 
 
 (*MessageName[a__]/;(!TrueQ@$ChemMessageNameOverride):=Quiet@(
@@ -1195,11 +1428,21 @@ $ChemInMessageName;*)
 	);*)
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*Get*)
+
+
+
 (*MessageName[s_,props:Except["usage"]..]/;!TrueQ@$ChemInMessageName:=
 	If[ChemTestObjectQ@s,
 		Fold[ChemGet[#,#2]&,s,{props}],
 		Block[{$ChemInMessageName=True},MessageName[s,props]]
 		];*)
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Set*)
+
 
 
 (*MessageName/:
@@ -1214,6 +1457,11 @@ $ChemInMessageName;*)
 			];*)
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*SetDelayed*)
+
+
+
 (*MessageName/:
 	HoldPattern[
 		SetDelayed[MessageName[s_,props:Except["usage"]..],v_]/;!TrueQ@$ChemInMessageName
@@ -1224,6 +1472,11 @@ $ChemInMessageName;*)
 				],
 			Block[{$ChemInMessageName=True},MessageName[s,props]:=v]
 			];*)
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Unset*)
+
 
 
 (*MessageName/:
@@ -1241,6 +1494,11 @@ $ChemInMessageName;*)
 (*Protect@MessageName;*)
 
 
+(* ::Subsubsection::Closed:: *)
+(*MutationHandler*)
+
+
+
 Language`SetMutationHandler[ChemObject, ChemObjectMutationHandler];
 
 
@@ -1248,6 +1506,11 @@ ChemObjectMutationHandler~SetAttributes~HoldAllComplete;
 
 
 ChemObject::noobj="`` isn't a valid object"
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Basic*)
+
 
 
 ChemObjectMutationHandler[
@@ -1272,6 +1535,11 @@ ChemObjectMutationHandler[
 		];
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*Part*)
+
+
+
 ChemObjectMutationHandler[
 	Set[sym_Symbol?ChemTestObjectQ[[base___,prop:Except[_List|_Integer],parts__Integer]],
 		newvalue_
@@ -1284,8 +1552,6 @@ ChemObjectMutationHandler[
 			$Failed
 			]
 		];
-
-
 ChemObjectMutationHandler[
 	SetDelayed[sym_Symbol?ChemTestObjectQ[[
 		base___,
@@ -1302,6 +1568,11 @@ ChemObjectMutationHandler[
 			$Failed
 			]
 		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Thread*)
+
 
 
 ChemObjectMutationHandler[
@@ -1326,6 +1597,46 @@ ChemObjectMutationHandler[
 		];
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*AddTo*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*SubtractFrom*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*DivideBy*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*TimesBy*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*AppendTo*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*AssociateTo*)
+
+
+
+(* ::Subsection:: *)
+(*General methods*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*InstanceQ*)
+
+
+
 ChemInstanceQ[o:ChemObjPattern,types:_String|{__String}]:=
 	MemberQ[Flatten@{types},ChemGet[o,"ObjectType"]];
 ChemInstanceQ[obs:{ChemObjPattern..},types:_String|{__String}]:=
@@ -1334,7 +1645,13 @@ ChemInstanceQ[types_][obj_]:=
 	ChemInstanceQ[obj,types];
 
 
-ChemMerge[obj:ChemObjAllPattern,
+(* ::Subsubsection::Closed:: *)
+(*Merge*)
+
+
+
+ChemMerge[
+	obj:ChemObjAllPattern,
 	a:_Association|{__Association}|{__Rule}|_Rule,
 	mergeFunction_:Join
 	]:=
@@ -1348,6 +1665,11 @@ ChemMerge[obj:ChemObjAllPattern,obj2:ChemObjAllPattern,mergeFunction_:Join]:=
 	ChemMerge[obj,ChemAssociation@obj2,mergeFunction];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Join*)
+
+
+
 ChemJoin[{a__Association}]:=
 	ChemAdd[Join[a]];
 ChemJoin[a:{{__Association}..}]:=
@@ -1358,10 +1680,20 @@ ChemJoin[obj:{ChemObjAllPattern}]:=
 	ChemAdd@Map[Flatten@{ChemAssociation@#}&,obj];
 
 
+(* ::Subsubsection::Closed:: *)
+(*ReplaceAll*)
+
+
+
 ChemReplaceAll[o:chemThingsAll,replacements_]:=
 	ChemApply[o,ReplaceAll[replacements]];
 ChemReplaceAll[replacements_][o:chemThingsAll]:=
 	ChemReplaceAll[o,replacements];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Mutate*)
+
 
 
 ChemMutate[obj:ChemObjPattern,prop:Except[_List],function_]:=
@@ -1400,6 +1732,11 @@ ChemMutate[prop_,function_][obj:ChemObjPattern|ChemObjVectorPattern]:=
 	ChemMutate[obj,prop,function];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Increment*)
+
+
+
 chemGeneralIncrement[obj_,val_]:=
 	Switch[{obj,val},
 		{_?NumericQ,_?NumericQ},
@@ -1431,6 +1768,11 @@ ChemIncrement[prop_,val_][obj:ChemObjAllPattern]:=
 	ChemIncrement[obj,prop,val]
 
 
+(* ::Subsubsection::Closed:: *)
+(*Decrement*)
+
+
+
 chemGeneralDecrement[obj_,val_]:=
 	Switch[{obj,val},
 		{_String,_Integer},
@@ -1456,12 +1798,27 @@ ChemDecrement[prop_,val_][obj:ChemObjAllPattern]:=
 	ChemDecrement[obj,prop,val]
 
 
+(* ::Subsubsection::Closed:: *)
+(*AppendTo*)
+
+
+
 ChemAppendTo[obj:ChemObjAllPattern,prop_,val_]:=
 	ChemIncrement[obj,prop,val,Append];
 
 
+(* ::Subsubsection::Closed:: *)
+(*DeleteFrom*)
+
+
+
 ChemDeleteFrom[obj:ChemObjAllPattern,prop_,val_]:=
 	ChemDecrement[obj,prop,val,DeleteCases];
+
+
+(* ::Subsubsection::Closed:: *)
+(*GetRecursive*)
+
 
 
 ChemGetRecursive[obj:ChemObjAllPattern,props_]:=
@@ -1491,16 +1848,36 @@ ChemGetRecursive[obj:ChemObjAllPattern,props_]:=
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*AddReference*)
+
+
+
 ChemAddReference[ob:ChemObjAllPattern,ref:ChemObjAllPattern]:=
 	ChemIncrement[ob,"ObjectReferences",ref,Flatten@*List];
+
+
+(* ::Subsubsection::Closed:: *)
+(*RemoveReference*)
+
 
 
 ChemRemoveReference[ob:ChemObjAllPattern,ref:ChemObjAllPattern]:=
 	ChemMutate[ob,"ObjectReferences",DeleteCases[Alternatives@@{ref}]];
 
 
+(* ::Subsubsection::Closed:: *)
+(*References*)
+
+
+
 ChemReferences[obj:ChemObjAllPattern]:=
 	ChemGet[obj,"ObjectReferences"]
+
+
+(* ::Subsubsection::Closed:: *)
+(*RecursiveReferences*)
+
 
 
 ChemRecursiveReferences[obj:ChemObjAllPattern]:=
@@ -1521,10 +1898,20 @@ ChemRecursiveReferences[obj:ChemObjAllPattern]:=
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*RemoveRecursive*)
+
+
+
 ChemRemoveRecursive[obj:ChemObjAllPattern]:=
 	With[{rs=Flatten@{obj,ChemRecursiveReferences[obj]}},
 		ChemRemove@rs
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Select*)
+
 
 
 ChemSelect[obj:ChemObjAllPattern,test_]:=

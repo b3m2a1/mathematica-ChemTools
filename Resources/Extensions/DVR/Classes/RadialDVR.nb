@@ -118,53 +118,156 @@ Cell["Kinetic Energy Matrix", \
 Cell[BoxData[{
  RowBox[{
   RowBox[{
-   RowBox[{"Options", "[", "RadialDVRK", "]"}], "=", 
-   RowBox[{"{", 
-    RowBox[{"\"\<\[HBar]\>\"", "->", "1"}], "}"}]}], ";"}], "\n", 
+   RowBox[{"Options", "[", "RadialDVRK", "]"}], "=", "\n", "\t", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"\"\<Mass\>\"", "->", "1"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<HBar\>\"", "->", "1"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<ScalingFactor\>\"", "\[Rule]", "1"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<UseExact\>\"", "\[Rule]", "False"}]}], "\n", "\t\t", 
+    "}"}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{"RadialDVRK", "[", 
-   RowBox[{"gridpoints_", ",", 
+   RowBox[{"grid_", ",", 
     RowBox[{"ops", ":", 
-     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", 
   RowBox[{"With", "[", 
    RowBox[{
     RowBox[{"{", 
      RowBox[{
-      RowBox[{"p", "=", 
-       RowBox[{"Length", "@", "gridpoints"}]}], ",", 
-      RowBox[{"\[HBar]", "=", 
-       RowBox[{"OptionValue", "@", "\"\<\[HBar]\>\""}]}]}], "}"}], ",", "\n", 
-    "\t\t", 
-    RowBox[{"N", "@", 
-     RowBox[{"Table", "[", "\n", "\t\t\t", 
-      RowBox[{
-       RowBox[{"\[HBar]", "*", 
+      RowBox[{"rmin", "=", 
+       RowBox[{"Min", "@", "grid"}]}], ",", 
+      RowBox[{"rmax", "=", 
+       RowBox[{"Max", "@", "grid"}]}], ",", 
+      RowBox[{"points", "=", 
+       RowBox[{"Length", "@", "grid"}]}]}], "}"}], ",", "\n", "\t\t", 
+    RowBox[{"With", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"{", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"dr", "=", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"rmax", "-", "rmin"}], ")"}], "/", 
+          RowBox[{"(", 
+           RowBox[{"points", "-", "1"}], ")"}]}]}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"m", "=", 
+         RowBox[{"OptionValue", "@", "\"\<Mass\>\""}]}], ",", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"\[HBar]", "=", 
+         RowBox[{"OptionValue", "@", "\"\<HBar\>\""}]}], ",", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"scl", "=", 
+         RowBox[{"OptionValue", "@", "\"\<ScalingFactor\>\""}]}], ",", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"ex", "=", 
+         RowBox[{"TrueQ", "@", 
+          RowBox[{"OptionValue", "@", "\"\<UseExact\>\""}]}]}]}], "\n", 
+       "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+      RowBox[{"With", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"{", "\n", "\t\t\t\t\t", 
+         RowBox[{"f", "=", "\n", "\t\t\t\t\t\t", 
+          RowBox[{"If", "[", 
+           RowBox[{"ex", ",", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"scl", "*", "\n", "\t\t\t\t\t\t\t\t", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"#", "\[Equal]", "#2"}], ",", " ", "\n", 
+                "\t\t\t\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"\[Pi]", "^", "2."}], "/", "3."}], "-", 
+                 RowBox[{"1", "/", 
+                  SuperscriptBox["#", "2"]}]}], ",", "\n", 
+                "\t\t\t\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{"2.", "/", 
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{"#", "-", "#2"}], ")"}], "^", "2"}]}], "-", 
+                 RowBox[{"2.", "/", 
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{"#", "+", "#2"}], ")"}], "^", "2"}]}]}]}], "\n", 
+               "\t\t\t\t\t\t\t\t\t", "]"}], "*", "\n", "\t\t\t\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"\[HBar]", "^", "2."}], 
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"-", "1"}], ")"}], "^", 
+                  RowBox[{"(", 
+                   RowBox[{"#", "-", "#2"}], ")"}]}]}], ")"}], "/", 
+               RowBox[{"(", 
+                RowBox[{"2.", "m", " ", 
+                 RowBox[{"dr", "^", "2"}]}], ")"}]}]}], "&"}], ",", "\n", 
+            "\t\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"scl", "*", "\n", "\t\t\t\t\t\t\t\t", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"#", "\[Equal]", "#2"}], ",", " ", "\n", 
+                "\t\t\t\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"\[Pi]", "^", "2."}], "/", "3."}], "-", 
+                 RowBox[{"1", "/", 
+                  SuperscriptBox["#", "2"]}]}], ",", "\n", 
+                "\t\t\t\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{"2.", "/", 
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{"#", "-", "#2"}], ")"}], "^", "2"}]}], "-", 
+                 RowBox[{"2.", "/", 
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{"#", "+", "#2"}], ")"}], "^", "2"}]}]}]}], "\n", 
+               "\t\t\t\t\t\t\t\t\t", "]"}], "*", "\n", "\t\t\t\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"\[HBar]", "^", "2."}], 
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"-", "1"}], ")"}], "^", 
+                  RowBox[{"(", 
+                   RowBox[{"#", "-", "#2"}], ")"}]}]}], ")"}], "/", 
+               RowBox[{"(", 
+                RowBox[{"2.", "m", " ", 
+                 RowBox[{"dr", "^", "2"}]}], ")"}]}]}], "&"}]}], "\n", 
+           "\t\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "}"}], ",", "\n", 
+        "\t\t\t\t", 
         RowBox[{"If", "[", 
          RowBox[{
-          RowBox[{"i", "==", "j"}], ",", "\n", "\t\t\t\t", 
-          RowBox[{
-           RowBox[{"\[Pi]", "^", "2"}], "/", "3"}], ",", "\n", "\t\t\t\t", 
-          RowBox[{
-           RowBox[{"(", 
-            RowBox[{"2", "*", 
-             RowBox[{
-              RowBox[{"(", 
-               RowBox[{"-", "1"}], ")"}], "^", 
-              RowBox[{"(", 
-               RowBox[{"i", "-", "j"}], ")"}]}]}], ")"}], "/", 
+          RowBox[{"points", ">", "100000"}], ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"ParallelTable", "[", 
            RowBox[{
-            RowBox[{"(", 
-             RowBox[{"i", "-", "j"}], ")"}], "^", "2"}]}]}], "]"}]}], ",", 
-       "\n", "\t\t\t", 
-       RowBox[{"{", 
-        RowBox[{"i", ",", "p"}], "}"}], ",", "\n", "\t\t\t", 
-       RowBox[{"{", 
-        RowBox[{"j", ",", "p"}], "}"}]}], "]"}]}]}], "\n", "\t\t", 
-   "]"}]}]}], "CodeInput",
- CellChangeTimes->{{3.6992358674736557`*^9, 3.699235965180313*^9}},
- EmphasizeSyntaxErrors->
-  True,ExpressionUUID->"33e19602-d690-474a-b4dc-2d55a7647148"]
-}, Closed]],
+            RowBox[{"f", "[", 
+             RowBox[{"i", ",", "j"}], "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", "points"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"j", ",", "points"}], "}"}]}], "]"}], ",", "\n", 
+          "\t\t\t\t\t", 
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"f", "[", 
+             RowBox[{"i", ",", "j"}], "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", "points"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"j", ",", "points"}], "}"}]}], "]"}]}], "\n", 
+         "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", 
+     "]"}]}], "\n", "\t\t", "]"}]}]}], "CodeInput",
+ CellChangeTimes->{{3.6992358674736557`*^9, 3.699235965180313*^9}, {
+  3.731087319996853*^9, 
+  3.731087341376301*^9}},ExpressionUUID->"33e19602-d690-474a-b4dc-\
+2d55a7647148"]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -222,53 +325,6 @@ Cell[BoxData[{
 
 Cell[CellGroupData[{
 
-Cell["Wavefunctions Function", \
-"Subsubsection",ExpressionUUID->"d1a11e21-a5af-43a6-aedc-59c36bc528db"],
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{
-   RowBox[{"RadialDVRWavefunctions", "[", 
-    RowBox[{"T_", ",", "V_"}], "]"}], ":=", "\n", "\t", 
-   RowBox[{"With", "[", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{"S", "=", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"#", "[", 
-          RowBox[{"[", 
-           RowBox[{
-            RowBox[{"{", 
-             RowBox[{"1", ",", "2"}], "}"}], ",", 
-            RowBox[{"Ordering", "[", 
-             RowBox[{"First", "@", "#"}], "]"}]}], "]"}], "]"}], "&"}], "@", 
-        RowBox[{"Eigensystem", "[", 
-         RowBox[{"T", "+", "V"}], "]"}]}]}], "}"}], ",", "\n", "\t\t", 
-     RowBox[{"With", "[", 
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{"phase", "=", 
-         RowBox[{"Sign", "@", 
-          RowBox[{"S", "[", 
-           RowBox[{"[", 
-            RowBox[{"2", ",", "1"}], "]"}], "]"}]}]}], "}"}], ",", "\n", 
-       "\t\t\t", 
-       RowBox[{"{", 
-        RowBox[{
-         RowBox[{"First", "@", "S"}], ",", 
-         RowBox[{
-          RowBox[{
-           RowBox[{"phase", "*", "#"}], "&"}], "/@", 
-          RowBox[{"Last", "@", "S"}]}]}], "}"}]}], "\n", "\t\t\t", "]"}]}], 
-    "\n", "\t\t", "]"}]}], ";"}]], "CodeInput",
- CellChangeTimes->{{3.699236266872559*^9, 
-  3.699236281868435*^9}},ExpressionUUID->"df9470d6-b300-4e9b-a5b6-\
-cbf8c9fa4af9"]
-}, Closed]],
-
-Cell[CellGroupData[{
-
 Cell["Plotting Function", \
 "Subsubsection",ExpressionUUID->"614cdc6a-8b94-4e66-8fb3-0a00ad6b7e4e"],
 
@@ -285,7 +341,8 @@ Cell[BoxData[{
         "\n", "\t", "\t", 
        RowBox[{"AxesOrigin", "->", 
         RowBox[{"{", 
-         RowBox[{"0", ",", "0"}], "}"}]}], ",", "\n", "\t", "\t", 
+         RowBox[{"0", ",", "0"}], "}"}]}], ",", "\n", "\t\t", 
+       RowBox[{"Scaled", "\[Rule]", "Automatic"}], ",", "\n", "\t\t", 
        RowBox[{"\"\<EnergyDigits\>\"", "->", "3"}], ",", "\n", "\t", "\t", 
        RowBox[{"\"\<ZeroPointEnergy\>\"", "->", "0"}], ",", "\n", "\t", "\t", 
        
@@ -314,6 +371,23 @@ Cell[BoxData[{
      RowBox[{"{", 
       RowBox[{
       "\[CapitalLambda]", ",", "X", ",", "\[Psi]", ",", "\n", "\t\t", 
+       RowBox[{"scale", "=", "\n", "\t\t\t", 
+        RowBox[{"Replace", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "Scaled", "]"}], ",", "\n", "\t\t\t\t", 
+          
+          RowBox[{"Automatic", "\[RuleDelayed]", "\n", "\t\t\t\t\t", 
+           RowBox[{"Max", "@", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"1", "/", "10"}], "*", 
+               RowBox[{"Max", "[", 
+                RowBox[{"Abs", "/@", 
+                 RowBox[{"MinMax", "[", 
+                  RowBox[{"Flatten", "@", "potentialMatrix"}], "]"}]}], 
+                "]"}]}], ",", " ", "10"}], "}"}]}]}]}], "\n", "\t\t\t\t", 
+         "]"}]}], ",", "\n", "\t\t", 
        RowBox[{"num", "=", "\n", "\t\t\t", 
         RowBox[{"Replace", "[", 
          RowBox[{
@@ -349,12 +423,8 @@ Cell[BoxData[{
                  RowBox[{
                   RowBox[{"Subscript", "[", 
                    RowBox[{"\"\<\[Psi]\>\"", ",", "#1"}], "]"}], ",", 
-                  "\"\<: E=\>\"", ",", "\n", "\t\t\t\t\t", 
-                  RowBox[{"NumberForm", "[", 
-                   RowBox[{"#2", ",", 
-                    RowBox[{
-                    "OptionValue", "[", "\"\<EnergyDigits\>\"", "]"}]}], 
-                   "]"}]}], "}"}]}], "&"}], ")"}]}], ",", "\n", "\t\t\t\t", 
+                  "\"\<: E=\>\"", ",", "#2"}], "}"}]}], "&"}], ")"}]}], ",", 
+            "\n", "\t\t\t\t", 
             RowBox[{"None", "->", "False"}]}], "}"}]}], "]"}]}], ",", "\n", 
        "\t\t", "plotWave", ",", "waveSet", ",", 
        RowBox[{"Ec", "=", 
@@ -432,15 +502,20 @@ Cell[BoxData[{
        RowBox[{"With", "[", 
         RowBox[{
          RowBox[{"{", 
-          RowBox[{"\[Lambda]", "=", 
-           RowBox[{"{", 
-            RowBox[{"0", ",", 
-             RowBox[{"\[CapitalLambda]", "[", 
-              RowBox[{"[", "n", "]"}], "]"}]}], "}"}]}], "}"}], ",", "\n", 
+          RowBox[{
+           RowBox[{"s", "=", 
+            RowBox[{"{", 
+             RowBox[{"1", ",", "scale"}], "}"}]}], ",", " ", 
+           RowBox[{"\[Lambda]", "=", 
+            RowBox[{"{", 
+             RowBox[{"0", ",", 
+              RowBox[{"\[CapitalLambda]", "[", 
+               RowBox[{"[", "n", "]"}], "]"}]}], "}"}]}]}], "}"}], ",", "\n", 
          "\t\t\t\t", 
          RowBox[{
           RowBox[{
-           RowBox[{"\[Lambda]", "+", "#"}], "&"}], "/@", 
+           RowBox[{"\[Lambda]", "+", 
+            RowBox[{"s", "*", "#"}]}], "&"}], "/@", 
           RowBox[{"\[Psi]", "[", "n", "]"}]}]}], "\n", "\t\t\t\t", "]"}]}], 
       ";", "\n", "\t\t", 
       RowBox[{"waveSet", "=", "\n", "\t\t\t", 
@@ -642,10 +717,14 @@ Cell[BoxData[{
             RowBox[{"Options", "[", "Plot", "]"}]}], "]"}]}], "\n", 
          "\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}]}]}], "\n", "\t", "]"}]}], 
   ";"}]}], "CodeInput",
- CellChangeTimes->{{3.699236891668317*^9, 
-  3.6992369028207417`*^9}},ExpressionUUID->"ba2004c1-83d1-4f69-bde0-\
+ CellChangeTimes->{{3.699236891668317*^9, 3.6992369028207417`*^9}, 
+   3.731088204772923*^9, {3.731088327212296*^9, 3.731088424984414*^9}, {
+   3.731088539219789*^9, 3.7310885745823812`*^9}, {3.731088664701023*^9, 
+   3.731088697394865*^9}, {3.731088730079042*^9, 3.731088778921502*^9}, {
+   3.731090344593775*^9, 
+   3.731090364826092*^9}},ExpressionUUID->"ba2004c1-83d1-4f69-bde0-\
 f3fff6134ec8"]
-}, Closed]]
+}, Open  ]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -678,15 +757,13 @@ Cell[BoxData[
     
     RowBox[{"\"\<KineticEnergy\>\"", "->", "RadialDVRK"}], ",", "\n", "\t", 
     "\t", 
-    RowBox[{"\"\<PotentialEnergy\>\"", "->", "RadialDVRV"}], ",", "\n", "\t", 
-    "\t", 
-    RowBox[{"\"\<Wavefunctions\>\"", "->", "RadialDVRWavefunctions"}], ",", 
-    "\n", "\t", "\t", 
+    RowBox[{"\"\<PotentialEnergy\>\"", "->", "RadialDVRV"}], ",", "\n", 
+    "\t\t", 
     RowBox[{"\"\<View\>\"", "->", "RadialDVRPlot"}]}], "\n", "\t", "\t", 
    "|>"}]}]], "CodeInput",
  CellChangeTimes->{{3.699236923511825*^9, 3.6992369555077667`*^9}, {
-  3.699237949531838*^9, 
-  3.699237954564919*^9}},ExpressionUUID->"7c275231-ae55-49d8-8da5-\
+   3.699237949531838*^9, 3.699237954564919*^9}, 
+   3.7310917258452806`*^9},ExpressionUUID->"7c275231-ae55-49d8-8da5-\
 ba36a018a3cb"]
 }, Open  ]],
 
@@ -710,9 +787,9 @@ Cell["", "SectionSeparator",ExpressionUUID->"3bc90092-197f-4b10-9566-\
 },
 WindowSize->{808, 755},
 WindowMargins->{{117, Automatic}, {15, Automatic}},
-FrontEndVersion->"11.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
-10, 2017)",
-StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackagePlain.nb", 
   CharacterEncoding -> "UTF-8"]
 ]
 

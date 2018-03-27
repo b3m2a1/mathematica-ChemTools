@@ -138,15 +138,6 @@ Cartesian2DDVRKineticMatrix[grid_, ops:OptionsPattern[]]:=
 			]*)
 
 
-Options[Cartesian2DDVRPotentialMatrix]={Function->(Norm[(#/2)^2]&)};
-Cartesian2DDVRPotentialMatrix[grid_,ops:OptionsPattern[]]:=
-	With[{func=OptionValue@Function},
-		With[{A=func/@Flatten[grid,1]},
-			SparseArray[Band[{1,1}]->A]
-			]
-		]
-
-
 Options[Cartesian2DDVRListPlot]=
 	DeleteDuplicatesBy[First]@
 	Flatten@{
@@ -539,8 +530,11 @@ $Cartesian2DDVR=
 		"Range"->{{-10,10}, {-10, 10}},
 		"Grid"->Cartesian2DDVRPoints,
 		"KineticEnergy"->Cartesian2DDVRKineticMatrix,
-		"PotentialEnergy"->Cartesian2DDVRPotentialMatrix,
-		"View"->Cartesian2DDVRPlotFunction
+		"View"->Cartesian2DDVRPlotFunction,
+		"Defaults"->
+			{
+				"PotentialFunction"->"HarmonicOscillator"
+				}
 		|>
 
 

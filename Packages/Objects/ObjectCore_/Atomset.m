@@ -19,6 +19,11 @@
 
 
 
+(* ::Subsection:: *)
+(*Class*)
+
+
+
 (*$ChemObjectDefaults["Atomset"]=.*)
 
 
@@ -47,7 +52,9 @@ If[!KeyMemberQ[$ChemObjectDefaults, "Atomset"],
 				"SetBondLength"->
 					ChemMethod[AtomsetSetBondLength],
 				"NormalizeBonds"->
-					ChemMethod[NormalizeBonds],
+					ChemMethod[AtomsetNormalizeBonds],
+				"GuessBonds"->
+					ChemMethod[AtomsetGuessBonds],
 					
 				"Center"->
 					ChemProperty[AtomsetCenter],
@@ -131,6 +138,16 @@ If[!KeyMemberQ[$ChemObjectDefaults, "Atomset"],
 					]
 				|>
   ];
+
+
+(* ::Subsection:: *)
+(*Atomset Creation*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*Create*)
+
 
 
 parseToAtoms[system_,{{a_,b_},o__}]:=
@@ -1044,7 +1061,7 @@ AtomsetConnectedComponents[obj:ChemObjPattern]:=
 findRing[baseAtoms_,vds_,ed_]:=
 	With[{edges1=
 		Cases[ed,
-			(Alternatives@@baseAtoms)<->(Alternatives@@baseAtoms)
+			(Alternatives@@baseAtoms)\[UndirectedEdge](Alternatives@@baseAtoms)
 			]
 		},
 		If[AllTrue[VertexDegree[edges1],GreaterThan[1]],
@@ -1054,8 +1071,8 @@ findRing[baseAtoms_,vds_,ed_]:=
 				findRing[
 					VertexList@
 						Cases[ed,
-							(Alternatives@@baseAtoms)<->_|
-							_<->Alternatives@@baseAtoms],
+							(Alternatives@@baseAtoms)\[UndirectedEdge]_|
+							_\[UndirectedEdge]Alternatives@@baseAtoms],
 					vds,
 					ed
 					]
@@ -1099,7 +1116,7 @@ AtomsetRings[obj:ChemObjPattern]:=
 								MemberQ[rings,l]||
 								!ConnectedGraphQ@
 									Graph@Cases[edges,
-										(Alternatives@@l)<->
+										(Alternatives@@l)\[UndirectedEdge]
 											(Alternatives@@l)
 										],
 								Nothing,
@@ -1801,6 +1818,16 @@ AtomsetPointGroup[
 		]
 
 
+(* ::Subsection:: *)
+(*Atomset Surface Properties*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*VdWSurface*)
+
+
+
 Options[AtomsetVdWSurface]=
 	Options@BoundaryDiscretizeRegion;
 AtomsetVdWSurface[obj:ChemObjPattern,ops:OptionsPattern[]]:=
@@ -1818,8 +1845,18 @@ AtomsetVdWSurface[obj:ChemObjPattern,ops:OptionsPattern[]]:=
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*VdWVolume*)
+
+
+
 AtomsetVdWVolume[obj:ChemObjPattern]:=
 	Quantity[Volume@AtomsetVdWSurface[obj],"Angstroms"^3];
+
+
+(* ::Subsubsection::Closed:: *)
+(*PartialCharges*)
+
 
 
 atomsetGastInitialCharges[obj:ChemObjPattern]:=
@@ -2070,6 +2107,11 @@ AtomsetPartialCharges/:
 			]
 
 
+(* ::Subsubsection::Closed:: *)
+(*ElectricPotential*)
+
+
+
 Options[AtomsetElectricPotential]=
 	{
 		"Mode"->"Cached"
@@ -2118,6 +2160,11 @@ AtomsetElectricPotential[
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*ElectricPotentialMap*)
+
+
+
 Options[AtomsetElectricPotentialMap]=
 	Join[
 		Options@ChemSurfacePlot,
@@ -2140,6 +2187,11 @@ AtomsetElectricPotentialMap[
 					ColorData@{"DarkRainbow","Reverse"}
 				]
 		}];
+
+
+(* ::Subsubsection::Closed:: *)
+(*PolarMoment*)
+
 
 
 (*AtomsetPolarMoment[system_String,id_,
@@ -2175,6 +2227,11 @@ AtomsetPolarMoment[ChemObject[system_,id_],s___]:=
 	AtomsetPolarMoment[system,id,s];*)
 
 
+(* ::Subsubsection::Closed:: *)
+(*PolarCenter*)
+
+
+
 (*AtomsetPolarCenter[system_String,id_,
 	testPoint:{_?NumericQ,_?NumericQ,_?NumericQ}|"Center"|"CenterOfMass":"Center",
 	steps_Integer:100,
@@ -2203,6 +2260,11 @@ AtomsetPolarCenter[ChemObject[system_,id_],a___]:=
 	AtomsetPolarCenter[system,id,a];*)
 
 
+(* ::Subsubsection::Closed:: *)
+(*PolarMomentPlot*)
+
+
+
 (*AtomsetPolarMomentPlot[system_,id_]:=
 	Show[
 		ChemSurfacePlot[
@@ -2215,6 +2277,11 @@ AtomsetPolarCenter[ChemObject[system_,id_],a___]:=
 		];
 AtomsetPolarMomentPlot[ChemObject[system_,id_]]:=
 	AtomsetPolarMomentPlot[system,id];*)
+
+
+(* ::Subsubsection::Closed:: *)
+(*Polarization*)
+
 
 
 (*AtomsetPolarization[system_,id_]:=

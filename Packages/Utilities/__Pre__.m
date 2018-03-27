@@ -75,33 +75,56 @@ Map[
 		]&,
 	{"cube", "CubeFile"}
 	];
-	Map[
-		ImportExport`RegisterImport[
-			#,
-			{
-				"MolTable":>
-					Function[{"MolTable"->ImportGaussianJob[#, "MolTable"]}],
-				"Elements":>
-					Function[{"Elements"->{"MolTable"}}],
-				ImportGaussianJob
-				}
-			]&,
-		{"GJF", "GaussianJob"}
-		];
-	Map[
-		ImportExport`RegisterImport[
-			#,
-			{
-				"MolTable":>
-					Function[{"MolTable"->ImportFormattedCheckpointFile[#, "MolTable"]}],
-				"Elements":>
-					Function[{"Elements"->{"MolTable"}}],
-				ImportFormattedCheckpointFile
-				},
-			"FunctionChannels"->{"Streams"}
-			]&,
-		{"FCHK", "FormattedCheckpoint"}
-		];
+(* 
+	GJF
+	*)
+Map[
+	ImportExport`RegisterImport[
+		#,
+		{
+			"MolTable":>
+				Function[{"MolTable"->ImportGaussianJob[#, "MolTable"]}],
+			"Elements":>
+				Function[{"Elements"->{"MolTable"}}],
+			ImportGaussianJob
+			}
+		]&,
+	{"GJF", "GaussianJob"}
+	];
+(* 
+	FChk
+	*)
+Map[
+	ImportExport`RegisterImport[
+		#,
+		{
+			"MolTable":>
+				Function[{"MolTable"->ImportFormattedCheckpointFile[#, "MolTable"]}],
+			"Elements":>
+				Function[{"Elements"->{"MolTable"}}],
+			ImportFormattedCheckpointFile
+			},
+		"FunctionChannels"->{"Streams"}
+		]&,
+	{"FCHK", "FormattedCheckpoint"}
+	];
+(* 
+	Scan
+	*)
+Map[
+	ImportExport`RegisterImport[
+		#,
+		{
+			"MolTable":>
+				Function[{"MolTable"->ImportGaussianScan[#, "MolTable"]}],
+			"Elements":>
+				Function[{"Elements"->{"MolTable"}}],
+			ImportGaussianScan
+			},
+		"FunctionChannels"->{"Streams"}
+		]&,
+	{"GaussianScan"}
+	];
 `Private`$ImportsRegistered=True
 ];
 

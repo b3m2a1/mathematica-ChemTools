@@ -192,9 +192,12 @@ $Cartesian1DCsDVR=
 		"Range"->{{-5,5}},
 		"Grid"->Cartesian1DCsDVRPoints,
 		"KineticEnergy"->Cartesian1DCsDVRKineticMatrix,
-		"PotentialEnergy"->Cartesian1DCsDVRPotentialMatrix,
 		"Wavefunctions"->Cartesian1DCsDVRWavefunctions,
-		"View"->Cartesian1DCsDVRPlotFunction
+		"View"->Cartesian1DCsDVRPlotFunction,
+		"Defaults"->
+			{
+				"PotentialFunction"->"HarmonicOscillator"
+				}
 		|>
 
 

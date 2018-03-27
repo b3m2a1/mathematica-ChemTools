@@ -21,10 +21,10 @@
 
 ImportGaussianJob::usage=
 	"Imports data from a Gaussian job";
-
-
 ImportFormattedCheckpointFile::usage=
-	"Imports results from an FChk file"
+	"Imports results from an FChk file";
+ImportGaussianScan::usage=
+	"Imports a scan from a Log file";
 
 
 Begin["`Private`"];
@@ -198,6 +198,146 @@ ImportGaussianJob[file:_String|_InputStream, "MolTable"]:=
 			Lookup[dats, "Atoms", {}],
 			Lookup[dats, "Bonds", {}]
 			]
+		]
+
+
+(* ::Subsection:: *)
+(*GaussianLogRead*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*GaussianLogRead*)
+
+
+
+GaussianLogRead[logFile:_String?FileExistsQ, key_]:=
+	With[{or=OpenRead[logFile]},
+		Replace[$Failed:>(Close[or];$Failed)]@
+			CheckAbort[
+				With[{res=GaussianLogRead[or, key]},
+					Close[or];
+					res
+					],
+				$Failed
+				]
+		];
+GaussianLogRead[logString_String, key_]:=
+	With[{or=StringToStream[logString]},
+		Replace[$Failed:>(Close[or];$Failed)]@
+			CheckAbort[
+				With[{res=GaussianLogRead[or, key]},
+					Close[or];
+					res
+					],
+				$Failed
+				]
+		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*GaussianLogReadZMatrix*)
+
+
+
+gaussianLogReadZMatrixBlock[zmat_]:=
+	Map[
+		Which[
+			Length@#>5,
+				MapAt[
+					Quantity[#, "Angstroms"]&, 
+					MapAt[Quantity[#, "AngularDegrees"]&, #, {5, 7}],
+					{3}
+					],
+			Length@#>3,
+				MapAt[
+					Quantity[#, "Angstroms"]&, 
+					MapAt[Quantity[#, "AngularDegrees"]&, #, {5}], 
+					{3}
+					],
+			Length@#>1,
+					MapAt[Quantity[#, "Angstroms"]&, #, {3}],
+			True,
+				#
+			]&,
+		ImportString[
+			StringTrim@
+				First@StringSplit[
+					StringSplit[StringTrim@zmat, "\n", 2][[2]],
+					"Variables:"
+					],
+			"Table"
+			]
+		];
+
+
+GaussianLogRead[log_InputStream, "ZMatrix"]:=
+	gaussianLogReadZMatrixBlock@
+		Read[log, Record,
+			RecordSeparators->{{"Z-matrix:"}, {"NAtoms="}}
+			]
+
+
+(* ::Subsubsection::Closed:: *)
+(*GaussianLogReadScan*)
+
+
+
+gaussianLogReadScanBlock[scan_]:=
+	Module[
+		{
+			splits=
+				StringTrim[
+					StringSplit[scan, Repeated[Repeated["-"]|"  "]~~Repeated["-"], 2],
+					Repeated[Repeated["-"]|"  "]~~Repeated["-"]
+					],
+			headers,
+			vars,
+			energyPos,
+			tab
+			},
+		headers=StringSplit[splits[[1]]];
+		energyPos=First@FirstPosition[headers, "SCF"];
+		vars=Append[Take[headers, {2, energyPos-1}], "V"];
+		tab=
+			MapAt[
+				Quantity[#, "Hartrees"]&,
+				Partition[
+					ReadList[StringToStream@splits[[2]], Number], 
+					Length@headers
+					][[All, Append[Range[2, energyPos-1], -1]]],
+				{All, -1}
+				];
+		Map[Thread[vars->#]&, tab]
+		];
+
+
+GaussianLogRead[log_InputStream, "Scan"]:=
+	gaussianLogReadScanBlock@
+		Read[log, Record, 
+			RecordSeparators->{{"scan:"}, {"\n  \n"}}
+			];
+
+
+(* ::Subsubsection::Closed:: *)
+(*ImportGaussianScan*)
+
+
+
+ImportGaussianScan[
+	file:_String?FileExistsQ|_InputStream
+	]:=
+	GaussianLogRead[file, "Scan"];
+ImportGaussianScan[
+	file:_String?FileExistsQ|_InputStream,
+	"MolTable"
+	]:=
+	With[
+		{
+			zmat=GaussianLogRead[file, "ZMatrix"],
+			scan=GaussianLogRead[file, "Scan"]
+			},
+		MapAt[ChemUtilsGenerateMolTable, zmat->"V"/.scan, {All, 1}]
 		]
 
 
