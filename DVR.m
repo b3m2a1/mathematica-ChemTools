@@ -1,9 +1,12 @@
-(* This is a conveniece file so Needs["ChemTools`DVR`"] can be used *)
+(* This is a conveniece file so Needs["App`Pkg`"] can be used *)
 BeginPackage[
-  FileBaseName[DirectoryName@$InputFileName]<>"`"<>
+  StringSplit[
+   FileBaseName[DirectoryName@$InputFileName],
+   "-"
+   ][[1]]<>"`"<>
   FileBaseName[$InputFileName]<>"`",
   FileBaseName[DirectoryName@$InputFileName]<>"`"
   ];
 EndPackage[]
 
-(*FrontEnd`Private`GetUpdatedSymbolContexts[]*)
+FrontEnd`Private`GetUpdatedSymbolContexts[]

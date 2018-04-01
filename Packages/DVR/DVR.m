@@ -38,7 +38,8 @@ PackageScopeBlock[
 	ChemDVRDefaultKineticEnergy::usage="";
 	ChemDVRDefaultWavefunctions::usage="";
 	ChemDVRDefaultGridWavefunctions::usage="";
-	ChemDVRDefaultInterpolatingWavefunctions::usage=""
+	ChemDVRDefaultInterpolatingWavefunctions::usage="";
+	ChemDVRDefaultExpectationValues::usage="";
 	];
 
 
@@ -85,7 +86,9 @@ ChemDVRWavefunctions::usage=
 ChemDVRGridWavefunctions::usage=
 	"Returns the wavefunction imposed on the grid";
 ChemDVRInterpolatingWavefunctions::usage=
-	"Returns the wavefunctions interpolating over a grid"
+	"Returns the wavefunctions interpolating over a grid";
+ChemDVRExpectationValues::usage=
+	"Returns the expectation values of a set of functions";
 ChemDVRView::usage="Displays the wavefunctions from a ChemDVR run";
 ChemDVRRun::usage="General form ChemDVR runner";
 
@@ -292,6 +295,10 @@ ChemDVRCreate[a_Association]:=
 			dvrAssoc["InterpolatingWavefunctions"]=
 				ChemDVRDefaultInterpolatingWavefunctions
 			];
+		If[!KeyMemberQ[dvrAssoc,"ExpectationValues"],
+			dvrAssoc["ExpectationValues"]=
+				ChemDVRDefaultExpectationValues
+			];
 		If[!KeyMemberQ[dvrAssoc,"FormatGrid"],
 			dvrAssoc["FormatGrid"]=
 				ChemDVRDefaultFormatGrid
@@ -433,6 +440,28 @@ ChemDVRDefaultGridPointList[grid_, o:OptionsPattern[]]:=
 				]
 			]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*WavefunctionSelection*)
+
+
+
+Options[ChemDVRDefaultWavefunctionSelection]=
+	{
+		"WavefunctionSelection"->All
+		};
+ChemDVRDefaultWavefunctionSelection[wfs_, ops:OptionsPattern[]]:=
+	With[{sel=OptionValue["WavefunctionSelection"]},
+		If[sel=!=All,
+			wfs[[All, 
+				Replace[sel,
+					i_Integer:>Range[i]
+					]
+				]],
+			wfs
+			]
+		]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -765,9 +794,7 @@ ChemDVRDefaultWavefunctions[T_,V_,ops:OptionsPattern[]]:=
 
 Options[ChemDVRDefaultGridWavefunctions]=
 	Join[
-		{
-			"WavefunctionSelection"->All
-			},
+		Options[ChemDVRDefaultWavefunctionSelection],
 		Options[ChemDVRDefaultGridPointList]
 		];
 ChemDVRDefaultGridWavefunctions[grid_,wfs_, o:OptionsPattern[]]:=
@@ -779,11 +806,9 @@ ChemDVRDefaultGridWavefunctions[grid_,wfs_, o:OptionsPattern[]]:=
 		},
 		MapThread[
 			#->Thread[{coreGridPoints,#2}]&,
-			With[{sel=OptionValue["WavefunctionSelection"]},
-				If[sel=!=All,
-					wfs[[All, OptionValue["WavefunctionSelection"]]],
-					wfs
-					]
+			ChemDVRDefaultWavefunctionSelection[
+				wfs,
+				FilterRules[{o}, Options[ChemDVRDefaultWavefunctionSelection]]
 				]
 			]
 		];
@@ -804,27 +829,57 @@ ChemDVRDefaultInterpolatingWavefunctions[
 	With[
 		{
 			coreGridPoints=
-				If[Depth@grid<=3,
-					OptionValue["GridPrepFunction"]@grid,
-					Flatten[
-						OptionValue["GridPrepFunction"]@grid,
-						Depth[grid]-3
-						]
+				ChemDVRDefaultGridPointList[grid, 
+					FilterRules[{ops}, Options@ChemDVRDefaultGridPointList]
 					]
 			},
 		MapThread[
 			#->Interpolation@MapThread[Flatten@*List,{coreGridPoints,#2}]&,
-			With[{sel=OptionValue["WavefunctionSelection"]},
-				If[sel=!=All,
-					wfs[[All, 
-						Replace[OptionValue["WavefunctionSelection"],
-							i_Integer:>Range[i]
-							]
-						]],
-					wfs
-					]
+			ChemDVRDefaultWavefunctionSelection[
+				wfs,
+				FilterRules[{ops}, Options[ChemDVRDefaultWavefunctionSelection]]
 				]
 			]
+		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*ChemDVRDefaultExpectationValues*)
+
+
+
+Options[ChemDVRDefaultExpectationValues]=
+	Options@ChemDVRDefaultGridWavefunctions;
+ChemDVRDefaultInterpolatingWavefunctions[
+	grid_,
+	wfs_,
+	evs_,
+	ops:OptionsPattern[]
+	]:=
+	With[
+		{
+			coreGridPoints=
+				ChemDVRDefaultGridPointList[grid, 
+					FilterRules[{ops}, Options[ChemDVRDefaultGridPointList]]
+					],
+			exfns=
+				Flatten@List@evs
+			},
+		If[Not@*ListQ@exfns, First, Identity]@
+			Map[
+				With[{wf=#},
+					Map[
+						With[{ef=#},
+							Replace[ef@coreGridPoints, _ef:>ef/@coreGridPoints].wf
+							]&,
+						exfns
+						]
+					]&,
+				ChemDVRDefaultWavefunctionSelection[
+					wfs,
+					FilterRules[{ops}, Options[ChemDVRDefaultWavefunctionSelection]]
+					]
+				]
 		];
 
 
@@ -1333,6 +1388,31 @@ ChemDVRInterpolatingWavefunctions[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 
 
 (* ::Subsubsection::Closed:: *)
+(*ExpectationValues*)
+
+
+
+ChemDVRExpectationValues[
+	obj:dvrObjPattern, 
+	efuns:Except[_?OptionQ], 
+	ops:OptionsPattern[]
+	]:=
+	With[{exFun=ChemDVRGet[obj, "ExpectationValues"]},
+		exFun[
+			dvrOpsLookup[ops, "Grid", ChemDVRGrid[obj,ops]],
+			dvrOpsLookup[ops,
+				"Wavefunctions",
+				ChemDVRWavefunctions[obj,ops]
+				],
+			efuns,
+			FilterRules[{ops},
+				Options@exFun
+				]
+			]
+		]
+
+
+(* ::Subsubsection::Closed:: *)
 (*View*)
 
 
@@ -1608,6 +1688,11 @@ ChemDVRObject[uuid_?chemDVRValidQ][a___?OptionQ]:=
 	ChemDVRWavefunctions[obj,args];
 (obj:_ChemDVRObject?chemDVRValidQ)["GridWavefunctions",args___?OptionQ]:=
 	ChemDVRGridWavefunctions[obj,args];
+(obj:_ChemDVRObject?chemDVRValidQ)["InterpolatingWavefunctions",args___?OptionQ]:=
+	ChemDVRInterpolatingWavefunctions[obj,args];
+(obj:_ChemDVRObject?chemDVRValidQ)["ExpectationValues", 
+		efuns:Except[_?OptionQ], args___?OptionQ]:=
+	ChemDVRExpectationValuesobj,efuns, args];
 (obj:_ChemDVRObject?chemDVRValidQ)["Properties"]:=
 	Keys@ChemDVRAssociation[obj];
 (obj:_ChemDVRObject?chemDVRValidQ)["Association"]:=
