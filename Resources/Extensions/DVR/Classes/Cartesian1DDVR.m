@@ -245,7 +245,7 @@ $Cartesian1DDVR=
 		"View"->Cartesian1DDVRPlotFunction,
 		"Defaults"->
 			{
-				"PotentialFunction"->"HarmonicOscialltor"
+				"PotentialFunction"->"HarmonicOscillator"
 				}
 		|>
 

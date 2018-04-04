@@ -372,7 +372,7 @@ PackageDeclarePackage[pkgFile_->syms_]:=
 		];
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*PackageLoadDeclare*)
 
 
@@ -386,7 +386,7 @@ PackageLoadDeclare[pkgFile_String]:=
 		];
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*PackageAppLoad*)
 
 
@@ -494,7 +494,7 @@ PackageAppNeeds[pkg_String]:=
 		];
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*PackageScopeBlock*)
 
 
@@ -512,10 +512,9 @@ PackageScopeBlock[
 				],
 		res=If[$PackageScopeBlockEvalExpr,e]
 		},
-		If[!MemberQ[$PackageContexts,newcont],
+		If[!MemberQ[$PackageContexts, newcont],
 			Unprotect[$PackageContexts];
 			AppendTo[$PackageContexts,newcont];
-			Protect[$PackageContexts];
 			];
 		Replace[
 			Thread[
