@@ -22,89 +22,75 @@
 ChemDVRBegin[];
 
 
-Cartesian1DDVRFormatGrid::usage=""
-Cartesian1DDVRPoints::usage=""
-Cartesian1DDVRKineticMatrix::usage=""
-Cartesian1DDVRPotentialMatrix::usage=""
-Cartesian1DDVRWavefunctions::usage=""
-Cartesian1DDVRPlotFunction::usage=""
+AngularDVRPoints::usage="Generates the grid";
+AngularDVRK::usage="";
 
 
 Begin["`Private`"];
 
 
-Cartesian1DDVRPoints[points:{_Integer},
-	X:{{_?NumericQ,_?NumericQ}}:{{-10,10}}]:=
-	Subdivide@@Flatten@{N@X,points-1}
+AngularDVRPoints[{points_Integer},
+	X:{{_?NumericQ,_?NumericQ}}:{{0,2.\[Pi]}}
+	]:=
+	DeleteDuplicatesBy[Mod[#,2\[Pi]]&][
+		Subdivide@@Append[X[[1]],points]
+		]
 
 
-Options[Cartesian1DDVRKineticMatrix]=
+Options[AngularDVRK]=
 	{
 		"Mass"->1,
 		"HBar"->1,
 		"ScalingFactor"->1,
 		"UseExact"->False
 		};
-Cartesian1DDVRKineticMatrix[grid_,OptionsPattern[]]:=
-	With[{xmin=Min@grid,xmax=Max@grid,points=Length@grid},
-		With[
-			{
-				dx=(xmax-xmin)/(points-1),
-				m=OptionValue@"Mass",
-				\[HBar]=OptionValue@"HBar",
-				scl=OptionValue@"ScalingFactor",
-				ex=TrueQ@OptionValue@"UseExact"
-				},
-			With[
-				{
-					f=
-						If[ex,
-							scl*
-								If[#==#2, 
-									\[Pi]^2/3, 
-									2/(#-#2)^2
-									]*
-									(\[HBar]^2(-1)^(#-#2))/(2m dx^2)&,
-							scl*
-								If[#==#2, 
-									\[Pi]^2./3.,
-									2./(#-#2)^2
-									]*
-									(\[HBar]^2.(-1)^(#-#2))/(2.m dx^2)&
-							]
-					},
-				If[points>100000,
-					ParallelTable[f[i,j],{i,points},{j,points}],
-					Table[f[i,j],{i,points},{j,points}]
-					]
-				]
+AngularDVRK[gridpoints_,ops:OptionsPattern[]]:=
+	With[
+		{
+			X=gridpoints,
+			p=Length@gridpoints,
+			\[HBar]=OptionValue@"HBar",
+			m=OptionValue["Mass"],
+			ex=TrueQ@OptionValue["UseExact"],
+			s=OptionValue["ScalingFactor"]
+			},
+		Table[
+			If[!ex, N, Identity]@
+			(s*\[HBar])*
+			If[i==j,
+				(p^2/2+1)*1/6,
+				((-1)^(i-j))/
+					(2*Sin[(\[Pi]*(i-j))/p]^2)
+				],
+			{i,p},
+			{j,p}
 			]
-		]
+		];
 
 
 End[];
 
 
-$Cartesian1DDVR=
+$AngularDVR=
 	<|
-		"Name"->"Cartesian 1D",
+		"Name"->"Angular 1D",
 		"Dimension"->1,
-		"PointLabels"->{"x"|"y"|"z"},
-		"Range"->{{-10,10}},
-		"Grid"->Cartesian1DDVRPoints,
-		"KineticEnergy"->Cartesian1DDVRKineticMatrix,
+		"PointLabels"->{("\[CurlyPhi]"|"\[Phi]"|"phi"|"Phi"|"Angular"|"angular")},
+		"Range"->{{0,2\[Pi]}},
+		"Grid"->AngularDVRPoints,
+		"KineticEnergy"->AngularDVRK,
 		"Defaults"->
-			{
-				"PotentialFunction"->"HarmonicOscillator",
-				"PlotMode"->{"Cartesian", 1}
-				}
-		|>
+				{
+					"PotentialFunction"->"HinderedRotor",
+					"PlotMode"->"Angular3D"
+					}
+		|>;
 
 
 ChemDVREnd[];
 
 
-$Cartesian1DDVR
+$AngularDVR
 
 
 

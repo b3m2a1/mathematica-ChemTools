@@ -22,78 +22,38 @@
 ChemDVRBegin[];
 
 
-RadialDVRPoints::usage="Returns the radial DVR grid/array"
-RadialDVRK::usage="Returns the radial DVR kinetic energy matrix"
+DiskDVRPoints::usage="Returns the radial DVR grid/array";
+DiskDVRK::usage="Returns the radial DVR kinetic energy matrix";
+
+
+ChemDVRNeeds/@{"RadialDVR", "AngularDVR"};
 
 
 Begin["`Private`"];
 
 
-RadialDVRPoints[
-	points:{_Integer},
-	X:{{_?NumericQ,_?NumericQ}}:{{0,10}}
-	]:=
-	Subdivide@@Flatten@{N@X, points-1}
-
-
-Options[RadialDVRK]=
-	{
-		"Mass"->1,
-		"HBar"->1,
-		"ScalingFactor"->1,
-		"UseExact"->False
-		};
-RadialDVRK[grid_,ops:OptionsPattern[]]:=
-With[{rmin=Min@grid,rmax=Max@grid,points=Length@grid},
-		With[
-			{
-				dr=(rmax-rmin)/(points-1),
-				m=OptionValue@"Mass",
-				\[HBar]=OptionValue@"HBar",
-				scl=OptionValue@"ScalingFactor",
-				ex=TrueQ@OptionValue@"UseExact"
-				},
-			With[
-				{
-					f=
-						If[ex,
-							scl*
-								If[#==#2, 
-									\[Pi]^2./3.-1/#^2,
-									2./(#-#2)^2-2./(#+#2)^2
-									]*
-									(\[HBar]^2.(-1)^(#-#2))/(2.m dr^2)&,
-							scl*
-								If[#==#2, 
-									\[Pi]^2./3.-1/#^2,
-									2./(#-#2)^2-2./(#+#2)^2
-									]*
-									(\[HBar]^2.(-1)^(#-#2))/(2.m dr^2)&
-							]
-					},
-				If[points>100000,
-					ParallelTable[f[i,j],{i,points},{j,points}],
-					Table[f[i,j],{i,points},{j,points}]
-					]
-				]
-			]
-		]
+DiskDVRPoints[ ]:=
+	ChemDVRDirectProductGrid[
+		{$RadialDVR["Grid"], $AngularDVR["Grid"]}
+		] 
 
 
 End[];
 
 
-$RadialDVR=
+$DiskDVR=
 	<|
-		"Name"->"Radial 1D",
-		"Dimension"->1,
-		"PointLabels"->{("r"|"R"|"radial")},
-		"Range"->{{0,10}},
-		"Grid"->RadialDVRPoints,
-		"KineticEnergy"->RadialDVRK,
+		"Name"->"Disk 2D",
+		"Dimension"->2,
+		"PointLabels"->
+			Join[$RadialDVR["PointLabels"], $MeyerDVR["PointLabels"]],
+		"Range"->
+			Join[$RadialDVR["Range"], $MeyerDVR["Range"]],
+		"Grid"->DiskDVRPoints,
+		"KineticEnergy"->DiskDVRK,
 		"Defaults"->
 			{
-				"PotentialFunction"->"MorseOscillator",
+				"PotentialFunction"->"MorseOscillator"\[Cross]"HinderedRotor",
 				"PlotMode"->{"Cartesian", 1}
 				}
 		|>

@@ -1,0 +1,147 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Disk DVR (Colbert and Miller (0,\[Infinity]) range DVR and Meyer DVR)", \
+"CodeSection",
+ CellChangeTimes->{{3.732009206070642*^9, 3.732009213875209*^9}, {
+  3.732066570047451*^9, 
+  3.732066570845751*^9}},ExpressionUUID->"fc4cedbb-1f6e-4454-94a4-\
+fe827adb8e59"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDVRBegin", "[", "]"}], ";"}]], "InputSection",
+ CellChangeTimes->{3.699240055548855*^9, 
+  3.707066404725416*^9},ExpressionUUID->"fe0a6118-608c-495e-aa15-\
+8a73b87902ac"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"DiskDVRPoints", "::", "usage"}], "=", 
+   "\"\<Returns the radial DVR grid/array\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"DiskDVRK", "::", "usage"}], "=", 
+   "\"\<Returns the radial DVR kinetic energy matrix\>\""}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{
+  3.699235814204474*^9, {3.6992370430571823`*^9, 3.6992370521161327`*^9}, {
+   3.731972688971364*^9, 3.7319727189346046`*^9}, {3.732009218019388*^9, 
+   3.7320092298279467`*^9}},ExpressionUUID->"8bb521bd-a059-472c-90cb-\
+d64d19ca721a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDVRNeeds", "/@", 
+   RowBox[{"{", 
+    RowBox[{"\"\<RadialDVR\>\"", ",", " ", "\"\<AngularDVR\>\""}], "}"}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.7320662031534863`*^9, 3.7320662144847927`*^9}, {
+  3.732066830689795*^9, 
+  3.732066834191299*^9}},ExpressionUUID->"494bec57-5dbb-4e6b-8968-\
+c2800d92a0d4"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"5577ebba-1313-41d6-91be-\
+9f82c59a24b2"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"DiskDVRPoints", "[", " ", "]"}], ":=", "\n", "\t", 
+  RowBox[{"ChemDVRDirectProductGrid", "[", "\n", "\t\t", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"$RadialDVR", "[", "\"\<Grid\>\"", "]"}], ",", " ", 
+     RowBox[{"$AngularDVR", "[", "\"\<Grid\>\"", "]"}]}], "}"}], "\n", "\t\t",
+    "]"}], " "}]], "CodeInput",
+ CellChangeTimes->{{3.732066338525298*^9, 3.732066345596293*^9}, {
+  3.732066552202579*^9, 3.73206655559838*^9}, {3.732066839622855*^9, 
+  3.7320668590203667`*^9}},ExpressionUUID->"08836dd6-95b3-4ebd-b791-\
+cc1fd555b9ba"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]], "InputSection",
+ CellChangeTimes->{{3.732066602080488*^9, 
+  3.732066605384226*^9}},ExpressionUUID->"84a54722-f124-4eb5-850e-\
+f322513db9f9"],
+
+Cell[BoxData[
+ RowBox[{"$DiskDVR", "=", "\n", "\t", 
+  RowBox[{"<|", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"\"\<Name\>\"", "\[Rule]", "\"\<Disk 2D\>\""}], ",", "\n", "\t", 
+    "\t", 
+    RowBox[{"\"\<Dimension\>\"", "\[Rule]", "2"}], ",", "\n", "\t\t", 
+    RowBox[{"\"\<PointLabels\>\"", "->", "\n", "\t\t\t", 
+     RowBox[{"Join", "[", 
+      RowBox[{
+       RowBox[{"$RadialDVR", "[", "\"\<PointLabels\>\"", "]"}], ",", " ", 
+       RowBox[{"$MeyerDVR", "[", "\"\<PointLabels\>\"", "]"}]}], "]"}]}], ",",
+     "\n", "\t\t", 
+    RowBox[{"\"\<Range\>\"", "\[Rule]", "\n", "\t\t\t", 
+     RowBox[{"Join", "[", 
+      RowBox[{
+       RowBox[{"$RadialDVR", "[", "\"\<Range\>\"", "]"}], ",", " ", 
+       RowBox[{"$MeyerDVR", "[", "\"\<Range\>\"", "]"}]}], "]"}]}], ",", "\n",
+     "\t\t", 
+    RowBox[{"\"\<Grid\>\"", "->", "DiskDVRPoints"}], ",", "\n", "\t\t", 
+    RowBox[{"\"\<KineticEnergy\>\"", "\[Rule]", "DiskDVRK"}], ",", "\n", 
+    "\t\t", 
+    RowBox[{"\"\<Defaults\>\"", "->", "\n", "\t\t\t", 
+     RowBox[{"{", "\n", "\t\t\t\t", 
+      RowBox[{
+       RowBox[{"\"\<PotentialFunction\>\"", "\[Rule]", 
+        RowBox[{
+        "\"\<MorseOscillator\>\"", "\[Cross]", "\"\<HinderedRotor\>\""}]}], 
+       ",", "\n", "\t\t\t\t", 
+       RowBox[{"\"\<PlotMode\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"\"\<Cartesian\>\"", ",", " ", "1"}], "}"}]}]}], "\n", 
+      "\t\t\t\t", "}"}]}]}], "\n", "\t\t", "|>"}]}]], "CodeInput",
+ CellChangeTimes->{{3.699236923511825*^9, 3.6992369555077667`*^9}, {
+   3.699237949531838*^9, 3.699237954564919*^9}, 3.7310917258452806`*^9, {
+   3.731972724114958*^9, 3.731972751612996*^9}, {3.731989625498749*^9, 
+   3.731989650996195*^9}, {3.732066180844104*^9, 3.732066228762169*^9}, {
+   3.732066387612627*^9, 3.732066398764946*^9}, {3.732066436066725*^9, 
+   3.73206650903833*^9}},ExpressionUUID->"7c275231-ae55-49d8-8da5-\
+ba36a018a3cb"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDVREnd", "[", "]"}], ";"}]], "InputSection",
+ CellChangeTimes->{{3.69923997837263*^9, 3.699240000757471*^9}, 
+   3.707066410893405*^9},ExpressionUUID->"247e4052-5d8d-4fda-bcce-\
+3be397b318c5"],
+
+Cell[BoxData["$RadialDVR"], "CodeInput",
+ CellChangeTimes->{
+  3.699241967016337*^9},ExpressionUUID->"062e096f-efca-46ac-b513-7188deb4cf23"]
+}, Open  ]]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"3bc90092-197f-4b10-9566-\
+9cd9c4936cec"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{163, Automatic}, {Automatic, 39}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackagePlain.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

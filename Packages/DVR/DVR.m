@@ -35,12 +35,16 @@ PackageScopeBlock[
 	ChemDVRDefaultFormatGrid::usage="";
 	ChemDVRDefaultNamedPotential::usage="";
 	ChemDVRDefaultPotentialEnergy::usage="";
-	ChemDVRDefaultKineticEnergy::usage="";
 	ChemDVRDefaultWavefunctions::usage="";
+	ChemDVRDefaultPlot::usage="";
 	ChemDVRDefaultGridWavefunctions::usage="";
 	ChemDVRDefaultInterpolatingWavefunctions::usage="";
 	ChemDVRDefaultExpectationValues::usage="";
-	ChemDVRDefaultOperatorMatrix::usage="";,
+	ChemDVRDefaultOperatorMatrix::usage="";
+	ChemDVRDirectProductGrid::usage=
+		"Creates a direct product grid from two grid functions";
+	ChemDVRDirectProductKineticEnergy::usage=
+		"Creates a direct product grid from two grid functions";,
 	$Context
 	];
 
@@ -281,12 +285,12 @@ ChemDVRCreate[a_Association]:=
 					Message[m]];
 				dvrAssoc[#]=None;
 				]&,{
-			{"Range", $dvrgr, $dvrke, $dvrvw},
+			{"Range", $dvrgr, $dvrke},
 			Thread@
 				Hold[
 					{
 						ChemDVRCreate::norng,ChemDVRCreate::nogrid,
-						ChemDVRCreate::noke,ChemDVRCreate::novw
+						ChemDVRCreate::noke
 						}
 					]
 			}];
@@ -301,6 +305,10 @@ ChemDVRCreate[a_Association]:=
 		If[!KeyMemberQ[dvrAssoc, $dvrwf],
 			dvrAssoc[$dvrwf]=
 				ChemDVRDefaultWavefunctions
+			];
+		If[!KeyMemberQ[dvrAssoc, $dvrvw],
+			dvrAssoc[$dvrvw]=
+				ChemDVRDefaultPlot
 			];
 		If[!KeyMemberQ[dvrAssoc, $dvrgrwf],
 			dvrAssoc[$dvrgrwf]=
@@ -497,6 +505,11 @@ ChemDVRObject::nonpot="Named potential `` unknown";
 ChemDVRDefaultNamedPotential//Clear
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*HarmonicOscillator*)
+
+
+
 ChemDVRDefaultNamedPotential["HarmonicOscillator", ops___?OptionQ]:=
 	With[
 		{
@@ -505,6 +518,13 @@ ChemDVRDefaultNamedPotential["HarmonicOscillator", ops___?OptionQ]:=
 			},
 		Norm[k*(#-re)^2]&
 		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*MorseOscillator*)
+
+
+
 ChemDVRDefaultNamedPotential["MorseOscillator", ops___?OptionQ]:=
 	With[
 		{
@@ -514,9 +534,31 @@ ChemDVRDefaultNamedPotential["MorseOscillator", ops___?OptionQ]:=
 			},
 		Norm[(de*(1-Exp[-a*(#-re)])^2)]&
 		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*HinderedRotor*)
+
+
+
+ChemDVRDefaultNamedPotential["HinderedRotor", ops___?OptionQ]:=
+	With[
+		{
+			w=Lookup[{ops}, "WellNumber", 3],
+			d=Lookup[{ops}, "WellDepth", 5.]
+			},
+		Norm[d*Cos[w/2*#]]&
+		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Fallback*)
+
+
+
 ChemDVRDefaultNamedPotential[name_String, ops___?OptionQ]:=
 	If[FileExistsQ[name]||MemberQ[ChemDVRPotentials[], name],
-		Echo@name,
+		name,
 		With[
 			{
 				pe=PhysicalSystemData[name, "PotentialEnergy"],
@@ -622,140 +664,6 @@ ChemDVRDefaultPotentialEnergy[grid_, ops___?OptionQ]:=
 
 
 (* ::Subsubsection::Closed:: *)
-(*ChemDVRDefaultKineticEnergy*)
-
-
-
-If[Length@OwnValues[dvrKGetValues]==0,
-	dvrKGetValues := 
-		dvrKGetValues=
-			Compile[
-				{
-					{k1row, _Real, 1}, {blockvals, _Real, 2}, 
-					{diagidx, _Integer, 1}, {i, _Integer}
-					},
-		   Block[{A},
-		    A =
-		    	Join[
-			      Table[
-								Compile`GetElement[k1row, k], 
-								{l, 1, Dimensions[blockvals][[1]]}, 
-								{k, 1, i}
-								],
-			      blockvals,
-			      Table[
-								Compile`GetElement[k1row, k], 
-								{l, 1, Dimensions[blockvals][[1]]}, 
-								{k, i + 2, Length[k1row]}
-								],
-			      2
-			      ];
-		    Do[
-					A[[k, Compile`GetElement[diagidx, k] + i]] += 
-						Compile`GetElement[k1row, i + 1], 
-					{k, 1, Length[blockvals]}
-					];
-		    A
-		    ],
-		   RuntimeAttributes -> {Listable},
-		   Parallelization -> True,
-		   CompilationTarget -> "C",
-		   RuntimeOptions -> "Speed"
-		   ]
-	]
-
-
-If[Length@OwnValues[dvrKGetColumnIndices]==0,
-	dvrKGetColumnIndices := 
-		dvrKGetColumnIndices=
-			Compile[{
-		    {blockci, _Integer, 3}, {diagci, _Integer, 
-		     3}, {m, _Integer}, {n, _Integer}, {i, _Integer}
-		    },
-		   If[i > 0,
-		    If[i < m - 1,
-		     Join[
-						diagci[[All, 1 ;; i]], 
-						blockci + i n, 
-						diagci[[All, i + 1 ;; m - 1]] + (n), 
-						2
-						],
-		     Join[
-						diagci[[All, 1 ;; i]], 
-						blockci + i n, 
-						2
-						]
-		     ],
-		    Join[
-		    	blockci + i n, 
-		    	diagci[[All, i + 1 ;; m - 1]] + (n), 
-		    	2
-		    	]
-		    ],
-		   RuntimeAttributes -> {Listable},
-		   Parallelization -> True,
-		   CompilationTarget -> "C",
-		   RuntimeOptions -> "Speed"
-		   ]
-	];
-
-
-dvrKToSparseArrayData[b_?MatrixQ] := {
-  Partition[SparseArray[b]["ColumnIndices"], Dimensions[b][[2]]],
-  b,
-  Dimensions[b][[2]],
-  Range[Dimensions[b][[2]]]
-  }
-
-dvrKToSparseArray[X_] := 
- With[{d1 = Dimensions[X[[1]]][[1]], d2 = Dimensions[X[[1]]][[2]]},
-  SparseArray @@ {Automatic, {d1, d1}, 0,
-    {1, {Range[0, d1 d2, d2], Flatten[X[[1]], 1]}, Flatten[X[[2]]]}}
-  ]
-
-
-dvrKIteration[X_, a_] := With[{
-   m = Length[a],
-   blockci = X[[1]],
-   blockvals = X[[2]],
-   n = X[[3]],
-   diagidx = X[[4]]
-   },
-  With[{ran = Range[0, m - 1]},
-   {
-    Join @@ 
-    	dvrKGetColumnIndices[blockci, 
-    		Transpose[Partition[Partition[Range[(m - 1) n], 1], n]], 
-    		m, 
-    		n, 
-    		ran
-    		],
-    Join @@ dvrKGetValues[a, blockvals, diagidx, ran],
-    m n,
-    Join @@ Outer[Plus, ran, diagidx]
-    }
-   ]
-  ]
-
-
-ChemDVRDefaultKineticEnergy[keMats:{__List}]:=
-	dvrKToSparseArray[
-		Fold[dvrKIteration, 
-			dvrKToSparseArrayData[keMats[[1]]], 
-			Rest[keMats]
-			]
-		]
-
-
-(*ChemDVRDefaultKineticEnergy[
-	grid_, 
-	keFunctions:{(_Symbol|_Function)..},
-	o:OptionsPattern[]
-	]:=
-	With[{grids=Flatten[grid, Depth[grid]-1]*)
-
-
-(* ::Subsubsection::Closed:: *)
 (*ChemDVRDefaultWavefunctions*)
 
 
@@ -822,22 +730,32 @@ ChemDVRDefaultWavefunctions[T_,V_,ops:OptionsPattern[]]:=
 
 Options[ChemDVRDefaultGridWavefunctions]=
 	Join[
+		{
+			"ReturnEnergies"->False
+			},
 		Options[ChemDVRDefaultWavefunctionSelection],
 		Options[ChemDVRDefaultGridPointList]
 		];
 ChemDVRDefaultGridWavefunctions[grid_,wfs_, o:OptionsPattern[]]:=
-	With[{
-		coreGridPoints=
-			ChemDVRDefaultGridPointList[grid, 
-				FilterRules[{o}, Options@ChemDVRDefaultGridPointList]
-				]
-		},
-		MapThread[
-			#->Thread[{coreGridPoints,#2}]&,
-			ChemDVRDefaultWavefunctionSelection[
-				wfs,
-				FilterRules[{o}, Options[ChemDVRDefaultWavefunctionSelection]]
-				]
+	With[
+		{
+			coreGridPoints=
+				ChemDVRDefaultGridPointList[grid, 
+					FilterRules[{o}, Options@ChemDVRDefaultGridPointList]
+					],
+			wfns=
+				ChemDVRDefaultWavefunctionSelection[
+					wfs,
+					FilterRules[{o}, Options[ChemDVRDefaultWavefunctionSelection]]
+					],
+			retE=TrueQ@OptionValue["ReturnEnergies"]
+			},
+		If[retE, 
+			MapThread[
+				#->Thread[{coreGridPoints,#2}]&,
+				wfns
+				],
+			Map[Thread[{coreGridPoints,#}]&, wfns[[2]]]
 			]
 		];
 
@@ -859,20 +777,31 @@ ChemDVRDefaultInterpolatingWavefunctions[
 			coreGridPoints=
 				ChemDVRDefaultGridPointList[grid, 
 					FilterRules[{ops}, Options@ChemDVRDefaultGridPointList]
-					]
+					],
+			wfns=
+				ChemDVRDefaultWavefunctionSelection[
+					wfs,
+					FilterRules[{ops}, Options[ChemDVRDefaultWavefunctionSelection]]
+					],
+			retE=TrueQ@OptionValue["ReturnEnergies"]
 			},
-		MapThread[
-			#->Interpolation@MapThread[Flatten@*List,{coreGridPoints,#2}]&,
-			ChemDVRDefaultWavefunctionSelection[
-				wfs,
-				FilterRules[{ops}, Options[ChemDVRDefaultWavefunctionSelection]]
-				]
+		If[retE, 
+			MapThread[
+				#->Interpolation@MapThread[Flatten@*List,{coreGridPoints,#2}]&,
+				wfns
+				],
+			Map[Interpolation@MapThread[Flatten@*List,{coreGridPoints, #}]&, wfns[[2]]]
 			]
 		];
 
 
 (* ::Subsubsection::Closed:: *)
 (*ChemDVRDefaultExpectationValues*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*chemDVRCalcExpectationValue*)
 
 
 
@@ -903,12 +832,7 @@ chemDVRCalcExpectationValue[func:Except[_Function], grid_, wfL_, wfR_]:=
 
 
 Options[ChemDVRDefaultExpectationValues]=
-	Join[
-		{
-			"ReturnEnergies"->False
-			},
-		Options@ChemDVRDefaultGridWavefunctions
-		];
+	Options@ChemDVRDefaultGridWavefunctions;
 ChemDVRDefaultExpectationValues[
 	grid_,
 	wfs_,
@@ -1026,6 +950,1456 @@ ChemDVRDefaultOperatorMatrix[
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*ChemDVRDefaultPlot*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*$ChemDVRDefaultPlotOptions*)
+
+
+
+$ChemDVRDefaultPlotOptions=
+	DeleteDuplicatesBy[First]@
+		Join[
+			{
+				"ShowEnergy"->True,
+				"ShowPotential"->True,
+				"PotentialStyle"->Automatic,
+				"WavefunctionClipping"->10^-5,
+				"WavefunctionScaling"->Scaled[.5],
+				"WavefunctionShifting"->None,
+				"WavefunctionRescaling"->None,
+				"PotentialRescaling"->None,
+				"PlotProbabilityDensity"->False,
+				"PlotDisplayMode"->Manipulate,
+				"PlotFunction"->Automatic,
+				"CoordinateTransformation"->None,
+				"PlotListStyle"->Automatic
+				},
+			Options[ChemDVRDefaultGridPointList],
+			Options[ChemDVRDefaultWavefunctionSelection]
+			]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotOptionValue*)
+
+
+
+ChemDVRDefaultPlotOptionValue[opName_, ops_, f_:None, default_:Automatic]:=
+	Lookup[Flatten@{ops}, opName,
+		Lookup[Options[f], opName, 
+			Lookup[$ChemDVRDefaultPlotOptions, opName, default]
+			]
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotGetShiftedScaledWavefunctions*)
+
+
+
+ChemDVRDefaultPlotGetShiftedScaledWavefunctions//Clear
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*chemDVRDefaultPlotWavefunctionRescalingFunction*)
+
+
+
+chemDVRDefaultPlotWavefunctionRescalingFunction//Clear;
+chemDVRDefaultPlotWavefunctionRescalingFunction[
+	{min_?NumericQ, max_?NumericQ},
+	_
+	]:=
+	Map[Rescale[#, MinMax[#], {min, max}]&];
+chemDVRDefaultPlotWavefunctionRescalingFunction[
+	Scaled[mm:{_?NumericQ, _?NumericQ}],
+	pot_
+	]:=
+	With[{pmm=mm*MinMax[pot]},
+		Map[Rescale[#, MinMax[#], pmm]&]
+		];
+chemDVRDefaultPlotWavefunctionRescalingFunction[
+	Scaled[n_?NumericQ],
+	pot_
+	]:=
+	chemDVRDefaultPlotWavefunctionRescalingFunction[
+		Scaled[{0, n}],
+		pot
+		];
+chemDVRDefaultPlotWavefunctionRescalingFunction[___]:=
+	Identity
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotGetShiftedScaledWavefunctions*)
+
+
+
+ChemDVRDefaultPlotGetShiftedScaledWavefunctions[
+	psi_,
+	pot_,
+	shift_,
+	scale_,
+	rescale_
+	]:=
+	With[
+		{
+			rescalePsi=
+				chemDVRDefaultPlotWavefunctionRescalingFunction[rescale, pot][psi],
+			shiftFactor=
+				Replace[shift,
+					Scaled[s_?NumericQ]:>
+						s*Max@Abs[pot]
+					],
+			scaleFactor=
+				Replace[scale,
+					Scaled[s_?NumericQ]:>
+						s*Max@Abs[pot]
+					]
+			},
+		If[NumericQ@shiftFactor,
+			If[NumericQ@scaleFactor, scaleFactor*shiftFactor, shiftFactor]+#,
+			#
+			]&@
+			If[NumericQ@scaleFactor, 
+				With[{maxPsi=Max[Abs[psi]]},
+					MapThread[
+						With[{minPsi=First@MinimalBy[#, Abs]},
+							#2-scaleFactor*minPsi/maxPsi
+							]&,
+						{
+							rescalePsi,
+							scaleFactor*rescalePsi/maxPsi
+							}
+						]
+					],
+				rescalePsi
+				]
+		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotGetClippedWavefunctionSpec*)
+
+
+
+ChemDVRDefaultPlotGetClippedWavefunctionSpec[
+	psi_,
+	clip_?NumericQ
+	]:=
+	Map[#>=clip&, Abs[psi]]; 
+ChemDVRDefaultPlotGetClippedWavefunctionSpec[
+	psi_,
+	Scaled[clip_?NumericQ]
+	]:=
+	ChemDVRDefaultPlotGetClippedWavefunctionSpec[
+		psi,
+		Rescale[clip, {0, 1}, MinMax[Abs@psi]]
+		];
+ChemDVRDefaultPlotGetClippedWavefunctionSpec[
+	psi_,
+	_
+	]:=
+	ConstantArray[True, Length@psi];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotGetPlotPoints*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Imp*)
+
+
+
+iChemDVRDefaultPlotGetPlotPoints[
+	sel_,
+	pot_,
+	grid_,
+	scaling_,
+	shifting_,
+	rescaling_,
+	clip:_Scaled|_?NumericQ
+	]:=
+	With[
+		{
+			scaledPsi=
+				ChemDVRDefaultPlotGetShiftedScaledWavefunctions[
+					sel, pot, 
+					shifting, scaling, rescaling
+					]
+			},
+		MapThread[
+			With[
+				{
+					pspec=ChemDVRDefaultPlotGetClippedWavefunctionSpec[#, clip]
+					},
+				MapThread[
+					Flatten@*List,
+					{
+						Pick[grid, pspec], 
+						Pick[#2, pspec]
+						}
+					]
+				]&,
+			{
+				sel,
+				scaledPsi
+				}
+			]
+		];
+iChemDVRDefaultPlotGetPlotPoints[
+	sel_,
+	pot_,
+	grid_,
+	scaling_,
+	shifting_,
+	rescaling_,
+	clip:Except[_?NumericQ]
+	]:=
+	With[
+		{
+			scaledPsi=
+				ChemDVRDefaultPlotGetShiftedScaledWavefunctions[
+					sel, pot, 
+					shifting, scaling, rescaling
+					]
+			},
+		Map[
+			MapThread[Flatten@*List, {grid, #}]&,
+			scaledPsi
+			]
+		]
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*potResc*)
+
+
+
+chemDVRDefaultPlotPotentialRescalingFunction[potResc_]:=
+	Replace[potResc, 
+		{
+			{_?NumericQ, _?NumericQ}:>
+				Function@Rescale[#, MinMax[#], potResc],
+			Scaled[s:{_?NumericQ, _?NumericQ}]:>
+				Function@
+					With[{mm=MinMax[#]},
+						Rescale[#, mm, s*mm]
+						],
+			Offset[
+				off:_?NumericQ,
+				scl:{_?NumericQ, _?NumericQ}
+				]:>
+				Function[
+					off+Rescale[#, MinMax[#], scl]
+					],
+			Offset[
+				off:_?NumericQ,
+				Scaled[scl:{_?NumericQ, _?NumericQ}]
+				]:>
+				Function@
+					With[{mm=MinMax[#]},
+						off+If[scl=={1, 1}, #, Rescale[#, mm, scl*mm]]
+						],
+			Offset[
+				Scaled[off:_?NumericQ],
+				scl:{_?NumericQ, _?NumericQ}
+				]:>
+				Function@
+					With[{mm=MinMax[#]},
+						(off*First[mm])+Rescale[#, mm, scl*mm]
+						],
+			Offset[
+				Scaled[off:_?NumericQ],
+				Scaled[scl:{_?NumericQ, _?NumericQ}]
+				]:>
+				Function@
+					With[{mm=MinMax[#]},
+						(off*First[mm])+If[scl=={1, 1}, #, Rescale[#, mm, scl*mm]]
+						],
+			_->Identity
+			}
+		]
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+Options[ChemDVRDefaultPlotGetPlotPoints]=
+	$ChemDVRDefaultPlotOptions;
+ChemDVRDefaultPlotGetPlotPoints[
+	gridpoints_,
+	psi_,
+	pot_,
+	showPot_,
+	showEng_,
+	transf_,
+	ops:OptionsPattern[]
+	]:=
+	With[
+		{
+			scaling=
+				OptionValue["WavefunctionScaling"],
+			rescaling=
+				OptionValue["WavefunctionRescaling"],
+			clipping=
+				OptionValue["WavefunctionClipping"],
+			shift=
+				OptionValue["WavefunctionShifting"],
+			potResc=
+				OptionValue["PotentialRescaling"],
+			wfnsel=
+				ChemDVRDefaultWavefunctionSelection[
+					psi, 
+					FilterRules[{ops}, 
+						Options@ChemDVRDefaultWavefunctionSelection
+						]
+					],
+			sqr=
+				TrueQ["PlotProbabilityDensity"],
+			gps=
+				If[transf===None, 
+					gridpoints, 
+					Map[
+						Replace[transf,
+							chart_Rule:>
+								Function[
+									Evaluate@
+										CoordinateTransform[chart, 
+											Slot/@Range[Length[gridpoints[[1]]]]
+											]
+									]
+							],
+						gridpoints
+						]
+					]
+				},
+		{
+			If[TrueQ@showEng,
+				wfnsel[[1]],
+				None
+				],
+			iChemDVRDefaultPlotGetPlotPoints[
+				If[sqr, wfnsel[[2]]^2, wfnsel[[2]]],
+				If[showPot, pot, {1}],
+				gps,
+				scaling,
+				shift,
+				rescaling,
+				clipping
+				],
+			If[TrueQ@showPot,
+				MapThread[
+					Flatten@*List,
+					{
+						gps,
+						chemDVRDefaultPlotPotentialRescalingFunction[potResc]@
+							Normal@
+								If[pot//MatrixQ,
+									Diagonal@pot,
+									pot
+									]
+						}
+					],
+				None
+				]
+			}
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotPotential*)
+
+
+
+ChemDVRDefaultPlotPotential[
+	func_Symbol, pot_, ops:OptionsPattern[]
+	]:=
+	With[
+		{
+			potStyle=
+				ChemDVRDefaultPlotOptionValue[
+					"PotentialStyle",
+					{ops},
+					func,
+					Automatic
+					]
+			},
+		func[
+			pot,
+			Evaluate@
+				FilterRules[
+					Flatten@{
+						PlotStyle->
+							Replace[potStyle,
+								Automatic:>
+									{
+										If[Length@pot[[1]]===2,
+											Directive[Dashed, Gray],
+											Directive[Opacity[.5], Gray]
+											]
+										}
+								],
+						ops
+						},
+					Options@func
+					]
+			]
+		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotResolvePlotStyle*)
+
+
+
+ChemDVRDefaultPlotResolvePlotStyle[
+	func_, solNum_, ops_
+	]:=
+	Module[
+		{
+			cf=
+				Replace[
+					{
+						s:_String|{_String, __}:>ColorData[s],
+						Automatic:>ColorData[97]
+						}
+					]@
+					ChemDVRDefaultPlotOptionValue[
+						"PlotListStyle", 
+						{ops}, 
+						func, 
+						Lookup[
+							Charting`ResolvePlotTheme[Automatic, func],
+							"DefaultColorFunction",
+							Lookup[
+								Lookup[
+									Charting`ResolvePlotTheme[Automatic, func], 
+									Method,
+									{"DefaultPlotStyle"->Automatic}
+									],
+								"DefaultPlotStyle",
+								Automatic
+								]
+							]
+						]
+			},
+			With[
+				{
+					ci=
+						MatchQ[cf, HoldPattern[ColorDataFunction[_, "Indexed", __]]]
+					},
+				Function[
+					Which[
+						ListQ@cf,
+							cf[[Mod[#, Length[cf], 1]]],
+						ci,
+							cf@#,
+						True,
+							cf@Rescale[#, {1, solNum}]
+						]
+					]
+				]
+			]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotManipulateSolutions*)
+
+
+
+ChemDVRDefaultPlotManipulateSolutions[
+	func_Symbol, energies_, solns_, pot_,
+ ops:OptionsPattern[]
+ ]:=
+	With[
+		{
+			potPlot=
+				If[pot=!=None, ChemDVRDefaultPlotPotential[func, pot, ops], None],
+			ps=
+				ChemDVRDefaultPlotResolvePlotStyle[func, Length@solns, {ops}]
+			},
+		Manipulate[
+			Replace[
+				func[solns[[i]],
+					Evaluate@
+						FilterRules[
+							{
+								ops,
+								PlotStyle->
+									ps[i]
+								},
+							Options@func
+							]
+					],
+				{
+					Except[_Graphics|_Graphics3D]:>
+						Failure["DVR Viewer",
+							"Couldn't view solutions for plotting function ``"~~TemplateApply~~func
+							],
+					g:_Graphics|_Graphics3D:>
+						Function[
+							If[energies=!=None,
+								Legended[#,
+									Placed[
+										Row@{Subscript["E", i],": ", energies[[i]] },
+										After
+										]
+									],
+								#
+								]
+							]@If[pot=!=None, Show[g, potPlot], g]
+					}
+				],
+			{{i, 1, "\[Psi]"}, 1, Length@solns, 1}
+			]
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotListSolutions*)
+
+
+
+ChemDVRDefaultPlotListSolutions[
+	func_Symbol, energies_, solns_, pot_,
+ ops:OptionsPattern[]
+ ]:=
+	With[
+		{
+			potPlot=
+				If[pot=!=None, ChemDVRDefaultPlotPotential[func, pot, ops], None],
+			ps=
+				ChemDVRDefaultPlotResolvePlotStyle[func, Length@solns, {ops}]
+			},
+		Table[
+			Replace[
+				func[solns[[i]],
+					Evaluate@
+						FilterRules[
+							{
+								ops,
+								PlotStyle->ps[i]
+								},
+							Options@func
+							]
+					],
+				{
+					Except[_Graphics|_Graphics3D]:>
+						Failure["DVR Viewer",
+							"Couldn't view solutions for plotting function ``"~~TemplateApply~~func
+							],
+					g:_Graphics|_Graphics3D:>
+						Function[
+							If[energies=!=None,
+								Legended[#,
+									Placed[
+										Row@{Subscript["E", i],": ", energies[[i]] },
+										After
+										]
+									],
+								#
+								]
+							]@If[pot=!=None, Show[g, potPlot], g]
+					}
+				],
+			{i, 1, Length@solns}
+			]
+		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotShowSolutions*)
+
+
+
+ChemDVRDefaultPlotShowSolutions[
+	func_Symbol, energies_, solns_, pot_,
+	ops:OptionsPattern[]
+	]:=
+	With[
+		{
+			ps=
+				ChemDVRDefaultPlotResolvePlotStyle[func, Length@solns, {ops}]
+			},
+		Show[
+			If[pot=!=None, 
+				ChemDVRDefaultPlotPotential[func, pot, ops], 
+				{}
+				],
+			MapIndexed[
+				Replace[
+					func[#,
+						Evaluate@
+							FilterRules[
+								{
+									ops,
+									PlotStyle->
+											ps@#2[[1]]
+									},
+								Options@func
+								]
+						],
+					{
+						Except[_Graphics|_Graphics3D]:>
+							Nothing
+						}
+					]&,
+				solns
+				]
+			]
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotSolutions*)
+
+
+
+ChemDVRDefaultPlotSolutions[
+	func_Symbol, energies_, solns_, pot_,
+ ops:OptionsPattern[]
+ ]:=
+	Switch[
+		ChemDVRDefaultPlotOptionValue[
+			"PlotDisplayMode",
+			{ops},
+			func
+			],
+		Manipulate|"Manipulate",
+			ChemDVRDefaultPlotManipulateSolutions[
+				func, energies, solns, pot, 
+				ops
+				],
+		Show|"Show",
+			ChemDVRDefaultPlotShowSolutions[
+				func, energies, solns, pot, 
+				ops
+				],
+		_,
+			ChemDVRDefaultPlotListSolutions[
+				func, energies, solns, pot, 
+				ops
+				]
+		];
+ChemDVRDefaultPlotSolutions[
+	func_, energies_, solns_, pot_,
+ ops:OptionsPattern[]
+ ]:=
+ Module[{plotFun},
+ 	plotFun[e___]:=func[e];
+ 	ChemDVRDefaultPlotSolutions[func, energies, solns, pot, ops]
+ 	] 
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotBasic*)
+
+
+
+ChemDVRDefaultPlotBasic[
+	solutions_, grid_, potentialMatrix_, 
+	headFunc_Symbol, defaultFunc:Except[_?OptionQ],
+	ops:OptionsPattern[]
+	]:=
+	Module[
+		{
+			params=
+				ChemDVRDefaultPlotGetPlotPoints[
+					grid,
+					solutions, 
+					potentialMatrix,
+					TrueQ@
+						ChemDVRDefaultPlotOptionValue["ShowPotential",
+							{ops},
+							headFunc,
+							False
+							],
+					TrueQ@
+						ChemDVRDefaultPlotOptionValue["ShowEnergy",
+							{ops}, 
+							headFunc,
+							False
+							],
+					ChemDVRDefaultPlotOptionValue["CoordinateTransformation",
+						{ops}, 
+						headFunc,
+						None
+						],
+					FilterRules[{ops},
+						Options@ChemDVRDefaultPlotGetPlotPoints
+						]
+					]
+			},
+		ChemDVRDefaultPlotSolutions[
+			Replace[
+				ChemDVRDefaultPlotOptionValue["PlotFunction",
+					{ops}, 
+					headFunc,
+					False
+					],
+				Automatic->defaultFunc
+				],
+			Sequence@@params,
+			ops,
+			PlotRange->
+				Append[
+					ConstantArray[Automatic, 
+						Length[params[[2, 1, 1]]]-1
+						],
+					MinMax@params[[2, All, All, -1]]
+					],
+			PlotRangePadding->
+				Append[
+					ConstantArray[
+						{Scaled[.05],Scaled[.05]}, 
+						Length[params[[2, 1, 1]]]-1
+						],
+					{Scaled[.15], Scaled[.15]}
+					]
+			]
+	];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotCartesian1D*)
+
+
+
+Options[ChemDVRDefaultPlotCartesian1D]=
+	Join[
+		$ChemDVRDefaultPlotOptions,
+		{
+			AxesOrigin->{0,0},
+			PlotRange->Automatic
+			},
+		FilterRules[Options[ListLinePlot],
+			Except[AxesOrigin|PlotRange]
+			]
+		];
+ChemDVRDefaultPlotCartesian1D[
+	solutions_,
+	grid_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRDefaultPlotBasic[
+		solutions, grid, potentialMatrix,
+		ChemDVRDefaultPlotCartesian1D, ListLinePlot,
+		ops
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotCartesian2D*)
+
+
+
+Options[ChemDVRDefaultPlotCartesian2D]=
+	Join[
+		$ChemDVRDefaultPlotOptions,
+		Options[ListPlot3D]
+		];
+ChemDVRDefaultPlotCartesian2D[
+	solutions_,
+	grid_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRDefaultPlotBasic[
+		solutions, grid, potentialMatrix,
+		ChemDVRDefaultPlotCartesian2D, ListPlot3D,
+		ops
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotCartesian3D*)
+
+
+
+Options[ChemDVRDefaultPlotCartesian3D]=
+	Join[
+		$ChemDVRDefaultPlotOptions,
+		Options[ContourPlot3D]
+		];
+ChemDVRDefaultPlotCartesian3D[
+	solutions_,
+	grid_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRDefaultPlotBasic[
+		solutions, grid, potentialMatrix,
+		ChemDVRDefaultPlotCartesian3D, ContourPlot3D,
+		ops
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotAngular*)
+
+
+
+Options[ChemDVRDefaultPlotAngular]=
+	DeleteDuplicatesBy[First]@
+		Join[
+			{
+				"WavefunctionShifting"->1,
+				"PotentialRescaling"->
+					Offset[Scaled[-1.5], Scaled[{1, 1}]],
+				Joined->True
+				},
+			$ChemDVRDefaultPlotOptions,
+			Options[ListPolarPlot]
+			];
+ChemDVRDefaultPlotAngular[
+	solutions_,
+	grid_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRDefaultPlotBasic[
+		solutions, grid, potentialMatrix,
+		ChemDVRDefaultPlotAngular, ListPolarPlot,
+		ops,
+		"WavefunctionShifting"->1,
+		"PotentialRescaling"->Offset[Scaled[-1.5], Scaled[{1, 1}]],
+		Joined->True,
+		PlotRange->All
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotAngular3D*)
+
+
+
+iChemDVRDefaultPlotAngular3D//Clear
+Options[iChemDVRDefaultPlotAngular3D]=
+	Options[ListPointPlot3D];
+iChemDVRDefaultPlotAngular3D[pts_, ops:OptionsPattern[]]:=
+	ReplaceAll[
+		ListPointPlot3D[pts,
+			Evaluate@FilterRules[{ops}, Options[ListPointPlot3D]]
+			],
+		{a___, p_Point, b___}:>
+			{AbsoluteThickness[2], a, Line@@Insert[p, p[[1, 1]], {1, -1}], b}
+		];
+
+
+Options[ChemDVRDefaultPlotAngular3D]=
+	DeleteDuplicatesBy[First]@
+		Join[
+			$ChemDVRDefaultPlotOptions,
+			Options[ListPointPlot3D]
+			];
+ChemDVRDefaultPlotAngular3D[
+	solutions_,
+	grid_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRDefaultPlotBasic[
+		solutions, grid, potentialMatrix,
+		ChemDVRDefaultPlotAngular3D, iChemDVRDefaultPlotAngular3D,
+		ops,
+		"CoordinateTransformation"->
+			({Cos[#], Sin[#]}&)
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotPolar*)
+
+
+
+Options[ChemDVRDefaultPlotPolar]=
+	Join[
+		$ChemDVRDefaultPlotOptions,
+		Options[ListPlot3D]
+		];
+ChemDVRDefaultPlotPolar[
+	solutions_,
+	gridpoints_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRDefaultPlotBasic[
+		solutions, gridpoints, potentialMatrix,
+		ChemDVRDefaultPlotPolar, ListPlot3D,
+		ops,
+		"CoordinateTransformation"->
+			("Polar" -> "Cartesian"),
+		RegionMemberFunction->
+			RegionMember[
+				Annulus[
+					{0, 0}, 
+					MinMax[gridpoints[[All, 1]]],
+					MinMax[gridpoints[[All, 2]]]
+					]
+				]
+		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotShell*)
+
+
+
+Options[ChemDVRDefaultPlotShell]=
+	DeleteDuplicatesBy[First]@
+		Join[
+			{
+				"WavefunctionShifting"->1
+				},
+			$ChemDVRDefaultPlotOptions,
+			Options[ListSurfacePlot3D]
+			];
+ChemDVRDefaultPlotShell[
+	solutions_,
+	gridpoints_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRDefaultPlotBasic[
+		solutions, gridpoints, potentialMatrix,
+		ChemDVRDefaultPlotShell, ListSurfacePlot3D,
+		ops,
+		"CoordinateTransformation"->
+			("Spherical" -> "Cartesian"),
+		"WavefunctionShifting"->1
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotSpherical*)
+
+
+
+Options[ChemDVRDefaultPlotSpherical]=
+	Join[
+		$ChemDVRDefaultPlotOptions,
+		Options[ContourPlot3D]
+		];
+ChemDVRDefaultPlotSpherical[
+	solutions_,
+	gridpoints_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRDefaultPlotBasic[
+		solutions, gridpoints, potentialMatrix,
+		ChemDVRDefaultPlotSpherical, ContourPlot3D,
+		ops,
+		"CoordinateTransformation"->
+			("Spherical" -> "Cartesian")
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotDensity2D*)
+
+
+
+Options[ChemDVRDefaultPlotDensity2D]=
+	Join[
+		$ChemDVRDefaultPlotOptions,
+		Options[ListDensityPlot]
+		];
+ChemDVRDefaultPlotDensity2D[
+	solutions_,
+	grid_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRDefaultPlotBasic[
+		solutions, grid, potentialMatrix,
+		ChemDVRDefaultPlotDensity2D, ListDensityPlot,
+		ops
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotDensity3D*)
+
+
+
+Options[ChemDVRDefaultPlotDensity3D]=
+	Join[
+		$ChemDVRDefaultPlotOptions,
+		Options[ListDensityPlot3D]
+		];
+ChemDVRDefaultPlotDensity3D[
+	solutions_,
+	grid_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRDefaultPlotBasic[
+		solutions, grid, potentialMatrix,
+		ChemDVRDefaultPlotDensity3D, ListDensityPlot3D,
+		ops
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotPolarDensity*)
+
+
+
+Options[ChemDVRDefaultPlotPolarDensity]=
+	Join[
+		$ChemDVRDefaultPlotOptions,
+		Options[DensityPlot]
+		];
+ChemDVRDefaultPlotPolarDensity[
+	solutions_,
+	gridpoints_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRDefaultPlotBasic[
+		solutions, gridpoints, potentialMatrix,
+		ChemDVRDefaultPlotPolarDensity, DensityPlot,
+		ops,
+		"CoordinateTransformation"->
+			("Polar" -> "Cartesian"),
+		RegionMemberFunction->
+			RegionMember[
+				Annulus[
+					{0, 0}, 
+					MinMax[gridpoints[[All, 1]]],
+					MinMax[gridpoints[[All, 2]]]
+					]
+				]
+		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotSphericalDensity*)
+
+
+
+Options[ChemDVRDefaultPlotSphericalDensity]=
+	Join[
+		$ChemDVRDefaultPlotOptions,
+		Options[DensityPlot3D]
+		];
+ChemDVRDefaultPlotSphericalDensity[
+	solutions_,
+	gridpoints_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRDefaultPlotBasic[
+		solutions, gridpoints, potentialMatrix,
+		ChemDVRDefaultPlotSphericalDensity, DensityPlot3D,
+		ops,
+		"CoordinateTransformation"->
+			("Spherical" -> "Cartesian")
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotContour2D*)
+
+
+
+Options[ChemDVRDefaultPlotContour2D]=
+	Join[
+		$ChemDVRDefaultPlotOptions,
+		Options[ListContourPlot]
+		];
+ChemDVRDefaultPlotContour2D[
+	solutions_,
+	grid_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRDefaultPlotBasic[
+		solutions, grid, potentialMatrix,
+		ChemDVRDefaultPlotContour2D, ListContourPlot,
+		ops
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotContour3D*)
+
+
+
+Options[ChemDVRDefaultPlotContour3D]=
+	Join[
+		$ChemDVRDefaultPlotOptions,
+		Options[ListContourPlot3D]
+		];
+ChemDVRDefaultPlotContour3D[
+	solutions_,
+	grid_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRDefaultPlotBasic[
+		solutions, grid, potentialMatrix,
+		ChemDVRDefaultPlotContour3D, ListContourPlot3D,
+		ops
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlotPolarContour*)
+
+
+
+Options[ChemDVRDefaultPlotPolarContour]=
+	Join[
+		$ChemDVRDefaultPlotOptions,
+		Options[ContourPlot]
+		];
+ChemDVRDefaultPlotPolarContour[
+	solutions_,
+	gridpoints_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRDefaultPlotBasic[
+		solutions, gridpoints, potentialMatrix,
+		ChemDVRDefaultPlotPolarContour, ContourPlot,
+		ops,
+		"CoordinateTransformation"->
+			("Polar" -> "Cartesian"),
+		RegionMemberFunction->
+			RegionMember[
+				Annulus[
+					{0, 0}, 
+					MinMax[gridpoints[[All, 1]]],
+					MinMax[gridpoints[[All, 2]]]
+					]
+				]
+		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultPlot*)
+
+
+
+ChemDVRRun::nosup="PlotMode `` is unsupported";
+
+
+Options[ChemDVRDefaultPlot]=
+	Join[
+		{
+			"PlotMode"->Automatic
+			},
+		$ChemDVRDefaultPlotOptions
+		];
+ChemDVRDefaultPlot[
+	solutions_,
+	grid_,
+	potentialMatrix_,
+	ops:OptionsPattern[]
+	]:=
+	Catch@
+	Module[
+		{
+			gridpoints,
+			func,
+			pmode,
+			gridranges
+			},
+		pmode=
+			ChemDVRDefaultPlotOptionValue[
+				"PlotMode",
+				{ops},
+				ChemDVRDefaultPlot,
+				Automatic
+				];
+		func=
+			Switch[pmode,
+				{"Cartesian", 1},
+					ChemDVRDefaultPlotCartesian1D,
+				{"Cartesian", 2},
+					ChemDVRDefaultPlotCartesian2D,
+				{"Cartesian", 3},
+					ChemDVRDefaultPlotCartesian3D,
+				"Cartesian",
+					gridpoints=
+						ChemDVRDefaultGridPointList[grid, 
+							FilterRules[{ops}, Options@ChemDVRDefaultGridPointList]
+							];
+					{"Cartesian", Length@gridpoints[[1]]},
+				{"Density", 2},
+					ChemDVRDefaultPlotDensity2D,
+				{"Density", 3},
+					ChemDVRDefaultPlotDensity3D,
+				{"Density", "Polar"},
+					ChemDVRDefaultPlotPolarDensity,
+				{"Density", "Spherical"},
+					ChemDVRDefaultPlotSphericalDensity,
+				"Density",
+					gridpoints=
+						ChemDVRDefaultGridPointList[grid, 
+							FilterRules[{ops}, Options@ChemDVRDefaultGridPointList]
+							];
+					{"Density", Length@gridpoints[[1]]},
+				{"Contour", 2},
+					ChemDVRDefaultPlotContour2D,
+				{"Contour", 3},
+					ChemDVRDefaultPlotContour3D,
+				{"Contour", "Polar"},
+					ChemDVRDefaultPlotPolarContour,
+				{"Contour", "Spherical"},
+					ChemDVRDefaultPlotSpherical,
+				"Contour",
+					gridpoints=
+						ChemDVRDefaultGridPointList[grid, 
+							FilterRules[{ops}, Options@ChemDVRDefaultGridPointList]
+							];
+					{"Contour", Length@gridpoints[[1]]},
+				"Angular",
+					ChemDVRDefaultPlotAngular,
+				"Angular3D",
+					ChemDVRDefaultPlotAngular3D,
+				"Polar",
+					ChemDVRDefaultPlotPolar,
+				"Shell",
+					ChemDVRDefaultPlotShell,
+				"Spherical",
+					ChemDVRDefaultPlotSpherical,
+				Automatic,
+					gridpoints=
+						ChemDVRDefaultGridPointList[grid, 
+							FilterRules[{ops}, Options@ChemDVRDefaultGridPointList]
+							];
+					gridranges=
+						If[Length@gridpoints[[1]]==0,
+							{MinMax@gridpoints},
+							MinMax/@Transpose[gridpoints]
+							];
+					Switch[gridranges,
+						{{_, _}?(#[[2]]+#[[1]]==2\[Pi]&)},
+							"Angular",
+						{
+							{_, _}?(#[[2]]+#[[1]]==2\[Pi]&), 
+							{_, _}?(#[[2]]+#[[1]]==\[Pi]&)
+							},
+							"Shell",
+						{
+							{_, _},
+							{_, _}?(#[[2]]+#[[1]]==2\[Pi]&)
+							},
+							"Polar",
+						{
+							{_, _},
+							{_, _}?(#[[2]]+#[[1]]==2\[Pi]&), 
+							{_, _}?(#[[2]]+#[[1]]==\[Pi]&)
+							},
+							"Spherical",
+						_,
+							{"Cartesian", Length@gridranges}
+						],
+				_,
+					Message[
+						ChemDVRRun::nosup,
+						pmode
+						];
+					Throw[$Failed]
+				];
+		If[StringQ@func||ListQ@func,
+			ChemDVRDefaultPlot[
+				solutions,
+				grid,
+				potentialMatrix,
+				"PlotMode"->func,
+				ops
+				],
+			If[!ListQ@gridpoints, 
+				gridpoints=
+					ChemDVRDefaultGridPointList[grid, 
+						FilterRules[{ops}, Options@ChemDVRDefaultGridPointList]
+						]
+				];
+			func[
+				solutions,
+				gridpoints,
+				potentialMatrix,
+				ops
+				]
+			]
+		]
+
+
+(* ::Subsubsection::Closed:: *)
+(*ChemDVRDirectProductKineticEnergy*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Imp*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*dvrKGetValues*)
+
+
+
+If[Length@OwnValues[dvrKGetValues]==0,
+	dvrKGetValues := 
+		dvrKGetValues=
+			Compile[
+				{
+					{k1row, _Real, 1}, {blockvals, _Real, 2}, 
+					{diagidx, _Integer, 1}, {i, _Integer}
+					},
+		   Block[{A},
+		    A =
+		    	Join[
+			      Table[
+								Compile`GetElement[k1row, k], 
+								{l, 1, Dimensions[blockvals][[1]]}, 
+								{k, 1, i}
+								],
+			      blockvals,
+			      Table[
+								Compile`GetElement[k1row, k], 
+								{l, 1, Dimensions[blockvals][[1]]}, 
+								{k, i + 2, Length[k1row]}
+								],
+			      2
+			      ];
+		    Do[
+					A[[k, Compile`GetElement[diagidx, k] + i]] += 
+						Compile`GetElement[k1row, i + 1], 
+					{k, 1, Length[blockvals]}
+					];
+		    A
+		    ],
+		   RuntimeAttributes -> {Listable},
+		   Parallelization -> True,
+		   CompilationTarget -> "C",
+		   RuntimeOptions -> "Speed"
+		   ]
+	]
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*dvrKGetColumnIndices*)
+
+
+
+If[Length@OwnValues[dvrKGetColumnIndices]==0,
+	dvrKGetColumnIndices := 
+		dvrKGetColumnIndices=
+			Compile[{
+		    {blockci, _Integer, 3}, {diagci, _Integer, 
+		     3}, {m, _Integer}, {n, _Integer}, {i, _Integer}
+		    },
+		   If[i > 0,
+		    If[i < m - 1,
+		     Join[
+						diagci[[All, 1 ;; i]], 
+						blockci + i n, 
+						diagci[[All, i + 1 ;; m - 1]] + (n), 
+						2
+						],
+		     Join[
+						diagci[[All, 1 ;; i]], 
+						blockci + i n, 
+						2
+						]
+		     ],
+		    Join[
+		    	blockci + i n, 
+		    	diagci[[All, i + 1 ;; m - 1]] + (n), 
+		    	2
+		    	]
+		    ],
+		   RuntimeAttributes -> {Listable},
+		   Parallelization -> True,
+		   CompilationTarget -> "C",
+		   RuntimeOptions -> "Speed"
+		   ]
+	];
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*dvrKToSparseArray*)
+
+
+
+dvrKToSparseArrayData[b_?MatrixQ] := {
+  Partition[SparseArray[b]["ColumnIndices"], Dimensions[b][[2]]],
+  b,
+  Dimensions[b][[2]],
+  Range[Dimensions[b][[2]]]
+  }
+
+dvrKToSparseArray[X_] := 
+ With[{d1 = Dimensions[X[[1]]][[1]], d2 = Dimensions[X[[1]]][[2]]},
+  SparseArray @@ {Automatic, {d1, d1}, 0,
+    {1, {Range[0, d1 d2, d2], Flatten[X[[1]], 1]}, Flatten[X[[2]]]}}
+  ]
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*dvrKIteration*)
+
+
+
+dvrKIteration[X_, a_] := With[{
+   m = Length[a],
+   blockci = X[[1]],
+   blockvals = X[[2]],
+   n = X[[3]],
+   diagidx = X[[4]]
+   },
+  With[{ran = Range[0, m - 1]},
+   {
+    Join @@ 
+    	dvrKGetColumnIndices[blockci, 
+    		Transpose[Partition[Partition[Range[(m - 1) n], 1], n]], 
+    		m, 
+    		n, 
+    		ran
+    		],
+    Join @@ dvrKGetValues[a, blockvals, diagidx, ran],
+    m n,
+    Join @@ Outer[Plus, ran, diagidx]
+    }
+   ]
+  ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDirectProductKineticEnergy*)
+
+
+
+ChemDVRDirectProductKineticEnergy[keMats:{__List}]:=
+	dvrKToSparseArray[
+		Fold[dvrKIteration, 
+			dvrKToSparseArrayData[keMats[[1]]], 
+			Rest[keMats]
+			]
+		]
+
+
+(* ::Subsection:: *)
+(*ChemDVRObject*)
+
+
+
 chemDVRValidQ[uuid_String]:=
 	KeyMemberQ[$ChemDVRManager["Objects"],uuid];
 chemDVRValidQ[ChemDVRObject[uuid_]]:=
@@ -1079,6 +2453,21 @@ ChemDVRGet[obj:ChemDVRClass[a_Association],attribute_]:=
 	Lookup[a,attribute];
 ChemDVRGet[obj:ChemDVRClass[a_Association],attribute_,default_]:=
 	Lookup[a,attribute,default];
+
+
+PackageAddAutocompletions[
+	ChemDVRGet,
+	{
+		None,
+		{
+			$dvrgr,
+			$dvrke,$dvrpe,
+			$dvrwf,$dvrgrwf,
+			$dvrintwf,$dvrexv,
+			$dvrexm,$dvrvw
+			}
+		}
+	]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -1601,7 +2990,7 @@ ChemDVRView[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 						]
 					]},
 					ChemDVRGet[obj,"View"][wfs,g,pe,
-						Sequence@@FilterRules[{ops},Options@ChemDVRGet[obj,"View"]]
+						{ops}
 						]
 				]
 			]
@@ -1613,20 +3002,74 @@ ChemDVRView[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 
 
 
+ChemDVRRun::badops="Options `` aren't valid for ChemDVRRun (OptionQ failed)"
+
+
+iChemDVRGetRuntimeOptions[key_]:=
+	Sequence@@
+		dvrOpsLookup[
+			{RunRuntimeOptions}, 
+			key<>"Options",
+			{RunRuntimeOptions}
+			]
+
+
+iChemDVRRunGridWavefunctions[obj_]:=
+	ChemDVRGridWavefunctions[obj,
+		$dvrwf->RunWavefunctions,
+		$dvrgr->RunGrid,
+		iChemDVRGetRuntimeOptions[$dvrgrwf]
+		];
+iChemDVRRunInterpolatingWavefunctions[obj_]:=
+	ChemDVRInterpolatingWavefunctions[obj,
+		$dvrwf->RunWavefunctions,
+		$dvrgr->RunGrid,
+		iChemDVRGetRuntimeOptions[$dvrintwf]
+		];
+iChemDVRRunExpectationValues[obj_]:=
+	ChemDVRExpectationValues[obj,
+		Replace[
+			Rest@RunEndPoint,
+			{
+				{f:Except[_List]}:>f,
+				e_:>Flatten[e]
+				}
+			],
+		$dvrwf->RunWavefunctions,
+		$dvrgr->RunGrid,
+		iChemDVRGetRuntimeOptions[$dvrexv]
+		];
+iChemDVRRunOperatorMatrix[obj_]:=
+	ChemDVROperatorMatrix[obj,
+		Replace[
+			Rest@RunEndPoint,
+			{
+				{f:Except[_List]}:>f,
+				e_:>Flatten[e]
+				}
+			],
+		$dvrwf->RunWavefunctions,
+		$dvrgr->RunGrid,
+		iChemDVRGetRuntimeOptions[$dvrexm]
+		]
+
+
 iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 	Block[{
-		RunTimeOptions=
+		RunObject=obj,
+		RunRuntimeOptions=
 			Sequence@@
-				Select[OptionQ]@
-				Flatten[
-					Normal/@{
-						ops,
-						ChemDVRGet[obj, "RunTimeOptions", {}],
-						ChemDVRGet[obj, "Defaults", {}]
-						}
-					],
+				Normal@
+					Merge[
+						{
+							ops,
+							ChemDVRGet[obj, "RuntimeOptions", {}],
+							ChemDVRGet[obj, "Defaults", {}]
+							},
+						First
+						],
 		RunCheckPoint=None,
-		RunEndPoint=dvrOpsLookup[ops,Return,"View"],
+		RunEndPoint,
 		RunRange=None,
 		RunPoints=None,
 		RunGrid=None,
@@ -1634,135 +3077,138 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 		RunPotentialEnergy=None,
 		RunWavefunctions=None
 		},
-		If[dvrOpsLookup[ops,"Save",False],
+		
+		If[!OptionQ[{RunRuntimeOptions}], 
+			Message[ChemDVRRun::badops, RunRuntimeOptions];
+			Throw[$Failed]
+			];
+		RunEndPoint=dvrOpsLookup[RunRuntimeOptions, Return, "View"];
+		If[dvrOpsLookup[RunRuntimeOptions, "Save", False],
 			ChemDVRSave@obj
 			];
 		(*---------- Grid ---------*)
-		RunGrid=dvrOpsLookup[ops,$dvrgr,None];
+		RunGrid=dvrOpsLookup[RunRuntimeOptions, $dvrgr, None];
 		If[RunGrid===None,
-			RunGrid=ChemDVRGrid[obj,ops]];
-		If[RunEndPoint===$dvrgr,Return@RunGrid];
+			RunGrid=
+				ChemDVRGrid[obj,
+					iChemDVRGetRuntimeOptions[$dvrgr]
+					]
+			];
+		If[RunEndPoint===$dvrgr, Return@RunGrid];
 		RunCheckPoint=$dvrgr;
 		(*---------- Kinetic Energy ---------*)
 		If[RunEndPoint=!=$dvrpe&&
-			!ListQ@dvrOpsLookup[ops, $dvrwf, None],
+			!ListQ@dvrOpsLookup[RunRuntimeOptions, $dvrwf, None],
 			RunKineticEnergy=
-				dvrOpsLookup[ops, $dvrke, None];
+				dvrOpsLookup[RunRuntimeOptions, $dvrke, None];
 			If[RunKineticEnergy===None,
 				RunKineticEnergy=
 					ChemDVRKineticEnergy[obj,
 						$dvrgr->RunGrid,
-						Sequence@@
-							dvrOpsLookup[
-								{RunTimeOptions}, 
-								$dvrke<>"Options",
-								{RunTimeOptions}
-								]
+						iChemDVRGetRuntimeOptions[$dvrke]
 						]
 				];
 			];
-		If[RunEndPoint===$dvrke,Return@RunKineticEnergy];
+		If[RunEndPoint===$dvrke, Return@RunKineticEnergy];
 		RunCheckPoint=$dvrke;
 		(*---------- Potential Energy ---------*)
 		RunPotentialEnergy=
-			dvrOpsLookup[ops,$dvrpe,None];
+			dvrOpsLookup[RunRuntimeOptions, $dvrpe, None];
 		If[RunPotentialEnergy===None,
 			RunPotentialEnergy=
 				ChemDVRPotentialEnergy[obj,
 					$dvrgr->RunGrid,
-					Sequence@@dvrOpsLookup[
-						{RunTimeOptions}, 
-						$dvrpe<>"Options",
-						{RunTimeOptions}
-						]
+					iChemDVRGetRuntimeOptions[$dvrpe]
 					]
 				];
 		If[RunEndPoint===$dvrpe,Return@RunPotentialEnergy];
 		RunCheckPoint=$dvrpe;
 		(*---------- Wavefunctions ---------*)
 		RunWavefunctions=
-			dvrOpsLookup[ops, $dvrwf, None];
+			dvrOpsLookup[RunRuntimeOptions, $dvrwf, None];
 		If[RunWavefunctions===None,
 			With[{ke=RunKineticEnergy, pe=RunPotentialEnergy},
 			RunWavefunctions=
 				ChemDVRWavefunctions[obj,
 					$dvrke->ke,
 					$dvrpe->pe,
-					Sequence@@
-						dvrOpsLookup[
-							{RunTimeOptions}, 
-							$dvrwf<>"Options",
-							{RunTimeOptions}
-							]
+					iChemDVRGetRuntimeOptions[$dvrwf]
 					];
 				]
 			];
 		If[RunEndPoint===$dvrwf,
-			Return@RunWavefunctions];
+			Return@RunWavefunctions
+			];
 		RunCheckPoint=$dvrwf;
 		
 		Switch[RunEndPoint,
+			{
+				(
+					$dvrgr|$dvrke|$dvrpe|$dvrwf|
+						$dvrgrwf|$dvrintwf|{$dvrexv, __}|{$dvrexm, __})..
+				},
+				Replace[
+					Replace[
+						DeleteDuplicates@RunEndPoint,
+						{
+							$dvrgr:>($dvrgr->RunGrid),
+							$dvrke:>($dvrke->RunKineticEnergy),
+							$dvrpe:>($dvrpe->RunPotentialEnergy),
+							$dvrwf:>($dvrwf->RunWavefunctions),
+							$dvrgrwf:>
+								($dvrgrwf->iChemDVRRunGridWavefunctions[obj]),
+							$dvrintwf:>
+								($dvrintwf->iChemDVRRunInterpolatingWavefunctions[obj]),
+							{$dvrexv, __}:>
+								($dvrexv->iChemDVRRunExpectationValues[obj]),
+							{$dvrexm, __}:>
+								($dvrexm->iChemDVRRunOperatorMatrix[obj])
+							},
+						1
+						],
+				o:{__Rule}:>Association[o]
+				],
 			$dvrgrwf,
 				(*----------  Wavefunction Grid ---------*)
-				ChemDVRGridWavefunctions[obj,
-					$dvrwf->RunWavefunctions,
-					$dvrgr->RunGrid,
-					Sequence@@
-						dvrOpsLookup[
-							{RunTimeOptions}, 
-							$dvrgrwf<>"Options",
-							{RunTimeOptions}
-							]
-					],
+				iChemDVRRunGridWavefunctions[obj],
 			$dvrintwf,
 				(*----------  InterpolatingWavefunctions ---------*)
-				ChemDVRInterpolatingWavefunctions[obj,
-					$dvrwf->RunWavefunctions,
-					$dvrgr->RunGrid,
-					Sequence@@
-						dvrOpsLookup[
-							{RunTimeOptions}, 
-							$dvrintwf<>"Options",
-							{RunTimeOptions}
-							]
-					],
-			{$dvrexv, _},
+				iChemDVRRunInterpolatingWavefunctions[obj],
+			{$dvrexv, __},
 				(*----------  ExpectationValues ---------*)
-				ChemDVRExpectationValues[obj,
-					Replace[
-						Rest@RunEndPoint,
-						{
-							{f:Except[_List]}:>f,
-							e_:>Flatten[e]
-							}
-						],
-					$dvrwf->RunWavefunctions,
-					$dvrgr->RunGrid,
-					Sequence@@
-						dvrOpsLookup[
-							{RunTimeOptions}, 
-							$dvrexv<>"Options",
-							{RunTimeOptions}
-							]
-					],
-			{$dvrexm, _},
-				(*----------  ExpectationValues ---------*)
-				ChemDVROperatorMatrix[obj,
-					Replace[
-						Rest@RunEndPoint,
-						{
-							{f:Except[_List]}:>f,
-							e_:>Flatten[e]
-							}
-						],
-					$dvrwf->RunWavefunctions,
-					$dvrgr->RunGrid,
-					Sequence@@
-						dvrOpsLookup[
-							{RunTimeOptions}, 
-							$dvrexv<>"Options",
-							{RunTimeOptions}
-							]
+				iChemDVRRunExpectationValues[obj],
+			{$dvrexm, __},
+				(*----------  Operator Matrix ---------*)
+				iChemDVRRunOperatorMatrix[obj],
+			"FullResults",
+				If[ListQ@RunWavefunctions,
+					<|
+						"Grid"->
+							If[ListQ@RunGrid, 
+								RawArray["Real64", RunGrid],
+								RunGrid
+								],
+						"PotentialEnergy"->
+							If[ListQ@RunPotentialEnergy, 
+								RawArray["Real64", RunPotentialEnergy],
+								RunPotentialEnergy
+								],
+						"KineticEnergy"->
+							If[ListQ@RunKineticEnergy, 
+								RawArray["Real64", RunKineticEnergy],
+								RunKineticEnergy
+								],
+						"Energies"->
+							If[ListQ@RunWavefunctions, 
+								RawArray["Real64", RunWavefunctions[[1]]],
+								RunWavefunctions[[1]]
+								],
+						"Wavefunctions"->
+							If[ListQ@RunWavefunctions, 
+								RawArray["Real64", RunWavefunctions[[2]]],
+								RunWavefunctions[[2]]
+								]
+						|>
 					],
 			_,
 				(*---------- View ---------*)
@@ -1770,12 +3216,7 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 					$dvrwf->RunWavefunctions,
 					$dvrpe->RunPotentialEnergy,
 					$dvrgr->RunGrid,
-					Sequence@@
-						dvrOpsLookup[
-							{RunTimeOptions}, 
-							$dvrvw<>"Options",
-							{RunTimeOptions}
-							]
+					iChemDVRGetRuntimeOptions[$dvrvw]
 					]
 			]
 		];
@@ -1897,7 +3338,7 @@ ChemDVRNotebook[
 
 $dvrBasicKeys=
 	$dvrgr|$dvrpe|$dvrke|
-		$dvrwf|$dvrgrwf|$dvrintwf
+		$dvrwf|$dvrgrwf|$dvrintwf|"FullResults"
 
 
 ChemDVRObject[uuid_?chemDVRValidQ][a___?OptionQ]:=
@@ -2058,6 +3499,11 @@ Format[obj:dvrObjPattern?chemDVRValidQ]:=
 			StandardForm
 			];
 		
+
+
+(* ::Subsection:: *)
+(*ChemDVRClass*)
+
 
 
 (* ::Subsubsection::Closed:: *)

@@ -22,24 +22,11 @@
 ChemDVRBegin[];
 
 
-LegendreDVRFormatGrid::usage="Formats the grid";
 LegendreDVRPoints::usage="The Legendre eigensystem";
 LegendreDVRK::usage="The Legendre kinetic energy";
-LegendreDVRV::usage="The Legendre potential energy";
-LegendreDVRWavefunctions::usage="The Legendre wavefunctions";
-LegendreDVRPlot::usage="The Legendre view function";
 
 
 Begin["`Private`"];
-
-
-(* ::Subsubsection::Closed:: *)
-(*Grid Formatting*)
-
-
-
-LegendreDVRFormatGrid[grid_,points_]:=
-	grid;
 
 
 (* ::Subsubsection::Closed:: *)
@@ -77,18 +64,22 @@ With[{ip=i-1,jp=j-1},
 		]*)
 
 
-LegendreDVRPoints[{\[Theta]Points_},r_]:=
-	With[{eig=
-		Eigensystem@
-			Table[
-				Sqrt[i^2/((-1 + 2*i)*(1 + 2.*i))]*KroneckerDelta[j, -1 + i] +
-					Sqrt[(1 + i)^2/((3 + 2*i)*(1 + 2.*i))]*KroneckerDelta[j, 1 + i],
-				{i,\[Theta]Points},
-				{j,\[Theta]Points}
-				]
-		},
-		eig[[All,Ordering[First@eig]]]
-		]
+LegendreDVRPoints[{\[Theta]Points_}, rest___]:=
+	With[
+		{
+			eig=
+				Eigensystem@
+					SparseArray[
+						{
+							Band[{2, 1}]->
+								Table[Sqrt[i^2/((-1 + 2*i)*(1 + 2.*i))], {i, \[Theta]Points-1}],
+							Band[{1, 2}]->
+								Table[Sqrt[(1 + i)^2/((3 + 2*i)*(1 + 2.*i))], {i, \[Theta]Points-1}]
+							}
+						]
+			},
+			MapAt[ArcCos, eig[[All, Ordering[First@eig]]], {1, All}]
+			]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -138,147 +129,6 @@ LegendreDVRK[eigensystem_,ops:OptionsPattern[]]:=
 		]
 
 
-(* ::Subsubsection::Closed:: *)
-(*Potential Energy Matrix*)
-
-
-
-Clear["LegendreDVRV"]
-Options[LegendreDVRV]=
-	{Function->Sin};
-LegendreDVRV[eigensystem_,ops:OptionsPattern[]]:=
-	With[
-		{
-			\[CapitalLambda]=First@eigensystem,T=Last@eigensystem,
-			P=OptionValue[Function]
-			},
-		SparseArray[
-			Band[{1,1}]->
-				Replace[P[ArcCos[\[CapitalLambda]]],
-					_P:>Map[P, ArcCos[\[CapitalLambda]]]
-					]
-			]
-		];
-
-
-(* ::Subsubsection::Closed:: *)
-(*Plotting Function*)
-
-
-
-Options[LegendreDVRPlot]=
-	DeleteDuplicatesBy[
-		Flatten@{
-			FilterRules[Options[ListPolarPlot],Except[Joined|ColorFunction]],
-			Labeled->True,
-			"EnergyShift"->False,
-			"WavefunctionSelection"->Automatic,
-			"EnergyDigits"->3,
-			"ShowPotential"->True,
-			"SquareWavefunction"->False,
-			Manipulate->True,
-			ColorFunction->"BrightBands"
-			},
-		First];
-LegendreDVRPlot[solutions_,gridpoints_,potentialmatrix_,ops:OptionsPattern[]]:=
-	Module[
-		{
-			X,T,V=potentialmatrix,\[CapitalLambda],\[CapitalPsi],\[Psi],
-			waveSet,wavePlot,potentialPlot,volEl,
-			num=
-				Replace[OptionValue["WavefunctionSelection"],
-					Automatic:>If[OptionValue@Manipulate//TrueQ,All,5]
-					]},
-		{X,T}=gridpoints;
-		{\[CapitalLambda],\[CapitalPsi]}=solutions;
-		num=
-			Which[
-				num===All,
-					Range[1,Length[\[CapitalLambda]]],
-				MatchQ[num,_List],
-					num,
-				MatchQ[num,_Integer],
-					Range[1,num],
-				True,
-					Range[1,Floor[Length[\[CapitalLambda]]/2]]
-				];
-		volEl[x_]:=
-			Sqrt[1-x^2];
-		\[Psi][n_]:=
-			Reverse@SortBy[First]@
-				With[
-					{
-						S=OptionValue["EnergyShift"],
-						Q=TrueQ@OptionValue["SquareWavefunction"]
-						},
-					MapThread[
-						{ArcCos@#,If[S,\[CapitalLambda][[n]],0]+If[Q,Power[#2,2],#2]}&,
-						{X,\[CapitalPsi][[n]]}]
-					];
-		waveSet=\[Psi]/@num;
-		wavePlot=
-			MapThread[
-				ListPolarPlot[#,
-					PlotLegends->
-						If[TrueQ@OptionValue[Labeled],
-							Row[{
-								Subscript["\[Psi]",ToString[#2]],
-								": E=",
-								Round[\[CapitalLambda][[#2]],1.0*10^(-1*OptionValue["EnergyDigits"])]
-								}],
-							None
-							],
-					ColorFunctionScaling->False,
-					ColorFunction->
-						With[{c=ColorData[OptionValue[ColorFunction]][#2/Length@num]},
-							Function[{x,y,\[Theta],r},Darker[c,\[Theta]/(1.5\[Pi])]]
-							],
-					FilterRules[{
-						ops
-						},
-						Options[ListPolarPlot]
-						],
-					Joined->True
-				]&,{
-				waveSet,
-				num
-				}];
-		potentialPlot=
-			If[TrueQ@OptionValue["ShowPotential"],
-				With[{
-					pset=
-						With[{D=Diagonal[V],M=Max@Diagonal@V,m=Max[waveSet[[All,All,2]]]},
-							Reverse@SortBy[First]@
-								MapThread[
-									{#1,Abs[m/M]#2}&,
-									{X,D}
-									]
-							]},
-					With[{p=1,M=Max[pset[[All,2]]],m=Min[pset[[All,2]]]},
-						Graphics[{
-							Arrowheads[Small],
-							Table[
-								{GrayLevel[Rescale[pset[[i,2]],{m,M},{0,.9}]],
-									Arrow[-#2*{Sin[#1],Cos[#1]}&@@@Take[pset,{i,(i+1)}]]
-									},
-								{i,Floor[Length[pset]/p]-1}]
-							}]
-						]
-					],
-				{}];
-		If[OptionValue[Manipulate],
-			With[{
-				wp=wavePlot,pp=potentialPlot},
-				Manipulate[
-					Show[wp[[n]],pp],
-					{{n,1,"Wavefunction"},1,Length[wp],1}
-					]
-				],
-			Show[Append[wavePlot,potentialPlot]]
-			]
-		]
-
-
 End[];
 
 
@@ -286,14 +136,15 @@ $LegendreDVR=
 	<|
 		"Name"->"Legendre 1D",
 		"Dimension"->1,
-		"FormatGrid"->LegendreDVRFormatGrid,
 		"PointLabels"->{("\[Theta]"|"theta"|"Theta"|"Azimuthal"|"azimuthal")},
 		"Range"->{{0,\[Pi]}},
 		"Grid"->LegendreDVRPoints,
 		"KineticEnergy"->LegendreDVRK,
-		"PotentialEnergy"->LegendreDVRV,
-		"Wavefunctions"->LegendreDVRWavefunctions,
-		"View"->LegendreDVRPlot
+		"Defaults"->
+			{
+				"PotentialFunction"->
+					{"HinderedRotor", "WellNumber"->2}
+				}
 		|>
 
 
