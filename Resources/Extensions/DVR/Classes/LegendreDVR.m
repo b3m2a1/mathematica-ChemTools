@@ -90,8 +90,8 @@ LegendreDVRPoints[{\[Theta]Points_}, rest___]:=
 (* ::Text:: *)
 (*
 
-	I can\[CloseCurlyQuote]t actually remember the derivation for this one...
-		not good.
+	I can\[CloseCurlyQuote]t actually remember the derivation for this one...not good.
+	Why in our cos(\[Theta]) rep it\[CloseCurlyQuote]s tridiagonal with 0 on the main diagonal I\[CloseCurlyQuote]m not entirely sure.
 *)
 
 
@@ -102,15 +102,21 @@ Options[LegendreDVRK]=
 		"Mass"->1,
 		"HBar"->1,
 		"ScalingFactor"->1,
-		"UseExact"->False
+		"UseExact"->False,
+		"TransformationMatrix"->None
 		};
-LegendreDVRK[eigensystem_,ops:OptionsPattern[]]:=
+LegendreDVRK::notran="No \"TransformationMatrix\" passed";
+LegendreDVRK[grid_,ops:OptionsPattern[]]:=
 	With[
 		{
 			m=OptionValue["Mass"], \[HBar]=OptionValue@"HBar",
 			s=OptionValue["ScalingFactor"], ex=TrueQ@OptionValue["UseExact"],
-			T=Last@eigensystem, \[CapitalLambda]=First@eigensystem
+			T=OptionValue["TransformationMatrix"], \[CapitalLambda]=grid
 			},
+		If[!SquareMatrixQ[T], 
+			Message[LegendreDVRK::notran];
+			Throw[$Failed]
+			];
 		Replace[
 			s*\[HBar],
 			Except[_?NumericQ]->1.

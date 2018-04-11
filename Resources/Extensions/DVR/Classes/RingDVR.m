@@ -22,25 +22,25 @@
 ChemDVRBegin[];
 
 
-$Cartesian1DDVR::usage=
-	"A one dimensional DVR by Colbert and Miller for the (-\[Infinity],\[Infinity]) range"
+$RingDVR::usage=
+	"A one dimensional DVR by Meyer for the (0, 2\[Pi]) range"
 
 
-$Cartesian1DDVR=
+$RingDVR=
 	<|
-		"Name"->"Cartesian 1D",
-		"Range"->{{-10,10}},
-		"Points"->{101},
+		"Name"->"Ring 1D",
+		"Range"->{{0, 2\[Pi]}},
+		"Points"->{100},
 		"Defaults"->
 			{
 				"GridType"->
-					"RegularSubdivision",
+					"AzimuthalSubdivision",
 				"KineticEnergyElementFunction"->
-					"ColbertMillerCartesian",
+					"MeyerAzimuthal",
 				"PotentialFunction"->
-					"HarmonicOscillator",
+					"HinderedRotor",
 				"PlotMode"->
-					{"Cartesian", 1}
+					{"Density", "Ring"}
 				}
 		|>
 
@@ -48,7 +48,7 @@ $Cartesian1DDVR=
 ChemDVREnd[];
 
 
-$Cartesian1DDVR
+$RingDVR
 
 
 

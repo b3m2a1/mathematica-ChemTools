@@ -22,75 +22,33 @@
 ChemDVRBegin[];
 
 
-AngularDVRPoints::usage="Generates the grid";
-AngularDVRK::usage="";
+$Azimuthal1DDVR::usage=
+	"A one dimensional DVR by Meyer for the (0, 2\[Pi]) range"
 
 
-Begin["`Private`"];
-
-
-AngularDVRPoints[{points_Integer},
-	X:{{_?NumericQ,_?NumericQ}}:{{0,2.\[Pi]}}
-	]:=
-	DeleteDuplicatesBy[Mod[#,2\[Pi]]&][
-		Subdivide@@Append[X[[1]],points]
-		]
-
-
-Options[AngularDVRK]=
-	{
-		"Mass"->1,
-		"HBar"->1,
-		"ScalingFactor"->1,
-		"UseExact"->False
-		};
-AngularDVRK[gridpoints_,ops:OptionsPattern[]]:=
-	With[
-		{
-			X=gridpoints,
-			p=Length@gridpoints,
-			\[HBar]=OptionValue@"HBar",
-			m=OptionValue["Mass"],
-			ex=TrueQ@OptionValue["UseExact"],
-			s=OptionValue["ScalingFactor"]
-			},
-		Table[
-			If[!ex, N, Identity]@
-			(s*\[HBar])*
-			If[i==j,
-				(p^2/2+1)*1/6,
-				((-1)^(i-j))/
-					(2*Sin[(\[Pi]*(i-j))/p]^2)
-				],
-			{i,p},
-			{j,p}
-			]
-		];
-
-
-End[];
-
-
-$AngularDVR=
+$Azimuthal1DDVR=
 	<|
-		"Name"->"Angular 1D",
-		"Dimension"->1,
-		"PointLabels"->{("\[CurlyPhi]"|"\[Phi]"|"phi"|"Phi"|"Angular"|"angular")},
-		"Range"->{{0,2\[Pi]}},
-		"Grid"->AngularDVRPoints,
-		"KineticEnergy"->AngularDVRK,
+		"Name"->"Azimuthal 1D",
+		"Range"->{{0, 2\[Pi]}},
+		"Points"->{101},
 		"Defaults"->
-				{
-					"PotentialFunction"->"HinderedRotor",
-					"PlotMode"->"Angular3D"
-					}
-		|>;
+			{
+				"GridType"->
+					"AzimuthalSubdivision",
+				"KineticEnergyElementFunction"->
+					"ColbertMillerCartesian",
+				"PotentialFunction"->
+					"HarmonicOscillator",
+				"PlotMode"->
+					{"Cartesian", 1}
+				}
+		|>
 
 
 ChemDVREnd[];
 
 
-$AngularDVR
+$Cartesian1DDVR
 
 
 

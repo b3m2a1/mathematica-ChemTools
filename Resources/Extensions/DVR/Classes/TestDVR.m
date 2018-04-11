@@ -19,36 +19,17 @@
 
 
 
-ChemDVRBegin[];
-
-
-$Cartesian1DDVR::usage=
-	"A one dimensional DVR by Colbert and Miller for the (-\[Infinity],\[Infinity]) range"
-
-
-$Cartesian1DDVR=
-	<|
-		"Name"->"Cartesian 1D",
-		"Range"->{{-10,10}},
-		"Points"->{101},
-		"Defaults"->
-			{
-				"GridType"->
-					"RegularSubdivision",
-				"KineticEnergyElementFunction"->
-					"ColbertMillerCartesian",
-				"PotentialFunction"->
-					"HarmonicOscillator",
-				"PlotMode"->
-					{"Cartesian", 1}
-				}
-		|>
-
-
-ChemDVREnd[];
-
-
-$Cartesian1DDVR
-
-
-
+<|
+	"Name"->"Test 1D",
+	"Defaults"->
+		{
+			"GridType"->
+				"RegularSubdivision",
+			"KineticEnergyElementFunction"->
+				"ColbertMillerCartesian",
+			"PotentialFunction"->
+				"HarmonicOscillator",
+			"PlotMode"->
+				{"Cartesian", 1}
+			}
+	|>

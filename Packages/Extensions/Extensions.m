@@ -39,12 +39,8 @@ PackageScopeBlock[
 
 
 PackageScopeBlock[
-	PySession::usage="";
-	PySessionProcess::usage="";
-	PySessionStart::usage="";
-	PySessionKill::usage="";
-	PySessionActive::usage="";
-	PySessionRun::usage="";
+	PyToolsLoad::usage=
+		"Ensures PyTools is loaded";
 	]
 
 
@@ -355,159 +351,25 @@ SwigBuild[dir:_String?DirectoryQ|Automatic:Automatic]:=
 		]
 
 
-If[!AssociationQ@$PySessions,$PySessions=<||>];
+(* ::Text:: *)
+(*
+	Delegated to my PyTools package:
+		https://www.wolframcloud.com/objects/b3m2a1.paclets/PacletServer/main.html#pytools
+*)
 
 
-PySession[n_]:=
-	Replace[$PySessions[n],Except[_Association]->None]
 
-
-PySessionProcess[n_]:=
-	Replace[PySession[n],a:Except[None]:>a["Process"]]
-
-
-PySessionActive[n_]:=
-	MatchQ[$PySessions[n]["Process"],_ProcessObject?(ProcessStatus[#,"Running"]&)];
-
-
-PySessionKill[n_]:=
-	KillProcess@PySessionProcess[n];
-
-
-PySessionStart[name_,
-	ops:OptionsPattern[]
-	]:=
-	(
-		PySessionKill[name];
-		$PySessions[name]=
-			<|
-				"Process"->
-					StartProcess[{"python","-i"},ops],
-				"Name"->name
-				|>
-		);
-
-
-PySessionWrite[name_,s_String]:=
-	If[PySessionActive[name],
-		WriteLine[PySessionProcess[name],s],
-		$Failed
-		];
-PySessionWrite[name_,l_List]:=
-	PySessionWrite[name,PySessionWriteEscape[l]]
-
-
-Clear[PySessionWriteEscape];
-PySessionWriteEscape[s_String]:=
-	s;
-PySessionWriteEscape[File[f_String]]:=
-	"\""<>ExpandFileName[f]<>"\"";
-PySessionWriteEscape[URL[u_String]]:=
-	"\""<>u<>"\"";
-PySessionWriteEscape[l_List]:=
-	StringRiffle@Map[PySessionWriteEscape,l]
-PySessionWriteEscape[r_Rule]:=
-	PySessionWriteEscape[First[r]]<>"--="<>PySessionWriteEscape[Last[r]];
-PySessionWriteEscape[Break]:=
-	"\n";
-PySessionWriteEscape[e_]:=ToString[e];
-
-
-PySessionRead[name_]:=
-Catch@
-	With[{proc=PySessionProcess[name]},
-		If[!MatchQ[proc,_ProcessObject],Throw[$Failed]];
-		AssociationMap[
-			With[{strm=ProcessConnection[proc,#]},
-				If[!MatchQ[strm,_InputStream],Throw[$Failed]];
-				ReadString[ProcessConnection[PySessionProcess[name],#],EndOfBuffer]
-				]&,
-			{
-				"StandardOutput",
-				"StandardError"
-				}
+PyToolsInstall[]:=
+	If[Length@PacletManager`PacletFind["PyTools"]==0,
+		PacletManager`PacletInstall["PyTools",
+			"Site"->"http://www.wolframcloud.com/objects/b3m2a1.paclets/PacletServer/"
 			]
 		];
-
-
-Options[PySessionRun]=
-	{
-		TimeConstraint->Automatic,
-		"PollTime"->Automatic
-		};
-PySessionRun[name_,s:_String|_List,ops:OptionsPattern[]]:=
-	Catch@
-	Block[{
-		poll=
-			Replace[OptionValue["PollTime"],
-				Except[_?NumericQ]->.01
-				],
-		reads,
-		startflag=CreateUUID["process-start-"],
-		doneflag=CreateUUID["process-"]
-		},
-		Quiet@WriteLine[PySessionProcess@name,
-			StringRiffle[
-				{
-					"import sys",
-					"from __future__ import print_function",
-					"print('"<>startflag<>"')",
-					"print('"<>startflag<>"', file=sys.stderr)",
-					"#-----Start Block------\n",
-					s,
-					"\n#-----End Block------",
-					"print('"<>doneflag<>"', file=sys.stderr)",
-					"print('"<>doneflag<>"')"
-					},
-				"\n"
-				]
-			];
-		Pause[poll];
-		reads=Replace[PySessionRead[name],$Failed:>Throw[$Failed]];
-		TimeConstrained[
-			While[!StringContainsQ[StringRiffle[Values[reads]],doneflag],
-				Pause[poll/10];
-				reads=
-					Merge[{
-						reads,
-						Replace[PySessionRead[name],$Failed:>Throw[$Failed]]
-						},
-						StringJoin]
-				],
-			Replace[OptionValue[TimeConstraint],
-				Except[_?NumericQ]->1
-				],
-			reads=
-				Merge[{
-					reads,
-					Replace[Echo@PySessionRead[name],$Failed:>Throw[$Failed]]
-					},
-					StringJoin]
-			];
-		KeyValueMap[
-			#->
-				If[#==="StandardError",
-					Function[
-						StringDelete[#,
-							Repeated[">>>"~~" "|""]|
-							Repeated["..."~~" "|""]
-							]
-						],
-					Identity
-					]@
-					StringTrim[
-						First@StringSplit[
-							Last@StringSplit[#2,startflag,2],
-							doneflag,
-							2
-							],
-					("\n"~~EndOfString)|
-						startflag|
-						doneflag
-					]&,
-			reads
-			]//Association
-		];
+PyToolsLoad[]:=
+	(
+		PyToolsInstall[];
+		<<PyTools`All`
+		);
 
 
 terminalRead[p_,readVar_]:=

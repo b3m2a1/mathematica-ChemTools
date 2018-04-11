@@ -92,8 +92,7 @@ Psi4CubeElectrostaticPotential::usage=
 Begin["`Private`"];
 
 
-(* Load the symbolic python package *)
-ToPython;
+PyToolsLoad[]
 
 
 $Psi4Dir=ChemExtensionDir["psi4"];

@@ -32,9 +32,53 @@ ChemDVRNeeds/@{"RadialDVR", "AngularDVR"};
 Begin["`Private`"];
 
 
-DiskDVRPoints[ ]:=
+(* ::Text:: *)
+(*
+	Grid as direct product
+*)
+
+
+
+Options[DiskDVRPoints]=
+	Normal@Merge[
+		Options/@{$RadialDVR["Grid"], $AngularDVR["Grid"]},
+		Last
+		];
+DiskDVRPoints[
+	pts:{_Integer, _Integer},
+	region:{{_?NumericQ, _?NumericQ}, {_?NumericQ, _?NumericQ}},
+	opts:OptionsPattern[]
+	]:=
 	ChemDVRDirectProductGrid[
-		{$RadialDVR["Grid"], $AngularDVR["Grid"]}
+		{$RadialDVR["Grid"], $AngularDVR["Grid"]},
+		region,
+		pts,
+		opts
+		] 
+
+
+(* ::Text:: *)
+(*
+	Kinetic energy as direct product
+*)
+
+
+
+Options[DiskDVRK]=
+	Normal@Merge[
+		Options/@{$RadialDVR["Grid"], $AngularDVR["Grid"]},
+		Last
+		];
+DiskDVRPoints[
+	pts:{_Integer, _Integer},
+	region:{{_?NumericQ, _?NumericQ}, {_?NumericQ, _?NumericQ}},
+	opts:OptionsPattern[]
+	]:=
+	ChemDVRDirectProductGrid[
+		{$RadialDVR["Grid"], $AngularDVR["Grid"]},
+		region,
+		pts,
+		opts
 		] 
 
 
@@ -46,14 +90,17 @@ $DiskDVR=
 		"Name"->"Disk 2D",
 		"Dimension"->2,
 		"PointLabels"->
-			Join[$RadialDVR["PointLabels"], $MeyerDVR["PointLabels"]],
+			Join[$RadialDVR["PointLabels"], $AngularDVR["PointLabels"]],
 		"Range"->
-			Join[$RadialDVR["Range"], $MeyerDVR["Range"]],
+			Join[$RadialDVR["Range"], $AngularDVR["Range"]],
+		"Points"->
+			Join[$RadialDVR["Points"], $AngularDVR["Points"]],
 		"Grid"->DiskDVRPoints,
 		"KineticEnergy"->DiskDVRK,
 		"Defaults"->
 			{
-				"PotentialFunction"->"MorseOscillator"\[Cross]"HinderedRotor",
+				"PotentialFunction"->
+					"MorseOscillator"\[Cross]"HinderedRotor",
 				"PlotMode"->{"Cartesian", 1}
 				}
 		|>

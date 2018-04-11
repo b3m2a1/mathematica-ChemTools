@@ -310,13 +310,16 @@ Cell["\[LeftCeiling]Kinetic Energy Matrix\[RightFloor]", "CodeSubsubsection",
 Cell["\<\
 \[LeftCeiling]
 
-\tI can\[CloseCurlyQuote]t actually remember the derivation for this one...
-\t\tnot good.
+\tI can\[CloseCurlyQuote]t actually remember the derivation for this \
+one...not good.
+\tWhy in our cos(\[Theta]) rep it\[CloseCurlyQuote]s tridiagonal with 0 on \
+the main diagonal I\[CloseCurlyQuote]m not entirely sure.
 \[RightFloor]\
 \>", "Text",
  Evaluatable->True,
- CellChangeTimes->{{3.7310979901396103`*^9, 
-  3.731098035129038*^9}},ExpressionUUID->"fc3f869c-f50b-4f7c-b9e0-\
+ CellChangeTimes->{{3.7310979901396103`*^9, 3.731098035129038*^9}, {
+  3.73239954723951*^9, 
+  3.732399586417848*^9}},ExpressionUUID->"fc3f869c-f50b-4f7c-b9e0-\
 801554289397"],
 
 Cell[BoxData[{
@@ -329,11 +332,16 @@ Cell[BoxData[{
      RowBox[{"\"\<Mass\>\"", "->", "1"}], ",", "\n", "\t\t", 
      RowBox[{"\"\<HBar\>\"", "->", "1"}], ",", "\n", "\t\t", 
      RowBox[{"\"\<ScalingFactor\>\"", "\[Rule]", "1"}], ",", "\n", "\t\t", 
-     RowBox[{"\"\<UseExact\>\"", "\[Rule]", "False"}]}], "\n", "\t\t", 
-    "}"}]}], ";"}], "\n", 
+     RowBox[{"\"\<UseExact\>\"", "\[Rule]", "False"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<TransformationMatrix\>\"", "\[Rule]", "None"}]}], "\n", 
+    "\t\t", "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"LegendreDVRK", "::", "notran"}], "=", 
+   "\"\<No \\\"TransformationMatrix\\\" passed\>\""}], ";"}], "\n", 
  RowBox[{
   RowBox[{"LegendreDVRK", "[", 
-   RowBox[{"eigensystem_", ",", 
+   RowBox[{"grid_", ",", 
     RowBox[{"ops", ":", 
      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
   RowBox[{"With", "[", "\n", "\t\t", 
@@ -351,60 +359,60 @@ Cell[BoxData[{
         RowBox[{"OptionValue", "[", "\"\<UseExact\>\"", "]"}]}]}], ",", "\n", 
       "\t\t\t", 
       RowBox[{"T", "=", 
-       RowBox[{"Last", "@", "eigensystem"}]}], ",", " ", 
-      RowBox[{"\[CapitalLambda]", "=", 
-       RowBox[{"First", "@", "eigensystem"}]}]}], "\n", "\t\t\t", "}"}], ",", 
-    "\n", "\t\t", 
+       RowBox[{"OptionValue", "[", "\"\<TransformationMatrix\>\"", "]"}]}], 
+      ",", " ", 
+      RowBox[{"\[CapitalLambda]", "=", "grid"}]}], "\n", "\t\t\t", "}"}], ",",
+     "\n", "\t\t", 
     RowBox[{
-     RowBox[{
-      RowBox[{"Replace", "[", "\n", "\t\t\t", 
-       RowBox[{
-        RowBox[{"s", "*", "\[HBar]"}], ",", "\n", "\t\t\t", 
-        RowBox[{
-         RowBox[{"Except", "[", 
-          RowBox[{"_", "?", "NumericQ"}], "]"}], "\[Rule]", "1."}]}], "\n", 
-       "\t\t\t", "]"}], "*", "\n", "\t\t\t", 
-      RowBox[{"Dot", "[", 
-       RowBox[{"T", ",", "\n", "\t\t\t\t", 
-        RowBox[{"If", "[", 
-         RowBox[{"ex", ",", "\n", "\t\t\t\t\t", 
-          RowBox[{"DiagonalMatrix", "@", 
-           RowBox[{"Array", "[", 
-            RowBox[{
-             RowBox[{
-              RowBox[{
-               RowBox[{"(", 
-                RowBox[{"#", "-", "1"}], ")"}], 
-               RowBox[{"(", "#", ")"}]}], "&"}], ",", 
-             RowBox[{"Length", "[", "\[CapitalLambda]", "]"}]}], "]"}]}], ",",
-           "\n", "\t\t\t\t\t", 
-          RowBox[{"DiagonalMatrix", "@", 
-           RowBox[{"Array", "[", 
-            RowBox[{
-             RowBox[{
-              RowBox[{
-               RowBox[{"N", "@", 
-                RowBox[{"(", 
-                 RowBox[{"#", "-", "1"}], ")"}]}], 
-               RowBox[{"(", "#", ")"}]}], "&"}], ",", 
-             RowBox[{"Length", "[", "\[CapitalLambda]", "]"}]}], "]"}]}]}], 
-         "\n", "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
-        RowBox[{"Transpose", "@", "T"}]}], "\n", "\t\t\t\t", "]"}]}], "+", 
-     "\n", "\t\t\t\t", 
      RowBox[{"If", "[", 
-      RowBox[{"ex", ",", "\n", "\t\t\t\t\t", 
-       RowBox[{"DiagonalMatrix", "@", 
-        RowBox[{"Map", "[", 
+      RowBox[{
+       RowBox[{"!", 
+        RowBox[{"SquareMatrixQ", "[", "T", "]"}]}], ",", " ", "\n", "\t\t\t", 
+       
+       RowBox[{
+        RowBox[{"Message", "[", 
+         RowBox[{"LegendreDVRK", "::", "notran"}], "]"}], ";", "\n", "\t\t\t", 
+        RowBox[{"Throw", "[", "$Failed", "]"}]}]}], "\n", "\t\t\t", "]"}], 
+     ";", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Replace", "[", "\n", "\t\t\t", 
+        RowBox[{
+         RowBox[{"s", "*", "\[HBar]"}], ",", "\n", "\t\t\t", 
          RowBox[{
-          RowBox[{
-           RowBox[{
-            RowBox[{"m", "^", "2"}], "/", 
-            RowBox[{"(", 
-             RowBox[{"1", "-", 
-              RowBox[{"#", "^", "2"}]}], ")"}]}], "&"}], ",", 
-          "\[CapitalLambda]"}], "]"}]}], ",", "\n", "\t\t\t\t\t", 
-       RowBox[{"DiagonalMatrix", "@", 
-        RowBox[{"N", "@", 
+          RowBox[{"Except", "[", 
+           RowBox[{"_", "?", "NumericQ"}], "]"}], "\[Rule]", "1."}]}], "\n", 
+        "\t\t\t", "]"}], "*", "\n", "\t\t\t", 
+       RowBox[{"Dot", "[", 
+        RowBox[{"T", ",", "\n", "\t\t\t\t", 
+         RowBox[{"If", "[", 
+          RowBox[{"ex", ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"DiagonalMatrix", "@", 
+            RowBox[{"Array", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{"#", "-", "1"}], ")"}], 
+                RowBox[{"(", "#", ")"}]}], "&"}], ",", 
+              RowBox[{"Length", "[", "\[CapitalLambda]", "]"}]}], "]"}]}], 
+           ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"DiagonalMatrix", "@", 
+            RowBox[{"Array", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"N", "@", 
+                 RowBox[{"(", 
+                  RowBox[{"#", "-", "1"}], ")"}]}], 
+                RowBox[{"(", "#", ")"}]}], "&"}], ",", 
+              RowBox[{"Length", "[", "\[CapitalLambda]", "]"}]}], "]"}]}]}], 
+          "\n", "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"Transpose", "@", "T"}]}], "\n", "\t\t\t\t", "]"}]}], "+", 
+      "\n", "\t\t\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{"ex", ",", "\n", "\t\t\t\t\t", 
+        RowBox[{"DiagonalMatrix", "@", 
          RowBox[{"Map", "[", 
           RowBox[{
            RowBox[{
@@ -413,16 +421,28 @@ Cell[BoxData[{
              RowBox[{"(", 
               RowBox[{"1", "-", 
                RowBox[{"#", "^", "2"}]}], ")"}]}], "&"}], ",", 
-           "\[CapitalLambda]"}], "]"}]}]}]}], "\n", "\t\t\t\t\t", "]"}]}]}], 
-   "\n", "\t\t", "]"}]}]}], "CodeInput",
+           "\[CapitalLambda]"}], "]"}]}], ",", "\n", "\t\t\t\t\t", 
+        RowBox[{"DiagonalMatrix", "@", 
+         RowBox[{"N", "@", 
+          RowBox[{"Map", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"m", "^", "2"}], "/", 
+              RowBox[{"(", 
+               RowBox[{"1", "-", 
+                RowBox[{"#", "^", "2"}]}], ")"}]}], "&"}], ",", 
+            "\[CapitalLambda]"}], "]"}]}]}]}], "\n", "\t\t\t\t\t", 
+       "]"}]}]}]}], "\n", "\t\t", "]"}]}]}], "CodeInput",
  CellChangeTimes->{{3.699224516894437*^9, 3.699224645715311*^9}, {
-  3.699224928546916*^9, 3.6992251494499903`*^9}, {3.699225284560356*^9, 
-  3.699225462648979*^9}, {3.699229244772596*^9, 3.699229250739311*^9}, {
-  3.731097895937579*^9, 3.7310978995912457`*^9}, {3.731097935313169*^9, 
-  3.731097964568994*^9}, {3.7310980438150454`*^9, 
-  3.7310981419317617`*^9}},ExpressionUUID->"20d8dcea-e7a7-4319-8948-\
+   3.699224928546916*^9, 3.6992251494499903`*^9}, {3.699225284560356*^9, 
+   3.699225462648979*^9}, {3.699229244772596*^9, 3.699229250739311*^9}, {
+   3.731097895937579*^9, 3.7310978995912457`*^9}, {3.731097935313169*^9, 
+   3.731097964568994*^9}, {3.7310980438150454`*^9, 3.7310981419317617`*^9}, {
+   3.732399471833186*^9, 3.732399534686688*^9}, 
+   3.7323996129033527`*^9},ExpressionUUID->"20d8dcea-e7a7-4319-8948-\
 beebb90e1803"]
-}, Closed]]
+}, Open  ]]
 }, Open  ]],
 
 Cell[CellGroupData[{

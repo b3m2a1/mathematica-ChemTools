@@ -59,8 +59,7 @@ OBRingMap::usage="Maps a function over a molecule"
 Begin["`Private`"];
 
 
-(* Load the symbolic python package *)
-ToPython;
+PyToolsLoad[]
 
 
 $eigen3src="http://bitbucket.org/eigen/eigen/get/3.2.10.zip";

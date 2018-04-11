@@ -27,106 +27,171 @@
 
 
 
-If[!TrueQ[`Private`$ImportsRegistered],
-(*
-	MolTables
-	*)
-ImportExport`RegisterImport[
-	"MolTable",
-	ChemImportMolTable,
-	"FunctionChannels"->{"Streams"}
-	];
-ImportExport`RegisterImport[
-	"ZMatrix",
-	ChemImportZMatrix,
-	"FunctionChannels"->{"Streams"}
-	];
-(*
-	Objects
-	*)
-ImportExport`RegisterImport[
-	"ChemObject",
-	ChemImportObject
-	];
-(*
-	CubeFiles
-	*)
-Map[
+(* ::Subsubsection::Closed:: *)
+(*ChemObject*)
+
+
+
+If[!TrueQ[`Private`$ImportRegistered["MolTable"]],
 	ImportExport`RegisterImport[
-		"CubeFile",
-		{
-			"Association":>
-				Function[
-					{"Association"->CubeFileGrid@CubeFileRead[##]}
-					],
-			"Grid":>
-				Function[
-					{"Grid"->CubeFileGrid@CubeFileRead[##]}
-					],
-			"InterpolatingFunction":>
-				Function[
-					{"InterpolatingFunction"->CubeFileFunction@CubeFileRead[##]}
-					],
-			"Elements":>
-				Function[{"Elements"->{"Association", "Grid", "InterpolatingFunction"}}],
-			CubeFileRead
-			},
+		"MolTable",
+		ChemImportMolTable,
 		"FunctionChannels"->{"Streams"}
-		]&,
-	{"cube", "CubeFile"}
-	];
-(* 
-	GJF
-	*)
-Map[
+		];
 	ImportExport`RegisterImport[
-		#,
-		{
-			"MolTable":>
-				Function[{"MolTable"->ImportGaussianJob[#, "MolTable"]}],
-			"Elements":>
-				Function[{"Elements"->{"MolTable"}}],
-			ImportGaussianJob
-			}
-		]&,
-	{"GJF", "GaussianJob"}
-	];
-(* 
-	FChk
-	*)
-Map[
-	ImportExport`RegisterImport[
-		#,
-		{
-			"MolTable":>
-				Function[{"MolTable"->ImportFormattedCheckpointFile[#, "MolTable"]}],
-			"Elements":>
-				Function[{"Elements"->{"MolTable"}}],
-			ImportFormattedCheckpointFile
-			},
+		"ZMatrix",
+		ChemImportZMatrix,
 		"FunctionChannels"->{"Streams"}
-		]&,
-	{"FCHK", "FormattedCheckpoint"}
-	];
-(* 
-	Scan
-	*)
-Map[
+		];
+	`Private`$ImportRegistered["MolTable"]=True
+	]
+
+
+(* ::Subsubsection::Closed:: *)
+(*ChemObject*)
+
+
+
+If[!TrueQ[`Private`$ImportRegistered["ChemObject"]],
 	ImportExport`RegisterImport[
-		#,
-		{
-			"MolTable":>
-				Function[{"MolTable"->ImportGaussianScan[#, "MolTable"]}],
-			"Elements":>
-				Function[{"Elements"->{"MolTable"}}],
-			ImportGaussianScan
-			},
-		"FunctionChannels"->{"Streams"}
-		]&,
-	{"GaussianScan"}
+		"ChemObject",
+		ChemImportObject
+		];
+	`Private`$ImportRegistered["ChemObject"]=True
 	];
-`Private`$ImportsRegistered=True
-];
+
+
+(* ::Subsubsection::Closed:: *)
+(*CubeFile*)
+
+
+
+If[!TrueQ[`Private`$ImportRegistered["CubeFile"]],
+	Map[
+		ImportExport`RegisterImport[
+			"CubeFile",
+			{
+				"Association":>
+					Function[
+						{"Association"->CubeFileGrid@CubeFileRead[##]}
+						],
+				"Grid":>
+					Function[
+						{"Grid"->CubeFileGrid@CubeFileRead[##]}
+						],
+				"InterpolatingFunction":>
+					Function[
+						{"InterpolatingFunction"->CubeFileFunction@CubeFileRead[##]}
+						],
+				"Elements":>
+					Function[{"Elements"->{"Association", "Grid", "InterpolatingFunction"}}],
+				CubeFileRead
+				},
+			"FunctionChannels"->{"Streams"}
+			]&,
+		{"cube", "CubeFile"}
+		];
+	`Private`$ImportRegistered["CubeFile"]=True
+	];
+
+
+(* ::Subsubsection::Closed:: *)
+(*GJF*)
+
+
+
+If[!TrueQ[`Private`$ImportRegistered["GaussianJob"]],
+	Map[
+		ImportExport`RegisterImport[
+			#,
+			{
+				"MolTable":>
+					Function[{"MolTable"->ImportGaussianJob[#, "MolTable"]}],
+				"Elements":>
+					Function[{"Elements"->{"MolTable"}}],
+				ImportGaussianJob
+				}
+			]&,
+		{"GJF", "GaussianJob"}
+		];
+	`Private`$ImportRegistered["GaussianJob"]=True
+	];
+
+
+(* ::Subsubsection::Closed:: *)
+(*FChk*)
+
+
+
+If[!TrueQ[`Private`$ImportRegistered["FormattedCheckpoint"]],
+	Map[
+		ImportExport`RegisterImport[
+			#,
+			{
+				"MolTable":>
+					Function[{"MolTable"->ImportFormattedCheckpointFile[#, "MolTable"]}],
+				"Elements":>
+					Function[{"Elements"->{"MolTable"}}],
+				ImportFormattedCheckpointFile
+				},
+			"FunctionChannels"->{"Streams"}
+			]&,
+		{"FCHK", "FormattedCheckpoint"}
+		];
+	`Private`$ImportRegistered["FormattedCheckpoint"]=True
+	];
+
+
+(* ::Subsubsection::Closed:: *)
+(*GaussianLog*)
+
+
+
+If[!TrueQ[`Private`$ImportRegistered["GaussianLog"]],
+	Map[
+		ImportExport`RegisterImport[
+			#,
+			Join[
+				Map[
+					Function[
+						With[{`Private`elname=#},
+							`Private`elname:>
+								Function[{`Private`elname->ImportGaussianLog[#, `Private`elname]}]
+							]
+						],
+					{
+						"StartDateTime",
+						"ZMatrix",
+						"Scan",
+						"Blurb",
+						"ComputerTimeElapsed",
+						"EndDateTime"
+						}
+					],
+				{
+					"Elements":>
+						Function[
+							{
+								"Elements"->
+									{
+										"StartDateTime",
+										"ZMatrix",
+										"Scan",
+										"Blurb",
+										"ComputerTimeElapsed",
+										"EndDateTime"
+										}
+								}
+							],
+					ImportGaussianLog
+					}
+				],
+			"FunctionChannels"->{"Streams"}
+			]&,
+		{"GaussianLog"}
+		];
+	`Private`$ImportRegistered["GaussianLog"]=True
+	];
 
 
 

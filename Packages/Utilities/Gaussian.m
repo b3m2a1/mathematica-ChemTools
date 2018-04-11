@@ -23,8 +23,8 @@ ImportGaussianJob::usage=
 	"Imports data from a Gaussian job";
 ImportFormattedCheckpointFile::usage=
 	"Imports results from an FChk file";
-ImportGaussianScan::usage=
-	"Imports a scan from a Log file";
+ImportGaussianLog::usage=
+	"Imports data from a log file";
 
 
 Begin["`Private`"];
@@ -207,7 +207,38 @@ ImportGaussianJob[file:_String|_InputStream, "MolTable"]:=
 
 
 (* ::Subsubsection::Closed:: *)
+(*iGaussianLogRead*)
+
+
+
+iGaussianLogRead[log_InputStream, recSeps_, postProcess_]/;!TrueQ[$GaussianLogReadEOF]:=
+	With[
+		{
+			sp=
+				Quiet@StreamPosition@log,
+			res=
+				Read[log, Record, 
+					RecordSeparators->recSeps
+					]
+			},
+		If[res===EndOfFile,
+			$GaussianLogReadEOF=
+				Quiet@Check[SetStreamPosition[log, sp], True];
+			Missing["NotFound"],
+			postProcess@res
+			]
+		];
+iGaussianLogRead[log_InputStream, recSeps_, postProcess_]/;TrueQ[$GaussianLogReadEOF]=
+	Missing["EndOfFile"]
+
+
+(* ::Subsubsection::Closed:: *)
 (*GaussianLogRead*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Main*)
 
 
 
@@ -235,8 +266,8 @@ GaussianLogRead[logString_String, key_]:=
 		];
 
 
-(* ::Subsubsection::Closed:: *)
-(*GaussianLogReadZMatrix*)
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrix*)
 
 
 
@@ -246,7 +277,7 @@ gaussianLogReadZMatrixBlock[zmat_]:=
 			Length@#>5,
 				MapAt[
 					Quantity[#, "Angstroms"]&, 
-					MapAt[Quantity[#, "AngularDegrees"]&, #, {5, 7}],
+					MapAt[Quantity[#, "AngularDegrees"]&, #, {{5}, {7}}],
 					{3}
 					],
 			Length@#>3,
@@ -272,14 +303,15 @@ gaussianLogReadZMatrixBlock[zmat_]:=
 
 
 GaussianLogRead[log_InputStream, "ZMatrix"]:=
-	gaussianLogReadZMatrixBlock@
-		Read[log, Record,
-			RecordSeparators->{{"Z-matrix:"}, {"NAtoms="}}
-			]
+	iGaussianLogRead[
+		log,
+		{{"Z-matrix:"}, {"NAtoms="}},
+		gaussianLogReadZMatrixBlock
+		]
 
 
-(* ::Subsubsection::Closed:: *)
-(*GaussianLogReadScan*)
+(* ::Subsubsubsection::Closed:: *)
+(*Scan*)
 
 
 
@@ -313,32 +345,144 @@ gaussianLogReadScanBlock[scan_]:=
 
 
 GaussianLogRead[log_InputStream, "Scan"]:=
-	gaussianLogReadScanBlock@
-		Read[log, Record, 
-			RecordSeparators->{{"scan:"}, {"\n  \n"}}
-			];
+	iGaussianLogRead[
+		log,
+		{{"scan:"}, {"\n  \n"}},
+		gaussianLogReadScanBlock
+		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ComputerTimeElapsed*)
+
+
+
+gaussianLogReadTimeElapsedBlock[elapsed_]:=
+	With[
+		{
+			times=ToExpression@StringCases[elapsed, NumberString],
+			units={"Days", "Hours", "Minutes", "Seconds"}
+			},
+		With[{mlen=Min[Length/@{times, units}]},
+			Quantity[
+				MixedMagnitude[Take[times, mlen]],
+				MixedUnit[Take[units, mlen]]
+				]
+			]
+		];
+
+
+GaussianLogRead[log_InputStream, "ComputerTimeElapsed"]:=
+	iGaussianLogRead[
+		log,
+		{{"cpu time:"}, {"\n"}},
+		gaussianLogReadTimeElapsedBlock
+		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Blurb*)
+
+
+
+GaussianLogRead[log_InputStream, "Blurb"]:=
+	iGaussianLogRead[
+		log,
+		{{"\n\n\n"}, {"\n Job "}},
+		StringTrim
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*StartDateTime*)
+
+
+
+gaussianLogReadParseStartDateTime[s_String]:=
+	DateObject@
+		First@
+			StringSplit[
+				Last@
+					StringSplit[
+						s,
+						" at "
+						],
+				","
+				]
+
+
+GaussianLogRead[log_InputStream, "StartDateTime"]:=
+	iGaussianLogRead[log,
+		{{"Leave Link"}, {"\n (Enter"}},
+		gaussianLogReadParseStartDateTime
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*EndDateTime*)
+
+
+
+gaussianLogReadParseEndDateTime[s_String]:=
+	DateObject@Last@
+		StringSplit[s, " at "]
+
+
+GaussianLogRead[log_InputStream, "EndDateTime"]:=
+	iGaussianLogRead[
+		log,
+		{{"Normal termination of Gaussian"}, {"\n"}},
+		gaussianLogReadParseEndDateTime
+		]
 
 
 (* ::Subsubsection::Closed:: *)
-(*ImportGaussianScan*)
+(*ImportGaussianLog*)
 
 
 
-ImportGaussianScan[
-	file:_String?FileExistsQ|_InputStream
-	]:=
-	GaussianLogRead[file, "Scan"];
-ImportGaussianScan[
+$GaussianLogKeywords=
+	{
+		"StartDateTime",
+		"ZMatrix",
+		"Scan",
+		"Blurb",
+		"ComputerTimeElapsed",
+		"EndDateTime"
+		};
+
+
+ImportGaussianLog[
 	file:_String?FileExistsQ|_InputStream,
-	"MolTable"
+	k_String
 	]:=
-	With[
-		{
-			zmat=GaussianLogRead[file, "ZMatrix"],
-			scan=GaussianLogRead[file, "Scan"]
-			},
-		MapAt[ChemUtilsGenerateMolTable, zmat->"V"/.scan, {All, 1}]
-		]
+	Block[{$GaussianLogReadEOF},
+		Replace[
+			GaussianLogRead[file, k],
+			_GaussianLogRead->Missing["UnknownKey", k]
+			]
+		];
+ImportGaussianLog[
+	file:_String?FileExistsQ|_InputStream,
+	k:{__String}
+	]:=
+	Block[{$GaussianLogReadEOF},
+		AssociationMap[
+			Replace[
+				GaussianLogRead[file, #],
+				_GaussianLogRead->Missing["UnknownKey", #]
+				]&,
+			SortBy[
+				k, 
+				Position[$GaussianLogKeywords, #]&
+				]
+			]
+		];
+ImportGaussianLog[
+	file:_String?FileExistsQ|_InputStream,
+	Optional[All, All]
+	]:=
+	ImportGaussianLog[file, $GaussianLogKeywords]
 
 
 (* ::Subsection:: *)
