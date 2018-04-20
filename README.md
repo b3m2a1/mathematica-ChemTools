@@ -90,7 +90,7 @@ Import a molecule from PubChem:
 
     (*Out:*)
     
-    ![readme-1671162139457571605](project/img/readme-1671162139457571605.png)
+![readme-1671162139457571605](project/img/readme-1671162139457571605.png)
 
 Calculate the Gasteiger-charge based electric potential:
 
@@ -98,7 +98,7 @@ Calculate the Gasteiger-charge based electric potential:
 
     (*Out:*)
     
-    ![readme-2363863788513175169](project/img/readme-2363863788513175169.png)
+![readme-2363863788513175169](project/img/readme-2363863788513175169.png)
 
 Plot the first molecular orbital:
 
@@ -108,7 +108,7 @@ Plot the first molecular orbital:
 
     (*Out:*)
     
-    ![readme-1320381462497713551](project/img/readme-1320381462497713551.png)
+![readme-1320381462497713551](project/img/readme-1320381462497713551.png)
 
 ---
 
@@ -201,13 +201,13 @@ Note that these are all implemented in  top-level Mathematica code, and some may
 
     (*Out:*)
     
-    ![readme-2495216512333191222](project/img/readme-2495216512333191222.png)
+![readme-2495216512333191222](project/img/readme-2495216512333191222.png)
 
     ChemUtilsSymmetryGraphics[AtomsetElementPositions@benzene]//AbsoluteTiming
 
     (*Out:*)
     
-    ![readme-8741352710220477349](project/img/readme-8741352710220477349.png)
+![readme-8741352710220477349](project/img/readme-8741352710220477349.png)
 
 This can be accelerated by only considering the heavy atoms. The atom set version provides that as a default:
 
@@ -215,7 +215,7 @@ This can be accelerated by only considering the heavy atoms. The atom set versio
 
     (*Out:*)
     
-    ![readme-4345856255436803276](project/img/readme-4345856255436803276.png)
+![readme-4345856255436803276](project/img/readme-4345856255436803276.png)
 
 The algorithm depends on being able to reduce the problem by symmetry, though, so for unsymmetric systems, performance is negatively impacted:
 
@@ -223,7 +223,7 @@ The algorithm depends on being able to reduce the problem by symmetry, though, s
 
     (*Out:*)
     
-    ![readme-7496145490262263288](project/img/readme-7496145490262263288.png)
+![readme-7496145490262263288](project/img/readme-7496145490262263288.png)
 
 And for particularly large species it fails completely:
 
@@ -281,7 +281,7 @@ Configure a simple scan in Psi4:
 
     (*Out:*)
     
-    ![readme-4847461953510582721](project/img/readme-4847461953510582721.png)
+![readme-4847461953510582721](project/img/readme-4847461953510582721.png)
 
 Extract the input file string:
 
@@ -353,13 +353,13 @@ Load a simple 1D DVR and run it:
 
     (*Out:*)
     
-    ![readme-3087179262152654434](project/img/readme-3087179262152654434.png)
+![readme-3087179262152654434](project/img/readme-3087179262152654434.png)
 
     dvr[Manipulate->False]
 
     (*Out:*)
     
-    ![readme-4756771029121808054](project/img/readme-4756771029121808054.png)
+![readme-4756771029121808054](project/img/readme-4756771029121808054.png)
 
 ---
 
@@ -388,7 +388,7 @@ Import a random JPL line list:
 
     (*Out:*)
     
-    ![readme-6692305282162883065](project/img/readme-6692305282162883065.png)
+![readme-6692305282162883065](project/img/readme-6692305282162883065.png)
 
 Plot it:
 
@@ -396,7 +396,7 @@ Plot it:
 
     (*Out:*)
     
-    ![readme-2103693155381691522](project/img/readme-2103693155381691522.png)
+![readme-2103693155381691522](project/img/readme-2103693155381691522.png)
 
 Start an interactive line picker
 
@@ -404,4 +404,4 @@ Start an interactive line picker
 
     (*Out:*)
     
-    ![readme-2819440853614459419](project/img/readme-2819440853614459419.png)
+![readme-2819440853614459419](project/img/readme-2819440853614459419.png)
