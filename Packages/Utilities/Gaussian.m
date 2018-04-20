@@ -333,7 +333,7 @@ gaussianLogReadScanBlock[scan_]:=
 		vars=Append[Take[headers, {2, energyPos-1}], "V"];
 		tab=
 			MapAt[
-				Quantity[#, "Hartrees"]&,
+				#&,
 				Partition[
 					ReadList[StringToStream@splits[[2]], Number], 
 					Length@headers
@@ -485,6 +485,46 @@ ImportGaussianLog[
 	ImportGaussianLog[file, $GaussianLogKeywords]
 
 
+ImportGaussianLog[
+	file:_String?FileExistsQ|_InputStream,
+	"ScanQuantityArray"
+	]:=
+	With[{bits=ImportGaussianLog[file, {"ZMatrix", "Scan"}]},
+		If[MissingQ@bits[[2]],
+			bits[[2]],
+			With[{
+				keys=Keys@First@bits[[2]], 
+				vals=Values@bits[[2]], 
+				zm=bits[[1]],
+				uc=
+					QuantityMagnitude@
+						UnitConvert[
+							Quantity[1, "Hartrees"], 
+							"Wavenumbers"*"PlanckConstant"*"SpeedOfLight"
+							]
+				},
+				With[
+					{
+						types=
+							Map[
+								Switch[FirstPosition[zm, #], 
+									{_, 3, ___}, "Angstroms",
+									_, "AngularDegrees"
+									]&,
+								Most@keys
+								]
+						},
+				Map[QuantityVariable, keys]->
+					QuantityArray[
+						MapAt[uc*#&, vals, {All, -1}], 
+						Append[types, "Wavenumbers"]
+						]
+					]
+				]
+			]
+		]
+
+
 (* ::Subsection:: *)
 (*FormattedCheckPoint Files*)
 
@@ -581,7 +621,7 @@ iFormattedCheckpointRead[
 							With[{n=ToExpression[lineParts[[4]]]},
 								Switch[type,
 									"R"|"I",
-									If[n>100,
+									If[n>50,
 										RawArray[
 											If[type=="R", "Real64", "Integer32"],
 											ReadList[stream, Number, n]
@@ -701,7 +741,7 @@ iFormattedCheckpointCleanResults[results_Association?AssociationQ]:=
 								"BohrRadius"
 								],
 						StringEndsQ[#, "Energy"|"Energies"],
-							If[Length@#==0,
+							If[NumericQ@#2,
 								Quantity[#2, "Hartrees"],
 								QuantityArray[Normal@#2, "Hartrees"]
 								],

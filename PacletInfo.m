@@ -1,5 +1,5 @@
 (* Created with the Wolfram Language : www.wolfram.com *)
-Paclet[Name -> "ChemTools", Version -> "1.1.31", 
+Paclet[Name -> "ChemTools", Version -> "1.1.32", 
  Creator -> "b3m2a1@gmail.com", Description -> "A collection of packages for \
 object oriented chemistry.\n  The primary packages implement an object and \
 data framework, but support is included for basic spectroscopy and a few \

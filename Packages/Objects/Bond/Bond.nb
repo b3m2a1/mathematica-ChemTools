@@ -1,0 +1,3489 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Bond", "CodeSection",
+ CellChangeTimes->{{3.7152876855358953`*^9, 
+  3.715287685958872*^9}},ExpressionUUID->"02da432f-90d8-4413-aeef-\
+2c1193b1c7b7"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Bond Methods\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.691807302522764*^9, 3.6918073054416857`*^9}, {
+  3.7325507528599997`*^9, 
+  3.7325507542930927`*^9}},ExpressionUUID->"505cd6c9-60e4-4755-ad77-\
+d6e23a5c07ec"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"CreateBond", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Creates a bond\>\""}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.691807408716099*^9, 3.691807453750148*^9}, 
+   3.692320659126638*^9, {3.700092755649259*^9, 3.700092771775456*^9}, {
+   3.700093756258853*^9, 
+   3.700093756578732*^9}},ExpressionUUID->"1af7ed45-35e5-4fea-9a58-\
+210a476630f5"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondCanFormQ", "::", "usage"}], "=", "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondFormedQ", "::", "usage"}], "=", "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondForm", "::", "usage"}], "=", "\"\<Creates a bond\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondBreak", "::", "usage"}], "=", "\"\<Breaks a bond\>\""}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.6923206703459387`*^9, 3.6923206933303823`*^9}, {
+   3.692394122542552*^9, 3.692394153627087*^9}, 
+   3.692406952139323*^9},ExpressionUUID->"5eecbe3f-9b88-4c32-8062-\
+3b547051a7f7"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondCenter", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Gets the raw bond center\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondCenterOfMass", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Gets the bond COM\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondMove", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Moves a bond\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondRotate", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Rotates a bond\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondNormal", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Comuptes the normal to a bond-point plane\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondTransform", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Applies a transform to a bond\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondRotationTransform", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Returns a RotationTransform on the bond axis\>\""}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.6924767181844873`*^9, 3.6924767357226057`*^9}, {
+  3.692478047169634*^9, 3.692478064261326*^9}, {3.700139095564855*^9, 
+  3.700139113849833*^9}, {3.7001394762885437`*^9, 3.7001394868152037`*^9}, {
+  3.70014282553542*^9, 3.700142855906877*^9}, {3.7001487662833014`*^9, 
+  3.700148799999092*^9}},ExpressionUUID->"667a6d6f-0e6b-4223-8a84-\
+006176e8ff17"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondPolarization", "::", "usage"}], "=", 
+   "\"\<Gets bond polarization\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondVector", "::", "usage"}], "=", "\"\<Gets a bond vector\>\""}],
+   ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondDeviation", "::", "usage"}], "=", 
+   "\"\<Gets a bond's deviation from its standard distance\>\""}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.691807408716099*^9, 3.691807453750148*^9}, 
+   3.692320659126638*^9, 3.692396033769308*^9, {3.6924091367778273`*^9, 
+   3.692409144094961*^9}, {3.692491996391218*^9, 3.6924919998660603`*^9}, {
+   3.710254249276947*^9, 
+   3.710254264147225*^9}},ExpressionUUID->"43ec65ce-963b-4915-bc28-\
+243d0a547af0"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondColors", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Returns the colors for a bond\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondGraphic", "::", "usage"}], "=", 
+   "\"\<Gets a 2D bond graphics object\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondGraphic3D", "::", "usage"}], "=", 
+   "\"\<Gets a 3D bond graphics object\>\""}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.691807408716099*^9, 3.691807453750148*^9}, 
+   3.692320659126638*^9, {3.692396033769308*^9, 3.692396041080175*^9}, {
+   3.6924125368883553`*^9, 3.692412558062913*^9}, {3.700150179218615*^9, 
+   3.700150193145245*^9}},ExpressionUUID->"df9152f2-bb07-4375-8325-\
+62450583526b"]
+}, Closed]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"11392d0b-b6d9-4e29-9e60-\
+df9349723dfc"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Bond Class\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.726973188555375*^9, 
+  3.7269731901472054`*^9}},ExpressionUUID->"a98e8a0f-ef5c-4d0c-8bb6-\
+ebca6cd7b8fd"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"$ChemObjectDefaults", "[", "\"\<Bond\>\"", "]"}], "=."}], 
+  "*)"}]], "CodeInput",
+ CellChangeTimes->{
+  3.72697522512689*^9},ExpressionUUID->"d4667345-e180-4c66-b22c-f4d9b573c83d"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"If", "[", 
+   RowBox[{
+    RowBox[{"!", 
+     RowBox[{"KeyMemberQ", "[", 
+      RowBox[{"$ChemObjectDefaults", ",", " ", "\"\<Bond\>\""}], "]"}]}], ",",
+     "\n", "\t", 
+    RowBox[{
+     RowBox[{"$ChemObjectDefaults", "[", "\"\<Bond\>\"", "]"}], "=", "\n", 
+     "\t\t\t", 
+     RowBox[{"<|", "\n", "\t\t\t\t", 
+      RowBox[{
+       RowBox[{"\"\<Atoms\>\"", "\[Rule]", 
+        RowBox[{"{", "}"}]}], ",", "\n", "\t\t\t\t", 
+       RowBox[{"\"\<Type\>\"", "\[Rule]", "1"}], ",", "\n", "\t\t\t\t", 
+       RowBox[{"\"\<Strength\>\"", "\[Rule]", "Automatic"}], ",", "\n", 
+       "\t\t\t\t", 
+       RowBox[{"\"\<Color\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"Automatic", ",", "Automatic"}], "}"}]}], ",", "\n", 
+       "\t\t\t\t", "\n", "\t\t\t\t", 
+       RowBox[{"\"\<Form\>\"", "\[Rule]", 
+        RowBox[{"ChemMethod", "[", "BondForm", "]"}]}], ",", "\n", "\t\t\t\t", 
+       RowBox[{"\"\<Break\>\"", "\[Rule]", 
+        RowBox[{"ChemMethod", "[", "BondBreak", "]"}]}], ",", "\n", 
+       "\t\t\t\t", 
+       RowBox[{"\"\<CanForm\>\"", "\[Rule]", 
+        RowBox[{"ChemProperty", "[", "BondCanFormQ", "]"}]}], ",", "\n", 
+       "\t\t\t\t", 
+       RowBox[{"\"\<Formed\>\"", "\[Rule]", 
+        RowBox[{"ChemProperty", "[", "BondFormedQ", "]"}]}], ",", "\n", 
+       "\t\t\t\t", "\n", "\t\t\t\t", 
+       RowBox[{"\"\<Rotate\>\"", "->", 
+        RowBox[{"ChemMethod", "[", "BondRotate", "]"}]}], ",", "\n", 
+       "\t\t\t\t", 
+       RowBox[{"\"\<Move\>\"", "\[Rule]", 
+        RowBox[{"ChemMethod", "[", "BondMove", "]"}]}], ",", "\n", "\t\t\t\t", 
+       RowBox[{"\"\<Transform\>\"", "->", 
+        RowBox[{"ChemMethod", "[", "BondTransform", "]"}]}], ",", "\n", 
+       "\t\t\t\t", "\n", "\t\t\t\t", 
+       RowBox[{"\"\<Center\>\"", "->", 
+        RowBox[{"ChemProperty", "[", "BondCenter", "]"}]}], ",", "\n", 
+       "\t\t\t\t", 
+       RowBox[{"\"\<CenterOfMass\>\"", "->", 
+        RowBox[{"ChemProperty", "[", "BondCenterOfMass", "]"}]}], ",", "\n", 
+       "\t\t\t\t", 
+       RowBox[{"\"\<Vector\>\"", "\[Rule]", 
+        RowBox[{"ChemProperty", "[", "BondVector", "]"}]}], ",", "\n", 
+       "\t\t\t\t", 
+       RowBox[{"\"\<Normal\>\"", "->", 
+        RowBox[{"ChemProperty", "[", "BondNormal", "]"}]}], ",", "\n", 
+       "\t\t\t\t", "\n", "\t\t\t\t", 
+       RowBox[{"\"\<Graphic\>\"", "\[Rule]", 
+        RowBox[{"ChemMethod", "[", "\n", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"With", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"o", "=", 
+              RowBox[{"{", "##", "}"}]}], "}"}], ",", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"BondGraphic", "[", 
+             RowBox[{
+              RowBox[{"First", "@", "o"}], ",", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"Sequence", "@@", 
+               RowBox[{"FilterRules", "[", 
+                RowBox[{
+                 RowBox[{"Rest", "@", "o"}], ",", 
+                 RowBox[{"Options", "@", "BondGraphic"}]}], "]"}]}]}], 
+             "]"}]}], "\n", "\t\t\t\t\t\t\t", "]"}], "&"}], "\n", 
+         "\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t", 
+       RowBox[{"\"\<Graphic3D\>\"", "\[Rule]", 
+        RowBox[{"ChemMethod", "[", "\n", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"With", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"o", "=", 
+              RowBox[{"{", "##", "}"}]}], "}"}], ",", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"BondGraphic3D", "[", 
+             RowBox[{
+              RowBox[{"First", "@", "o"}], ",", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"Sequence", "@@", 
+               RowBox[{"FilterRules", "[", 
+                RowBox[{
+                 RowBox[{"Rest", "@", "o"}], ",", 
+                 RowBox[{"Options", "@", "BondGraphic3D"}]}], "]"}]}]}], 
+             "]"}]}], "\n", "\t\t\t\t\t\t", "]"}], "&"}], "\n", "\t\t\t\t\t", 
+         "]"}]}]}], "\n", "\t\t\t", "|>"}]}]}], "\n", "  ", "]"}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.7269718460174503`*^9, 3.726971866710965*^9}, {
+  3.72697192852835*^9, 3.726971937213673*^9}, {3.7269729527788763`*^9, 
+  3.726973043721567*^9}, {3.726973123572806*^9, 3.726973139627715*^9}, {
+  3.726973205774446*^9, 3.726973217416877*^9}, {3.7269752202273197`*^9, 
+  3.726975222346209*^9}, {3.727827093416979*^9, 3.727827106644939*^9}, {
+  3.730838783404006*^9, 3.730838795612101*^9}, {3.7308388947173147`*^9, 
+  3.730838990356057*^9}, {3.730839068234892*^9, 3.7308390701527233`*^9}, {
+  3.7308410336918163`*^9, 
+  3.7308410397636623`*^9}},ExpressionUUID->"ccacee57-673e-4439-ad3d-\
+bcaf26c9322e"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Bond Props\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.726973178204859*^9, 
+  3.726973179395465*^9}},ExpressionUUID->"1df88cca-5781-4afd-bc82-\
+248ea1dc9747"],
+
+Cell[CellGroupData[{
+
+Cell["Create", "CodeSubsubsection",
+ CellChangeTimes->{{3.6924087308448763`*^9, 
+  3.692408731631301*^9}},ExpressionUUID->"d0df5e94-da4f-4fd9-91d5-\
+171f66eb5c31"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"CreateBond", "[", 
+    RowBox[{
+     RowBox[{"sys", ":", 
+      RowBox[{"ChemSysPattern", "|", "Automatic"}], ":", "Automatic"}], ",", 
+     "\n", "\t", 
+     RowBox[{"atom1", ":", "ChemObjPattern"}], ",", 
+     RowBox[{"atom2", ":", "ChemObjPattern"}], ",", "\n", "\t", 
+     RowBox[{"btype_:", "Automatic"}], ",", "\n", "\t", "others___"}], "]"}], 
+   ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"bops", "=", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"btype", "=!=", "Automatic"}], ",", 
+         RowBox[{"Prepend", "[", 
+          RowBox[{
+           RowBox[{"{", "others", "}"}], ",", 
+           RowBox[{"\"\<Type\>\"", "\[Rule]", "btype"}]}], "]"}], ",", 
+         RowBox[{"{", "others", "}"}]}], "]"}]}], "}"}], ",", "\n", "\t\t", 
+     RowBox[{"ChemAdd", "[", 
+      RowBox[{
+       RowBox[{"Replace", "[", 
+        RowBox[{"sys", ",", 
+         RowBox[{"Automatic", "\[RuleDelayed]", "$ChemDefaultSystem"}]}], 
+        "]"}], ",", "\n", "\t\t\t", "\"\<Bond\>\"", ",", "\n", "\t\t\t", 
+       RowBox[{"\"\<Atoms\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"atom1", ",", "atom2"}], "}"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"Sequence", "@@", "bops"}]}], "\n", "\t\t\t", "]"}]}], "\n", 
+    "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.692310172132568*^9, 3.69231017378874*^9}, {
+   3.692311144822106*^9, 3.692311234948963*^9}, {3.692311365996387*^9, 
+   3.692311423750495*^9}, {3.692315512155553*^9, 3.692315545927567*^9}, {
+   3.692316829541572*^9, 3.6923168975954514`*^9}, {3.692316930231468*^9, 
+   3.692317002249379*^9}, {3.692392986836624*^9, 3.6923930079558907`*^9}, {
+   3.692393039702726*^9, 3.692393096307291*^9}, {3.7000818033482656`*^9, 
+   3.700081811718238*^9}, {3.700081880029814*^9, 3.700081928824547*^9}, 
+   3.7183356371052113`*^9, {3.718335710104453*^9, 
+   3.71833571011055*^9}},ExpressionUUID->"5e4b9498-f5cb-49e2-a2ac-\
+a9e57f5855eb"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["CanFormQ", "CodeSubsubsection",
+ CellChangeTimes->{{3.692408733835746*^9, 
+  3.692408736476856*^9}},ExpressionUUID->"8b848194-8031-4063-8cb0-\
+4ea86401a618"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondCanFormQ", "[", 
+    RowBox[{"obj", ":", "ChemObjPattern"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"a", "=", 
+       RowBox[{"ChemGet", "[", 
+        RowBox[{"obj", ",", "\"\<Atoms\>\""}], "]"}]}], "}"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{
+      RowBox[{"!", 
+       RowBox[{"MemberQ", "[", 
+        RowBox[{
+         RowBox[{"Flatten", "@", 
+          RowBox[{"ChemGet", "[", 
+           RowBox[{"a", ",", "\"\<Bonds\>\""}], "]"}]}], ",", "obj"}], 
+        "]"}]}], "&&", "\n", "\t\t\t", 
+      RowBox[{"AtomCanBondQ", "[", 
+       RowBox[{
+        RowBox[{"First", "@", "a"}], ",", 
+        RowBox[{"Last", "@", "a"}], ",", 
+        RowBox[{"ChemGet", "[", 
+         RowBox[{"obj", ",", "\"\<Type\>\""}], "]"}]}], "]"}]}]}], "\n", 
+    "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.692310172132568*^9, 3.69231017378874*^9}, {
+   3.692311144822106*^9, 3.692311234948963*^9}, {3.692311365996387*^9, 
+   3.692311423750495*^9}, {3.692315512155553*^9, 3.692315545927567*^9}, {
+   3.692316829541572*^9, 3.6923168975954514`*^9}, {3.692316930231468*^9, 
+   3.692317064511986*^9}, {3.692317247289304*^9, 3.692317247994936*^9}, {
+   3.692319002572343*^9, 3.6923190395927153`*^9}, {3.6923205564883547`*^9, 
+   3.692320648430485*^9}, {3.700081993537272*^9, 3.700082010866385*^9}, {
+   3.700082045603457*^9, 3.7000820993339252`*^9}, {3.700082138071227*^9, 
+   3.700082179337667*^9}, 
+   3.71833571011633*^9},ExpressionUUID->"7dd0398f-fbd7-4737-b7bb-f446880612cc"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["FormedQ", "CodeSubsubsection",
+ CellChangeTimes->{{3.692408740507299*^9, 
+  3.692408741764051*^9}},ExpressionUUID->"f720d0be-8bc1-4e87-9b5d-\
+f1080a579ebb"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"BondFormedQ", "[", 
+   RowBox[{"obj", ":", "ChemObjPattern"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"MemberQ", "[", 
+   RowBox[{
+    RowBox[{"Flatten", "@", 
+     RowBox[{"ChemGet", "[", 
+      RowBox[{
+       RowBox[{"ChemGet", "[", 
+        RowBox[{"obj", ",", "\"\<Atoms\>\""}], "]"}], ",", "\"\<Bonds\>\""}], 
+      "]"}]}], ",", "obj"}], "]"}]}]], "CodeInput",
+ CellChangeTimes->{{3.692310172132568*^9, 3.69231017378874*^9}, {
+   3.692311144822106*^9, 3.692311234948963*^9}, {3.692311365996387*^9, 
+   3.692311423750495*^9}, {3.692315512155553*^9, 3.692315545927567*^9}, {
+   3.692316829541572*^9, 3.6923168975954514`*^9}, {3.692316930231468*^9, 
+   3.692317064511986*^9}, {3.692317247289304*^9, 3.692317247994936*^9}, {
+   3.692319002572343*^9, 3.6923190395927153`*^9}, {3.6923205564883547`*^9, 
+   3.692320648430485*^9}, {3.70008210282946*^9, 3.700082120754517*^9}, 
+   3.718335710121683*^9},ExpressionUUID->"44eb9e7f-2c50-443b-98d3-\
+cb7000e092ff"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Form", "CodeSubsubsection",
+ CellChangeTimes->{{3.692408744979538*^9, 
+  3.6924087453803883`*^9}},ExpressionUUID->"f5abe085-186f-4fd3-88de-\
+1162968bb7de"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondForm", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemObjPattern"}], ",", 
+     RowBox[{"check", ":", 
+      RowBox[{"True", "|", "False"}], ":", "True"}]}], "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"!", "check"}], ")"}], "||", 
+      RowBox[{"BondCanFormQ", "[", "obj", "]"}]}], ",", "\n", "\t\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"a", "=", 
+         RowBox[{"ChemGet", "[", 
+          RowBox[{"obj", ",", "\"\<Atoms\>\""}], "]"}]}], "}"}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{
+        RowBox[{"AtomAddBond", "[", 
+         RowBox[{"a", ",", "obj"}], "]"}], ";", "\n", "\t\t\t", 
+        RowBox[{"ChemAddReference", "[", 
+         RowBox[{"obj", ",", "a"}], "]"}], ";"}]}], "\n", "\t\t\t", "]"}], 
+     ",", "\n", "\t\t", "$Failed"}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.692310172132568*^9, 3.69231017378874*^9}, {
+   3.692311144822106*^9, 3.692311234948963*^9}, {3.692311365996387*^9, 
+   3.692311423750495*^9}, {3.692315512155553*^9, 3.692315545927567*^9}, {
+   3.692316829541572*^9, 3.6923168975954514`*^9}, {3.692316930231468*^9, 
+   3.6923170028598757`*^9}, {3.6923170359932947`*^9, 3.692317040818239*^9}, {
+   3.692317073185769*^9, 3.692317085538612*^9}, {3.692317233339273*^9, 
+   3.692317254472124*^9}, {3.69231734361975*^9, 3.692317394330893*^9}, {
+   3.692317515716687*^9, 3.692317530761198*^9}, {3.692318990827709*^9, 
+   3.692318993425178*^9}, {3.6923207221823263`*^9, 3.6923207272989597`*^9}, {
+   3.6923886366452217`*^9, 3.6923886393140574`*^9}, {3.692393137586546*^9, 
+   3.6923931697690573`*^9}, {3.692394261995878*^9, 3.6923942660985727`*^9}, {
+   3.6923945370108852`*^9, 3.692394564844051*^9}, {3.692394790572639*^9, 
+   3.692394794883458*^9}, {3.692406952115416*^9, 3.692406952123824*^9}, {
+   3.692490191923994*^9, 3.692490224063933*^9}, {3.69249026511243*^9, 
+   3.692490267888229*^9}, {3.694547812313754*^9, 3.6945478413620167`*^9}, {
+   3.6945479322486067`*^9, 3.694547946940057*^9}, {3.700082197532359*^9, 
+   3.700082237881192*^9}, {3.700082296726014*^9, 3.700082311444971*^9}, 
+   3.718335710126333*^9},ExpressionUUID->"a47c268d-9f53-4250-940f-\
+afa99098a8e6"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Break", "CodeSubsubsection",
+ CellChangeTimes->{{3.692408749899334*^9, 
+  3.692408750412548*^9}},ExpressionUUID->"e6afd748-b183-471d-8cb2-\
+d388282a8f18"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondBreak", "[", 
+    RowBox[{"obj", ":", "ChemObjPattern"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{"BondFormedQ", "[", "obj", "]"}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"AtomRemoveBond", "[", 
+       RowBox[{
+        RowBox[{"ChemGet", "[", 
+         RowBox[{"obj", ",", "\"\<Atoms\>\""}], "]"}], ",", "obj"}], "]"}], 
+      ";", "\n", "\t\t", "obj"}], ",", "\n", "\t\t", "$Failed"}], "\n", 
+    "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.692310172132568*^9, 3.69231017378874*^9}, {
+   3.692311144822106*^9, 3.692311234948963*^9}, {3.692311365996387*^9, 
+   3.692311423750495*^9}, {3.692315512155553*^9, 3.692315545927567*^9}, {
+   3.692316829541572*^9, 3.6923168975954514`*^9}, {3.692316930231468*^9, 
+   3.6923170028598757`*^9}, {3.6923170359932947`*^9, 3.692317040818239*^9}, {
+   3.692317073185769*^9, 3.692317085538612*^9}, {3.692317233339273*^9, 
+   3.692317254472124*^9}, {3.69231734361975*^9, 3.692317394330893*^9}, {
+   3.692317515716687*^9, 3.692317530761198*^9}, {3.692318990827709*^9, 
+   3.692318993425178*^9}, {3.6923207221823263`*^9, 3.6923207272989597`*^9}, {
+   3.6923886366452217`*^9, 3.6923886393140574`*^9}, {3.692393137586546*^9, 
+   3.6923931697690573`*^9}, {3.692394261995878*^9, 3.6923942660985727`*^9}, {
+   3.6923945370108852`*^9, 3.692394560890739*^9}, {3.7000050204614067`*^9, 
+   3.700005024857779*^9}, {3.700005067626052*^9, 3.700005074671166*^9}, {
+   3.700082420088974*^9, 3.700082453209126*^9}, 
+   3.718335710132115*^9},ExpressionUUID->"a2999ec0-c7d7-4108-80c1-\
+004f7e2241f2"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Vector", "CodeSubsubsection",
+ CellChangeTimes->{{3.6924087662347517`*^9, 
+  3.6924087671636143`*^9}},ExpressionUUID->"8e7d46b9-9114-4422-9505-\
+166d1c59cf27"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondVector", "[", 
+    RowBox[{"obj", ":", "ChemObjPattern"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Subtract", "@@", "\n", "\t\t", 
+    RowBox[{"ChemGet", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"ChemGet", "[", 
+       RowBox[{"obj", ",", "\"\<Atoms\>\""}], "]"}], ",", "\n", "\t\t\t", 
+      "\"\<Position\>\""}], "\n", "\t\t\t", "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondVector", "[", 
+    RowBox[{"objV", ":", "ChemObjVectorPattern"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Subtract", "@@@", 
+    RowBox[{"ChemGet", "[", 
+     RowBox[{
+      RowBox[{"ChemGet", "[", 
+       RowBox[{"objV", ",", "\"\<Atoms\>\""}], "]"}], ",", 
+      "\"\<Position\>\""}], "]"}]}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.69240876961541*^9, 3.692408839658251*^9}, 
+   3.692411254418227*^9, {3.700082508549605*^9, 3.700082527791752*^9}, {
+   3.700096708624497*^9, 3.700096724277417*^9}, 3.700168844121065*^9, 
+   3.700269232844385*^9, 3.7002693037689667`*^9, 3.7183356288201857`*^9, 
+   3.718335710137529*^9, {3.7202328618538303`*^9, 
+   3.7202328684055147`*^9}},ExpressionUUID->"63be7405-32cc-41ad-a6f4-\
+9ae152f75aa5"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["CenterOfMass", "CodeSubsubsection",
+ CellChangeTimes->{{3.700139499580824*^9, 
+  3.700139501941039*^9}},ExpressionUUID->"4bb47ffc-39e6-430e-88ef-\
+c7f8762e1802"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"BondCenterOfMass", "[", 
+   RowBox[{"obj", ":", "ChemObjPattern"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t", 
+     RowBox[{"a", "=", 
+      RowBox[{"ChemGet", "[", 
+       RowBox[{"obj", ",", "\"\<Atoms\>\""}], "]"}]}], "\n", "\t\t", "}"}], 
+    ",", "\n", "\t\t", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"p", "=", 
+         RowBox[{"ChemGet", "[", 
+          RowBox[{"a", ",", "\"\<Position\>\""}], "]"}]}], ",", "\n", 
+        "\t\t\t", 
+        RowBox[{"m", "=", 
+         RowBox[{"ChemGet", "[", 
+          RowBox[{"a", ",", "\"\<Mass\>\""}], "]"}]}]}], "\n", "\t\t\t", 
+       "}"}], ",", "\n", "\t\t\t", 
+      RowBox[{"Mean", "@", 
+       RowBox[{"WeightedData", "[", 
+        RowBox[{"p", ",", "m"}], "]"}]}]}], "\n", "\t\t\t", "]"}]}], "\n", 
+   "\t\t", "]"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondCenterOfMass", "[", 
+    RowBox[{"objV", ":", "ChemObjVectorPattern"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{"a", "=", 
+       RowBox[{"ChemGet", "[", 
+        RowBox[{"objV", ",", "\"\<Atoms\>\""}], "]"}]}], "\n", "\t\t", "}"}], 
+     ",", "\n", "\t\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", "\n", "\t\t\t", 
+        RowBox[{
+         RowBox[{"p", "=", 
+          RowBox[{"ChemGet", "[", 
+           RowBox[{"a", ",", "\"\<Position\>\""}], "]"}]}], ",", "\n", 
+         "\t\t\t", 
+         RowBox[{"m", "=", 
+          RowBox[{"ChemGet", "[", 
+           RowBox[{"a", ",", "\"\<Mass\>\""}], "]"}]}]}], "\n", "\t\t\t", 
+        "}"}], ",", "\n", "\t\t\t", 
+       RowBox[{"Mean", "/@", 
+        RowBox[{"MapThread", "[", 
+         RowBox[{"WeightedData", ",", 
+          RowBox[{"{", 
+           RowBox[{"p", ",", "m"}], "}"}]}], "]"}]}]}], "\n", "\t\t\t", 
+      "]"}]}], "\n", "\t\t", "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.69240876961541*^9, 3.692408839658251*^9}, 
+   3.692411254418227*^9, {3.700082508549605*^9, 3.700082527791752*^9}, {
+   3.700096708624497*^9, 3.700096724277417*^9}, {3.7001395121124*^9, 
+   3.7001396923936377`*^9}, {3.700140330412204*^9, 3.700140334452524*^9}, {
+   3.700962184203681*^9, 3.7009621893850803`*^9}, 3.7183356288318872`*^9, 
+   3.718335710142803*^9},ExpressionUUID->"6e6b204c-0a5f-42db-b641-\
+b14ed7e0afb7"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Center", "CodeSubsubsection",
+ CellChangeTimes->{{3.700139454422159*^9, 
+  3.700139455134286*^9}},ExpressionUUID->"26c73433-454b-495e-b4ed-\
+9e4bb1fc77f5"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondCenter", "[", 
+    RowBox[{"obj", ":", "ChemObjPattern"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Mean", "@", 
+    RowBox[{
+     RowBox[{"ChemGet", "[", "\"\<Position\>\"", "]"}], "@", 
+     RowBox[{"ChemGet", "[", 
+      RowBox[{"obj", ",", "\"\<Atoms\>\""}], "]"}]}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondCenter", "[", 
+    RowBox[{"objV", ":", "ChemObjVectorPattern"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Mean", "/@", 
+    RowBox[{"ChemGet", "[", 
+     RowBox[{
+      RowBox[{"ChemGet", "[", 
+       RowBox[{"objV", ",", "\"\<Atoms\>\""}], "]"}], ",", "  ", 
+      "\"\<Position\>\""}], "]"}]}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.700139456496265*^9, 3.700139468479816*^9}, {
+   3.700139666509284*^9, 3.700139710805982*^9}, {3.7001403236707163`*^9, 
+   3.700140327364283*^9}, {3.700141566200492*^9, 3.70014160028675*^9}, 
+   3.700143174101534*^9, {3.70026925825309*^9, 3.700269285911468*^9}, 
+   3.7183356288407497`*^9, 
+   3.7183357101471577`*^9},ExpressionUUID->"15b3b02f-3090-44b1-98b5-\
+e2ffaa556d8f"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Move", "CodeSubsubsection",
+ CellChangeTimes->{{3.700139160447201*^9, 
+  3.700139161310319*^9}},ExpressionUUID->"05bc7e95-004c-4941-8ad7-\
+a0340081fd94"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondMove", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemObjPattern"}], ",", "\n", "\t", "pt_", ",", 
+     "\n", "\t", 
+     RowBox[{"mode", ":", 
+      RowBox[{"\"\<Set\>\"", "|", "\"\<Add\>\""}], ":", "\"\<Add\>\""}]}], 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"atoms", "=", 
+       RowBox[{"ChemGet", "[", 
+        RowBox[{"obj", ",", "\"\<Atoms\>\""}], "]"}]}], "}"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"Switch", "[", 
+      RowBox[{
+      "mode", ",", "\n", "\t", "\t\t", "\"\<Set\>\"", ",", "\n", "\t\t\t\t", 
+       RowBox[{"AtomMove", "[", 
+        RowBox[{"atoms", ",", 
+         RowBox[{"pt", "-", 
+          RowBox[{"BondCenter", "@", "obj"}]}], ",", "\"\<Add\>\""}], "]"}], 
+       ",", "\n", "\t\t\t", "\"\<Add\>\"", ",", "\n", "\t\t\t\t", 
+       RowBox[{"AtomMove", "[", 
+        RowBox[{"atoms", ",", "pt", ",", "\"\<Add\>\""}], "]"}]}], "\n", 
+      "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondMove", "[", 
+    RowBox[{
+     RowBox[{"objV", ":", "ChemObjVectorPattern"}], ",", "\n", "\t", "pt_", 
+     ",", "\n", "\t", 
+     RowBox[{"mode", ":", 
+      RowBox[{"\"\<Set\>\"", "|", "\"\<Add\>\""}], ":", "\"\<Add\>\""}]}], 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"atoms", "=", 
+       RowBox[{"ChemGet", "[", 
+        RowBox[{"objV", ",", "\"\<Atoms\>\""}], "]"}]}], "}"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"Switch", "[", 
+      RowBox[{
+      "mode", ",", "\n", "\t", "\t\t", "\"\<Set\>\"", ",", "\n", "\t\t\t\t", 
+       RowBox[{"MapThread", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"AtomMove", "[", 
+           RowBox[{"#", ",", 
+            RowBox[{"pt", "-", "#2"}], ",", "\"\<Add\>\""}], "]"}], "&"}], 
+         ",", 
+         RowBox[{"{", "\n", "\t\t\t\t\t", 
+          RowBox[{"atoms", ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"BondCenter", "@", "objV"}]}], "\n", "\t\t\t\t\t", "}"}]}],
+         "]"}], ",", "\n", "\t\t\t", "\"\<Add\>\"", ",", "\n", "\t", "\t\t\t", 
+       RowBox[{"AtomMove", "[", 
+        RowBox[{
+         RowBox[{"Flatten", "@", "atoms"}], ",", "\n", "\t\t\t\t\t", "pt", 
+         ",", "\n", "\t", "\t\t\t\t", "\"\<Add\>\""}], "\n", "\t\t\t\t\t", 
+        "]"}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.700142660745964*^9, 3.700142794085227*^9}, {
+   3.700142938913608*^9, 3.70014310224583*^9}, 3.718335628852524*^9, 
+   3.718335710153493*^9},ExpressionUUID->"e652b752-6517-4ec0-b0d2-\
+d2a566b09b8a"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["StandardDistance", "CodeSubsubsection",
+ CellChangeTimes->{{3.7102539157554092`*^9, 
+  3.7102539180582743`*^9}},ExpressionUUID->"797b2901-9137-4a1e-b4d5-\
+5a9b3a7cc479"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondStandardDistance", "[", 
+    RowBox[{"obj", ":", "ChemObjPattern"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"els", "=", 
+        RowBox[{"ChemGet", "[", 
+         RowBox[{
+          RowBox[{"ChemGet", "[", 
+           RowBox[{"obj", ",", "\"\<Atoms\>\""}], "]"}], ",", 
+          "\"\<Element\>\""}], "]"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"typ", "=", 
+        RowBox[{"ChemGet", "[", 
+         RowBox[{"obj", ",", "\"\<Type\>\""}], "]"}]}]}], "\n", "\t\t\t", 
+      "}"}], ",", "\n", "\t\t", 
+     RowBox[{"ChemDataLookup", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"ChemDataQuery", "@@", 
+        RowBox[{"Append", "[", 
+         RowBox[{"els", ",", "typ"}], "]"}]}], ",", "\n", "\t\t\t", 
+       "\"\<BondDistances\>\""}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+    "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondStandardDistance", "[", 
+    RowBox[{"obj", ":", "ChemObjVectorPattern"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"els", "=", 
+        RowBox[{"ChemGet", "[", 
+         RowBox[{
+          RowBox[{"ChemGet", "[", 
+           RowBox[{"obj", ",", "\"\<Atoms\>\""}], "]"}], ",", 
+          "\"\<Element\>\""}], "]"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"typ", "=", 
+        RowBox[{"ChemGet", "[", 
+         RowBox[{"obj", ",", "\"\<Type\>\""}], "]"}]}]}], "\n", "\t\t\t", 
+      "}"}], ",", "\n", "\t\t", 
+     RowBox[{"ChemDataLookup", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"MapThread", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"ChemDataQuery", "@@", 
+           RowBox[{"Append", "[", 
+            RowBox[{"#", ",", "#2"}], "]"}]}], "&"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"{", "\n", "\t\t\t\t\t", 
+          RowBox[{"els", ",", "\n", "\t\t\t\t\t", "typ"}], "\n", "\t\t\t\t\t",
+           "}"}]}], "]"}], ",", "\n", "\t\t\t", "\"\<BondDistances\>\""}], 
+      "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.710253919134468*^9, 3.710254058100575*^9}, 
+   3.718335628866151*^9, 
+   3.718335710160419*^9},ExpressionUUID->"0913e29d-60a6-4068-af67-\
+db3478613bb6"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Deviation", "CodeSubsubsection",
+ CellChangeTimes->{{3.710253811101069*^9, 
+  3.710253812667498*^9}},ExpressionUUID->"bedf5782-78b1-41e2-9769-\
+59ea39ed4b6f"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondDeviation", "[", 
+    RowBox[{"obj", ":", "ChemObjPattern"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"std", "=", 
+        RowBox[{"BondStandardDistance", "[", "obj", "]"}]}], ",", "\n", "\t", 
+       "\t\t", 
+       RowBox[{"dis", "=", 
+        RowBox[{"Norm", "@", 
+         RowBox[{"BondVector", "[", "obj", "]"}]}]}]}], "\n", "\t\t\t", "}"}],
+      ",", "\n", "\t\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"std", ">", "0"}], ",", "\n", "\t\t\t", 
+       RowBox[{"Subtract", "[", 
+        RowBox[{"dis", ",", "std"}], "]"}], ",", "\n", "\t\t\t", "0"}], "\n", 
+      "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondDeviation", "[", 
+    RowBox[{"objV", ":", "ChemObjVectorPattern"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"std", "=", 
+        RowBox[{"BondStandardDistance", "[", "objV", "]"}]}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"dis", "=", 
+        RowBox[{"Norm", "/@", 
+         RowBox[{"BondVector", "[", "objV", "]"}]}]}]}], "\n", "\t\t\t", 
+      "}"}], ",", "\n", "\t\t", 
+     RowBox[{"MapThread", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"#2", ">", "0"}], ",", "\n", "\t\t\t\t", "#", ",", "\n", 
+          "\t\t\t\t", "0"}], "\n", "\t\t\t\t", "]"}], "&"}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"Subtract", "[", 
+          RowBox[{"dis", ",", "std"}], "]"}], ",", "\n", "\t\t\t\t", "std"}], 
+        "\n", "\t\t\t\t", "}"}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+    "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.7102538807487593`*^9, 3.710253905083972*^9}, {
+   3.7102540635189667`*^9, 3.710254110979353*^9}, {3.710254278772565*^9, 
+   3.7102543236208076`*^9}, {3.71027948925949*^9, 3.710279490265954*^9}, {
+   3.71616880101548*^9, 3.7161688358052797`*^9}, {3.716168917929707*^9, 
+   3.716168950509804*^9}, 3.718335628871706*^9, 
+   3.718335710036158*^9},ExpressionUUID->"ffd58dac-5a11-4309-be05-\
+7c3393646a48"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Normal", "CodeSubsubsection",
+ CellChangeTimes->{{3.7001406295194473`*^9, 
+  3.700140633478342*^9}},ExpressionUUID->"3f60fb3e-46d0-4b42-a58d-\
+a6036eec4c40"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondNormal", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemObjPattern"}], ",", 
+     RowBox[{"pt", ":", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"_", "?", "NumericQ"}], ",", "_", ",", "_"}], "}"}]}]}], 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"ps", "=", 
+       RowBox[{
+        RowBox[{"ChemGet", "[", "\"\<Position\>\"", "]"}], "@", 
+        RowBox[{"ChemGet", "[", 
+         RowBox[{"obj", ",", "\"\<Atoms\>\""}], "]"}]}]}], "}"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"Cross", "[", 
+      RowBox[{
+       RowBox[{"Subtract", "@@", "ps"}], ",", 
+       RowBox[{"pt", "-", 
+        RowBox[{"First", "@", "ps"}]}]}], "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondNormal", "[", 
+    RowBox[{
+     RowBox[{"objV", ":", "ChemObjVectorPattern"}], ",", 
+     RowBox[{"pt", ":", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"_", "?", "NumericQ"}], ",", "_", ",", "_"}], "}"}]}]}], 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"ps", "=", 
+       RowBox[{
+        RowBox[{"ChemGet", "[", "\"\<Position\>\"", "]"}], "@", 
+        RowBox[{"ChemGet", "[", 
+         RowBox[{"objV", ",", "\"\<Atoms\>\""}], "]"}]}]}], "}"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Cross", "[", 
+        RowBox[{
+         RowBox[{"Subtract", "@@", "#"}], ",", 
+         RowBox[{"pt", "-", 
+          RowBox[{"First", "@", "#"}]}]}], "]"}], "&"}], "/@", "ps"}]}], "\n",
+     "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondNormal", "[", 
+    RowBox[{
+     RowBox[{"objV", ":", "ChemObjVectorPattern"}], ",", 
+     RowBox[{"pts", ":", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"_", "?", "NumericQ"}], ",", "_", ",", "_"}], "}"}], ",", 
+        "___"}], "}"}]}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"MapThread", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Cross", "[", 
+       RowBox[{
+        RowBox[{"Subtract", "@@", "#"}], ",", 
+        RowBox[{"#2", "-", 
+         RowBox[{"First", "@", "#"}]}]}], "]"}], "&"}], ",", 
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"ChemGet", "[", "\"\<Position\>\"", "]"}], "@", 
+        RowBox[{"ChemGet", "[", 
+         RowBox[{"objV", ",", "\"\<Atoms\>\""}], "]"}]}], ",", "\n", "\t\t", 
+       "pts"}], "\n", "\t\t", "}"}]}], "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.700140635415298*^9, 3.7001407799557867`*^9}, {
+   3.7001408223346233`*^9, 3.700140908088979*^9}, {3.700140962212792*^9, 
+   3.700140995927142*^9}, {3.700141725802737*^9, 3.7001418004538803`*^9}, {
+   3.7183356288850927`*^9, 3.718335628889855*^9}, 
+   3.7183357100484457`*^9},ExpressionUUID->"bc5dd39b-d12b-4c0d-9c9a-\
+f1de13b439f9"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Rotate", "CodeSubsubsection",
+ CellChangeTimes->{{3.7001391627179747`*^9, 
+  3.700139163582115*^9}},ExpressionUUID->"3a22fd05-e8ec-4778-81ed-\
+1252e068c8a9"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondRotate", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemObjPattern"}], ",", "\n", "\t", 
+     RowBox[{"theta_", "?", "NumericQ"}], ",", 
+     RowBox[{"axis_:", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], ",", 
+     RowBox[{"center_:", "\"\<Center\>\""}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"atoms", "=", 
+       RowBox[{
+        RowBox[{"ChemGet", "[", "\"\<Atoms\>\"", "]"}], "@", "obj"}]}], "}"}],
+      ",", "\n", "\t\t", 
+     RowBox[{"AtomRotate", "[", 
+      RowBox[{"atoms", ",", "theta", ",", "axis", ",", "\n", "\t\t\t", 
+       RowBox[{"Switch", "[", 
+        RowBox[{"center", ",", "\n", "\t\t\t\t", 
+         RowBox[{"First", "|", "\"\<Atom1\>\""}], ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"First", "@", 
+          RowBox[{"ChemGet", "[", 
+           RowBox[{"atoms", ",", "\"\<Position\>\""}], "]"}]}], ",", "\n", 
+         "\t\t\t\t", 
+         RowBox[{"Last", "|", "\"\<Atom2\>\""}], ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"Last", "@", 
+          RowBox[{"ChemGet", "[", 
+           RowBox[{"atoms", ",", "\"\<Position\>\""}], "]"}]}], ",", "\n", 
+         "\t\t\t\t", "\"\<Center\>\"", ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"BondCenter", "@", "obj"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"\"\<COM\>\"", "|", "\"\<CenterOfMass\>\""}], ",", "\n", 
+         "\t\t\t\t\t", 
+         RowBox[{"BondCenterOfMass", "@", "obj"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"_", "?", "NumericQ"}], ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"positions", "=", 
+             RowBox[{"ChemGet", "[", 
+              RowBox[{"atoms", ",", "\"\<Position\>\""}], "]"}]}], "}"}], ",",
+            "\n", "\t", "\t\t\t\t\t", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"center", ">=", "0"}], ",", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"First", "@", "positions"}], "+", 
+              RowBox[{"center", "*", 
+               RowBox[{"(", 
+                RowBox[{"Subtract", "@@", "positions"}], ")"}]}]}], ",", "\n",
+              "\t\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"Last", "@", "positions"}], "+", 
+              RowBox[{"center", "*", 
+               RowBox[{"(", 
+                RowBox[{"Subtract", "@@", "positions"}], ")"}]}]}]}], "\n", 
+            "\t\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t\t", "]"}], ",", "\n",
+          "\t\t\t\t", "_", ",", "\n", "\t\t\t\t\t", "center"}], "\n", 
+        "\t\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], "\t", "\n", "\t", "]"}]}],
+   ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondRotate", "[", 
+    RowBox[{
+     RowBox[{"objV", ":", "ChemObjVectorPattern"}], ",", "\n", "\t", 
+     RowBox[{"theta_", "?", "NumericQ"}], ",", 
+     RowBox[{"axis_:", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], ",", 
+     RowBox[{"center_:", "\"\<Center\>\""}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"atoms", "=", 
+       RowBox[{
+        RowBox[{"ChemGet", "[", "\"\<Atoms\>\"", "]"}], "@", "objV"}]}], 
+      "}"}], ",", "\n", "\t\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"centers", "=", "\n", "\t\t\t", 
+         RowBox[{"Switch", "[", 
+          RowBox[{"center", ",", "\n", "\t\t\t\t", 
+           RowBox[{"First", "|", "\"\<Atom1\>\""}], ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"First", "@", 
+            RowBox[{"ChemGet", "[", 
+             RowBox[{"atoms", ",", "\"\<Position\>\""}], "]"}]}], ",", "\n", 
+           "\t\t\t\t", 
+           RowBox[{"Last", "|", "\"\<Atom2\>\""}], ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"Last", "@", 
+            RowBox[{"ChemGet", "[", 
+             RowBox[{"atoms", ",", "\"\<Position\>\""}], "]"}]}], ",", "\n", 
+           "\t\t\t\t", "\"\<Center\>\"", ",", "\n", "\t", "\t\t\t\t", 
+           RowBox[{"BondCenter", "@", "objV"}], ",", "\n", "\t\t\t\t", 
+           RowBox[{"\"\<COM\>\"", "|", "\"\<CenterOfMass\>\""}], ",", "\n", 
+           "\t\t\t\t\t", 
+           RowBox[{"BondCenterOfMass", "@", "objV"}], ",", "\n", "\t\t\t\t", 
+           RowBox[{"_", "?", "NumericQ"}], ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"With", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"positions", "=", 
+               RowBox[{"ChemGet", "[", 
+                RowBox[{"atoms", ",", "\"\<Position\>\""}], "]"}]}], "}"}], 
+             ",", "\n", "\t", "\t\t\t\t\t", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"center", ">=", "0"}], ",", "\n", "\t", "\t\t\t\t\t\t", 
+               RowBox[{"MapThread", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"First", "@", "#"}], "+", 
+                   RowBox[{"center", "*", "#2"}]}], "&"}], ",", "\n", 
+                 "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"{", 
+                  RowBox[{"positions", ",", 
+                   RowBox[{"Subtract", "@@@", "positions"}]}], "}"}]}], "]"}],
+                ",", "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{"MapThread", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Last", "@", "#"}], "+", 
+                   RowBox[{"center", "*", "#2"}]}], "&"}], ",", "\n", 
+                 "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"{", 
+                  RowBox[{"positions", ",", 
+                   RowBox[{"Subtract", "@@@", "positions"}]}], "}"}]}], 
+                "]"}]}], "\n", "\t\t\t\t\t\t\t", "]"}]}], "\n", 
+            "\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", "_", ",", "\n", 
+           "\t\t\t\t\t", "center"}], "\n", "\t\t\t\t", "]"}]}], "\n", 
+        "\t\t\t", "}"}], ",", "\n", "\t\t\t\t", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"ListQ", "@", 
+          RowBox[{"First", "@", "centers"}]}], ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"MapThread", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"AtomRotate", "[", 
+             RowBox[{"#", ",", "theta", ",", "axis", ",", "#2"}], "]"}], 
+            "&"}], ",", 
+           RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"atoms", ",", "\n", "\t\t\t\t\t\t", "centers"}], "\n", 
+            "\t\t\t\t\t\t", "}"}]}], "]"}], ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"AtomRotate", "[", 
+          RowBox[{
+           RowBox[{"Flatten", "@", "atoms"}], ",", "theta", ",", "axis", ",", 
+           "center"}], "]"}]}], "\n", "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t", 
+      "]"}]}], "\n", "\t\t", "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.70013919371905*^9, 3.700139214460313*^9}, {
+   3.700139316065155*^9, 3.7001394508393087`*^9}, {3.700139722871613*^9, 
+   3.700139942506015*^9}, {3.7001403053836823`*^9, 3.700140359137815*^9}, {
+   3.700140409837316*^9, 3.7001404376368647`*^9}, {3.7001404679221697`*^9, 
+   3.70014048123283*^9}, {3.7001405289386473`*^9, 3.700140600046253*^9}, {
+   3.700142147095436*^9, 3.70014221609962*^9}, {3.700142266850485*^9, 
+   3.700142637428809*^9}, {3.700148947292787*^9, 3.700148954171496*^9}, 
+   3.718335628905661*^9, 
+   3.718335710060039*^9},ExpressionUUID->"e2747ff3-83f6-43f5-ae73-\
+c80c9f519d81"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["RotationTransform", "CodeSubsubsection",
+ CellChangeTimes->{{3.700148058358173*^9, 
+  3.700148061054072*^9}},ExpressionUUID->"42ae0f5f-ab29-4009-a165-\
+2cb2c3d65971"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondRotationTransform", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemObjPattern"}], ",", "\n", "\t", 
+     RowBox[{"theta_", "?", "NumericQ"}], ",", 
+     RowBox[{"axis_:", "\"\<Bond\>\""}], ",", 
+     RowBox[{"center_:", "\"\<Center\>\""}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"atoms", "=", 
+       RowBox[{
+        RowBox[{"ChemGet", "[", "\"\<Atoms\>\"", "]"}], "@", "obj"}]}], "}"}],
+      ",", "\n", "\t\t", 
+     RowBox[{"RotationTransform", "[", "\n", "\t\t\t", 
+      RowBox[{"theta", ",", "\n", "\t\t\t", 
+       RowBox[{"Replace", "[", 
+        RowBox[{"axis", ",", 
+         RowBox[{"{", "\n", "\t\t\t\t", 
+          RowBox[{
+           RowBox[{"\"\<Bond\>\"", ":>", "\n", "\t\t\t\t\t", 
+            RowBox[{"BondVector", "@", "obj"}]}], ",", "\n", "\t\t\t\t", 
+           RowBox[{"_String", "\[Rule]", 
+            RowBox[{"{", 
+             RowBox[{"0.", ",", "0.", ",", "1."}], "}"}]}]}], "\n", 
+          "\t\t\t\t", "}"}]}], "]"}], ",", "\n", "\t\t\t", 
+       RowBox[{"Switch", "[", 
+        RowBox[{"center", ",", "\n", "\t\t\t\t", 
+         RowBox[{"First", "|", "\"\<Atom1\>\""}], ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"First", "@", 
+          RowBox[{"ChemGet", "[", 
+           RowBox[{"atoms", ",", "\"\<Position\>\""}], "]"}]}], ",", "\n", 
+         "\t\t\t\t", 
+         RowBox[{"Last", "|", "\"\<Atom2\>\""}], ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"Last", "@", 
+          RowBox[{"ChemGet", "[", 
+           RowBox[{"atoms", ",", "\"\<Position\>\""}], "]"}]}], ",", "\n", 
+         "\t\t\t\t", "\"\<Center\>\"", ",", "\n", "\t", "\t\t\t\t", 
+         RowBox[{"BondCenter", "@", "obj"}], ",", "\n", "\t", "\t\t\t", 
+         RowBox[{"\"\<COM\>\"", "|", "\"\<CenterOfMass\>\""}], ",", "\n", 
+         "\t", "\t\t\t\t", 
+         RowBox[{"BondCenterOfMass", "@", "obj"}], ",", "\n", "\t", "\t\t\t", 
+         
+         RowBox[{"_", "?", "NumericQ"}], ",", "\n", "\t", "\t\t\t\t", 
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"positions", "=", 
+             RowBox[{"ChemGet", "[", 
+              RowBox[{"atoms", ",", "\"\<Position\>\""}], "]"}]}], "}"}], ",",
+            "\n", "\t", "\t\t\t\t\t", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"center", ">=", "0"}], ",", "\n", "\t", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"First", "@", "positions"}], "+", 
+              RowBox[{"center", "*", 
+               RowBox[{"(", 
+                RowBox[{"Subtract", "@@", "positions"}], ")"}]}]}], ",", "\n",
+              "\t", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"Last", "@", "positions"}], "+", 
+              RowBox[{"center", "*", 
+               RowBox[{"(", 
+                RowBox[{"Subtract", "@@", "positions"}], ")"}]}]}]}], "\n", 
+            "\t", "\t\t\t\t\t\t", "]"}]}], "\n", "\t", "\t\t\t\t\t", "]"}], 
+         ",", "\n", "\t", "\t\t\t", "_", ",", "\n", "\t\t\t\t\t", "center"}], 
+        "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+    "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondRotationTransform", "[", 
+    RowBox[{
+     RowBox[{"objV", ":", "ChemObjVectorPattern"}], ",", "\n", "\t", 
+     RowBox[{"theta_", "?", "NumericQ"}], ",", 
+     RowBox[{"axis_:", "\"\<Bond\>\""}], ",", 
+     RowBox[{"center_:", "\"\<Center\>\""}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"atoms", "=", 
+       RowBox[{
+        RowBox[{"ChemGet", "[", "\"\<Atoms\>\"", "]"}], "@", "objV"}]}], 
+      "}"}], ",", "\n", "\t\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"centers", "=", "\n", "\t\t\t", 
+          RowBox[{"Switch", "[", 
+           RowBox[{"center", ",", "\n", "\t\t\t\t", 
+            RowBox[{"First", "|", "\"\<Atom1\>\""}], ",", "\n", "\t\t\t\t\t", 
+            
+            RowBox[{"First", "@", 
+             RowBox[{"ChemGet", "[", 
+              RowBox[{"atoms", ",", "\"\<Position\>\""}], "]"}]}], ",", "\n", 
+            "\t\t\t\t", 
+            RowBox[{"Last", "|", "\"\<Atom2\>\""}], ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"Last", "@", 
+             RowBox[{"ChemGet", "[", 
+              RowBox[{"atoms", ",", "\"\<Position\>\""}], "]"}]}], ",", "\n", 
+            "\t\t\t\t", "\"\<Center\>\"", ",", "\n", "\t", "\t\t\t\t", 
+            RowBox[{"BondCenter", "@", "objV"}], ",", "\n", "\t\t\t\t", 
+            RowBox[{"\"\<COM\>\"", "|", "\"\<CenterOfMass\>\""}], ",", "\n", 
+            "\t\t\t\t\t", 
+            RowBox[{"BondCenterOfMass", "@", "objV"}], ",", "\n", "\t\t\t\t", 
+            
+            RowBox[{"_", "?", "NumericQ"}], ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"With", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"positions", "=", 
+                RowBox[{"ChemGet", "[", 
+                 RowBox[{"atoms", ",", "\"\<Position\>\""}], "]"}]}], "}"}], 
+              ",", "\n", "\t", "\t\t\t\t\t", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"center", ">=", "0"}], ",", "\n", "\t", 
+                "\t\t\t\t\t\t", 
+                RowBox[{"MapThread", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"First", "@", "#"}], "+", 
+                    RowBox[{"center", "*", "#2"}]}], "&"}], ",", "\n", 
+                  "\t\t\t\t\t\t\t\t", 
+                  RowBox[{"{", 
+                   RowBox[{"positions", ",", 
+                    RowBox[{"Subtract", "@@@", "positions"}]}], "}"}]}], 
+                 "]"}], ",", "\n", "\t\t\t\t\t\t\t", 
+                RowBox[{"MapThread", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"Last", "@", "#"}], "+", 
+                    RowBox[{"center", "*", "#2"}]}], "&"}], ",", "\n", 
+                  "\t\t\t\t\t\t\t\t", 
+                  RowBox[{"{", 
+                   RowBox[{"positions", ",", 
+                    RowBox[{"Subtract", "@@@", "positions"}]}], "}"}]}], 
+                 "]"}]}], "\n", "\t\t\t\t\t\t\t", "]"}]}], "\n", 
+             "\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", "_", ",", "\n", 
+            "\t\t\t\t\t", 
+            RowBox[{"Which", "[", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Length", "@", "center"}], "\[Equal]", "0"}], ",", 
+              "\n", "\t", "\t\t\t\t\t\t", 
+              RowBox[{"ConstantArray", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+                RowBox[{"Length", "@", "objV"}]}], "]"}], ",", "\n", 
+              "\t\t\t\t\t\t", 
+              RowBox[{"Not", "@", 
+               RowBox[{"ListQ", "@", 
+                RowBox[{"First", "@", "center"}]}]}], ",", "\n", 
+              "\t\t\t\t\t\t\t", 
+              RowBox[{"ConstantArray", "[", 
+               RowBox[{"center", ",", 
+                RowBox[{"Length", "@", "objV"}]}], "]"}], ",", "\n", 
+              "\t\t\t\t\t\t", "True", ",", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"Take", "[", 
+               RowBox[{
+                RowBox[{"Flatten", "[", 
+                 RowBox[{
+                  RowBox[{"ConstantArray", "[", 
+                   RowBox[{"center", ",", 
+                    RowBox[{"Length", "@", "objV"}]}], "]"}], ",", "1"}], 
+                 "]"}], ",", 
+                RowBox[{"Length", "@", "objV"}]}], "]"}]}], "\n", 
+             "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}]}], ",", "\n", 
+         "\t\t\t", 
+         RowBox[{"axes", "=", "\n", "\t\t\t\t", 
+          RowBox[{"Replace", "[", 
+           RowBox[{"axis", ",", 
+            RowBox[{"{", "\n", "\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"\"\<Bond\>\"", ":>", "\n", "\t\t\t\t\t\t", 
+               RowBox[{"BondVector", "@", "objV"}]}], ",", "\n", "\t\t\t\t\t", 
+              RowBox[{"_String", ":>", "\n", "\t\t\t\t\t\t", 
+               RowBox[{"ConstantArray", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"0.", ",", "0.", ",", "1."}], "}"}], ",", 
+                 RowBox[{"Length", "@", "objV"}]}], "]"}]}], ",", "\n", 
+              "\t\t\t\t\t", 
+              RowBox[{"_", ":>", "\n", "\t\t\t\t\t\t", 
+               RowBox[{"Which", "[", "\n", "\t\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"Length", "@", "axis"}], "\[Equal]", "0"}], ",", 
+                 "\n", "\t", "\t", "\t\t\t\t\t\t", 
+                 RowBox[{"ConstantArray", "[", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"0", ",", "0", ",", "1."}], "}"}], ",", 
+                   RowBox[{"Length", "@", "objV"}]}], "]"}], ",", "\n", "\t", 
+                 "\t\t\t\t\t\t", 
+                 RowBox[{"Not", "@", 
+                  RowBox[{"ListQ", "@", 
+                   RowBox[{"First", "@", "axis"}]}]}], ",", "\n", 
+                 "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"ConstantArray", "[", 
+                  RowBox[{"axis", ",", 
+                   RowBox[{"Length", "@", "objV"}]}], "]"}], ",", "\n", "\t", 
+                 "\t\t\t\t\t\t", "True", ",", "\n", "\t", "\t\t\t\t\t\t\t", 
+                 RowBox[{"Take", "[", 
+                  RowBox[{
+                   RowBox[{"Flatten", "[", 
+                    RowBox[{
+                    RowBox[{"ConstantArray", "[", 
+                    RowBox[{"axis", ",", 
+                    RowBox[{"Length", "@", "objV"}]}], "]"}], ",", "1"}], 
+                    "]"}], ",", 
+                   RowBox[{"Length", "@", "objV"}]}], "]"}]}], "\n", "\t", 
+                "\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t", "}"}]}], 
+           "]"}]}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t\t\t", 
+       RowBox[{"MapThread", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"RotationTransform", "[", 
+           RowBox[{"theta", ",", "#2", ",", "#1"}], "]"}], "&"}], ",", 
+         RowBox[{"{", "\n", "\t\t\t\t\t", 
+          RowBox[{"centers", ",", "\n", "\t\t\t\t\t", "axes"}], "\n", 
+          "\t\t\t\t\t", "}"}]}], "]"}]}], "\n", "\t\t\t", "]"}]}], "\n", 
+    "\t\t", "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.700148077036319*^9, 3.700148253249003*^9}, {
+   3.7001482979354143`*^9, 3.70014846047656*^9}, {3.700148576507649*^9, 
+   3.7001486569809923`*^9}, {3.700148698432405*^9, 3.700148717279175*^9}, {
+   3.700148901790144*^9, 3.700148940235777*^9}, 3.718335628926407*^9, 
+   3.718335710071946*^9},ExpressionUUID->"b46b29c5-cee2-466e-bd77-\
+31bab9128b7c"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Transform", "CodeSubsubsection",
+ CellChangeTimes->{{3.700139169891181*^9, 
+  3.700139171459298*^9}},ExpressionUUID->"808bfcb4-de35-47e1-a80a-\
+eeed7f15808a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondTransform", "[", 
+    RowBox[{
+     RowBox[{"objV", ":", "ChemObjAllPattern"}], ",", "transf_"}], "]"}], ":=",
+    "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"a", "=", 
+       RowBox[{"Flatten", "@", 
+        RowBox[{"DeleteDuplicates", "@", 
+         RowBox[{"ChemGet", "[", 
+          RowBox[{"objV", ",", "\"\<Atoms\>\""}], "]"}]}]}]}], "}"}], ",", 
+     "\t", "\n", "\t\t", 
+     RowBox[{"AtomTransform", "[", 
+      RowBox[{"a", ",", "transf"}], "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.70013919371905*^9, 3.700139214460313*^9}, {
+   3.700139316065155*^9, 3.7001393465105553`*^9}, 
+   3.718335661314849*^9},ExpressionUUID->"36c1d843-d5ee-4753-b8bc-\
+8342722a2217"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Polarization", "CodeSubsubsection",
+ CellChangeTimes->{{3.692475555810528*^9, 
+  3.692475584268281*^9}},ExpressionUUID->"6892e1bf-8edc-4516-ba0d-\
+67e815ed44c0"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondPolarization", "[", 
+    RowBox[{"obj", ":", "ChemObjPattern"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"a", "=", 
+       RowBox[{"ChemGet", "[", 
+        RowBox[{"obj", ",", "\"\<Atoms\>\""}], "]"}]}], "}"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", "\n", "\t\t\t", 
+        RowBox[{
+         RowBox[{"en", "=", 
+          RowBox[{"Subtract", "@@", 
+           RowBox[{"ChemGet", "[", 
+            RowBox[{"a", ",", "\"\<Electronegativity\>\""}], "]"}]}]}], ",", 
+         "\n", "\t\t\t", 
+         RowBox[{"vec", "=", 
+          RowBox[{"Subtract", "@@", 
+           RowBox[{"ChemGet", "[", 
+            RowBox[{"a", ",", "\"\<Position\>\""}], "]"}]}]}]}], "\n", 
+        "\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+       RowBox[{"en", "*", 
+        RowBox[{"Normalize", "@", "vec"}]}]}], "\n", "\t\t\t", "]"}]}], "\n", 
+    "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.6924916738366003`*^9, 3.692491698840262*^9}, {
+   3.6924917311866903`*^9, 3.6924918184608307`*^9}, {3.692491900463892*^9, 
+   3.692491984468094*^9}, {3.692492029029002*^9, 3.692492045249858*^9}, {
+   3.692492477395342*^9, 3.692492525207946*^9}, {3.692492722110754*^9, 
+   3.692492734994679*^9}, {3.7000825406422358`*^9, 3.700082577744035*^9}, 
+   3.718335710080325*^9},ExpressionUUID->"1b7496e2-9fa5-4165-bc41-\
+0f026de1c4c2"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Colors", "CodeSubsubsection",
+ CellChangeTimes->{{3.700150242053796*^9, 
+  3.700150243861063*^9}},ExpressionUUID->"261d0dec-42a6-406c-80f3-\
+cd5fb44eca4f"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondColors", "[", 
+    RowBox[{"obj", ":", "ChemObjPattern"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{"c", "=", "\n", "\t\t\t", 
+       RowBox[{"Replace", "[", 
+        RowBox[{
+         RowBox[{"ChemGet", "[", 
+          RowBox[{"obj", ",", "\"\<Color\>\""}], "]"}], ",", 
+         RowBox[{
+          RowBox[{"c", ":", 
+           RowBox[{"Except", "[", "_List", "]"}]}], "\[RuleDelayed]", 
+          RowBox[{"{", 
+           RowBox[{"c", ",", "c"}], "}"}]}]}], "]"}]}], "\n", "\t\t\t", "}"}],
+      ",", "\n", "\t\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"p", "=", 
+         RowBox[{"Flatten", "@", 
+          RowBox[{"Position", "[", 
+           RowBox[{"c", ",", 
+            RowBox[{"Except", "[", 
+             RowBox[{"_", "?", "ColorQ"}], "]"}], ",", "1"}], "]"}]}]}], 
+        "}"}], ",", "\n", "\t\t\t", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "@", "p"}], ">", "0"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"colors", "=", "\n", "\t\t\t\t\t", 
+             RowBox[{"ChemDataLookup", "[", "\n", "\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"ChemGet", "[", 
+                RowBox[{
+                 RowBox[{"ChemGet", "[", 
+                  RowBox[{"obj", ",", "\"\<Atoms\>\""}], "]"}], ",", 
+                 "\"\<Element\>\""}], "]"}], ",", "\n", "\t\t\t\t\t\t", 
+               "\"\<AtomColors\>\""}], "]"}]}], "}"}], ",", "\n", 
+           "\t\t\t\t\t", 
+           RowBox[{"ReplacePart", "[", 
+            RowBox[{"c", ",", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"#", "\[Rule]", 
+                 RowBox[{"colors", "[", 
+                  RowBox[{"[", "#", "]"}], "]"}]}], "&"}], ",", "p"}], 
+              "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", 
+          "]"}], ",", "\n", "\t\t\t\t", "c"}], "\n", "\t\t\t\t", "]"}]}], 
+      "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondColors", "[", 
+    RowBox[{"objV", ":", "ChemObjVectorPattern"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"colorSpecs", "=", "\n", "\t\t\t", 
+        RowBox[{"Replace", "[", 
+         RowBox[{
+          RowBox[{"ChemGet", "[", 
+           RowBox[{"objV", ",", "\"\<Color\>\""}], "]"}], ",", 
+          RowBox[{
+           RowBox[{"c", ":", 
+            RowBox[{"Except", "[", "_List", "]"}]}], "\[RuleDelayed]", 
+           RowBox[{"{", 
+            RowBox[{"c", ",", "c"}], "}"}]}], ",", "1"}], "]"}]}], ",", "\n", 
+       "\t\t", 
+       RowBox[{"colors", "=", "\n", "\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"ChemDataLookup", "[", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"ChemGet", "[", 
+             RowBox[{"#", ",", "\"\<Element\>\""}], "]"}], ",", "\n", 
+            "\t\t\t\t\t", "\"\<AtomColors\>\""}], "]"}], "&"}], "/@", 
+         RowBox[{"ChemGet", "[", 
+          RowBox[{"objV", ",", "\"\<Atoms\>\""}], "]"}]}]}]}], "\n", "\t\t\t",
+       "}"}], ",", "\n", "\t\t", 
+     RowBox[{"MapThread", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"With", "[", 
+         RowBox[{
+          RowBox[{"{", "\n", "\t\t\t\t", 
+           RowBox[{
+            RowBox[{"p", "=", 
+             RowBox[{"Flatten", "@", 
+              RowBox[{"Position", "[", 
+               RowBox[{"#", ",", 
+                RowBox[{"Except", "[", 
+                 RowBox[{"_", "?", "ColorQ"}], "]"}], ",", "1"}], "]"}]}]}], 
+            ",", "\n", "\t\t\t\t", 
+            RowBox[{"cs", "=", "#2"}]}], "}"}], ",", "\n", "\t\t\t\t", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Length", "@", "p"}], ">", "0"}], ",", "\n", 
+            "\t\t\t\t\t", 
+            RowBox[{"ReplacePart", "[", 
+             RowBox[{"#", ",", "\n", "\t\t\t\t\t\t", 
+              RowBox[{"Map", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"#", "\[Rule]", 
+                  RowBox[{"cs", "[", 
+                   RowBox[{"[", "#", "]"}], "]"}]}], "&"}], ",", "p"}], 
+               "]"}]}], "\n", "\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t", 
+            "#"}], "\n", "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}], 
+        "&"}], ",", 
+       RowBox[{"{", "\n", "\t\t\t", 
+        RowBox[{"colorSpecs", ",", "\n", "\t\t\t", "colors"}], "\n", "\t\t\t",
+         "}"}]}], "]"}]}], "\n", "\t\t", "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.700150244942892*^9, 3.700150307758195*^9}, {
+   3.700150359997919*^9, 3.700150435390524*^9}, {3.700150671502137*^9, 
+   3.7001507269152193`*^9}, {3.700150868829422*^9, 3.700150889907864*^9}, {
+   3.700151012852376*^9, 3.700151110824119*^9}, {3.7001511497998943`*^9, 
+   3.700151207903854*^9}, {3.700151249868037*^9, 3.700151273401794*^9}, {
+   3.70015131217419*^9, 3.700151458466014*^9}, {3.700151632148822*^9, 
+   3.7001516325221567`*^9}, {3.70016048201748*^9, 3.700160500697743*^9}, {
+   3.700160533360997*^9, 3.700160552687161*^9}, 3.718335628939946*^9, 
+   3.718335710089582*^9},ExpressionUUID->"30810930-8d0b-4f95-8873-\
+622c2f8415fb"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"co", "=", "ChemObjPattern"}], ",", 
+      RowBox[{"cv", "=", "ChemObjVectorPattern"}], ",", 
+      RowBox[{"ca", "=", "ChemObjAllPattern"}]}], "}"}], ",", "\n", "\t", 
+    RowBox[{
+     RowBox[{"BondColors", "/:", "\n", "\t\t", 
+      RowBox[{"HoldPattern", "[", 
+       RowBox[{"Set", "[", 
+        RowBox[{
+         RowBox[{"BondColors", "[", 
+          RowBox[{"obj_", "?", 
+           RowBox[{"(", 
+            RowBox[{"MatchQ", "[", "co", "]"}], ")"}]}], "]"}], ",", 
+         "color_"}], "]"}], "]"}], ":=", 
+      RowBox[{"(", "\n", "\t\t\t", 
+       RowBox[{"ChemSet", "[", 
+        RowBox[{"obj", ",", "\"\<Color\>\"", ",", "color"}], "]"}], "\n", 
+       "\t\t\t", ")"}]}], ";", "\n", "\t", 
+     RowBox[{"BondColors", "/:", "\n", "\t", "\t", 
+      RowBox[{"HoldPattern", "[", 
+       RowBox[{"SetDelayed", "[", 
+        RowBox[{
+         RowBox[{"BondColors", "[", 
+          RowBox[{"obj_", "?", 
+           RowBox[{"(", 
+            RowBox[{"MatchQ", "[", "co", "]"}], ")"}]}], "]"}], ",", 
+         "color_"}], "]"}], "]"}], ":=", "\n", "\t", "\t\t", 
+      RowBox[{"ChemSetDelayed", "[", 
+       RowBox[{"obj", ",", "\"\<Color\>\"", ",", "color"}], "]"}]}], ";", 
+     "\n", "\t", 
+     RowBox[{"BondColors", "/:", "\n", "\t", "\t", 
+      RowBox[{"HoldPattern", "[", 
+       RowBox[{"Set", "[", 
+        RowBox[{
+         RowBox[{"BondColors", "[", 
+          RowBox[{"obj", ":", 
+           RowBox[{"_", "?", 
+            RowBox[{"(", 
+             RowBox[{"MatchQ", "[", "cv", "]"}], ")"}]}]}], "]"}], ",", 
+         RowBox[{"color", ":", 
+          RowBox[{"Except", "[", "_List", "]"}]}]}], "]"}], "]"}], ":=", "\n",
+       "\t", "\t\t", 
+      RowBox[{"ChemSet", "[", 
+       RowBox[{"obj", ",", "\"\<Color\>\"", ",", "color"}], "]"}]}], ";", 
+     "\n", "\t", 
+     RowBox[{"BondColors", "/:", "\n", "\t", "\t", 
+      RowBox[{"HoldPattern", "[", 
+       RowBox[{"SetDelayed", "[", 
+        RowBox[{
+         RowBox[{"BondColors", "[", 
+          RowBox[{"objV_", "?", 
+           RowBox[{"(", 
+            RowBox[{"MatchQ", "[", "cv", "]"}], ")"}]}], "]"}], ",", 
+         RowBox[{"color", ":", 
+          RowBox[{"Except", "[", "_List", "]"}]}]}], "]"}], "]"}], ":=", "\n",
+       "\t", "\t\t", 
+      RowBox[{"ChemSetDelayed", "[", 
+       RowBox[{"objV", ",", "\"\<Color\>\"", ",", "color"}], "]"}]}], ";", 
+     "\n", "\t", 
+     RowBox[{"BondColors", "/:", "\n", "\t", "\t", 
+      RowBox[{"HoldPattern", "[", 
+       RowBox[{"Set", "[", 
+        RowBox[{
+         RowBox[{"BondColors", "[", 
+          RowBox[{"objV_", "?", 
+           RowBox[{"(", 
+            RowBox[{"MatchQ", "[", "cv", "]"}], ")"}]}], "]"}], ",", 
+         "color_List"}], "]"}], "]"}], ":=", "\n", "\t", "\t\t", 
+      RowBox[{"ChemThreadSet", "[", 
+       RowBox[{"objV", ",", "\"\<Color\>\"", ",", "color"}], "]"}]}], ";", 
+     "\n", "\t", 
+     RowBox[{"BondColors", "/:", "\n", "\t", "\t", 
+      RowBox[{"HoldPattern", "[", 
+       RowBox[{"SetDelayed", "[", 
+        RowBox[{
+         RowBox[{"BondColors", "[", 
+          RowBox[{"objV_", "?", 
+           RowBox[{"(", 
+            RowBox[{"MatchQ", "[", "cv", "]"}], ")"}]}], "]"}], ",", 
+         "color_List"}], "]"}], "]"}], ":=", "\n", "\t", "\t\t", 
+      RowBox[{"ChemThreadSetDelayed", "[", 
+       RowBox[{"objV", ",", "\"\<Color\>\"", ",", "color"}], "]"}]}], ";", 
+     "\n", "\t", 
+     RowBox[{"BondColors", "/:", "\n", "\t\t", 
+      RowBox[{"HoldPattern", "[", 
+       RowBox[{"Unset", "[", 
+        RowBox[{"BondColors", "[", 
+         RowBox[{"obj_", "?", 
+          RowBox[{"(", 
+           RowBox[{"MatchQ", "[", "ca", "]"}], ")"}]}], "]"}], "]"}], "]"}], ":=", 
+      RowBox[{"(", "\n", "\t\t\t", 
+       RowBox[{"ChemSet", "[", 
+        RowBox[{"obj", ",", "\"\<Color\>\"", ",", "Automatic"}], "]"}], "\n", 
+       "\t\t\t", ")"}]}], ";"}]}], "\n", "\t\t", "\n", "\t", "]"}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.70015183266644*^9, 3.700151996124453*^9}, {
+   3.700152240098077*^9, 3.700152338923805*^9}, {3.700152407949923*^9, 
+   3.7001524530822353`*^9}, {3.700161199876083*^9, 3.700161208349334*^9}, {
+   3.700161245580916*^9, 3.700161287267931*^9}, {3.700183762386712*^9, 
+   3.700183765886106*^9}, 3.718335628952382*^9, 3.71833566132067*^9, 
+   3.718335710098077*^9},ExpressionUUID->"112bd629-462e-42fd-b442-\
+2010b0482bf1"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Graphic", "CodeSubsubsection",
+ CellChangeTimes->{{3.6924087581639347`*^9, 3.692408759315797*^9}, 
+   3.6924113714915667`*^9},ExpressionUUID->"16768679-85a6-4885-a64c-\
+cb4159e63898"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"BondGraphicShapeFunction2D", "[", "\n", "\t", 
+   RowBox[{
+   "colors_", ",", "\n", "\t", "positions_", ",", "\n", "\t", "radii_", ",", 
+    "\n", "\t", "label_", ",", "\n", "\t", "style_"}], "\n", "\t", "]"}], ":=",
+   "\n", "\t", 
+  RowBox[{"{", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"Replace", "[", 
+       RowBox[{"style", ",", "\n", "\t\t\t\t", 
+        RowBox[{"None", "\[Rule]", "Nothing"}]}], "\n", "\t\t\t\t", "]"}], 
+      ",", "\n", "\t\t\t", 
+      RowBox[{"{", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"First", "@", "colors"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"AbsoluteThickness", "[", 
+         RowBox[{"radii", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], "]"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"#", "[", 
+            RowBox[{"[", 
+             RowBox[{";;", "2"}], "]"}], "]"}], "&"}], "/@", 
+          RowBox[{"positions", "[", 
+           RowBox[{"[", 
+            RowBox[{";;", "2"}], "]"}], "]"}]}], "//", "Line"}]}], "\n", 
+       "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+      RowBox[{"{", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"Last", "@", "colors"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"AbsoluteThickness", "[", 
+         RowBox[{"radii", "[", 
+          RowBox[{"[", "2", "]"}], "]"}], "]"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"#", "[", 
+            RowBox[{"[", 
+             RowBox[{";;", "2"}], "]"}], "]"}], "&"}], "/@", 
+          RowBox[{"positions", "[", 
+           RowBox[{"[", 
+            RowBox[{"2", ";;"}], "]"}], "]"}]}], "//", "Line"}]}], "\n", 
+       "\t\t\t\t", "}"}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+    RowBox[{"Replace", "[", 
+     RowBox[{"label", ",", 
+      RowBox[{"{", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"None", "\[Rule]", "Nothing"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"e_", ":>", "\n", "\t\t\t\t\t", 
+         RowBox[{"Text", "[", "\n", "\t\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"Style", "[", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{"e", ",", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"ColorDistance", "[", 
+                 RowBox[{
+                  RowBox[{"colors", "[", 
+                   RowBox[{"[", "1", "]"}], "]"}], ",", " ", "Black"}], "]"}],
+                 ">", ".7"}], ",", " ", "Black", ",", " ", "White"}], "]"}]}],
+             "\n", "\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"Mean", "@", 
+            RowBox[{"positions", "[", 
+             RowBox[{"[", 
+              RowBox[{"All", ",", " ", 
+               RowBox[{";;", "2"}]}], "]"}], "]"}]}]}], "\n", "\t\t\t\t\t\t", 
+          "]"}]}]}], "\n", "\t\t\t\t", "}"}]}], "]"}]}], "\n", "\t\t\t", 
+   "}"}]}]], "CodeInput",
+ CellChangeTimes->{{3.720373523104905*^9, 3.7203735920654*^9}, {
+  3.720373640273164*^9, 3.720373640735046*^9}, {3.7203738599660788`*^9, 
+  3.720373933554047*^9}, {3.720374566511389*^9, 3.720374567071967*^9}, {
+  3.7203758877263203`*^9, 
+  3.72037591728197*^9}},ExpressionUUID->"bda7813b-b8d9-41c6-bbc6-\
+ff506979a322"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "BondGraphic", "]"}], "=", 
+   RowBox[{"{", "\n", "\t", 
+    RowBox[{
+     RowBox[{"\"\<DoubleBondSeparation\>\"", "\[Rule]", ".0075"}], ",", "\n", 
+     "\t", 
+     RowBox[{"\"\<TripleBondSeparation\>\"", "\[Rule]", ".0075"}], ",", "\n", 
+     "\t", 
+     RowBox[{"\"\<BondThickness\>\"", "\[Rule]", ".05"}], ",", "\n", "\t", 
+     RowBox[{"\"\<BondDashing\>\"", "\[Rule]", ".025"}], ",", "\n", "\t", 
+     RowBox[{"\"\<RadiusScaling\>\"", "\[Rule]", ".125"}], ",", "\n", "\t", 
+     RowBox[{"\"\<AtomicRadius\>\"", "\[Rule]", "Automatic"}], ",", "\n", 
+     "\t", 
+     RowBox[{"\"\<BondColor\>\"", "\[Rule]", "Automatic"}], ",", "\n", "\t", 
+     RowBox[{"\"\<BondShapeFunction\>\"", "\[Rule]", "Automatic"}], ",", "\n",
+      "\t", 
+     RowBox[{"\"\<BondLabel\>\"", "\[Rule]", "Automatic"}], ",", "\n", "\t", 
+     RowBox[{"\"\<BondStyle\>\"", "\[Rule]", "Automatic"}]}], "\n", "\t", 
+    "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondGraphic", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemObjAllPattern"}], ",", 
+     RowBox[{"ops", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"atoms", "=", 
+        RowBox[{"ChemGet", "[", 
+         RowBox[{
+          RowBox[{"Flatten", "@", 
+           RowBox[{"{", "obj", "}"}]}], ",", "\"\<Atoms\>\""}], "]"}]}], ",", 
+       "\n", "\t\t", 
+       RowBox[{"fn", "=", "\n", "\t\t\t", 
+        RowBox[{"Replace", "[", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<BondShapeFunction\>\"", "]"}], ",",
+           " ", "\n", "\t\t\t\t", 
+          RowBox[{"Automatic", "\[Rule]", "BondGraphicShapeFunction2D"}]}], 
+         "\n", "\t\t\t\t", "]"}]}], ",", "\n", "\t\t", 
+       RowBox[{"lab", "=", "\n", "\t\t\t", 
+        RowBox[{"Replace", "[", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<BondLabel\>\"", "]"}], ",", 
+          RowBox[{"{", "\n", "\t\t\t\t", 
+           RowBox[{
+            RowBox[{"Automatic", ":>", "\n", "\t\t\t\t\t", 
+             RowBox[{"ChemGet", "[", 
+              RowBox[{
+               RowBox[{"Flatten", "@", 
+                RowBox[{"{", "obj", "}"}]}], ",", " ", "\"\<Label\>\"", ",", 
+               " ", "None"}], "]"}]}], ",", "\n", "\t\t\t\t", 
+            RowBox[{"\"\<Numbered\>\"", ":>", "\n", "\t\t\t\t\t", 
+             RowBox[{"Range", "[", 
+              RowBox[{"Length", "@", 
+               RowBox[{"Flatten", "@", 
+                RowBox[{"{", "obj", "}"}]}]}], "]"}]}]}], "\n", "\t\t\t\t", 
+           "}"}]}], "]"}]}], ",", "\n", "\t\t", 
+       RowBox[{"style", "=", "\n", "\t\t\t", 
+        RowBox[{"Replace", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<BondStyle\>\"", "]"}], ",", "\n", 
+          "\t\t\t\t", 
+          RowBox[{"Automatic", "\[RuleDelayed]", "None"}]}], "\n", "\t\t\t\t",
+          "]"}]}]}], "\n", "\t\t", "}"}], ",", "\n", "\t\t", 
+     RowBox[{"Join", "@@", 
+      RowBox[{"MapThread", "[", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Block", "[", 
+          RowBox[{
+           RowBox[{"{", "\n", "\t\t\t\t", 
+            RowBox[{
+             RowBox[{"bondGraphicsPositions", "=", "#"}], ",", "\n", 
+             "\t\t\t\t", 
+             RowBox[{"bondGraphicsColors", "=", "#2"}], ",", "\n", "\t\t\t\t", 
+             RowBox[{"bondGraphicsRadii", "=", "#3"}], ",", "\n", "\t\t\t\t", 
+             
+             RowBox[{"bondGraphicsAtoms", "=", "#4"}], ",", "\n", "\t\t\t\t", 
+             
+             RowBox[{"bondGraphicsLabel", "=", "#5"}], ",", "\n", "\t\t\t\t", 
+             
+             RowBox[{"bondGraphicsStyle", "=", "#6"}], ",", "\n", "\t\t\t\t", 
+             "bondGraphicsVector"}], "\n", "\t\t\t\t", "}"}], ",", "\n", 
+           "\t\t\t\t", 
+           RowBox[{
+            RowBox[{"bondGraphicsRadii", "=", "\n", "\t\t\t\t\t", 
+             RowBox[{"Replace", "[", 
+              RowBox[{
+               RowBox[{"OptionValue", "@", "\"\<AtomicRadius\>\""}], ",", 
+               RowBox[{"{", "\n", "\t", "\t", "\t\t\t\t", 
+                RowBox[{
+                 RowBox[{"Automatic", "\[RuleDelayed]", 
+                  RowBox[{"(", "\n", "\t", "\t", "\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"OptionValue", "@", "\"\<RadiusScaling\>\""}], 
+                    "*", "\n", "\t", "\t", "\t\t\t\t\t\t", 
+                    RowBox[{"QuantityMagnitude", "@", "bondGraphicsRadii"}]}],
+                    "\n", "\t", "\t", "\t\t\t\t\t", ")"}]}], ",", "\n", "\t", 
+                 "\t", "\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"n_", "?", "NumericQ"}], ":>", "\n", "\t", "\t", 
+                  "\t\t\t\t\t", 
+                  RowBox[{"ConstantArray", "[", 
+                   RowBox[{"n", ",", 
+                    RowBox[{"Length", "@", "bondGraphicsAtoms"}]}], "]"}]}]}],
+                 "\n", "\t\t\t\t\t\t", "}"}]}], "]"}]}], ";", "\n", 
+            "\t\t\t\t", 
+            RowBox[{"bondGraphicsVector", "=", "\n", "\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"Subtract", "@@", "bondGraphicsPositions"}], "//", 
+              "Normalize"}]}], ";", "\n", "\t", "\t", "\t\t", 
+            RowBox[{
+            "bondGraphicsPositions", "=", "\n", "\t", "\t", "\t\t\t", 
+             RowBox[{"Insert", "[", 
+              RowBox[{
+              "bondGraphicsPositions", ",", "\n", "\t", "\t", "\t\t\t\t", 
+               RowBox[{"Mean", "@", 
+                RowBox[{"{", "\n", "\t", "\t", "\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"First", "@", "bondGraphicsPositions"}], "-", "\n",
+                    "\t", "\t", "\t\t\t\t\t\t", 
+                   RowBox[{"bondGraphicsVector", "*", 
+                    RowBox[{"First", "@", "bondGraphicsRadii"}]}]}], ",", 
+                  "\n", "\t", "\t", "\t\t\t\t\t", 
+                  RowBox[{
+                   RowBox[{"Last", "@", "bondGraphicsPositions"}], "+", "\n", 
+                   "\t", "\t", "\t\t\t\t\t\t", 
+                   RowBox[{"bondGraphicsVector", "*", 
+                    RowBox[{"Last", "@", "bondGraphicsRadii"}]}]}]}], "\n", 
+                 "\t", "\t", "\t\t\t\t\t", "}"}]}], ",", "\n", "\t", "\t", 
+               "\t\t\t\t", "2"}], "]"}]}], ";", "\n", "\t\t\t\t", 
+            RowBox[{"fn", "[", "\n", "\t\t\t\t\t", 
+             RowBox[{
+             "bondGraphicsColors", ",", "\n", "\t\t\t\t\t", 
+              "bondGraphicsPositions", ",", "\n", "\t\t\t\t\t", 
+              RowBox[{"ConstantArray", "[", "\n", "\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"Replace", "[", 
+                 RowBox[{
+                  RowBox[{"OptionValue", "@", "\"\<BondThickness\>\""}], ",", 
+                  "\n", "\t", "\t\t\t\t\t\t", 
+                  RowBox[{"r_Real", "\[RuleDelayed]", 
+                   RowBox[{"10", "*", "r"}]}]}], "\n", "\t\t\t\t\t\t\t", 
+                 "]"}], ",", "\n", "\t\t\t\t\t\t", "2"}], "\n", 
+               "\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t", 
+              "bondGraphicsLabel", ",", "\n", "\t\t\t\t\t", 
+              "bondGraphicsStyle"}], "\n", "\t\t\t\t\t", "]"}]}]}], "\n", 
+          "\t\t\t\t", "]"}], "&"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"With", "[", 
+         RowBox[{
+          RowBox[{"{", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"p", "=", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"AssociationThread", "[", "\n", "\t", "\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"DeleteDuplicates", "@", 
+                RowBox[{"Flatten", "@", "atoms"}]}], ",", "\n", "\t", 
+               "\t\t\t\t\t\t", 
+               RowBox[{"ChemGet", "[", 
+                RowBox[{
+                 RowBox[{"DeleteDuplicates", "@", 
+                  RowBox[{"Flatten", "@", "atoms"}]}], ",", 
+                 "\"\<Position\>\""}], "]"}]}], "\n", "\t\t\t\t\t\t\t", 
+              "]"}]}], ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"c", "=", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"Replace", "[", 
+              RowBox[{
+               RowBox[{"OptionValue", "[", "\"\<BondColor\>\"", "]"}], ",", 
+               "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{"Automatic", ":>", 
+                RowBox[{"BondColors", "@", 
+                 RowBox[{"Flatten", "@", 
+                  RowBox[{"{", "obj", "}"}]}]}]}]}], "\n", "\t\t\t\t\t\t\t", 
+              "]"}]}], ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"r", "=", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"AssociationThread", "[", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"DeleteDuplicates", "@", 
+                RowBox[{"Flatten", "@", "atoms"}]}], ",", "\n", 
+               "\t\t\t\t\t\t\t", 
+               RowBox[{"ChemGet", "[", 
+                RowBox[{
+                 RowBox[{"DeleteDuplicates", "@", 
+                  RowBox[{"Flatten", "@", "atoms"}]}], ",", 
+                 "\"\<Radius\>\""}], "]"}]}], "\n", "\t\t\t\t\t\t\t", 
+              "]"}]}]}], "\n", "\t\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"Lookup", "[", 
+               RowBox[{"p", ",", "#"}], "]"}], "&"}], "/@", "atoms"}], ",", 
+            "\n", "\t\t\t\t\t\t", 
+            RowBox[{"Take", "[", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"Flatten", "[", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"ConstantArray", "[", "\n", "\t\t\t\t\t\t\t\t\t", 
+                 RowBox[{"c", ",", "\n", "\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{"Length", "@", "atoms"}]}], "\n", 
+                 "\t\t\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t\t\t\t", 
+                "1"}], "\n", "\t\t\t\t\t\t\t\t", "]"}], ",", "\n", 
+              "\t\t\t\t\t\t\t", 
+              RowBox[{"Length", "@", "atoms"}]}], "\n", "\t\t\t\t\t\t\t", 
+             "]"}], ",", "\n", "\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Lookup", "[", 
+               RowBox[{"r", ",", "#"}], "]"}], "&"}], "/@", "atoms"}], ",", 
+            "\n", "\t\t\t\t\t\t", "atoms", ",", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"Take", "[", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"Flatten", "[", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"ConstantArray", "[", "\n", "\t\t\t\t\t\t\t\t\t", 
+                 RowBox[{"lab", ",", "\n", "\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{"Length", "@", "atoms"}]}], "\n", 
+                 "\t\t\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t\t\t\t", 
+                "1"}], "\n", "\t\t\t\t\t\t\t\t", "]"}], ",", "\n", 
+              "\t\t\t\t\t\t\t", 
+              RowBox[{"Length", "@", "atoms"}]}], "\n", "\t\t\t\t\t\t\t", 
+             "]"}], ",", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"Take", "[", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"Flatten", "[", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"ConstantArray", "[", "\n", "\t\t\t\t\t\t\t\t\t", 
+                 RowBox[{"style", ",", "\n", "\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{"Length", "@", "atoms"}]}], "\n", 
+                 "\t\t\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t\t\t\t", 
+                "1"}], "\n", "\t\t\t\t\t\t\t\t", "]"}], ",", "\n", 
+              "\t\t\t\t\t\t\t", 
+              RowBox[{"Length", "@", "atoms"}]}], "\n", "\t\t\t\t\t\t\t", 
+             "]"}]}], "\n", "\t\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t\t", 
+         "]"}]}], "\n", "\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.692408905530569*^9, 3.692408970976132*^9}, {
+   3.6924090591562366`*^9, 3.6924090990726624`*^9}, {3.692409155536306*^9, 
+   3.692409426071615*^9}, {3.692409526259198*^9, 3.692409567880213*^9}, {
+   3.6924104803554993`*^9, 3.692410503617511*^9}, {3.692410923246231*^9, 
+   3.692411026837083*^9}, {3.692411196640417*^9, 3.6924112000771017`*^9}, 
+   3.692411256353093*^9, {3.692411938925235*^9, 3.6924119403830442`*^9}, {
+   3.692412139420477*^9, 3.692412142019125*^9}, {3.692450692765382*^9, 
+   3.692450709886984*^9}, {3.6924533441677313`*^9, 3.692453345934114*^9}, {
+   3.692453671852169*^9, 3.69245368521129*^9}, {3.6924537216828527`*^9, 
+   3.692453729736932*^9}, {3.692453764209412*^9, 3.692453767326516*^9}, {
+   3.692468129140088*^9, 3.692468283101008*^9}, {3.6924710676868467`*^9, 
+   3.6924710735506372`*^9}, 3.6924716530976973`*^9, {3.692471992838645*^9, 
+   3.692471999869089*^9}, {3.6924720523942966`*^9, 3.692472053127474*^9}, {
+   3.692493443777033*^9, 3.692493483562574*^9}, {3.6924935549786673`*^9, 
+   3.692493702711822*^9}, {3.6924939546645937`*^9, 3.692493978016114*^9}, {
+   3.6924961970152493`*^9, 3.6924962025892897`*^9}, {3.6924962903486433`*^9, 
+   3.692496290993862*^9}, {3.6924963453841887`*^9, 3.692496345703438*^9}, {
+   3.6924968109098997`*^9, 3.6924968636964283`*^9}, 3.6941007044045753`*^9, {
+   3.700082612494404*^9, 3.70008265384828*^9}, {3.700082757104685*^9, 
+   3.700083155523843*^9}, 3.700083260974391*^9, 3.700107725346549*^9, {
+   3.700107780646779*^9, 3.70010778679209*^9}, {3.700107835357628*^9, 
+   3.700107854347416*^9}, {3.700107889349366*^9, 3.700108015182445*^9}, {
+   3.700108131469431*^9, 3.700108137236521*^9}, {3.7001515143145323`*^9, 
+   3.700151558304617*^9}, 3.7183356613389874`*^9, {3.72037340573626*^9, 
+   3.7203734445878887`*^9}, 3.720373520172554*^9, {3.720373597627729*^9, 
+   3.720373851086582*^9}, {3.720375239355187*^9, 3.7203752479291983`*^9}, {
+   3.720376089950452*^9, 
+   3.7203761688007593`*^9}},ExpressionUUID->"9838a421-a494-4982-80c1-\
+645ced5597c5"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["SingleBonds", "CodeSubsubsection",
+ CellChangeTimes->{{3.692408762114355*^9, 3.692408764044072*^9}, 
+   3.692411369194841*^9, {3.693109796166182*^9, 
+   3.693109798116664*^9}},ExpressionUUID->"cba5f7b9-b64c-4f57-a221-\
+423f39bd2d95"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"bondGraphics3D1", "[", "\n", "\t", 
+    RowBox[{
+    "bondGraphicsColors_", ",", "\n", "\t", "bondGraphicsPositions_", ",", 
+     "\n", "\t", "bondGraphicsLabel_", ",", "\n", "\t", "style_", ",", "\n", 
+     "\t", "bondGraphicThickness_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"EdgeForm", "[", "None", "]"}], ",", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"Replace", "[", 
+         RowBox[{"None", "\[Rule]", "Nothing"}], "]"}], "@", "style"}], ",", 
+       "\n", "\t\t\t", 
+       RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"First", "@", "bondGraphicsColors"}], ",", "\n", "\t", 
+         "\t\t\t", 
+         RowBox[{"Cylinder", "[", 
+          RowBox[{
+           RowBox[{"bondGraphicsPositions", "[", 
+            RowBox[{"[", 
+             RowBox[{";;", "2"}], "]"}], "]"}], ",", "bondGraphicThickness"}],
+           "]"}], ",", "\n", "\t", "\t\t\t", 
+         RowBox[{"Last", "@", "bondGraphicsColors"}], ",", "\n", "\t", 
+         "\t\t\t", 
+         RowBox[{"Cylinder", "[", 
+          RowBox[{
+           RowBox[{"bondGraphicsPositions", "[", 
+            RowBox[{"[", 
+             RowBox[{"2", ";;"}], "]"}], "]"}], ",", "bondGraphicThickness"}],
+           "]"}]}], "\n", "\t\t\t\t", "}"}]}], "\n", "\t\t\t", "}"}], ",", 
+     "\n", "\t\t", 
+     RowBox[{"Replace", "[", 
+      RowBox[{"bondGraphicsLabel", ",", 
+       RowBox[{"{", "\n", "\t\t\t", 
+        RowBox[{
+         RowBox[{"None", "\[Rule]", "Nothing"}], ",", "\n", "\t\t\t", 
+         RowBox[{"e_", ":>", "\n", "\t\t\t\t", 
+          RowBox[{"Map", "[", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Text", "[", "\n", "\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"Style", "[", "\n", "\t\t\t\t\t\t\t", 
+                RowBox[{"e", ",", "\n", "\t", "\t", "\t\t\t\t\t", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"ColorDistance", "[", 
+                    RowBox[{
+                    RowBox[{"bondGraphicsColors", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", " ", "Black"}], 
+                    "]"}], ">", ".7"}], ",", " ", "Black", ",", " ", 
+                   "White"}], "]"}]}], "\n", "\t\t\t\t\t\t\t", "]"}], ",", 
+               "\n", "\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"Mean", "@", "bondGraphicsPositions"}], "+", "#"}]}], 
+              "\n", "\t\t\t\t\t\t", "]"}], "&"}], ",", "\n", "\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{".25", "+", "bondGraphicThickness"}], ")"}], "*", "\n", 
+             "\t\t\t\t\t", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"bondGraphicThickness", ">", ".5"}], ",", "\n", 
+               "\t\t\t\t\t\t\t", 
+               RowBox[{"Join", "[", 
+                RowBox[{
+                 RowBox[{"IdentityMatrix", "[", "3", "]"}], ",", " ", 
+                 RowBox[{"-", 
+                  RowBox[{"IdentityMatrix", "[", "3", "]"}]}]}], "]"}], ",", 
+               "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{"{", 
+                RowBox[{"{", 
+                 RowBox[{"0", ",", "0", ",", "1"}], "}"}], "}"}]}], "\n", 
+              "\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t", "]"}]}]}], 
+        "\n", "\t\t\t", "}"}]}], "]"}]}], "\n", "\t\t", "}"}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.692469440805901*^9, 3.692469464967525*^9}, {
+   3.692469619050849*^9, 3.692469633253935*^9}, {3.692470077160881*^9, 
+   3.692470079904271*^9}, {3.6924950451064987`*^9, 3.692495050318137*^9}, {
+   3.6924950955576077`*^9, 3.692495124345827*^9}, {3.692496100267662*^9, 
+   3.692496103234173*^9}, {3.700083435843309*^9, 3.700083438422654*^9}, {
+   3.720374502572814*^9, 3.720374630462412*^9}, 3.720374982456867*^9, {
+   3.7203751406666594`*^9, 3.720375169893519*^9}, {3.720375523191614*^9, 
+   3.720375531440506*^9}, {3.7203759239190807`*^9, 3.720375958473674*^9}, 
+   3.7203765901642933`*^9},ExpressionUUID->"1c680300-7d30-4d88-9f2c-\
+70241eaeb513"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"bondGraphics3D1Dashed", "[", "\n", "\t", 
+    RowBox[{
+    "bondGraphicsColors_", ",", "bondGraphicsPositions_", ",", "\n", "\t", 
+     "bondGraphicsLabel_", ",", "style_", ",", "\n", "\t", 
+     "bondGraphicThickness_", ",", "dashing_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"EdgeForm", "[", "None", "]"}], ",", "\n", "\t", "\t\t", 
+       RowBox[{
+        RowBox[{"Replace", "[", 
+         RowBox[{"None", "\[Rule]", "Nothing"}], "]"}], "@", "style"}], ",", 
+       "\n", "\t", "\t\t", 
+       RowBox[{"{", "\n", "\t", "\t\t\t", 
+        RowBox[{
+         RowBox[{"First", "@", "bondGraphicsColors"}], ",", "\n", "\t", 
+         "\t\t\t", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Cylinder", "[", 
+            RowBox[{"#", ",", "bondGraphicThickness"}], "]"}], "&"}], "/@", 
+          "\n", "\t", "\t\t\t\t", 
+          RowBox[{"Partition", "[", "\n", "\t", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"With", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"v", "=", 
+                RowBox[{"Subtract", "@@", 
+                 RowBox[{"bondGraphicsPositions", "[", 
+                  RowBox[{"[", 
+                   RowBox[{";;", "2"}], "]"}], "]"}]}]}], "}"}], ",", "\n", 
+              "\t", "\t", "\t\t\t\t\t", 
+              RowBox[{"With", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"u", "=", 
+                   RowBox[{"Normalize", "@", "v"}]}], ",", 
+                  RowBox[{"n", "=", 
+                   RowBox[{"Norm", "@", "v"}]}], ",", 
+                  RowBox[{"p", "=", 
+                   RowBox[{"bondGraphicsPositions", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}]}]}], "}"}], ",", "\n", 
+                "\t", "\t", "\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"p", "+", 
+                   RowBox[{"#", "*", "u"}]}], "&"}], "/@", 
+                 RowBox[{"Range", "[", 
+                  RowBox[{"0", ",", "n", ",", 
+                   RowBox[{"Min", "@", 
+                    RowBox[{"{", 
+                    RowBox[{"dashing", ",", 
+                    RowBox[{"n", "/", "2."}]}], "}"}]}]}], "]"}]}]}], "\n", 
+               "\t", "\t\t\t\t\t\t\t", "]"}]}], "\n", "\t", "\t\t\t\t\t\t", 
+             "]"}], ",", "\n", "\t", "\t\t\t\t\t", "2"}], "]"}]}], ",", "\n", 
+         "\t", "\t\t\t", 
+         RowBox[{"Last", "@", "bondGraphicsColors"}], ",", "\n", "\t", 
+         "\t\t\t", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Cylinder", "[", 
+            RowBox[{"#", ",", "bondGraphicThickness"}], "]"}], "&"}], "/@", 
+          "\n", "\t", "\t\t\t\t", 
+          RowBox[{"Partition", "[", "\n", "\t", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"With", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"v", "=", 
+                RowBox[{"Subtract", "@@", 
+                 RowBox[{"bondGraphicsPositions", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"2", ";;"}], "]"}], "]"}]}]}], "}"}], ",", "\n", 
+              "\t", "\t", "\t\t\t\t\t", 
+              RowBox[{"With", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"u", "=", 
+                   RowBox[{"Normalize", "@", "v"}]}], ",", 
+                  RowBox[{"n", "=", 
+                   RowBox[{"Norm", "@", "v"}]}], ",", 
+                  RowBox[{"p", "=", 
+                   RowBox[{"bondGraphicsPositions", "[", 
+                    RowBox[{"[", "3", "]"}], "]"}]}]}], "}"}], ",", "\n", 
+                "\t", "\t", "\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"p", "+", 
+                   RowBox[{"#", "*", "u"}]}], "&"}], "/@", 
+                 RowBox[{"Range", "[", 
+                  RowBox[{"0", ",", "n", ",", 
+                   RowBox[{"Min", "@", 
+                    RowBox[{"{", 
+                    RowBox[{"dashing", ",", 
+                    RowBox[{"n", "/", "2."}]}], "}"}]}]}], "]"}]}]}], "\n", 
+               "\t", "\t\t\t\t\t\t\t", "]"}]}], "\n", "\t", "\t\t\t\t\t\t", 
+             "]"}], ",", "\n", "\t", "\t\t\t\t\t", "2"}], "]"}]}]}], "\n", 
+        "\t\t\t\t", "}"}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+     RowBox[{"Replace", "[", 
+      RowBox[{"bondGraphicsLabel", ",", "\n", "\t\t\t", 
+       RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"None", "\[Rule]", "Nothing"}], ",", "\n", "\t", "\t\t\t", 
+         RowBox[{"e_", ":>", "\n", "\t\t\t\t\t", 
+          RowBox[{"Map", "[", "\n", "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Text", "[", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"Style", "[", "\n", "\t", "\t\t\t\t\t\t\t", 
+                RowBox[{"e", ",", "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"ColorDistance", "[", 
+                    RowBox[{
+                    RowBox[{"bondGraphicsColors", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", " ", "Black"}], 
+                    "]"}], ">", ".7"}], ",", " ", "Black", ",", " ", 
+                   "White"}], "]"}]}], "\n", "\t", "\t\t\t\t\t\t\t", "]"}], 
+               ",", "\n", "\t", "\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"Mean", "@", "bondGraphicsPositions"}], "+", "#"}]}], 
+              "\n", "\t", "\t\t\t\t\t\t", "]"}], "&"}], ",", "\n", 
+            "\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{".25", "+", "bondGraphicThickness"}], ")"}], "*", "\n", 
+             "\t\t\t\t\t\t\t", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"bondGraphicThickness", ">", ".5"}], ",", "\n", 
+               "\t\t\t\t\t\t\t\t", 
+               RowBox[{"Join", "[", 
+                RowBox[{
+                 RowBox[{"IdentityMatrix", "[", "3", "]"}], ",", " ", 
+                 RowBox[{"-", 
+                  RowBox[{"IdentityMatrix", "[", "3", "]"}]}]}], "]"}], ",", 
+               "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{"{", 
+                RowBox[{"{", 
+                 RowBox[{"0", ",", "0", ",", "1"}], "}"}], "}"}]}], "\n", 
+              "\t\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t\t", "]"}]}]}], 
+        "\n", "\t\t\t\t", "}"}]}], "]"}]}], "\n", "\t\t", "}"}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.692469440805901*^9, 3.692469464967525*^9}, {
+   3.692469619050849*^9, 3.692469633253935*^9}, {3.692470077160881*^9, 
+   3.692470079904271*^9}, {3.6924950451064987`*^9, 3.692495089540133*^9}, {
+   3.692495127120329*^9, 3.6924951300985928`*^9}, {3.69249601300666*^9, 
+   3.692496014365802*^9}, {3.692496066373014*^9, 3.692496094874769*^9}, {
+   3.692496138990718*^9, 3.692496153960189*^9}, {3.700083442113038*^9, 
+   3.700083448345536*^9}, {3.720374635628373*^9, 3.7203746524085703`*^9}, 
+   3.720374986924406*^9, {3.720375051552648*^9, 3.720375056064949*^9}, {
+   3.720375110692479*^9, 3.720375130168079*^9}, {3.720375171926957*^9, 
+   3.720375172878689*^9}, 3.720375537782392*^9, {3.72037596707014*^9, 
+   3.720375981499548*^9}, 
+   3.7203765911278343`*^9},ExpressionUUID->"98bf4dd4-55a5-465d-9e89-\
+c3bc31bafbb6"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["DoubleBonds", "CodeSubsubsection",
+ CellChangeTimes->{{3.692408762114355*^9, 3.692408764044072*^9}, 
+   3.692411369194841*^9, {3.693109803085999*^9, 
+   3.69310980662846*^9}},ExpressionUUID->"33e3ffd5-363a-4002-889c-\
+3f0cc77c9560"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"bondGraphics3D2", "[", "\n", "\t", 
+    RowBox[{
+    "bondGraphicsColors_", ",", "bondGraphicsPositions_", ",", "\n", "\t", 
+     "bondGraphicsLabel_", ",", "style_", ",", "\n", "\t", 
+     "bondGraphicsVector_", ",", "bondGraphicSeparation_", ",", "\n", "\t", 
+     "bondGraphicThickness_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"perp", "=", "\n", "\t\t\t", 
+       RowBox[{"ConstantArray", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"bondGraphicSeparation", "+", "bondGraphicThickness"}], 
+           ")"}], "*", "\n", "\t\t\t\t\t", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"With", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"g", "=", 
+                RowBox[{"Normalize", "@", "bondGraphicsVector"}]}], "}"}], 
+              ",", 
+              RowBox[{
+               RowBox[{"g", "!=", 
+                RowBox[{"{", 
+                 RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], "&&", 
+               RowBox[{"g", "\[NotEqual]", 
+                RowBox[{"{", 
+                 RowBox[{"0", ",", "0", ",", 
+                  RowBox[{"-", "1"}]}], "}"}]}]}]}], "]"}], ",", "\n", "\t", 
+            "\t\t\t\t\t", 
+            RowBox[{"Cross", "[", 
+             RowBox[{"bondGraphicsVector", ",", 
+              RowBox[{"{", 
+               RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], "]"}], ",", "\n", 
+            "\t", "\t\t\t\t\t", 
+            RowBox[{"{", 
+             RowBox[{"1", ",", "0", ",", "0"}], "}"}]}], "\n", "\t", 
+           "\t\t\t\t\t", "]"}]}], ",", "\n", "\t", "\t\t\t", "2"}], "]"}]}], 
+      "}"}], ",", "\n", "\t\t", 
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"EdgeForm", "[", "None", "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"Replace", "[", 
+           RowBox[{"None", "\[Rule]", "Nothing"}], "]"}], "@", "style"}], ",",
+          "\n", "\t\t\t\t", 
+         RowBox[{"{", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"First", "@", "bondGraphicsColors"}], ",", "\n", "\t", 
+           "\t", "\t\t\t", 
+           RowBox[{"Cylinder", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"bondGraphicsPositions", "[", 
+               RowBox[{"[", 
+                RowBox[{";;", "2"}], "]"}], "]"}], "-", "perp"}], ",", "\n", 
+             "\t", "\t\t\t\t\t", "bondGraphicThickness"}], "]"}], ",", "\n", 
+           "\t", "\t\t\t\t", 
+           RowBox[{"Cylinder", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"bondGraphicsPositions", "[", 
+               RowBox[{"[", 
+                RowBox[{";;", "2"}], "]"}], "]"}], "+", "perp"}], ",", "\n", 
+             "\t", "\t\t\t\t\t", "bondGraphicThickness"}], "]"}]}], "\n", 
+          "\t", "\t\t\t\t", "}"}], ",", "\n", "\t", "\t", "\t\t", 
+         RowBox[{"{", "\n", "\t", "\t", "\t\t\t", 
+          RowBox[{
+           RowBox[{"Last", "@", "bondGraphicsColors"}], ",", "\n", "\t", "\t",
+            "\t\t\t", 
+           RowBox[{"Cylinder", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"bondGraphicsPositions", "[", 
+               RowBox[{"[", 
+                RowBox[{"2", ";;"}], "]"}], "]"}], "-", "perp"}], ",", "\n", 
+             "\t", "\t\t\t\t\t", "bondGraphicThickness"}], "]"}], ",", "\n", 
+           "\t", "\t\t\t\t", 
+           RowBox[{"Cylinder", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"bondGraphicsPositions", "[", 
+               RowBox[{"[", 
+                RowBox[{"2", ";;"}], "]"}], "]"}], "+", "perp"}], ",", "\n", 
+             "\t", "\t\t\t\t\t", "bondGraphicThickness"}], "]"}]}], "\n", 
+          "\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+       RowBox[{"Replace", "[", 
+        RowBox[{"bondGraphicsLabel", ",", 
+         RowBox[{"{", "\n", "\t\t\t\t", 
+          RowBox[{
+           RowBox[{"None", "\[Rule]", "Nothing"}], ",", "\n", "\t", "\t\t\t", 
+           
+           RowBox[{"e_", ":>", "\n", "\t\t\t\t\t", 
+            RowBox[{"Map", "[", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Text", "[", "\n", "\t\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{"Style", "[", "\n", "\t", "\t\t\t\t\t\t\t", 
+                  RowBox[{"e", ",", "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"ColorDistance", "[", 
+                    RowBox[{
+                    RowBox[{"bondGraphicsColors", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", " ", "Black"}], 
+                    "]"}], ">", ".7"}], ",", " ", "Black", ",", " ", 
+                    "White"}], "]"}]}], "\n", "\t", "\t\t\t\t\t\t\t", "]"}], 
+                 ",", "\n", "\t", "\t\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"Mean", "@", "bondGraphicsPositions"}], "+", 
+                  "#"}]}], "\n", "\t", "\t\t\t\t\t\t", "]"}], "&"}], ",", 
+              "\n", "\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{".25", "+", "bondGraphicThickness"}], ")"}], "*", 
+               "\n", "\t\t\t\t\t\t", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"bondGraphicThickness", ">", ".5"}], ",", "\n", 
+                 "\t\t\t\t\t\t\t", 
+                 RowBox[{"Join", "[", 
+                  RowBox[{
+                   RowBox[{"IdentityMatrix", "[", "3", "]"}], ",", " ", 
+                   RowBox[{"-", 
+                    RowBox[{"IdentityMatrix", "[", "3", "]"}]}]}], "]"}], ",",
+                  "\n", "\t\t\t\t\t\t\t", 
+                 RowBox[{"{", 
+                  RowBox[{"{", 
+                   RowBox[{"0", ",", "0", ",", "1"}], "}"}], "}"}]}], "\n", 
+                "\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t\t", "]"}]}]}], 
+          "\n", "\t", "\t\t\t", "}"}]}], "]"}]}], "\n", "\t\t\t", "}"}]}], 
+    "\n", "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.692469436183511*^9, 3.6924694387244873`*^9}, {
+   3.6924694753916187`*^9, 3.692469488343678*^9}, {3.6924696574009542`*^9, 
+   3.6924696653571863`*^9}, {3.692469700966443*^9, 3.692469722211412*^9}, {
+   3.692469754060135*^9, 3.692469767316454*^9}, {3.692470051742532*^9, 
+   3.692470091171968*^9}, {3.69249641300165*^9, 3.692496435941975*^9}, 
+   3.700083458474841*^9, {3.720374661015253*^9, 3.720374687041718*^9}, 
+   3.7203749647819138`*^9, {3.720375150682057*^9, 3.720375160070373*^9}, {
+   3.720375540514805*^9, 3.720375542187195*^9}, {3.7203759959483347`*^9, 
+   3.720376008835124*^9}, {3.720376390349525*^9, 3.7203763911782103`*^9}, 
+   3.720376586691434*^9},ExpressionUUID->"418c6259-1d6a-4cbf-8ce2-\
+df1336b8b235"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"bondGraphics3D2Dashed", "[", "\n", "\t", 
+    RowBox[{
+    "bondGraphicsColors_", ",", "bondGraphicsPositions_", ",", "\n", "\t", 
+     "bondGraphicsLabel_", ",", "style_", ",", "\n", "\t", 
+     "bondGraphicsVector_", ",", "bondGraphicSeparation_", ",", "\n", "\t", 
+     "bondGraphicThickness_", ",", "dashing_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"perp", "=", "\n", "\t\t\t", 
+       RowBox[{"ConstantArray", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"bondGraphicSeparation", "+", "bondGraphicThickness"}], 
+           ")"}], "*", "\n", "\t\t\t\t\t", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"With", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"g", "=", 
+                RowBox[{"Normalize", "@", "bondGraphicsVector"}]}], "}"}], 
+              ",", 
+              RowBox[{
+               RowBox[{"g", "!=", 
+                RowBox[{"{", 
+                 RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], "&&", 
+               RowBox[{"g", "\[NotEqual]", 
+                RowBox[{"{", 
+                 RowBox[{"0", ",", "0", ",", 
+                  RowBox[{"-", "1"}]}], "}"}]}]}]}], "]"}], ",", "\n", "\t", 
+            "\t\t\t\t\t", 
+            RowBox[{"Cross", "[", 
+             RowBox[{"bondGraphicsVector", ",", 
+              RowBox[{"{", 
+               RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], "]"}], ",", "\n", 
+            "\t", "\t\t\t\t\t", 
+            RowBox[{"{", 
+             RowBox[{"1", ",", "0", ",", "0"}], "}"}]}], "\n", "\t", 
+           "\t\t\t\t\t", "]"}]}], ",", "\n", "\t", "\t\t\t", "2"}], "]"}]}], 
+      "}"}], ",", "\n", "\t\t", 
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"EdgeForm", "[", "None", "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"Replace", "[", 
+           RowBox[{"None", "\[Rule]", "Nothing"}], "]"}], "@", "style"}], ",",
+          "\n", "\t\t\t\t", 
+         RowBox[{"{", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"First", "@", "bondGraphicsColors"}], ",", "\n", "\t", 
+           "\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Cylinder", "[", 
+              RowBox[{"#", ",", "bondGraphicThickness"}], "]"}], "&"}], "/@", 
+            "\n", "\t", "\t\t\t\t\t", 
+            RowBox[{"Partition", "[", "\n", "\t", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"With", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"v", "=", 
+                  RowBox[{"Subtract", "@@", 
+                   RowBox[{"bondGraphicsPositions", "[", 
+                    RowBox[{"[", 
+                    RowBox[{";;", "2"}], "]"}], "]"}]}]}], "}"}], ",", "\n", 
+                "\t", "\t\t\t\t\t\t\t", 
+                RowBox[{"With", "[", 
+                 RowBox[{
+                  RowBox[{"{", "\n", "\t", "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"u", "=", 
+                    RowBox[{"Normalize", "@", "v"}]}], ",", 
+                    RowBox[{"n", "=", 
+                    RowBox[{"Norm", "@", "v"}]}], ",", "\n", "\t", "\t", 
+                    "\t\t\t\t\t\t\t\t", 
+                    RowBox[{"p", "=", 
+                    RowBox[{"bondGraphicsPositions", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}]}]}], "}"}], ",", "\n", 
+                  "\t", "\t", "\t", "\t\t\t\t\t\t\t", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"p", "+", 
+                    RowBox[{"#", "*", "u"}], "-", 
+                    RowBox[{"First", "@", "perp"}]}], "&"}], "/@", 
+                   RowBox[{"Range", "[", 
+                    RowBox[{"0", ",", "n", ",", 
+                    RowBox[{"Min", "@", 
+                    RowBox[{"{", 
+                    RowBox[{"dashing", ",", 
+                    RowBox[{"n", "/", "2."}]}], "}"}]}]}], "]"}]}]}], "\n", 
+                 "\t", "\t\t\t\t\t\t\t\t", "]"}]}], "\n", "\t", 
+               "\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t", "\t\t\t\t\t\t", 
+              "2"}], "]"}]}], ",", "\n", "\t", "\t\t\t\t", 
+           RowBox[{"Cylinder", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"bondGraphicsPositions", "[", 
+               RowBox[{"[", 
+                RowBox[{";;", "2"}], "]"}], "]"}], "+", "perp"}], ",", "\n", 
+             "\t", "\t\t\t\t\t", "bondGraphicThickness"}], "]"}]}], "\n", 
+          "\t", "\t\t\t\t", "}"}], ",", "\n", "\t", "\t", "\t\t", 
+         RowBox[{"{", "\n", "\t", "\t", "\t\t\t", 
+          RowBox[{
+           RowBox[{"Last", "@", "bondGraphicsColors"}], ",", "\n", "\t", 
+           "\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Cylinder", "[", 
+              RowBox[{"#", ",", "bondGraphicThickness"}], "]"}], "&"}], "/@", 
+            "\n", "\t", "\t\t\t\t\t", 
+            RowBox[{"Partition", "[", "\n", "\t", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"With", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"v", "=", 
+                  RowBox[{"Subtract", "@@", 
+                   RowBox[{"bondGraphicsPositions", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"2", ";;"}], "]"}], "]"}]}]}], "}"}], ",", "\n", 
+                "\t", "\t\t\t\t\t\t\t", 
+                RowBox[{"With", "[", 
+                 RowBox[{
+                  RowBox[{"{", "\n", "\t", "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"u", "=", 
+                    RowBox[{"Normalize", "@", "v"}]}], ",", 
+                    RowBox[{"n", "=", 
+                    RowBox[{"Norm", "@", "v"}]}], ",", "\n", "\t", "\t", 
+                    "\t\t\t\t\t\t\t\t", 
+                    RowBox[{"p", "=", 
+                    RowBox[{"bondGraphicsPositions", "[", 
+                    RowBox[{"[", "3", "]"}], "]"}]}]}], "}"}], ",", "\n", 
+                  "\t", "\t", "\t", "\t\t\t\t\t\t\t", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"p", "+", 
+                    RowBox[{"#", "*", "u"}], "-", 
+                    RowBox[{"First", "@", "perp"}]}], "&"}], "/@", 
+                   RowBox[{"Range", "[", 
+                    RowBox[{"0", ",", "n", ",", 
+                    RowBox[{"Min", "@", 
+                    RowBox[{"{", 
+                    RowBox[{"dashing", ",", 
+                    RowBox[{"n", "/", "2."}]}], "}"}]}]}], "]"}]}]}], "\n", 
+                 "\t", "\t\t\t\t\t\t\t\t", "]"}]}], "\n", "\t", 
+               "\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t", "\t\t\t\t\t\t", 
+              "2"}], "]"}]}], ",", "\n", "\t", "\t\t\t\t", 
+           RowBox[{"Cylinder", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"bondGraphicsPositions", "[", 
+               RowBox[{"[", 
+                RowBox[{"2", ";;"}], "]"}], "]"}], "+", "perp"}], ",", "\n", 
+             "\t", "\t\t\t\t\t", "bondGraphicThickness"}], "]"}]}], "\n", 
+          "\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+       RowBox[{"Replace", "[", 
+        RowBox[{"bondGraphicsLabel", ",", 
+         RowBox[{"{", "\n", "\t\t\t\t", 
+          RowBox[{
+           RowBox[{"None", "\[Rule]", "Nothing"}], ",", "\n", "\t", "\t\t\t", 
+           
+           RowBox[{"e_", ":>", "\n", "\t\t\t\t\t", 
+            RowBox[{"Map", "[", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Text", "[", "\n", "\t\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{"Style", "[", "\n", "\t", "\t\t\t\t\t\t\t", 
+                  RowBox[{"e", ",", "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"ColorDistance", "[", 
+                    RowBox[{
+                    RowBox[{"bondGraphicsColors", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", " ", "Black"}], 
+                    "]"}], ">", ".7"}], ",", " ", "Black", ",", " ", 
+                    "White"}], "]"}]}], "\n", "\t", "\t\t\t\t\t\t\t", "]"}], 
+                 ",", "\n", "\t", "\t\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"Mean", "@", "bondGraphicsPositions"}], "+", 
+                  "#"}]}], "\n", "\t", "\t\t\t\t\t\t", "]"}], "&"}], ",", 
+              "\n", "\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{".25", "+", "bondGraphicThickness"}], ")"}], "*", 
+               "\n", "\t\t\t\t\t\t", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"bondGraphicThickness", ">", ".5"}], ",", "\n", 
+                 "\t\t\t\t\t\t\t", 
+                 RowBox[{"Join", "[", 
+                  RowBox[{
+                   RowBox[{"IdentityMatrix", "[", "3", "]"}], ",", " ", 
+                   RowBox[{"-", 
+                    RowBox[{"IdentityMatrix", "[", "3", "]"}]}]}], "]"}], ",",
+                  "\n", "\t\t\t\t\t\t\t", 
+                 RowBox[{"{", 
+                  RowBox[{"{", 
+                   RowBox[{"0", ",", "0", ",", "1"}], "}"}], "}"}]}], "\n", 
+                "\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t", "\t\t\t\t\t", 
+             "]"}]}]}], "\n", "\t", "\t\t\t", "}"}]}], "]"}]}], "\n", 
+      "\t\t\t", "}"}]}], "\n", "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.6924944609578648`*^9, 3.6924945278103523`*^9}, {
+   3.6924946457267113`*^9, 3.6924946733335238`*^9}, {3.692494736688162*^9, 
+   3.692494959546268*^9}, 3.692495007866489*^9, {3.692495238516939*^9, 
+   3.6924952443180857`*^9}, {3.692495365506083*^9, 3.692495382303542*^9}, 
+   3.69249547009219*^9, {3.6924958374174767`*^9, 3.692495855217675*^9}, {
+   3.692495885633449*^9, 3.692495973718968*^9}, {3.6924960272935867`*^9, 
+   3.6924960601577187`*^9}, {3.692496170054179*^9, 3.6924961791668367`*^9}, {
+   3.692496391390439*^9, 3.6924964325331573`*^9}, 3.7000834626649857`*^9, {
+   3.720374691547271*^9, 3.720374703648*^9}, 3.720374975951013*^9, 
+   3.720375178561261*^9, {3.72037554518235*^9, 3.720375546756702*^9}, {
+   3.7203760116453543`*^9, 3.7203760252919083`*^9}, 
+   3.72037658733366*^9},ExpressionUUID->"7dfcb09b-1fef-4836-9fa2-7ee2f6680b2d"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["TripleBonds", "CodeSubsubsection",
+ CellChangeTimes->{{3.692408762114355*^9, 3.692408764044072*^9}, 
+   3.692411369194841*^9, {3.693109814173964*^9, 
+   3.693109817492243*^9}},ExpressionUUID->"b7f03e87-0410-41d7-aea3-\
+0a0909d2f835"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"bondGraphics3D3", "[", "\n", "\t", 
+    RowBox[{
+    "bondGraphicsColors_", ",", "bondGraphicsPositions_", ",", "\n", "\t", 
+     "bondGraphicsLabel_", ",", " ", "style_", ",", "\n", "\t", 
+     "bondGraphicsVector_", ",", "bondGraphicSeparation_", ",", "\n", "\t", 
+     "bondGraphicThickness_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"perps", "=", "\n", "\t\t\t", 
+       RowBox[{"NestList", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"RotationMatrix", "[", 
+            RowBox[{
+             RowBox[{"2.", 
+              RowBox[{"\[Pi]", "/", "3"}]}], ",", "bondGraphicsVector"}], 
+            "]"}], ".", "#"}], "&"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"bondGraphicSeparation", "+", "bondGraphicThickness"}], 
+           ")"}], "*", "\n", "\t\t\t\t\t", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"With", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"g", "=", 
+                RowBox[{"Normalize", "@", "bondGraphicsVector"}]}], "}"}], 
+              ",", 
+              RowBox[{
+               RowBox[{"g", "!=", 
+                RowBox[{"{", 
+                 RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], "&&", 
+               RowBox[{"g", "\[NotEqual]", 
+                RowBox[{"{", 
+                 RowBox[{"0", ",", "0", ",", 
+                  RowBox[{"-", "1"}]}], "}"}]}]}]}], "]"}], ",", "\n", "\t", 
+            "\t\t\t\t\t", 
+            RowBox[{"Cross", "[", 
+             RowBox[{"bondGraphicsVector", ",", 
+              RowBox[{"{", 
+               RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], "]"}], ",", "\n", 
+            "\t", "\t\t\t\t\t", 
+            RowBox[{"{", 
+             RowBox[{"1", ",", "0", ",", "0"}], "}"}]}], "\n", "\t\t\t\t\t\t",
+            "]"}]}], ",", "\n", "\t\t\t\t", "2"}], "\n", "\t\t\t\t", "]"}]}], 
+      "}"}], ",", "\n", "\t\t", 
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"EdgeForm", "[", "None", "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"Replace", "[", 
+           RowBox[{"None", "\[Rule]", "Nothing"}], "]"}], "@", "style"}], ",",
+          "\n", "\t\t\t\t", 
+         RowBox[{"{", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"First", "@", "bondGraphicsColors"}], ",", "\n", "\t", 
+           "\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Cylinder", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"bondGraphicsPositions", "[", 
+                 RowBox[{"[", 
+                  RowBox[{";;", "2"}], "]"}], "]"}], "+", 
+                RowBox[{"ConstantArray", "[", 
+                 RowBox[{"#", ",", "2"}], "]"}]}], ",", "\n", "\t", 
+               "\t\t\t\t\t", "bondGraphicThickness"}], "]"}], "&"}], "/@", 
+            "perps"}]}], "\n", "\t", "\t\t\t\t", "}"}], ",", "\n", "\t", 
+         "\t\t\t", 
+         RowBox[{"{", "\n", "\t", "\t", "\t\t\t", 
+          RowBox[{
+           RowBox[{"Last", "@", "bondGraphicsColors"}], ",", "\n", "\t", 
+           "\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Cylinder", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"bondGraphicsPositions", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"2", ";;"}], "]"}], "]"}], "+", 
+                RowBox[{"ConstantArray", "[", 
+                 RowBox[{"#", ",", "2"}], "]"}]}], ",", "\n", "\t", 
+               "\t\t\t\t\t", "bondGraphicThickness"}], "]"}], "&"}], "/@", 
+            "perps"}]}], "\n", "\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t", "}"}],
+        ",", "\n", "\t\t\t", 
+       RowBox[{"Replace", "[", 
+        RowBox[{"bondGraphicsLabel", ",", 
+         RowBox[{"{", "\n", "\t\t\t\t", 
+          RowBox[{
+           RowBox[{"None", "\[Rule]", "Nothing"}], ",", "\n", "\t", "\t\t\t", 
+           
+           RowBox[{"e_", ":>", "\n", "\t\t\t\t\t", 
+            RowBox[{"Map", "[", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Text", "[", "\n", "\t\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{"Style", "[", "\n", "\t", "\t\t\t\t\t\t\t", 
+                  RowBox[{"e", ",", "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"ColorDistance", "[", 
+                    RowBox[{
+                    RowBox[{"bondGraphicsColors", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", " ", "Black"}], 
+                    "]"}], ">", ".7"}], ",", " ", "Black", ",", " ", 
+                    "White"}], "]"}]}], "\n", "\t", "\t\t\t\t\t\t\t", "]"}], 
+                 ",", "\n", "\t", "\t\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"Mean", "@", "bondGraphicsPositions"}], "+", 
+                  "#"}]}], "\n", "\t\t\t\t\t\t\t", "]"}], "&"}], ",", "\n", 
+              "\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{".25", "+", "bondGraphicThickness"}], ")"}], "*", 
+               "\n", "\t\t\t\t\t\t", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"bondGraphicThickness", ">", ".5"}], ",", "\n", 
+                 "\t\t\t\t\t\t\t", 
+                 RowBox[{"Join", "[", 
+                  RowBox[{
+                   RowBox[{"IdentityMatrix", "[", "3", "]"}], ",", " ", 
+                   RowBox[{"-", 
+                    RowBox[{"IdentityMatrix", "[", "3", "]"}]}]}], "]"}], ",",
+                  "\n", "\t\t\t\t\t\t\t", 
+                 RowBox[{"{", 
+                  RowBox[{"{", 
+                   RowBox[{"0", ",", "0", ",", "1"}], "}"}], "}"}]}], "\n", 
+                "\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t", "\t\t\t\t\t", 
+             "]"}]}]}], "\n", "\t", "\t\t\t", "}"}]}], "]"}]}], "\n", 
+      "\t\t\t", "}"}]}], "\n", "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.692469844551282*^9, 3.692469848238855*^9}, 
+   3.693109745161607*^9, {3.693109830563151*^9, 3.693109933169549*^9}, {
+   3.693109964192792*^9, 3.693109983137355*^9}, {3.693110021098003*^9, 
+   3.69311007663894*^9}, {3.693110180670539*^9, 3.693110181630755*^9}, {
+   3.693110304440105*^9, 3.693110310337143*^9}, {3.693110413356051*^9, 
+   3.6931104170509787`*^9}, 3.700083468401558*^9, {3.7203747102487288`*^9, 
+   3.7203747188945017`*^9}, {3.7203749340368013`*^9, 3.720374947851831*^9}, 
+   3.720375191051256*^9, {3.720375548690722*^9, 3.7203755499935837`*^9}, {
+   3.720376033731509*^9, 3.72037605248193*^9}, 
+   3.720376587904811*^9},ExpressionUUID->"bc4bb8e2-0d9c-4bdc-93b8-\
+cab1df6d1058"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"bondGraphics3D3Dashed", "[", "\n", "\t", 
+    RowBox[{
+    "bondGraphicsColors_", ",", "bondGraphicsPositions_", ",", "\n", "\t", 
+     "bondGraphicsLabel_", ",", " ", "style_", ",", "\n", "\t", 
+     "bondGraphicsVector_", ",", "bondGraphicSeparation_", ",", "\n", "\t", 
+     "bondGraphicThickness_", ",", "dashing_"}], "]"}], ":=", "\n", "\t\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"perps", "=", "\n", "\t\t\t", 
+       RowBox[{"NestList", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"RotationMatrix", "[", 
+            RowBox[{
+             RowBox[{"2.", 
+              RowBox[{"\[Pi]", "/", "3"}]}], ",", "bondGraphicsVector"}], 
+            "]"}], ".", "#"}], "&"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"bondGraphicSeparation", "+", "bondGraphicThickness"}], 
+           ")"}], "*", "\n", "\t\t\t\t\t", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"With", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"g", "=", 
+                RowBox[{"Normalize", "@", "bondGraphicsVector"}]}], "}"}], 
+              ",", 
+              RowBox[{
+               RowBox[{"g", "!=", 
+                RowBox[{"{", 
+                 RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], "&&", 
+               RowBox[{"g", "\[NotEqual]", 
+                RowBox[{"{", 
+                 RowBox[{"0", ",", "0", ",", 
+                  RowBox[{"-", "1"}]}], "}"}]}]}]}], "]"}], ",", "\n", "\t", 
+            "\t\t\t\t\t", 
+            RowBox[{"Cross", "[", 
+             RowBox[{"bondGraphicsVector", ",", 
+              RowBox[{"{", 
+               RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], "]"}], ",", "\n", 
+            "\t", "\t\t\t\t\t", 
+            RowBox[{"{", 
+             RowBox[{"1", ",", "0", ",", "0"}], "}"}]}], "\n", "\t\t\t\t\t\t",
+            "]"}]}], ",", "\n", "\t\t\t\t", "2"}], "\n", "\t\t\t\t", "]"}]}], 
+      "}"}], ",", "\n", "\t\t", 
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"EdgeForm", "[", "None", "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"Replace", "[", 
+           RowBox[{"None", "\[Rule]", "Nothing"}], "]"}], "@", "style"}], ",",
+          "\n", "\t\t\t\t", 
+         RowBox[{"{", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"First", "@", "bondGraphicsColors"}], ",", "\n", "\t", 
+           "\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Cylinder", "[", 
+              RowBox[{"#", ",", "bondGraphicThickness"}], "]"}], "&"}], "/@", 
+            "\n", "\t", "\t\t\t\t\t", 
+            RowBox[{"Partition", "[", "\n", "\t", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"With", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"v", "=", 
+                  RowBox[{"Subtract", "@@", 
+                   RowBox[{"bondGraphicsPositions", "[", 
+                    RowBox[{"[", 
+                    RowBox[{";;", "2"}], "]"}], "]"}]}]}], "}"}], ",", "\n", 
+                "\t", "\t\t\t\t\t\t\t", 
+                RowBox[{"With", "[", 
+                 RowBox[{
+                  RowBox[{"{", "\n", "\t", "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"u", "=", 
+                    RowBox[{"Normalize", "@", "v"}]}], ",", 
+                    RowBox[{"n", "=", 
+                    RowBox[{"Norm", "@", "v"}]}], ",", "\n", "\t", "\t", 
+                    "\t\t\t\t\t\t\t\t", 
+                    RowBox[{"p", "=", 
+                    RowBox[{"bondGraphicsPositions", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}]}]}], "}"}], ",", "\n", 
+                  "\t", "\t", "\t", "\t\t\t\t\t\t\t", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"p", "+", 
+                    RowBox[{"#", "*", "u"}], "+", 
+                    RowBox[{"First", "@", "perps"}]}], "&"}], "/@", 
+                   RowBox[{"Range", "[", 
+                    RowBox[{"0", ",", "n", ",", 
+                    RowBox[{"Min", "@", 
+                    RowBox[{"{", 
+                    RowBox[{"dashing", ",", 
+                    RowBox[{"n", "/", "2."}]}], "}"}]}]}], "]"}]}]}], "\n", 
+                 "\t", "\t\t\t\t\t\t\t\t", "]"}]}], "\n", "\t", 
+               "\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t", "\t\t\t\t\t\t", 
+              "2"}], "]"}]}], ",", "\n", "\t", "\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Cylinder", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"bondGraphicsPositions", "[", 
+                 RowBox[{"[", 
+                  RowBox[{";;", "2"}], "]"}], "]"}], "+", 
+                RowBox[{"ConstantArray", "[", 
+                 RowBox[{"#", ",", "2"}], "]"}]}], ",", "\n", "\t", 
+               "\t\t\t\t\t\t", "bondGraphicThickness"}], "]"}], "&"}], "/@", 
+            RowBox[{"perps", "[", 
+             RowBox[{"[", 
+              RowBox[{"2", ";;"}], "]"}], "]"}]}]}], "\n", "\t", "\t\t\t\t", 
+          "}"}], ",", "\n", "\t", "\t\t\t", 
+         RowBox[{"{", "\n", "\t", "\t", "\t\t\t", 
+          RowBox[{
+           RowBox[{"Last", "@", "bondGraphicsColors"}], ",", "\n", "\t", 
+           "\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Cylinder", "[", 
+              RowBox[{"#", ",", "bondGraphicThickness"}], "]"}], "&"}], "/@", 
+            "\n", "\t", "\t\t\t\t\t", 
+            RowBox[{"Partition", "[", "\n", "\t", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"With", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"v", "=", 
+                  RowBox[{"Subtract", "@@", 
+                   RowBox[{"bondGraphicsPositions", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"2", ";;"}], "]"}], "]"}]}]}], "}"}], ",", "\n", 
+                "\t", "\t\t\t\t\t\t\t", 
+                RowBox[{"With", "[", 
+                 RowBox[{
+                  RowBox[{"{", "\n", "\t", "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"u", "=", 
+                    RowBox[{"Normalize", "@", "v"}]}], ",", 
+                    RowBox[{"n", "=", 
+                    RowBox[{"Norm", "@", "v"}]}], ",", "\n", "\t", "\t", 
+                    "\t\t\t\t\t\t\t\t", 
+                    RowBox[{"p", "=", 
+                    RowBox[{"bondGraphicsPositions", "[", 
+                    RowBox[{"[", "3", "]"}], "]"}]}]}], "}"}], ",", "\n", 
+                  "\t", "\t", "\t", "\t\t\t\t\t\t\t", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"p", "+", 
+                    RowBox[{"#", "*", "u"}], "+", 
+                    RowBox[{"First", "@", "perps"}]}], "&"}], "/@", 
+                   RowBox[{"Range", "[", 
+                    RowBox[{"0", ",", "n", ",", 
+                    RowBox[{"Min", "@", 
+                    RowBox[{"{", 
+                    RowBox[{"dashing", ",", 
+                    RowBox[{"n", "/", "2."}]}], "}"}]}]}], "]"}]}]}], "\n", 
+                 "\t", "\t\t\t\t\t\t\t\t", "]"}]}], "\n", "\t", 
+               "\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t", "\t\t\t\t\t\t", 
+              "2"}], "]"}]}], ",", "\n", "\t", "\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Cylinder", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"bondGraphicsPositions", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"2", ";;"}], "]"}], "]"}], "+", 
+                RowBox[{"ConstantArray", "[", 
+                 RowBox[{"#", ",", "2"}], "]"}]}], ",", "\n", "\t", 
+               "\t\t\t\t\t", "bondGraphicThickness"}], "]"}], "&"}], "/@", 
+            RowBox[{"perps", "[", 
+             RowBox[{"[", 
+              RowBox[{"2", ";;"}], "]"}], "]"}]}]}], "\n", "\t\t\t\t\t", 
+          "}"}]}], "\n", "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+       RowBox[{"Replace", "[", 
+        RowBox[{"bondGraphicsLabel", ",", 
+         RowBox[{"{", "\n", "\t\t\t\t", 
+          RowBox[{
+           RowBox[{"None", "\[Rule]", "Nothing"}], ",", "\n", "\t", "\t\t\t", 
+           
+           RowBox[{"e_", ":>", "\n", "\t\t\t\t\t", 
+            RowBox[{"Map", "[", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Text", "[", "\n", "\t\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{"Style", "[", "\n", "\t", "\t\t\t\t\t\t\t", 
+                  RowBox[{"e", ",", "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"ColorDistance", "[", 
+                    RowBox[{
+                    RowBox[{"bondGraphicsColors", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", " ", "Black"}], 
+                    "]"}], ">", ".7"}], ",", " ", "Black", ",", " ", 
+                    "White"}], "]"}]}], "\n", "\t", "\t\t\t\t\t\t\t", "]"}], 
+                 ",", "\n", "\t", "\t\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"Mean", "@", "bondGraphicsPositions"}], "+", 
+                  "#"}]}], "\n", "\t", "\t\t\t\t\t\t", "]"}], "&"}], ",", 
+              "\n", "\t\t\t\t\t\t", 
+              RowBox[{"bondGraphicThickness", "*", 
+               RowBox[{"Join", "[", 
+                RowBox[{
+                 RowBox[{"IdentityMatrix", "[", "3", "]"}], ",", " ", 
+                 RowBox[{"-", 
+                  RowBox[{"IdentityMatrix", "[", "3", "]"}]}]}], "]"}]}]}], 
+             "\n", "\t", "\t\t\t\t\t", "]"}]}]}], "\n", "\t", "\t\t\t", 
+          "}"}]}], "]"}]}], "\n", "\t\t\t", "}"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.692469844551282*^9, 3.692469848238855*^9}, {
+   3.69249618556527*^9, 3.692496189459168*^9}, {3.693110095977146*^9, 
+   3.693110122847082*^9}, {3.693110188070256*^9, 3.693110234968274*^9}, {
+   3.693110317089979*^9, 3.693110336985696*^9}, {3.693110376985395*^9, 
+   3.6931104076923103`*^9}, 3.693110762887499*^9, 3.693110795806445*^9, 
+   3.700083471456431*^9, {3.720374728274184*^9, 3.7203747372631493`*^9}, 
+   3.72037495722346*^9, {3.720376065948399*^9, 3.720376080067337*^9}, 
+   3.7203765884526987`*^9},ExpressionUUID->"b44f4438-f355-4bfe-b0bb-\
+c3966de4ff69"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Graphic3D", "CodeSubsubsection",
+ CellChangeTimes->{{3.6931101060059547`*^9, 
+  3.693110109052516*^9}},ExpressionUUID->"3a999445-0da9-4dd3-bb48-\
+c3678573647f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"BondGraphicShapeFunction3D", "[", "\n", "\t", 
+   RowBox[{
+   "type_", ",", "\n", "\t", "colors_", ",", "\n", "\t", "positions_", ",", 
+    "\n", "\t", "label_", ",", "\n", "\t", "style_", ",", "\n", "\t", 
+    "vector_", ",", "\n", "\t", "tbSep_", ",", "\n", "\t", "dbSep_", ",", 
+    "\n", "\t", "thick_", ",", "\n", "\t", "dashing_"}], "\n", "\t", "]"}], ":=",
+   "\n", "\t", 
+  RowBox[{"Which", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"tbSep", "=!=", "None"}], "&&", 
+      RowBox[{"type", "\[Equal]", "3"}]}], "//", "TrueQ"}], ",", "\n", 
+    "\t\t\t", 
+    RowBox[{"bondGraphics3D3", "[", "\n", "\t\t\t\t", 
+     RowBox[{
+     "colors", ",", " ", "positions", ",", "\n", "\t\t\t\t", "label", ",", 
+      " ", "style", ",", "\n", "\t\t\t\t", "vector", ",", " ", "tbSep", ",", 
+      "\n", "\t\t\t\t", "thick"}], "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"dbSep", "=!=", "None"}], "&&", 
+      RowBox[{"type", "\[Equal]", "2"}]}], "//", "TrueQ"}], ",", "\n", 
+    "\t\t\t", 
+    RowBox[{"bondGraphics3D2", "[", "\n", "\t\t\t\t", 
+     RowBox[{
+     "colors", ",", "positions", ",", " ", "\n", "\t\t\t\t", "label", ",", 
+      " ", "style", ",", "\n", "\t\t\t\t", "vector", ",", " ", "dbSep", ",", 
+      "\n", "\t\t\t\t", "thick"}], "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"type", "\[Equal]", "3"}], "&&", 
+        RowBox[{"tbSep", "===", "None"}]}], ")"}], "||", "\n", "\t\t\t", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"type", "\[Equal]", "2"}], "&&", 
+        RowBox[{"dbSep", "===", "None"}]}], ")"}], "||", "\n", "\t\t\t\t", 
+      RowBox[{"type", "==", "1"}]}], "//", "TrueQ"}], ",", "\n", "\t\t\t", 
+    RowBox[{"bondGraphics3D1", "[", "\n", "\t\t\t\t", 
+     RowBox[{
+     "colors", ",", " ", "positions", ",", " ", "\n", "\t\t\t\t", "label", 
+      ",", " ", "style", ",", "\n", "\t\t\t\t", "thick"}], "]"}], ",", "\n", 
+    "\t\t", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"tbSep", "=!=", "None"}], "&&", 
+      RowBox[{"type", ">", "2"}]}], "//", "TrueQ"}], ",", "\n", "\t\t\t", 
+    RowBox[{"bondGraphics3D3Dashed", "[", "\n", "\t\t\t\t", 
+     RowBox[{
+     "colors", ",", " ", "positions", ",", " ", "\n", "\t\t\t\t", "label", 
+      ",", " ", "style", ",", "\n", "\t\t\t\t", "vector", ",", " ", "tbSep", 
+      ",", "\n", "\t\t\t\t", "thick", ",", " ", "dashing"}], "]"}], ",", "\n",
+     "\t\t", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"dbSep", "=!=", "None"}], "&&", 
+      RowBox[{"type", ">", "1"}]}], "//", "TrueQ"}], ",", "\n", "\t\t\t", 
+    RowBox[{"bondGraphics3D2Dashed", "[", "\n", "\t\t\t\t", 
+     RowBox[{
+     "colors", ",", " ", "positions", ",", " ", "\n", "\t\t\t\t", "label", 
+      ",", " ", "style", ",", "\n", "\t\t\t\t", "vector", ",", " ", "dbSep", 
+      ",", "\n", "\t\t\t\t", "thick", ",", " ", "dashing"}], "\n", "\t\t\t\t",
+      "]"}], ",", "\n", "\t\t", "True", ",", "\n", "\t\t\t", 
+    RowBox[{"bondGraphics3D1Dashed", "[", "\n", "\t\t\t\t", 
+     RowBox[{
+     "colors", ",", " ", "positions", ",", " ", "\n", "\t\t\t\t", "label", 
+      ",", " ", "style", ",", "\n", "\t\t\t\t", "thick", ",", " ", 
+      "dashing"}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t", 
+   "]"}]}]], "CodeInput",
+ CellChangeTimes->{{3.720373523104905*^9, 3.7203735920654*^9}, {
+  3.720373640273164*^9, 3.720373640735046*^9}, {3.7203738599660788`*^9, 
+  3.720374299108679*^9}, {3.720375065424971*^9, 3.7203750704528627`*^9}, {
+  3.720376183579042*^9, 
+  3.7203762094544773`*^9}},ExpressionUUID->"44f66a55-8a2e-4a03-9d32-\
+3a16fa25da7f"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "BondGraphic3D", "]"}], "=", 
+   RowBox[{"Options", "[", "BondGraphic", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"BondGraphic3D", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemObjAllPattern"}], ",", 
+     RowBox[{"ops", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"atoms", "=", 
+        RowBox[{"ChemGet", "[", 
+         RowBox[{
+          RowBox[{"Flatten", "@", 
+           RowBox[{"{", "obj", "}"}]}], ",", "\"\<Atoms\>\""}], "]"}]}], ",", 
+       "\n", "\t\t", 
+       RowBox[{"type", "=", 
+        RowBox[{"ChemGet", "[", 
+         RowBox[{
+          RowBox[{"Flatten", "@", 
+           RowBox[{"{", "obj", "}"}]}], ",", "\"\<Type\>\""}], "]"}]}], ",", 
+       "\n", "\t\t", 
+       RowBox[{"fn", "=", "\n", "\t\t\t", 
+        RowBox[{"Replace", "[", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<BondShapeFunction\>\"", "]"}], ",",
+           "\n", "\t\t\t\t\t", 
+          RowBox[{"Automatic", "\[Rule]", "BondGraphicShapeFunction3D"}]}], 
+         "\n", "\t\t\t\t", "]"}]}], ",", "\n", "\t\t", 
+       RowBox[{"lab", "=", "\n", "\t\t\t", 
+        RowBox[{"Replace", "[", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<BondLabel\>\"", "]"}], ",", 
+          RowBox[{"{", "\n", "\t\t\t\t", 
+           RowBox[{
+            RowBox[{"Automatic", ":>", "\n", "\t\t\t\t\t", 
+             RowBox[{"ChemGet", "[", 
+              RowBox[{
+               RowBox[{"Flatten", "@", 
+                RowBox[{"{", "obj", "}"}]}], ",", " ", "\"\<Label\>\"", ",", 
+               " ", "None"}], "]"}]}], ",", "\n", "\t\t\t\t", 
+            RowBox[{"\"\<Numbered\>\"", "->", "\n", "\t\t\t\t\t", 
+             RowBox[{"Range", "[", 
+              RowBox[{"Length", "@", 
+               RowBox[{"Flatten", "@", 
+                RowBox[{"{", "obj", "}"}]}]}], "]"}]}]}], "\n", "\t\t\t\t", 
+           "}"}]}], "]"}]}], ",", "\n", "\t\t", 
+       RowBox[{"style", "=", "\n", "\t\t\t", 
+        RowBox[{"Replace", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<BondStyle\>\"", "]"}], ",", "\n", 
+          "\t\t\t\t", 
+          RowBox[{"Automatic", "\[RuleDelayed]", "None"}]}], "\n", "\t\t\t\t",
+          "]"}]}]}], "\n", "\t\t", "}"}], ",", "\n", "\t\t", 
+     RowBox[{"Join", "@@", 
+      RowBox[{"MapThread", "[", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Block", "[", 
+          RowBox[{
+           RowBox[{"{", "\n", "\t\t\t\t", 
+            RowBox[{
+             RowBox[{"bondGraphicsAtoms", "=", "#4"}], ",", "\n", "\t\t\t\t", 
+             
+             RowBox[{"bondGraphicsType", "=", "#5"}], ",", "\n", "\t\t\t\t", 
+             RowBox[{"bondGraphicsPositions", "=", "#"}], ",", "\n", 
+             "\t\t\t\t", 
+             RowBox[{"bondGraphicsColors", "=", "#2"}], ",", "\n", "\t\t\t\t", 
+             RowBox[{"bondGraphicsRadii", "=", "#3"}], ",", "\n", "\t\t\t\t", 
+             
+             RowBox[{"bondGraphicsLab", "=", "#6"}], ",", "\n", "\t\t\t\t", 
+             RowBox[{"bondGraphicsStyle", "=", "#7"}], ",", "\n", "\t\t\t\t", 
+             "bondGraphicsVector", ",", "\n", "\t\t\t\t", 
+             RowBox[{"bondGraphicsDBSep", "=", 
+              RowBox[{"OptionValue", "@", "\"\<DoubleBondSeparation\>\""}]}], 
+             ",", "\n", "\t", "\t", "\t\t", 
+             RowBox[{"bondGraphicsTBSep", "=", 
+              RowBox[{
+              "OptionValue", "@", "\"\<TripleBondSeparation\>\""}]}]}], "\n", 
+            "\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t", 
+           RowBox[{
+            RowBox[{"bondGraphicsRadii", "=", "\n", "\t\t\t\t\t", 
+             RowBox[{"Replace", "[", 
+              RowBox[{
+               RowBox[{"OptionValue", "@", "\"\<AtomicRadius\>\""}], ",", 
+               RowBox[{"{", "\n", "\t", "\t", "\t\t\t\t", 
+                RowBox[{
+                 RowBox[{"Automatic", "\[RuleDelayed]", 
+                  RowBox[{"(", "\n", "\t", "\t", "\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"OptionValue", "@", "\"\<RadiusScaling\>\""}], 
+                    "*", "\n", "\t", "\t", "\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"QuantityMagnitude", "@*", 
+                    RowBox[{"ChemGet", "[", "\"\<Radius\>\"", "]"}]}], "/@", 
+                    "bondGraphicsAtoms"}]}], "\n", "\t", "\t", "\t\t\t\t\t", 
+                   ")"}]}], ",", "\n", "\t", "\t", "\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"n_", "?", "NumericQ"}], ":>", "\n", "\t", "\t", 
+                  "\t\t\t\t\t", 
+                  RowBox[{"ConstantArray", "[", 
+                   RowBox[{"n", ",", 
+                    RowBox[{"Length", "@", "bondGraphicsAtoms"}]}], "]"}]}]}],
+                 "\n", "\t", "\t", "\t\t\t\t", "}"}]}], "]"}]}], ";", "\n", 
+            "\t\t\t\t", 
+            RowBox[{"bondGraphicsVector", "=", 
+             RowBox[{
+              RowBox[{"Subtract", "@@", "bondGraphicsPositions"}], "//", 
+              "Normalize"}]}], ";", "\n", "\t", "\t", "\t\t", 
+            RowBox[{
+            "bondGraphicsPositions", "=", "\n", "\t", "\t", "\t\t\t", 
+             RowBox[{"Insert", "[", 
+              RowBox[{
+              "bondGraphicsPositions", ",", "\n", "\t", "\t", "\t\t\t\t", 
+               RowBox[{"Mean", "@", 
+                RowBox[{"{", "\n", "\t", "\t", "\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"First", "@", "bondGraphicsPositions"}], "-", "\n",
+                    "\t", "\t", "\t\t\t\t\t\t", 
+                   RowBox[{"bondGraphicsVector", "*", 
+                    RowBox[{"First", "@", "bondGraphicsRadii"}]}]}], ",", 
+                  "\n", "\t", "\t", "\t\t\t\t\t", 
+                  RowBox[{
+                   RowBox[{"Last", "@", "bondGraphicsPositions"}], "+", "\n", 
+                   "\t", "\t", "\t\t\t\t\t\t", 
+                   RowBox[{"bondGraphicsVector", "*", 
+                    RowBox[{"Last", "@", "bondGraphicsRadii"}]}]}]}], "\n", 
+                 "\t", "\t", "\t\t\t\t\t", "}"}]}], ",", "\n", "\t", "\t", 
+               "\t\t\t\t", "2"}], "]"}]}], ";", "\n", "\t\t\t\t", 
+            RowBox[{"fn", "[", "\n", "\t\t\t\t\t", 
+             RowBox[{
+             "bondGraphicsType", ",", "\n", "\t\t\t\t\t", 
+              "bondGraphicsColors", ",", "\n", "\t\t\t\t\t", 
+              "bondGraphicsPositions", ",", "\n", "\t\t\t\t\t", 
+              "bondGraphicsLab", ",", "\n", "\t\t\t\t\t", "bondGraphicsStyle",
+               ",", "\n", "\t\t\t\t\t", "bondGraphicsVector", ",", "\n", 
+              "\t\t\t\t\t", 
+              RowBox[{
+              "OptionValue", "[", "\"\<TripleBondSeparation\>\"", "]"}], ",", 
+              "\n", "\t\t\t\t\t", 
+              RowBox[{
+              "OptionValue", "[", "\"\<DoubleBondSeparation\>\"", "]"}], ",", 
+              "\n", "\t\t\t\t\t", 
+              RowBox[{"OptionValue", "[", "\"\<BondThickness\>\"", "]"}], ",",
+               "\n", "\t\t\t\t\t", 
+              RowBox[{"OptionValue", "[", "\"\<BondDashing\>\"", "]"}]}], 
+             "\n", "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t", "]"}], "&"}], 
+        ",", "\n", "\t\t\t\t", 
+        RowBox[{"With", "[", 
+         RowBox[{
+          RowBox[{"{", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"p", "=", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"AssociationThread", "[", "\n", "\t", "\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"DeleteDuplicates", "@", 
+                RowBox[{"Flatten", "@", "atoms"}]}], ",", "\n", "\t", 
+               "\t\t\t\t\t\t", 
+               RowBox[{"ChemGet", "[", 
+                RowBox[{
+                 RowBox[{"DeleteDuplicates", "@", 
+                  RowBox[{"Flatten", "@", "atoms"}]}], ",", 
+                 "\"\<Position\>\""}], "]"}]}], "\n", "\t\t\t\t\t\t\t", 
+              "]"}]}], ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"c", "=", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"Replace", "[", 
+              RowBox[{
+               RowBox[{"OptionValue", "[", "\"\<BondColor\>\"", "]"}], ",", 
+               "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{"Automatic", ":>", 
+                RowBox[{"BondColors", "@", 
+                 RowBox[{"Flatten", "@", 
+                  RowBox[{"{", "obj", "}"}]}]}]}]}], "\n", "\t\t\t\t\t\t\t", 
+              "]"}]}], ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"r", "=", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"AssociationThread", "[", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"DeleteDuplicates", "@", 
+                RowBox[{"Flatten", "@", "atoms"}]}], ",", "\n", 
+               "\t\t\t\t\t\t\t", 
+               RowBox[{"ChemGet", "[", 
+                RowBox[{
+                 RowBox[{"DeleteDuplicates", "@", 
+                  RowBox[{"Flatten", "@", "atoms"}]}], ",", 
+                 "\"\<Radius\>\""}], "]"}]}], "\n", "\t\t\t\t\t\t\t", 
+              "]"}]}]}], "\n", "\t\t\t\t\t", "}"}], ",", 
+          RowBox[{"{", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"Lookup", "[", 
+               RowBox[{"p", ",", "#"}], "]"}], "&"}], "/@", "atoms"}], ",", 
+            "\n", "\t\t\t\t\t", 
+            RowBox[{"Take", "[", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"ColorQ", "@", 
+                   RowBox[{"#", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], ",", " ", "\n", 
+                  "\t\t\t\t\t\t\t", 
+                  RowBox[{"Partition", "[", 
+                   RowBox[{"#", ",", " ", "2"}], "]"}], ",", "\n", 
+                  "\t\t\t\t\t\t\t", "#"}], "\n", "\t\t\t\t\t\t\t", "]"}], 
+                "&"}], "@", "\n", "\t\t\t\t\t\t", 
+               RowBox[{"Flatten", "[", "\n", "\t\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{"ConstantArray", "[", "\n", "\t\t\t\t\t\t\t\t", 
+                  RowBox[{"c", ",", "\n", "\t\t\t\t\t\t\t\t", 
+                   RowBox[{"2", "*", 
+                    RowBox[{"Length", "@", "atoms"}]}]}], "\n", 
+                  "\t\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t\t\t", 
+                 "1"}], "\n", "\t\t\t\t\t\t\t", "]"}]}], ",", "\n", 
+              "\t\t\t\t\t\t", 
+              RowBox[{"Length", "@", "atoms"}]}], "\n", "\t\t\t\t\t\t", "]"}],
+             ",", "\n", "\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Lookup", "[", 
+               RowBox[{"r", ",", "#"}], "]"}], "&"}], "/@", "atoms"}], ",", 
+            "\n", "\t\t\t\t\t", "atoms", ",", "\n", "\t\t\t\t\t", "type", ",",
+             "\n", "\t\t\t\t\t", 
+            RowBox[{"Take", "[", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"Flatten", "[", "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"ConstantArray", "[", "\n", "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"lab", ",", "\n", "\t\t\t\t\t\t\t\t", 
+                  RowBox[{"Length", "@", "atoms"}]}], "\n", 
+                 "\t\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t\t\t", 
+                "1"}], "\n", "\t\t\t\t\t\t\t", "]"}], ",", "\n", 
+              "\t\t\t\t\t\t", 
+              RowBox[{"Length", "@", "atoms"}]}], "\n", "\t\t\t\t\t\t", "]"}],
+             ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"Take", "[", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"Flatten", "[", "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"ConstantArray", "[", "\n", "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"style", ",", "\n", "\t\t\t\t\t\t\t\t", 
+                  RowBox[{"Length", "@", "atoms"}]}], "\n", 
+                 "\t\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t\t\t", 
+                "1"}], "\n", "\t\t\t\t\t\t\t", "]"}], ",", "\n", 
+              "\t\t\t\t\t\t", 
+              RowBox[{"Length", "@", "atoms"}]}], "\n", "\t\t\t\t\t\t", 
+             "]"}]}], "\n", "\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t\t", 
+         "]"}]}], "\n", "\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.692411006026124*^9, 3.6924110784864492`*^9}, {
+   3.692411193156311*^9, 3.692411195834941*^9}, {3.692411908779005*^9, 
+   3.692411928508028*^9}, {3.692412131051449*^9, 3.6924121465711117`*^9}, {
+   3.6924121824808187`*^9, 3.692412183664282*^9}, {3.692453332600334*^9, 
+   3.692453335574451*^9}, {3.69245377409863*^9, 3.6924538050314407`*^9}, {
+   3.692468335067239*^9, 3.692468458826645*^9}, {3.6924685184728193`*^9, 
+   3.692468586271987*^9}, {3.692468641991755*^9, 3.69246875643058*^9}, {
+   3.692468800353734*^9, 3.692468881844804*^9}, 3.692468919509601*^9, {
+   3.692468988260405*^9, 3.692469236365405*^9}, {3.692469394498023*^9, 
+   3.692469414530657*^9}, {3.6924694721831503`*^9, 3.6924696936624928`*^9}, {
+   3.6924697311526413`*^9, 3.69246982257857*^9}, {3.6924701055259027`*^9, 
+   3.692470170377798*^9}, {3.692471058654999*^9, 3.692471059246365*^9}, {
+   3.692471646160345*^9, 3.692471646927081*^9}, {3.6924930720993757`*^9, 
+   3.6924931243732452`*^9}, {3.6924931598825617`*^9, 3.692493176338524*^9}, {
+   3.692493207104035*^9, 3.692493227550802*^9}, {3.692493273091902*^9, 
+   3.692493305137801*^9}, {3.692493339419118*^9, 3.692493371633905*^9}, {
+   3.6924934059234962`*^9, 3.6924934238508997`*^9}, 3.6924934977800198`*^9, {
+   3.69249381014705*^9, 3.692493820462487*^9}, {3.692493989396226*^9, 
+   3.6924939930231743`*^9}, {3.6924941720198383`*^9, 3.6924941751258*^9}, {
+   3.692494250033349*^9, 3.6924942869426613`*^9}, {3.692496216968713*^9, 
+   3.692496234597815*^9}, {3.6924964994683447`*^9, 3.692496699522297*^9}, 
+   3.69311111451939*^9, {3.7000831711004677`*^9, 3.700083430179422*^9}, {
+   3.70008348915318*^9, 3.700083490863258*^9}, 3.700084105974436*^9, {
+   3.70010837574872*^9, 3.700108398841259*^9}, {3.700108473962131*^9, 
+   3.7001085102117453`*^9}, {3.7001085428387623`*^9, 3.700108598121418*^9}, {
+   3.700151545882249*^9, 3.700151550231205*^9}, 3.718335661363584*^9, 
+   3.720373974226224*^9, {3.7203743088972483`*^9, 3.720374492970191*^9}, {
+   3.7203748772730083`*^9, 3.720374888275565*^9}, {3.720375081973157*^9, 
+   3.7203750934360943`*^9}, {3.720375208428679*^9, 3.720375224969705*^9}, {
+   3.720376213179633*^9, 3.720376245248384*^9}, {3.720380571518084*^9, 
+   3.720380596662034*^9}},ExpressionUUID->"bbb6a6a8-c534-4336-8f59-\
+6530217a2057"]
+}, Open  ]]
+}, Closed]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"2fedcf5c-18fa-4da9-8b05-\
+7567195ea16d"]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"b86ec000-b97b-452d-ab9d-\
+b5c88b99871e"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{34, Automatic}, {15, Automatic}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackagePlain.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

@@ -1,0 +1,1642 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["ChemObject Utils", "CodeSection",
+ CellChangeTimes->{{3.6926191754747066`*^9, 3.692619180113187*^9}, {
+  3.692619212056231*^9, 3.692619212488041*^9}, {3.699310048207142*^9, 
+  3.699310052239023*^9}, {3.732550855709237*^9, 
+  3.732550856713928*^9}},ExpressionUUID->"db164cda-6690-482c-a2ce-\
+3f791cec8e80"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Manipulation\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.700144924570825*^9, 
+  3.700144927626404*^9}},ExpressionUUID->"69a515c9-c523-41e1-93a0-\
+468f5eb40451"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemMove", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Generalizes \[Star]Move operations\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemRotate", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Generalizes \[Star]Rotate operations\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemTransform", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Generalizes \[Star]Transform operations\>\""}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.700144928998682*^9, 
+  3.700144985026016*^9}},ExpressionUUID->"efcd5766-4ed5-4637-9145-\
+af3d375094d0"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Visualization\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.692619217432187*^9, 
+  3.692619229879285*^9}},ExpressionUUID->"a43eb83c-e251-46b1-a44b-\
+4b5a0d6d48db"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]View\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.699310101961892*^9, 
+  3.6993101034245777`*^9}},ExpressionUUID->"23a5cece-acc1-4979-9a57-\
+6bd99bb3fb54"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemView", "::", "usage"}], "=", "\"\<Views a ChemObject\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemViewList", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<ChemView / Manipulate combo\>\""}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.6925955733907547`*^9, 3.69259559787753*^9}, {
+   3.6945266352376537`*^9, 3.694526651207027*^9}, 
+   3.69452722199547*^9},ExpressionUUID->"31dbc216-9f26-4294-8964-3f819592a1c4"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Surface\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.6993101059442883`*^9, 
+  3.699310107456238*^9}},ExpressionUUID->"0e9e883e-d372-4d3b-8624-\
+2bcd5ae97dfc"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSurface", "::", "usage"}], "=", 
+   "\"\<Generates a surface from a graphic or ChemObject\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSurfacePlot", "::", "usage"}], "=", 
+   "\"\<Plots a function on a surface\>\""}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.6925955733907547`*^9, 
+  3.692595617851892*^9}},ExpressionUUID->"cb850f65-4104-421f-80d0-\
+a1cf51f0bcd5"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Animate\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.70096186203284*^9, 
+  3.700961863305035*^9}},ExpressionUUID->"12674cdf-f116-41c0-a079-\
+055b403c834d"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemAnimate", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Animates a command and view expression. \nJust ListAnimate / Table / \
+Interpretation joined\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSaveAnimation", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Exports a set of frames to a file\>\""}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.6924995351832027`*^9, 3.692499615730959*^9}, {
+  3.70096187393969*^9, 
+  3.700961874607864*^9}},ExpressionUUID->"7b81966a-f931-4e22-ba5b-\
+f4b77d2d5de8"]
+}, Closed]]
+}, Closed]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"0e3ab6f9-b37c-4853-a4b3-\
+bf81eb920fd7"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Manipulations\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.700113921464645*^9, 
+  3.7001139238955507`*^9}},ExpressionUUID->"c11ffa26-d5a5-4950-ad44-\
+02f6142e2ba3"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GetApply\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.7001448916856737`*^9, 
+  3.700144892899767*^9}},ExpressionUUID->"8319ce14-6e6f-4ac1-920a-\
+e02f94737442"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemGetApply", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemManyPattern"}], ",", "prop_", ",", "args___"}], 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"attrs", "=", "\n", "\t\t", 
+       RowBox[{"Block", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"$ChemFormatMethods", "=", "True"}], "}"}], ",", "\n", 
+         "\t\t\t", 
+         RowBox[{"ChemGet", "[", 
+          RowBox[{
+           RowBox[{"Flatten", "@", "obj"}], ",", "prop"}], "]"}]}], "\n", 
+        "\t\t\t", "]"}]}], "\n", "\t\t", "}"}], ",", "\n", "\t\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"ListQ", "@", "attrs"}], ",", "\n", "\t\t\t", 
+       RowBox[{"Through", "[", 
+        RowBox[{
+         RowBox[{"Map", "[", 
+          RowBox[{"Apply", ",", "attrs"}], "]"}], "[", 
+         RowBox[{"{", "args", "}"}], "]"}], "]"}], ",", "\n", "\t\t\t", 
+       RowBox[{"attrs", "[", "args", "]"}]}], "\n", "\t\t\t", "]"}]}], "\n", 
+    "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.700144277004011*^9, 3.700144360992858*^9}, {
+   3.7001444046539783`*^9, 3.70014447315475*^9}, {3.700145041862795*^9, 
+   3.700145043783101*^9}, 
+   3.720369355136973*^9},ExpressionUUID->"d6a5ad34-af71-4bb0-8e1a-\
+2c44cbe8e803"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Move\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.700144034507588*^9, 3.700144036512455*^9}, {
+  3.725671649797364*^9, 
+  3.725671650035597*^9}},ExpressionUUID->"64487d21-b1ce-4f1d-a3d2-\
+93c9bc86e3e6"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemMove", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemManyPattern"}], ",", " ", "pt_", ",", 
+     RowBox[{"mode", ":", 
+      RowBox[{"\"\<Set\>\"", "|", "\"\<Add\>\""}], ":", "\"\<Add\>\""}]}], 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"ChemGetApply", "[", 
+      RowBox[{"obj", ",", "\"\<Move\>\"", ",", "pt", ",", "mode"}], "]"}], 
+     ";"}], ")"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ChemMove", "[", 
+     RowBox[{"pt_", ",", 
+      RowBox[{"mode", ":", 
+       RowBox[{"\"\<Set\>\"", "|", "\"\<Add\>\""}], ":", "\"\<Add\>\""}]}], 
+     "]"}], "[", 
+    RowBox[{"obj", ":", "ChemManyPattern"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemMove", "[", 
+    RowBox[{"obj", ",", "pt", ",", "mode"}], "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.700144482858193*^9, 3.700144514281219*^9}, {
+   3.700144825525206*^9, 3.7001448262973127`*^9}, {3.7001448583413153`*^9, 
+   3.700144878628779*^9}, {3.700145074711083*^9, 3.700145076158176*^9}, {
+   3.7203693551448174`*^9, 3.720369355149496*^9}, 
+   3.725317935244179*^9},ExpressionUUID->"811bb6a8-3393-4f45-a246-\
+f0c32eb0c2e2"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Rotate\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.700144037364602*^9, 
+  3.7001440398655*^9}},ExpressionUUID->"f90d90c8-6e96-417b-9f2c-07191b8e3d0f"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemRotate", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemManyPattern"}], ",", "theta_", ",", 
+     RowBox[{"axis_:", 
+      RowBox[{"{", 
+       RowBox[{"0.", ",", "0.", ",", "1."}], "}"}]}], ",", 
+     RowBox[{"pt_:", 
+      RowBox[{"{", 
+       RowBox[{"0.", ",", "0.", ",", "0."}], "}"}]}]}], "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"ChemGetApply", "[", 
+      RowBox[{
+      "obj", ",", "\"\<Rotate\>\"", ",", "\n", "\t\t", "theta", ",", "axis", 
+       ",", "pt"}], "]"}], ";"}], ")"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ChemRotate", "[", 
+     RowBox[{"theta_", ",", 
+      RowBox[{"axis_:", 
+       RowBox[{"{", 
+        RowBox[{"0.", ",", "0.", ",", "1."}], "}"}]}], ",", 
+      RowBox[{"pt_:", 
+       RowBox[{"{", 
+        RowBox[{"0.", ",", "0.", ",", "0."}], "}"}]}]}], "]"}], "[", 
+    RowBox[{"obj", ":", "ChemManyPattern"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemRotate", "[", 
+    RowBox[{"obj", ",", "theta", ",", "axis", ",", "pt"}], "]"}]}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.700144742755068*^9, 3.7001448208561573`*^9}, {
+  3.700145069701474*^9, 3.700145072246138*^9}, {3.720369355154891*^9, 
+  3.720369355160346*^9}},ExpressionUUID->"1c34b725-db54-4a41-bf36-\
+3f779fd8071e"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Transform\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.700144042840406*^9, 
+  3.7001440447282257`*^9}},ExpressionUUID->"7cbd7220-b8f2-4c29-bdda-\
+97d7df36c68a"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemTransform", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemManyPattern"}], ",", "transf_"}], "]"}], ":=", 
+   "\n", "\t", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"ChemGetApply", "[", 
+      RowBox[{"obj", ",", "\"\<Transform\>\"", ",", "transf"}], "]"}], ";"}], 
+    ")"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ChemTransform", "[", "transf_", "]"}], "[", 
+    RowBox[{"obj", ":", "ChemManyPattern"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemTransform", "[", 
+    RowBox[{"obj", ",", "transf"}], "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.700144045564439*^9, 3.700144170210492*^9}, 
+   3.7001442664654903`*^9, {3.7001445198949623`*^9, 3.700144537475823*^9}, {
+   3.7001446878577833`*^9, 3.700144703700059*^9}, {3.700145080061561*^9, 
+   3.70014508194177*^9}, {3.72036935516625*^9, 
+   3.7203693551719103`*^9}},ExpressionUUID->"9f57c9b5-dde8-4898-bae6-\
+fa179e1e7326"]
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Views\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.692845393217112*^9, 3.692845400026387*^9}, 
+   3.69452675047512*^9, {3.700112207188055*^9, 
+   3.700112208628151*^9}},ExpressionUUID->"22abde74-cd00-40d9-8baa-\
+51eb013763ff"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]View\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.692412282721621*^9, 
+  3.692412283147806*^9}},ExpressionUUID->"811b1fe2-7f90-4742-a6f7-\
+18b41c68ebea"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemView", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemManyPattern"}], ",", 
+     RowBox[{"mode", ":", 
+      RowBox[{"\"\<2D\>\"", "|", "\"\<3D\>\""}], ":", "\"\<3D\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"directives", ":", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"Except", "[", 
+         RowBox[{"_String", "|", "_Rule", "|", "_RuleDelayed"}], "]"}], ")"}],
+        "..."}]}], ",", "\n", "\t", 
+     RowBox[{"ops", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Switch", "[", 
+    RowBox[{"mode", ",", "\n", "\t\t", "\"\<2D\>\"", ",", "\n", "\t\t\t", 
+     RowBox[{"Graphics", "[", 
+      RowBox[{
+       RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{"directives", ",", "\n", "\t\t\t\t", 
+         RowBox[{"ChemGetApply", "[", 
+          RowBox[{
+          "obj", ",", "\n", "\t\t\t\t\t", "\"\<Graphic\>\"", ",", "\n", 
+           "\t\t\t\t\t", 
+           RowBox[{"FilterRules", "[", 
+            RowBox[{
+             RowBox[{"{", "ops", "}"}], ",", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"Except", "[", 
+              RowBox[{"Alternatives", "@@", 
+               RowBox[{"Map", "[", 
+                RowBox[{"First", ",", 
+                 RowBox[{"Options", "@", "Graphics"}]}], "]"}]}], "]"}]}], 
+            "\n", "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "]"}]}], "\n", 
+        "\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t", 
+       RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"{", "ops", "}"}], ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"Options", "@", "Graphics"}]}], "\n", "\t\t\t\t\t", "]"}]}], 
+      "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t", "\"\<3D\>\"", ",", "\n", 
+     "\t\t\t", 
+     RowBox[{"Graphics3D", "[", 
+      RowBox[{
+       RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{"directives", ",", "\n", "\t\t\t\t", 
+         RowBox[{"ChemGetApply", "[", "\n", "\t\t\t\t\t", 
+          RowBox[{
+          "obj", ",", "\n", "\t\t\t\t\t", "\"\<Graphic3D\>\"", ",", "\n", 
+           "\t\t\t\t\t", 
+           RowBox[{"FilterRules", "[", 
+            RowBox[{
+             RowBox[{"{", "ops", "}"}], ",", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"Except", "[", 
+              RowBox[{"Alternatives", "@@", 
+               RowBox[{"Map", "[", 
+                RowBox[{"First", ",", 
+                 RowBox[{"Options", "@", "Graphics3D"}]}], "]"}]}], "]"}]}], 
+            "\n", "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "]"}]}], "\n", 
+        "\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t", 
+       RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"ops", ",", 
+           RowBox[{"\"\<Lighting\>\"", "\[Rule]", "\"\<Neutral\>\""}], ",", 
+           RowBox[{"Boxed", "\[Rule]", "False"}]}], "}"}], ",", "\n", 
+         "\t\t\t\t\t", 
+         RowBox[{"Options", "@", "Graphics3D"}]}], "\n", "\t\t\t\t\t", 
+        "]"}]}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.700112214682111*^9, 3.7001122773177567`*^9}, {
+   3.700144199350247*^9, 3.7001442210280523`*^9}, {3.700144554503729*^9, 
+   3.700144676272314*^9}, 3.700144832121714*^9, 3.718844336174283*^9, 
+   3.7203693551784277`*^9, 3.7256720444009647`*^9, {3.726975696541643*^9, 
+   3.726975696648806*^9}},ExpressionUUID->"a4452cf5-8b76-4086-a4af-\
+05ff3420a880"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemView", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemManyPattern"}], ",", "\"\<Atoms\>\"", ",", 
+     "a___"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemView", "[", 
+    RowBox[{
+    "obj", ",", "\"\<3D\>\"", ",", "\n", "\t\t", "a", ",", "\n", "\t\t", 
+     RowBox[{"\"\<AtomicRadius\>\"", "\[Rule]", ".15"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<BondThickness\>\"", "\[Rule]", "0"}]}], "\n", "\t\t", 
+    "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemView", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemManyPattern"}], ",", "\"\<Bonds\>\"", ",", 
+     "a___"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemView", "[", 
+    RowBox[{
+    "obj", ",", "\"\<3D\>\"", ",", "\n", "\t\t", "a", ",", "\n", "\t\t", 
+     RowBox[{"\"\<AtomicRadius\>\"", "\[Rule]", "0."}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<BondThickness\>\"", "\[Rule]", ".1"}]}], "\n", "\t\t", 
+    "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemView", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemManyPattern"}], ",", "\"\<SpaceFilling\>\"", 
+     ",", "a___"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemView", "[", 
+    RowBox[{
+    "obj", ",", "\"\<3D\>\"", ",", "\n", "\t\t", "a", ",", "\n", "\t\t", 
+     RowBox[{"\"\<RadiusScaling\>\"", "\[Rule]", "1"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<AtomicRadius\>\"", "\[Rule]", "Automatic"}]}], "\n", "\t\t",
+     "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemView", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemManyPattern"}], ",", "\"\<TraditionalForm\>\"", 
+     ",", "a___"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemView", "[", 
+    RowBox[{"obj", ",", "\"\<3D\>\"", ",", "\n", "\t\t", 
+     RowBox[{"Specularity", "[", 
+      RowBox[{"White", ",", "100"}], "]"}], ",", "\n", "\t\t", "a"}], "\n", 
+    "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemView", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemManyPattern"}], ",", "\"\<Tube\>\"", ",", 
+     "a___"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemView", "[", 
+    RowBox[{"obj", ",", "\"\<3D\>\"", ",", "\n", "\t\t", 
+     RowBox[{"Specularity", "[", 
+      RowBox[{"White", ",", "100"}], "]"}], ",", "\n", "\t\t", "a", ",", "\n",
+      "\t\t", 
+     RowBox[{"\"\<AtomicRadius\>\"", "\[Rule]", ".15"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<BondThickness\>\"", "\[Rule]", ".15"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<DoubleBondSeparation\>\"", "\[Rule]", "None"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"\"\<TripleBondSeparation\>\"", "\[Rule]", "None"}]}], "\n", 
+    "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemView", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemManyPattern"}], ",", "\"\<Line\>\"", ",", 
+     "a___"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemView", "[", 
+    RowBox[{"obj", ",", "\"\<3D\>\"", ",", "\n", "\t\t", 
+     RowBox[{"Specularity", "[", 
+      RowBox[{"White", ",", "100"}], "]"}], ",", "\n", "\t\t", "a", ",", "\n",
+      "\t\t", 
+     RowBox[{"\"\<AtomicRadius\>\"", "\[Rule]", ".01"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<BondThickness\>\"", "\[Rule]", ".01"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<DoubleBondSeparation\>\"", "\[Rule]", "None"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"\"\<TripleBondSeparation\>\"", "\[Rule]", "None"}]}], "\n", 
+    "\t\t", "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.700112214682111*^9, 3.7001122773177567`*^9}, {
+   3.700144199350247*^9, 3.7001442210280523`*^9}, {3.700144554503729*^9, 
+   3.700144676272314*^9}, 3.700144832121714*^9, {3.700287619380747*^9, 
+   3.7002876274867353`*^9}, {3.7203693551841908`*^9, 
+   3.720369355211225*^9}},ExpressionUUID->"d96785bf-8d46-4cb8-97be-\
+32c47f359816"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ChemView", "[", 
+     RowBox[{
+      RowBox[{"s", ":", 
+       RowBox[{"(", 
+        RowBox[{"_String", "|", "_Integer", "|", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"_String", "|", "_Integer"}], ")"}], ".."}], "}"}]}], 
+        ")"}]}], ",", "a___"}], "]"}], ":=", "\n", "\t", 
+    RowBox[{"Replace", "[", 
+     RowBox[{
+      RowBox[{"ChemImport", "@", "s"}], ",", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"c", ":", "ChemObjAllPattern"}], "\[RuleDelayed]", "\n", 
+       "\t\t\t", 
+       RowBox[{"With", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"g", "=", 
+           RowBox[{"ChemView", "[", 
+            RowBox[{"c", ",", "a"}], "]"}]}], "}"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"ChemRemoveRecursive", "@", "c"}], ";", "\n", "\t\t\t\t", 
+          "g"}]}], "\n", "\t\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}], ";"}], 
+  "\t"}]], "CodeInput",
+ CellChangeTimes->{{3.694480241257745*^9, 3.694480302343936*^9}, {
+   3.694480346016214*^9, 3.6944803474952297`*^9}, {3.694481987423052*^9, 
+   3.694482056090913*^9}, {3.694542661415903*^9, 3.694542688868785*^9}, {
+   3.700109989963574*^9, 3.700110003874085*^9}, {3.700256429161744*^9, 
+   3.700256455465364*^9}, 
+   3.7183344075425787`*^9},ExpressionUUID->"7cd29059-d34a-4f21-b751-\
+4916f399d2f9"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ViewList\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.6945267305492496`*^9, 3.694526752755501*^9}, 
+   3.69452721456413*^9},ExpressionUUID->"65fe5292-4ab5-49f1-8e44-\
+ff64809fd84b"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemViewList", "[", 
+    RowBox[{"l_List", ",", "ops___"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"len", "=", 
+        RowBox[{"Length", "@", "l"}]}], ",", "\n", "\t\t", 
+       RowBox[{"barSize", "=", 
+        RowBox[{"Rasterize", "[", 
+         RowBox[{
+          RowBox[{"Slider", "[", "]"}], ",", "\"\<RasterSize\>\""}], "]"}]}], 
+       ",", "\n", "\t\t", 
+       RowBox[{"bW", "=", "25"}]}], "\n", "\t\t", "}"}], ",", "\n", "\t\t", 
+     RowBox[{"Manipulate", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"ChemView", "[", 
+        RowBox[{
+         RowBox[{"l", "[", 
+          RowBox[{"[", "i", "]"}], "]"}], ",", "ops"}], "]"}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"Framed", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"Grid", "[", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"Button", "[", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"Style", "[", 
+                 RowBox[{"\"\<\[LeftTriangleBar]\>\"", ",", "Gray"}], "]"}], 
+                ",", "\n", "\t\t\t\t\t\t\t\t", 
+                RowBox[{"i", "=", "1"}], ",", "\n", "\t", "\t", "\t", "\t", 
+                "\t\t\t\t", 
+                RowBox[{"Appearance", "\[Rule]", "\"\<AbuttingRight\>\""}]}], 
+               
+               RowBox[{"(*", 
+                RowBox[{",", "\n", "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"ImageSize", "\[Rule]", 
+                  RowBox[{"{", 
+                   RowBox[{"bW", ",", 
+                    RowBox[{"Last", "@", "barSize"}]}], "}"}]}], ",", "\n", 
+                 "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"Alignment", "\[Rule]", 
+                  RowBox[{"{", 
+                   RowBox[{"0", ",", 
+                    RowBox[{"Last", "@", "barSize"}]}], "}"}]}]}], "*)"}], 
+               "]"}], ",", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"Button", "[", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"Style", "[", 
+                 RowBox[{"\"\<\[LeftTriangle]\>\"", ",", "Gray"}], "]"}], ",",
+                 "\n", "\t\t\t\t\t\t\t\t", 
+                RowBox[{"i", "=", 
+                 RowBox[{"Max", "@", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"i", "-", "1"}], ",", "1"}], "}"}]}]}], ",", "\n",
+                 "\t", "\t", "\t", "\t\t\t\t\t", 
+                RowBox[{
+                "Appearance", "\[Rule]", "\"\<AbuttingLeftRight\>\""}]}], 
+               RowBox[{"(*", 
+                RowBox[{",", "\n", "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"ImageSize", "\[Rule]", 
+                  RowBox[{"{", 
+                   RowBox[{"bW", ",", 
+                    RowBox[{"Last", "@", "barSize"}]}], "}"}]}], ",", "\n", 
+                 "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"Alignment", "\[Rule]", 
+                  RowBox[{"{", 
+                   RowBox[{"0", ",", 
+                    RowBox[{"Last", "@", "barSize"}]}], "}"}]}]}], "*)"}], 
+               "]"}], ",", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"Framed", "[", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"Control", "@", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"i", ",", "1", ",", "\"\<\>\""}], "}"}], ",", "1",
+                    ",", 
+                   RowBox[{"Length", "@", "l"}], ",", "1", ",", "\n", 
+                   "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{"ControlType", "\[Rule]", "Manipulator"}]}], 
+                  "}"}]}], ",", "\n", "\t\t\t\t\t\t\t\t", 
+                RowBox[{"FrameMargins", "\[Rule]", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"0", ",", "10"}], "}"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"-", "1"}], ",", 
+                    RowBox[{"-", "1"}]}], "}"}]}], "}"}]}], ",", "\n", 
+                "\t\t\t\t\t\t\t\t", 
+                RowBox[{"FrameStyle", "\[Rule]", 
+                 RowBox[{"Directive", "[", 
+                  RowBox[{"Thin", ",", 
+                   RowBox[{"GrayLevel", "[", ".9", "]"}]}], "]"}]}]}], "\n", 
+               "\t\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"Button", "[", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"Style", "[", 
+                 RowBox[{"\"\<\[RightTriangle]\>\"", ",", "Gray"}], "]"}], 
+                ",", "\n", "\t\t\t\t\t\t\t\t", 
+                RowBox[{"i", "=", 
+                 RowBox[{"Min", "@", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"i", "+", "1"}], ",", "len"}], "}"}]}]}], ",", 
+                "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
+                RowBox[{
+                "Appearance", "\[Rule]", "\"\<AbuttingLeftRight\>\""}]}], 
+               RowBox[{"(*", 
+                RowBox[{",", "\n", "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"ImageSize", "\[Rule]", 
+                  RowBox[{"{", 
+                   RowBox[{"bW", ",", 
+                    RowBox[{"Last", "@", "barSize"}]}], "}"}]}], ",", "\n", 
+                 "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"Alignment", "\[Rule]", 
+                  RowBox[{"{", 
+                   RowBox[{"0", ",", 
+                    RowBox[{"Last", "@", "barSize"}]}], "}"}]}]}], "*)"}], 
+               "]"}], ",", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"Button", "[", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"Style", "[", 
+                 RowBox[{"\"\<\[RightTriangleBar]\>\"", ",", "Gray"}], "]"}], 
+                ",", "\n", "\t\t\t\t\t\t\t\t", 
+                RowBox[{"i", "=", "len"}], ",", "\n", "\t\t\t\t\t\t\t\t", 
+                RowBox[{"Appearance", "\[Rule]", "\"\<AbuttingLeft\>\""}], 
+                ",", "\n", "\t\t\t\t\t\t\t\t", 
+                RowBox[{"FrameMargins", "\[Rule]", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"0", ",", "3"}], "}"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"-", "1"}], ",", "0"}], "}"}]}], "}"}]}]}], 
+               RowBox[{"(*", 
+                RowBox[{",", "\n", "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"ImageSize", "\[Rule]", 
+                  RowBox[{"{", 
+                   RowBox[{"bW", ",", 
+                    RowBox[{"Last", "@", "barSize"}]}], "}"}]}], ",", "\n", 
+                 "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"Alignment", "\[Rule]", 
+                  RowBox[{"{", 
+                   RowBox[{"0", ",", ".5"}], "}"}]}]}], "*)"}], "]"}]}], "\n",
+              "\t\t\t\t\t\t\t", "}"}], "\n", "\t\t\t\t\t\t", "}"}], ",", "\n",
+            "\t", "\t\t\t\t", 
+           RowBox[{"Spacings", "\[Rule]", "0"}], ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"Alignment", "\[Rule]", "Top"}]}], "\n", "\t\t\t\t\t", 
+          "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"RoundingRadius", "\[Rule]", "5"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"FrameMargins", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"-", "2"}], ",", 
+              RowBox[{"-", "2"}]}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"-", "3"}], ",", 
+              RowBox[{"-", "2"}]}], "}"}]}], "}"}]}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"Background", "\[Rule]", "White"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"FrameStyle", "\[Rule]", 
+          RowBox[{"GrayLevel", "[", ".9", "]"}]}]}], "\n", "\t\t\t\t", 
+        "]"}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.694526753776065*^9, 3.694526952367634*^9}, {
+  3.694527020328087*^9, 3.694527210017927*^9}, {3.694527374262183*^9, 
+  3.6945275289460373`*^9}, {3.694527584519986*^9, 3.694528148058621*^9}, {
+  3.694528192113205*^9, 3.694528291552408*^9}, {3.694528341911174*^9, 
+  3.694528458578246*^9}, {3.6945285038749447`*^9, 3.694528766072122*^9}, {
+  3.694528815074729*^9, 
+  3.694529016962178*^9}},ExpressionUUID->"3b26860b-fe89-4a33-bdc7-\
+5a9651f4a01c"]
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Surfaces\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.692845388874509*^9, 
+  3.692845390289257*^9}},ExpressionUUID->"a74d5490-0e58-4c7b-b4da-\
+b2d96276559c"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Surface\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.692595161468539*^9, 
+  3.692595162692218*^9}},ExpressionUUID->"1756ac63-307b-41fd-b754-\
+802afc6f506e"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "ChemSurface", "]"}], "=", "\n", "\t", 
+   RowBox[{"Join", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"Options", "[", "BoundaryDiscretizeRegion", "]"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"Options", "[", "DiscretizeGraphics", "]"}]}], "\n", "\t\t", 
+    "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSurface", "[", 
+    RowBox[{"g_Graphics3D", ",", " ", 
+     RowBox[{"ops", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"c", "=", 
+       RowBox[{
+        RowBox[{"Cases", "[", 
+         RowBox[{"g", ",", "_Sphere", ",", "\[Infinity]"}], "]"}], "/.", 
+        RowBox[{"Sphere", "\[Rule]", "Ball"}]}]}], "}"}], ",", "\n", "\t\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Length", "@", "c"}], ">", "0"}], ",", "\n", "\t\t\t", 
+       RowBox[{"BoundaryDiscretizeRegion", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"RegionUnion", "@@", "c"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"FilterRules", "[", 
+          RowBox[{
+           RowBox[{"{", "ops", "}"}], ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"Options", "@", "BoundaryDiscretizeRegion"}]}], "\n", 
+          "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"PlotTheme", "\[Rule]", "\"\<SmoothShading\>\""}]}], "\n", 
+        "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
+       RowBox[{"DiscretizeGraphics", "[", 
+        RowBox[{"g", ",", "\n", "\t\t\t\t", 
+         RowBox[{"FilterRules", "[", 
+          RowBox[{
+           RowBox[{"{", "ops", "}"}], ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"Options", "@", "DiscretizeGraphics"}]}], "\n", 
+          "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"PlotTheme", "\[Rule]", "\"\<SmoothShading\>\""}]}], "\n", 
+        "\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSurface", "[", 
+    RowBox[{
+     RowBox[{"obj", ":", "ChemObjPattern"}], ",", 
+     RowBox[{"ops", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemSurface", "[", 
+    RowBox[{
+     RowBox[{"ChemView", "[", 
+      RowBox[{"obj", ",", "\"\<SpaceFilling\>\""}], "]"}], ",", " ", "ops"}], 
+    "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.692595163686084*^9, 3.692595318799519*^9}, {
+   3.6926405388204308`*^9, 3.692640596031556*^9}, {3.700109174638216*^9, 
+   3.7001091897643023`*^9}, {3.7001093192354593`*^9, 3.700109402355548*^9}, {
+   3.7001106135107927`*^9, 3.7001106137571793`*^9}, 3.7183343945348*^9, {
+   3.725663455720303*^9, 3.725663483941041*^9}, {3.7256636727776747`*^9, 
+   3.725663685608313*^9}},ExpressionUUID->"5107eff2-6440-4129-a84a-\
+a669df954a4a"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Cached CSP\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.693162281456747*^9, 
+  3.6931622850475817`*^9}},ExpressionUUID->"c99650d9-a42b-4b53-917e-\
+eafb8db763ea"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "ChemSurfacePlot", "]"}], "=", 
+    RowBox[{"{", "\n", "\t", 
+     RowBox[{
+      RowBox[{"Function", "\[Rule]", 
+       RowBox[{"Compile", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"{", 
+           RowBox[{"p", ",", "_Real", ",", "1"}], "}"}], "}"}], ",", 
+         RowBox[{"Norm", "@", "p"}]}], "]"}]}], ",", "\n", "\t", 
+      RowBox[{"InterpolatingFunction", "\[Rule]", 
+       RowBox[{"Compile", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"{", 
+           RowBox[{"c", ",", "_Real", ",", "1"}], "}"}], "}"}], ",", 
+         RowBox[{"Mean", "@", "c"}]}], "]"}]}], ",", "\n", "\t", 
+      RowBox[{"ColorFunction", "\[Rule]", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"Hue", "[", 
+          RowBox[{"1", "-", 
+           RowBox[{".8", "*", "#"}]}], "]"}], "&"}], ")"}]}], ",", "\n", "\t", 
+      RowBox[{"ColorFunctionScaling", "\[Rule]", "True"}]}], "\n", "\t", 
+     "}"}]}], ";", "\n", 
+   RowBox[{
+    RowBox[{"ChemSurfacePlot", "[", "\n", "\t", 
+     RowBox[{
+      RowBox[{"surface_", "?", "RegionQ"}], ",", "\n", "\t", 
+      RowBox[{"ops", ":", 
+       RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", 
+    "\n", "\t", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"coordinateFunction", "=", 
+         RowBox[{"OptionValue", "@", "Function"}]}], ",", "\n", "\t\t", 
+        RowBox[{"interpolationFunction", "=", 
+         RowBox[{"OptionValue", "@", "InterpolatingFunction"}]}], ",", "\n", 
+        "\t\t", 
+        RowBox[{"colorFunction", "=", 
+         RowBox[{"OptionValue", "@", "ColorFunction"}]}], ",", "\n", "\t\t", 
+        RowBox[{"csScaling", "=", 
+         RowBox[{"TrueQ", "[", 
+          RowBox[{"OptionValue", "@", "ColorFunctionScaling"}], "]"}]}]}], 
+       "\n", "\t\t", "}"}], ",", "\n", "\t", 
+      RowBox[{"Block", "[", 
+       RowBox[{
+        RowBox[{"{", "\n", "\t\t", 
+         RowBox[{
+          RowBox[{"csPlotCoordinateValues", "=", 
+           RowBox[{"coordinateFunction", "/@", 
+            RowBox[{"MeshCoordinates", "@", "surface"}]}]}], ",", "\n", 
+          "\t\t", "csPlotMinMax", ",", "csPlotMin", ",", "csPlotDiff", ",", 
+          "\n", "\t\t", "csPlotCellStyling"}], "}"}], ",", "\n", "\t\t", 
+        RowBox[{
+         RowBox[{"csPlotMinMax", "=", 
+          RowBox[{"MinMax", "@", "csPlotCoordinateValues"}]}], ";", "\n", 
+         "\t\t", 
+         RowBox[{"csPlotMin", "=", 
+          RowBox[{"First", "@", "csPlotMinMax"}]}], ";", "\n", "\t\t", 
+         RowBox[{"csPlotDiff", "=", 
+          RowBox[{"Abs", "@", 
+           RowBox[{"First", "@", 
+            RowBox[{"Differences", "@", "csPlotMinMax"}]}]}]}], ";", "\n", 
+         "\t\t", 
+         RowBox[{"csPlotCoordinateValues", "=", "\n", "\t\t\t", 
+          RowBox[{"Association", "@", "\n", "\t\t\t\t", 
+           RowBox[{"If", "[", 
+            RowBox[{"csScaling", ",", "\n", "\t\t\t\t\t", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"csPlotDiff", "==", "0"}], ",", "\n", "\t\t\t\t\t\t", 
+               RowBox[{"MapIndexed", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"First", "@", "#2"}], "\[Rule]", ".5"}], "&"}], 
+                 ",", "\n", "\t\t\t\t\t\t\t", "csPlotCoordinateValues"}], 
+                "]"}], ",", "\n", "\t\t\t\t\t\t", 
+               RowBox[{"MapIndexed", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"First", "@", "#2"}], "\[Rule]", 
+                   RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"#", "-", "csPlotMin"}], ")"}], "/", 
+                    "csPlotDiff"}]}], "&"}], ",", "\n", "\t\t\t\t\t\t\t", 
+                 "csPlotCoordinateValues"}], "]"}]}], "\n", "\t\t\t\t\t\t", 
+              "]"}], ",", "\n", "\t\t\t\t\t", 
+             RowBox[{"MapIndexed", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{"First", "@", "#2"}], "\[Rule]", "#"}], "&"}], ",", 
+               "csPlotCoordinateValues"}], "]"}]}], "\n", "\t\t\t\t\t", 
+            "]"}]}]}], ";", "\n", "\t\t", 
+         RowBox[{"csPlotCellStyling", "=", "\n", "\t\t\t", 
+          RowBox[{"With", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"cf", "=", "\n", "\t\t\t\t", 
+              RowBox[{"colorFunction", "/.", 
+               RowBox[{
+                RowBox[{"HoldPattern", "@", 
+                 RowBox[{"ColorData", "[", "a__", "]"}]}], "\[RuleDelayed]", 
+                "\n", "\t\t\t\t\t", 
+                RowBox[{"RuleCondition", "[", 
+                 RowBox[{
+                  RowBox[{"ColorData", "[", "a", "]"}], ",", "True"}], 
+                 "]"}]}]}]}], "}"}], ",", "\n", "\t\t\t", 
+            RowBox[{"MapIndexed", "[", "\n", "\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Style", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"2", ",", 
+                   RowBox[{"First", "@", "#2"}]}], "}"}], ",", "\n", 
+                 "\t\t\t\t\t", 
+                 RowBox[{"cf", "@", 
+                  RowBox[{"interpolationFunction", "[", 
+                   RowBox[{
+                    RowBox[{"First", "@", "#"}], "/.", 
+                    "csPlotCoordinateValues"}], "]"}]}]}], "\n", "\t\t\t\t\t",
+                 "]"}], "&"}], ",", "\n", "\t\t\t\t", 
+              RowBox[{"MeshCells", "[", 
+               RowBox[{"surface", ",", "2"}], "]"}]}], "\n", "\t\t\t\t", 
+             "]"}]}], "\n", "\t\t\t", "]"}]}], ";", "\n", "\t\t", 
+         RowBox[{"HighlightMesh", "[", 
+          RowBox[{
+          "surface", ",", "\n", "\t\t\t", "csPlotCellStyling", ",", "\n", 
+           "\t\t\t", 
+           RowBox[{"PlotTheme", "\[Rule]", "\"\<SmoothShading\>\""}]}], "\n", 
+          "\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}], "\n", "\t", "]"}]}], 
+   ";", "\n", 
+   RowBox[{
+    RowBox[{"ChemSurfacePlot", "[", 
+     RowBox[{
+     "system_String", ",", "id_", ",", "f_", ",", "\n", "\t", "a___"}], "\n", 
+     "\t", "]"}], ":=", "\n", "\t", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"s", "=", 
+         RowBox[{"ChemSurface", "[", 
+          RowBox[{"system", ",", "id"}], "]"}]}], ",", "\n", "\t\t", 
+        RowBox[{"ops", "=", "\n", "\t\t\t", 
+         RowBox[{"Sequence", "@@", "\n", "\t\t\t\t", 
+          RowBox[{"Normal", "@", "\n", "\t\t\t\t\t", 
+           RowBox[{"With", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"op", "=", 
+               RowBox[{"Association", "@", 
+                RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"ColorFunction", "\[Rule]", 
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"ColorData", "[", "\"\<TemperatureMap\>\"", "]"}],
+                     "@", "#"}], ",", 
+                    RowBox[{"Opacity", "[", ".65", "]"}]}], "}"}], "&"}], 
+                    ")"}]}], ",", "\n", "\t\t\t\t\t\t", "a"}], "\n", 
+                 "\t\t\t\t\t\t", "}"}]}]}], "}"}], ",", "\n", "\t\t\t\t\t\t", 
+             
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"FreeQ", "[", 
+                RowBox[{
+                 RowBox[{"op", "[", "ColorFunction", "]"}], ",", "_Opacity"}],
+                 "]"}], ",", "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{"With", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"cf", "=", 
+                   RowBox[{"op", "[", "ColorFunction", "]"}]}], "}"}], ",", 
+                 "\n", "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"Append", "[", 
+                  RowBox[{"op", ",", 
+                   RowBox[{"ColorFunction", "\[Rule]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"Flatten", "@", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"cf", "@", "#"}], ",", 
+                    RowBox[{"Opacity", "[", ".65", "]"}]}], "}"}]}], "&"}], 
+                    ")"}]}]}], "]"}]}], "\n", "\t\t\t\t\t\t\t\t", "]"}], ",", 
+               "\n", "\t\t\t\t\t\t\t", "op"}], "\n", "\t\t\t\t\t\t\t", 
+              "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}]}]}]}], "\n", "\t\t\t", 
+       "}"}], ",", "\n", "\t\t", 
+      RowBox[{"Replace", "[", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"ChemSurfacePlot", "[", 
+         RowBox[{"s", ",", "\n", "\t\t\t\t", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"FreeQ", "[", 
+             RowBox[{
+              RowBox[{"Hold", "[", "f", "]"}], ",", "Point"}], "]"}], ",", 
+            "\n", "\t\t\t\t\t", "f", ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"AtomsetPointCompile", "[", 
+             RowBox[{"system", ",", "id", ",", "\n", "\t\t\t\t\t\t", "f"}], 
+             "\n", "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "]"}], ",", 
+          "\n", "\t\t\t\t", "ops"}], "\n", "\t\t\t\t", "]"}], ",", "\n", 
+        "\t\t\t", 
+        RowBox[{
+         RowBox[{"p", ":", 
+          RowBox[{"Except", "[", "_ChemSurfacePlot", "]"}]}], ":>", "\n", 
+         "\t\t\t\t", 
+         RowBox[{"Show", "[", "\n", "\t\t\t\t\t", 
+          RowBox[{"p", ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"ChemView", "[", 
+            RowBox[{"system", ",", "id"}], "]"}]}], "\n", "\t\t\t\t\t", 
+          "]"}]}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], ";", 
+   "\n", 
+   RowBox[{
+    RowBox[{"ChemSurfacePlot", "[", 
+     RowBox[{
+      RowBox[{"ChemObject", "[", 
+       RowBox[{"system_", ",", "id_"}], "]"}], ",", "a__"}], "]"}], ":=", 
+    "\n", "\t", 
+    RowBox[{"ChemSurfacePlot", "[", 
+     RowBox[{"system", ",", "id", ",", "a"}], "]"}]}], ";", "\n", 
+   RowBox[{"ChemSurfacePlot", "~", "SetAttributes", "~", "HoldRest"}], ";"}], 
+  "*)"}]], "CodeInput",
+ CellChangeTimes->{{3.692595328768546*^9, 3.692595545415061*^9}, {
+   3.692595659346208*^9, 3.6925961254929237`*^9}, {3.692596267747776*^9, 
+   3.6925962906896067`*^9}, {3.692596599306073*^9, 3.6925966143362503`*^9}, {
+   3.6925966544147663`*^9, 3.692596660012711*^9}, 3.692614695502596*^9, {
+   3.692616525267871*^9, 3.692616553953814*^9}, {3.692616588129016*^9, 
+   3.692616759305605*^9}, {3.692616870803907*^9, 3.692616932504071*^9}, {
+   3.6926169728269653`*^9, 3.692616975932474*^9}, {3.692617018923253*^9, 
+   3.692617020018032*^9}, {3.692617208270907*^9, 3.692617212428873*^9}, {
+   3.6928454472272797`*^9, 3.692845499549363*^9}, 3.6928458330746737`*^9, {
+   3.6928461414033546`*^9, 3.6928461722790623`*^9}, {3.6928462360922613`*^9, 
+   3.692846284158869*^9}, {3.6928463161498404`*^9, 3.692846349060549*^9}, {
+   3.692846382638541*^9, 3.692846390603998*^9}, {3.692846438910694*^9, 
+   3.6928464560222273`*^9}, {3.692846696189473*^9, 3.6928466974678783`*^9}, {
+   3.692846890664694*^9, 3.692847276441524*^9}, {3.69284733261665*^9, 
+   3.692847351733838*^9}, {3.692847676287657*^9, 3.6928476865339813`*^9}, {
+   3.692847731999031*^9, 3.692847747732889*^9}, {3.692847794914975*^9, 
+   3.692847799480863*^9}, {3.692847845693482*^9, 3.6928478464929323`*^9}, {
+   3.692847888689196*^9, 3.6928479532102747`*^9}, {3.692847988793414*^9, 
+   3.692848044374762*^9}, 3.6928486404753027`*^9, {3.6928489737542973`*^9, 
+   3.692848976216028*^9}, {3.692849038416944*^9, 3.692849099882773*^9}, {
+   3.692849166695969*^9, 3.692849354991953*^9}, {3.6928494860405197`*^9, 
+   3.6928495281773157`*^9}, {3.693107582406467*^9, 3.693107738609775*^9}, {
+   3.693107789063429*^9, 3.6931078977832003`*^9}, {3.693107952226465*^9, 
+   3.693107987034178*^9}, 3.693113907464065*^9, {3.693162202865665*^9, 
+   3.693162203610243*^9}, {3.6931622418376703`*^9, 3.69316226434676*^9}, {
+   3.69316255627626*^9, 
+   3.6931625573605833`*^9}},ExpressionUUID->"dc38b9d7-16a8-40a9-91c1-\
+2dcbed365619"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]SurfacePlot\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.6931622940790653`*^9, 
+  3.693162297086858*^9}},ExpressionUUID->"4a825db8-c351-4bcc-b237-\
+359294f6071b"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "ChemSurfacePlot", "]"}], "=", "\n", "\t", 
+   RowBox[{"Join", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"Options", "@", "SliceDensityPlot3D"}], ",", "\n", "\t\t", 
+     RowBox[{"Options", "@", "ChemSurface"}], ",", 
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{"Quiet", "\[Rule]", "True"}], "\n", "\t\t", "}"}]}], "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSurfacePlot", "[", "\n", "\t", 
+    RowBox[{"function_", ",", "\n", "\t", 
+     RowBox[{"surface_", "?", "RegionQ"}], ",", "\n", "\t", 
+     RowBox[{"ops", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n",
+    "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"m", "=", 
+       RowBox[{"MinMax", "@", 
+        RowBox[{"MeshCoordinates", "@", "surface"}]}]}], "}"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", "\n", "\t\t\t", 
+        RowBox[{"drops", "=", "\n", "\t\t\t\t", 
+         RowBox[{"Sequence", "@@", "\n", "\t\t\t\t\t", 
+          RowBox[{"FilterRules", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"ops", ",", "\n", "\t\t\t\t\t\t", 
+              RowBox[{"ColorFunction", "\[Rule]", 
+               RowBox[{"ColorData", "[", "\"\<TemperatureMap\>\"", "]"}]}], 
+              ",", "\n", "\t\t\t\t\t\t", 
+              RowBox[{"Boxed", "\[Rule]", "False"}], ",", "\n", "\t", "\t", 
+              "\t", "\t\t\t", 
+              RowBox[{"Axes", "\[Rule]", "False"}]}], "\n", "\t", "\t", "\t", 
+             "\t\t\t", "}"}], ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"Options", "@", "SliceDensityPlot3D"}]}], "\n", 
+           "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "}"}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"With", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"h", "=", "\n", "\t\t\t\t", 
+           RowBox[{"Hold", "@", "\n", "\t\t\t\t\t", 
+            RowBox[{"SliceDensityPlot3D", "[", 
+             RowBox[{
+              RowBox[{"function", "@", 
+               RowBox[{"{", 
+                RowBox[{"x", ",", "y", ",", "z"}], "}"}]}], ",", "surface", 
+              ",", "\n", "\t", "\t", "\t", "\t", "\t\t", 
+              RowBox[{"{", 
+               RowBox[{"x", ",", 
+                RowBox[{"First", "@", "m"}], ",", 
+                RowBox[{"Last", "@", "m"}]}], "}"}], ",", "\n", "\t", "\t", 
+              "\t\t\t\t", 
+              RowBox[{"{", 
+               RowBox[{"y", ",", 
+                RowBox[{"First", "@", "m"}], ",", 
+                RowBox[{"Last", "@", "m"}]}], "}"}], ",", "\n", "\t", "\t", 
+              "\t\t\t\t", 
+              RowBox[{"{", 
+               RowBox[{"z", ",", 
+                RowBox[{"First", "@", "m"}], ",", 
+                RowBox[{"Last", "@", "m"}]}], "}"}], ",", "\n", 
+              "\t\t\t\t\t\t", "drops"}], "\n", "\t\t\t\t\t\t", "]"}]}]}], 
+          "\n", "\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"OptionValue", "@", "Quiet"}], "//", "TrueQ"}], ",", "\n",
+            "\t\t\t\t\t", 
+           RowBox[{"Quiet", "[", 
+            RowBox[{
+             RowBox[{"ReleaseHold", "@", "h"}], ",", 
+             RowBox[{"CompiledFunction", "::", "cfta"}]}], "]"}], ",", "\n", 
+           "\t", "\t\t\t\t", 
+           RowBox[{"ReleaseHold", "@", "h"}]}], "\n", "\t", "\t\t\t\t", 
+          "]"}]}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}]}], "\n", 
+    "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSurfacePlot", "[", 
+    RowBox[{"f_", ",", "\n", "\t", 
+     RowBox[{"obj_", "?", "ChemObjectQ"}], ",", "\n", "\t", 
+     RowBox[{"ops", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"s", "=", "\n", "\t\t", 
+        RowBox[{"ChemSurface", "[", 
+         RowBox[{"obj", ",", "\n", "\t\t\t", 
+          RowBox[{"FilterRules", "[", 
+           RowBox[{
+            RowBox[{"{", "ops", "}"}], ",", 
+            RowBox[{"Options", "@", "ChemSurface"}]}], "]"}]}], "\n", 
+         "\t\t\t", "]"}]}], ",", "\n", "\t\t", 
+       RowBox[{"opacity", "=", "\n", "\t\t\t", 
+        RowBox[{"Lookup", "[", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"FilterRules", "[", 
+           RowBox[{
+            RowBox[{"{", "ops", "}"}], ",", "\n", "\t\t\t\t\t", "Opacity"}], 
+           "]"}], ",", "\n", "\t\t\t\t", "Opacity", ",", "\n", "\t\t\t\t", 
+          ".85"}], "]"}]}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", "\n", "\t\t\t", 
+        RowBox[{
+         RowBox[{"pf", "=", "\n", "\t\t\t\t", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"FreeQ", "[", 
+             RowBox[{
+              RowBox[{"Hold", "[", "f", "]"}], ",", 
+              RowBox[{"$ChemCompilePoint", "|", "$ChemCompileObject"}]}], 
+             "]"}], ",", "\n", "\t\t\t\t\t", "f", ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"Replace", "[", 
+             RowBox[{
+              RowBox[{"Unevaluated", "[", "f", "]"}], ",", 
+              RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"c_ChemPointCompile", ":>", "\n", "\t\t\t\t\t\t\t", 
+                 RowBox[{"c", "[", "obj", "]"}]}], ",", "\n", "\t\t\t\t\t\t", 
+                
+                RowBox[{"_", ":>", "\n", "\t\t\t\t\t\t\t", 
+                 RowBox[{"Replace", "[", 
+                  RowBox[{
+                   RowBox[{"ChemPointCompile", "[", "f", "]"}], ",", 
+                   RowBox[{"{", "\n", "\t", "\t", "\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"c", ":", 
+                    RowBox[{"Except", "[", "_CompiledFunction", "]"}]}], ":>",
+                     "\n", "\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"c", "[", "obj", "]"}]}], "\n", 
+                    "\t\t\t\t\t\t\t\t", "}"}]}], "]"}]}]}], "\n", 
+               "\t\t\t\t\t\t", "}"}]}], "]"}]}], "\n", "\t\t\t\t\t", "]"}]}], 
+         ",", "\n", "\t\t\t", 
+         RowBox[{"pops", "=", "\n", "\t\t\t\t", 
+          RowBox[{"Sequence", "@@", "\n", "\t\t\t\t\t", 
+           RowBox[{"Replace", "[", "\n", "\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
+                RowBox[{"ops", ",", "\n", "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"ColorFunction", "\[Rule]", 
+                  RowBox[{
+                  "ColorData", "[", "\"\<TemperatureMap\>\"", "]"}]}]}], "\n",
+                 "\t\t\t\t\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{"Options", "@", "ChemSurfacePlot"}]}], "]"}], ",", 
+             "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"ColorFunction", "\[Rule]", "v_"}], ")"}], 
+              "\[RuleDelayed]", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"With", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"cfOld", "=", 
+                  RowBox[{"Replace", "[", 
+                   RowBox[{"v", ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"_String", "|", "_Integer"}], "\[RuleDelayed]", 
+                    RowBox[{"ColorData", "[", "v", "]"}]}], "}"}]}], "]"}]}], 
+                 "}"}], ",", "\n", "\t\t\t\t\t\t\t\t", 
+                RowBox[{
+                "ColorFunction", "\[Rule]", "\n", "\t\t\t\t\t\t\t\t\t", 
+                 RowBox[{"(", 
+                  RowBox[{
+                   RowBox[{"Directive", "[", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"cfOld", "@", "#"}], ",", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Opacity", "[", "opacity", "]"}]}], "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t", "]"}], "&"}], ")"}]}]}], "\n", 
+               "\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t\t", "1"}], 
+            "]"}]}]}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+       RowBox[{"Replace", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"ChemSurfacePlot", "[", 
+          RowBox[{"pf", ",", "s", ",", "pops"}], "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"p", ":", 
+           RowBox[{"Except", "[", "_ChemSurfacePlot", "]"}]}], 
+          "\[RuleDelayed]", "\n", "\t\t\t\t\t", 
+          RowBox[{"Show", "[", 
+           RowBox[{"p", ",", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"ChemView", "[", 
+             RowBox[{"obj", ",", " ", "ops"}], "]"}]}], "\n", "\t\t\t\t\t\t", 
+           "]"}]}]}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}]}], 
+    "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ChemSurfacePlot", "~", "SetAttributes", "~", "HoldFirst"}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.692595328768546*^9, 3.692595545415061*^9}, {
+   3.692595659346208*^9, 3.6925961254929237`*^9}, {3.692596267747776*^9, 
+   3.6925962906896067`*^9}, {3.692596599306073*^9, 3.6925966143362503`*^9}, {
+   3.6925966544147663`*^9, 3.692596660012711*^9}, 3.692614695502596*^9, {
+   3.692616525267871*^9, 3.692616553953814*^9}, {3.692616588129016*^9, 
+   3.692616759305605*^9}, {3.692616870803907*^9, 3.692616932504071*^9}, {
+   3.6926169728269653`*^9, 3.692616975932474*^9}, {3.692617018923253*^9, 
+   3.692617020018032*^9}, {3.692617208270907*^9, 3.692617212428873*^9}, {
+   3.6928454472272797`*^9, 3.692845499549363*^9}, 3.6928458330746737`*^9, {
+   3.6928461414033546`*^9, 3.6928461722790623`*^9}, {3.6928462360922613`*^9, 
+   3.692846284158869*^9}, {3.6928463161498404`*^9, 3.692846349060549*^9}, {
+   3.692846382638541*^9, 3.692846390603998*^9}, {3.692846438910694*^9, 
+   3.6928464560222273`*^9}, {3.692846696189473*^9, 3.6928466974678783`*^9}, {
+   3.692846890664694*^9, 3.692847276441524*^9}, {3.69284733261665*^9, 
+   3.692847351733838*^9}, {3.692847676287657*^9, 3.6928476865339813`*^9}, {
+   3.692847731999031*^9, 3.692847747732889*^9}, {3.692847794914975*^9, 
+   3.692847799480863*^9}, {3.692847845693482*^9, 3.6928478464929323`*^9}, {
+   3.692847888689196*^9, 3.6928479532102747`*^9}, {3.692847988793414*^9, 
+   3.692848044374762*^9}, 3.6928486404753027`*^9, {3.6928489737542973`*^9, 
+   3.692848976216028*^9}, {3.692849038416944*^9, 3.692849099882773*^9}, {
+   3.692849166695969*^9, 3.692849354991953*^9}, {3.6928494860405197`*^9, 
+   3.6928495281773157`*^9}, {3.693107582406467*^9, 3.693107738609775*^9}, {
+   3.693107789063429*^9, 3.6931078977832003`*^9}, {3.693107952226465*^9, 
+   3.693107987034178*^9}, 3.693113907464065*^9, {3.693162202865665*^9, 
+   3.693162203610243*^9}, {3.6931622418376703`*^9, 3.693162269732068*^9}, {
+   3.693162316356821*^9, 3.6931627066697493`*^9}, {3.693162755335416*^9, 
+   3.69316284397025*^9}, {3.6931628750938*^9, 3.6931629653559017`*^9}, {
+   3.693163047813401*^9, 3.69316311757452*^9}, {3.693164479433852*^9, 
+   3.6931645755115957`*^9}, {3.69316463350495*^9, 3.693164732541655*^9}, {
+   3.693164795461026*^9, 3.693164796964093*^9}, {3.693165020202552*^9, 
+   3.6931650229757643`*^9}, {3.693165721915319*^9, 3.693165798415428*^9}, {
+   3.693165830386674*^9, 3.693165922611333*^9}, {3.6931659690681267`*^9, 
+   3.6931659750498877`*^9}, {3.69316611229389*^9, 3.6931661143557367`*^9}, {
+   3.693166178363615*^9, 3.693166196571849*^9}, {3.693166241205982*^9, 
+   3.693166243260786*^9}, {3.6931664306243467`*^9, 3.693166528103918*^9}, {
+   3.693166572445716*^9, 3.6931667205734787`*^9}, {3.6931721288450203`*^9, 
+   3.693172153059113*^9}, {3.6931732835266037`*^9, 3.693173361778658*^9}, {
+   3.6931738903922033`*^9, 3.6931740151951027`*^9}, 3.693174090029291*^9, {
+   3.6931741237794743`*^9, 3.693174141227007*^9}, {3.6948967182469597`*^9, 
+   3.694896722229904*^9}, {3.6948967549579277`*^9, 3.6948968126998672`*^9}, {
+   3.700109208525825*^9, 3.70010924322983*^9}, {3.700109290649727*^9, 
+   3.70010931096985*^9}, {3.700109428812767*^9, 3.700109495602962*^9}, 
+   3.700110585218635*^9, {3.701106695689068*^9, 3.701106711981359*^9}, {
+   3.701106806467005*^9, 3.7011068220363483`*^9}, {3.701109068928397*^9, 
+   3.701109111864592*^9}, {3.701109146075268*^9, 3.701109208240814*^9}, {
+   3.701111157419694*^9, 3.701111210504425*^9}, {3.701111378810454*^9, 
+   3.7011113933511143`*^9}, {3.701111531961792*^9, 3.701111621939535*^9}, 
+   3.701111656242785*^9, {3.701111702013109*^9, 3.701111824070314*^9}, {
+   3.701111869793832*^9, 3.701111901726686*^9}, {3.701111943161354*^9, 
+   3.7011120037882957`*^9}, {3.72566334553016*^9, 3.725663367318028*^9}, 
+   3.725663403063526*^9, {3.725663660710154*^9, 3.7256636697937603`*^9}, {
+   3.7256719904458838`*^9, 3.725671997245163*^9}, {3.725672133805241*^9, 
+   3.725672146954432*^9}},ExpressionUUID->"caec45bc-c05a-4af3-90df-\
+841f339a893a"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Animations\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.694526743420702*^9, 
+  3.6945267468354*^9}},ExpressionUUID->"2827653e-2435-4428-9ccb-60c18a076f54"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ChemAnimate\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.6925000993105087`*^9, 
+  3.6925001010775633`*^9}},ExpressionUUID->"f635bbfd-f60c-453c-8f28-\
+96b0a3bf561c"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"chemAnimationTime", "=", "\n", "\t", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"_Times", "?", 
+      RowBox[{"(", 
+       RowBox[{"MatchQ", "[", "_Integer", "]"}], ")"}]}], "|", "_Integer", 
+     "|", "_List", "|", "\[Infinity]"}], ")"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"chemAnimationObjs", "=", "\n", "\t", 
+   RowBox[{"ChemManyPattern", "|", 
+    RowBox[{"_Symbol", "?", 
+     RowBox[{"(", 
+      RowBox[{"MatchQ", "[", "ChemManyPattern", "]"}], ")"}]}], "|", "\n", 
+    "\t\t", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"_Symbol", "?", 
+          RowBox[{"(", 
+           RowBox[{"MatchQ", "[", "ChemObjAllPattern", "]"}], ")"}]}], ")"}], 
+        "|", "ChemManyPattern"}], ")"}], ".."}], "}"}]}]}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.700147488610997*^9, 3.700147500597373*^9}, {
+   3.700147532853923*^9, 3.700147557787595*^9}, {3.700147602397668*^9, 
+   3.7001476129378138`*^9}, 3.718334407551592*^9, {3.720369355219603*^9, 
+   3.720369355228121*^9}},ExpressionUUID->"2c505d68-78ea-4dad-bc61-\
+af1be10c981b"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ChemAnimate", "//", "ClearAll"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "ChemAnimate", "]"}], "=", "\n", "\t", 
+   RowBox[{"Join", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"Options", "@", "ListAnimate"}], ",", 
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"Prolog", "\[Rule]", 
+        RowBox[{"{", "}"}]}], ",", "\n", "\t\t", 
+       RowBox[{"Epilog", "\[Rule]", 
+        RowBox[{"{", "}"}]}], ",", "\n", "\t\t", 
+       RowBox[{"\"\<AnimationTime\>\"", "\[Rule]", "10."}], ",", "\n", "\t\t", 
+       RowBox[{"\"\<ChemViewOptions\>\"", "\[Rule]", 
+        RowBox[{"{", "}"}]}]}], "\n", "\t\t", "}"}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemAnimate", "[", "\n", "\t", 
+    RowBox[{"cmd_", ",", "\n", "\t", 
+     RowBox[{"steps", ":", "chemAnimationTime", ":", "10"}], ",", "\n", "\t", 
+     
+     RowBox[{"ops", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{"frames", "=", "\n", "\t\t\t", 
+       RowBox[{"Join", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"Flatten", "@", 
+          RowBox[{"{", 
+           RowBox[{"OptionValue", "@", "Prolog"}], "}"}]}], ",", "\n", 
+         "\t\t\t\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"MatchQ", "[", 
+            RowBox[{"steps", ",", 
+             RowBox[{"_Integer", "|", "\[Infinity]"}]}], "]"}], ",", 
+           RowBox[{"{", "cmd", "}"}], ",", 
+           RowBox[{"{", "}"}]}], "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", "\n", "\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"start", "=", "Now"}], ",", "\n", "\t\t\t\t\t", 
+             RowBox[{"anmQ", "=", "\n", "\t\t\t\t\t\t", 
+              RowBox[{"Quantity", "[", "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"Replace", "[", 
+                 RowBox[{
+                  RowBox[{"OptionValue", "@", "\"\<AnimationTime\>\""}], ",", 
+                  
+                  RowBox[{
+                   RowBox[{"Except", "[", 
+                    RowBox[{"_", "?", "NumericQ"}], "]"}], "\[Rule]", "0"}]}],
+                  "]"}], ",", "\n", "\t", "\t\t\t\t\t\t", "\"\<Seconds\>\""}],
+                "]"}]}]}], "\n", "\t\t\t\t\t\t", "}"}], ",", "\n", 
+           "\t\t\t\t\t", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"steps", "===", "\[Infinity]"}], ",", "\n", 
+             "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"Reap", "[", "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{"While", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"Now", "-", "start"}], "<", "anmQ"}], ",", "\n", 
+                 "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"Sow", "@", "cmd"}]}], "\n", "\t\t\t\t\t\t\t\t", 
+                "]"}], "\n", "\t\t\t\t\t\t\t", "]"}], "[", 
+              RowBox[{"[", 
+               RowBox[{"2", ",", "1"}], "]"}], "]"}], ",", "\n", 
+             "\t\t\t\t\t\t", 
+             RowBox[{"Table", "[", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"Now", "-", "start"}], "<", "anmQ"}], ",", "\n", 
+                 "\t\t\t\t\t\t\t\t", "cmd", ",", "\n", "\t\t\t\t\t\t\t\t", 
+                 "Nothing"}], "\n", "\t\t\t\t\t\t\t\t", "]"}], ",", "\n", 
+               "\t\t\t\t\t\t\t", "steps"}], "\n", "\t\t\t\t\t\t\t", "]"}]}], 
+            "\n", "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "]"}], ",", 
+         "\n", "\t\t\t\t", 
+         RowBox[{"Flatten", "@", 
+          RowBox[{"{", 
+           RowBox[{"OptionValue", "@", "Epilog"}], "}"}]}]}], "\n", 
+        "\t\t\t\t", "]"}]}], "}"}], ",", "\n", "\t\t", 
+     RowBox[{"Interpretation", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"ListAnimate", "[", 
+        RowBox[{"frames", ",", "\n", "\t\t\t\t", 
+         RowBox[{"FilterRules", "[", 
+          RowBox[{
+           RowBox[{"{", "ops", "}"}], ",", 
+           RowBox[{"Options", "@", "ListAnimate"}]}], "]"}]}], "]"}], ",", 
+       "\n", "\t\t\t", "frames"}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+    "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemAnimate", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"obj", ":", "chemAnimationObjs"}], ",", "\n", "\t", "mutate_", 
+     ",", "\n", "\t", 
+     RowBox[{"steps", ":", "chemAnimationTime", ":", "10"}], ",", "\n", "\t", 
+     
+     RowBox[{"ops", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"cvops", "=", "\n", "\t\t", 
+       RowBox[{"Sequence", "@@", "\n", "\t\t\t", 
+        RowBox[{"Flatten", "@", 
+         RowBox[{"{", 
+          RowBox[{"OptionValue", "@", "\"\<ChemViewOptions\>\""}], 
+          "}"}]}]}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+     RowBox[{"ChemAnimate", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"mutate", "@", "obj"}], ";", "\n", "\t", "\t\t", 
+        RowBox[{"ChemView", "[", 
+         RowBox[{"obj", ",", "cvops"}], "]"}]}], ",", "\n", "\t\t\t", "steps",
+        ",", "\n", "\t\t\t", "ops", ",", "\n", "\t\t\t", 
+       RowBox[{"Prolog", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"ChemView", "[", 
+          RowBox[{"obj", ",", "cvops"}], "]"}], "}"}]}]}], "\n", "\t\t\t", 
+      "]"}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SyntaxInformation", "[", "ChemAnimate", "]"}], "=", "\n", "\t", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"\"\<ArgumentsPattern\>\"", "->", 
+      RowBox[{"{", 
+       RowBox[{"_", ",", "_.", ",", "_.", ",", 
+        RowBox[{"OptionsPattern", "[", "]"}]}], "}"}]}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<LocalVariables\>\"", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"Table", ",", 
+        RowBox[{"{", 
+         RowBox[{"2", ",", "3"}], "}"}]}], "}"}]}]}], "\n", "\t\t", "}"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ChemAnimate", "~", "SetAttributes", "~", "HoldAll"}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.6924988009238777`*^9, 3.692498986252434*^9}, {
+   3.6924991886682043`*^9, 3.692499253339278*^9}, {3.6924992951847343`*^9, 
+   3.692499333559602*^9}, {3.692499386843515*^9, 3.692499506880451*^9}, {
+   3.692499699666416*^9, 3.6924997066546173`*^9}, {3.692540085913041*^9, 
+   3.6925401345176497`*^9}, {3.6926363131499567`*^9, 
+   3.6926363176946487`*^9}, {3.692636353323748*^9, 3.692636399257783*^9}, {
+   3.692636451316753*^9, 3.692636471581046*^9}, {3.692637168863701*^9, 
+   3.692637178893393*^9}, {3.7001108931726933`*^9, 3.700110900361374*^9}, {
+   3.7001109519858103`*^9, 3.700111027829183*^9}, {3.700111072872169*^9, 
+   3.700111102741543*^9}, {3.700111133618733*^9, 3.7001112078215313`*^9}, {
+   3.700111293433345*^9, 3.7001117549528913`*^9}, {3.700111785692964*^9, 
+   3.700111811036517*^9}, {3.700111905581566*^9, 3.7001119066353703`*^9}, {
+   3.700111955381473*^9, 3.7001119948455*^9}, {3.7001120832982273`*^9, 
+   3.700112114466343*^9}, {3.700112299534127*^9, 3.700112323571274*^9}, {
+   3.700113468480009*^9, 3.700113511268897*^9}, {3.7001135468781023`*^9, 
+   3.700113621557459*^9}, {3.7001136560219107`*^9, 3.700113700688476*^9}, {
+   3.7001137863816223`*^9, 3.700113803107136*^9}, {3.7001471078264837`*^9, 
+   3.700147171880641*^9}, 3.7001473867508307`*^9, {3.70014742450113*^9, 
+   3.7001474429882717`*^9}, {3.7001474843142853`*^9, 3.700147573470364*^9}, {
+   3.700147660990985*^9, 3.700147664970578*^9}, {3.700147698821765*^9, 
+   3.700147698988982*^9}, {3.705204924721126*^9, 
+   3.7052049616115923`*^9}},ExpressionUUID->"1145aa58-4e2a-41b2-88cd-\
+e958bf7dbfea"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ChemSaveAnimation\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.692500104453266*^9, 
+  3.692500107717128*^9}},ExpressionUUID->"07c2bede-8eb1-47c5-92ee-\
+f5e43e1cfee2"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemSaveAnimation", "[", 
+   RowBox[{"file_", ",", "\n", "\t", 
+    RowBox[{"frames_List", "|", 
+     RowBox[{"Interpretation", "[", 
+      RowBox[{"_", ",", "frames_List"}], "]"}]}], ",", "\n", "\t", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"images", "=", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Rasterize", "[", 
+         RowBox[{"#", ",", "\"\<Image\>\"", ",", 
+          RowBox[{"FilterRules", "[", 
+           RowBox[{
+            RowBox[{"{", "ops", "}"}], ",", 
+            RowBox[{"Options", "@", "Rasterize"}]}], "]"}]}], "]"}], "&"}], "/@",
+        "\n", "\t\t\t", "frames"}]}], "\n", "\t\t\t", "}"}], ",", "\n", 
+    "\t\t", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"dims", "=", 
+        RowBox[{"ImageDimensions", "@", 
+         RowBox[{"First", "@", "images"}]}]}], "}"}], ",", "\n", "   \t ", 
+      RowBox[{"Export", "[", 
+       RowBox[{"file", ",", "\n", "   \t \t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"ImageResize", "[", 
+           RowBox[{
+            RowBox[{"ColorConvert", "[", 
+             RowBox[{"#", ",", " ", "\"\<RGB\>\""}], "]"}], ",", " ", 
+            "dims"}], "]"}], " ", "&"}], " ", "/@", " ", "images"}], ",", 
+        "\n", "   \t \t", "ops"}], "\n", "   \t \t", "]"}]}], "\n", "    \t", 
+     "]"}]}], "\n", "    ", "]"}]}]], "CodeInput",
+ CellChangeTimes->{{3.692498963000108*^9, 3.6924990478803043`*^9}, {
+  3.692499104987369*^9, 3.692499163928076*^9}, {3.692499425715597*^9, 
+  3.692499437124765*^9}, {3.701100773032249*^9, 
+  3.701100826802705*^9}},ExpressionUUID->"fe4d14e9-d5a9-4af4-921c-\
+c0d527f86b43"]
+}, Closed]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"62879a3e-49dd-41f6-85e6-\
+10c60bf23b28"]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"6d12f542-22a3-4182-b9cf-\
+a61a3ab82a4b"]
+},
+WindowSize->{768, 787},
+WindowMargins->{{135, Automatic}, {Automatic, 11}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

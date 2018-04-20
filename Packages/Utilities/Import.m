@@ -21,23 +21,13 @@
 
 ChemImportMolTable::usage="Imports MolTable data";
 ChemImportZMatrix::usage="Imports ZMatrix data";
-
-
-ChemImportObjectString::usage=
-	"Imports a chemical structure or structures from a string";
-ChemImportObject::usage=
-	"Routes imports to ChemImportObjectString";
+ChemImportGraphics::usage="Imports Graphics data";
 
 
 Begin["`Private`"];
 
 
 (* ::Subsection:: *)
-(*Import Lower-Level*)
-
-
-
-(* ::Subsubsection::Closed:: *)
 (*String Patterns*)
 
 
@@ -99,20 +89,41 @@ ChemDataBondBlockStringPattern=
 	(BondLineStringPattern~~EndOfLine)..;
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*ZMatrix*)
 
 
 
-ChemImportZMatrix[table:{__List}]:=
-	With[{chunks=
-		SequenceCases[SplitBy[table,MatchQ@{_String,___}],
-			s:{ {{_String,___},___},{{_Integer,___},___} }|{{{_String,___},___}}:>
-				Join@@s
-			]},
+iChemImportZMatrix[table:{__List}]:=
+	With[
+		{
+			chunks=
+				Join@@@
+					Partition[
+						SplitBy[table, MatchQ@{_String}],
+						2
+						]
+				},
 		Table[
 			With[{
-				a=ChemUtilsGenerateMolTable@Cases[t,{_String,___}],
+				a=ChemUtilsGenerateMolTable@
+					Replace[
+						Cases[t, {_String,___}],
+						{
+							{s_, i_, r_, j_, a_}:>
+								{s, i, r, 
+									j, 
+										If[TrueQ[a>2\[Pi]||a<-\[Pi]], a*Degree, a]},
+							{s_, i_, r_, j_, a_, k_, d_, ___}:>
+								{s, i, r, 
+									j, 
+										If[TrueQ[a>2\[Pi]||a<-\[Pi]], a*Degree, a], 
+									k, 
+										If[TrueQ[d>2\[Pi]||d<-\[Pi]], d*Degree, d]
+										}
+							},
+						1
+						],
 				b=Cases[t,{_Integer,_Integer,_Integer}|{_Integer,_Integer}]
 				},
 				Join[
@@ -124,15 +135,20 @@ ChemImportZMatrix[table:{__List}]:=
 			{t,chunks}
 			]
 		];
+
+
 ChemImportZMatrix[s_String?(Not@*FileExistsQ)]:=
-	ChemImportZMatrix@ImportString[s,"Table"];
-ChemImportZMatrix[file_String?FileExistsQ]:=
-	ChemImportZMatrix@Import[file, "Table"];
-ChemImportZMatrix[stream_InputStream]:=
-	ChemImportZMatrix@Import[stream, "Table"];
+	With[{strings=If[Length[#]==1, #[[1]], #]&@ChemUtilsEnumerateZMatrixStrings@s},
+		If[StringQ@strings, 
+			iChemImportZMatrix@ImportString[strings, "Table"],
+			Flatten[Map[iChemImportZMatrix@ImportString[#, "Table"]&, strings], 1]
+			]
+		];
+ChemImportZMatrix[file:_String?FileExistsQ|_InputStream|_File|_URL]:=
+	ChemImportZMatrix@ReadString[file];
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*MolTable*)
 
 
@@ -370,7 +386,7 @@ parseMolTable[atomList:{___,"START",__}]:=
 		];
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*Graphics3D*)
 
 
@@ -382,7 +398,7 @@ getElemColors[]:=
 			($elemsByColor=
 				DeleteCases[
 					AssociationMap[
-						ElementData[#,"IconColor"]&,
+						ElementData[#, "IconColor"]&,
 						ChemTools`Private`$ChemElements//Keys
 						],
 					$Failed
@@ -576,7 +592,18 @@ chemImportGraphics3D[data_Graphics3D]:=
 		];
 
 
-(* ::Subsubsection::Closed:: *)
+ChemImportGraphics::nosup=
+	"Import support for type `` is currently unavailable. \
+Only Graphics3D is currently supported.";
+
+
+ChemImportGraphics[data_Graphics3D]:=
+	chemImportGraphics3D[data];
+ChemImportGraphics[data_]/;(Message[ChemImportGraphics::nosup, Head[data]]):=
+	Null;
+
+
+(* ::Subsection:: *)
 (*Graph*)
 
 
@@ -591,7 +618,7 @@ chemImportGraphics3D[data_Graphics3D]:=
 		];*)
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*Gaussian*)
 
 
@@ -600,244 +627,6 @@ gaussianImportObjectData[file:_String?FileExistsQ|_InputStream, "GaussianJob"]:=
 	List@ImportGaussianJob[file, "MolTable"];
 gaussianImportObjectData[file:_String?FileExistsQ|_InputStream, "FormattedCheckpoint"]:=
 	List@ImportFormattedCheckpointFile[file, "MolTable"];
-
-
-(* ::Subsubsection::Closed:: *)
-(*generalizedImport*)
-
-
-
-chemObjectImport[
-	system:_String|ChemObject[_]|Automatic:Automatic,
-	atomSets_List
-	]:=
-	With[{sys=Replace[system, Automatic:>$ChemDefaultSystem]},
-		Replace[
-			CreateAtomset[sys,#]&/@atomSets//Flatten,{
-			{}->None,
-			{a_}:>a
-			}]
-		];
-
-
-(* ::Subsection:: *)
-(*ImportString*)
-
-
-
-(* ::Subsubsection::Closed:: *)
-(*ImportString*)
-
-
-
-ChemImportObject::noobj=
-	"Unable to construct ChemObject check input file or contact me";
-ChemImportObjectString[
-	system:ChemSysPattern|Automatic:Automatic,
-	string_String,
-	format:"MolTable"|"ZMatrix"|"GaussianJob"|"FormattedCheckpoint"
-	]:=
-	Switch[format,
-		"MolTable",
-			chemObjectImport[system,
-				chemImportMolTable@string],
-		"ZMatrix",
-			chemObjectImport[system,
-				chemImportZMatrix@string],
-		"GaussianJob"|"FormattedCheckpoint",
-			chemObjectImport[system,
-				gaussianImportObjectData[
-					StringToStream@string,
-					format
-					]
-				]
-		];
-ChemImportObjectString[
-	system:ChemSysPattern|Automatic:Automatic,
-	string_String,
-	Optional[Automatic,Automatic]]:=
-	With[{attempts=
-		If[StringContainsQ[string,"V2000"|"V3000"],
-			{"MolTable","ZMatrix"},
-			{"ZMatrix","MolTable"}
-			]
-		},
-		Replace[
-			ChemImportObjectString[system,string,First@attempts],{
-			Except[_ChemObject|{__ChemObject}]:>
-				Replace[
-					Quiet@
-						ChemImportObjectString[system,string,Last@attempts],
-					e:Except[_ChemObject|{__ChemObject}]:>(
-						Message[ChemImportObject::noobj];
-						$Failed
-						)
-					]
-			}]
-		]
-
-
-(* ::Subsection:: *)
-(*Import*)
-
-
-
-(* ::Subsubsection::Closed:: *)
-(*Import From FIle*)
-
-
-
-ChemImportObject[
-	system:ChemSysPattern|Automatic:Automatic,
-	file:_File|_String?FileExistsQ,
-	format:"MolTable"|"ZMatrix"|"GaussianJob"|"FormattedCheckpoint"|Automatic:Automatic
-	]:=
-	With[{form=
-		Replace[format,
-			Automatic:>
-				Switch[FileExtension@file,
-					"mol"|"sdf",
-						"MolTable",
-					"zmat",
-						"ZMatrix",
-					"gjf",
-						"GaussianJob",
-					"fchk",
-						"FormattedCheckpoint",
-					_,
-						Automatic
-					]
-				]
-			},
-		Switch[form,	
-			"MolTable"|"ZMatrix",
-				ChemImportObjectString[system, Import[file,"Text"], form],
-			"GaussianJob"|"FormattedCheckpoint",
-				chemObjectImport[system,
-					gaussianImportObjectData[
-						file,
-						form
-						]
-					]
-			]
-		];
-
-
-(* ::Subsubsection::Closed:: *)
-(*URL*)
-
-
-
-ChemImportObject[
-	system:ChemSysPattern|Automatic:Automatic,
-	file:_URL|_String?(URLParse[#]["Scheme"]=!=None&),
-	format:"MolTable"|"ZMatrix"|Automatic:Automatic]:=
-	With[{f=URLDownload@file},
-		If[FileExistsQ@f,
-			ChemImportObject[system,f,format],
-			$Failed
-			]
-		];	
-
-
-(* ::Subsubsection::Closed:: *)
-(*Graphics3D*)
-
-
-
-ChemImportObject::no3d=
-	"No 3D structure found for identifier ``. Attempting to use a 2D structure instead";
-ChemImportObject::nostr=
-	"No structure found for identifier ``";
-ChemImportObject[
-	system:ChemSysPattern|Automatic:Automatic,
-	structure:
-		_PubChemCompound|
-		_PubChemSubstance|
-		_Integer|
-		Entity["Chemical",_]|
-		_String?(
-			Not@FileExistsQ@#&&
-			Not@StringContainsQ[#,"\n"|$PathnameSeparator]
-			&),
-	format:"MolTable"|"ZMatrix"|Automatic:Automatic]:=
-	Replace[
-		Replace[
-			Quiet[ChemDataLookup[structure,"SDFFiles"],ServiceExecute::serrormsg],
-			$Failed:>(
-				Message[ChemImportObject::no3d, structure];
-				ChemDataLookup[structure,"2DStructures",
-					"Overwrite"->True]
-				)
-			],
-		{
-			mol_String:>
-				ChemImportObjectString[system,mol,"MolTable"],
-			mols:{__String}:>
-				Map[ChemImportObjectString[system,#,"MolTable"]&,mols],
-			_:>(Message[ChemImportObject::nostr,structure];$Failed)
-			}
-		];
-
-
-ChemImportObject[
-	system:ChemSysPattern|Automatic:Automatic,
-	data_Graphics3D
-	]:=
-	chemObjectImport[system,chemImportGraphics3D@data];
-
-
-(*ChemImportObject[
-	system:ChemSysPattern|Automatic:Automatic,
-	data_Graph
-	]:=
-	chemObjectImport[system,chemImportGraph@data];*)
-
-
-(* ::Subsubsection::Closed:: *)
-(*Importable Types*)
-
-
-
-$ChemImportableTypes=
-	(
-		_Graphics3D|_String|_Integer|Entity["Chemical",_]|
-		_File|_URL|
-		_PubChemCompound|_PubChemSubstance
-		);
-
-
-ChemImportObject[system:ChemSysPattern|Automatic:Automatic,
-	data:{$ChemImportableTypes..}
-	]:=
-	ChemImportObject[system,#]&/@data;
-
-
-(*ChemImportObject[
-	system:ChemSysPattern|Automatic:Automatic,
-	s_Symbol?(Not@*MatchQ[$ChemImportableTypes|{$ChemImportableTypes..}])
-	]:=
-	(s=ChemImportObject[system,SymbolName[Unevaluated[s]]]);*)
-
-
-ChemImportObject[system:ChemSysPattern|Automatic:Automatic,
-	s_?(MatchQ[$ChemImportableTypes|{$ChemImportableTypes..}]),
-	o___
-	]:=
-	ChemImportObject[system,s,o];
-
-
-ChemImportObject[
-	a___
-	]/;!TrueQ[$ChemImportInImport]:=
-	Block[{$ChemImportInImport=True},
-		With[{l={a}},
-			ChemImportObject@@l
-			]
-		]
-
-
-(*ChemImportObject~SetAttributes~HoldFirst;*)
 
 
 End[];

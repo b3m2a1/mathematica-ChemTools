@@ -28,7 +28,7 @@
 
 
 (* ::Subsubsection::Closed:: *)
-(*ChemObject*)
+(*MolTable*)
 
 
 
@@ -45,20 +45,6 @@ If[!TrueQ[`Private`$ImportRegistered["MolTable"]],
 		];
 	`Private`$ImportRegistered["MolTable"]=True
 	]
-
-
-(* ::Subsubsection::Closed:: *)
-(*ChemObject*)
-
-
-
-If[!TrueQ[`Private`$ImportRegistered["ChemObject"]],
-	ImportExport`RegisterImport[
-		"ChemObject",
-		ChemImportObject
-		];
-	`Private`$ImportRegistered["ChemObject"]=True
-	];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -165,7 +151,8 @@ If[!TrueQ[`Private`$ImportRegistered["GaussianLog"]],
 						"Scan",
 						"Blurb",
 						"ComputerTimeElapsed",
-						"EndDateTime"
+						"EndDateTime",
+						"ScanQuantityArray"
 						}
 					],
 				{
@@ -179,7 +166,8 @@ If[!TrueQ[`Private`$ImportRegistered["GaussianLog"]],
 										"Scan",
 										"Blurb",
 										"ComputerTimeElapsed",
-										"EndDateTime"
+										"EndDateTime",
+										"ScanQuantityArray"
 										}
 								}
 							],

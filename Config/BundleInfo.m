@@ -3,6 +3,7 @@
 {
 	"RemovePaths" -> {
 		"Private",
+		"project",
 		".git"
 		},
 	"RemovePatterns" -> {

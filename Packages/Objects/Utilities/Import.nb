@@ -1,0 +1,808 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Imports", "CodeSection",
+ CellChangeTimes->{{3.730581315248868*^9, 
+  3.730581317854288*^9}},ExpressionUUID->"f7ef8964-aab6-4db2-bfce-\
+fd07f3006634"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemImportObjectString", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Imports a chemical structure or structures from a string\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemImportObject", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Routes imports to ChemImportObjectString\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemImportableObjectTypes", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Support import types\>\""}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.7305816202065353`*^9, 3.730581632530641*^9}, 
+   3.730581879627846*^9, {3.730582081697652*^9, 3.7305821086375713`*^9}, {
+   3.73058309939634*^9, 3.7305831287214413`*^9}, {3.732552168617647*^9, 
+   3.732552175952731*^9}},ExpressionUUID->"e56a2503-a31a-4b95-8f1c-\
+9b3fd1648a12"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}]], "InputSection",
+ CellChangeTimes->{{3.732921341891988*^9, 
+  3.732921342522491*^9}},ExpressionUUID->"1e7b823d-483f-4e48-82c3-\
+1d341d1bcc96"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Gaussian\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.730837685694828*^9, 
+  3.730837691206213*^9}},ExpressionUUID->"0070434c-999e-4513-b8f5-\
+f93ede6b0273"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"gaussianImportObjectData", "[", 
+    RowBox[{
+     RowBox[{"file", ":", 
+      RowBox[{
+       RowBox[{"_String", "?", "FileExistsQ"}], "|", "_InputStream"}]}], ",", 
+     " ", "\"\<GaussianJob\>\""}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"List", "@", 
+    RowBox[{"ImportGaussianJob", "[", 
+     RowBox[{"file", ",", " ", "\"\<MolTable\>\""}], "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"gaussianImportObjectData", "[", 
+    RowBox[{
+     RowBox[{"file", ":", 
+      RowBox[{
+       RowBox[{"_String", "?", "FileExistsQ"}], "|", "_InputStream"}]}], ",", 
+     " ", "\"\<FormattedCheckpoint\>\""}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"List", "@", 
+    RowBox[{"ImportFormattedCheckpointFile", "[", 
+     RowBox[{"file", ",", " ", "\"\<MolTable\>\""}], "]"}]}]}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.730830643641626*^9, 3.730830669288062*^9}, {
+   3.730830705437407*^9, 3.730830736611869*^9}, {3.730830809313363*^9, 
+   3.730830879612211*^9}, {3.730830927485488*^9, 3.730831013011237*^9}, {
+   3.730831091107768*^9, 3.730831103680934*^9}, {3.730831254295288*^9, 
+   3.7308312592865553`*^9}, {3.730831331263329*^9, 3.7308313777237673`*^9}, 
+   3.7308374058233423`*^9, {3.730837702656393*^9, 3.730837716933559*^9}, {
+   3.730837779793742*^9, 
+   3.730837797764235*^9}},ExpressionUUID->"f9fdf7c4-94ba-4076-b69c-\
+39a3478bf8c8"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]generalizedImport\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.692577116182444*^9, 
+  3.6925771195986223`*^9}},ExpressionUUID->"51fc4081-c3ec-4071-a51b-\
+cd40d9042c28"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"chemObjectImport", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"system", ":", 
+      RowBox[{"_String", "|", 
+       RowBox[{"ChemObject", "[", "_", "]"}], "|", "Automatic"}], ":", 
+      "Automatic"}], ",", "\n", "\t", "atomSets_List"}], "\n", "\t", "]"}], ":=",
+    "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"sys", "=", 
+       RowBox[{"Replace", "[", 
+        RowBox[{"system", ",", " ", 
+         RowBox[{"Automatic", "\[RuleDelayed]", "$ChemDefaultSystem"}]}], 
+        "]"}]}], "}"}], ",", "\n", "\t\t", 
+     RowBox[{"Replace", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"CreateAtomset", "[", 
+           RowBox[{"sys", ",", "#"}], "]"}], "&"}], "/@", "atomSets"}], "//", 
+        "Flatten"}], ",", 
+       RowBox[{"{", "\n", "\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", "}"}], "\[Rule]", "None"}], ",", "\n", "\t", "\t\t", 
+         RowBox[{
+          RowBox[{"{", "a_", "}"}], "\[RuleDelayed]", "a"}]}], "\n", "\t\t\t",
+         "}"}]}], "]"}]}], "\n", "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.692577121273727*^9, 3.6925772127645397`*^9}, {
+   3.693930377103022*^9, 3.693930381829072*^9}, {3.710172858537599*^9, 
+   3.710172859450912*^9}, {3.73083129945053*^9, 3.730831314742337*^9}, 
+   3.73246940334029*^9},ExpressionUUID->"2a6c04f7-805c-4d68-ac55-b85faa35eb80"]
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ImportString\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.6923058612920856`*^9, 3.692305862595064*^9}, {
+  3.730581573274974*^9, 
+  3.7305815777295837`*^9}},ExpressionUUID->"d16454af-4bff-4d28-83bd-\
+4ae8efdadf04"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ImportString\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.692576984943171*^9, 
+  3.692576986839342*^9}},ExpressionUUID->"ddfe7daa-7369-4f2e-8e04-\
+be439ae3b0b7"],
+
+Cell[BoxData[
+ RowBox[{"ChemImportObjectString", "//", "Clear"}]], "CodeInput",
+ CellChangeTimes->{{3.7324691227656717`*^9, 
+  3.7324691233744287`*^9}},ExpressionUUID->"57f1c434-d303-42f6-bdd1-\
+3dd3a77c039e"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemImportObject", "::", "noobj"}], "=", "\n", "\t", 
+   "\"\<Unable to construct ChemObject. Check input file,\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemImportObject", "::", "nofmt"}], "=", "\n", "\t", 
+   "\"\<Unable to autodetect format for ``\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemImportObjectString", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"system", ":", 
+      RowBox[{"ChemSysPattern", "|", "Automatic"}], ":", "Automatic"}], ",", 
+     "\n", "\t", 
+     RowBox[{"string_String", "?", 
+      RowBox[{"(", 
+       RowBox[{"Not", "@*", "FileExistsQ"}], ")"}]}], ",", "\n", "\t", 
+     RowBox[{"format", ":", 
+      RowBox[{
+      "\"\<MolTable\>\"", "|", "\"\<ZMatrix\>\"", "|", "\"\<GaussianJob\>\"", 
+       "|", "\"\<FormattedCheckpoint\>\"", "|", "Automatic"}]}]}], "\n", "\t",
+     "]"}], ":=", "\n", "\t", 
+   RowBox[{"Switch", "[", 
+    RowBox[{
+    "format", ",", "\n", "\t\t", "\"\<MolTable\>\"", ",", "\n", "\t\t\t", 
+     RowBox[{"chemObjectImport", "[", 
+      RowBox[{"system", ",", "\n", "\t\t\t\t", 
+       RowBox[{"ChemImportMolTable", "@", "string"}]}], "]"}], ",", "\n", 
+     "\t\t", "\"\<ZMatrix\>\"", ",", "\n", "\t\t\t", 
+     RowBox[{"chemObjectImport", "[", 
+      RowBox[{"system", ",", "\n", "\t\t\t\t", 
+       RowBox[{"ChemImportZMatrix", "@", "string"}]}], "]"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"\"\<GaussianJob\>\"", "|", "\"\<FormattedCheckpoint\>\""}], ",",
+      "\n", "\t\t\t", 
+     RowBox[{"chemObjectImport", "[", 
+      RowBox[{"system", ",", "\n", "\t", "\t\t\t", 
+       RowBox[{"gaussianImportObjectData", "[", "\n", "\t", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"StringToStream", "@", "string"}], ",", "\n", "\t\t\t\t\t", 
+         "format"}], "\n", "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}], 
+     ",", "\n", "\t\t", "Automatic", ",", "\n", "\t\t\t", 
+     RowBox[{"Which", "[", "\n", "\t\t\t\t", 
+      RowBox[{
+       RowBox[{"StringStartsQ", "[", 
+        RowBox[{
+         RowBox[{"StringTrim", "@", "string"}], ",", " ", "\n", "\t\t\t\t\t", 
+         
+         RowBox[{
+          RowBox[{"LetterCharacter", ".."}], "~~", 
+          RowBox[{"(", 
+           RowBox[{"Whitespace", "|", "\"\<\>\""}], ")"}], "~~", 
+          "\"\<\\n\>\""}]}], "\n", "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
+       RowBox[{"chemObjectImport", "[", 
+        RowBox[{"system", ",", "\n", "\t\t\t\t\t\t", 
+         RowBox[{"ChemImportZMatrix", "@", "string"}]}], "]"}], ",", "\n", 
+       "\t\t\t\t", 
+       RowBox[{"StringContainsQ", "[", 
+        RowBox[{"string", ",", " ", 
+         RowBox[{"\"\<V2000\>\"", "|", "\"\<V3000\>\""}]}], "]"}], ",", "\n", 
+       "\t\t\t\t\t", 
+       RowBox[{"chemObjectImport", "[", 
+        RowBox[{"system", ",", "\n", "\t\t\t\t\t\t", 
+         RowBox[{"ChemImportMolTable", "@", "string"}]}], "]"}], ",", "\n", 
+       "\t\t\t\t", "True", ",", "\n", "\t\t\t\t\t", 
+       RowBox[{
+        RowBox[{"Message", "[", 
+         RowBox[{
+          RowBox[{"ChemImportObject", "::", "nofmt"}], ",", " ", "string"}], 
+         "]"}], ";", "\n", "\t\t\t\t\t", "$Failed"}]}], "\n", "\t\t\t\t", 
+      "]"}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ChemImportObjectString", "[", "\n", "\t", 
+   RowBox[{
+    RowBox[{"system", ":", 
+     RowBox[{"ChemSysPattern", "|", "Automatic"}], ":", "Automatic"}], ",", 
+    "\n", "\t", 
+    RowBox[{"string_String", "?", 
+     RowBox[{"(", 
+      RowBox[{"Not", "@*", "FileExistsQ"}], ")"}]}], ",", "\n", "\t", 
+    RowBox[{"Optional", "[", 
+     RowBox[{"Automatic", ",", "Automatic"}], "]"}]}], "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"attempts", "=", "\n", "\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"StringContainsQ", "[", 
+         RowBox[{"string", ",", 
+          RowBox[{"\"\<V2000\>\"", "|", "\"\<V3000\>\""}]}], "]"}], ",", "\n",
+         "\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"\"\<MolTable\>\"", ",", "\"\<ZMatrix\>\""}], "}"}], ",", 
+        "\n", "\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"\"\<ZMatrix\>\"", ",", "\"\<MolTable\>\""}], "}"}]}], "\n", 
+       "\t\t\t", "]"}]}], "\n", "\t\t", "}"}], ",", "\n", "\t\t", 
+    RowBox[{"Replace", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"ChemImportObjectString", "[", 
+       RowBox[{"system", ",", "string", ",", 
+        RowBox[{"First", "@", "attempts"}]}], "]"}], ",", 
+      RowBox[{"{", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"Except", "[", 
+         RowBox[{"_ChemObject", "|", 
+          RowBox[{"{", "__ChemObject", "}"}]}], "]"}], ":>", "\n", "\t\t\t\t", 
+        RowBox[{"Replace", "[", "\n", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"Quiet", "@", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"ChemImportObjectString", "[", 
+            RowBox[{"system", ",", "string", ",", 
+             RowBox[{"Last", "@", "attempts"}]}], "]"}]}], ",", "\n", 
+          "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"e", ":", 
+            RowBox[{"Except", "[", 
+             RowBox[{"_ChemObject", "|", 
+              RowBox[{"{", "__ChemObject", "}"}]}], "]"}]}], "\[RuleDelayed]", 
+           RowBox[{"(", "\n", "\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"Message", "[", 
+              RowBox[{"ChemImportObject", "::", "noobj"}], "]"}], ";", "\n", 
+             "\t\t\t\t\t\t", "$Failed"}], "\n", "\t\t\t\t\t\t", ")"}]}]}], 
+         "\n", "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t", "}"}]}], "]"}]}], "\n", 
+   "\t\t", "]"}]}]}], "CodeInput",
+ CellChangeTimes->{{3.692305797748176*^9, 3.692305827258965*^9}, {
+   3.6923058658111*^9, 3.692305870419566*^9}, {3.692411088525763*^9, 
+   3.692411102533237*^9}, {3.692411138642226*^9, 3.692411148689479*^9}, {
+   3.692455937107181*^9, 3.692455986706958*^9}, {3.6924582515659122`*^9, 
+   3.692458255591323*^9}, {3.692460657467251*^9, 3.692460658226652*^9}, 
+   3.692460778174439*^9, {3.6924620921300983`*^9, 3.692462159636458*^9}, {
+   3.6924625187095222`*^9, 3.692462532478364*^9}, {3.692462941064582*^9, 
+   3.692462943207103*^9}, 3.692462999663168*^9, 3.692463052160982*^9, {
+   3.692463236638096*^9, 3.692463293954761*^9}, {3.692577189857452*^9, 
+   3.692577261893341*^9}, 3.692989711592115*^9, {3.69298984690641*^9, 
+   3.692989850948688*^9}, {3.692991003318109*^9, 3.6929910051720877`*^9}, {
+   3.6929911467454567`*^9, 3.692991150031063*^9}, {3.6939668323557796`*^9, 
+   3.693966833626226*^9}, {3.700110090137362*^9, 3.700110090302907*^9}, {
+   3.700110149252385*^9, 3.700110155651538*^9}, {3.700185037153664*^9, 
+   3.7001852591228027`*^9}, {3.7001905287853394`*^9, 
+   3.7001905336637774`*^9}, {3.7002616912242002`*^9, 
+   3.7002618613071737`*^9}, {3.700261926898102*^9, 3.700261945358418*^9}, {
+   3.700261994174814*^9, 3.700262009116555*^9}, {3.700264978699313*^9, 
+   3.700264980050321*^9}, {3.718334369955265*^9, 3.718334369961975*^9}, {
+   3.73058176801313*^9, 3.7305817717364492`*^9}, 3.7305820557380943`*^9, {
+   3.7305820980536346`*^9, 3.730582159123602*^9}, {3.73058309480725*^9, 
+   3.7305830948147783`*^9}, {3.7305831252780952`*^9, 3.7305831252971*^9}, {
+   3.7308306762036257`*^9, 3.730830693618321*^9}, {3.730830749024993*^9, 
+   3.730830791435782*^9}, {3.73246911572047*^9, 3.7324692404974127`*^9}, {
+   3.732469771719366*^9, 3.732469774342144*^9}, {3.732553357736405*^9, 
+   3.732553514663759*^9}},ExpressionUUID->"f1b0e591-c83c-403e-a0ff-\
+e0f3e3667669"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Import\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.6923058612920856`*^9, 3.692305862595064*^9}, 
+   3.730581573274974*^9},ExpressionUUID->"e9604b5e-b99b-452b-b087-\
+11f92f746470"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Import From File\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.69257699004709*^9, 3.6925769909427357`*^9}, {
+   3.730581658843952*^9, 3.7305816649234953`*^9}, 
+   3.7325521403448477`*^9},ExpressionUUID->"e9521c8e-9718-42cf-93d4-\
+10d5462d9803"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemImportObject", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"system", ":", 
+      RowBox[{"ChemSysPattern", "|", "Automatic"}], ":", "Automatic"}], ",", 
+     "\n", "\t", 
+     RowBox[{"file", ":", 
+      RowBox[{"_File", "|", 
+       RowBox[{"_String", "?", "FileExistsQ"}]}]}], ",", "\n", "\t", 
+     RowBox[{"format", ":", 
+      RowBox[{
+      "\"\<MolTable\>\"", "|", "\"\<ZMatrix\>\"", "|", "\"\<GaussianJob\>\"", 
+       "|", "\"\<FormattedCheckpoint\>\"", "|", "Automatic"}], ":", 
+      "Automatic"}]}], "\n", "\t", "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"form", "=", "\n", "\t\t", 
+       RowBox[{"Replace", "[", 
+        RowBox[{"format", ",", "\n", "\t\t\t", 
+         RowBox[{"Automatic", ":>", "\n", "\t\t\t\t", 
+          RowBox[{"Switch", "[", 
+           RowBox[{
+            RowBox[{"FileExtension", "@", "file"}], ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"\"\<mol\>\"", "|", "\"\<sdf\>\""}], ",", "\n", 
+            "\t\t\t\t\t\t", "\"\<MolTable\>\"", ",", "\n", "\t\t\t\t\t", 
+            "\"\<zmat\>\"", ",", "\n", "\t\t\t\t\t\t", "\"\<ZMatrix\>\"", ",",
+             "\n", "\t\t\t\t\t", "\"\<gjf\>\"", ",", "\n", "\t\t\t\t\t\t", 
+            "\"\<GaussianJob\>\"", ",", "\n", "\t\t\t\t\t", "\"\<fchk\>\"", 
+            ",", "\n", "\t\t\t\t\t\t", "\"\<FormattedCheckpoint\>\"", ",", 
+            "\n", "\t\t\t\t\t", "_", ",", "\n", "\t\t\t\t\t\t", "Automatic"}],
+            "\n", "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t", "]"}]}], "\n", 
+      "\t\t\t", "}"}], ",", "\n", "\t\t", 
+     RowBox[{"Switch", "[", 
+      RowBox[{"form", ",", "\t", "\n", "\t\t\t", 
+       RowBox[{"\"\<MolTable\>\"", "|", "\"\<ZMatrix\>\""}], ",", "\n", 
+       "\t\t\t\t", 
+       RowBox[{"ChemImportObjectString", "[", 
+        RowBox[{"system", ",", " ", 
+         RowBox[{"Import", "[", 
+          RowBox[{"file", ",", "\"\<Text\>\""}], "]"}], ",", " ", "form"}], 
+        "]"}], ",", "\n", "\t\t\t", 
+       RowBox[{"\"\<GaussianJob\>\"", "|", "\"\<FormattedCheckpoint\>\""}], 
+       ",", "\n", "\t\t\t\t", 
+       RowBox[{"chemObjectImport", "[", 
+        RowBox[{"system", ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"gaussianImportObjectData", "[", "\n", "\t\t\t\t\t\t", 
+          RowBox[{"file", ",", "\n", "\t\t\t\t\t\t", "form"}], "\n", 
+          "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "]"}], ",", "\n", 
+       "\t\t\t", "Automatic", ",", "\n", "\t\t\t\t", 
+       RowBox[{"ChemImportObject", "[", 
+        RowBox[{"system", ",", " ", 
+         RowBox[{"Import", "[", 
+          RowBox[{"file", ",", "\"\<Text\>\""}], "]"}]}], "]"}]}], "\n", 
+      "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.692305797748176*^9, 3.692305827258965*^9}, {
+   3.6923058658111*^9, 3.692305870419566*^9}, {3.692411088525763*^9, 
+   3.6924111039156523`*^9}, {3.692411135357031*^9, 3.692411162919291*^9}, {
+   3.6924605019834003`*^9, 3.692460593249744*^9}, {3.692460629460021*^9, 
+   3.6924606528419647`*^9}, {3.6924607618520603`*^9, 3.69246076430621*^9}, {
+   3.692462413486782*^9, 3.692462421585259*^9}, {3.692462909790627*^9, 
+   3.692462937711789*^9}, {3.692462971656139*^9, 3.6924630477117558`*^9}, 
+   3.692467748334118*^9, {3.692467781152235*^9, 3.6924677865668783`*^9}, {
+   3.700110126158186*^9, 3.700110130640121*^9}, {3.70018490411544*^9, 
+   3.700184905978648*^9}, {3.700184972544772*^9, 3.7001849778233767`*^9}, {
+   3.700185019167595*^9, 3.700185029366849*^9}, 3.718334369975814*^9, {
+   3.7305820980655937`*^9, 3.730582108677888*^9}, {3.7305824097559147`*^9, 
+   3.730582444051489*^9}, 3.730583094822661*^9, 3.730583125302621*^9, 
+   3.7305831589507847`*^9, {3.730830549605164*^9, 3.730830619337986*^9}, {
+   3.730831031492751*^9, 3.730831069001582*^9}, {3.73246929217735*^9, 
+   3.7324693554597588`*^9}, {3.7324694173298597`*^9, 
+   3.732469421272112*^9}},ExpressionUUID->"7100ee24-9e01-4035-bb1e-\
+e253145df8fc"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]String\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.7325530319307623`*^9, 
+  3.732553032609048*^9}},ExpressionUUID->"0ddd6eec-dcae-4f13-a5f6-\
+e3689d7e6781"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemImportObject", "[", "\n", "\t", 
+   RowBox[{
+    RowBox[{"system", ":", 
+     RowBox[{"ChemSysPattern", "|", "Automatic"}], ":", "Automatic"}], ",", 
+    "\n", "\t", 
+    RowBox[{"string", ":", 
+     RowBox[{"_String", "?", 
+      RowBox[{"(", 
+       RowBox[{"StringContainsQ", "[", "\"\<\\n\>\"", "]"}], ")"}]}]}], ",", 
+    "\n", "\t", 
+    RowBox[{"fmt", ":", 
+     RowBox[{"\"\<ZMatrix\>\"", "|", "\"\<MolTable\>\"", "|", "Automatic"}], 
+     ":", "Automatic"}]}], "\n", "\t", "]"}], ":=", "\n", "\t", 
+  RowBox[{"ChemImportObjectString", "[", 
+   RowBox[{"system", ",", " ", "string", ",", " ", "fmt"}], 
+   "]"}]}]], "CodeInput",
+ CellChangeTimes->{{3.7325530861972237`*^9, 3.7325531174833937`*^9}, {
+   3.732641895000619*^9, 3.732641902549643*^9}, 
+   3.732646272353512*^9},ExpressionUUID->"d6182f13-0cbd-40bd-a322-\
+b934dc1c0e56"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]URL\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.7305831748870993`*^9, 
+  3.730583177567182*^9}},ExpressionUUID->"319539fe-e26e-4877-9d57-\
+c1bc1a2472d6"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ChemImportObject", "[", "\n", "\t", 
+     RowBox[{
+      RowBox[{"system", ":", 
+       RowBox[{"ChemSysPattern", "|", "Automatic"}], ":", "Automatic"}], ",", 
+      "\n", "\t", 
+      RowBox[{"file", ":", 
+       RowBox[{"_URL", "|", 
+        RowBox[{"_String", "?", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"URLParse", "[", "#", "]"}], "[", "\"\<Scheme\>\"", 
+             "]"}], "=!=", "None"}], "&"}], ")"}]}]}]}], ",", "\n", "\t", 
+      RowBox[{"format", ":", 
+       RowBox[{"\"\<MolTable\>\"", "|", "\"\<ZMatrix\>\"", "|", "Automatic"}],
+        ":", "Automatic"}]}], "]"}], ":=", "\n", "\t", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"f", "=", 
+        RowBox[{"URLDownload", "@", "file"}]}], "}"}], ",", "\n", "\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"FileExistsQ", "@", "f"}], ",", "\n", "\t\t\t", 
+        RowBox[{"ChemImportObject", "[", 
+         RowBox[{"system", ",", "f", ",", "format"}], "]"}], ",", "\n", 
+        "\t\t\t", "$Failed"}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}],
+    ";"}], "\t"}]], "CodeInput",
+ CellChangeTimes->{{3.692467750091497*^9, 3.6924678333486767`*^9}, {
+   3.70011020965879*^9, 3.7001102105784483`*^9}, {3.700184782506729*^9, 
+   3.700184805875761*^9}, 3.718334369987094*^9, {3.7305820980706253`*^9, 
+   3.730582098075088*^9}, {3.73058309482952*^9, 
+   3.730583094835327*^9}},ExpressionUUID->"f520e999-d617-46d1-873a-\
+fcbf620fc91e"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PubChem\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.7305831748870993`*^9, 3.730583184654903*^9}, {
+  3.73246971758955*^9, 
+  3.732469719267768*^9}},ExpressionUUID->"a88238d1-62e5-4570-bb04-\
+4c1af9fc757d"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemImportObject", "::", "no3d"}], "=", "\n", "\t", 
+   "\"\<No 3D structure found for identifier ``. Attempting to use a 2D \
+structure instead\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemImportObject", "::", "nostr"}], "=", "\n", "\t", 
+   "\"\<No structure found for identifier ``\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemImportObject", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"system", ":", 
+      RowBox[{"ChemSysPattern", "|", "Automatic"}], ":", "Automatic"}], ",", 
+     "\n", "\t", 
+     RowBox[{"structure", ":", "\n", "\t\t", 
+      RowBox[{
+      "_PubChemCompound", "|", "\n", "\t\t", "_PubChemSubstance", "|", "\n", 
+       "\t\t", "_Integer", "|", "\n", "\t\t", 
+       RowBox[{"Entity", "[", 
+        RowBox[{"\"\<Chemical\>\"", ",", "_"}], "]"}], "|", "\n", "\t\t", 
+       RowBox[{"_String", "?", 
+        RowBox[{"(", "\n", "\t\t\t", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Not", "@", 
+            RowBox[{"FileExistsQ", "@", "#"}]}], "&&", "\n", "\t", "\t\t", 
+           RowBox[{"Not", "@", 
+            RowBox[{"StringContainsQ", "[", 
+             RowBox[{"#", ",", 
+              RowBox[{"\"\<\\n\>\"", "|", "$PathnameSeparator"}]}], "]"}]}]}],
+           "\n", "\t", "\t\t", "&"}], ")"}]}]}]}], ",", "\n", "\t", 
+     RowBox[{"format", ":", 
+      RowBox[{"\"\<MolTable\>\"", "|", "\"\<ZMatrix\>\"", "|", "Automatic"}], 
+      ":", "Automatic"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Replace", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"Replace", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"Quiet", "[", 
+        RowBox[{
+         RowBox[{"ChemDataLookup", "[", 
+          RowBox[{"structure", ",", "\"\<SDFFiles\>\""}], "]"}], ",", 
+         RowBox[{"ServiceExecute", "::", "serrormsg"}]}], "]"}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"$Failed", "\[RuleDelayed]", 
+        RowBox[{"(", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"Message", "[", 
+           RowBox[{
+            RowBox[{"ChemImportObject", "::", "no3d"}], ",", " ", 
+            "structure"}], "]"}], ";", "\n", "\t\t\t\t", 
+          RowBox[{"ChemDataLookup", "[", 
+           RowBox[{
+           "structure", ",", "\"\<2DStructures\>\"", ",", "\n", "\t", 
+            "\t\t\t\t", 
+            RowBox[{"\"\<Overwrite\>\"", "\[Rule]", "True"}]}], "]"}]}], "\n",
+          "\t\t\t\t", ")"}]}]}], "\n", "\t\t\t", "]"}], ",", "\n", "\t\t", 
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"mol_String", ":>", "\n", "\t\t\t\t", 
+        RowBox[{"ChemImportObjectString", "[", 
+         RowBox[{"system", ",", " ", "mol", ",", " ", "\"\<MolTable\>\""}], 
+         "]"}]}], ",", "\n", "\t", "\t\t", 
+       RowBox[{
+        RowBox[{"mols", ":", 
+         RowBox[{"{", "__String", "}"}]}], ":>", "\n", "\t\t\t\t", 
+        RowBox[{"Map", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"ChemImportObjectString", "[", 
+            RowBox[{"system", ",", "#", ",", "\"\<MolTable\>\""}], "]"}], 
+           "&"}], ",", "mols"}], "]"}]}], ",", "\n", "\t", "\t\t", 
+       RowBox[{"_", ":>", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"Message", "[", 
+           RowBox[{
+            RowBox[{"ChemImportObject", "::", "nostr"}], ",", "structure"}], 
+           "]"}], ";", "$Failed"}], ")"}]}]}], "\n", "\t\t\t", "}"}]}], "\n", 
+    "\t\t", "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.692467750091497*^9, 3.692467924616868*^9}, 
+   3.692577004042721*^9, {3.6925811933464203`*^9, 3.6925812312089863`*^9}, {
+   3.692582834793296*^9, 3.692582852151229*^9}, {3.6925830933528433`*^9, 
+   3.692583094823309*^9}, {3.692583509856612*^9, 3.692583514637766*^9}, {
+   3.69438189138935*^9, 3.694381915788576*^9}, 3.694382410365107*^9, {
+   3.694382569033042*^9, 3.694382661461568*^9}, {3.694383852639166*^9, 
+   3.694383885700892*^9}, 3.7001102183741207`*^9, {3.7001847558139877`*^9, 
+   3.700184770217448*^9}, {3.700184809404834*^9, 3.7001848136823874`*^9}, {
+   3.700185431623451*^9, 3.700185481423873*^9}, {3.7001916413013563`*^9, 
+   3.700191660594047*^9}, {3.700269982249989*^9, 3.700269990974326*^9}, {
+   3.700270376985221*^9, 3.700270549097231*^9}, {3.710103623259728*^9, 
+   3.71010362626834*^9}, {3.710103702975389*^9, 3.71010370770927*^9}, {
+   3.7161326295653*^9, 3.716132634360031*^9}, 3.718334370000827*^9, {
+   3.730582098081822*^9, 3.73058210869324*^9}, {3.730582260677194*^9, 
+   3.730582264375681*^9}, {3.730583094843247*^9, 3.730583094866675*^9}, {
+   3.730583125313428*^9, 3.7305831253190928`*^9}, {3.732469730562449*^9, 
+   3.7324697315173073`*^9}},ExpressionUUID->"9eb0128f-e8a1-4128-9dbf-\
+88a8ff411c2a"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Graphics3D\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.7305831748870993`*^9, 
+  3.730583184654903*^9}},ExpressionUUID->"11492c9a-7eec-4692-8f56-\
+fa5ad794c543"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemImportObject", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"system", ":", 
+      RowBox[{"ChemSysPattern", "|", "Automatic"}], ":", "Automatic"}], ",", 
+     "\n", "\t", "data_Graphics3D"}], "\n", "\t", "]"}], ":=", "\n", "\t", 
+   RowBox[{"chemObjectImport", "[", 
+    RowBox[{"system", ",", 
+     RowBox[{"chemImportGraphics3D", "@", "data"}]}], "]"}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.692577007120121*^9, 3.69257702680583*^9}, {
+   3.6925770827689247`*^9, 3.692577088535233*^9}, {3.692577274019128*^9, 
+   3.692577303455762*^9}, 3.700110225212776*^9, 3.718334370011654*^9, 
+   3.730582098116509*^9, 3.730582130519889*^9, 
+   3.730583094875009*^9},ExpressionUUID->"9f3a51c8-6ea7-4810-8b60-\
+e27eafa59bb2"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"ChemImportObject", "[", "\n", "\t", 
+     RowBox[{
+      RowBox[{"system", ":", 
+       RowBox[{"ChemSysPattern", "|", "Automatic"}], ":", "Automatic"}], ",", 
+      "\n", "\t", "data_Graph"}], "\n", "\t", "]"}], ":=", "\n", "\t", 
+    RowBox[{"chemObjectImport", "[", 
+     RowBox[{"system", ",", 
+      RowBox[{"chemImportGraph", "@", "data"}]}], "]"}]}], ";"}], 
+  "*)"}]], "CodeInput",
+ CellChangeTimes->{{3.692577007120121*^9, 3.69257702680583*^9}, {
+   3.6925770827689247`*^9, 3.692577088535233*^9}, {3.692577274019128*^9, 
+   3.6925773113265133`*^9}, 3.700110230596589*^9, 3.718334370025889*^9, 
+   3.730582098128689*^9, 3.730582130531749*^9, 
+   3.730583094885849*^9},ExpressionUUID->"e3c296e7-f981-4af5-9498-\
+1097e5af87e9"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Importable Types\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.7305831748870993`*^9, 3.730583177567182*^9}, {
+  3.7305832200640583`*^9, 
+  3.730583223109981*^9}},ExpressionUUID->"563ef33f-62e2-4ed3-953f-\
+41ab4f33a45d"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$ChemImportableObjectTypes", "=", "\n", "\t", 
+   RowBox[{"(", "\n", "\t\t", 
+    RowBox[{"_Graphics3D", "|", "_String", "|", "_Integer", "|", 
+     RowBox[{"Entity", "[", 
+      RowBox[{"\"\<Chemical\>\"", ",", "_"}], "]"}], "|", "\n", "\t\t", 
+     "_File", "|", "_URL", "|", "\n", "\t\t", "_PubChemCompound", "|", 
+     "_PubChemSubstance"}], "\n", "\t\t", ")"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.70019166934359*^9, 3.700191698124198*^9}, {
+  3.710103594850293*^9, 3.710103604267694*^9}, {3.732552149687078*^9, 
+  3.732552154531385*^9}},ExpressionUUID->"5960f0a0-bc39-4963-b403-\
+7e9b34196b6e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemImportObject", "[", 
+    RowBox[{
+     RowBox[{"system", ":", 
+      RowBox[{"ChemSysPattern", "|", "Automatic"}], ":", "Automatic"}], ",", 
+     "\n", "\t", 
+     RowBox[{"data", ":", 
+      RowBox[{"{", 
+       RowBox[{"$ChemImportableTypes", ".."}], "}"}]}]}], "\n", "\t", "]"}], ":=",
+    "\n", "\t", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ChemImportObject", "[", 
+      RowBox[{"system", ",", "#"}], "]"}], "&"}], "/@", "data"}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.700191423450181*^9, 3.7001914741451063`*^9}, 
+   3.7001916682327957`*^9, 3.7001918725819893`*^9, 3.7183343700386467`*^9, {
+   3.73058209813846*^9, 3.730582098144568*^9}, {3.730583094894279*^9, 
+   3.7305830948992863`*^9}},ExpressionUUID->"f5220131-f623-4240-b9b6-\
+a79b587990a7"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"ChemImportObject", "[", "\n", "\t", 
+     RowBox[{
+      RowBox[{"system", ":", 
+       RowBox[{"ChemSysPattern", "|", "Automatic"}], ":", "Automatic"}], ",", 
+      "\n", "\t", 
+      RowBox[{"s_Symbol", "?", 
+       RowBox[{"(", 
+        RowBox[{"Not", "@*", 
+         RowBox[{"MatchQ", "[", 
+          RowBox[{"$ChemImportableTypes", "|", 
+           RowBox[{"{", 
+            RowBox[{"$ChemImportableTypes", ".."}], "}"}]}], "]"}]}], 
+        ")"}]}]}], "\n", "\t", "]"}], ":=", "\n", "\t", 
+    RowBox[{"(", 
+     RowBox[{"s", "=", 
+      RowBox[{"ChemImportObject", "[", 
+       RowBox[{"system", ",", 
+        RowBox[{"SymbolName", "[", 
+         RowBox[{"Unevaluated", "[", "s", "]"}], "]"}]}], "]"}]}], ")"}]}], 
+   ";"}], "*)"}]], "CodeInput",
+ CellChangeTimes->{{3.700962266899599*^9, 3.7009624062369213`*^9}, {
+  3.7010455325383787`*^9, 3.701045550902755*^9}, {3.710103719156081*^9, 
+  3.710103784458454*^9}, {3.710103816139303*^9, 3.7101038567129087`*^9}, {
+  3.7183343700528793`*^9, 3.718334370058423*^9}, {3.730582098155911*^9, 
+  3.730582098180388*^9}, {3.730582219298737*^9, 3.730582226150628*^9}, {
+  3.730583094910614*^9, 
+  3.730583094914687*^9}},ExpressionUUID->"44014fc2-5bf1-41ec-85d8-\
+c1d40be217a1"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemImportObject", "[", 
+    RowBox[{
+     RowBox[{"system", ":", 
+      RowBox[{"ChemSysPattern", "|", "Automatic"}], ":", "Automatic"}], ",", 
+     "\n", "\t", 
+     RowBox[{"s_", "?", 
+      RowBox[{"(", 
+       RowBox[{"MatchQ", "[", 
+        RowBox[{"$ChemImportableTypes", "|", 
+         RowBox[{"{", 
+          RowBox[{"$ChemImportableTypes", ".."}], "}"}]}], "]"}], ")"}]}], 
+     ",", "\n", "\t", "o___"}], "\n", "\t", "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemImportObject", "[", 
+    RowBox[{"system", ",", "s", ",", "o"}], "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.700962266899599*^9, 3.7009624062369213`*^9}, {
+  3.7010455325383787`*^9, 3.701045550902755*^9}, {3.710103719156081*^9, 
+  3.710103784458454*^9}, {3.710103816139303*^9, 3.7101038567129087`*^9}, {
+  3.7183343700528793`*^9, 3.718334370058423*^9}, {3.730582098155911*^9, 
+  3.730582098180388*^9}, {3.730582219298737*^9, 3.730582232690318*^9}, {
+  3.7305830949222183`*^9, 
+  3.7305830949274187`*^9}},ExpressionUUID->"5814e594-78c9-4a5a-8976-\
+d2b9e3ac916e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemImportObject", "[", "\n", "\t", "a___", "\n", "\t", "]"}], "/;", 
+   RowBox[{"!", 
+    RowBox[{"TrueQ", "[", "$ChemImportInImport", "]"}]}]}], ":=", "\n", "\t", 
+  
+  RowBox[{"Block", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"$ChemImportInImport", "=", "True"}], "}"}], ",", "\n", "\t\t", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"l", "=", 
+        RowBox[{"{", "a", "}"}]}], "}"}], ",", "\n", "\t\t\t", 
+      RowBox[{"ChemImportObject", "@@", "l"}]}], "\n", "\t\t\t", "]"}]}], 
+   "\n", "\t\t", "]"}]}]], "CodeInput",
+ CellChangeTimes->{{3.700962266899599*^9, 3.7009624062369213`*^9}, {
+  3.7010455325383787`*^9, 3.701045550902755*^9}, {3.710103719156081*^9, 
+  3.710103784458454*^9}, {3.710103816139303*^9, 3.7101038567129087`*^9}, {
+  3.7183343700528793`*^9, 3.718334370058423*^9}, {3.730582098155911*^9, 
+  3.730582098180388*^9}, {3.730582219298737*^9, 3.730582232690318*^9}, {
+  3.7305830949363117`*^9, 
+  3.730583094941618*^9}},ExpressionUUID->"ca100b00-1352-4e4b-ad13-\
+b118651dbda6"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"ChemImportObject", "~", "SetAttributes", "~", "HoldFirst"}], 
+   ";"}], "*)"}]], "CodeInput",
+ CellChangeTimes->{{3.700962368848567*^9, 3.700962373287286*^9}, 
+   3.730582098187797*^9, 
+   3.730583094954772*^9},ExpressionUUID->"116763a7-f8b5-4136-8ad3-\
+750b1a98eb44"]
+}, Closed]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"997e5b33-72ce-4ae7-bd55-\
+0fc75025b11e"]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"da25e391-a522-4c64-aaba-\
+0b7b29f76914"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{0, Automatic}, {Automatic, 32}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

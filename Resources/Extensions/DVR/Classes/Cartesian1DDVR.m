@@ -29,7 +29,7 @@ $Cartesian1DDVR::usage=
 $Cartesian1DDVR=
 	<|
 		"Name"->"Cartesian 1D",
-		"Range"->{{-10,10}},
+		"Range"->{{-10., 10.}},
 		"Points"->{101},
 		"Defaults"->
 			{

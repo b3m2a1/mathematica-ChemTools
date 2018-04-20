@@ -22,79 +22,30 @@
 ChemDVRBegin[];
 
 
-RadialDVRPoints::usage="Returns the radial DVR grid/array"
-RadialDVRK::usage="Returns the radial DVR kinetic energy matrix"
-
-
-Begin["`Private`"];
-
-
-RadialDVRPoints[
-	points:{_Integer},
-	X:{{_?NumericQ,_?NumericQ}}:{{0,10}}
-	]:=
-	Subdivide@@Flatten@{N@X, points-1}
-
-
-Options[RadialDVRK]=
-	{
-		"Mass"->1,
-		"HBar"->1,
-		"ScalingFactor"->1,
-		"UseExact"->False
-		};
-RadialDVRK[grid_,ops:OptionsPattern[]]:=
-With[{rmin=Min@grid,rmax=Max@grid,points=Length@grid},
-		With[
-			{
-				dr=(rmax-rmin)/(points-1),
-				m=OptionValue@"Mass",
-				\[HBar]=OptionValue@"HBar",
-				scl=OptionValue@"ScalingFactor",
-				ex=TrueQ@OptionValue@"UseExact"
-				},
-			With[
-				{
-					f=
-						If[ex,
-							scl*
-								If[#==#2, 
-									\[Pi]^2./3.-1/#^2,
-									2./(#-#2)^2-2./(#+#2)^2
-									]*
-									(\[HBar]^2.(-1)^(#-#2))/(2.m dr^2)&,
-							scl*
-								If[#==#2, 
-									\[Pi]^2./3.-1/#^2,
-									2./(#-#2)^2-2./(#+#2)^2
-									]*
-									(\[HBar]^2.(-1)^(#-#2))/(2.m dr^2)&
-							]
-					},
-				If[points>100000,
-					ParallelTable[f[i,j],{i,points},{j,points}],
-					Table[f[i,j],{i,points},{j,points}]
-					]
-				]
-			]
-		]
-
-
-End[];
+$RadialDVR::usage=
+	"A one dimensional DVR by Colbert and Miller for the (0,\[Infinity]) range"
 
 
 $RadialDVR=
 	<|
 		"Name"->"Radial 1D",
-		"Dimension"->1,
-		"PointLabels"->{("r"|"R"|"radial")},
-		"Range"->{{0,10}},
-		"Grid"->RadialDVRPoints,
-		"KineticEnergy"->RadialDVRK,
+		"Range"->{{-2, 5}},
+		"Points"->{100},
 		"Defaults"->
 			{
-				"PotentialFunction"->"MorseOscillator",
-				"PlotMode"->{"Cartesian", 1}
+				"GridType"->
+					"RegularSubdivision",
+				"KineticEnergyElementFunction"->
+					"ColbertMillerRadial",
+				"PotentialFunction"->
+					"MorseOscillator",
+				"PlotMode"->
+					{"Cartesian", 1},
+				"ViewOptions"->
+					{
+						"WavefunctionScaling"->5, 
+						PlotRange->{-5, 15}
+						}
 				}
 		|>
 

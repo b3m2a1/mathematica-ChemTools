@@ -215,7 +215,7 @@ Cell[BoxData[{
    3.7324215593981533`*^9}, {3.732422115931074*^9, 
    3.732422120751442*^9}},ExpressionUUID->"648d799f-64d0-4bf1-864c-\
 cb9c7b6283bc"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1382,17 +1382,21 @@ Cell[BoxData[
       RowBox[{"min_", ",", " ", "max_"}], "}"}]}], "\n", "\t", "]"}], ":=", 
    "\n", "\t", 
    RowBox[{
-    RowBox[{
-     RowBox[{"(", 
-      RowBox[{"max", "-", "min"}], ")"}], "/", 
-     RowBox[{"(", 
-      RowBox[{"pt", "+", "1"}], ")"}]}], "*", 
-    RowBox[{"Range", "[", "pt", "]"}]}]}], ";"}]], "CodeInput",
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"max", "-", "min"}], ")"}], "/", 
+       RowBox[{"(", 
+        RowBox[{"pt", "+", "1"}], ")"}]}], "*", 
+      RowBox[{"Range", "[", "pt", "]"}]}], ")"}], "+", "min"}]}], 
+  ";"}]], "CodeInput",
  CellChangeTimes->{{3.732396989589134*^9, 3.732397093769566*^9}, 
    3.7323971489126596`*^9, {3.732398455945573*^9, 3.732398466167584*^9}, {
    3.732398521248809*^9, 3.732398522358704*^9}, {3.732398555860317*^9, 
-   3.732398574967497*^9}, {3.7324220352043457`*^9, 
-   3.732422038202054*^9}},ExpressionUUID->"3b4e23af-f469-40e6-9419-\
+   3.732398574967497*^9}, {3.7324220352043457`*^9, 3.732422038202054*^9}, {
+   3.7324290821207333`*^9, 
+   3.732429097493587*^9}},ExpressionUUID->"3b4e23af-f469-40e6-9419-\
 f5573e7f00c3"]
 }, Closed]],
 
@@ -1473,7 +1477,7 @@ Cell[BoxData[
    3.7324220627540627`*^9}},ExpressionUUID->"bdb7351e-c76c-494d-a896-\
 a81d913182a3"]
 }, Closed]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -1718,11 +1722,11 @@ Cell[BoxData[
         RowBox[{"Lookup", "[", 
          RowBox[{
           RowBox[{"{", "ops", "}"}], ",", " ", "\"\<DissociationEnergy\>\"", 
-          ",", " ", "1"}], "]"}]}], ",", "\n", "\t\t\t", 
+          ",", " ", "10"}], "]"}]}], ",", "\n", "\t\t\t", 
        RowBox[{"a", "=", 
         RowBox[{"Lookup", "[", 
          RowBox[{
-          RowBox[{"{", "ops", "}"}], ",", " ", "\"\<\[Alpha]\>\"", ",", " ", 
+          RowBox[{"{", "ops", "}"}], ",", " ", "\"\<WellWidth\>\"", ",", " ", 
           "1"}], "]"}]}], ",", "\n", "\t\t\t", 
        RowBox[{"re", "=", 
         RowBox[{"Lookup", "[", 
@@ -1731,7 +1735,7 @@ Cell[BoxData[
           "\"\<EquilibriumBondLength\>\"", ",", " ", "0"}], "]"}]}]}], "\n", 
       "\t\t\t", "}"}], ",", "\n", "\t\t", 
      RowBox[{
-      RowBox[{"Norm", "[", 
+      RowBox[{"Total", "[", 
        RowBox[{"(", 
         RowBox[{"de", "*", 
          RowBox[{
@@ -1739,7 +1743,9 @@ Cell[BoxData[
            RowBox[{"1", "-", 
             RowBox[{"Exp", "[", 
              RowBox[{
-              RowBox[{"-", "a"}], "*", 
+              RowBox[{"-", 
+               RowBox[{"(", 
+                RowBox[{"1", "/", "a"}], ")"}]}], "*", 
               RowBox[{"(", 
                RowBox[{"#", "-", "re"}], ")"}]}], "]"}]}], ")"}], "^", 
           "2"}]}], ")"}], "]"}], "&"}]}], "\n", "\t\t", "]"}]}], 
@@ -1750,9 +1756,153 @@ Cell[BoxData[
   3.7317027614272003`*^9, 3.73170279026587*^9}, {3.731703044125525*^9, 
   3.731703130206279*^9}, {3.7317032576034*^9, 3.731703284843528*^9}, {
   3.7317037103783283`*^9, 3.731703739124189*^9}, {3.7317868044773617`*^9, 
-  3.731786807209291*^9}, {3.731989249775194*^9, 
-  3.731989265325032*^9}},ExpressionUUID->"ecfcc71b-da60-404a-b102-\
+  3.731786807209291*^9}, {3.731989249775194*^9, 3.731989265325032*^9}, {
+  3.7324292506282673`*^9, 3.7324292544019957`*^9}, {3.73242943515804*^9, 
+  3.732429435324175*^9}, {3.732429680848701*^9, 3.7324296823883038`*^9}, {
+  3.7324679372674017`*^9, 
+  3.732467937937348*^9}},ExpressionUUID->"ecfcc71b-da60-404a-b102-\
 fab3a6fe3485"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]MultiWellPolynomial\[RightFloor]", "CodeSubsubsubsection",
+ 
+ Evaluatable->True,
+ CellChangeTimes->{3.731989256604802*^9, 
+  3.732467977108077*^9},ExpressionUUID->"48db298b-f7d7-445e-9301-\
+c3e0007e9ec6"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRDefaultNamedPotential", "[", 
+    RowBox[{"\"\<MultiWellPolynomial\>\"", ",", " ", 
+     RowBox[{"ops___", "?", "OptionQ"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Module", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"pos", "=", 
+        RowBox[{"Lookup", "[", 
+         RowBox[{
+          RowBox[{"{", "ops", "}"}], ",", " ", "\"\<TurningPoints\>\"", ",", 
+          " ", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1"}], ",", " ", "1"}], "}"}]}], "]"}]}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"dep", "=", 
+        RowBox[{"Lookup", "[", 
+         RowBox[{
+          RowBox[{"{", "ops", "}"}], ",", " ", "\"\<Depth\>\"", ",", " ", 
+          "5"}], "]"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"min", "=", 
+        RowBox[{"Lookup", "[", 
+         RowBox[{
+          RowBox[{"{", "ops", "}"}], ",", " ", "\"\<Minimum\>\"", ",", " ", 
+          "0"}], "]"}]}], ",", "\n", "\t\t\t", "mainPol", ",", "\n", "\t\t\t",
+        "minValPos", ",", "\n", "\t\t\t", "minPos", ",", "\n", "\t\t\t", 
+       "minVal", ",", "\n", "\t\t\t", "minDiff"}], "\n", "\t\t\t", "}"}], ",",
+      "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"EvenQ", "@", 
+         RowBox[{"Length", "@", "pos"}]}], ",", "\n", "\t\t\t", 
+        RowBox[{"pos", "=", 
+         RowBox[{"Riffle", "[", 
+          RowBox[{"pos", ",", " ", 
+           RowBox[{"MovingAverage", "[", 
+            RowBox[{"pos", ",", " ", "2"}], "]"}]}], "]"}]}]}], "\n", 
+       "\t\t\t", "]"}], ";", "\n", "\t\t", 
+      RowBox[{"mainPol", "=", 
+       RowBox[{"Integrate", "[", 
+        RowBox[{
+         RowBox[{"Product", "[", 
+          RowBox[{
+           RowBox[{"\[FormalX]p", "-", "t"}], ",", " ", 
+           RowBox[{"{", 
+            RowBox[{"t", ",", " ", "pos"}], "}"}]}], "]"}], ",", " ", 
+         "\[FormalX]p"}], "]"}]}], ";", "\n", "\t\t", 
+      RowBox[{"minValPos", "=", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"\[FormalI]pol", ",", " ", "mainPol"}], "}"}], "/.", 
+        RowBox[{"MapIndexed", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"\[FormalX]p", "\[Rule]", "#"}], ",", " ", 
+             RowBox[{"\[FormalI]pol", "\[Rule]", 
+              RowBox[{"#2", "[", 
+               RowBox[{"[", "1", "]"}], "]"}]}]}], "}"}], "&"}], ",", " ", 
+          "pos"}], "]"}]}]}], ";", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"minPos", ",", " ", "minVal"}], "}"}], "=", "\n", "\t\t\t", 
+       RowBox[{"First", "@", 
+        RowBox[{"MinimalBy", "[", 
+         RowBox[{
+          RowBox[{"minValPos", "[", 
+           RowBox[{"[", 
+            RowBox[{"Range", "[", 
+             RowBox[{"1", ",", " ", 
+              RowBox[{"Length", "@", "pos"}], ",", " ", "2"}], "]"}], "]"}], 
+           "]"}], ",", " ", "Last"}], "]"}]}]}], ";", "\n", "\t\t", 
+      RowBox[{"minDiff", "=", "\n", "\t\t\t", 
+       RowBox[{"Min", "@", 
+        RowBox[{"{", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"minPos", ">", "1"}], ",", "\n", "\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"minValPos", "[", 
+              RowBox[{"[", 
+               RowBox[{
+                RowBox[{"minPos", "-", "1"}], ",", " ", "2"}], "]"}], "]"}], 
+             "-", "minVal"}], ",", "\n", "\t\t\t\t\t", "\[Infinity]"}], "\n", 
+           "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"minPos", "<", 
+             RowBox[{"Length", "@", "pos"}]}], ",", "\n", "\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"minValPos", "[", 
+              RowBox[{"[", 
+               RowBox[{
+                RowBox[{"minPos", "+", "1"}], ",", " ", "2"}], "]"}], "]"}], 
+             "-", "minVal"}], ",", "\n", "\t\t\t\t\t", "\[Infinity]"}], "\n", 
+           "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "}"}]}]}], ";", "\n", 
+      "\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"minDiff", ">", "0"}], ",", " ", "\n", "\t\t\t", 
+        RowBox[{"dep", "=", 
+         RowBox[{"dep", "/", "minDiff"}]}], ",", "\n", "\t\t\t", 
+        RowBox[{"dep", "=", "1"}]}], "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{
+         RowBox[{"dep", 
+          RowBox[{"(", 
+           RowBox[{"mainPol", "/.", 
+            RowBox[{"\[FormalX]p", "\[Rule]", "#"}]}], ")"}]}], "-", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"dep", "*", "minVal"}], "-", "min"}], ")"}]}], "]"}], 
+       "&"}]}]}], "\n", "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->CompressedData["
+1:eJxTTMoPSmViYGAQAWIQzbzZrnD+mdeO25b0lYLo19sVPoBogWfMX0H0upPy
+4guAtJP+IQkQfe7hzfwVZ187cm/fUQaiF6zWrQXRTE0nGkC0L0vLAhB9babb
+ahDN52+8G0Tr/Zu1D0S7SJ/5DKKjfyZ/B9E9bv1tF4F086ZnYDrlnEWCybnX
+jqvStJJA9BGpEAvu868d1e6eAdOr+FL9QfSS+Cww3a8hnQei/+T4gOkJUVG3
+ZID0s3LvuyD6nX3jHVkgnc1/7C2Itnuz7COInmS/gFMOSN8RWsIHonXZZ5qB
+6Ia4x1YgWosl0RpM8x+3B4sLzXQA0QuW63mA6NyrWxNANAA2sKsZ
+  
+  "],ExpressionUUID->"408fcd88-a639-4689-aa26-a7848a5041f9"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -2093,8 +2243,10 @@ Cell[BoxData[{
             "\t\t\t\t\t\t", "]"}], "\n", "\t\t\t\t\t\t", "]"}], ",", "\n", 
           "\t\t\t\t\t", 
           RowBox[{
-           RowBox[{"Except", "[", 
-            RowBox[{"_Function", "|", 
+           RowBox[{"Except", "[", "\n", "\t\t\t\t\t\t", 
+            RowBox[{
+            "_Function", "|", "_InterpolatingFunction", "|", "\n", 
+             "\t\t\t\t\t\t", "_CompiledFunction", "|", 
              RowBox[{"_Symbol", "?", 
               RowBox[{"(", 
                RowBox[{
@@ -2131,7 +2283,8 @@ Cell[BoxData[{
         RowBox[{"gpVec", "=", "\n", "\t\t\t\t\t", 
          RowBox[{"Replace", "[", 
           RowBox[{
-           RowBox[{"pf", "@", "gp"}], ",", " ", 
+           RowBox[{"Quiet", "@", 
+            RowBox[{"pf", "@", "gp"}]}], ",", " ", 
            RowBox[{
             RowBox[{"Except", "[", "_List", "]"}], ":>", 
             RowBox[{"Map", "[", 
@@ -2171,9 +2324,11 @@ Cell[BoxData[{
    3.7317033497071743`*^9, 3.731703400814232*^9}, {3.731703571460451*^9, 
    3.731703593145343*^9}, {3.731703755185617*^9, 3.7317037830556593`*^9}, {
    3.7323078378564587`*^9, 3.732307873762175*^9}, {3.732308583784424*^9, 
-   3.732308609962387*^9}},ExpressionUUID->"e8baee08-cf00-4f85-a457-\
+   3.732308609962387*^9}, {3.7325120256455793`*^9, 3.732512029508812*^9}, {
+   3.732515889975792*^9, 3.732515897023177*^9}, {3.732515952794894*^9, 
+   3.732515953806324*^9}},ExpressionUUID->"e8baee08-cf00-4f85-a457-\
 ac95fb6d1f87"]
-}, Closed]]
+}, Open  ]]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -3379,7 +3534,7 @@ Cell[BoxData[{
       RowBox[{
       "\"\<KineticEnergyElementFunction\>\"", "\[Rule]", "Automatic"}], "\n", 
       "\t\t\t", "}"}], ",", "\n", "\t\t", 
-     RowBox[{"Options", "[", "iChemDVRDefaultKineticEnergy", "]"}]}], "\n", 
+     RowBox[{"Options", "[", "iChemDVRDefaultKineticEnergy1D", "]"}]}], "\n", 
     "\t\t", "]"}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{"ChemDVRDefaultKineticEnergy", "[", "\n", "\t", 
@@ -3482,7 +3637,7 @@ Cell[BoxData[{
       "\n", "\t\t\t", 
       RowBox[{"{", 
        RowBox[{"_String", ",", " ", 
-        RowBox[{"o___", "?", "OptionQ"}]}], "}"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"___", "?", "OptionQ"}]}], "}"}], ",", "\n", "\t\t\t\t", 
       RowBox[{"ChemDVRDefaultKineticEnergy", "[", "\n", "\t\t\t\t\t", 
        RowBox[{"gridpoints", ",", "\n", "\t\t\t\t\t", 
         RowBox[{
@@ -3521,10 +3676,12 @@ Cell[BoxData[{
    3.7324227273110027`*^9, 3.732422734602519*^9}, {3.732422781458602*^9, 
    3.7324228045182953`*^9}, {3.732422872507553*^9, 3.732422940752428*^9}, {
    3.732423092404846*^9, 3.732423115361535*^9}, {3.732423150388412*^9, 
-   3.732423156481235*^9}},ExpressionUUID->"6b69030e-ef42-4002-9cd4-\
+   3.732423156481235*^9}, 3.732517052282962*^9, {3.732517088905349*^9, 
+   3.732517090558765*^9}, {3.732517125778096*^9, 3.7325171816681843`*^9}, 
+   3.7325172168188972`*^9},ExpressionUUID->"6b69030e-ef42-4002-9cd4-\
 9e76af5523ff"]
 }, Open  ]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -4529,10 +4686,10 @@ Cell[BoxData[
        RowBox[{"\"\<WavefunctionClipping\>\"", "\[Rule]", 
         RowBox[{"10", "^", 
          RowBox[{"-", "5"}]}]}], ",", "\n", "\t\t\t\t", 
-       RowBox[{"\"\<WavefunctionScaling\>\"", "\[Rule]", 
-        RowBox[{"Scaled", "[", ".5", "]"}]}], ",", "\n", "\t\t\t\t", 
-       RowBox[{"\"\<WavefunctionShifting\>\"", "\[Rule]", "None"}], ",", "\n",
-        "\t\t\t\t", 
+       RowBox[{"\"\<WavefunctionScaling\>\"", "\[Rule]", "Automatic"}], ",", 
+       "\n", "\t\t\t\t", 
+       RowBox[{"\"\<WavefunctionShifting\>\"", "\[Rule]", "Automatic"}], ",", 
+       "\n", "\t\t\t\t", 
        RowBox[{"\"\<WavefunctionRescaling\>\"", "\[Rule]", "None"}], ",", 
        "\n", "\t\t\t\t", 
        RowBox[{"\"\<PotentialRescaling\>\"", "\[Rule]", "None"}], ",", "\n", 
@@ -4562,10 +4719,11 @@ Cell[BoxData[
    3.732069641645046*^9, 3.7320696576082363`*^9}, 3.7320705183780403`*^9, {
    3.732073163770446*^9, 3.732073165226499*^9}, {3.732074134991974*^9, 
    3.732074148253376*^9}, {3.732301642038023*^9, 3.732301661577847*^9}, {
-   3.732425950650519*^9, 
-   3.732425960587916*^9}},ExpressionUUID->"bde93d56-18d9-400b-8200-\
+   3.732425950650519*^9, 3.732425960587916*^9}, {3.7325130025989847`*^9, 
+   3.732513011079768*^9}, {3.732513143405149*^9, 
+   3.732513144202325*^9}},ExpressionUUID->"bde93d56-18d9-400b-8200-\
 0dd72757672b"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -4698,6 +4856,95 @@ af51617e01a4"]
 
 Cell[CellGroupData[{
 
+Cell["\[LeftCeiling]chemDVRDefaultPlotWavefunctionShift\[RightFloor]", \
+"CodeSubsubsubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.7320731973956213`*^9, 3.732073208174921*^9}, {
+  3.7325133848448887`*^9, 
+  3.732513391507206*^9}},ExpressionUUID->"31dda4b0-1d5a-44ec-8ce5-\
+c93ae29a1c14"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"chemDVRDefaultPlotWavefunctionShift", "[", 
+    RowBox[{
+     RowBox[{"n_", "?", "NumericQ"}], ",", " ", "pot_"}], "]"}], ":=", "\n", 
+   "\t", "n"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"chemDVRDefaultPlotWavefunctionShift", "[", 
+    RowBox[{
+     RowBox[{"Scaled", "[", 
+      RowBox[{"s_", "?", "NumericQ"}], "]"}], ",", " ", "pot_"}], "]"}], ":=",
+    "\n", "\t", 
+   RowBox[{"s", "*", 
+    RowBox[{"Max", "@", 
+     RowBox[{"Abs", "[", 
+      RowBox[{"pot", "-", 
+       RowBox[{"Min", "[", "pot", "]"}]}], "]"}]}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"chemDVRDefaultPlotWavefunctionShift", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"Offset", "[", 
+      RowBox[{
+       RowBox[{"base_", "?", "NumericQ"}], ",", " ", 
+       RowBox[{"shift_", "?", "NumericQ"}]}], "]"}], ",", " ", "pot_"}], 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"base", "+", "shift"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"chemDVRDefaultPlotWavefunctionShift", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"Offset", "[", 
+      RowBox[{
+       RowBox[{"base_", "?", "NumericQ"}], ",", " ", 
+       RowBox[{"Scaled", "[", 
+        RowBox[{"shift_", "?", "NumericQ"}], "]"}]}], "]"}], ",", " ", 
+     "pot_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"chemDVRDefaultPlotWavefunctionShift", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"Offset", "[", 
+      RowBox[{"base", ",", " ", 
+       RowBox[{"shift", "*", 
+        RowBox[{"Max", "@", 
+         RowBox[{"Abs", "[", 
+          RowBox[{"pot", "-", 
+           RowBox[{"Min", "[", "pot", "]"}]}], "]"}]}]}]}], "]"}], ",", "\n", 
+     "\t\t", "pot"}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"chemDVRDefaultPlotWavefunctionShift", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"Offset", "[", 
+      RowBox[{
+       RowBox[{"Scaled", "[", 
+        RowBox[{"base_", "?", "NumericQ"}], "]"}], ",", " ", "e_"}], "]"}], 
+     ",", " ", "pot_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"chemDVRDefaultPlotWavefunctionShift", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"Offset", "[", 
+      RowBox[{
+       RowBox[{"Rescale", "[", 
+        RowBox[{"base", ",", " ", 
+         RowBox[{"{", 
+          RowBox[{"0", ",", " ", "1"}], "}"}], ",", " ", 
+         RowBox[{"MinMax", "[", "pot", "]"}]}], "]"}], ",", " ", "e"}], "]"}],
+      ",", "\n", "\t\t", "pot"}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"chemDVRDefaultPlotWavefunctionShift", "[", 
+    RowBox[{"e_", ",", " ", "pot_"}], "]"}], ":=", "\n", "\t", "e"}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.732513396578218*^9, 3.732513521870913*^9}, {
+  3.732513576587142*^9, 3.7325136446141787`*^9}, {3.7325136791534843`*^9, 
+  3.732513725279379*^9}},ExpressionUUID->"8e80de30-5a72-4e74-8b83-\
+afab2332aee9"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
 Cell["\[LeftCeiling]ChemDVRDefaultPlotGetShiftedScaledWavefunctions\
 \[RightFloor]", "CodeSubsubsubsubsection",
  Evaluatable->True,
@@ -4723,16 +4970,8 @@ Cell[BoxData[
           RowBox[{"rescale", ",", " ", "pot"}], "]"}], "[", "psi", "]"}]}], 
        ",", "\n", "\t\t\t", 
        RowBox[{"shiftFactor", "=", "\n", "\t\t\t\t", 
-        RowBox[{"Replace", "[", 
-         RowBox[{"shift", ",", "\n", "\t\t\t\t\t", 
-          RowBox[{
-           RowBox[{"Scaled", "[", 
-            RowBox[{"s_", "?", "NumericQ"}], "]"}], ":>", "\n", 
-           "\t\t\t\t\t\t", 
-           RowBox[{"s", "*", 
-            RowBox[{"Max", "@", 
-             RowBox[{"Abs", "[", "pot", "]"}]}]}]}]}], "\n", "\t\t\t\t\t", 
-         "]"}]}], ",", "\n", "\t\t\t", 
+        RowBox[{"chemDVRDefaultPlotWavefunctionShift", "[", 
+         RowBox[{"shift", ",", " ", "pot"}], "]"}]}], ",", "\n", "\t\t\t", 
        RowBox[{"scaleFactor", "=", "\n", "\t\t\t\t", 
         RowBox[{"Replace", "[", 
          RowBox[{"scale", ",", "\n", "\t\t\t\t\t", 
@@ -4742,8 +4981,10 @@ Cell[BoxData[
            "\t\t\t\t\t\t", 
            RowBox[{"s", "*", 
             RowBox[{"Max", "@", 
-             RowBox[{"Abs", "[", "pot", "]"}]}]}]}]}], "\n", "\t\t\t\t\t", 
-         "]"}]}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+             RowBox[{"Abs", "[", 
+              RowBox[{"pot", "-", 
+               RowBox[{"Min", "[", "pot", "]"}]}], "]"}]}]}]}]}], "\n", 
+         "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
      RowBox[{
       RowBox[{
        RowBox[{"If", "[", 
@@ -4752,10 +4993,13 @@ Cell[BoxData[
          RowBox[{
           RowBox[{"If", "[", 
            RowBox[{
-            RowBox[{"NumericQ", "@", "scaleFactor"}], ",", " ", 
-            RowBox[{"scaleFactor", "*", "shiftFactor"}], ",", " ", 
-            "shiftFactor"}], "]"}], "+", "#"}], ",", "\n", "\t\t\t", "#"}], 
-        "\n", "\t\t\t", "]"}], "&"}], "@", "\n", "\t\t\t", 
+            RowBox[{
+             RowBox[{"NumericQ", "@", "scaleFactor"}], "&&", 
+             RowBox[{"NumericQ", "@", "shift"}]}], ",", " ", "\n", "\t\t\t\t", 
+            RowBox[{"scaleFactor", "*", "shiftFactor"}], ",", " ", "\n", 
+            "\t\t\t\t", "shiftFactor"}], "\n", "\t\t\t\t", "]"}], "+", "#"}], 
+         ",", "\n", "\t\t\t", "#"}], "\n", "\t\t\t", "]"}], "&"}], "@", "\n", 
+      "\t\t\t", 
       RowBox[{"If", "[", 
        RowBox[{
         RowBox[{"NumericQ", "@", "scaleFactor"}], ",", " ", "\n", "\t\t\t\t", 
@@ -4807,11 +5051,14 @@ Cell[BoxData[
    3.732074628139017*^9}, {3.7320746891771*^9, 3.732074801284964*^9}, {
    3.732074838570671*^9, 3.7320748580000687`*^9}, {3.732074912060575*^9, 
    3.7320751897783422`*^9}, {3.732075235056118*^9, 3.7320752405149527`*^9}, {
-   3.7320757185770807`*^9, 3.732075720106614*^9}, 
-   3.732075772394341*^9},ExpressionUUID->"c38a5e21-d2fc-4b4e-a667-\
+   3.7320757185770807`*^9, 3.732075720106614*^9}, 3.732075772394341*^9, {
+   3.732513227231529*^9, 3.732513274434421*^9}, {3.732513306160062*^9, 
+   3.73251331584391*^9}, {3.732513360259551*^9, 3.732513369655795*^9}, {
+   3.732513552872191*^9, 
+   3.7325135625066032`*^9}},ExpressionUUID->"c38a5e21-d2fc-4b4e-a667-\
 4a78411989ed"]
-}, Open  ]]
-}, Closed]],
+}, Closed]]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -5253,9 +5500,27 @@ Cell[BoxData[{
         RowBox[{"If", "[", 
          RowBox[{"showPot", ",", " ", "pot", ",", " ", 
           RowBox[{"{", "1", "}"}]}], "]"}], ",", "\n", "\t\t\t\t", "gps", ",",
-         "\n", "\t\t\t\t", "scaling", ",", "\n", "\t\t\t\t", "shift", ",", 
-        "\n", "\t\t\t\t", "rescaling", ",", "\n", "\t\t\t\t", "clipping"}], 
-       "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
+         "\n", "\t\t\t\t", 
+        RowBox[{"Replace", "[", 
+         RowBox[{"scaling", ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"Automatic", "\[RuleDelayed]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"rescaling", "=!=", "None"}], ",", " ", "None", ",", " ", 
+             RowBox[{"Scaled", "[", ".5", "]"}]}], "]"}]}]}], "\n", 
+         "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"Replace", "[", 
+         RowBox[{"shift", ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"Automatic", "\[RuleDelayed]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"rescaling", "=!=", "None"}], ",", " ", "None", ",", " ", 
+             RowBox[{"Offset", "[", 
+              RowBox[{
+               RowBox[{"Scaled", "[", "0", "]"}], ",", " ", "0"}], "]"}]}], 
+            "]"}]}]}], "\n", "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
+        "rescaling", ",", "\n", "\t\t\t\t", "clipping"}], "\n", "\t\t\t\t", 
+       "]"}], ",", "\n", "\t\t\t", 
       RowBox[{"If", "[", 
        RowBox[{
         RowBox[{"TrueQ", "@", "showPot"}], ",", "\n", "\t\t\t\t", 
@@ -5303,8 +5568,10 @@ Cell[BoxData[{
    3.732070838080887*^9, 3.7320708429230013`*^9}, {3.732071030772806*^9, 
    3.732071031548468*^9}, 3.73207259853039*^9, {3.732072786518133*^9, 
    3.732072824883953*^9}, {3.7320741909637613`*^9, 3.732074217232868*^9}, {
-   3.732301677784473*^9, 
-   3.732301689299107*^9}},ExpressionUUID->"fec8a5d3-9873-4484-8975-\
+   3.732301677784473*^9, 3.732301689299107*^9}, {3.7325130631205673`*^9, 
+   3.732513078316722*^9}, {3.732513157682069*^9, 3.732513165257862*^9}, {
+   3.73251384942909*^9, 
+   3.7325138580255203`*^9}},ExpressionUUID->"fec8a5d3-9873-4484-8975-\
 7c17d737ba87"]
 }, Open  ]]
 }, Closed]],
@@ -6237,7 +6504,7 @@ Cell[BoxData[{
    3.732424435449319*^9, 3.7324244366237803`*^9}, {3.732425414211877*^9, 
    3.732425417341784*^9}},ExpressionUUID->"4bba0af6-5ffe-4265-a964-\
 edf672d40a46"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -6902,7 +7169,7 @@ Cell[BoxData[{
    3.732425280248184*^9, 
    3.732425355371295*^9}},ExpressionUUID->"f8c398a8-dc60-42ea-8b03-\
 90397a7bf235"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -6965,7 +7232,7 @@ Cell[BoxData[{
    3.73242540139012*^9}},ExpressionUUID->"3b743fc0-fed3-4446-8a4c-\
 301a1cb9587b"]
 }, Open  ]]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -7567,7 +7834,7 @@ Cell[BoxData[{
    3.73242446377912*^9}},ExpressionUUID->"da63ee8d-cb1e-4a4d-8fa8-\
 efcf1b48173e"]
 }, Closed]]
-}, Open  ]]
+}, Closed]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -9263,8 +9530,8 @@ Cell["\[LeftCeiling]OperatorMatrix\[RightFloor]", "CodeSubsubsection",
  Evaluatable->True,
  CellChangeTimes->{{3.6992016390438643`*^9, 3.699201641474523*^9}, {
    3.716044651921208*^9, 3.716044652615678*^9}, {3.718049011698127*^9, 
-   3.7180490349269447`*^9}, {3.7314333747697363`*^9, 3.7314333785914497`*^9},
-    {3.731787197805335*^9, 3.731787198860034*^9}, 
+   3.7180490349269447`*^9}, {3.7314333747697363`*^9, 
+   3.7314333785914497`*^9}, {3.731787197805335*^9, 3.731787198860034*^9}, 
    3.731791449699368*^9},ExpressionUUID->"3460bcba-b1df-4e89-b1b6-\
 40f4f4db6402"],
 
@@ -9781,6 +10048,24 @@ Cell[BoxData[
              RowBox[{
               RowBox[{
                RowBox[{
+                RowBox[{"Hamiltonian", " ", "--"}], "--"}], "--"}], 
+              "--"}]}]}]}]}]}], "-", "--"}], "*)"}], "\n", "\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"RunEndPoint", "===", "\"\<Hamiltonian\>\""}], ",", " ", 
+        RowBox[{"Return", "[", 
+         RowBox[{"RunPotentialEnergy", "+", "RunKineticEnergy"}], "]"}]}], 
+       "]"}], ";", "\n", "\t\t", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", " ", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
                 RowBox[{"Wavefunctions", " ", "--"}], "--"}], "--"}], 
               "--"}]}]}]}]}]}], "-"}], "*)"}], "\n", "\t\t", 
       RowBox[{"RunWavefunctions", "=", "\n", "\t\t\t", 
@@ -9811,15 +10096,46 @@ Cell[BoxData[
         RowBox[{"RunEndPoint", "===", "$dvrwf"}], ",", "\n", "\t\t\t", 
         RowBox[{"Return", "@", "RunWavefunctions"}]}], "\n", "\t\t\t", "]"}], 
       ";", "\n", "\t\t", 
-      RowBox[{"RunCheckPoint", "=", "$dvrwf"}], ";", "\n", "\t\t", "\n", 
-      "\t\t", 
+      RowBox[{"RunCheckPoint", "=", "$dvrwf"}], ";", "\n", "\t\t", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", " ", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"Energies", " ", "--"}], "--"}], "--"}], 
+              "--"}]}]}]}]}]}], "-", "--"}], "*)"}], "\n", "\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"RunEndPoint", "===", "\"\<Energies\>\""}], ",", " ", 
+        RowBox[{"Return", "[", 
+         RowBox[{"RunWavefunctions", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], "]"}]}], "]"}], ";", "\n", "\t\t", 
+      "\n", "\t\t", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", " ", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"Rest", " ", "--"}], "--"}], "--"}], "--"}]}]}]}]}]}],
+         "-", "--"}], "*)"}], "\n", "\t\t", 
       RowBox[{"Switch", "[", 
        RowBox[{"RunEndPoint", ",", "\n", "\t\t\t", 
         RowBox[{"{", "\n", "\t\t\t\t", 
          RowBox[{
           RowBox[{"(", "\n", "\t\t\t\t\t", 
            RowBox[{
-           "$dvrgr", "|", "$dvrke", "|", "$dvrpe", "|", "$dvrwf", "|", "\n", 
+           "$dvrgr", "|", "$dvrke", "|", "$dvrpe", "|", "$dvrwf", "|", 
+            "\"\<Hamiltonian\>\"", "|", "\"\<Energies\>\"", "|", "\n", 
             "\t\t\t\t\t\t", "$dvrgrwf", "|", "$dvrintwf", "|", 
             RowBox[{"{", 
              RowBox[{"$dvrexv", ",", " ", "__"}], "}"}], "|", 
@@ -9850,6 +10166,17 @@ Cell[BoxData[
                RowBox[{"(", 
                 RowBox[{"$dvrwf", "->", "RunWavefunctions"}], ")"}]}], ",", 
               "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"\"\<Hamiltonian\>\"", ":>", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{"(", 
+                RowBox[{"\"\<Hamiltonian\>\"", "->", 
+                 RowBox[{"RunPotentialEnergy", "+", "RunKineticEnergy"}]}], 
+                ")"}]}], ",", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"\"\<Energies\>\"", ":>", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{"(", 
+                RowBox[{"\"\<Energies\>\"", "->", 
+                 RowBox[{"RunWavefunctions", "[", 
+                  RowBox[{"[", "1", "]"}], "]"}]}], ")"}]}], ",", "\n", 
+              "\t\t\t\t\t\t\t", 
               RowBox[{
               "$dvrgrwf", "\[RuleDelayed]", "\n", "\t\t\t\t\t\t\t\t", 
                RowBox[{"(", 
@@ -10081,8 +10408,9 @@ Cell[BoxData[
    3.731972648606625*^9, 3.731972652221534*^9}, {3.732399285534478*^9, 
    3.7323993044591627`*^9}, {3.732399338399111*^9, 3.732399415485458*^9}, {
    3.732399690803557*^9, 3.732399699973838*^9}, {3.732399757535132*^9, 
-   3.732399757660239*^9}, {3.732420927981739*^9, 
-   3.732420946247279*^9}},ExpressionUUID->"cf991749-e396-417e-94ae-\
+   3.732399757660239*^9}, {3.732420927981739*^9, 3.732420946247279*^9}, {
+   3.732516580933485*^9, 
+   3.732516707808769*^9}},ExpressionUUID->"cf991749-e396-417e-94ae-\
 f407430bfb5e"],
 
 Cell[BoxData[{
@@ -10266,7 +10594,7 @@ Cell[BoxData[
  CellChangeTimes->{{3.7292526878326817`*^9, 
   3.729252722959811*^9}},ExpressionUUID->"141af66c-0d04-430f-90aa-\
 67026cba1e09"]
-}, Closed]]
+}, Open  ]]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -10367,12 +10695,13 @@ Cell[BoxData[
  RowBox[{"$dvrBasicKeys", "=", "\n", "\t", 
   RowBox[{
   "$dvrgr", "|", "$dvrpe", "|", "$dvrke", "|", "\n", "\t\t", "$dvrwf", "|", 
-   "$dvrgrwf", "|", "$dvrintwf", "|", "\"\<FullResults\>\""}]}]], "CodeInput",
- 
+   "$dvrgrwf", "|", "$dvrintwf", "|", "\"\<Hamiltonian\>\"", "|", 
+   "\"\<Energies\>\"", "|", "\"\<FullResults\>\""}]}]], "CodeInput",
  CellChangeTimes->{{3.731702846767716*^9, 3.731702900711887*^9}, 
    3.7317860905900497`*^9, {3.731786158385253*^9, 3.7317861861743317`*^9}, 
-   3.7317863941048098`*^9, {3.731864772362146*^9, 
-   3.731864775829237*^9}},ExpressionUUID->"4f13f9a1-6387-451c-abd2-\
+   3.7317863941048098`*^9, {3.731864772362146*^9, 3.731864775829237*^9}, {
+   3.7325167423863792`*^9, 
+   3.732516749680912*^9}},ExpressionUUID->"4f13f9a1-6387-451c-abd2-\
 2143208b843e"],
 
 Cell[BoxData[{
@@ -10653,7 +10982,7 @@ Cell[BoxData[
   3.727732360933573*^9}},ExpressionUUID->"d293b01f-3f5d-464d-a4b0-\
 c22cb7adc485"]
 }, Closed]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -11344,8 +11673,8 @@ coordinate\>\"", ",", "\n", "\t\t\t ", "\"\<Text\>\""}], "]"}], ",", "\n",
                    RowBox[{"{", 
                     RowBox[{
                     "\"\<points_\>\"", ",", "\"\<,\>\"", ",", 
-                    "\"\<range_\>\""}], "}"}], "]"}], ",", "\"\<]\>\""}], "}"}
-                 ], "]"}], ",", "\n", "\t\t\t\t", "\"\<:=\>\"", ",", 
+                    "\"\<range_\>\""}], "}"}], "]"}], ",", "\"\<]\>\""}], 
+                 "}"}], "]"}], ",", "\n", "\t\t\t\t", "\"\<:=\>\"", ",", 
                "\"\<\\n\\t\>\"", ",", "\n", "\t\t\t\t", 
                RowBox[{"ToBoxes", "@", 
                 RowBox[{
@@ -12303,7 +12632,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"9009c70d-1aad-415c-9701-\
 edff1eaf5262"]
 },
 WindowSize->{788, 764},
-WindowMargins->{{78, Automatic}, {Automatic, 0}},
+WindowMargins->{{Automatic, 320}, {Automatic, 0}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

@@ -34,8 +34,18 @@ ChemPointCompile::usage=
 Begin["`Private`"];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Evaluate*)
+
+
+
 ChemEvaluate[expr_]:=
 	Evaluate[expr];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Compile*)
+
 
 
 ChemCompile[spec:{{_,_Blank,___}...},
@@ -85,6 +95,11 @@ ChemCompile[spec:{{_,_Blank,___}...},
 				]
 		];
 ChemCompile~SetAttributes~HoldAll;
+
+
+(* ::Subsubsection::Closed:: *)
+(*PointCompile*)
+
 
 
 ChemPointCompile[

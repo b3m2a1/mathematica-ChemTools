@@ -19,6 +19,11 @@
 
 
 
+(* ::Text:: *)
+(*A collection of datasets used as ChemData sources*)
+
+
+
 $ChemCustomAtoms::usage="";
 $ChemIsotopicMasses::usage="";
 $ChemAtomColors::usage="";
@@ -39,109 +44,174 @@ $ChemMMFF94TorsionAngleData::usage="";
 Begin["`Private`"];
 
 
-If[!MatchQ[OwnValues[$ChemCustomAtoms],{_:>_Association?AssociationQ}],
-	$ChemCustomAtoms:=
-		$ChemCustomAtoms=
-			Import@PackageFilePath["Resources","Datasets","ChemCustomAtoms.wl"]
-	];
+ChemDataLookup::nolod="Couldn't load resource ``, got ``";
 
 
-If[!MatchQ[OwnValues[$ChemIsotopicMasses],{_:>_Association?AssociationQ}],
-	$ChemIsotopicMasses:=
-		$ChemIsotopicMasses=
-			Import@PackageFilePath["Resources","Datasets","ChemIsotopicMasses.wl"]
-	];
+$ChemDatasetsCachePermanent=False;
 
 
-If[!MatchQ[OwnValues[$ChemAtomColors],{_:>_Association?AssociationQ}],
-	$ChemAtomColors:=
-		$ChemAtomColors=
-			Import@PackageFilePath["Resources","Datasets","ChemAtomColors.wl"]
-	];
+ChemDatasetPacletFile[name_]:=
+	PackageFilePath["Resources", "Datasets", name<>".wl"];
+ChemDatasetTempFile[name_]:=
+	FileNameJoin[
+		{
+			$TemporaryDirectory, 
+			"ChemTools_Datasets",
+			name<>".wl"
+			}
+		];
+ChemDatasetAppDataFile[name_]:=
+	FileNameJoin[
+		{$UserBaseDirectory, "ApplicationData", "ChemTools", 
+			"Datasets", name<>".wl"
+			}
+		];
+ChemDatasetWebResourceFile[name_]:=
+	CloudObject@
+		URLBuild[
+			<|
+				"Scheme"->"user", 
+				"Path"->{"b3m2a1.datasets", "ChemTools", name<>".wl"}
+				|>
+			];
 
 
-If[!MatchQ[OwnValues[$ChemElements],{_:>_Association?AssociationQ}],
-	$ChemElements:=
-		$ChemElements=
-			Import@PackageFilePath["Resources","Datasets","ChemElements.wl"]
-	];
+ChemDatasetDownload[name_, "File"]:=
+	With[
+		{
+			target=
+				If[$ChemDatasetsCachePermanent,
+					ChemDatasetAppDataFile[name], 
+					ChemDatasetTempFile[name]
+					],
+			source=ChemDatasetWebResourceFile[name]
+			},
+		Monitor[
+			If[URLDownload[source, target, "StatusCode"]<400,
+				target,
+				Failure["ChemDatasetDownload", 
+					"MessageTemplate"->
+						TemplateApply["Couldn't download `` from ``",
+						 
+						 ]
+					]
+				],
+			Internal`LoadingPanel@
+				TemplateApply["Downloading dataset `` from ``", {name, source}]
+			]
+		]
 
 
-If[!MatchQ[OwnValues[$ChemSpaceGroups],{_:>_Association?AssociationQ}],
-	$ChemSpaceGroups:=
-		$ChemSpaceGroups=
-			Import@PackageFilePath["Resources","Datasets","ChemSpaceGroups.wl"];
+ChemDatasetLoad[name_, "File"]:=
+	Replace[
+		SelectFirst[
+			{
+				ChemDatasetPacletFile[name],
+				ChemDatasetAppDataFile[name],
+				ChemDatasetTempFile[name]
+				},
+			FileExistsQ,
+			ChemDownload[name]
+			],
+	{
+		res:(_String|_File)?FileExistsQ:>
+			Import[res],
+		fail_:>
+			(
+				Message[ChemDataLookup::nolod, name, fail];
+				SetDelayed[ChemDatasetLoad[name], Message[ChemDataLookup::nolod, name, fail]];
+				fail
+				)
+		}
 	]
 
 
-If[!MatchQ[OwnValues[$ChemBondDistances],{_:>_Association?AssociationQ}],
-	$ChemBondDistances:=
-		$ChemBondDistances=
-			Import@PackageFilePath["Resources","Datasets","ChemBondDistances.wl"];
-	];
+ChemDatasetRegister[base:Hold[_Symbol]|Automatic:Automatic, name_, pat_]:=
+	Replace[
+		If[base===Automatic,
+			ToExpression["$"<>name, StandardForm, Hold],
+			base
+			],
+		Hold[sym_]:>
+			If[!MatchQ[OwnValues[sym],{_:>pat}],
+				sym:=
+					sym=ChemDatasetLoad[name]
+				]
+		];
 
 
-If[!MatchQ[OwnValues[$ChemElementValences],{_:>_Association?AssociationQ}],
-	$ChemElementValences:=
-		$ChemElementValences=
-			Import@PackageFilePath["Resources","Datasets","ChemElementValences.wl"];
-	];
+(* ::Text:: *)
+(*A set of non-standard atoms used internally sometimes*)
 
 
-If[!MatchQ[OwnValues[$ChemCharacterTables],{_:>_Association?AssociationQ}],
-	$ChemCharacterTables:=
-		$ChemCharacterTables=
-			Import@PackageFilePath["Resources","Datasets","ChemCharacterTables.wl"];
-	];
+
+ChemDatasetRegister["ChemCustomAtoms", _Association?AssociationQ]
 
 
-If[!MatchQ[OwnValues[$ChemCorrelationTables],{_:>_Association?AssociationQ}],
-	$ChemCorrelationTables:=
-		$ChemCorrelationTables=
-			Import@PackageFilePath["Resources","Datasets","ChemCorrelationTables.wl"];
-	];
+ChemDatasetRegister["ChemIsotopicMasses", _Association?AssociationQ]
 
 
-If[!MatchQ[OwnValues[$ChemTanabeSuganoData],{_:>_Association?AssociationQ}],
-	$ChemTanabeSuganoData:=
-		$ChemTanabeSuganoData=
-			Import@PackageFilePath["Resources","Datasets","ChemTanabeSuganoDiagrams.wl"];
-	];
+ChemDatasetRegister["ChemAtomColors", _Association?AssociationQ]
 
 
-If[!MatchQ[OwnValues[$ChemMMMFF94AtomTypes],{_:>_Association?AssociationQ}],
-	$ChemMMMFF94AtomTypes:=
-		$ChemMMMFF94AtomTypes=
-			Import@PackageFilePath["Resources","Datasets","MMMFF94AtomTypes.wl"];
-	];
+ChemDatasetRegister["ChemElements", _Association?AssociationQ]
 
 
-If[!MatchQ[OwnValues[$ChemMMMFF94BondData],{_:>_Association?AssociationQ}],
-	$ChemMMMFF94BondData:=
-		$ChemMMMFF94BondData=
-			Import@PackageFilePath["Resources","Datasets","MMFF94BondData.wl"];
-	];
+ChemDatasetRegister["ChemSpaceGroups", _Association?AssociationQ]
 
 
-If[!MatchQ[OwnValues[$ChemMMFF94BondAngleData],{_:>_Association?AssociationQ}],
-	$ChemMMFF94BondAngleData:=
-		$ChemMMFF94BondAngleData=
-			Import@PackageFilePath["Resources","Datasets","MMFF94BondAngleData.wl"];
-	];
+ChemDatasetRegister["ChemBondDistances", _Association?AssociationQ]
 
 
-If[!MatchQ[OwnValues[$ChemMMFF94StretchBendData],{_:>_Association?AssociationQ}],
-	$ChemMMFF94StretchBendData:=
-		$ChemMMFF94StretchBendData=
-			Import@PackageFilePath["Resources","Datasets","MMFF94StretchBendData.wl"];
-	];
+ChemDatasetRegister["ChemElementValences", _Association?AssociationQ]
 
 
-If[!MatchQ[OwnValues[$ChemMMFF94TorsionAngleData],{_:>_Association?AssociationQ}],
-	$ChemMMFF94TorsionAngleData:=
-		$ChemMMFF94TorsionAngleData=
-			Import@PackageFilePath["Resources","Datasets","MMFF94TorsionAngleData.wl"];
-	];
+ChemDatasetRegister["ChemCharacterTables", _Association?AssociationQ]
+
+
+ChemDatasetRegister["ChemCorrelationTables", _Association?AssociationQ]
+
+
+ChemDatasetRegister[
+	$ChemTanabeSuganoData, 
+	"ChemTanabeSuganoDiagrams", 
+	_Association?AssociationQ
+	]
+
+
+ChemDatasetRegister[
+	$ChemMMFF94AtomTypes, 
+	"MMFF94AtomTypes", 
+	_Association?AssociationQ
+	]
+
+
+ChemDatasetRegister[
+	$ChemMMMFF94BondData, 
+	"MMFF94BondData", 
+	_Association?AssociationQ
+	]
+
+
+ChemDatasetRegister[
+	$ChemMMFF94BondAngleData, 
+	"MMFF94BondAngleData", 
+	_Association?AssociationQ
+	]
+
+
+ChemDatasetRegister[
+	$ChemMMFF94StretchBendData, 
+	"MMFF94StretchBendData", 
+	_Association?AssociationQ
+	]
+
+
+ChemDatasetRegister[
+	$ChemMMFF94TorsionAngleData, 
+	"MMFF94TorsionAngleData", 
+	_Association?AssociationQ
+	]
 
 
 End[];

@@ -19,36 +19,26 @@
 
 
 
-ChemDVRBegin[];
+(* ::Text:: *)
+(*
+	A preloaded file before any of the other files are imported.
+	Get is run on it rather than the standard declaration scraping procedure.
+*)
 
 
-$RingDVR::usage=
-	"A one dimensional DVR by Meyer for the (0, 2\[Pi]) range"
+
+(* ::Subsubsection::Closed:: *)
+(*ChemObject*)
 
 
-$RingDVR=
-	<|
-		"Name"->"Ring 1D",
-		"Range"->{{0., 2.\[Pi]}},
-		"Points"->{101},
-		"Defaults"->
-			{
-				"GridType"->
-					"AzimuthalSubdivision",
-				"KineticEnergyElementFunction"->
-					"MeyerAzimuthal",
-				"PotentialFunction"->
-					"HinderedRotor",
-				"PlotMode"->
-					{"Density", "Ring"}
-				}
-		|>
 
-
-ChemDVREnd[];
-
-
-$RingDVR
+If[!TrueQ[`Private`$ImportRegistered["ChemObject"]],
+	ImportExport`RegisterImport[
+		"ChemObject",
+		ChemImportObject
+		];
+	`Private`$ImportRegistered["ChemObject"]=True
+	];
 
 
 

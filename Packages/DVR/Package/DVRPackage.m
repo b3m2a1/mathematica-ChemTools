@@ -547,7 +547,7 @@ ChemDVRDefaultNamedGrid[
 	"InteriorSubdivision", 
 	pt_Integer, {min_, max_}
 	]:=
-	(max-min)/(pt+1)*Range[pt];
+	((max-min)/(pt+1)*Range[pt])+min;
 
 
 (* ::Subsubsubsubsection::Closed:: *)
@@ -690,11 +690,54 @@ ChemDVRDefaultNamedPotential["HarmonicOscillator", ops___?OptionQ]:=
 ChemDVRDefaultNamedPotential["MorseOscillator", ops___?OptionQ]:=
 	With[
 		{
-			de=Lookup[{ops}, "DissociationEnergy", 1],
-			a=Lookup[{ops}, "\[Alpha]", 1],
+			de=Lookup[{ops}, "DissociationEnergy", 10],
+			a=Lookup[{ops}, "WellWidth", 1],
 			re=Lookup[{ops}, "EquilibriumBondLength", 0]
 			},
-		Norm[(de*(1-Exp[-a*(#-re)])^2)]&
+		Total[(de*(1-Exp[-(1/a)*(#-re)])^2)]&
+		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*MultiWellPolynomial*)
+
+
+
+ChemDVRDefaultNamedPotential["MultiWellPolynomial", ops___?OptionQ]:=
+	Module[
+		{
+			pos=Lookup[{ops}, "TurningPoints", {-1, 1}],
+			dep=Lookup[{ops}, "Depth", 5],
+			min=Lookup[{ops}, "Minimum", 0],
+			mainPol,
+			minValPos,
+			minPos,
+			minVal,
+			minDiff
+			},
+		If[EvenQ@Length@pos,
+			pos=Riffle[pos, MovingAverage[pos, 2]]
+			];
+		mainPol=Integrate[Product[\[FormalX]p-t, {t, pos}], \[FormalX]p];
+		minValPos={\[FormalI]pol, mainPol}/.MapIndexed[{\[FormalX]p->#, \[FormalI]pol->#2[[1]]}&, pos];
+		{minPos, minVal}=
+			First@MinimalBy[minValPos[[Range[1, Length@pos, 2]]], Last];
+		minDiff=
+			Min@{
+				If[minPos>1,
+					minValPos[[minPos-1, 2]]-minVal,
+					\[Infinity]
+					],
+				If[minPos<Length@pos,
+					minValPos[[minPos+1, 2]]-minVal,
+					\[Infinity]
+					]
+				};
+		If[minDiff>0, 
+			dep=dep/minDiff,
+			dep=1
+			];
+		Evaluate[dep(mainPol/.\[FormalX]p->#)-(dep*minVal-min)]&
 		];
 
 
@@ -831,7 +874,9 @@ ChemDVRDefaultPotentialEnergy[grid_, ops___?OptionQ]:=
 							Lookup[Options[ChemDVRDefaultPotentialEnergy], "PotentialFunction"]
 							]
 						],
-					Except[_Function|_Symbol?(Length[DownValues[#]>0]&)]:>
+					Except[
+						_Function|_InterpolatingFunction|
+						_CompiledFunction|_Symbol?(Length[DownValues[#]>0]&)]:>
 						iChemDVRDefaultPotentialFunction[
 							Lookup[Flatten@{ops}, Function, 
 								Lookup[Options[ChemDVRDefaultPotentialEnergy], Function]
@@ -848,7 +893,7 @@ ChemDVRDefaultPotentialEnergy[grid_, ops___?OptionQ]:=
 		With[
 			{
 				gpVec=
-					Replace[pf@gp, Except[_List]:>Map[pf, gp]]
+					Replace[Quiet@pf@gp, Except[_List]:>Map[pf, gp]]
 				},
 			If[!VectorQ@gpVec,
 				Message[ChemDVRObject::badpot, pf];
@@ -1289,7 +1334,7 @@ Options[ChemDVRDefaultKineticEnergy]=
 		{
 			"KineticEnergyElementFunction"->Automatic
 			},
-		Options[iChemDVRDefaultKineticEnergy]
+		Options[iChemDVRDefaultKineticEnergy1D]
 		];
 ChemDVRDefaultKineticEnergy[
 	gridpoints_,
@@ -1341,7 +1386,7 @@ ChemDVRDefaultKineticEnergy[
 						ChemDVRDefaultKineticEnergyElementFunction[keel],
 					ops
 					],
-			{_String, o___?OptionQ},
+			{_String, ___?OptionQ},
 				ChemDVRDefaultKineticEnergy[
 					gridpoints,
 					"KineticEnergyElementFunction"->
@@ -1736,8 +1781,8 @@ $ChemDVRDefaultPlotOptions=
 				"PotentialStyle"->Automatic,
 				"WavefunctionSelection"->Scaled[.25],
 				"WavefunctionClipping"->10^-5,
-				"WavefunctionScaling"->Scaled[.5],
-				"WavefunctionShifting"->None,
+				"WavefunctionScaling"->Automatic,
+				"WavefunctionShifting"->Automatic,
 				"WavefunctionRescaling"->None,
 				"PotentialRescaling"->None,
 				"PlotProbabilityDensity"->False,
@@ -1803,6 +1848,34 @@ chemDVRDefaultPlotWavefunctionRescalingFunction[___]:=
 
 
 (* ::Subsubsubsubsection::Closed:: *)
+(*chemDVRDefaultPlotWavefunctionShift*)
+
+
+
+chemDVRDefaultPlotWavefunctionShift[n_?NumericQ, pot_]:=
+	n;
+chemDVRDefaultPlotWavefunctionShift[Scaled[s_?NumericQ], pot_]:=
+	s*Max@Abs[pot-Min[pot]];
+chemDVRDefaultPlotWavefunctionShift[
+	Offset[base_?NumericQ, shift_?NumericQ], pot_]:=
+	base+shift;
+chemDVRDefaultPlotWavefunctionShift[
+	Offset[base_?NumericQ, Scaled[shift_?NumericQ]], pot_]:=
+	chemDVRDefaultPlotWavefunctionShift[
+		Offset[base, shift*Max@Abs[pot-Min[pot]]],
+		pot
+		];
+chemDVRDefaultPlotWavefunctionShift[
+	Offset[Scaled[base_?NumericQ], e_], pot_]:=
+	chemDVRDefaultPlotWavefunctionShift[
+		Offset[Rescale[base, {0, 1}, MinMax[pot]], e],
+		pot
+		];
+chemDVRDefaultPlotWavefunctionShift[e_, pot_]:=
+	e;
+
+
+(* ::Subsubsubsubsection::Closed:: *)
 (*ChemDVRDefaultPlotGetShiftedScaledWavefunctions*)
 
 
@@ -1819,18 +1892,18 @@ ChemDVRDefaultPlotGetShiftedScaledWavefunctions[
 			rescalePsi=
 				chemDVRDefaultPlotWavefunctionRescalingFunction[rescale, pot][psi],
 			shiftFactor=
-				Replace[shift,
-					Scaled[s_?NumericQ]:>
-						s*Max@Abs[pot]
-					],
+				chemDVRDefaultPlotWavefunctionShift[shift, pot],
 			scaleFactor=
 				Replace[scale,
 					Scaled[s_?NumericQ]:>
-						s*Max@Abs[pot]
+						s*Max@Abs[pot-Min[pot]]
 					]
 			},
 		If[NumericQ@shiftFactor,
-			If[NumericQ@scaleFactor, scaleFactor*shiftFactor, shiftFactor]+#,
+			If[NumericQ@scaleFactor&&NumericQ@shift, 
+				scaleFactor*shiftFactor, 
+				shiftFactor
+				]+#,
 			#
 			]&@
 			If[NumericQ@scaleFactor, 
@@ -2066,8 +2139,12 @@ ChemDVRDefaultPlotGetPlotPoints[
 				If[sqr, wfnsel[[2]]^2, wfnsel[[2]]],
 				If[showPot, pot, {1}],
 				gps,
-				scaling,
-				shift,
+				Replace[scaling,
+					Automatic:>If[rescaling=!=None, None, Scaled[.5]]
+					],
+				Replace[shift,
+					Automatic:>If[rescaling=!=None, None, Offset[Scaled[0], 0]]
+					],
 				rescaling,
 				clipping
 				],
@@ -4015,6 +4092,8 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 				];
 		If[RunEndPoint===$dvrpe,Return@RunPotentialEnergy];
 		RunCheckPoint=$dvrpe;
+		(*---------- Hamiltonian -----------*)
+		If[RunEndPoint==="Hamiltonian", Return[RunPotentialEnergy+RunKineticEnergy]];
 		(*---------- Wavefunctions ---------*)
 		RunWavefunctions=
 			dvrOpsLookup[RunRuntimeOptions, $dvrwf, None];
@@ -4032,11 +4111,14 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 			Return@RunWavefunctions
 			];
 		RunCheckPoint=$dvrwf;
+		(*---------- Energies -----------*)
+		If[RunEndPoint==="Energies", Return[RunWavefunctions[[1]]]];
 		
+		(*---------- Rest -----------*)
 		Switch[RunEndPoint,
 			{
 				(
-					$dvrgr|$dvrke|$dvrpe|$dvrwf|
+					$dvrgr|$dvrke|$dvrpe|$dvrwf|"Hamiltonian"|"Energies"|
 						$dvrgrwf|$dvrintwf|{$dvrexv, __}|{$dvrexm, __})..
 				},
 				Replace[
@@ -4047,6 +4129,10 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 							$dvrke:>($dvrke->RunKineticEnergy),
 							$dvrpe:>($dvrpe->RunPotentialEnergy),
 							$dvrwf:>($dvrwf->RunWavefunctions),
+							"Hamiltonian":>
+								("Hamiltonian"->RunPotentialEnergy+RunKineticEnergy),
+							"Energies":>
+								("Energies"->RunWavefunctions[[1]]),
 							$dvrgrwf:>
 								($dvrgrwf->iChemDVRRunGridWavefunctions[obj]),
 							$dvrintwf:>
@@ -4231,7 +4317,7 @@ ChemDVRNotebook[
 
 $dvrBasicKeys=
 	$dvrgr|$dvrpe|$dvrke|
-		$dvrwf|$dvrgrwf|$dvrintwf|"FullResults"
+		$dvrwf|$dvrgrwf|$dvrintwf|"Hamiltonian"|"Energies"|"FullResults"
 
 
 ChemDVRObject[uuid_?chemDVRValidQ][a___?OptionQ]:=
