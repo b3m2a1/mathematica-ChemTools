@@ -211,7 +211,10 @@ ImportGaussianJob[file:_String|_InputStream, "MolTable"]:=
 
 
 
-iGaussianLogRead[log_InputStream, recSeps_, postProcess_]/;!TrueQ[$GaussianLogReadEOF]:=
+iGaussianLogRead[
+	log_InputStream, recSeps_, postProcess_,
+	mode:Read:Read
+	]/;!TrueQ[$GaussianLogReadEOF]:=
 	With[
 		{
 			sp=
@@ -228,7 +231,27 @@ iGaussianLogRead[log_InputStream, recSeps_, postProcess_]/;!TrueQ[$GaussianLogRe
 			postProcess@res
 			]
 		];
-iGaussianLogRead[log_InputStream, recSeps_, postProcess_]/;TrueQ[$GaussianLogReadEOF]=
+iGaussianLogRead[
+	log_InputStream, recSeps_, postProcess_,
+	mode:ReadList
+	]/;!TrueQ[$GaussianLogReadEOF]:=
+	With[
+		{
+			sp=
+				Quiet@StreamPosition@log,
+			res=
+				ReadList[log, Record, 
+					RecordSeparators->recSeps
+					]
+			},
+		$GaussianLogReadEOF=
+			Quiet@Check[SetStreamPosition[log, sp], True];
+		postProcess@res
+		];
+iGaussianLogRead[
+	log_InputStream, recSeps_, postProcess_, 
+	___
+	]/;TrueQ[$GaussianLogReadEOF]=
 	Missing["EndOfFile"]
 
 
@@ -307,6 +330,45 @@ GaussianLogRead[log_InputStream, "ZMatrix"]:=
 		log,
 		{{"Z-matrix:"}, {"NAtoms="}},
 		gaussianLogReadZMatrixBlock
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*OptimizationCoordinates*)
+
+
+
+gaussianLogReadParseOptimizationCoordinates[s:{__String}]:=
+	Map[
+		StringCases[
+			Whitespace~~which:DigitCharacter..~~
+				Whitespace~~what:DigitCharacter..~~
+				Whitespace~type:DigitCharacter..~~
+				Whitespace~~x:NumberString~~
+				Whitespace~~y:NumberString~~
+				Whitespace~~z:NumberString:>
+					{
+						ElementData[what, "Symbol"], ToExpression@{x, y, z}
+						}
+				],
+		s
+		];
+gaussianLogReadParseOptimizationCoordinates[{}]:=
+	{}
+
+
+GaussianLogRead[log_InputStream, "OptimizationCoordinates"]:=
+	iGaussianLogRead[
+		log,
+		{
+		{"                         Standard orientation:                         
+ ---------------------------------------------------------------------
+ Center     Atomic      Atomic             Coordinates (Angstroms)
+ Number     Number       Type             X           Y           Z
+ ---------------------------------------------------------------------"}, 
+ {" ---------------------------------------------------------------------"}
+ },
+		gaussianLogReadParseOptimizationCoordinates
 		]
 
 
@@ -444,6 +506,7 @@ GaussianLogRead[log_InputStream, "EndDateTime"]:=
 $GaussianLogKeywords=
 	{
 		"StartDateTime",
+		"OptimizationCoordinates",
 		"ZMatrix",
 		"Scan",
 		"Blurb",

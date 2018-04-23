@@ -14,6 +14,10 @@ ChemTools`PackageScope`Private`$TopLevelLoad=
 BeginPackage["ChemTools`"];
 
 
+ChemTools::usage=
+	"ChemTools is an inert head for the ChemTools package";
+
+
 (* ::Subsubsection::Closed:: *)
 (*$ContextPath*)
 
@@ -1341,6 +1345,10 @@ Thread[
 EndPackage[];
 
 
-If[(Clear@ChemTools`PackageScope`Private`$loadAbort;!#)&@ChemTools`PackageScope`Private`$loadAbort,
+If[
+	(Clear@ChemTools`PackageScope`Private`$loadAbort;!#)&@
+		ChemTools`PackageScope`Private`$loadAbort,
+	Unprotect[ChemTools`PackageScope`Private`$LoadCompleted];
+	ChemTools`PackageScope`Private`$LoadCompleted=True;
 	ChemTools`PackageScope`Private`PackagePostProcessContextPathReassign[]
 	]

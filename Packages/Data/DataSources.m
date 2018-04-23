@@ -19,16 +19,20 @@
 
 
 
-ChemData::usage=
-	"A wrapper for various chemical data stuff to act like an extensible ChemicalData";
+$ChemDataSources::usage=
+	"";
 
 
-$ChemDataSources::usage="";
 ChemDataSource::usage=
 	"Converts a string into a datasource from which to pull relevant properties";
 
 
 Begin["`Private`"];
+
+
+(* ::Subsection:: *)
+(*Core Sources*)
+
 
 
 $ChemDataSourcesDontCacheFlag=False;
@@ -37,10 +41,6 @@ $ChemDataSourcesDontCacheFlag=False;
 If[!AssociationQ@$ChemDataSources,
 	$ChemDataSources=<||>
 	];
-
-
-ChemData::badsrc=
-	"$ChemDataSources can only take ChemData object";
 
 
 $ChemDataSources/:
@@ -60,6 +60,11 @@ chemDataSourceAdd[key_,val_]:=
 		];
 chemDataSourceAdd[key_->val_]:=
 	chemDataSourceAdd[key,val]
+
+
+(* ::Subsubsection::Closed:: *)
+(*CustomAtoms*)
+
 
 
 chemDataSourceAdd[
@@ -93,12 +98,22 @@ chemDataSourceAdd[
 	]
 
 
+(* ::Subsubsection::Closed:: *)
+(*AtomColors*)
+
+
+
 chemDataSourceAdd[
 	"AtomColors"->
 			ChemData[$ChemAtomColors,
 			(ElementData[#,"IconColor"]&)
 			]
 	];
+
+
+(* ::Subsubsection::Closed:: *)
+(*BondDistances*)
+
 
 
 CDSBondDistance[query_,___]:=
@@ -138,6 +153,11 @@ chemDataSourceAdd[
 	]
 
 
+(* ::Subsubsection::Closed:: *)
+(*UnitConversions*)
+
+
+
 chemDataSourceAdd[
 	"UnitConversions"->
 		ChemData[<|
@@ -150,6 +170,11 @@ chemDataSourceAdd[
 				|>,
 			$Failed&]
 	];
+
+
+(* ::Subsubsection::Closed:: *)
+(*SpaceGroups*)
+
 
 
 CDSSpaceGroup[query_,___]:=(
@@ -186,6 +211,11 @@ chemDataSourceAdd[
 	];
 
 
+(* ::Subsubsection::Closed:: *)
+(*ElementValences*)
+
+
+
 CSDElementValences[query_,___]:=
 (
 	$ChemDataSourcesDontCacheFlag=True;
@@ -205,6 +235,11 @@ chemDataSourceAdd[
 	]
 
 
+(* ::Subsubsection::Closed:: *)
+(*PubChemIDs*)
+
+
+
 CDSPubChemID[query_,___]:=
 	Replace[query,{
 			PubChemCompound[id_]:>
@@ -222,6 +257,11 @@ chemDataSourceAdd[
 	"PubChemIDs"->
 		ChemData[CDSPubChemID,$Failed&]
 	];
+
+
+(* ::Subsubsection::Closed:: *)
+(*PubChemNames*)
+
 
 
 CDSPubChemNames[query_,___]:=
@@ -249,16 +289,31 @@ chemDataSourceAdd[
 		]
 
 
+(* ::Subsubsection::Closed:: *)
+(*ComponentIDs*)
+
+
+
 chemDataSourceAdd[
 	"ComponentIDs"->
 		ChemData[PubChemComponentIDs@#&,$Failed&]
 	]
 
 
+(* ::Subsubsection::Closed:: *)
+(*ParentIDs*)
+
+
+
 chemDataSourceAdd[
 	"ParentIDs"->
 		ChemData[PubChemParentIDs@#&,$Failed&]
 	]
+
+
+(* ::Subsubsection::Closed:: *)
+(*SimilarIDs*)
+
 
 
 CDSSimilarIDs[query_,___]:=
@@ -284,10 +339,20 @@ chemDataSourceAdd[
 	]
 
 
+(* ::Subsubsection::Closed:: *)
+(*2DStructures*)
+
+
+
 chemDataSourceAdd[
 	"2DStructures"->
 			ChemData[PubChemStructure@#&,$Failed&]
 	]
+
+
+(* ::Subsubsection::Closed:: *)
+(*SDFFiles*)
+
 
 
 chemDataSourceAdd[
@@ -303,6 +368,11 @@ chemDataSourceAdd[
 	]
 
 
+(* ::Subsubsection::Closed:: *)
+(*PrimaryIsotope*)
+
+
+
 chemDataSourceAdd[
 	"PrimaryIsotope"->
 		ChemData[
@@ -314,6 +384,11 @@ chemDataSourceAdd[
 			$Failed&
 			]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*StandardName*)
+
 
 
 chemDataSourceAdd[
@@ -339,6 +414,11 @@ chemDataSourceAdd[
 	]
 
 
+(* ::Subsubsection::Closed:: *)
+(*Symbol*)
+
+
+
 chemDataSourceAdd[
 	"Symbol"->
 		ChemData[
@@ -361,6 +441,11 @@ chemDataSourceAdd[
 				|>
 			]
 	]
+
+
+(* ::Subsubsection::Closed:: *)
+(*Radius*)
+
 
 
 CDSourceRadius[query_,___]:=
@@ -398,6 +483,11 @@ chemDataSourceAdd[
 	];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Mass*)
+
+
+
 CDSourceMass[query_,___]:=
 	If[ChemDataIsotopeQ@query,
 		Quantity[
@@ -426,6 +516,11 @@ chemDataSourceAdd[
 				|>
 			]
 	]
+
+
+(* ::Subsubsection::Closed:: *)
+(*NISTMass*)
+
 
 
 CDSourceMass[query_,___]:=
@@ -481,6 +576,11 @@ chemDataSourceAdd[
 	]
 
 
+(* ::Subsubsection::Closed:: *)
+(*AtomicNumber*)
+
+
+
 chemDataSourceAdd[
 	"AtomicNumber"->
 		ChemData[
@@ -498,6 +598,11 @@ chemDataSourceAdd[
 				|>
 			]
 	]
+
+
+(* ::Subsubsection::Closed:: *)
+(*Electronegativity*)
+
 
 
 CDElectronegativity[query_,___]:=
@@ -529,6 +634,11 @@ chemDataSourceAdd[
 	]
 
 
+(* ::Subsubsection::Closed:: *)
+(*ChemDataSource*)
+
+
+
 ChemDataSource[s_String]:=
 	Which[
 		s==="ElementData",
@@ -555,19 +665,6 @@ ChemDataSource[s_String]:=
 		True,
 			ChemicalData
 		]
-
-
-PackageAddAutocompletions[
-	"ChemDataLookup",
-	{
-		None,
-		Keys@$ChemDataSources,
-		Join[
-			ToString/@{ElementData,IsotopeData,ChemicalData},
-			Keys@$ChemDataSources
-			]
-		}
-	]
 
 
 End[];

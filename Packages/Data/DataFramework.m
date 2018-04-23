@@ -22,6 +22,10 @@
 ChemDataLookup::usage="Looks up relevant chemical data";
 
 
+ChemData::usage=
+	"A wrapper for various chemical data stuff to act like an extensible ChemicalData";
+
+
 ChemDataQuery::usage=
 	"A descriptive head used in to pass multiple parameters to sources";
 ChemDataProperties::usage="Finds properties matching a pattern";
@@ -31,9 +35,23 @@ ChemDataCacheClear::usage="Clears cached data matching a pattern";
 Begin["`Private`"];
 
 
+(* ::Subsection:: *)
+(*ChemData and Caching*)
+
+
+
+ChemData::badsrc=
+	"$ChemDataSources can only take ChemData object";
+
+
 If[Not@AssociationQ@$chemDataCache,
 	$chemDataCache=<||>
 	];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemData Access*)
+
 
 
 ChemData[data:Except[_String],fallback_,cache_:<||>][
@@ -73,6 +91,11 @@ ChemData[data:Except[_String],
 		extractProps@data,
 		extractProps@fallback
 		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemData Manipulation*)
+
 
 
 chemDataPrep[props_]:=
@@ -188,6 +211,11 @@ ChemData/:
 	]
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*Formatting*)
+
+
+
 Format[
 	d:ChemData[data:Except[_String],
 		fallback_]
@@ -277,6 +305,11 @@ Format[
 		]
 
 
+(* ::Subsection:: *)
+(*ChemDataProperties*)
+
+
+
 ChemDataProperties[pat_:"*",
 	datasource:IsotopeData|ElementData|ChemicalData|_ChemData]:=
 	With[{props=datasource["Properties"]},
@@ -288,6 +321,11 @@ ChemDataProperties[pat_:"*",
 	ChemDataProperties[pat,$ChemDataSources[s]];
 ChemDataProperties[thing_,pat_:"*"]:=
 	ChemDataProperties[pat,ChemDataSource@thing];
+
+
+(* ::Subsection:: *)
+(*ChemDataLookup*)
+
 
 
 ChemDataCacheClear[string_:_,attr_:_]:=
@@ -491,6 +529,24 @@ ChemDataLookup[spc:_Association][string_]:=
 		Lookup[spc,"Source",Sequence[]],
 		Lookup[spc,"Default",Sequence[]]
 		];
+
+
+(* ::Subsection:: *)
+(*Autocompletions*)
+
+
+
+PackageAddAutocompletions[
+	"ChemDataLookup",
+	{
+		None,
+		Keys@$ChemDataSources,
+		Join[
+			ToString/@{ElementData,IsotopeData,ChemicalData},
+			Keys@$ChemDataSources
+			]
+		}
+	]
 
 
 End[];

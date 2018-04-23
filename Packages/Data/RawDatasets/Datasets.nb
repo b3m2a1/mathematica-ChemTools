@@ -1,0 +1,646 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["ChemDataSets", "CodeSection",
+ CellChangeTimes->{{3.699732327466008*^9, 
+  3.6997323317299423`*^9}},ExpressionUUID->"cebd66a2-a1aa-4393-b885-\
+8bbeed3534e2"],
+
+Cell["\[LeftCeiling]A collection of datasets used as ChemData sources\
+\[RightFloor]", "Text",
+ Evaluatable->True,
+ CellChangeTimes->{{3.699732405561163*^9, 3.699732415391182*^9}, {
+  3.733194150316943*^9, 
+  3.733194150866671*^9}},ExpressionUUID->"229d30a7-a11f-4929-9f65-\
+4af32f94f44d"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemCustomAtoms", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemIsotopicMasses", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemAtomColors", "::", "usage"}], "=", "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemElements", "::", "usage"}], "=", "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemSpaceGroups", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemBondDistances", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemElementValences", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemCharacterTables", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemCorrelationTables", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemTanabeSuganoData", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemMMMFF94AtomTypes", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemMMMFF94BondData", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemMMFF94BondAngleData", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemMMFF94StretchBendData", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemMMFF94TorsionAngleData", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.705204385771803*^9, 3.7052044107488537`*^9}, {
+   3.713042119431808*^9, 3.713042133350217*^9}, {3.716140305950507*^9, 
+   3.716140312669142*^9}, {3.718338732885502*^9, 3.718338758975627*^9}, {
+   3.718338934284926*^9, 3.718338959873062*^9}, {3.718488973118787*^9, 
+   3.7184889814387827`*^9}, {3.718588125023863*^9, 3.718588130341258*^9}, 
+   3.718588164157833*^9, {3.719028310067408*^9, 3.719028312224804*^9}, {
+   3.7196964277847157`*^9, 3.719696437333824*^9}, {3.720741625610126*^9, 
+   3.720741630212887*^9}, {3.722042723282456*^9, 3.722042728478793*^9}, {
+   3.733194608023991*^9, 3.733194617545487*^9}, {3.733194866586916*^9, 
+   3.733194871010347*^9}},ExpressionUUID->"a04db7a6-03a6-4daa-855e-\
+6084ce909a6d"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"e9073810-683a-4e32-b832-\
+0ba97da92c0c"],
+
+Cell[CellGroupData[{
+
+Cell["Load", "CodeSubsubsection",
+ CellChangeTimes->{{3.733194126907894*^9, 3.733194130682741*^9}, 
+   3.7331952019633636`*^9},ExpressionUUID->"474b0585-6fb4-49af-93a9-\
+f5579af32e89"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDataLookup", "::", "nolod"}], "=", 
+   "\"\<Couldn't load resource ``, got ``\>\""}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.733193983074987*^9, 3.733193990851368*^9}, {
+  3.733194026159216*^9, 
+  3.733194048275078*^9}},ExpressionUUID->"deeb89f1-adee-48f0-a8f9-\
+2e626fa689fb"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$ChemDatasetsCachePermanent", "=", "False"}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.733193764770788*^9, 
+  3.73319378312289*^9}},ExpressionUUID->"a04468dc-3a1d-4aaf-ad51-\
+6e71bd266f48"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDatasetPacletFile", "[", "name_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"PackageFilePath", "[", 
+    RowBox[{"\"\<Resources\>\"", ",", " ", "\"\<Datasets\>\"", ",", " ", 
+     RowBox[{"name", "<>", "\"\<.wl\>\""}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDatasetTempFile", "[", "name_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"FileNameJoin", "[", "\n", "\t\t", 
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+     "$TemporaryDirectory", ",", " ", "\n", "\t\t\t", 
+      "\"\<ChemTools_Datasets\>\"", ",", "\n", "\t\t\t", 
+      RowBox[{"name", "<>", "\"\<.wl\>\""}]}], "\n", "\t\t\t", "}"}], "\n", 
+    "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDatasetAppDataFile", "[", "name_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"FileNameJoin", "[", "\n", "\t\t", 
+    RowBox[{"{", 
+     RowBox[{
+     "$UserBaseDirectory", ",", " ", "\"\<ApplicationData\>\"", ",", " ", 
+      "\"\<ChemTools\>\"", ",", " ", "\n", "\t\t\t", "\"\<Datasets\>\"", ",", 
+      " ", 
+      RowBox[{"name", "<>", "\"\<.wl\>\""}]}], "\n", "\t\t\t", "}"}], "\n", 
+    "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDatasetWebResourceFile", "[", "name_", "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{"First", "@", 
+    RowBox[{"CloudObject", "@", "\n", "\t\t", 
+     RowBox[{"URLBuild", "[", "\n", "\t\t\t", 
+      RowBox[{"<|", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"\"\<Scheme\>\"", "\[Rule]", "\"\<user\>\""}], ",", " ", "\n",
+         "\t\t\t\t", 
+        RowBox[{"\"\<Path\>\"", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+          "\"\<b3m2a1.datasets\>\"", ",", " ", "\"\<ChemTools\>\"", ",", " ", 
+           
+           RowBox[{"name", "<>", "\"\<.wl\>\""}]}], "}"}]}]}], "\n", 
+       "\t\t\t\t", "|>"}], "\n", "\t\t\t", "]"}]}]}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.7331935862018347`*^9, 3.733193597483899*^9}, 
+   3.733193645293779*^9, {3.733193691295034*^9, 3.7331938059719667`*^9}, {
+   3.733250864811556*^9, 
+   3.733250865394189*^9}},ExpressionUUID->"35050c56-b0ed-451d-a645-\
+e67e06fbc747"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDatasetDownload", "[", 
+   RowBox[{"name_", ",", " ", "\"\<File\>\""}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"With", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"target", "=", "\n", "\t\t\t\t", 
+       RowBox[{"If", "[", 
+        RowBox[{"$ChemDatasetsCachePermanent", ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"ChemDatasetAppDataFile", "[", "name", "]"}], ",", " ", "\n",
+          "\t\t\t\t\t", 
+         RowBox[{"ChemDatasetTempFile", "[", "name", "]"}]}], "\n", 
+        "\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t", 
+      RowBox[{"source", "=", 
+       RowBox[{"ChemDatasetWebResourceFile", "[", "name", "]"}]}]}], "\n", 
+     "\t\t\t", "}"}], ",", "\n", "\t\t", 
+    RowBox[{"Monitor", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"URLDownload", "[", 
+          RowBox[{
+          "source", ",", " ", "target", ",", " ", "\"\<StatusCode\>\""}], 
+          "]"}], "<", "400"}], ",", "\n", "\t\t\t\t", "target", ",", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"Failure", "[", 
+         RowBox[{
+         "\"\<ChemDatasetDownload\>\"", ",", " ", "\n", "\t\t\t\t\t", 
+          RowBox[{"\"\<MessageTemplate\>\"", "->", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"TemplateApply", "[", 
+            RowBox[{
+            "\"\<Couldn't download `` from ``\>\"", ",", "\n", 
+             "\t\t\t\t\t\t ", 
+             RowBox[{"{", 
+              RowBox[{"name", ",", " ", "source"}], "}"}]}], "\n", 
+            "\t\t\t\t\t\t ", "]"}]}]}], "\n", "\t\t\t\t\t", "]"}]}], "\n", 
+       "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
+      RowBox[{"Internal`LoadingPanel", "@", "\n", "\t\t\t\t", 
+       RowBox[{"TemplateApply", "[", 
+        RowBox[{"\"\<Downloading dataset `` from ``\>\"", ",", " ", 
+         RowBox[{"{", 
+          RowBox[{"name", ",", " ", "source"}], "}"}]}], "]"}]}]}], "\n", 
+     "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}]], "CodeInput",
+ CellChangeTimes->{{3.733193340976232*^9, 3.7331933519514027`*^9}, {
+   3.7331934384635887`*^9, 3.733193452365506*^9}, {3.733193618198996*^9, 
+   3.7331936369709578`*^9}, {3.733193677359159*^9, 3.73319368478643*^9}, {
+   3.733193831246002*^9, 3.7331939791488667`*^9}, {3.733194056958961*^9, 
+   3.7331941135415983`*^9}, {3.733194156912039*^9, 3.733194160748084*^9}, 
+   3.733250651951086*^9},ExpressionUUID->"52bac43a-f080-40d6-874d-\
+419c9df43707"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDatasetLoad", "[", 
+    RowBox[{"name_", ",", " ", 
+     RowBox[{"mode", ":", "\"\<File\>\""}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Replace", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"SelectFirst", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"ChemDatasetPacletFile", "[", "name", "]"}], ",", "\n", 
+         "\t\t\t\t", 
+         RowBox[{"ChemDatasetAppDataFile", "[", "name", "]"}], ",", "\n", 
+         "\t\t\t\t", 
+         RowBox[{"ChemDatasetTempFile", "[", "name", "]"}]}], "\n", 
+        "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", "FileExistsQ", ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"ChemDatasetDownload", "[", 
+        RowBox[{"name", ",", " ", "mode"}], "]"}]}], "\n", "\t\t\t", "]"}], 
+     ",", "\n", "\t", 
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"res", ":", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"_String", "|", "_File"}], ")"}], "?", "FileExistsQ"}]}], ":>",
+         "\n", "\t", "\t\t", 
+        RowBox[{"Import", "[", "res", "]"}]}], ",", "\n", "\t\t", 
+       RowBox[{"fail_", "\[RuleDelayed]", "\n", "\t\t\t", 
+        RowBox[{"(", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"Message", "[", 
+           RowBox[{
+            RowBox[{"ChemDataLookup", "::", "nolod"}], ",", " ", "name", ",", 
+            " ", "fail"}], "]"}], ";", "\n", "\t\t\t\t", 
+          RowBox[{"SetDelayed", "[", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"ChemDatasetLoad", "[", 
+             RowBox[{"name", ",", " ", "mode"}], "]"}], ",", " ", "\n", 
+            "\t\t\t\t\t", 
+            RowBox[{"Message", "[", 
+             RowBox[{
+              RowBox[{"ChemDataLookup", "::", "nolod"}], ",", " ", "name", 
+              ",", " ", "fail"}], "]"}]}], "\n", "\t\t\t\t\t", "]"}], ";", 
+          "\n", "\t\t\t\t", "fail"}], "\n", "\t\t\t\t", ")"}]}]}], "\n", 
+      "\t\t", "}"}]}], "\n", "\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ChemDatasetLoad", "[", 
+   RowBox[{"name_", ",", " ", 
+    RowBox[{"Optional", "[", 
+     RowBox[{"Automatic", ",", " ", "Automatic"}], "]"}]}], "]"}], ":=", "\n",
+   "\t", 
+  RowBox[{"ChemDatasetLoad", "[", 
+   RowBox[{"name", ",", " ", "\"\<File\>\""}], "]"}]}]}], "CodeInput",
+ CellChangeTimes->{{3.733193455030879*^9, 3.733193659546884*^9}, {
+   3.7331938129677353`*^9, 3.7331938214200573`*^9}, {3.733194167226017*^9, 
+   3.733194180732336*^9}, {3.733194588121162*^9, 3.733194598652158*^9}, {
+   3.733250531735051*^9, 3.7332506057310753`*^9}, 
+   3.733250719248515*^9},ExpressionUUID->"3c522a74-2733-4a53-bc7e-\
+17aa0c21e950"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Register", "CodeSubsubsection",
+ CellChangeTimes->{{3.733195209137868*^9, 
+  3.7331952101751757`*^9}},ExpressionUUID->"712c0e03-6a64-40aa-8c7f-\
+a8660af95fb2"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDatasetRegister", "[", 
+    RowBox[{
+     RowBox[{"base", ":", 
+      RowBox[{
+       RowBox[{"Hold", "[", "_Symbol", "]"}], "|", "Automatic"}], ":", 
+      "Automatic"}], ",", " ", "name_", ",", " ", "pat_"}], "]"}], ":=", "\n",
+    "\t", 
+   RowBox[{"Replace", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"base", "===", "Automatic"}], ",", "\n", "\t\t\t", 
+       RowBox[{"ToExpression", "[", 
+        RowBox[{
+         RowBox[{"\"\<$\>\"", "<>", "name"}], ",", " ", "StandardForm", ",", 
+         " ", "Hold"}], "]"}], ",", "\n", "\t\t\t", "base"}], "\n", "\t\t\t", 
+      "]"}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"Hold", "[", "sym_", "]"}], ":>", "\n", "\t\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"!", 
+         RowBox[{"MatchQ", "[", 
+          RowBox[{
+           RowBox[{"OwnValues", "[", "sym", "]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"_", "\[RuleDelayed]", "pat"}], "}"}]}], "]"}]}], ",", 
+        "\n", "\t", "\t\t\t", 
+        RowBox[{"sym", ":=", "\n", "\t", "\t\t\t\t", 
+         RowBox[{"sym", "=", 
+          RowBox[{"ChemDatasetLoad", "[", "name", "]"}]}]}]}], "\n", 
+       "\t\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.733193048385305*^9, 3.733193194315797*^9}, {
+  3.733193305164516*^9, 3.733193336293623*^9}, {3.7331934162609777`*^9, 
+  3.733193435110495*^9}, {3.7331945767824078`*^9, 3.733194580964802*^9}, {
+  3.733194631409696*^9, 3.733194673929583*^9}, {3.7331948059698887`*^9, 
+  3.733194845039756*^9}},ExpressionUUID->"c5eb27a9-54cc-4301-bd67-\
+73134dfab3c8"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["$ChemCustomAtoms", "CodeSubsubsection",
+ CellChangeTimes->{
+  3.699732315174266*^9, {3.7161403466479673`*^9, 3.716140348126338*^9}, {
+   3.733194699081868*^9, 
+   3.7331947005843287`*^9}},ExpressionUUID->"498ffbd9-95e9-4511-bbf2-\
+1fbb75352b49"],
+
+Cell["\[LeftCeiling]A set of non-standard atoms used internally sometimes\
+\[RightFloor]", "Text",
+ Evaluatable->True,
+ CellChangeTimes->{{3.733194702600376*^9, 
+  3.733194712960388*^9}},ExpressionUUID->"9dd9bb87-8762-4330-bb2e-\
+ef91cd854447"],
+
+Cell[BoxData[
+ RowBox[{"ChemDatasetRegister", "[", 
+  RowBox[{"\"\<ChemCustomAtoms\>\"", ",", " ", 
+   RowBox[{"_Association", "?", "AssociationQ"}]}], "]"}]], "CodeInput",
+ CellChangeTimes->{{3.7331946820586863`*^9, 
+  3.733194690034141*^9}},ExpressionUUID->"3eeaf32d-b2a0-4668-9093-\
+2c0722f1f15d"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["$ChemIsotopicMasses", "CodeSubsubsection",
+ CellChangeTimes->{
+  3.699732315174266*^9, {3.7161403466479673`*^9, 3.716140348126338*^9}, 
+   3.7196964472571287`*^9},ExpressionUUID->"6177593b-1527-4053-92ae-\
+680054a32c0d"],
+
+Cell[BoxData[
+ RowBox[{"ChemDatasetRegister", "[", 
+  RowBox[{"\"\<ChemIsotopicMasses\>\"", ",", " ", 
+   RowBox[{"_Association", "?", "AssociationQ"}]}], "]"}]], "CodeInput",
+ CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, 
+   3.7331947238044167`*^9},ExpressionUUID->"c259d395-e393-4505-beac-\
+d7b26f486f64"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["$ChemAtomColors", "CodeSubsubsection",
+ CellChangeTimes->{
+  3.699732315174266*^9, {3.7161403466479673`*^9, 
+   3.716140348126338*^9}},ExpressionUUID->"31e55dd8-5c08-4de5-9709-\
+b6e2886ab7be"],
+
+Cell[BoxData[
+ RowBox[{"ChemDatasetRegister", "[", 
+  RowBox[{"\"\<ChemAtomColors\>\"", ",", " ", 
+   RowBox[{"_Association", "?", "AssociationQ"}]}], "]"}]], "CodeInput",
+ CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
+  3.7331947238044167`*^9, 
+  3.733194736081902*^9}},ExpressionUUID->"12546021-0267-46c3-8cee-\
+b16846599a6c"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["$ChemElements", "CodeSubsubsection",
+ CellChangeTimes->{{3.694483345462484*^9, 3.694483350357079*^9}, 
+   3.699732291447118*^9},ExpressionUUID->"fe16003e-3019-44fb-8dee-\
+d9637739e642"],
+
+Cell[BoxData[
+ RowBox[{"ChemDatasetRegister", "[", 
+  RowBox[{"\"\<ChemElements\>\"", ",", " ", 
+   RowBox[{"_Association", "?", "AssociationQ"}]}], "]"}]], "CodeInput",
+ CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
+  3.7331947238044167`*^9, 
+  3.7331947464442177`*^9}},ExpressionUUID->"383745f1-03e2-47f4-81b8-\
+43814bd3db46"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["$ChemSpaceGroups", "CodeSubsubsection",
+ CellChangeTimes->{
+  3.699732321494029*^9},ExpressionUUID->"c07253be-aaf9-48fc-b26f-\
+2ff7f5750715"],
+
+Cell[BoxData[
+ RowBox[{"ChemDatasetRegister", "[", 
+  RowBox[{"\"\<ChemSpaceGroups\>\"", ",", " ", 
+   RowBox[{"_Association", "?", "AssociationQ"}]}], "]"}]], "CodeInput",
+ CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
+  3.7331947238044167`*^9, 
+  3.733194755764496*^9}},ExpressionUUID->"54da4948-fcaf-49ac-982d-\
+97e097121c73"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["$ChemBondDistances", "CodeSubsubsection",
+ CellChangeTimes->{
+  3.699732310438301*^9},ExpressionUUID->"9815806b-a3ce-4fa4-948b-\
+cf7cc1ff6095"],
+
+Cell[BoxData[
+ RowBox[{"ChemDatasetRegister", "[", 
+  RowBox[{"\"\<ChemBondDistances\>\"", ",", " ", 
+   RowBox[{"_Association", "?", "AssociationQ"}]}], "]"}]], "CodeInput",
+ CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
+  3.7331947238044167`*^9, 
+  3.733194762420148*^9}},ExpressionUUID->"7ff1664f-1ef2-42c5-b499-\
+8fc7c0d0dd60"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["$ChemElementValences", "CodeSubsubsection",
+ CellChangeTimes->{
+  3.699732315174266*^9},ExpressionUUID->"5ad3f4c6-e505-4b71-8516-\
+b98021f5d0f4"],
+
+Cell[BoxData[
+ RowBox[{"ChemDatasetRegister", "[", 
+  RowBox[{"\"\<ChemElementValences\>\"", ",", " ", 
+   RowBox[{"_Association", "?", "AssociationQ"}]}], "]"}]], "CodeInput",
+ CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
+  3.7331947238044167`*^9, 
+  3.733194768908127*^9}},ExpressionUUID->"c364992b-f4f3-4baa-8930-\
+12f403fcee3a"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["$ChemCharacterTables", "CodeSubsubsection",
+ CellChangeTimes->{3.699732315174266*^9, 
+  3.718495189928379*^9},ExpressionUUID->"b98a4342-9771-4a2a-99fa-\
+c83a81ef5447"],
+
+Cell[BoxData[
+ RowBox[{"ChemDatasetRegister", "[", 
+  RowBox[{"\"\<ChemCharacterTables\>\"", ",", " ", 
+   RowBox[{"_Association", "?", "AssociationQ"}]}], "]"}]], "CodeInput",
+ CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
+  3.7331947238044167`*^9, 
+  3.7331947779552307`*^9}},ExpressionUUID->"75c544b9-e427-4f29-b22a-\
+bd290f6b1f06"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["$ChemCorrelationTables", "CodeSubsubsection",
+ CellChangeTimes->{3.699732315174266*^9, 3.718495189928379*^9, 
+  3.720759447953433*^9},ExpressionUUID->"9b352b53-130a-4869-8ee4-\
+b079c5be8ebf"],
+
+Cell[BoxData[
+ RowBox[{"ChemDatasetRegister", "[", 
+  RowBox[{"\"\<ChemCorrelationTables\>\"", ",", " ", 
+   RowBox[{"_Association", "?", "AssociationQ"}]}], "]"}]], "CodeInput",
+ CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
+  3.7331947238044167`*^9, 
+  3.733194781589662*^9}},ExpressionUUID->"fa7ee5e6-9de8-4912-84a3-\
+f347ec316b10"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["$ChemTanabeSuganoData", "CodeSubsubsection",
+ CellChangeTimes->{
+  3.699732315174266*^9, 3.718495189928379*^9, {3.71902828568225*^9, 
+   3.719028288928471*^9}},ExpressionUUID->"ed01f506-90a1-41a9-bdf8-\
+1c9bea8d7de4"],
+
+Cell[BoxData[
+ RowBox[{"ChemDatasetRegister", "[", "\n", "\t", 
+  RowBox[{
+  "$ChemTanabeSuganoData", ",", " ", "\n", "\t", 
+   "\"\<ChemTanabeSuganoDiagrams\>\"", ",", " ", "\n", "\t", 
+   RowBox[{"_Association", "?", "AssociationQ"}]}], "\n", "\t", 
+  "]"}]], "CodeInput",
+ CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
+  3.7331947238044167`*^9, 3.733194789042117*^9}, {3.733194853293475*^9, 
+  3.733194858920754*^9}},ExpressionUUID->"a701c679-161f-4af5-81a1-\
+8480e72ebbc2"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["$ChemMMMFF94AtomTypes", "CodeSubsubsection",
+ CellChangeTimes->{3.699732315174266*^9, 
+  3.7183390547094307`*^9},ExpressionUUID->"4dfc6cff-f4f7-4ab7-8510-\
+7d5b0bd7df5a"],
+
+Cell[BoxData[
+ RowBox[{"ChemDatasetRegister", "[", "\n", "\t", 
+  RowBox[{
+  "$ChemMMFF94AtomTypes", ",", " ", "\n", "\t", "\"\<MMFF94AtomTypes\>\"", 
+   ",", " ", "\n", "\t", 
+   RowBox[{"_Association", "?", "AssociationQ"}]}], "\n", "\t", 
+  "]"}]], "CodeInput",
+ CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
+  3.7331947238044167`*^9, 3.733194789042117*^9}, {3.733194853293475*^9, 
+  3.733194900742152*^9}},ExpressionUUID->"04bee1a5-6a57-41f7-8dfe-\
+1b68cec00a1e"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["$ChemMMMFF94BondData", "CodeSubsubsection",
+ CellChangeTimes->{
+  3.699732315174266*^9, {3.7183390547094307`*^9, 
+   3.718339068035162*^9}},ExpressionUUID->"98dba962-d86d-498a-b6b0-\
+f17a7e824334"],
+
+Cell[BoxData[
+ RowBox[{"ChemDatasetRegister", "[", "\n", "\t", 
+  RowBox[{
+  "$ChemMMMFF94BondData", ",", " ", "\n", "\t", "\"\<MMFF94BondData\>\"", ",",
+    " ", "\n", "\t", 
+   RowBox[{"_Association", "?", "AssociationQ"}]}], "\n", "\t", 
+  "]"}]], "CodeInput",
+ CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
+  3.7331947238044167`*^9, 3.733194789042117*^9}, {3.733194853293475*^9, 
+  3.7331949138990917`*^9}},ExpressionUUID->"85b2d08f-0c6f-461f-ba09-\
+6ee02cd547d1"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["$ChemMMFF94BondAngleData", "CodeSubsubsection",
+ CellChangeTimes->{3.699732315174266*^9, 3.7183390547094307`*^9, 
+  3.718339091044416*^9},ExpressionUUID->"626e7c22-d385-490a-85c0-\
+7012d577a540"],
+
+Cell[BoxData[
+ RowBox[{"ChemDatasetRegister", "[", "\n", "\t", 
+  RowBox[{
+  "$ChemMMFF94BondAngleData", ",", " ", "\n", "\t", 
+   "\"\<MMFF94BondAngleData\>\"", ",", " ", "\n", "\t", 
+   RowBox[{"_Association", "?", "AssociationQ"}]}], "\n", "\t", 
+  "]"}]], "CodeInput",
+ CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
+  3.7331947238044167`*^9, 3.733194789042117*^9}, {3.733194853293475*^9, 
+  3.7331949138990917`*^9}, {3.733195151517922*^9, 
+  3.733195154527211*^9}},ExpressionUUID->"43f1bc8a-1432-4960-972c-\
+95c12f53eb24"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["$ChemMMFF94StretchBendData", "CodeSubsubsection",
+ CellChangeTimes->{3.699732315174266*^9, 3.7183390547094307`*^9, 
+  3.718339118506922*^9},ExpressionUUID->"8a4909e7-05bb-42b1-bd68-\
+c60eb2d6f88a"],
+
+Cell[BoxData[
+ RowBox[{"ChemDatasetRegister", "[", "\n", "\t", 
+  RowBox[{
+  "$ChemMMFF94StretchBendData", ",", " ", "\n", "\t", 
+   "\"\<MMFF94StretchBendData\>\"", ",", " ", "\n", "\t", 
+   RowBox[{"_Association", "?", "AssociationQ"}]}], "\n", "\t", 
+  "]"}]], "CodeInput",
+ CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
+  3.7331947238044167`*^9, 3.733194789042117*^9}, {3.733194853293475*^9, 
+  3.7331949138990917`*^9}, {3.733195151517922*^9, 
+  3.733195166442972*^9}},ExpressionUUID->"ac750217-9754-4387-8461-\
+bb7cb493abfc"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["$ChemMMFF94TorsionAngleData", "CodeSubsubsection",
+ CellChangeTimes->{3.699732315174266*^9, 3.7183390547094307`*^9, 
+  3.718339130090351*^9},ExpressionUUID->"86dd7d23-6394-45bc-9fc7-\
+3167fc8bbbf3"],
+
+Cell[BoxData[
+ RowBox[{"ChemDatasetRegister", "[", "\n", "\t", 
+  RowBox[{
+  "$ChemMMFF94TorsionAngleData", ",", " ", "\n", "\t", 
+   "\"\<MMFF94TorsionAngleData\>\"", ",", " ", "\n", "\t", 
+   RowBox[{"_Association", "?", "AssociationQ"}]}], "\n", "\t", 
+  "]"}]], "CodeInput",
+ CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
+  3.7331947238044167`*^9, 3.733194789042117*^9}, {3.733194853293475*^9, 
+  3.7331949138990917`*^9}, {3.733195151517922*^9, 
+  3.733195179315353*^9}},ExpressionUUID->"612886c0-aee2-4ad3-b874-\
+bf327173bfe8"]
+}, Closed]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"8a9ccb5f-2a91-4328-84b3-\
+f2dfd9214c42"]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"8a2e883f-7c41-4538-8511-\
+dab71d3211a5"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{43, Automatic}, {Automatic, 25}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

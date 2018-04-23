@@ -1,14 +1,38 @@
-(* Created with the Wolfram Language : www.wolfram.com *)
-Paclet[Name -> "ChemTools", Version -> "1.1.33", 
- Creator -> "b3m2a1@gmail.com", Description -> "A collection of packages for \
-object oriented chemistry.\n  The primary packages implement an object and \
-data framework, but support is included for basic spectroscopy and a few \
-different external programs.\n  A discrete variable representation template \
-framework is included as well.", Tags -> {"chemistry"}, 
- Categories -> {"Chemistry"}, Thumbnail -> "PacletIcon.png", 
- Extensions -> {{"Documentation", "Language" -> "English", 
-    "MainPage" -> "Guides/ChemTools"}, {"Kernel", "Root" -> ".", 
-    "Context" -> {"ChemTools`"}, Root -> ".", Context -> {"ChemTools`"}}, 
-   {"FrontEnd"}, {"Formats"}, {"Resource", "Root" -> "Resources", 
-    "Resources" -> {"Datasets", "Extensions", "PaletteGenerators", 
-      "Templates"}, "SystemID" -> "*"}}]
+(* ::Package:: *)
+
+Paclet[
+  Name -> "ChemTools",
+  Version -> "1.2.0",
+  Creator -> "b3m2a1@gmail.com",
+  Description -> "A collection of tools for doing chemistry",
+  Thumbnail -> "PacletIcon.png",
+  Extensions -> {
+    	{
+     		"Kernel",
+     		"Root" -> ".",
+     		"Context" -> {"ChemTools`"}
+     	},
+    	{"FrontEnd"},
+    	{"Formats"},
+    	{
+     		"Resource",
+     		"Root" -> "Resources",
+     		"Resources" -> {
+       			"Datasets",
+       			"Extensions",
+       			"PaletteGenerators",
+       			"Templates"
+       		},
+     		"SystemID" -> "*"
+     	},
+    	{
+     		"PacletServer",
+     		"Tags" -> {"chemistry"},
+     		"Categories" -> {"Chemistry"},
+     		"Description"->"A collection of packages for object oriented chemistry.
+The primary packages implement an object and data framework.
+Support is included for basic spectroscopy and a few different external programs.
+A moderately sophisticated discrete variable representation framework is included as well."
+     	}
+    }
+ ]

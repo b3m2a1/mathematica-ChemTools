@@ -201,23 +201,31 @@ ChemZMatrixStringVarRules[s_String]:=
 		]
 
 
+ChemUtilsPreCleanZMatrixString[s_String]:=
+	Fold[
+		#2[#]&,
+		s,
+		{
+			StringTrim, 
+			StringDelete[StartOfString~~"!"~~(Except["\n"]...)~~"\n"],
+			StringDelete[Longest["!"~~(Except["\n"]...)]],
+			StringDelete[StartOfLine~~(Except["\n", Whitespace])],
+			StringDelete[(Except["\n", Whitespace])~~EndOfLine],
+			StringReplace[Repeated["\n", {2, \[Infinity]}]->"\n\n"]
+			}
+		];
+
+
 ChemUtilsEnumerateZMatrixStrings[s_String]:=
 	Module[
 		{
-			main=StringReplace[StringTrim@s, "!"~~(Except[EndOfLine]...)->""],
+			main=
+					ChemUtilsPreCleanZMatrixString[s],
 			bits,
 			bonds=""
 			},
-		main=
-			StringReplace[main, 
-				StartOfLine~~(Except["\n", Whitespace])->""];
-		main=
-			StringReplace[main,
-			 (Except["\n", Whitespace])~~EndOfLine->""
-			 ];
-		main=StringReplace[main, Repeated["\n", {2, \[Infinity]}]->"\n\n"];
 		bits=
-			StringTrim@
+			StringTrim/@
 				ReplaceAll[
 					StringSplit[
 						StringSplit[
@@ -228,13 +236,17 @@ ChemUtilsEnumerateZMatrixStrings[s_String]:=
 						2
 						],
 					{
-						{main_String}, {vars___String, "JoinMe!"->n_, bonds_String}
-						}:>
-							{
-								main,
-								vars,
-								n<>bonds
-								}
+						{
+							{m_String}, {vars___String, "JoinMe!"->n_, bonds_String}
+							}:>
+								{
+									m,
+									vars,
+									n<>bonds
+									},
+						{{m_String}, {vars__String}}:>
+							{m, vars}
+						}
 					];
 		If[Length@bits>1&&StringStartsQ[Last@bits, NumberString],
 			bonds=Last@bits;

@@ -67,7 +67,7 @@ ChemDatasetAppDataFile[name_]:=
 			}
 		];
 ChemDatasetWebResourceFile[name_]:=
-	CloudObject@
+	First@CloudObject@
 		URLBuild[
 			<|
 				"Scheme"->"user", 
@@ -92,7 +92,7 @@ ChemDatasetDownload[name_, "File"]:=
 				Failure["ChemDatasetDownload", 
 					"MessageTemplate"->
 						TemplateApply["Couldn't download `` from ``",
-						 
+						 {name, source}
 						 ]
 					]
 				],
@@ -102,7 +102,7 @@ ChemDatasetDownload[name_, "File"]:=
 		]
 
 
-ChemDatasetLoad[name_, "File"]:=
+ChemDatasetLoad[name_, mode:"File"]:=
 	Replace[
 		SelectFirst[
 			{
@@ -111,7 +111,7 @@ ChemDatasetLoad[name_, "File"]:=
 				ChemDatasetTempFile[name]
 				},
 			FileExistsQ,
-			ChemDownload[name]
+			ChemDatasetDownload[name, mode]
 			],
 	{
 		res:(_String|_File)?FileExistsQ:>
@@ -119,11 +119,16 @@ ChemDatasetLoad[name_, "File"]:=
 		fail_:>
 			(
 				Message[ChemDataLookup::nolod, name, fail];
-				SetDelayed[ChemDatasetLoad[name], Message[ChemDataLookup::nolod, name, fail]];
+				SetDelayed[
+					ChemDatasetLoad[name, mode], 
+					Message[ChemDataLookup::nolod, name, fail]
+					];
 				fail
 				)
 		}
-	]
+	];
+ChemDatasetLoad[name_, Optional[Automatic, Automatic]]:=
+	ChemDatasetLoad[name, "File"]
 
 
 ChemDatasetRegister[base:Hold[_Symbol]|Automatic:Automatic, name_, pat_]:=
