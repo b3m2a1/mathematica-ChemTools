@@ -145,15 +145,15 @@ If[!TrueQ[`Private`$ImportRegistered["GaussianLog"]],
 								Function[{`Private`elname->ImportGaussianLog[#, `Private`elname]}]
 							]
 						],
-					{
-						"StartDateTime",
-						"ZMatrix",
-						"Scan",
-						"Blurb",
-						"ComputerTimeElapsed",
-						"EndDateTime",
-						"ScanQuantityArray"
-						}
+						{
+							"StartDateTime",
+							"OptimizationCoordinates",
+							"ZMatrix",
+							"Scan",
+							"Blurb",
+							"ComputerTimeElapsed",
+							"EndDateTime"
+							}
 					],
 				{
 					"Elements":>
@@ -162,6 +162,7 @@ If[!TrueQ[`Private`$ImportRegistered["GaussianLog"]],
 								"Elements"->
 									{
 										"StartDateTime",
+										"OptimizationCoordinates",
 										"ZMatrix",
 										"Scan",
 										"Blurb",

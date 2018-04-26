@@ -324,7 +324,12 @@ ChemDataProperties[thing_,pat_:"*"]:=
 
 
 (* ::Subsection:: *)
-(*ChemDataLookup*)
+(*Cache*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDataCacheClear*)
 
 
 
@@ -340,68 +345,9 @@ ChemDataCacheClear[string_:_,attr_:_]:=
 		];
 
 
-HoldPattern[
-	ChemDataLookup[
-		string:Except[_Key|_List|_Pattern|_Optional],
-		attr_,
-		o__,"Overwrite"->True]
-	]:=(
-	$chemDataCache[ChemDataQuery[string,attr]]=.;
-	ChemDataLookup[string,attr,o]
-	);
+(* ::Subsubsubsection::Closed:: *)
+(*Cache Editing*)
 
-
-HoldPattern[
-	ChemDataLookup[
-		string:Except[_Key|_List|_Pattern|_Optional],
-		attr_,
-		dataSource:
-			IsotopeData|ElementData|
-			ChemicalData|_ChemData]
-	]:=
-	If[TrueQ@attr===None,
-		dataSource[Replace[string,{"D"->"H2","T"->"H3"}],attr],
-		Lookup[$chemDataCache,ChemDataQuery[string,attr],
-			With[{d=
-				dataSource[
-					Replace[string,{"D"->"H2","T"->"H3"}],
-					attr]},
-				If[TrueQ@$ChemDataSourcesDontCacheFlag,
-					$ChemDataSourcesDontCacheFlag=False;
-					d,
-					$chemDataCache[ChemDataQuery[string,attr]]=d
-					]
-				]
-			]
-		];
-HoldPattern[
-	ChemDataLookup[
-		string:Except[_Key|_List|_Pattern|_Optional],
-		attr_,
-		dataSource:
-			IsotopeData|ElementData|
-			ChemicalData|_ChemData,
-		default_]
-	]:=
-	If[attr===None,
-		Replace[
-			dataSource[Replace[string,{"D"->"H2","T"->"H3"}],
-				attr],
-			_Missing->default],
-		Lookup[$chemDataCache,ChemDataQuery[string,attr],
-			With[{d=
-				Replace[
-					dataSource[Replace[string,{"D"->"H2","T"->"H3"}],
-						attr],
-					_Missing->default]},
-				If[TrueQ@$ChemDataSourcesDontCacheFlag,
-					$ChemDataSourcesDontCacheFlag=False;
-					d,
-					$chemDataCache[ChemDataQuery[string,attr]]=d
-					]
-				]
-			]
-		];
 
 
 chemDataCacheThreadSet[keys:{__},vals:{__}]:=
@@ -459,65 +405,178 @@ ChemDataLookup/:
 	chemDataCacheThreadUnset[ChemDataQuery[name,attr]];
 
 
-HoldPattern[
-	ChemDataLookup[
-		string:Except[_Key|_List|_Pattern|_Optional],
-		attr_,
-		source_String?(KeyMemberQ[$ChemDataSources,#]&)]
+(* ::Subsection:: *)
+(*ChemDataLookup*)
+
+
+
+ChemDataLookup//Clear
+
+
+$ChemDataSpecialArgsPat=Except[_Key|_List|_Query|_Blank|_Pattern|_Optional]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDataLookup*)
+
+
+
+ChemDataLookup[
+	string:$ChemDataSpecialArgsPat,
+	attr_,
+	o__,
+	"Overwrite"->True
+	]:=
+	(
+		$chemDataCache[ChemDataQuery[string,attr]]=.;
+		ChemDataLookup[string,attr,o]
+		);
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Caching Lookup*)
+
+
+
+ChemDataLookup[
+	string:$ChemDataSpecialArgsPat,
+	attr_,
+	dataSource:
+		IsotopeData|ElementData|
+		ChemicalData|_ChemData
+	]:=
+	If[TrueQ@attr===None,
+		dataSource[Replace[string,{"D"->"H2","T"->"H3"}],attr],
+		Lookup[$chemDataCache,ChemDataQuery[string,attr],
+			With[{d=
+				dataSource[
+					Replace[string,{"D"->"H2","T"->"H3"}],
+					attr]},
+				If[TrueQ@$ChemDataSourcesDontCacheFlag,
+					$ChemDataSourcesDontCacheFlag=False;
+					d,
+					$chemDataCache[ChemDataQuery[string,attr]]=d
+					]
+				]
+			]
+		];
+
+
+ChemDataLookup[
+	string:$ChemDataSpecialArgsPat,
+	attr_,
+	dataSource:
+		IsotopeData|ElementData|
+		ChemicalData|_ChemData,
+	default_
+	]:=
+	If[attr===None,
+		Replace[
+			dataSource[Replace[string,{"D"->"H2","T"->"H3"}],
+				attr],
+			_Missing->default],
+		Lookup[$chemDataCache,ChemDataQuery[string,attr],
+			With[{d=
+				Replace[
+					dataSource[Replace[string,{"D"->"H2","T"->"H3"}],
+						attr],
+					_Missing->default]},
+				If[TrueQ@$ChemDataSourcesDontCacheFlag,
+					$ChemDataSourcesDontCacheFlag=False;
+					d,
+					$chemDataCache[ChemDataQuery[string,attr]]=d
+					]
+				]
+			]
+		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDataSources*)
+
+
+
+ChemDataLookup[
+	string:$ChemDataSpecialArgsPat,
+	attr_,
+	source_String?(KeyMemberQ[$ChemDataSources,#]&)
 	]:=
 	ChemDataLookup[string,attr,$ChemDataSources[source]];
-HoldPattern[
-	ChemDataLookup[
-		string:Except[_Key|_List|_Pattern|_Optional],
-		attr_,
-		source_String?(KeyMemberQ[$ChemDataSources,#]&),default_]
+
+
+ChemDataLookup[
+	string:$ChemDataSpecialArgsPat,
+	attr_,
+	source_String?(KeyMemberQ[$ChemDataSources,#]&),default_
 	]:=
 	ChemDataLookup[string,attr,
 		$ChemDataSources[source],default];
 
 
-HoldPattern[
-	ChemDataLookup[
-		string:Except[_Key|_List|_Pattern|_Optional],
-		source:
-			ChemicalData|ElementData|IsotopeData|
-			_String?(KeyMemberQ[$ChemDataSources,#]&)
-		]
+(* ::Subsubsubsection::Closed:: *)
+(*All Built-Ins*)
+
+
+
+ChemDataLookup[
+	string:$ChemDataSpecialArgsPat,
+	source:
+		ChemicalData|ElementData|IsotopeData|
+		_String?(KeyMemberQ[$ChemDataSources,#]&)
 	]:=
 	ChemDataLookup[string,source,source];
 
 
-HoldPattern[
-	ChemDataLookup[
-		string:Except[_Key|_List|_Pattern|_Optional],
-		source:
-			ChemicalData|ElementData|IsotopeData|
-			_String?(KeyMemberQ[$ChemDataSources,#]&),
-		default_]
+ChemDataLookup[
+	string:$ChemDataSpecialArgsPat,
+	source:
+		ChemicalData|ElementData|IsotopeData|
+		_String?(KeyMemberQ[$ChemDataSources,#]&),
+	default_
 	]:=
 	ChemDataLookup[string,source,source,default];
 
 
-HoldPattern[
-	ChemDataLookup[
-		string:Except[_Key|_List|_Pattern|_Optional],
-		attr_]
+(* ::Subsubsubsection::Closed:: *)
+(*Source Inference*)
+
+
+
+ChemDataLookup[
+	string:$ChemDataSpecialArgsPat,
+	attr_
 	]:=
 	ChemDataLookup[string,attr,ChemDataSource@string];
-HoldPattern[
-	ChemDataLookup[
-		string:Except[_Key|_List|_Pattern|_Optional],
-		attr_,default_]
+
+
+ChemDataLookup[
+	string:$ChemDataSpecialArgsPat,
+	attr_,default_
 	]:=
 	ChemDataLookup[string,attr,ChemDataSource@string,default];
 
 
-HoldPattern[ChemDataLookup[l_List,a__]]:=
+(* ::Subsubsubsection::Closed:: *)
+(*Simple listability*)
+
+
+
+ChemDataLookup[l_List,a__]:=
 	ChemDataLookup[#,a]&/@l;
 
 
-HoldPattern[ChemDataLookup[Verbatim[Verbatim][a_],b__]]:=
-	ChemDataLookup[ChemDataQuery[a], b];
+(* ::Subsubsubsection::Closed:: *)
+(*Query handling*)
+
+
+
+ChemDataLookup[Query[a__], b__]:=
+	ChemDataLookup[ChemDataQuery@@Flatten[{a}, 1], b];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Operator Form*)
+
 
 
 ChemDataLookup[attr:Except[_Association]][

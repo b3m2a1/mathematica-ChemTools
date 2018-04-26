@@ -341,14 +341,17 @@ GaussianLogRead[log_InputStream, "ZMatrix"]:=
 gaussianLogReadParseOptimizationCoordinates[s:{__String}]:=
 	Map[
 		StringCases[
-			Whitespace~~which:DigitCharacter..~~
+			(
+				Whitespace~~which:DigitCharacter..~~
 				Whitespace~~what:DigitCharacter..~~
-				Whitespace~type:DigitCharacter..~~
+				Whitespace~~type:DigitCharacter..~~
 				Whitespace~~x:NumberString~~
 				Whitespace~~y:NumberString~~
-				Whitespace~~z:NumberString:>
+				Whitespace~~z:NumberString
+				):>
 					{
-						ElementData[what, "Symbol"], ToExpression@{x, y, z}
+						ElementData[ToExpression@what, "Symbol"], 
+							ToExpression@{x, y, z}
 						}
 				],
 		s
@@ -368,7 +371,8 @@ GaussianLogRead[log_InputStream, "OptimizationCoordinates"]:=
  ---------------------------------------------------------------------"}, 
  {" ---------------------------------------------------------------------"}
  },
-		gaussianLogReadParseOptimizationCoordinates
+		gaussianLogReadParseOptimizationCoordinates,
+		ReadList
 		]
 
 

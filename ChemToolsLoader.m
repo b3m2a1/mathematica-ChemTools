@@ -15,7 +15,7 @@ BeginPackage["ChemTools`"];
 
 
 ChemTools::usage=
-	"ChemTools is an inert head for the ChemTools package";
+	"ChemTools is a manager head for the ChemTools package";
 
 
 (* ::Subsubsection::Closed:: *)
@@ -57,6 +57,9 @@ Unprotect["`PackageScope`Private`*"];
 Begin["`PackageScope`Private`"];
 
 
+Clear[ChemTools];
+
+
 (* ::Subsection:: *)
 (*Constants*)
 
@@ -65,17 +68,25 @@ Begin["`PackageScope`Private`"];
 (*Naming*)
 
 
+ChemTools["Directory"]:=
+	$PackageDirectory;
 $PackageDirectory=
 	DirectoryName@$InputFileName;
+
+
+ChemTools["Name"]:=
+	$PackageName;
 $PackageName=
 	"ChemTools";
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*Loading*)
 
 
+ChemTools["PackageListing"]:=$PackageListing;
 $PackageListing=<||>;
+ChemTools["Contexts"]:=$PackageContexts;
 $PackageContexts={
 		"ChemTools`",
 		"ChemTools`PackageScope`Private`",
@@ -89,8 +100,11 @@ $PackageDeclared=
 (*Scoping*)
 
 
+ChemTools["FEScopedSymbols"]:=$PackageFEHiddenSymbols;
 $PackageFEHiddenSymbols={};
+ChemTools["PackageScopedSymbols"]:=$PackageScopedSymbols;
 $PackageScopedSymbols={};
+ChemTools["LoadingParameters"]:=$PackageLoadSpecs
 $PackageLoadSpecs=
 	Merge[
 		{
@@ -142,11 +156,13 @@ $PackageLoadSpecs=
 			},
 		Last
 		];
+ChemTools["AllowPackageRescoping"]:=$AllowPackageRescoping;
 $AllowPackageRescoping=
 	Replace[
 		Lookup[$PackageLoadSpecs, "AllowRescoping"],
 		Except[True|False]->$TopLevelLoad
 		];
+ChemTools["AllowPackageRecoloring"]:=$AllowPackageRecoloring;
 $AllowPackageRecoloring=
 	Replace[
 		Lookup[$PackageLoadSpecs, "AllowRecoloring"],
@@ -196,22 +212,25 @@ PackagePathSymbol~SetAttributes~HoldRest;
 (*Loading*)
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*Constants*)
 
 
+ChemTools["FileContexts"]:=$PackageFileContexts;
 If[Not@AssociationQ@$PackageFileContexts,
 	$PackageFileContexts=
 		<||>
 	];
 
 
+ChemTools["DeclaredPackages"]:=$DeclaredPackages;
 If[Not@AssociationQ@$DeclaredPackages,
 	$DeclaredPackages=
 		<||>
 	];
 
 
+ChemTools["LoadedPackages"]:=$LoadedPackages;
 If[Not@ListQ@$LoadedPackages,
 	$LoadedPackages={}
 	];
@@ -394,6 +413,10 @@ PackageLoadDeclare[pkgFile_String]:=
 (*PackageAppLoad*)
 
 
+ChemTools["Load", args___]:=
+	PackageAppLoad[args]
+
+
 packageAppLoad[dir_, listing_]:=
 	With[
 		{
@@ -447,6 +470,8 @@ PackageAppLoad~SetAttributes~Listable;
 (*PackageAppGet*)
 
 
+ChemTools["Get", f__]:=
+	PackageAppGet[f];
 PackageAppGet[f_]:=
 	PackageExecute@
 		With[{fBase = 
@@ -478,8 +503,12 @@ PackageAppGet[c_,f_]:=
 		];
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*PackageAppNeeds*)
+
+
+ChemTools["Needs", f___]:=
+	PackageAppNeeds[f];
 
 
 PackageAppNeeds[pkgFile_String?FileExistsQ]:=
@@ -1261,6 +1290,30 @@ PackagePostProcessContextPathReassign[]:=
 		]
 
 
+(* ::Subsubsection:: *)
+(*AttachMainAutocomplete*)
+
+
+PackageAttachMainAutocomplete[]:=
+	PackageAddAutocompletions[ChemTools, 
+		Table[
+			Replace[{}->None]@
+				Cases[
+					DownValues[ChemTools],
+					Nest[
+						Insert[#, _, {1, 1, 1}]&,
+						(HoldPattern[Verbatim[HoldPattern]][
+							ChemTools[s_String, ___]
+							]:>_),
+						n-1
+						]:>s,
+					Infinity
+					],
+			{n, 5}
+			]
+		]
+
+
 (* ::Subsection:: *)
 (*End*)
 
@@ -1304,6 +1357,7 @@ If[!`PackageScope`Private`$loadAbort,
 	`PackageScope`Private`PackagePostProcessExposePackages[];
 	`PackageScope`Private`PackagePostProcessRehidePackages[];
 	`PackageScope`Private`PackagePostProcessDecontextPackages[];
+	`PackageScope`Private`PackageAttachMainAutocomplete[];
 	]
 
 
