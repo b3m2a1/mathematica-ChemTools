@@ -133,6 +133,28 @@ If[!TrueQ[`Private`$ImportRegistered["FormattedCheckpoint"]],
 
 
 
+`Private`$GLKS=
+	Join[
+		{
+			"StartDateTime",
+			"CartesianCoordinates",
+			"MultipoleMoments",
+			"ZMatrix",
+			"ZMatrixVariables",
+			"Scan",
+			"OptimizationScan",
+			"Blurb",
+			"ComputerTimeElapsed",
+			"EndDateTime"
+			},
+		{
+			"ScanQuantityArray",
+			"OptimizationScanQuantityArray",
+			"OptimizationScanZMatrices"
+			}
+		]
+
+
 If[!TrueQ[`Private`$ImportRegistered["GaussianLog"]],
 	Map[
 		ImportExport`RegisterImport[
@@ -145,31 +167,14 @@ If[!TrueQ[`Private`$ImportRegistered["GaussianLog"]],
 								Function[{`Private`elname->ImportGaussianLog[#, `Private`elname]}]
 							]
 						],
-						{
-							"StartDateTime",
-							"OptimizationCoordinates",
-							"ZMatrix",
-							"Scan",
-							"Blurb",
-							"ComputerTimeElapsed",
-							"EndDateTime"
-							}
+						`Private`$GLKS
 					],
 				{
 					"Elements":>
 						Function[
 							{
 								"Elements"->
-									{
-										"StartDateTime",
-										"OptimizationCoordinates",
-										"ZMatrix",
-										"Scan",
-										"Blurb",
-										"ComputerTimeElapsed",
-										"EndDateTime",
-										"ScanQuantityArray"
-										}
+									`Private`$GLKS
 								}
 							],
 					ImportGaussianLog

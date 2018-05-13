@@ -35,6 +35,11 @@ Begin["`Private`"];
 
 
 
+(* ::Subsubsection::Closed:: *)
+(*iGaussianRead*)
+
+
+
 iGaussianReadLink0[link0Block_]:=
 	Map[
 		If[StringContainsQ[#, "="],
@@ -94,22 +99,37 @@ iGaussianJobReadBonds[bonds_]:=
 	ImportString[bonds, "Table"];
 
 
+iGaussianJobPrecleanSpec[s_]:=
+	Fold[
+		#2[#]&,
+		s,
+		{
+			StringTrim, 
+			StringDelete[StartOfString~~"!"~~(Except["\n"]...)~~"\n"],
+			StringDelete[Longest["!"~~(Except["\n"]...)]],
+			StringDelete[StartOfLine~~(Except["\n", Whitespace])],
+			StringDelete[(Except["\n", Whitespace])~~EndOfLine],
+			StringReplace[Repeated["\n", {2, \[Infinity]}]->"\n\n"]
+			}
+		]
+
+
 iGaussianJobReadSystem[systemSpec_]:=
 	Module[
 		{
-			specText,
+			specText=iGaussianJobPrecleanSpec[systemSpec],
 			mults,
 			atoms,
 			vars,
 			consts,
 			bonds
 			},
-		{mults, specText}=StringSplit[systemSpec, "\n", 2];
+		{mults, specText}=StringSplit[specText, "\n", 2];
 		atoms=
 			First@
 				StringCases[specText,
 					Repeated[
-						(Whitespace|"")~~LetterCharacter~~Except["\n"|":"]..~~("\n"|EndOfString)
+						(Whitespace|"")~~LetterCharacter~~Except["\n"|":"]...~~("\n"|EndOfString)
 						]
 					];
 		specText=StringTrim[specText, atoms];
@@ -133,9 +153,9 @@ iGaussianJobReadSystem[systemSpec_]:=
 				consts="";
 			];
 		bonds=
-			Replace[
+			StringTrim@Replace[
 				StringCases[
-					specText,
+					StringDelete[specText, Alternatives@@vars],
 					Repeated[
 						(Whitespace|"")~~DigitCharacter~~Except["\n"|":"]..~~("\n"|EndOfString)
 						]
@@ -192,12 +212,16 @@ ImportGaussianJob[file:_String?FileExistsQ|_InputStream]:=
 ImportGaussianJob[str_String?(Not@*FileExistsQ)]:=
 	iGaussianJobRead1[str];
 ImportGaussianJob[file:_String|_InputStream, "MolTable"]:=
-	With[{dats=ImportGaussianJob[file]},
-		Join[
-			{{Length@dats["Atoms"], Length@dats["Bonds"]}},
-			Lookup[dats, "Atoms", {}],
-			Lookup[dats, "Bonds", {}]
-			]
+	With[{dats=ImportGaussianJob[file]["System"]},
+		ImportString[#, "ZMatrix"]&@
+			StringRiffle@
+				Join[
+					dats["Atoms"],
+					{{"Variables:"}},
+					dats["Variables"],
+					{{""}},
+					dats["Bonds"]
+					]
 		]
 
 
@@ -295,32 +319,43 @@ GaussianLogRead[logString_String, key_]:=
 
 
 gaussianLogReadZMatrixBlock[zmat_]:=
-	Map[
-		Which[
-			Length@#>5,
-				MapAt[
-					Quantity[#, "Angstroms"]&, 
-					MapAt[Quantity[#, "AngularDegrees"]&, #, {{5}, {7}}],
-					{3}
+	With[{
+		bits=
+			StringSplit[
+				StringSplit[StringTrim@zmat, "\n", 2][[2]],
+				"Variables:"
+				]
+		},
+		Prepend[
+			#[[1]]->Rest[#]&/@
+				ImportString[
+					StringSplit[StringTrim@bits[[2]], "\n"~~(Whitespace|"")~~"\n"][[1]], 
+					"Table"
 					],
-			Length@#>3,
-				MapAt[
-					Quantity[#, "Angstroms"]&, 
-					MapAt[Quantity[#, "AngularDegrees"]&, #, {5}], 
-					{3}
-					],
-			Length@#>1,
-					MapAt[Quantity[#, "Angstroms"]&, #, {3}],
-			True,
-				#
-			]&,
-		ImportString[
-			StringTrim@
-				First@StringSplit[
-					StringSplit[StringTrim@zmat, "\n", 2][[2]],
-					"Variables:"
-					],
-			"Table"
+			Map[
+				Which[
+					Length@#>5,
+						MapAt[
+							Quantity[#, "Angstroms"]&, 
+							MapAt[Quantity[#, "AngularDegrees"]&, #, {{5}, {7}}],
+							{3}
+							],
+					Length@#>3,
+						MapAt[
+							Quantity[#, "Angstroms"]&, 
+							MapAt[Quantity[#, "AngularDegrees"]&, #, {5}], 
+							{3}
+							],
+					Length@#>1,
+							MapAt[Quantity[#, "Angstroms"]&, #, {3}],
+					True,
+						#
+					]&,
+				ImportString[
+					StringTrim@First@bits,
+					"Table"
+					]
+				]
 			]
 		];
 
@@ -334,11 +369,11 @@ GaussianLogRead[log_InputStream, "ZMatrix"]:=
 
 
 (* ::Subsubsubsection::Closed:: *)
-(*OptimizationCoordinates*)
+(*CartesianCoordinates*)
 
 
 
-gaussianLogReadParseOptimizationCoordinates[s:{__String}]:=
+gaussianLogReadParseCartesianCoordinates[s:{__String}]:=
 	Map[
 		StringCases[
 			(
@@ -356,11 +391,11 @@ gaussianLogReadParseOptimizationCoordinates[s:{__String}]:=
 				],
 		s
 		];
-gaussianLogReadParseOptimizationCoordinates[{}]:=
+gaussianLogReadParseCartesianCoordinates[{}]:=
 	{}
 
 
-GaussianLogRead[log_InputStream, "OptimizationCoordinates"]:=
+GaussianLogRead[log_InputStream, "CartesianCoordinates"]:=
 	iGaussianLogRead[
 		log,
 		{
@@ -371,7 +406,89 @@ GaussianLogRead[log_InputStream, "OptimizationCoordinates"]:=
  ---------------------------------------------------------------------"}, 
  {" ---------------------------------------------------------------------"}
  },
-		gaussianLogReadParseOptimizationCoordinates,
+		gaussianLogReadParseCartesianCoordinates,
+		ReadList
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*MultipoleMoments*)
+
+
+
+gaussianLogReadParseMultipoleMoments[s_String]:=
+	Association@
+		Map[
+			#[[1]]->
+				With[
+					{
+						vals=
+							StringCases[#[[2]], 
+								k:("X"|"Y"|"Z")..~~"="~~Whitespace~~val:NumberString:>
+								Replace[Characters@k,
+									{
+										"X"->1,
+										"Y"->2,
+										"Z"->3
+										},
+									1
+									]->ToExpression@val
+								]
+						},
+					With[
+						{
+							symms=
+								SortBy[
+									DeleteDuplicatesBy[
+										Flatten[
+											Thread[
+												Tuples[#[[1]], Length[#[[1]]]]->
+													#[[2]]
+												]&/@vals
+											], 
+										First
+										], 
+									First
+									]
+							},
+						If[Mod[Length[symms], 3]==0, 
+							Nest[
+								If[Mod[Length[#], 3]==0,
+									Partition[#, 3],
+									#
+									]&, 
+								Last/@symms,
+								Length@vals[[1, 1]]-1
+								]
+							]
+						]
+					]&,
+			Partition[
+				StringSplit[
+					"Dipole moment ("<>s,
+					Longest[
+						(StartOfLine|StartOfString)~~
+							(type:(WordCharacter|" ")..)~~" moment "~~Except[":"]..~~":"
+						]:>
+						StringDelete[type, Whitespace]
+					],
+				2
+				]
+			];
+gaussianLogReadParseMultipoleMoments[s:{__String}]:=
+	gaussianLogReadParseMultipoleMoments/@s;
+gaussianLogReadParseMultipoleMoments[_]:=
+	{};
+
+
+GaussianLogRead[log_InputStream, "MultipoleMoments"]:=
+	iGaussianLogRead[
+		log,
+		{
+		{"Dipole moment ("}, 
+ {" N-N="}
+ },
+		gaussianLogReadParseMultipoleMoments,
 		ReadList
 		]
 
@@ -415,6 +532,41 @@ GaussianLogRead[log_InputStream, "Scan"]:=
 		log,
 		{{"scan:"}, {"\n  \n"}},
 		gaussianLogReadScanBlock
+		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*OptimizationScan*)
+
+
+
+gaussianLogReadOptScanBlock[scan_]:=
+	Transpose@
+		KeyValueMap[Thread[Rule[Replace[#, "Eigenvalues"->"Energy"], #2]]&]@
+			KeySortBy[Replace[{"Eigenvalues"->1, _->0}]]@
+			GroupBy[
+				DeleteCases[{}]@
+				Flatten[
+					ImportString[#, "Table"]&/@
+						StringReplace[
+							StringSplit[scan, "\n"~~Repeated[Whitespace~~DigitCharacter..]~~"\n"],
+							{
+								"--"->"  ",
+								"-"->" -"
+								}
+							],
+					1
+					],
+				First->Rest,
+				Flatten
+				]
+
+
+GaussianLogRead[log_InputStream, "OptimizationScan"]:=
+	iGaussianLogRead[
+		log,
+		{{"Summary of Optimized Potential Surface Scan"}, {"-----------------"}},
+		gaussianLogReadOptScanBlock
 		];
 
 
@@ -510,13 +662,21 @@ GaussianLogRead[log_InputStream, "EndDateTime"]:=
 $GaussianLogKeywords=
 	{
 		"StartDateTime",
-		"OptimizationCoordinates",
+		"CartesianCoordinates",
+		"MultipoleMoments",
 		"ZMatrix",
+		"ZMatrixVariables",
 		"Scan",
+		"OptimizationScan",
 		"Blurb",
 		"ComputerTimeElapsed",
 		"EndDateTime"
 		};
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Main*)
+
 
 
 ImportGaussianLog[
@@ -552,6 +712,11 @@ ImportGaussianLog[
 	ImportGaussianLog[file, $GaussianLogKeywords]
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*ScanQuantityArray*)
+
+
+
 ImportGaussianLog[
 	file:_String?FileExistsQ|_InputStream,
 	"ScanQuantityArray"
@@ -562,7 +727,7 @@ ImportGaussianLog[
 			With[{
 				keys=Keys@First@bits[[2]], 
 				vals=Values@bits[[2]], 
-				zm=bits[[1]],
+				zm=bits[[1, 1]],
 				uc=
 					QuantityMagnitude@
 						UnitConvert[
@@ -585,6 +750,99 @@ ImportGaussianLog[
 					QuantityArray[
 						MapAt[uc*#&, vals, {All, -1}], 
 						Append[types, "Wavenumbers"]
+						]
+					]
+				]
+			]
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*OptimizationScanQuantityArray*)
+
+
+
+ImportGaussianLog[
+	file:_String?FileExistsQ|_InputStream,
+	"OptimizationScanQuantityArray"
+	]:=
+	With[{bits=ImportGaussianLog[file, {"ZMatrix", "OptimizationScan"}]},
+		If[MissingQ@bits[[2]],
+			bits[[2]],
+			With[{
+				keys=Keys@First@bits[[2]], 
+				vals=Values@bits[[2]], 
+				zm=bits[[1, 1]],
+				uc=
+					QuantityMagnitude@
+						UnitConvert[
+							Quantity[1, "Hartrees"], 
+							"Wavenumbers"*"PlanckConstant"*"SpeedOfLight"
+							]
+				},
+				With[
+					{
+						types=
+							Map[
+								Switch[FirstPosition[zm, #], 
+									{_, 3, ___}, "Angstroms",
+									_, "AngularDegrees"
+									]&,
+								Most@keys
+								]
+						},
+				Map[QuantityVariable, keys]->
+					QuantityArray[
+						MapAt[uc*#&, vals, {All, -1}], 
+						Append[types, "Wavenumbers"]
+						]
+					]
+				]
+			]
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*OptimizationScanZMatrices*)
+
+
+
+ImportGaussianLog[
+	file:_String?FileExistsQ|_InputStream,
+	"OptimizationScanZMatrices"
+	]:=
+	With[{bits=ImportGaussianLog[file, {"ZMatrix", "OptimizationScan"}]},
+		If[MissingQ@bits[[2]],
+			bits[[2]],
+			With[{
+				keys=Keys@First@bits[[2]], 
+				vals=Values@bits[[2]], 
+				zm=bits[[1, 1]],
+				uc=
+					QuantityMagnitude@
+						UnitConvert[
+							Quantity[1, "Hartrees"], 
+							"Wavenumbers"*"PlanckConstant"*"SpeedOfLight"
+							]
+				},
+				With[
+					{
+						types=
+							Map[
+								Switch[FirstPosition[zm, #], 
+									{_, 3, ___}, "Angstroms",
+									_, "AngularDegrees"
+									]&,
+								Most@keys
+								]
+						},
+				ReplaceAll[zm/.q_Quantity:>QuantityMagnitude[q],
+					Thread[keys->#]&/@
+						QuantityMagnitude@
+							QuantityArray[
+								MapAt[uc*#&, vals, {All, -1}], 
+								Append[types, "Wavenumbers"]
+								]
 						]
 					]
 				]

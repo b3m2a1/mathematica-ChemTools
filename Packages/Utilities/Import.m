@@ -94,44 +94,59 @@ ChemDataBondBlockStringPattern=
 
 
 
+iChemImportZMatrix//Clear
+
+
 iChemImportZMatrix[table:{__List}]:=
-	With[
+	Module[
 		{
 			chunks=
 				Join@@@
 					Partition[
 						SplitBy[table, MatchQ@{_String}],
 						2
-						]
-				},
-		Table[
-			With[{
-				a=ChemUtilsGenerateMolTable@
-					Replace[
-						Cases[t, {_String,___}],
-						{
-							{s_, i_, r_, j_, a_}:>
-								{s, i, r, 
-									j, 
-										If[TrueQ[a>2\[Pi]||a<-\[Pi]], a*Degree, a]},
-							{s_, i_, r_, j_, a_, k_, d_, ___}:>
-								{s, i, r, 
-									j, 
-										If[TrueQ[a>2\[Pi]||a<-\[Pi]], a*Degree, a], 
-									k, 
-										If[TrueQ[d>2\[Pi]||d<-\[Pi]], d*Degree, d]
-										}
-							},
-						1
 						],
-				b=Cases[t,{_Integer,_Integer,_Integer}|{_Integer,_Integer}]
-				},
+			lines,
+			a,
+			b,
+			inDeg
+			},
+		Table[
+			lines=
+				Cases[t, {_String, ___}];
+			inDeg=
+				MemberQ[
+					lines, 
+					{_, _Integer, _, _Integer, _?(TrueQ[#>2\[Pi]||#<-\[Pi]]&), ___}
+					]||
+					MemberQ[
+						lines, 
+						{_, _Integer, _, _Integer, _, _Integer, _?(TrueQ[#>2\[Pi]||#<-\[Pi]]&), ___}
+						];
+			a=
+				ChemUtilsGenerateMolTable@
+					If[inDeg,
+						Replace[
+							lines,
+							{
+								{s_, i_Integer, r_, j_Integer, ang_?NumericQ}:>
+									{s, i, r, j, ang*Degree},
+								{s_, i_Integer, r_, j_Integer, ang_, k_Integer, d_, ___}:>
+									{s, i, r, 
+										j, ang*Degree, 
+										k, d*Degree
+										}
+								},
+							1
+							],
+						lines
+						];
+				b=Cases[t,{_Integer,_Integer,_Integer}|{_Integer,_Integer}];
 				Join[
 					{{Length@a,Length@b}},
 					a,
 					b
-					]
-				],
+					],
 			{t,chunks}
 			]
 		];

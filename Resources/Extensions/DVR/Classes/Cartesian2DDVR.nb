@@ -16,391 +16,15 @@ Cell[BoxData[
    3.707066357022255*^9}},ExpressionUUID->"0539e320-48cc-4d02-9a07-\
 7bf39b90707d"],
 
-Cell["\<\
-A one dimensional DVR as reported by Colbert and Miller for the \
-(-\[Infinity],\[Infinity]) range\
-\>", "Text",ExpressionUUID->"b5153e79-adb4-4b8f-b746-0ba9ac1e0e2c"],
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{"Cartesian2DDVRFormatGrid", "::", "usage"}], "=", 
-  "\"\<\>\""}], "\n", 
- RowBox[{
-  RowBox[{"Cartesian2DDVRPoints", "::", "usage"}], "=", "\"\<\>\""}], "\n", 
- RowBox[{
-  RowBox[{"Cartesian2DDVRKineticMatrix", "::", "usage"}], "=", 
-  "\"\<\>\""}], "\n", 
- RowBox[{
-  RowBox[{"Cartesian2DDVRPotentialMatrix", "::", "usage"}], "=", 
-  "\"\<\>\""}], "\n", 
- RowBox[{
-  RowBox[{"Cartesian2DDVRWavefunctions", "::", "usage"}], "=", 
-  "\"\<\>\""}], "\n", 
- RowBox[{
-  RowBox[{"Cartesian2DDVRPlotFunction", "::", "usage"}], "=", 
-  "\"\<\>\""}]}], "CodeInput",
- CellChangeTimes->{{3.718940038029428*^9, 
-  3.718940038053405*^9}},ExpressionUUID->"d646a94e-5a43-4ce4-bd20-\
-e3bc2003b68a"],
-
 Cell[BoxData[
  RowBox[{
-  RowBox[{"ChemDVRNeeds", "/@", 
-   RowBox[{"{", "\"\<Cartesian1DDVR\>\"", "}"}]}], ";"}]], "CodeInput",
- CellChangeTimes->{{3.699240131188299*^9, 3.699240167062263*^9}, 
-   3.6992402436302977`*^9, 3.707066387059753*^9, {3.71898352035047*^9, 
-   3.718983527395515*^9}},ExpressionUUID->"2d11891c-63a6-49d3-b823-\
-2260ea96fad0"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
-  ";"}]], "InputSection",ExpressionUUID->"bfbb51ae-b9cd-4ee1-a530-\
-674953ebeba0"],
-
-Cell[CellGroupData[{
-
-Cell["Grid Points Function", \
-"CodeSubsubsection",ExpressionUUID->"9dcbb1e6-36e5-49bc-8c7c-0b7e0095d83c"],
-
-Cell["\<\
-This function should take the number of grid points for each coordinate\
-\>", "Text",ExpressionUUID->"7ae732d9-a106-4f4d-ba40-c00268a8f44f"],
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"Cartesian2DDVRPoints", "[", "\n", "\t", 
-   RowBox[{
-    RowBox[{"points", ":", 
-     RowBox[{"{", 
-      RowBox[{"_Integer", ",", " ", "_Integer"}], "}"}]}], ",", "\n", "\t", 
-    RowBox[{"X", ":", 
-     RowBox[{"{", 
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{
-         RowBox[{"_", "?", "NumericQ"}], ",", 
-         RowBox[{"_", "?", "NumericQ"}]}], "}"}], ",", " ", 
-       RowBox[{"{", 
-        RowBox[{
-         RowBox[{"_", "?", "NumericQ"}], ",", 
-         RowBox[{"_", "?", "NumericQ"}]}], "}"}]}], "}"}], ":", 
-     RowBox[{"{", 
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{
-         RowBox[{"-", "10"}], ",", "10"}], "}"}], ",", " ", 
-       RowBox[{"{", 
-        RowBox[{
-         RowBox[{"-", "10"}], ",", "10"}], "}"}]}], "}"}]}]}], "\n", "\t", 
-   "]"}], ":=", "\n", "\t", 
-  RowBox[{"Table", "[", "\n", "\t\t", 
-   RowBox[{
-    RowBox[{"{", 
-     RowBox[{"x", ",", " ", "y"}], "}"}], ",", "\n", "\t\t", 
-    RowBox[{"{", 
-     RowBox[{"x", ",", " ", 
-      RowBox[{"Subdivide", "@@", 
-       RowBox[{"Flatten", "@", 
-        RowBox[{"{", 
-         RowBox[{
-          RowBox[{"N", "@", 
-           RowBox[{"X", "[", 
-            RowBox[{"[", "1", "]"}], "]"}]}], ",", 
-          RowBox[{
-           RowBox[{"points", "[", 
-            RowBox[{"[", "1", "]"}], "]"}], "-", "1"}]}], "}"}]}]}]}], "}"}], 
-    ",", "\n", "\t\t", 
-    RowBox[{"{", 
-     RowBox[{"y", ",", " ", 
-      RowBox[{"Subdivide", "@@", 
-       RowBox[{"Flatten", "@", 
-        RowBox[{"{", 
-         RowBox[{
-          RowBox[{"N", "@", 
-           RowBox[{"X", "[", 
-            RowBox[{"[", "2", "]"}], "]"}]}], ",", 
-          RowBox[{
-           RowBox[{"points", "[", 
-            RowBox[{"[", "2", "]"}], "]"}], "-", "1"}]}], "}"}]}]}]}], 
-     "}"}]}], "\n", "\t\t", "]"}]}]], "CodeInput",
- CellChangeTimes->{
-  3.699200045278949*^9, {3.69920008501616*^9, 3.6992000920807247`*^9}, {
-   3.699200124968298*^9, 3.699200133406434*^9}, {3.6992074474542017`*^9, 
-   3.699207450724925*^9}, {3.699211747970565*^9, 3.699211787049007*^9}, {
-   3.69921185461567*^9, 3.6992119283628674`*^9}, {3.699212533676085*^9, 
-   3.6992125341066017`*^9}, {3.69922854340968*^9, 3.699228545982193*^9}, {
-   3.699234968992999*^9, 3.699234969751259*^9}, {3.718940038062653*^9, 
-   3.718940123790215*^9}},ExpressionUUID->"5b122caf-413f-4b04-be9d-\
-789fc99f84b4"]
-}, Closed]],
-
-Cell[CellGroupData[{
-
-Cell["Kinetic Matrix Function", \
-"CodeSubsubsection",ExpressionUUID->"3a9cfae4-6754-4c56-9bb6-f653f5495f36"],
-
-Cell[" Using the CM extension to multi-dim", "Text",
- Evaluatable->False,
- CellChangeTimes->{{3.718940131840122*^9, 3.718940152900567*^9}, {
-  3.718940817354295*^9, 3.718940826466213*^9}, {3.718983645643561*^9, 
-  3.718983659607955*^9}},ExpressionUUID->"d2659771-e943-4864-8191-\
-db9d352e2346"],
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{
-   RowBox[{"Options", "[", "Cartesian2DDVRKineticMatrix", "]"}], "=", "\n", 
-   "\t", 
-   RowBox[{"Join", "[", "\n", "\t\t", 
-    RowBox[{
-     RowBox[{"FilterRules", "[", "\n", "\t\t\t", 
-      RowBox[{
-       RowBox[{"Options", "[", "Cartesian1DDVRKineticMatrix", "]"}], ",", 
-       "\n", "\t\t\t", 
-       RowBox[{"Except", "@", "\"\<Mass\>\""}]}], "\n", "\t\t\t", "]"}], ",", 
-     "\n", "\t\t", 
-     RowBox[{"{", "\n", "\t\t\t", 
-      RowBox[{
-       RowBox[{"\"\<Mass1\>\"", "\[Rule]", "1"}], ",", "\n", "\t", "\t\t", 
-       RowBox[{"\"\<Mass2\>\"", "\[Rule]", "1"}]}], "\n", "\t\t\t", "}"}]}], 
-    "\n", "\t\t", "]"}]}], ";"}], "\n", 
- RowBox[{
-  RowBox[{"Cartesian2DDVRKineticMatrix", "[", 
-   RowBox[{"grid_", ",", " ", 
-    RowBox[{"ops", ":", 
-     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
-  RowBox[{"Module", "[", "\n", "\t\t", 
-   RowBox[{
-    RowBox[{"{", "\n", "\t\t\t", 
-     RowBox[{
-      RowBox[{"cartDVR1", "=", "\n", "\t\t\t\t", 
-       RowBox[{"Cartesian1DDVRKineticMatrix", "[", "\n", "\t\t\t\t\t", 
-        RowBox[{
-         RowBox[{"grid", "[", 
-          RowBox[{"[", 
-           RowBox[{"All", ",", " ", "1", ",", " ", "1"}], "]"}], "]"}], ",", 
-         " ", "\n", "\t\t\t\t\t", 
-         RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t\t", 
-          RowBox[{
-           RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
-            RowBox[{
-             RowBox[{
-             "\"\<Mass\>\"", "\[Rule]", "\n", "\t", "\t\t\t\t\t\t\t", 
-              RowBox[{"OptionValue", "[", "\"\<Mass1\>\"", "]"}]}], ",", "\n",
-              "\t", "\t\t\t\t\t\t", "ops"}], "\n", "\t", "\t\t\t\t\t\t", 
-            "}"}], ",", "\n", "\t\t\t\t\t\t", 
-           RowBox[{"Options", "[", "Cartesian1DDVRKineticMatrix", "]"}]}], 
-          "\n", "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "]"}]}], ",", 
-      "\n", "\t\t\t", 
-      RowBox[{"cartDVR2", "=", "\n", "\t\t\t\t", 
-       RowBox[{"Cartesian1DDVRKineticMatrix", "[", "\n", "\t\t\t\t\t", 
-        RowBox[{
-         RowBox[{"grid", "[", 
-          RowBox[{"[", 
-           RowBox[{"1", ",", " ", "All", ",", " ", "2"}], "]"}], "]"}], ",", 
-         "\n", "\t\t\t\t\t", 
-         RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t\t", 
-          RowBox[{
-           RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
-            RowBox[{
-             RowBox[{"\"\<Mass\>\"", "\[Rule]", "\n", "\t\t\t\t\t\t\t\t", 
-              RowBox[{"OptionValue", "[", "\"\<Mass2\>\"", "]"}]}], ",", "\n",
-              "\t", "\t\t\t\t\t\t", "ops"}], "\n", "\t", "\t\t\t\t\t\t", 
-            "}"}], ",", "\n", "\t\t\t\t\t\t", 
-           RowBox[{"Options", "[", "Cartesian1DDVRKineticMatrix", "]"}]}], 
-          "\n", "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "]"}]}], ",", 
-      "\n", "\t\t\t", 
-      RowBox[{"ptsX", "=", 
-       RowBox[{"Length", "@", "grid"}]}], ",", "\n", "\t\t\t", 
-      RowBox[{"ptsY", "=", 
-       RowBox[{"Length", "@", 
-        RowBox[{"grid", "[", 
-         RowBox[{"[", "1", "]"}], "]"}]}]}], ",", "\n", "\t\t\t", 
-      "k1SparseRules", ",", "\n", "\t\t\t", "k2SparseRules"}], "\n", "\t\t\t",
-      "}"}], ",", "\n", "\t\t\t", 
-    RowBox[{
-     RowBox[{"k1SparseRules", "=", "\n", "\t\t\t\t", 
-      RowBox[{"Flatten", "[", "\n", "\t\t\t\t\t", 
-       RowBox[{
-        RowBox[{"Table", "[", "\n", "\t", "\t\t\t\t\t", 
-         RowBox[{
-          RowBox[{
-           RowBox[{"Band", "[", 
-            RowBox[{
-             RowBox[{"{", 
-              RowBox[{
-               RowBox[{
-                RowBox[{
-                 RowBox[{"(", 
-                  RowBox[{"i", "-", "1"}], ")"}], "*", "ptsY"}], "+", "1"}], 
-               ",", " ", 
-               RowBox[{
-                RowBox[{
-                 RowBox[{"(", 
-                  RowBox[{"j", "-", "1"}], ")"}], "*", "ptsY"}], "+", "1"}]}],
-               "}"}], ",", 
-             RowBox[{"{", 
-              RowBox[{
-               RowBox[{"i", "*", "ptsY"}], ",", " ", 
-               RowBox[{"j", "*", "ptsY"}]}], "}"}]}], "]"}], "\[Rule]", "\n", 
-           "\t", "\t", "\t", "\t", "\t\t", 
-           RowBox[{"cartDVR1", "[", 
-            RowBox[{"[", 
-             RowBox[{"i", ",", " ", "j"}], "]"}], "]"}]}], ",", "\n", "\t", 
-          "\t", "\t", "\t", "\t\t", 
-          RowBox[{"{", 
-           RowBox[{"i", ",", " ", "ptsX"}], "}"}], ",", "\n", "\t", "\t", 
-          "\t", "\t", "\t\t", 
-          RowBox[{"{", 
-           RowBox[{"j", ",", " ", "ptsX"}], "}"}]}], "\n", "\t", "\t", "\t", 
-         "\t", "\t\t", "]"}], ",", "\n", "\t", "\t\t\t\t", "1"}], "\n", 
-       "\t\t\t\t\t", "]"}]}], ";", "\n", "\t\t\t", 
-     RowBox[{"k2SparseRules", "=", "\n", "\t\t\t\t", 
-      RowBox[{"{", "\n", "\t\t\t\t\t", 
-       RowBox[{
-        RowBox[{"Band", "[", 
-         RowBox[{"{", 
-          RowBox[{"1", ",", " ", "1"}], "}"}], "]"}], "\[Rule]", "\n", 
-        "\t\t\t\t\t\t", 
-        RowBox[{"ConstantArray", "[", 
-         RowBox[{"cartDVR2", ",", " ", "ptsX"}], "]"}]}], "\n", "\t\t\t\t\t", 
-       "}"}]}], ";", "\n", "\t\t\t", 
-     RowBox[{"With", "[", 
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{"k3", "=", 
-         RowBox[{"SparseArray", "[", "k2SparseRules", "]"}]}], "}"}], ",", 
-       "\n", "\t", "\t", "\t", "\t", 
-       RowBox[{
-        RowBox[{"SparseArray", "[", 
-         RowBox[{"k1SparseRules", ",", " ", 
-          RowBox[{"Dimensions", "[", "k3", "]"}]}], "]"}], "+", "k3"}]}], 
-      "\n", "\t\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}]}], "CodeInput",
- CellChangeTimes->{{3.699200204109901*^9, 3.6992002446128483`*^9}, {
-   3.699201703464225*^9, 3.699201842336369*^9}, 3.7189400380777807`*^9, {
-   3.718940199321683*^9, 3.718940273048107*^9}, {3.7189403292162657`*^9, 
-   3.718940537639037*^9}, {3.718940612280304*^9, 3.718940623848082*^9}, {
-   3.718940732281986*^9, 3.7189407932704287`*^9}, {3.718941857598061*^9, 
-   3.71894190549535*^9}, {3.71894241980433*^9, 3.71894246972014*^9}, {
-   3.718942541871771*^9, 3.71894254757507*^9}, {3.7189425986287317`*^9, 
-   3.718942606348271*^9}, {3.7189429494720783`*^9, 3.718942966087562*^9}, {
-   3.718943237749342*^9, 3.718943239936226*^9}, {3.718943922365725*^9, 
-   3.718943946292486*^9}, {3.718944200439361*^9, 3.7189442115146217`*^9}, {
-   3.718983625289404*^9, 3.718983636301114*^9}, {3.71898367513409*^9, 
-   3.718983733654351*^9}, {3.718983909955647*^9, 3.718983915202002*^9}, {
-   3.7189840005193*^9, 3.7189840143290043`*^9}, {3.7189843994921207`*^9, 
-   3.718984466081663*^9}, {3.718985736653406*^9, 3.718985758194933*^9}, {
-   3.71901360882934*^9, 3.7190136203863707`*^9}, {3.719013674713336*^9, 
-   3.71901367775624*^9}, {3.7239939041070147`*^9, 3.7239939048238087`*^9}, {
-   3.7239945167936983`*^9, 3.723994530580879*^9}, {3.723995668567136*^9, 
-   3.723995679397496*^9}, {3.723995973069849*^9, 3.723995973395005*^9}, {
-   3.724001662873167*^9, 3.7240016694864063`*^9}, {3.724623779143531*^9, 
-   3.724623779754765*^9}, {3.724623852516251*^9, 3.7246238686985197`*^9}, {
-   3.724624732724074*^9, 3.724624735488986*^9}, {3.724624973514244*^9, 
-   3.7246249750465927`*^9}, {3.7246261119680643`*^9, 3.724626113619842*^9}, {
-   3.724790821037664*^9, 3.724790855960103*^9}, {3.724792328697731*^9, 
-   3.724792330558495*^9}, {3.7247932829420033`*^9, 3.724793322698197*^9}, 
-   3.727547721116929*^9, {3.7275657197882023`*^9, 3.7275657741451797`*^9}, {
-   3.72756581313594*^9, 3.727565865368951*^9}, {3.727565914876684*^9, 
-   3.72756594802414*^9}, {3.7275660002955723`*^9, 3.727566022787538*^9}, {
-   3.727566575473068*^9, 3.727566618732327*^9}, {3.72756694196278*^9, 
-   3.7275670204856443`*^9}, {3.72756713843058*^9, 3.7275671448017073`*^9}, {
-   3.727567356270418*^9, 3.727567361727285*^9}, {3.727568220748768*^9, 
-   3.727568236524228*^9}, {3.727570994778459*^9, 3.72757099726826*^9}, {
-   3.7276322954372253`*^9, 3.7276323003061943`*^9}, {3.727632380444655*^9, 
-   3.7276324982534227`*^9}, {3.727674431747594*^9, 3.727674434357292*^9}, {
-   3.727711404676024*^9, 3.7277114115299473`*^9}, 
-   3.729142569312962*^9},ExpressionUUID->"83694f47-d13a-4c3e-99f9-\
-61a940272020"],
-
-Cell[BoxData[
- RowBox[{"\t", 
-  RowBox[{"(*", "\n", "\t", 
-   RowBox[{
-    RowBox[{"This", " ", "was", " ", "my", " ", "old", " ", 
-     RowBox[{"n", "^", "4"}], " ", 
-     RowBox[{"implementation", ".", " ", "Much"}]}], ",", " ", 
-    RowBox[{"much", " ", 
-     RowBox[{"worse", "."}]}]}], "\n", "\t", "*)"}], "\n", "\t", 
-  RowBox[{"(*", 
-   RowBox[{"Developer`ToPackedArray", "@", "\n", "\t\t", 
-    RowBox[{
-     RowBox[{"If", "[", 
-      RowBox[{
-       RowBox[{
-        RowBox[{"(", 
-         RowBox[{"ptsX", "*", "ptsY"}], ")"}], ">", "100000"}], ",", "\n", 
-       "\t\t\t", "ParallelTable", ",", "\n", "\t\t\t", "Table"}], "\n", 
-      "\t\t\t", "]"}], "[", "\n", "\t\t\t", 
-     RowBox[{
-      RowBox[{"With", "[", "\n", "\t\t\t\t", 
-       RowBox[{
-        RowBox[{"{", "\n", "\t\t\t\t\t", 
-         RowBox[{
-          RowBox[{"ix", "=", 
-           RowBox[{"1", "+", 
-            RowBox[{"Floor", "[", 
-             RowBox[{
-              RowBox[{"(", 
-               RowBox[{"i", "-", "1"}], ")"}], "/", 
-              RowBox[{"(", "ptsY", ")"}]}], "]"}]}]}], ",", " ", 
-          RowBox[{"jx", "=", 
-           RowBox[{"1", "+", 
-            RowBox[{"Floor", "[", 
-             RowBox[{
-              RowBox[{"(", 
-               RowBox[{"j", "-", "1"}], ")"}], "/", 
-              RowBox[{"(", "ptsY", ")"}]}], "]"}]}]}], ",", "\n", 
-          "\t\t\t\t\t", 
-          RowBox[{"iy", "=", 
-           RowBox[{"Mod", "[", 
-            RowBox[{"i", ",", " ", "ptsY", ",", " ", "1"}], "]"}]}], ",", " ", 
-          RowBox[{"jy", "=", 
-           RowBox[{"Mod", "[", 
-            RowBox[{"j", ",", " ", "ptsY", ",", " ", "1"}], "]"}]}]}], "\n", 
-         "\t\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t", 
-        RowBox[{
-         RowBox[{"If", "[", 
-          RowBox[{
-           RowBox[{"iy", "!=", "jy"}], ",", "\n", "\t\t\t\t\t\t", "0.", ",", 
-           "\n", "\t\t\t\t\t\t", 
-           RowBox[{"cartDVR1", "[", 
-            RowBox[{"[", 
-             RowBox[{"ix", ",", " ", "jx"}], "]"}], "]"}]}], "\n", 
-          "\t\t\t\t\t\t", "]"}], "+", "\n", "\t\t\t\t", 
-         RowBox[{"If", "[", 
-          RowBox[{
-           RowBox[{"ix", "!=", "jx"}], ",", "\n", "\t\t\t\t\t\t", "0.", ",", 
-           "\n", "\t\t\t\t\t\t", 
-           RowBox[{"cartDVR2", "[", 
-            RowBox[{"[", 
-             RowBox[{"iy", ",", " ", "jy"}], "]"}], "]"}]}], "\n", 
-          "\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t", "]"}], ",", "\n", 
-      "\t\t\t", 
-      RowBox[{"{", 
-       RowBox[{"i", ",", " ", 
-        RowBox[{"ptsX", "*", "ptsY"}]}], "}"}], ",", "\n", "\t\t\t", 
-      RowBox[{"{", 
-       RowBox[{"j", ",", " ", 
-        RowBox[{"ptsX", "*", "ptsY"}]}], "}"}]}], "\n", "\t\t\t", "]"}]}], 
-   "*)"}]}]], "CodeInput",
- CellChangeTimes->{{3.7276744400748*^9, 
-  3.7276744548363028`*^9}},ExpressionUUID->"3cbe645b-4628-4b8b-9e0c-\
-7b139a56fbaa"]
-}, Closed]]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"End", "[", "]"}], 
-  ";"}]], "InputSection",ExpressionUUID->"4ef3b0ab-7ea1-4b25-94ee-\
-109a5b74243a"],
+  RowBox[{"$Cartesian2DDVR", "::", "usage"}], "=", "\n", "\t", 
+  "\"\<A two dimensional DVR based on a Colbert and Miller 1D direct \
+product\>\""}]], "CodeInput",
+ CellChangeTimes->{{3.732424126401417*^9, 3.732424175406726*^9}, {
+  3.734895689959152*^9, 
+  3.7348957076133823`*^9}},ExpressionUUID->"4faa493f-d0e1-4494-bad1-\
+d754c9f4452a"],
 
 Cell[BoxData[
  RowBox[{"$Cartesian2DDVR", "=", "\n", "\t", 
@@ -408,13 +32,6 @@ Cell[BoxData[
    RowBox[{
     RowBox[{"\"\<Name\>\"", "\[Rule]", "\"\<Cartesian 2D\>\""}], ",", "\n", 
     "\t", "\t", 
-    RowBox[{"\"\<Dimension\>\"", "\[Rule]", "2"}], ",", "\n", "\t\t", 
-    RowBox[{"\"\<PointLabels\>\"", "->", 
-     RowBox[{"{", 
-      RowBox[{
-       RowBox[{"\"\<x\>\"", "|", "\"\<y\>\"", "|", "\"\<z\>\""}], ",", " ", 
-       RowBox[{"\"\<x\>\"", "|", "\"\<y\>\"", "|", "\"\<z\>\""}]}], "}"}]}], 
-    ",", "\n", "\t\t", 
     RowBox[{"\"\<Range\>\"", "\[Rule]", 
      RowBox[{"{", 
       RowBox[{
@@ -424,29 +41,46 @@ Cell[BoxData[
        RowBox[{"{", 
         RowBox[{
          RowBox[{"-", "10"}], ",", " ", "10"}], "}"}]}], "}"}]}], ",", "\n", 
-    "\t\t", 
-    RowBox[{"\"\<Grid\>\"", "->", "Cartesian2DDVRPoints"}], ",", "\n", "\t\t", 
-    RowBox[{"\"\<KineticEnergy\>\"", "->", "Cartesian2DDVRKineticMatrix"}], 
-    ",", "\n", "\t\t", 
-    RowBox[{"\"\<Defaults\>\"", "->", "\n", "\t\t\t", 
-     RowBox[{"{", "\n", "\t\t\t\t", 
+    "\t", "\t", 
+    RowBox[{"\"\<Points\>\"", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{"11", ",", " ", "11"}], "}"}]}], ",", "\n", "\t\t", 
+    RowBox[{"\"\<Defaults\>\"", "->", "\n", "\t", "\t\t", 
+     RowBox[{"{", "\n", "\t", "\t\t\t", 
       RowBox[{
        RowBox[{
-       "\"\<PotentialFunction\>\"", "\[Rule]", "\"\<HarmonicOscillator\>\""}],
-        ",", "\n", "\t\t\t\t", 
-       RowBox[{"\"\<PlotMode\>\"", "\[Rule]", 
+       "\"\<GridType\>\"", "->", "\n", "\t\t\t\t\t", 
+        "\"\<RegularSubdivision\>\""}], ",", "\n", "\t\t\t\t", 
+       RowBox[{
+       "\"\<KineticEnergyElementFunction\>\"", "->", "\n", "\t\t\t\t\t", 
         RowBox[{"{", 
-         RowBox[{"\"\<Cartesian\>\"", ",", " ", "1"}], "}"}]}]}], "\n", 
+         RowBox[{"\"\<ColbertMillerCartesian\>\"", ",", " ", "2"}], "}"}]}], 
+       ",", "\n", "\t\t\t\t", 
+       RowBox[{"\"\<PotentialFunction\>\"", "\[Rule]", "\n", "\t\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"\"\<HarmonicOscillator\>\"", ",", " ", "2"}], "}"}]}], ",", 
+       "\n", "\t\t\t\t", 
+       RowBox[{"\"\<PlotMode\>\"", "\[Rule]", "\n", "\t\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"\"\<Cartesian\>\"", ",", " ", "2"}], "}"}]}]}], "\n", 
       "\t\t\t\t", "}"}]}]}], "\n", "\t\t", "|>"}]}]], "CodeInput",
  CellChangeTimes->{{3.699200278013855*^9, 3.6992003570101633`*^9}, {
    3.699200549451913*^9, 3.699200572585655*^9}, {3.699201461131833*^9, 
    3.6992014765432796`*^9}, {3.699206458337839*^9, 3.699206479116613*^9}, {
    3.699241987640071*^9, 3.699241995817466*^9}, {3.718048606105678*^9, 
-   3.7180486086994123`*^9}, {3.718940038142994*^9, 3.718940038168366*^9}, {
-   3.718940566265512*^9, 3.71894058093381*^9}, 3.718941224883973*^9, {
-   3.73116113006952*^9, 3.731161143451269*^9}, {3.731988492056267*^9, 
-   3.7319885110587673`*^9}},ExpressionUUID->"8aceb883-c792-425d-ba7c-\
-f5d9c3311e15"]
+   3.7180486086994123`*^9}, {3.731159533317487*^9, 3.731159534046062*^9}, 
+   3.7311595651250877`*^9, {3.731159647016672*^9, 3.731159651542239*^9}, {
+   3.731703622667482*^9, 3.731703629195075*^9}, {3.731987722165505*^9, 
+   3.731987733172058*^9}, {3.731988493999523*^9, 3.731988495362056*^9}, {
+   3.732421388775045*^9, 3.732421398996354*^9}, {3.7324214613185873`*^9, 
+   3.7324214988131037`*^9}, {3.7324215724220552`*^9, 3.732421590181982*^9}, {
+   3.732424088681109*^9, 3.732424116029738*^9}, {3.73242876165587*^9, 
+   3.732428763781661*^9}, {3.732428923333302*^9, 3.732428944138938*^9}, {
+   3.7348956921917143`*^9, 3.734895741366117*^9}, {3.7348958404092093`*^9, 
+   3.734895843922521*^9}, {3.7348960731423607`*^9, 3.734896073765956*^9}, {
+   3.7348963892786922`*^9, 
+   3.734896397153167*^9}},ExpressionUUID->"46f1750f-b987-4ed6-972f-\
+b7c68115bb5a"]
 }, Open  ]],
 
 Cell[CellGroupData[{

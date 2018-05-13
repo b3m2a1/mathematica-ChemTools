@@ -238,11 +238,14 @@ ChemUtilsEnumerateZMatrixStrings[s_String]:=
 					{
 						{
 							{m_String}, {vars___String, "JoinMe!"->n_, bonds_String}
+							}|
+						{
+							{m_String}, {vars___String},{b1___String, "JoinMe!"->n_, b2_String}
 							}:>
 								{
 									m,
 									vars,
-									n<>bonds
+									b1<>"\n"<>n<>b2
 									},
 						{{m_String}, {vars__String}}:>
 							{m, vars}
@@ -345,6 +348,11 @@ molTableVAngled[crd1_, crd2_, norm_, angle_]:=
 
 
 
+ChemUtilsGenerateMolTable::colin=
+	"Coordinates ``, ``, and `` are collinear. \
+Z axis will be used for dihedral";
+
+
 molTableDAngled[crd1_, crd2_, crd3_, norm_, angle_, dangle_]:=
 	Module[
 		{
@@ -355,6 +363,11 @@ molTableDAngled[crd1_, crd2_, crd3_, norm_, angle_, dangle_]:=
 			dihedAxis
 			},
 		normalVec=Cross[ax21, ax31];
+		If[normalVec=={0, 0, 0},
+			Message[ChemUtilsGenerateMolTable::colin, crd1, crd2, crd2];
+			normalVec=Cross[ax21, {0, 0, 1}]
+			];
+		If[normalVec=={0, 0, 0}, normalVec=Cross[ax21, {0, 1, 0}]];
 		baseVec=
 			RotationMatrix[angle, normalVec].(norm*Normalize[ax21]);
 		crd1+

@@ -1,0 +1,1487 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["ChemTools`DVR`Package", "CodeSection",
+ CellChangeTimes->{{3.699193506559762*^9, 3.699193508534224*^9}, {
+  3.7323031681209297`*^9, 
+  3.732303175462882*^9}},ExpressionUUID->"ce12fc74-14d9-4140-b8eb-\
+f0dcebd187a1"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRClass", "::", "usage"}], "=", 
+   "\"\<Template interface for a ChemDVR\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRClasses", "::", "usage"}], "=", 
+   "\"\<Lists the available classes\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRNewClass", "::", "usage"}], "=", 
+   "\"\<Opens up a template notebook for a new class\>\""}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.699206303141232*^9, 3.6992063339781017`*^9}, {
+  3.700004723626295*^9, 3.700004723632313*^9}, {3.709512931954008*^9, 
+  3.709512945169693*^9}},ExpressionUUID->"d4789c1f-d650-4a56-8f56-\
+c658790e5fac"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRBegin", "::", "usage"}], "=", 
+   "\"\<Wrapper for all BeginPackage stuff\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVREnd", "::", "usage"}], "=", 
+   "\"\<Wrapper for all EndPackage stuff\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemDVRLoaded", "::", "usage"}], "=", 
+   "\"\<The set of packages loaded already\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRNeeds", "::", "usage"}], "=", 
+   "\"\<Needs type loader for stuff\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRReload", "::", "usage"}], "=", 
+   "\"\<Reloads a ChemDVR file\>\""}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.699239324492299*^9, 3.6992393725629377`*^9}, {
+   3.699239719010161*^9, 3.69923972676486*^9}, {3.699242525647093*^9, 
+   3.699242533881804*^9}, {3.699817508046831*^9, 3.6998175284491587`*^9}, {
+   3.700004723637341*^9, 3.700004723653447*^9}, 3.709487016582574*^9, 
+   3.7094886288906307`*^9},ExpressionUUID->"f6497751-1f45-45fa-a6cf-\
+49770b92b0e1"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"0e55d644-7d11-4200-87af-\
+275b741b17e2"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ChemDVRClass\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.6992013685372677`*^9, 3.699201369665763*^9}, 
+   3.7000047246717587`*^9},ExpressionUUID->"cd405eee-c106-472e-9066-\
+e5abf9b2f27f"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ChemDVRClass\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.731158896147128*^9, 
+  3.73115889817822*^9}},ExpressionUUID->"a8fa74c8-80f2-4785-99ed-\
+d7c637a11190"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRClasses", "[", 
+    RowBox[{"pat_:", "\"\<*\>\""}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Map", "[", "\n", "\t\t", 
+    RowBox[{"FileBaseName", ",", "\n", "\t\t", 
+     RowBox[{"Join", "@@", "\n", "\t\t\t", 
+      RowBox[{"Map", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"FileNames", "[", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"StringQ", "@", "pat"}], ",", 
+              RowBox[{"StringTrim", "[", 
+               RowBox[{"pat", ",", "\"\<.m\>\""}], "]"}], ",", "pat"}], "]"}],
+             "~~", "\"\<.m\>\""}], ",", "\n", "\t\t\t\t\t", "#"}], "\n", 
+          "\t\t\t\t\t", "]"}], "&"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"ChemDVRDirectory", "[", 
+         RowBox[{"\"\<Classes\>\"", ",", " ", "True"}], "]"}]}], "\n", 
+       "\t\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.709512818860159*^9, 3.709512904310858*^9}, {
+   3.721165283898944*^9, 3.7211652909758873`*^9}, {3.721165499283287*^9, 
+   3.721165528224895*^9}, 
+   3.721165652969666*^9},ExpressionUUID->"4a2efc6d-a9a0-4a64-99eb-\
+e1bf97addddd"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"PackageAddAutocompletions", "[", "\n", "\t", 
+    RowBox[{"\"\<ChemDVRClass\>\"", ",", "\n", "\t", 
+     RowBox[{"List", "@", 
+      RowBox[{"ChemDVRClasses", "[", "]"}]}]}], "\n", "\t", "]"}], ";"}], 
+  "*)"}]], "CodeInput",
+ CellChangeTimes->{{3.7095129727847424`*^9, 3.709513006801633*^9}, 
+   3.7180486389708643`*^9, {3.7244347585318604`*^9, 3.724434772006802*^9}, {
+   3.724434833670721*^9, 
+   3.7244348432885036`*^9}},ExpressionUUID->"e913c1ad-8942-4f52-bcab-\
+30e94d221336"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Loading\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.699206374321762*^9, 
+  3.6992063786640043`*^9}},ExpressionUUID->"f0fdc303-979b-463f-9708-\
+548b0bba5f07"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRClass", "::", "noclass"}], "=", 
+   "\"\<No class template found at ``\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRClass", "[", 
+    RowBox[{"f_String", "?", 
+     RowBox[{"(", "FileExistsQ", ")"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"a", "=", "\n", "\t\t", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"ExpandFileName", "[", "f", "]"}], "==", "\n", "\t\t\t\t", 
+          RowBox[{"ExpandFileName", "@", 
+           RowBox[{"ChemDVRFile", "[", 
+            RowBox[{"\"\<Classes\>\"", ",", 
+             RowBox[{"FileNameTake", "@", "f"}]}], "]"}]}]}], ",", "\n", 
+         "\t\t\t", 
+         RowBox[{"ChemDVRNeeds", "@", 
+          RowBox[{"FileBaseName", "@", "f"}]}], ",", "\n", "\t\t\t", 
+         RowBox[{"ChemDVRNeeds", "@", "f"}]}], "\n", "\t\t\t", "]"}]}], "}"}],
+      ",", "\n", "\t\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"AssociationQ", "@", "a"}], ",", "\n", "\t\t\t", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"ExpandFileName", "[", "f", "]"}], "==", "\n", "\t\t\t\t\t", 
+          RowBox[{"ExpandFileName", "@", 
+           RowBox[{"ChemDVRFile", "[", 
+            RowBox[{"\"\<Classes\>\"", ",", 
+             RowBox[{"FileNameTake", "@", "f"}]}], "]"}]}]}], ",", "\n", 
+         "\t\t\t\t", 
+         RowBox[{"ChemDVRClass", "[", 
+          RowBox[{"Append", "[", 
+           RowBox[{"a", ",", 
+            RowBox[{"\"\<Class\>\"", "->", 
+             RowBox[{"FileBaseName", "@", "f"}]}]}], "]"}], "]"}], ",", "\n", 
+         "\t\t\t\t", 
+         RowBox[{"ChemDVRClass", "[", "a", "]"}]}], "\n", "\t\t\t\t", "]"}], 
+       ",", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"Message", "[", 
+         RowBox[{
+          RowBox[{"ChemDVRClass", "::", "noclass"}], ",", "f"}], "]"}], ";", 
+        "$Failed"}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRClass", "[", 
+    RowBox[{"f_String", "?", 
+     RowBox[{"(", 
+      RowBox[{"Not", "@*", "FileExistsQ"}], ")"}]}], "]"}], ":=", "\n", "\t", 
+   
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"FileExistsQ", "@", "#"}], ",", "\n", "\t\t\t", 
+        RowBox[{"ChemDVRClass", "@", "#"}], ",", "\n", "\t\t\t", 
+        RowBox[{
+         RowBox[{"Message", "[", 
+          RowBox[{
+           RowBox[{"ChemDVRClass", "::", "noclass"}], ",", "#"}], "]"}], ";", 
+         "$Failed"}]}], "]"}], ")"}], "&"}], "@", "\n", "\t\t", 
+    RowBox[{"ChemDVRFile", "[", 
+     RowBox[{"\"\<Classes\>\"", ",", 
+      RowBox[{
+       RowBox[{"StringTrim", "[", 
+        RowBox[{"f", ",", "\"\<.m\>\""}], "]"}], "<>", "\"\<.m\>\""}]}], 
+     "]"}]}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.699211140490896*^9, 3.6992111505307627`*^9}, {
+   3.6992112113360863`*^9, 3.699211241841501*^9}, 3.699211325626377*^9, {
+   3.6992163082539988`*^9, 3.699216310187002*^9}, 3.699240188059278*^9, {
+   3.699307401370687*^9, 3.699307505366496*^9}, {3.699307540479054*^9, 
+   3.69930759996637*^9}, {3.699307804462592*^9, 3.6993078095787783`*^9}, {
+   3.700004724694887*^9, 
+   3.7000047247380533`*^9}},ExpressionUUID->"152253d0-81ab-4b07-9050-\
+ae6ce36e7367"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Instantiation\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.6992063801513577`*^9, 
+  3.69920638455215*^9}},ExpressionUUID->"1a8ac439-c302-4a08-b4c1-\
+3cc7acc3e69d"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ChemDVRClass", "[", "a_Association", "]"}], "[", "ops___Rule", 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemDVRCreate", "[", 
+    RowBox[{"Join", "[", 
+     RowBox[{"a", ",", 
+      RowBox[{"<|", "ops", "|>"}]}], "]"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ChemDVRClass", "[", "a_Association", "]"}], "[", 
+    RowBox[{"range", ":", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"_", "?", "NumericQ"}], ",", 
+         RowBox[{"_", "?", "NumericQ"}]}], "}"}], ".."}], "}"}]}], "]"}], ":=",
+    "\n", "\t", 
+   RowBox[{
+    RowBox[{"ChemDVRClass", "[", "a", "]"}], "[", 
+    RowBox[{"\"\<Range\>\"", "\[Rule]", "range"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ChemDVRClass", "[", "a_Association", "]"}], "[", 
+    RowBox[{"points", ":", 
+     RowBox[{"{", 
+      RowBox[{"__Integer", "?", "Positive"}], "}"}]}], "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{
+    RowBox[{"ChemDVRClass", "[", "a", "]"}], "[", 
+    RowBox[{"\"\<Points\>\"", "\[Rule]", "points"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ChemDVRClass", "[", "a_Association", "]"}], "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"points", ":", 
+      RowBox[{"{", 
+       RowBox[{"__Integer", "?", "Positive"}], "}"}]}], ",", "\n", "\t", 
+     RowBox[{"range", ":", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"_", "?", "NumericQ"}], ",", 
+          RowBox[{"_", "?", "NumericQ"}]}], "}"}], ".."}], "}"}]}]}], "]"}], ":=",
+    "\n", "\t", 
+   RowBox[{
+    RowBox[{"ChemDVRClass", "[", "a", "]"}], "[", 
+    RowBox[{
+     RowBox[{"\"\<Points\>\"", "\[Rule]", "points"}], ",", 
+     RowBox[{"\"\<Range\>\"", "\[Rule]", "range"}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRClass", "[", "a_Association", "]"}], "[", "\n", "\t", 
+   RowBox[{
+    RowBox[{"range", ":", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"_", "?", "NumericQ"}], ",", 
+         RowBox[{"_", "?", "NumericQ"}]}], "}"}], ".."}], "}"}]}], ",", "\n", 
+    "\t", 
+    RowBox[{"points", ":", 
+     RowBox[{"{", 
+      RowBox[{"__Integer", "?", "Positive"}], "}"}]}]}], "\n", "\t", "]"}], ":=",
+   "\n", "\t", 
+  RowBox[{
+   RowBox[{"ChemDVRClass", "[", "a", "]"}], "[", 
+   RowBox[{"points", ",", "range"}], "]"}]}]}], "CodeInput",
+ CellChangeTimes->{{3.6992013701368303`*^9, 3.69920138374583*^9}, {
+   3.6992014998478727`*^9, 3.6992015258687572`*^9}, {3.699206083838956*^9, 
+   3.699206266116604*^9}, {3.699211576828723*^9, 3.699211632266419*^9}, {
+   3.6993073136960287`*^9, 3.6993073284695272`*^9}, {3.700004724748094*^9, 
+   3.700004724770212*^9}, {3.709485101197421*^9, 3.709485108322763*^9}, {
+   3.709486415367545*^9, 3.709486417017065*^9}, 3.709487016474667*^9, {
+   3.711061911711885*^9, 
+   3.7110619277818193`*^9}},ExpressionUUID->"00ee3b2f-1f3b-41b7-ac1b-\
+b08179b5899a"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Template\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.699206388792797*^9, 3.699206390871063*^9}, {
+  3.699207239394168*^9, 3.699207241015896*^9}, {3.699216404012043*^9, 
+  3.699216404680265*^9}},ExpressionUUID->"b53104b3-873d-48f5-9d28-\
+8cf2e5157597"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$ChemDVRClassTemplate", "=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"sn", "=", 
+       RowBox[{"ToBoxes", "@", 
+        RowBox[{"Placeholder", "[", "\"\<Name\>\"", "]"}]}]}], "}"}], ",", 
+     "\n", "\t", 
+     RowBox[{"Notebook", "[", 
+      RowBox[{
+       RowBox[{"{", "\n", "\t\t", 
+        RowBox[{
+         RowBox[{"Cell", "[", "\n", "\t\t\t", 
+          RowBox[{
+           RowBox[{"TextData", "@", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Cell", "[", 
+               RowBox[{"BoxData", "@", 
+                RowBox[{"ToBoxes", "@", 
+                 RowBox[{"Placeholder", "[", "\"\<LongName\>\"", "]"}]}]}], 
+               "]"}], ",", "\"\< \>\"", ",", "\"\<DVR\>\""}], "}"}]}], ",", 
+           " ", "\n", "\t\t\t", "\"\<CodeSection\>\""}], "]"}], ",", "\n", 
+         "\t\t", 
+         RowBox[{"Cell", "[", 
+          RowBox[{
+           RowBox[{"TextData", "@", 
+            RowBox[{"{", 
+             RowBox[{"Cell", "[", 
+              RowBox[{"BoxData", "@", 
+               RowBox[{"ToBoxes", "@", 
+                RowBox[{"Placeholder", "[", "\"\<Description\>\"", "]"}]}]}], 
+              "]"}], "}"}]}], ",", "\"\<Text\>\""}], "]"}], ",", "\n", "\t\t", 
+         RowBox[{
+          RowBox[{"Cell", "[", 
+           RowBox[{
+            RowBox[{"BoxData", "@", "\"\<ChemDVRBegin[];\>\""}], ",", 
+            "\"\<InputSection\>\""}], "]"}], ";", "\n", "\t\t", 
+          RowBox[{"Cell", "[", "\n", "\t\t\t", 
+           RowBox[{
+            RowBox[{"BoxData", "@", 
+             RowBox[{"{", "\n", "\t\t\t\t", 
+              RowBox[{
+               RowBox[{"RowBox", "[", 
+                RowBox[{"{", "\n", "\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"RowBox", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"sn", ",", "\"\<FormatGrid\>\""}], "}"}], "]"}], 
+                    ",", "\"\<::\>\"", ",", "\"\<usage\>\""}], "}"}], "]"}], 
+                  ",", "\"\<=\>\"", ",", "\"\<\\\"\\\"\>\""}], "}"}], "]"}], 
+               ",", "\"\<\\n\>\"", ",", "\n", "\t\t\t\t", 
+               RowBox[{"RowBox", "[", 
+                RowBox[{"{", "\n", "\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"RowBox", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"sn", ",", "$dvrgr"}], "}"}], "]"}], ",", 
+                    "\"\<::\>\"", ",", "\"\<usage\>\""}], "}"}], "]"}], ",", 
+                  "\"\<=\>\"", ",", "\"\<\\\"\\\"\>\""}], "}"}], "]"}], ",", 
+               "\"\<\\n\>\"", ",", "\n", "\t\t\t\t", 
+               RowBox[{"RowBox", "[", 
+                RowBox[{"{", "\n", "\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"RowBox", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"sn", ",", "$dvrke"}], "}"}], "]"}], ",", 
+                    "\"\<::\>\"", ",", "\"\<usage\>\""}], "}"}], "]"}], ",", 
+                  "\"\<=\>\"", ",", "\"\<\\\"\\\"\>\""}], "}"}], "]"}], ",", 
+               "\"\<\\n\>\"", ",", "\n", "\t\t\t\t", 
+               RowBox[{"RowBox", "[", 
+                RowBox[{"{", "\n", "\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"RowBox", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"sn", ",", "\"\<PotentialEnegy\>\""}], "}"}], 
+                    "]"}], ",", "\"\<::\>\"", ",", "\"\<usage\>\""}], "}"}], 
+                   "]"}], ",", "\"\<=\>\"", ",", "\"\<\\\"\\\"\>\""}], "}"}], 
+                "]"}], ",", "\"\<\\n\>\"", ",", "\n", "\t\t\t\t", 
+               RowBox[{"RowBox", "[", 
+                RowBox[{"{", "\n", "\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"RowBox", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"sn", ",", "$dvrwf"}], "}"}], "]"}], ",", 
+                    "\"\<::\>\"", ",", "\"\<usage\>\""}], "}"}], "]"}], ",", 
+                  "\"\<=\>\"", ",", "\"\<\\\"\\\"\>\""}], "}"}], "]"}], ",", 
+               "\"\<\\n\>\"", ",", "\n", "\t\t\t\t", 
+               RowBox[{"RowBox", "[", 
+                RowBox[{"{", "\n", "\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"RowBox", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"sn", ",", "\"\<View\>\""}], "}"}], "]"}], ",", 
+                    "\"\<::\>\"", ",", "\"\<usage\>\""}], "}"}], "]"}], ",", 
+                  "\"\<=\>\"", ",", "\"\<\\\"\\\"\>\""}], "}"}], "]"}]}], 
+              "\n", "\t\t\t\t", "}"}]}], ",", "\n", "\t\t\t\t", 
+            "\"\<CodeInput\>\""}], "]"}]}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", 
+          RowBox[{
+           RowBox[{"BoxData", "@", 
+            RowBox[{"RowBox", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"RowBox", "[", 
+                RowBox[{"{", 
+                 RowBox[{
+                 "\"\<Begin\>\"", ",", "\"\<[\>\"", ",", 
+                  "\"\<\\\"`Private`\\\"\>\"", ",", "\"\<]\>\""}], "}"}], 
+                "]"}], ",", "\"\<;\>\""}], "}"}], "]"}]}], ",", "\n", 
+           "\t\t\t", "\"\<InputSection\>\""}], "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", 
+          RowBox[{
+          "\"\<Grid Formatting Function\>\"", ",", " ", 
+           "\"\<CodeSubsubsection\>\""}], "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", "\n", "\t\t\t", 
+          RowBox[{
+          "\"\<This function should take a grid and the grid points used to \
+generate the grid.\>\"", ",", "\n", "\t\t\t ", "\"\<Text\>\""}], "]"}], ",", 
+         "\n", "\t\t", 
+         RowBox[{"Cell", "[", 
+          RowBox[{
+           RowBox[{"BoxData", "@", "\n", "\t\t\t", 
+            RowBox[{"RowBox", "[", 
+             RowBox[{"{", "\n", "\t\t\t\t", 
+              RowBox[{
+               RowBox[{"RowBox", "[", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{"sn", ",", "\"\<FormatGrid\>\""}], "}"}], "]"}], 
+                  ",", "\"\<[\>\"", ",", 
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    "\"\<grid_\>\"", ",", "\"\<,\>\"", ",", 
+                    "\"\<points_\>\""}], "}"}], "]"}], ",", "\"\<]\>\""}], 
+                 "}"}], "]"}], ",", "\n", "\t\t\t\t", "\"\<:=\>\"", ",", 
+               "\"\<\\n\\t\>\"", ",", "\n", "\t\t\t\t", 
+               RowBox[{"ToBoxes", "@", 
+                RowBox[{
+                "Placeholder", "[", "\"\<FormatGrid Function\>\"", "]"}]}]}], 
+              "}"}], "]"}]}], ",", "\n", "\t\t\t", "\"\<CodeInput\>\""}], 
+          "\n", "\t\t\t", "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", 
+          RowBox[{
+          "\"\<Grid Function\>\"", ",", " ", "\"\<CodeSubsubsection\>\""}], 
+          "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", "\n", "\t\t\t", 
+          RowBox[{
+          "\"\<This function should take the number of grid points for each \
+coordinate\>\"", ",", "\n", "\t\t\t ", "\"\<Text\>\""}], "]"}], ",", "\n", 
+         "\t\t", 
+         RowBox[{"Cell", "[", 
+          RowBox[{
+           RowBox[{"BoxData", "@", "\n", "\t\t\t", 
+            RowBox[{"RowBox", "[", 
+             RowBox[{"{", "\n", "\t\t\t\t", 
+              RowBox[{
+               RowBox[{"RowBox", "[", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{"sn", ",", "$dvrgr"}], "}"}], "]"}], ",", 
+                  "\"\<[\>\"", ",", 
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    "\"\<points_\>\"", ",", "\"\<,\>\"", ",", 
+                    "\"\<range_\>\""}], "}"}], "]"}], ",", "\"\<]\>\""}], 
+                 "}"}], "]"}], ",", "\n", "\t\t\t\t", "\"\<:=\>\"", ",", 
+               "\"\<\\n\\t\>\"", ",", "\n", "\t\t\t\t", 
+               RowBox[{"ToBoxes", "@", 
+                RowBox[{
+                "Placeholder", "[", "\"\<Grid Function\>\"", "]"}]}]}], "}"}],
+              "]"}]}], ",", "\n", "\t\t\t", "\"\<CodeInput\>\""}], "\n", 
+          "\t\t\t", "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", 
+          RowBox[{
+          "\"\<Kinetic Energy Function\>\"", ",", " ", 
+           "\"\<CodeSubsubsection\>\""}], "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", "\n", "\t\t\t", 
+          RowBox[{
+          "\"\<This should take the grid generated previously\>\"", ",", "\n",
+            "\t\t\t ", "\"\<Text\>\""}], "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", 
+          RowBox[{
+           RowBox[{"BoxData", "@", "\n", "\t\t\t", 
+            RowBox[{"RowBox", "[", 
+             RowBox[{"{", "\n", "\t\t\t\t", 
+              RowBox[{
+               RowBox[{"RowBox", "[", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{"sn", ",", "$dvrke"}], "}"}], "]"}], ",", 
+                  "\"\<[\>\"", ",", 
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", "\"\<grid_\>\"", "}"}], "]"}], ",", 
+                  "\"\<]\>\""}], "}"}], "]"}], ",", "\n", "\t\t\t\t", 
+               "\"\<:=\>\"", ",", "\"\<\\n\\t\>\"", ",", "\n", "\t\t\t\t", 
+               RowBox[{"ToBoxes", "@", 
+                RowBox[{
+                "Placeholder", "[", "\"\<KineticEnergy Function\>\"", 
+                 "]"}]}]}], "}"}], "]"}]}], ",", "\n", "\t\t\t", 
+           "\"\<CodeInput\>\""}], "\n", "\t\t\t", "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", 
+          RowBox[{
+          "\"\<Potential Energy Function\>\"", ",", " ", 
+           "\"\<CodeSubsubsection\>\""}], "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", "\n", "\t\t\t", 
+          RowBox[{
+          "\"\<This should take the grid generated previously\>\"", ",", "\n",
+            "\t\t\t ", "\"\<Text\>\""}], "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", 
+          RowBox[{
+           RowBox[{"BoxData", "@", "\n", "\t\t\t", 
+            RowBox[{"RowBox", "[", 
+             RowBox[{"{", "\n", "\t\t\t\t", 
+              RowBox[{
+               RowBox[{"RowBox", "[", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{"sn", ",", "$dvrpe"}], "}"}], "]"}], ",", 
+                  "\"\<[\>\"", ",", 
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", "\"\<grid_\>\"", "}"}], "]"}], ",", 
+                  "\"\<]\>\""}], "}"}], "]"}], ",", "\n", "\t\t\t\t", 
+               "\"\<:=\>\"", ",", "\"\<\\n\\t\>\"", ",", "\n", "\t\t\t\t", 
+               RowBox[{"ToBoxes", "@", 
+                RowBox[{
+                "Placeholder", "[", "\"\<PotentialEnergy Function\>\"", 
+                 "]"}]}]}], "}"}], "]"}]}], ",", "\n", "\t\t\t", 
+           "\"\<CodeInput\>\""}], "\n", "\t\t\t", "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", 
+          RowBox[{
+          "\"\<Wavefunctions Function\>\"", ",", " ", 
+           "\"\<CodeSubsubsection\>\""}], "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", "\n", "\t\t\t", 
+          RowBox[{
+          "\"\<This should take the kinetic and potential energies generated \
+previously\>\"", ",", "\n", "\t\t\t ", "\"\<Text\>\""}], "]"}], ",", "\n", 
+         "\t\t", 
+         RowBox[{"Cell", "[", 
+          RowBox[{
+           RowBox[{"BoxData", "@", "\n", "\t\t\t", 
+            RowBox[{"RowBox", "[", 
+             RowBox[{"{", "\n", "\t\t\t\t", 
+              RowBox[{
+               RowBox[{"RowBox", "[", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{"sn", ",", "$dvrwf"}], "}"}], "]"}], ",", 
+                  "\"\<[\>\"", ",", 
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{"\"\<T_\>\"", ",", "\"\<V_\>\""}], "}"}], "]"}], 
+                  ",", "\"\<]\>\""}], "}"}], "]"}], ",", "\n", "\t\t\t\t", 
+               "\"\<:=\>\"", ",", "\"\<\\n\\t\>\"", ",", "\n", "\t\t\t\t", 
+               RowBox[{"ToBoxes", "@", 
+                RowBox[{
+                "Placeholder", "[", "\"\<Wavefunctions Function\>\"", 
+                 "]"}]}]}], "}"}], "]"}]}], ",", "\n", "\t\t\t", 
+           "\"\<CodeInput\>\""}], "\n", "\t\t\t", "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", 
+          RowBox[{
+          "\"\<View Function\>\"", ",", " ", "\"\<CodeSubsubsection\>\""}], 
+          "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", "\n", "\t\t\t", 
+          RowBox[{
+          "\"\<This should take the wavefunctions, grid and potential \
+energies\>\"", ",", "\n", "\t\t\t ", "\"\<Text\>\""}], "]"}], ",", "\n", 
+         "\t\t", 
+         RowBox[{"Cell", "[", 
+          RowBox[{
+           RowBox[{"BoxData", "@", "\n", "\t\t\t", 
+            RowBox[{"RowBox", "[", 
+             RowBox[{"{", "\n", "\t\t\t\t", 
+              RowBox[{
+               RowBox[{"RowBox", "[", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{"sn", ",", "\"\<View\>\""}], "}"}], "]"}], ",", 
+                  "\"\<[\>\"", ",", 
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    "\"\<wfs_\>\"", ",", "\"\<grid_\>\"", ",", "\"\<V_\>\""}],
+                     "}"}], "]"}], ",", "\"\<]\>\""}], "}"}], "]"}], ",", 
+               "\n", "\t\t\t\t", "\"\<:=\>\"", ",", "\"\<\\n\\t\>\"", ",", 
+               "\n", "\t\t\t\t", 
+               RowBox[{"ToBoxes", "@", 
+                RowBox[{
+                "Placeholder", "[", "\"\<View Function\>\"", "]"}]}]}], "}"}],
+              "]"}]}], ",", "\n", "\t\t\t", "\"\<CodeInput\>\""}], "\n", 
+          "\t\t\t", "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", 
+          RowBox[{
+           RowBox[{"BoxData", "@", 
+            RowBox[{"RowBox", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"RowBox", "[", 
+                RowBox[{"{", 
+                 RowBox[{"\"\<End\>\"", ",", "\"\<[\>\"", ",", "\"\<]\>\""}], 
+                 "}"}], "]"}], ",", "\"\<;\>\""}], "}"}], "]"}]}], ",", "\n", 
+           "\t\t\t", "\"\<InputSection\>\""}], "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", "\n", "\t\t\t", 
+          RowBox[{
+           RowBox[{"BoxData", "@", 
+            RowBox[{"RowBox", "[", 
+             RowBox[{"{", 
+              RowBox[{
+              "\"\<<|\>\"", ",", "\"\<\\n\>\"", ",", "\"\<\\t\>\"", ",", "\n",
+                "\t\t\t\t", 
+               RowBox[{"RowBox", "[", 
+                RowBox[{"{", "\n", "\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    "\"\<\\\"Name\\\"\>\"", ",", "\"\<\[Rule]\>\"", ",", 
+                    RowBox[{"RowBox", "@", 
+                    RowBox[{"{", 
+                    RowBox[{"\"\<\\\"\>\"", ",", 
+                    RowBox[{"ToBoxes", "@", 
+                    RowBox[{"Placeholder", "[", "\"\<Name\>\"", "]"}]}], ",", 
+                    "\"\<\\\"\>\""}], "}"}]}]}], "}"}], "]"}], ",", "\n", 
+                  "\t\t\t\t\t\t", "\"\<,\>\"", ",", "\"\<\\n\>\"", ",", 
+                  "\"\<\\t\>\"", ",", "\n", "\t\t\t\t\t", 
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    "\"\<\\\"Dimension\\\"\>\"", ",", "\"\<\[Rule]\>\"", ",", 
+                    
+                    RowBox[{"ToBoxes", "@", 
+                    RowBox[{
+                    "Placeholder", "[", "\"\<Dimension\>\"", "]"}]}]}], "}"}],
+                    "]"}], ",", "\n", "\t\t\t\t\t\t", "\"\<,\>\"", ",", 
+                  "\"\<\\n\>\"", ",", "\"\<\\t\>\"", ",", "\n", "\t\t\t\t\t", 
+                  
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    "\"\<\\\"FormatGrid\\\"\>\"", ",", "\"\<->\>\"", ",", 
+                    RowBox[{"RowBox", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"sn", ",", "\"\<FormatGrid\>\""}], "}"}], "]"}]}],
+                     "}"}], "]"}], ",", "\n", "\t\t\t\t\t\t", "\"\<,\>\"", 
+                  ",", "\"\<\\n\>\"", ",", "\"\<\\t\>\"", ",", "\n", 
+                  "\t\t\t\t\t", 
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{"\"\<\\\"Grid\\\"\>\"", ",", "\"\<->\>\"", ",", 
+                    RowBox[{"RowBox", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"sn", ",", "$dvrgr"}], "}"}], "]"}]}], "}"}], 
+                   "]"}], ",", "\n", "\t\t\t\t\t\t", "\"\<,\>\"", ",", 
+                  "\"\<\\n\>\"", ",", "\"\<\\t\>\"", ",", "\n", "\t\t\t\t\t", 
+                  
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    "\"\<\\\"KineticEnergy\\\"\>\"", ",", "\"\<->\>\"", ",", 
+                    RowBox[{"RowBox", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"sn", ",", "$dvrke"}], "}"}], "]"}]}], "}"}], 
+                   "]"}], ",", "\n", "\t\t\t\t\t\t", "\"\<,\>\"", ",", 
+                  "\"\<\\n\>\"", ",", "\"\<\\t\>\"", ",", "\n", "\t\t\t\t\t", 
+                  
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    "\"\<\\\"PotentialEnergy\\\"\>\"", ",", "\"\<->\>\"", ",", 
+                    RowBox[{"RowBox", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"sn", ",", "$dvrpe"}], "}"}], "]"}]}], "}"}], 
+                   "]"}], ",", "\n", "\t\t\t\t\t\t", "\"\<,\>\"", ",", 
+                  "\"\<\\n\>\"", ",", "\"\<\\t\>\"", ",", "\n", "\t\t\t\t\t", 
+                  
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    "\"\<\\\"Wavefunctions\\\"\>\"", ",", "\"\<->\>\"", ",", 
+                    RowBox[{"RowBox", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"sn", ",", "$dvrwf"}], "}"}], "]"}]}], "}"}], 
+                   "]"}], ",", "\n", "\t\t\t\t\t\t", "\"\<,\>\"", ",", 
+                  "\"\<\\n\>\"", ",", "\"\<\\t\>\"", ",", "\n", "\t\t\t\t\t", 
+                  
+                  RowBox[{"RowBox", "[", 
+                   RowBox[{"{", 
+                    RowBox[{"\"\<\\\"View\\\"\>\"", ",", "\"\<->\>\"", ",", 
+                    RowBox[{"RowBox", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"sn", ",", "\"\<View\>\""}], "}"}], "]"}]}], 
+                    "}"}], "]"}]}], "}"}], "]"}], ",", "\n", "\t\t\t\t\t", 
+               "\"\<\\n\>\"", ",", "\"\<\\t\>\"", ",", "\"\<|>\>\""}], "}"}], 
+             "]"}]}], ",", "\n", "\t\t\t", "\"\<CodeInput\>\""}], "\n", 
+          "\t\t\t", "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", 
+          RowBox[{
+           RowBox[{"BoxData", "@", "\"\<ChemDVREnd[];\>\""}], ",", 
+           "\"\<InputSection\>\""}], "]"}], ",", "\n", "\t\t", 
+         RowBox[{"Cell", "[", 
+          RowBox[{"\"\<\>\"", ",", "\"\<SectionSeparator\>\""}], "]"}]}], 
+        "\n", "\t\t", "}"}], ",", "\n", "\t\t", 
+       RowBox[{"StyleDefinitions", "\[Rule]", "\n", "\t\t\t", 
+        RowBox[{"FrontEnd`FileName", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"\"\<ChemTools\>\"", ",", "\"\<Private\>\""}], "}"}], ",", 
+          "\"\<NewDVRClass.nb\>\""}], "]"}]}]}], "\n", "\t\t", "]"}]}], "\n", 
+    "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.699206392545425*^9, 3.699206394993764*^9}, {
+   3.6992065000224648`*^9, 3.699206603200674*^9}, {3.699206643388485*^9, 
+   3.699206841432807*^9}, {3.6992068862491207`*^9, 3.699207209235361*^9}, {
+   3.6992072474927397`*^9, 3.699207267302618*^9}, {3.69920729794243*^9, 
+   3.6992074309703283`*^9}, {3.6992074838846197`*^9, 3.699207486672621*^9}, {
+   3.699207518066824*^9, 3.69920761242247*^9}, {3.6992078069434233`*^9, 
+   3.699207849779862*^9}, {3.699207949027286*^9, 3.699208100324769*^9}, {
+   3.699208172715893*^9, 3.6992083292977667`*^9}, {3.6992083605016193`*^9, 
+   3.69920858568887*^9}, {3.69920867459321*^9, 3.6992086870846033`*^9}, {
+   3.699208764100472*^9, 3.699208867532579*^9}, {3.699208981827486*^9, 
+   3.699208987337901*^9}, {3.699209057809873*^9, 3.6992090583379707`*^9}, {
+   3.699210072485448*^9, 3.699210076548121*^9}, {3.699210496174555*^9, 
+   3.699210521587697*^9}, {3.699240078870713*^9, 3.6992401062408733`*^9}, {
+   3.699241803292095*^9, 3.699241836698929*^9}, {3.700004724806899*^9, 
+   3.700004724837203*^9}, {3.7070655845141172`*^9, 3.707065585072249*^9}, 
+   3.709489208498086*^9, {3.7094893108144712`*^9, 3.709489322275023*^9}, {
+   3.7094898445007467`*^9, 3.709489852967412*^9}, {3.731786169246167*^9, 
+   3.731786186248274*^9}, {3.731786394131937*^9, 
+   3.731786394151423*^9}},ExpressionUUID->"3a2f5004-b0b7-4d58-ab9c-\
+656af09b7878"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]New\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.6992090372707357`*^9, 
+  3.699209037694421*^9}},ExpressionUUID->"68e07f1f-4455-4165-b54a-\
+30c5315d1862"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "ChemDVRNewClass", "]"}], "=", 
+   RowBox[{"{", "\n", "\t", 
+    RowBox[{
+     RowBox[{"\"\<LongName\>\"", "\[Rule]", "None"}], ",", "\n", "\t", 
+     RowBox[{"\"\<Description\>\"", "\[Rule]", "None"}], ",", "\n", "\t", 
+     RowBox[{"\"\<Name\>\"", "\[Rule]", "None"}], ",", "\n", "\t", 
+     RowBox[{"\"\<Dimension\>\"", "\[Rule]", "None"}]}], "\n", "\t", "}"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRNewClass", "[", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"name", "=", "\n", "\t\t\t", 
+        RowBox[{"Replace", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<Name\>\"", "]"}], ",", "\n", 
+          "\t\t\t\t", 
+          RowBox[{"s_String", "\[RuleDelayed]", 
+           RowBox[{
+            RowBox[{"StringTrim", "[", 
+             RowBox[{
+              RowBox[{"StringReplace", "[", 
+               RowBox[{"s", ",", 
+                RowBox[{
+                 RowBox[{"Except", "[", "WordCharacter", "]"}], "\[Rule]", 
+                 "\"\<\>\""}]}], "]"}], ",", "\"\<DVR\>\""}], "]"}], "<>", 
+            "\n", "\t\t\t\t\t", "\"\<DVR\>\""}]}]}], "\n", "\t\t\t\t", 
+         "]"}]}], ",", "\n", "\t\t", 
+       RowBox[{"ln", "=", 
+        RowBox[{"Replace", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<LongName\>\"", "]"}], ",", 
+          RowBox[{"None", "->", 
+           RowBox[{"OptionValue", "[", "\"\<Name\>\"", "]"}]}]}], "]"}]}], 
+       ",", "\n", "\t\t", 
+       RowBox[{"desc", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Description\>\"", "]"}]}], ",", "\n",
+        "\t\t", 
+       RowBox[{"dim", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Dimension\>\"", "]"}]}]}], "\n", 
+      "\t\t", "}"}], ",", "\n", "\t\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"reps", "=", "\n", "\t\t\t", 
+         RowBox[{"{", "\n", "\t\t\t\t", 
+          RowBox[{
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"name", "===", "None"}], ",", "\n", "\t\t\t\t\t", 
+             "Nothing", ",", "\n", "\t\t\t\t\t", 
+             RowBox[{"Sequence", "@@", 
+              RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"RowBox", "@", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"ToBoxes", "@", 
+                    RowBox[{"Placeholder", "[", "\"\<Name\>\"", "]"}]}], ",", 
+                    "s_"}], "}"}]}], ":>", "\n", "\t", "\t\t\t\t\t\t", 
+                 RowBox[{"(", 
+                  RowBox[{"name", "<>", "s"}], ")"}]}], ",", "\n", 
+                "\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{"RowBox", "@", 
+                  RowBox[{"{", 
+                   RowBox[{"s1_", ",", 
+                    RowBox[{"ToBoxes", "@", 
+                    RowBox[{"Placeholder", "[", "\"\<Name\>\"", "]"}]}], ",", 
+                    "s2_"}], "}"}]}], ":>", "\n", "\t\t\t\t\t\t\t", 
+                 RowBox[{"s1", "<>", "name", "<>", "s2"}]}]}], "\n", 
+               "\t\t\t\t\t\t", "}"}]}]}], "\n", "\t\t\t\t\t", "]"}], ",", 
+           "\n", "\t\t\t\t", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"ln", "===", "None"}], ",", "\n", "\t\t\t\t\t", 
+             "Nothing", ",", "\n", "\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"ToBoxes", "@", 
+               RowBox[{"Placeholder", "[", "\"\<LongName\>\"", "]"}]}], 
+              "\[Rule]", "ln"}]}], "\n", "\t\t\t\t\t", "]"}], ",", "\n", 
+           "\t\t\t\t", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"desc", "===", "None"}], ",", "\n", "\t\t\t\t\t", 
+             "Nothing", ",", "\n", "\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"ToBoxes", "@", 
+               RowBox[{"Placeholder", "[", "\"\<Description\>\"", "]"}]}], 
+              "\[Rule]", "desc"}]}], "\n", "\t\t\t\t\t", "]"}], ",", "\n", 
+           "\t\t\t\t", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"dim", "===", "None"}], ",", "\n", "\t\t\t\t\t", 
+             "Nothing", ",", "\n", "\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"ToBoxes", "@", 
+               RowBox[{"Placeholder", "[", "\"\<Dimension\>\"", "]"}]}], 
+              "\[Rule]", "dim"}]}], "\n", "\t\t\t\t\t", "]"}]}], "\n", 
+          "\t\t\t\t", "}"}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+       RowBox[{"CreateDocument", "@", "\n", "\t\t\t\t", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Length", "@", "reps"}], "===", "0"}], ",", "\n", 
+          "\t\t\t\t\t", "$ChemDVRClassTemplate", ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"name", "===", "None"}], ",", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"ReplaceAll", "[", 
+             RowBox[{"$ChemDVRClassTemplate", ",", "reps"}], "]"}], ",", "\n",
+             "\t\t\t\t\t\t", 
+            RowBox[{"Append", "[", 
+             RowBox[{
+              RowBox[{"ReplaceAll", "[", 
+               RowBox[{"$ChemDVRClassTemplate", ",", "reps"}], "]"}], ",", 
+              "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"\"\<WindowTitle\>\"", "\[Rule]", "name"}]}], "\n", 
+             "\t\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], "\n", 
+         "\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+    "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.699209038532157*^9, 3.6992092322169247`*^9}, {
+   3.699209347662252*^9, 3.699209402748426*^9}, {3.699209434561887*^9, 
+   3.6992095457426434`*^9}, {3.699209586991514*^9, 3.699209954277371*^9}, {
+   3.699210012956421*^9, 3.699210042608933*^9}, 3.699210345954177*^9, {
+   3.6992104289280357`*^9, 3.699210449007607*^9}, {3.700004724852063*^9, 
+   3.7000047248778477`*^9}, 3.701030055255843*^9, {3.707065588898052*^9, 
+   3.707065592790909*^9}},ExpressionUUID->"85b9745a-b980-4576-8a98-\
+027c08c5b55e"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Begin\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.699239443394215*^9, 
+  3.699239444041135*^9}},ExpressionUUID->"16730cc1-fc87-47b1-ac5c-\
+5712ca13981a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRBegin", "[", 
+    RowBox[{"context_:", "\"\<\>\""}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{"$Context", "=!=", 
+      RowBox[{"Context", "[", "ChemDVRBegin", "]"}]}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"BeginPackage", "[", 
+       RowBox[{"Context", "[", "ChemDVRBegin", "]"}], "]"}], ";", "\n", 
+      "\t\t", 
+      RowBox[{"$ContextPath", "=", "\n", "\t\t\t", 
+       RowBox[{"Join", "[", 
+        RowBox[{"$ContextPath", ",", " ", "$PackageContexts"}], "]"}]}]}]}], 
+    "\n", "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.699239538371735*^9, 3.6992396393563147`*^9}, {
+   3.699239688914824*^9, 3.699239697240741*^9}, {3.69924449459455*^9, 
+   3.699244518120574*^9}, {3.700004724886218*^9, 3.700004724892145*^9}, {
+   3.719788204068878*^9, 3.7197882130709753`*^9}, {3.719788250232246*^9, 
+   3.71978825096038*^9}, {3.719788424792981*^9, 3.71978844283747*^9}, {
+   3.719941793429718*^9, 3.7199418217157097`*^9}, 3.721165737967766*^9, {
+   3.732397364316463*^9, 
+   3.732397374218656*^9}},ExpressionUUID->"1d450381-ef79-4f8f-88a5-\
+43f1e6ed0473"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]End\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.699239444985227*^9, 
+  3.6992394482501507`*^9}},ExpressionUUID->"b6a612ca-2099-494b-9edb-\
+7393bdc719c4"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVREnd", "[", "]"}], ":=", "\n", "\t", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{"$Context", "===", 
+      RowBox[{"Context", "[", "ChemDVRBegin", "]"}]}], ",", "\n", "\t\t", 
+     RowBox[{"EndPackage", "[", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.69923967563544*^9, 3.69923968615515*^9}, {
+  3.699298567801799*^9, 3.699298568224752*^9}, {3.700004724900271*^9, 
+  3.7000047249030313`*^9}},ExpressionUUID->"44b2f3f4-5022-458f-a38b-\
+e751005e960a"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Needs\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.699239705582326*^9, 
+  3.699239714674364*^9}},ExpressionUUID->"d14539b3-3f73-4abd-a18a-\
+b976c625afea"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"If", "[", 
+   RowBox[{
+    RowBox[{"Not", "@", 
+     RowBox[{"AssociationQ", "@", "$ChemDVRLoaded"}]}], ",", "\n", "\t", 
+    RowBox[{"$ChemDVRLoaded", "=", 
+     RowBox[{"<|", "\n", "\t\t", "\n", "\t\t", "|>"}]}]}], "\n", "\t", "]"}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.699239731552478*^9, 3.699239745804282*^9}, {
+  3.699242166361083*^9, 3.699242177300673*^9}, {3.700004724911167*^9, 
+  3.7000047249139977`*^9}, {3.7094870164855757`*^9, 3.709487016489607*^9}, {
+  3.709488628834133*^9, 3.709488628839898*^9}, {3.7095020485153427`*^9, 
+  3.709502049761731*^9}},ExpressionUUID->"1ac73f29-fa26-4387-b8da-\
+49975a532239"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"chemDVRGet", "[", 
+    RowBox[{"f_String", "?", 
+     RowBox[{"(", "FileExistsQ", ")"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Block", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"$ContextPath", "=", 
+        RowBox[{"Prepend", "[", 
+         RowBox[{"$PackageContexts", ",", " ", "\"\<System`\>\""}], "]"}]}], 
+       ",", "\n", "\t\t\t", "CircleTimes"}], "\n", "\t\t\t", "}"}], ",", "\n",
+      "\t\t", 
+     RowBox[{"Replace", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Get", "@", "f"}], "/.", 
+        RowBox[{"CircleTimes", "\[Rule]", 
+         RowBox[{"Inactive", "[", "CircleTimes", "]"}]}]}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"c_Association", ":>", "\n", "\t", "\t\t\t\t", 
+          RowBox[{"Set", "[", 
+           RowBox[{
+            RowBox[{"$ChemDVRLoaded", "[", "f", "]"}], ",", "\n", "\t", 
+            "\t\t\t\t\t", 
+            RowBox[{"Append", "[", 
+             RowBox[{"c", ",", 
+              RowBox[{"\"\<File\>\"", "\[Rule]", "f"}]}], "]"}]}], "\n", "\t",
+            "\t\t\t\t\t", "]"}]}], ",", "\n", "\t", "\t\t\t", 
+         RowBox[{"_", "\[Rule]", "$Failed"}]}], "\n", "\t\t\t\t", "}"}]}], 
+      "]"}]}], "\n", "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.707067439474018*^9, 3.707067487097458*^9}, {
+   3.707067530631317*^9, 3.707067551954217*^9}, {3.707068964897738*^9, 
+   3.707069001748479*^9}, {3.7075055438660583`*^9, 3.707505552262985*^9}, 
+   3.70948701650008*^9, 3.709488628852296*^9, {3.709502179283183*^9, 
+   3.709502192199139*^9}, {3.732397283936453*^9, 3.732397314764802*^9}, {
+   3.732397385591365*^9, 3.73239740268118*^9}, {3.734895299324967*^9, 
+   3.734895345295741*^9}, {3.7348954481797647`*^9, 
+   3.734895469151854*^9}},ExpressionUUID->"d03664c3-b658-42cb-a395-\
+857c98b49b06"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRNeeds", "[", 
+    RowBox[{"f_String", "?", 
+     RowBox[{"(", "FileExistsQ", ")"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Lookup", "[", 
+    RowBox[{"$ChemDVRLoaded", ",", "f", ",", "\n", "\t\t", 
+     RowBox[{"chemDVRGet", "[", "f", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRNeeds", "[", 
+    RowBox[{"f_String", "?", 
+     RowBox[{"(", 
+      RowBox[{"Not", "@*", "FileExistsQ"}], ")"}]}], "]"}], ":=", "\n", "\t", 
+   
+   RowBox[{"Lookup", "[", 
+    RowBox[{"$ChemDVRLoaded", ",", "f", ",", "\n", "\t\t", 
+     RowBox[{"Lookup", "[", 
+      RowBox[{"$ChemDVRLoaded", ",", 
+       RowBox[{"ChemDVRFile", "[", 
+        RowBox[{"\"\<Classes\>\"", ",", 
+         RowBox[{
+          RowBox[{"StringTrim", "[", 
+           RowBox[{"f", ",", "\"\<.m\>\""}], "]"}], "<>", "\"\<.m\>\""}]}], 
+        "]"}], ",", "\n", "\t\t\t", 
+       RowBox[{"chemDVRGet", "@", 
+        RowBox[{"ChemDVRFile", "[", 
+         RowBox[{"\"\<Classes\>\"", ",", 
+          RowBox[{
+           RowBox[{"StringTrim", "[", 
+            RowBox[{"f", ",", "\"\<.m\>\""}], "]"}], "<>", "\"\<.m\>\""}]}], 
+         "]"}]}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.699239706776084*^9, 3.699239711837459*^9}, {
+   3.699239748486086*^9, 3.6992398617663317`*^9}, {3.699239926702342*^9, 
+   3.699239945333599*^9}, {3.6992401485704107`*^9, 3.699240151863483*^9}, {
+   3.699240216439987*^9, 3.699240230445177*^9}, {3.699242134791975*^9, 
+   3.699242163302767*^9}, {3.7000047249234953`*^9, 3.7000047249423847`*^9}, {
+   3.7070657532981157`*^9, 3.707065815826592*^9}, {3.707067286490736*^9, 
+   3.7070672893627768`*^9}, {3.7070673393609657`*^9, 3.7070673482078533`*^9}, 
+   3.707067520056731*^9, {3.707067560317531*^9, 3.707067564204009*^9}, {
+   3.7070690081670094`*^9, 3.707069021633272*^9}, {3.709487016510026*^9, 
+   3.709487016514468*^9}, {3.709488628865324*^9, 3.709488628869603*^9}, {
+   3.7095020767096024`*^9, 
+   3.70950209844317*^9}},ExpressionUUID->"313adba5-4d3d-4089-9d0e-\
+54bbc82178ac"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Reload\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.699817537593745*^9, 
+  3.699817539520577*^9}},ExpressionUUID->"120ed1cc-5f1e-4f69-845c-\
+1c06dc2b8585"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRReload", "[", "s_String", "]"}], ":=", 
+   RowBox[{"(", "\n", "\t", 
+    RowBox[{
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"KeyMemberQ", "[", 
+        RowBox[{"$ChemDVRLoaded", ",", "s"}], "]"}], ",", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"$ChemDVRLoaded", "[", "s", "]"}], "=."}], ",", "\n", "\t\t", 
+       
+       RowBox[{
+        RowBox[{"$ChemDVRLoaded", "[", 
+         RowBox[{"ChemDVRFile", "[", 
+          RowBox[{"\"\<Classes\>\"", ",", 
+           RowBox[{
+            RowBox[{"StringTrim", "[", 
+             RowBox[{"s", ",", "\"\<.m\>\""}], "]"}], "<>", "\"\<.m\>\""}]}], 
+          "]"}], "]"}], "=."}]}], "\n", "\t\t", "]"}], ";", "\n", "\t", 
+     RowBox[{"ChemDVRNeeds", "@", "s"}]}], "\n", "\t", ")"}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.699817542637241*^9, 3.699817557968457*^9}, {
+   3.70000472494786*^9, 3.700004724954092*^9}, 3.709487016525186*^9, 
+   3.709488628878789*^9, {3.7095022557121563`*^9, 
+   3.709502287669404*^9}},ExpressionUUID->"cdbf26ad-3d74-465b-9c71-\
+f1ec02c0c56a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"PackageAddAutocompletions", "[", "\n", "\t", 
+   RowBox[{"\"\<ChemDVRReload\>\"", ",", "\n", "\t", 
+    RowBox[{"List", "@", 
+     RowBox[{"ChemDVRClasses", "[", "]"}]}]}], "\n", "\t", "]"}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{
+  3.724434852768161*^9},ExpressionUUID->"860e996d-0325-4b98-9a78-e691e1a7fd74"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Formatting\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.699206386279348*^9, 
+  3.6992063872072077`*^9}},ExpressionUUID->"0c1ef708-1ad5-4bba-9615-\
+5820711064ca"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$dvrclassimg", "=", "\n", "\t", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Graphics", "[", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"{", "\n", "\t\t\t", 
+        RowBox[{
+         RowBox[{"Inset", "[", "\n", "\t\t\t\t", 
+          RowBox[{"Graphics", "[", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"First", "@", "#"}], "/.", 
+             RowBox[{"_Opacity", "\[Rule]", 
+              RowBox[{"Opacity", "[", ".1", "]"}]}]}], ",", "\n", 
+            "\t\t\t\t\t", 
+            RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"ImageSize", "\[Rule]", 
+               RowBox[{"{", 
+                RowBox[{"28", ",", "28"}], "}"}]}], ",", "\n", "\t\t\t\t\t\t", 
+              RowBox[{"AspectRatio", "\[Rule]", "Full"}], ",", "\n", "\t", 
+              "\t\t\t\t\t", 
+              RowBox[{"Method", "\[Rule]", 
+               RowBox[{"{", 
+                RowBox[{"\"\<ShrinkWrap\>\"", "\[Rule]", "True"}], "}"}]}], 
+              ",", "\n", "\t\t\t\t\t\t", 
+              RowBox[{"PlotRange", "\[Rule]", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"-", "3"}], ",", "3"}], "}"}], ",", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"-", "0"}], ",", "20"}], "}"}]}], "}"}]}]}], "\n", 
+             "\t\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t\t", "]"}], "\n", 
+          "\t\t\t\t", "]"}], ",", "\n", "\t", "\t\t", 
+         RowBox[{"Inset", "[", "\n", "\t\t\t\t", 
+          RowBox[{"Graphics", "[", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"GrayLevel", "[", ".2", "]"}], ",", "\n", 
+              "\t\t\t\t\t\t", 
+              RowBox[{"First", "@", "#2"}]}], "\n", "\t\t\t\t\t\t", "}"}], 
+            ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"ImageSize", "\[Rule]", 
+               RowBox[{"{", 
+                RowBox[{"28", ",", "28"}], "}"}]}], ",", "\n", "\t", 
+              "\t\t\t\t\t", 
+              RowBox[{"AspectRatio", "\[Rule]", "Full"}], ",", "\n", "\t", 
+              "\t\t\t\t\t", 
+              RowBox[{"Method", "\[Rule]", 
+               RowBox[{"{", 
+                RowBox[{"\"\<ShrinkWrap\>\"", "\[Rule]", "True"}], "}"}]}]}], 
+             "\n", "\t", "\t\t\t\t\t", "}"}]}], "\n", "\t", "\t\t\t\t", "]"}],
+           "\n", "\t", "\t\t\t", "]"}]}], "\n", "\t", "\t\t", "}"}], ",", 
+       "\n", "\t", "\t", 
+       RowBox[{"Background", "\[Rule]", 
+        RowBox[{"GrayLevel", "[", ".95", "]"}]}], ",", "\n", "\t", "\t", 
+       RowBox[{"FrameStyle", "\[Rule]", 
+        RowBox[{"GrayLevel", "[", ".8", "]"}]}], ",", "\n", "\t", "\t", 
+       RowBox[{"Frame", "\[Rule]", "True"}], ",", "\n", "\t", "\t", 
+       RowBox[{"FrameTicks", "\[Rule]", "False"}], ",", "\n", "\t", "\t", 
+       RowBox[{"ImageSize", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"32", ",", "32"}], "}"}]}]}], "\n", "\t", "\t", "]"}], "&"}],
+     "[", 
+    RowBox[{"$dvrimg", ",", 
+     GraphicsBox[{FilledCurveBox[Line[CompressedData["
+1:eJxN2HmUjlUYAPCPKESLZA2p7Eu2SNkqRFkiZUnJUimyRCkqS7utVWTLvu+M
+GWPGNjPGjNlnrNG+bySihN73zM85/XG/3/ne8533ufd7nvfe994q/Yd1G1ow
+Eom0Dz5Co4J2qEAksoXRjOFWxnIb4xjP7dzBndzF3UxgIpO4h8ncyxSmch/T
+mM4MZjKL2cxhLvO4P/AgD3A/85jLHGYzi5nMYDrTuI+pTOFeJnNP4IHAJCYy
+gbu5izu5g9sZzzhuYyy3MobR3MIobuYmbuQGruc6ruUaruYqrgw8GLiCy7mM
+S7mEi7mIC7mA8/kp53Eu53A2Z/ETzuQMfszp/Igf8gO+z/f4buChwGmcyimc
+zEl8h2/zLb7JN/g6X+NETuB4juOrfIUvcyzH8CW+yNF8gc9zVODhwJF8jiM4
+nMM4lM9yCAfzGT7NQXyKT/IJDuQA9mc/Ps6+fIyPsg8fYW/2CjwS2JM9+DAf
+Ync+yG7sygfYhZ3ZiR15P+9jB7bnvWzHtmzDe3g372JrtmLLwM8CW7A57+Qd
+bMbb2ZRNeBsbsxEbsgHr81bWY13WYW3WYk3WYHVWY1Xewpt5U+DRwCq8kZVZ
+iRV5AyuwPMuxLMuwNK9nKV7HkryW1/BqXsUSLM4rWYxFWYRXBB4LvJyFWYiX
+sSALMMKLkXwv8Dz/5Tn+w795lmf4F0/zFP/kSf7BEzzO3/kbfw3a50H7hT/z
+J/7IH/g9v+O3/IZf8yt+yS94qR3jUX7GIzzMQzzIA9zPPOaKkeN7thhZYmSJ
+kS1Gthg5YuSIkStGrhh5/2uXruUw22+zmOkeGUx37zTuEzNVH1K4V9+SuUef
+k5hoLAncbYy7uNPYd3C7/z2ecfKxjbHytFXeYhgtn1sYJc+buSmSn/+N3BDJ
+r4v1XBfJr5e1XBPJr6PVXBXJr6+Vkfx6Cw3rb0Ukvx5Df3f9OE/wD57knzzF
+0/yLZ3iWf/MfnuO/PM8LvMjw+Q0twIK8jIVYmJcznC/C8RZhURbjlSzOEryK
+V/MaXsuSvI6leD1LswzLshzLswJvYEVWYmWG83eYvyq8iTfzFlZlNVZnDdZk
+LdZmHdZlPd7K+mzAhmzExryNTdiUt7MZw/U1rMs72Zwt2JKt2Jp38W7ewzZs
+y3a8l+3ZgffxfnZkJ3ZmFz7AruzG8H0nfM668yE+zB7syV7szUfYh4/yMfbl
+4+zH/hzAgXyCT/IpDuLTfIaDOYTh+2g4fwzlMA7nCD7HkRzF5/kCR/NFvsQx
+HMuX+Qpf5TiO5wRO5Gt8nW8w3B+E8+FbfJvvcBIncwqnchrf5Xt8nx/wQ37E
+6fyYMziTn3AWZ3MO53Iew/1aOL/P5wIu5CIu5hIu5TIu5wqu5Cqu5hqu5Tqu
+5wZu5CZuZhS3MJoxDPfT4boVy22MYzy3cwd3chd3M4GJTOIeJnMvU5jKfUxj
+OjOYySxmMzzfCNfhXOZxP8PzkXC9Ds9LLp0b/QdyegDz
+         "]]], 
+       FilledCurveBox[Line[CompressedData["
+1:eJxN12W3VVUUBuAFUhICUoL0Renu7hYR2PvQ3SghZdChNAapoDTSgv4Ru7u7
+W1H3Gvth6Ic5ng933BNrve88YzeYsXj0ouIhhKvFQoi2yHw2m+bZPJNNs2yu
+8DKf5iVe5AWe5zme5ZlsmmbzFE/zFE/yBI/zGI/yCJ/kEzzMQ3ycj/EgD3A/
+93Ev9/DRbJpk8wgf5kPczV3cyR3czm3cyi18kA9wMzdxIzdwPddxLddk0zib
+1VzF+3kf7+U9XMkVXM5lXMq7uYSLuYgLeRfv5ALO57xsbs1mLudwNmdxJmdw
+OqdxKqdwMidxIidwPMdxLAtMmXAMR2dzSzajeAdH8naO4G0czmEcyiEczEEc
+yAHsz37syz7szV7smU2jbHqwO7uxK7uwMzuxIzuwPduxLduwNVuxJVuwOZux
+KZswZqHIGRf5DkX+VvS/acgGrM96rMs6rM2bWYs1eRNrsDqrsSqr8EafoTIr
+sSJvYAWWZzmW5fUsw9IsxZIswetYnMUY+E/I/ZtX+VfIz+pP/sHf+Rt/5S/8
+mT/xR/7A7/kdv+U3/Nr7f8UvQ35+X4T8Tj8P+R1/FvI7j8YMfBryTERjRj4J
+eWaiMUMf+z2Kxox9FPLMRWMGPwx5JqMxox+EPLPRmOH3Q57paMz4eyHPfDR2
+4N2Qd+KdkHckGjvzdsg7FI2deivkHYvGzr0Z8g5GYyffCHlHo7Gzr4e8w9HY
+6ddC3vFo7PyrId8B0bgTXgn5jojGnfFyyHfISyHfKdG4Y14M+c6Jxh30Qsh3
+UjTuqOdDvrOicYc9F/KdFk1Z8PeC/yt4vYL3KXj/gs9T8DkLPn/qe6W+b+oc
+UueTOrfUeabOOXXuqftI3VPq/lL3mrrvVA5S+UjlJpWnVL5SeUvlL5XHVD4T
+eU3kN5HnRL4TeU/kP9GHRD8SfUn0J9GnRL8SfUv0L9HHRD8TfU30N9HnaHHG
+vsf7KsGSLMXSLMPrWZblWJ4VeAMrshIr80ZWYVVWY3XWYNyfMV81WYs3szbr
+sC7rsT4bsCGL2KjYf7+50Wu/wY3ZhE3ZjM3Zgi0Zd0XsRWu2YVu2Y3t2YEd2
+Ymd2YVd2Y3f2YE/2Ym/2YV/2Y9wVsccDOJCDOJhDOJTDOJy3cQRv50hem1Ec
+zTFMmLLAsRzH8V5zAidyEidzCqdyGqdzBmdyFmdzDudyHudzAe/kXVzIRc5g
+MZfwbi7lMi7nCq7kPbyX9/F+ruJqruFaruN6buBGbuJmd/cAH+QWbuU2bucO
+7uQu7uZDfJiP8FHu4V7u434e4EHG56mYtcd5iIf5BJ/kER7lMR7nCZ7kKZ7m
+UzzDszzH87zAi7zE+LwaO3KZVxifb2OH4vPuUA7hYA7iQA5gf/ZjX/Zhb/Zi
+T/Zgd3ZjV3ZhZ3ZiR3Zge7ZjW7Zha7ZiS157vv8X4eR7WA==
+         "]]], 
+       FilledCurveBox[Line[CompressedData["
+1:eJxV3HV8VVe2AODTTmemU5lO3acydXekAgR3J7i7JPhNCCE4F3d3h1JKKS3u
+rnVXqLuN63us5ru/ee+P+/vITXLvOXuvtfbOWYd7Q9vcejlnJkly3jlJEl50
++vHT6ceFpx8/8gd+z+/4Lb/h1/yKX/ILfs7P+Ck/4cf8iKd4kh/yA77P9/gu
+3+HbfItv8g2+ztf4Kl/hy3yJL/IFnuBxHuNRHuFhHuJBHuB+7uNe7uFu7uJO
+7uB2buNWbuFmbuJGPs/nuIHPcj2f4To+zbV8imv4JFdzFVdyBZdzGZdyCRdz
+ERdyAedzHudyDmdzFmdyBqdzGqdyCidzEidyAsdzHMdyDEczzVEcyREczmEc
+yiEczCIOYiEHsoADmM88ptif/diXfdibvdiTucxhD3ZnN3ZlF3ZmJ3ZkB7Zn
+O7ZlG7ZmK7ZkCzZnMzZlEzZmNhuxIRuwPuuxLuuwNmuxJmuwOquxKquwMiux
+IiuwPLNYjmVZhk/wcT7GR1mapViSJfgIH+ZDfJAP8H7ex3t5D+/mXbwzKV4/
+7jj9uPj04/bTj0tOP247/biUl/FyXsEreRWv5jW8lr/ndbyeN/BG/oE38Wbe
+wluZedzOO3gn7+LdvIf38j7ezwf4IEuYz5IsxdJ8lI/xcT7BMizLcsw8yrMC
+K7ISK7MKq7Iaq7MGa7IWa7MO67Ie67MBG7IRs9mYTdiUzdicLdiSrdiabdiW
+7dieHdiRndiZXdiV3didPZjDXPZkL/ZmH/ZlP/ZninnM5wAWcCALOYhFHMwh
+HMphHM4RHMlRTHM0x3Asx3E8J3AiJ3Eyp3Aqp3E6Z3AmZ3E253Au53E+F3Ah
+F3Exl3Apl3E5VzD2HJEjqxh7kgqsyEqszCqsymqszhqsyVqszTqsy3qszwZs
+yEbMZmM2YVM2Y3O2YEu2Ymu2YVu2Y3t2YEd2Ymd2YVd2Y3f2YA5z2ZO92Jt9
+2Jf92J8p5jGfA1jAgSzkIBZxMIdwKIdxOEdwJCNXIk4iV1ZyBZdzGZdyCRdz
+ERdyAedzHudyDmdzFmdyBqdzGqdyCidzEidyAsdzHMdyDEcz8xjFkRzB4RzG
+oRzCwSziIBZyIAs4gPnMY4r92Y992Ye92Ys9mcsc9mB3dmNXdmFndmJHdmB7
+tmNbtmFrtmJLtmBzNmNTNmFjZrMRG7IB67Me67IOa7MWa7IGq7Maq7IKK7MS
+K7ICyyf/XVPCcizLMnyCj/MxPsrSLMWSLMFH+DBjrxqxGfurkRzB4RzGoRzC
+wSziIBZyIAs4gPnMY4r92Y992Ye92Ys9mcsc9mB3dmNXdmFndmJHdmB7tmNb
+tmFrtmJLtmBzNmNTNmFjZrMRG7IB67Me67IOa7MWa7IGq7Maq7IKK7MSIzYj
+LiI2I04iNiNusjx/m+dv83xYgiVZiqX5KB/j43yCZViW5ZjF8qzAiqzEyqzC
+qqzG6qzBmqzF2qzDuqzH+mzAhmzEbDZmEzZlMzZnC7ZkK7ZmG7ZlO7ZnB3Zk
+J3ZmF3ZlN3ZnD+Ywlz3Zi73Zh33Zj/2ZYh7zOYAFHMhCDmIRB3MIh3IYh3ME
+R3IU0xzNMRzLcRzPCZzISZzMKZzKaZzOGZzJWZzNOZzLeZzPBVzIRVzMJVzK
+ZVzOFVzJVVzNJ7mGT3Etn+Y6PsP1fJYb+Byf50Zu4mZu4VZu43bu4E7u4m7u
+4V7u434e4EEe4mEe4VEe43Ge4At8kS/xZb7CV/kaX+cbfJNv8W2+w3f5Ht/n
+B/yQJ3mKH/FjfsJP+Rk/5xf8kl/xa37Db/kdv+cP/JE/8Y/8E//Mv/Cv/Bv/
+zn/wn/wX/83/8H+YnFHsGTyTv+BZ/CV/xV/zbP6G5/Bcnsfz+VtewN/xQl7E
+i3kJL+VlvJxX8Epexat5Da/l73kdr+cNvJF/4E28mbfwVt7G23kH7+RdvJv3
+8F7ex/v5AB/kQ3yYj7AES7IUS/NRPsbH+QTLsCzLMYvlWYEVWYmVWYVVWY3V
+WYM1WYu1WYd1WY/12YAN2YjZbMwmbMpmbM4WbMlWbM02bMt2bM8O7MhO7Mwu
+7Mpu7M4ezGEue7IXe7MP+7If+zPFPOZzAAs4kIUcxCIO5hAO5TAO5wiO5Cim
+OZpjOJbjOJ4TOJGTOJlTOJXTOJ0zOJOzOJtzOJfzOJ8LuJCLuJhLuJTLuJwr
+uJKruJpPcg2f4lo+zXV8huv5LDfwOT7PjdzEzdzCrdzG7dzBndzF3dzDvdzH
+/TzAgzzEwzzCozzG4zzBF/giX+LLfIWv8jW+zjf4Jt/i23yH7/I9vs8P+CFP
+8hQ/4sf8hJ/yM37OL/glv+LX/IbfnlHco/mO359R3KsJ7+RdvJv38F7ex/v5
+AB/kQ3yYj7AES7IUS/NRPsbH+QTLsCzLMYvlWYEVWYmVWYVVWY3VWYM1WYu1
+WYd1WY/12YAN2YjZbMwmbMpmbM4WbMlWbM02bMt2bM8O7MhO7Mwu7Mpu7M4e
+zGEue7KXfOrD3sw835O5zGEPdmc3dmUXdmYndmQHtmc7tmUbtmYrtmQLNmcz
+NmUTNmY2G7EhG7A+67Eu67A2a7Ema7A6q7Eqq7AyK7EiI86Pi/tjPCofjvAw
+D/EgD3A/93Ev93A3d3End3A7t3Ert3AzN3Ejn+dz3MBnuZ7PcB2f5lo+xTV8
+kqu5iiu5gsu5jEu5hIu5iAu5gPM5j3M5h7M5izM5g9M5jVM5hZM5iRM5geM5
+jmM5hqOZ5iiO5AgO5zAO5RAOZhEHsZADWcABzGceU+zPfuzLPuzNXuzJXOaw
+B7uzG7uyCzuzEzuyA9uzHduyDVuzFVuyBZuzGZuyiXxsLE+z5W22PM6W19ny
+PFveh9VYnTVYk7VYm3VYl/VYnw3YkI2YzcZswqZsxuZswZZsxdZsw7Zsx/bs
+wI7sxM7swq7sxu7swRzmsid7sTf7sC/7sT9TzGM+B7CAA1nIQSziYA7hUA7j
+cI7gSHExSpykxU1aHKXFVVqcpcVdWhymxWVanKbFbVocp8V1WpynxX1aHqTl
+RVqepOVNWh6l5VVanqXlXVoepuVlWp6m5W1aHqfldVqeh/2ZYh7zOYAFHMhC
+DmIRB3MIh3IYh3MER3IU0xzNMRzLcRzPCZzISZzMKZzKaZzOGZzJWZzNOZzL
+eZzPBVzIRVzMJVzKZVzOFVzJVVzNJ7mGT3Etn+Y6PsP1fJYb+Byf50Zu4mZu
+4VZu43bu4E7u4m7u4V7u434e4EEe4mEe4VEe43GekKcn5O0JeXxCXp+Q5yfk
+fTiEg1nEQSzkQBZwAPOZxxT7sx+jrsU+vDf7MPN8P/ZninnM5wAWcCALOYhF
+HMwhHMphHM4RHMlRTHM0x3Asx3E8J3AiJ3Eyp3Aqp3E6Z3AmZ3E253Au53E+
+F3AhF3Exl3Apl3E5V3AlV3E1n+QaPsW1fJrr+AzX81lu4HOMXk38nR+9mm8Z
+1wGiZ/M14zpB9G6+ZFxHiB7O54zrDNHL+ZRxHSJ6Oh8zrlNEb+cU4zpG9Hg+
+ZFzniF7P+4zrINHzeZdxnWR3UnzdJIzrKHuS4usqYVxniV5QXHeJXtBrjOsy
+0RN6hXHdJnpDL/HFM4p7RC8w8uWQvA4jzw8nxXkfRh2I3tFhRp2IHtJBRh2J
+XtJ+Rp2JntJeRh2K3tJuRp2KHtNORh2LXlPUteg1bWPUveg5bWHUxeg9bWLU
+zehBPc+oq9GL2sCou9GTWs+oy9GbWseo29GjWsuo69GrWsOo+9GzWs1YF6J3
+tZKxbkQPazljXYle1lLGuhM9rViHoqe1iLFORW9rAWMdO5kUr2thrHOnkuJ1
+L4x1MHpesxjrZPS+ZjDW0eiBTWOss9ELm8JYh6MnNomxTkdvbAJjHf8iKV7X
+w1jno1c2hrEPiJ5Z7AuiZzaKsW+I3tkIxr4iemjDGPuO6KUNYexLoqdWxNi3
+RG+tkLGviR5bAWPfE722fOYx5fspv5fyeinvk/L+KceVcrwp55FyXinnmzIO
+KeOTMm4p45kyzinjnzIvKfOVMo8p85sy7ylxkBIfKXGTEk8pcZYSfylxmRKv
+KXGcEt8pcZ+SDyl5kpI/KfmUkmcp+ZeSlyn5mpLHKfkdHuJBHuB+7uNe7uFu
+7uJO7uB2buNWbjGfm30d9Tb2wVGH+7Gv5/uwt5/vxZ5eJ9fr5rCH9+vObo6j
+K7s4vs7s5Lg7soPzac92zrMt2zj/1mxlXFqyhfFqzmbGsSmbGN/GzDbujdjQ
+fDQwP/VZz7zVZR3zWZu1zHNN1jD/1VlNXFRlFfFSmZXEUUVWEF/lmSXuyrGs
+eCzDJ8Tp43xM/D4qnkuzlDgvyRLi/xE+LC8e4oPy5QHeL4/u473y6x7eLe/u
+4p3y8Q7eLk9v463y9xbeLK9vYvSZTyXFfefI/xsYfemoC9cx+tZRL65l9LWj
+jlzN6HtHfbmS0RePunM5o28e9ehSRl896tTFjL77z//vkdGXj7p2AaNvH/Xu
+fEZfP+rguYy+f9THuA8g6uXZjPsEoo7+inEfQdTXsxj3GUTdPZNnMPH9xO8l
+Xi/xPon3TRxP4jgTx584r8T5JsYhMT6JcUuMZ2KcE+OfmJfEPCXmLzGviflO
+xEEiPhJxk4inRJwl4i8Rl4l4TcRxIq4T8Z7Ig0R+JPImkU+JPEvkXyIvE/ma
+yONEfoeHeJAHuJ/7uJd7uJu7uJM7uJ3buJVbzOdmX0edjftONjLt+bSfS4uD
+8Bc8i7/kr/hrns3f8Byey/N4Pn/LC/g7XsiLeDEv4aW8jJfzCl7Jq3g1r+G1
+/D2v4/W8gTfyD7yJN/MW3srbeDvv4J28i3fzHt7L+3g/H+CDfIgP8xGWYEmW
+YmlGXR7FkRzB4RzGoRzCwSziIBZyIAs4gPnMY4r92Y992Ye92Ys9mcsc9mB3
+dmNXdmFndmJHdmB7tmNbtmFrtmJLtmBzNmNTNmFjZrMRG7IB67Me67IOa7MW
+a7IGq7Maq7IKK7MSK7KCOCkvbsqLoyxxlSXOssRdljjMEpdZ4jRL3GaJ4yxx
+nSXOs8R9ljzIkhdZ8iRL3mTJoyx5lSXPsuRdljzMkpdZ8jRL3mbJ4yx5nSXP
+w2t5Da/mVbySV/ByXsZLeQkv5kW8kL/jBfwtz+d5PJfn8Dc8m7/mr/hLnsVf
+8EyewYRR18P/8N/8F//Jf/Dv/Bv/yr/wz/wT/8if+CN/4Pf8jt/yG37Nr/gl
+v+Dn/Iyf8hN+zI94iif5IT/g+3yP7/Idvs23+Cbf4Ot8ja/yFb7Ml/giX+AJ
+HucxHuURHmbsESIfY48QeRp7hIqsxMqswqqsxuqswZqsxdqsw7qsx/pswIZs
+xGw2ZhM2ZTM2Zwu2ZCu2Zhu2ZTu2Zwd2ZCd2Zhd2ZTd2Zw/mMJc92Yu92Yd9
+2Y/9mWIe8zmABRzIQg5iEQdzCIdyGIdzBGMdj7iIdT3i5Ofr+TzCozzG4zzB
+F/giX+LLfIWv8jW+zjf4Jt/i23yH7/I9vs8P+CFP8hQ/4sf8hJ/yM37OL/gl
+v+LX/Ibf8jt+zx/4I3/iH/kn/pl/4V/5N/6d/+A/+S/+m//5P270/CY/t8nv
+bfY6m73uFu+zxftudRxbHdc2x7nNcW93Htud1w7nucN57zQOu4zLLuO027jt
+No57jOse47zXuO81D/vMyz7ztN+87TePB8zrAfMcsfshIw4iht9nxEnE8ruM
+OIqYfpsRZxHbbzLiMGI84jJi/DVG3Easv8KI64j5l/iiR+bfJ3zvOI/5naM8
+4rUO85D3OMgD3ns/9zmmvdzjWHdzl3PYyR3Obbtz3catxmALNxubTdxozJ7n
+c8ZyA581xuv5jLFfx6fNyVo+Za7W8ElzuJqrzO1KRm8n5nw5o/cTsbCUS5Li
+GFmcFMfMIkYvKWJpAaPXFDE2j9GLitibw+hVRUzOYvSyIlZnMHpdEcPTGL2w
+iO0p/LlXluidJcW9tMiFCYxeW+TIOEYvLnJnDEcn/60JmRqRqRmZGpKpKZka
+k6k5mRqUqUmZGpWpWZkalqlpmRqXqXmZGpipiZkaeTL5/zU0U1MzNTZTczM1
+OFOTMzU6U7MzNTxT0zM1PlPzM2tAZk3IrBGZNSOzhmTWlMwak1lzMmtQZk3K
+rFGZNSuzhh3kAe7nPu7lHu7mLu7kDm7nNm7lFvO52deRS7GWRi6N9PUIDvdz
+wzjU7w/hYK9bxEHer5ADHUcBBzi+fOY57hT7O59+7Os8+7C38+/FnsYl1zjl
+sIfx687MXiizN+pivDuzk3noyA7mpz3bmbe2bGM+W7OVeW7J2OvF/Dfnz/eY
+Ju4xTYr3ihEvjRl7yYijRoy9ZsRX7D0j3uoz9qYRh3UZe9eIz9qMvW3EbU3G
+3jfiuTpjbxxxXpVVkuL4r8zYW0deVGTsvSNfyif//Rsh8qgcyybF+VWGca92
+5N3jjHu5Ix/j3u7Iz9KMe78jb0sy7g0/mRTfKx7GveOR5w8x7i2P/H+Ace95
+1IX7GPemR724h3HvetSRuxj3tkd9uYNx73vm/86F8TlGUY9u4c1JcZ26ifE5
+SFG/bkyK69kNvD4prnPXMT5XKerftYzPXYq6eDXjc5miXl7J+NymqKOXMz7X
+KerrpYzPfYq6ezEznyv4v0iNm28=
+         "]]]},
+      ImageSize->{52.1640625, Automatic}]}], "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.7072512615749702`*^9, 3.707251265717265*^9}, {
+  3.70725136468526*^9, 3.707251374886096*^9}, {3.707495877374937*^9, 
+  3.707495889223103*^9}, {3.707496236310917*^9, 3.7074962565888767`*^9}, {
+  3.7074965857694197`*^9, 3.7074966222799997`*^9}, {3.707505245346434*^9, 
+  3.70750526513126*^9}, {3.7075053083878202`*^9, 3.707505314622056*^9}, {
+  3.707505393828124*^9, 3.707505448767522*^9}, {3.707505756334353*^9, 
+  3.7075058313798943`*^9}, {3.707505938342243*^9, 3.707505953622929*^9}, {
+  3.7075059890090313`*^9, 
+  3.7075060562365503`*^9}},ExpressionUUID->"487766c1-9d32-455c-b293-\
+afab3c7bff62"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"Format", "[", 
+    RowBox[{"ChemDVRClass", "[", "a_Association", "]"}], "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{"RawBoxes", "@", "\n", "\t\t", 
+    RowBox[{"BoxForm`ArrangeSummaryBox", "[", "\n", "\t\t\t", 
+     RowBox[{"\"\<ChemDVRClass\>\"", ",", "\n", "\t\t\t", 
+      RowBox[{"Lookup", "[", 
+       RowBox[{"a", ",", "\"\<Icon\>\"", ",", 
+        RowBox[{"ChemDVRClass", "@", "a"}]}], "]"}], ",", "\n", "\t\t\t", 
+      "$dvrclassimg", ",", "\n", "\t\t\t\t", 
+      RowBox[{"{", "\n", "\t\t\t\t\t", 
+       RowBox[{"BoxForm`MakeSummaryItem", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"\"\<Name: \>\"", ",", 
+           RowBox[{"Lookup", "[", 
+            RowBox[{"a", ",", "\"\<Name\>\""}], "]"}]}], "}"}], ",", 
+         "StandardForm"}], "]"}], "\n", "\t", "\t\t\t\t", "}"}], ",", "\n", 
+      "\t", "\t\t", 
+      RowBox[{"KeyValueMap", "[", "\n", "\t", "\t\t\t", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"BoxForm`MakeSummaryItem", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Row", "@", 
+              RowBox[{"{", 
+               RowBox[{"#", ",", "\"\<: \>\""}], "}"}]}], ",", "#2"}], "}"}], 
+           ",", "StandardForm"}], "]"}], "&"}], ",", "\n", "\t", "\t\t\t\t", 
+        RowBox[{"KeySelect", "[", 
+         RowBox[{"a", ",", 
+          RowBox[{"MatchQ", "[", 
+           RowBox[{"Except", "[", "\"\<Name\>\"", "]"}], "]"}]}], "]"}]}], 
+       "\n", "\t", "\t\t\t", "]"}], ",", "\n", "\t", "\t\t", "StandardForm"}],
+      "\n", "\t", "\t\t", "]"}]}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.6992014129906178`*^9, 3.699201457489113*^9}, {
+  3.699201570816434*^9, 3.699201618622539*^9}, {3.699206072093081*^9, 
+  3.6992060732582197`*^9}, {3.69921129284207*^9, 3.699211295523595*^9}, {
+  3.700004724964623*^9, 3.700004724971187*^9}, {3.707251268393806*^9, 
+  3.707251271412424*^9}, {3.707505352271861*^9, 
+  3.70750535719699*^9}},ExpressionUUID->"f17b21a3-7cd3-4fd5-9298-8ad6193b84ef"]
+}, Closed]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"fdeebcf6-8c06-4eff-91a0-\
+04c994bffda0"]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"9009c70d-1aad-415c-9701-\
+edff1eaf5262"]
+},
+WindowSize->{788, 764},
+WindowMargins->{{Automatic, 175}, {Automatic, 43}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+
