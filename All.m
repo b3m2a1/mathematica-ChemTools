@@ -18,10 +18,10 @@ Map[
     "DVR",
     "Experimental",
     "Objects",
-    "OpenBabel",
-    "Psi4",
-    "SP",
-    "Utilities"
+    "Graphics",
+    "Utilities",
+    "Compute",
+    "Import"
     }
   ]
 

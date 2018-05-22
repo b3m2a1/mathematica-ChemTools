@@ -21,10 +21,11 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
-Cell["\[LeftCeiling]ChemDVRDefaultPlot\[RightFloor]", "CodeSubsection",
+Cell["\[LeftCeiling]Options\[RightFloor]", "CodeSubsection",
  Evaluatable->True,
- CellChangeTimes->{{3.731972776573567*^9, 
-  3.73197278676336*^9}},ExpressionUUID->"e33ee154-821b-4345-9835-\
+ CellChangeTimes->{{3.731972776573567*^9, 3.73197278676336*^9}, {
+  3.735504626036295*^9, 
+  3.7355046285623617`*^9}},ExpressionUUID->"e33ee154-821b-4345-9835-\
 41d1f372c741"],
 
 Cell[CellGroupData[{
@@ -44,8 +45,9 @@ Cell[BoxData[
     RowBox[{
      RowBox[{"{", "\n", "\t\t\t\t", 
       RowBox[{
-       RowBox[{"\"\<ZeroAxis\>\"", "\[Rule]", "True"}], ",", "\n", "\t\t\t\t", 
-       RowBox[{"\"\<ShowEnergy\>\"", "\[Rule]", "True"}], ",", "\n", 
+       RowBox[{"\"\<ShowEnergy\>\"", "\[Rule]", "Automatic"}], ",", "\n", 
+       "\t\t\t\t", 
+       RowBox[{"\"\<EnergyStyle\>\"", "\[Rule]", "Automatic"}], ",", "\n", 
        "\t\t\t\t", 
        RowBox[{"\"\<ShowPotential\>\"", "\[Rule]", "True"}], ",", "\n", 
        "\t\t\t\t", 
@@ -59,8 +61,8 @@ Cell[BoxData[
        "\n", "\t\t\t\t", 
        RowBox[{"\"\<WavefunctionShifting\>\"", "\[Rule]", "Automatic"}], ",", 
        "\n", "\t\t\t\t", 
-       RowBox[{"\"\<WavefunctionRescaling\>\"", "\[Rule]", "None"}], ",", 
-       "\n", "\t\t\t\t", 
+       RowBox[{"\"\<WavefunctionRescaling\>\"", "\[Rule]", "Automatic"}], ",",
+        "\n", "\t\t\t\t", 
        RowBox[{"\"\<PotentialRescaling\>\"", "\[Rule]", "None"}], ",", "\n", 
        "\t\t\t\t", 
        RowBox[{"\"\<PlotProbabilityDensity\>\"", "\[Rule]", "False"}], ",", 
@@ -91,7 +93,11 @@ Cell[BoxData[
    3.732425950650519*^9, 3.732425960587916*^9}, {3.7325130025989847`*^9, 
    3.732513011079768*^9}, {3.732513143405149*^9, 3.732513144202325*^9}, {
    3.735141515855105*^9, 3.7351415170000067`*^9}, {3.7351417449647503`*^9, 
-   3.7351417512022753`*^9}},ExpressionUUID->"bde93d56-18d9-400b-8200-\
+   3.7351417512022753`*^9}, {3.735504725185137*^9, 3.7355047297471533`*^9}, {
+   3.73550678993342*^9, 3.735506811880598*^9}, {3.735506857914469*^9, 
+   3.7355068734136953`*^9}, {3.735506923583522*^9, 3.735506939215029*^9}, {
+   3.735507290969059*^9, 3.735507328644858*^9}, {3.735511873710869*^9, 
+   3.735511874642411*^9}},ExpressionUUID->"bde93d56-18d9-400b-8200-\
 0dd72757672b"]
 }, Closed]],
 
@@ -126,7 +132,16 @@ Cell[BoxData[
  CellChangeTimes->{{3.731980601340897*^9, 
   3.731980648228436*^9}},ExpressionUUID->"e4f7783b-6b94-4db5-be07-\
 5f347434a283"]
-}, Closed]],
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Wavefunction Manipulations\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.731972776573567*^9, 3.73197278676336*^9}, {
+  3.735504626036295*^9, 
+  3.7355046371143*^9}},ExpressionUUID->"3d56192a-628d-4c96-b8e1-b8dae3672d90"],
 
 Cell[CellGroupData[{
 
@@ -192,14 +207,17 @@ Cell[BoxData[{
     RowBox[{
      RowBox[{"{", 
       RowBox[{"pmm", "=", 
-       RowBox[{"mm", "*", 
-        RowBox[{"If", "[", 
-         RowBox[{
-          RowBox[{"pot", "===", "None"}], ",", " ", 
-          RowBox[{"{", 
-           RowBox[{"0", ",", " ", "1"}], "}"}], ",", " ", 
-          RowBox[{"MinMax", "[", "pot", "]"}]}], "]"}]}]}], "}"}], ",", "\n", 
-     "\t\t", 
+       RowBox[{"Rescale", "[", 
+        RowBox[{"mm", ",", " ", 
+         RowBox[{"{", 
+          RowBox[{"0", ",", " ", "1"}], "}"}], ",", " ", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"pot", "===", "None"}], ",", " ", 
+           RowBox[{"{", 
+            RowBox[{"0", ",", " ", "1"}], "}"}], ",", " ", 
+           RowBox[{"MinMax", "[", "pot", "]"}]}], "]"}]}], "]"}]}], "}"}], 
+     ",", "\n", "\t\t", 
      RowBox[{"Map", "[", 
       RowBox[{
        RowBox[{"Rescale", "[", 
@@ -225,9 +243,14 @@ Cell[BoxData[{
   "chemDVRDefaultPlotWavefunctionRescalingFunction", "[", "___", "]"}], ":=", 
   "\n", "\t", "Identity"}]}], "CodeInput",
  CellChangeTimes->{{3.7320732155470247`*^9, 3.732073418020398*^9}, {
-  3.732074275096808*^9, 3.732074276392169*^9}, {3.7320757465397882`*^9, 
-  3.732075758953006*^9}, {3.7351453461264*^9, 
-  3.7351453554045277`*^9}},ExpressionUUID->"ee95d9cc-bcee-4d95-b24a-\
+   3.732074275096808*^9, 3.732074276392169*^9}, {3.7320757465397882`*^9, 
+   3.732075758953006*^9}, {3.7351453461264*^9, 3.7351453554045277`*^9}, {
+   3.735503515096692*^9, 3.735503516542945*^9}, {3.7355037044716063`*^9, 
+   3.735503764935317*^9}, 3.735503808107061*^9, {3.735503920633128*^9, 
+   3.7355039705510798`*^9}, 3.735504032265264*^9, {3.7355041477701683`*^9, 
+   3.735504149721958*^9}, {3.7355043325267363`*^9, 3.7355043539083652`*^9}, {
+   3.7355044183771772`*^9, 
+   3.7355044242957897`*^9}},ExpressionUUID->"ee95d9cc-bcee-4d95-b24a-\
 af51617e01a4"]
 }, Closed]],
 
@@ -330,8 +353,8 @@ Cell[BoxData[{
  CellChangeTimes->{{3.732513396578218*^9, 3.732513521870913*^9}, {
   3.732513576587142*^9, 3.7325136446141787`*^9}, {3.7325136791534843`*^9, 
   3.732513725279379*^9}, {3.735145200042453*^9, 3.735145209102867*^9}, {
-  3.735145282799342*^9, 
-  3.735145327852661*^9}},ExpressionUUID->"8e80de30-5a72-4e74-8b83-\
+  3.735145282799342*^9, 3.735145327852661*^9}, {3.735506992519837*^9, 
+  3.7355070183321047`*^9}},ExpressionUUID->"8e80de30-5a72-4e74-8b83-\
 afab2332aee9"]
 }, Closed]],
 
@@ -349,9 +372,9 @@ Cell[BoxData[
   RowBox[{
    RowBox[{"ChemDVRDefaultPlotGetShiftedScaledWavefunctions", "[", "\n", "\t", 
     RowBox[{
-    "psi_", ",", "\n", "\t", "pot_", ",", "\n", "\t", "shift_", ",", "\n", 
-     "\t", "scale_", ",", "\n", "\t", "rescale_"}], "\n", "\t", "]"}], ":=", 
-   "\n", "\t", 
+    "eng_", ",", "\n", "\t", "psi_", ",", "\n", "\t", "pot_", ",", "\n", "\t",
+      "shift_", ",", "\n", "\t", "scale_", ",", "\n", "\t", "rescale_"}], 
+    "\n", "\t", "]"}], ":=", "\n", "\t", 
    RowBox[{"With", "[", "\n", "\t\t", 
     RowBox[{
      RowBox[{"{", "\n", "\t\t\t", 
@@ -362,8 +385,13 @@ Cell[BoxData[
           RowBox[{"rescale", ",", " ", "pot"}], "]"}], "[", "psi", "]"}]}], 
        ",", "\n", "\t\t\t", 
        RowBox[{"shiftFactor", "=", "\n", "\t\t\t\t", 
-        RowBox[{"chemDVRDefaultPlotWavefunctionShift", "[", 
-         RowBox[{"shift", ",", " ", "pot"}], "]"}]}], ",", "\n", "\t\t\t", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"shift", "===", "\"\<Energy\>\""}], ",", "\n", "\t\t\t\t\t",
+           "eng", ",", " ", "\n", "\t\t\t\t\t", 
+          RowBox[{"chemDVRDefaultPlotWavefunctionShift", "[", 
+           RowBox[{"shift", ",", " ", "pot"}], "]"}]}], "\n", "\t\t\t\t\t", 
+         "]"}]}], ",", "\n", "\t\t\t", 
        RowBox[{"scaleFactor", "=", "\n", "\t\t\t\t", 
         RowBox[{"Replace", "[", 
          RowBox[{"scale", ",", "\n", "\t\t\t\t\t", 
@@ -385,21 +413,36 @@ Cell[BoxData[
       RowBox[{
        RowBox[{"If", "[", 
         RowBox[{
-         RowBox[{"NumericQ", "@", "shiftFactor"}], ",", "\n", "\t\t\t", 
          RowBox[{
+          RowBox[{"NumericQ", "@", "shiftFactor"}], "||", 
+          RowBox[{"ListQ", "@", "shiftFactor"}]}], ",", "\n", "\t\t\t", 
+         RowBox[{"(*", 
           RowBox[{"If", "[", 
            RowBox[{
             RowBox[{
              RowBox[{"NumericQ", "@", "scaleFactor"}], "&&", 
              RowBox[{"NumericQ", "@", "shift"}]}], ",", " ", "\n", "\t\t\t\t", 
             RowBox[{"scaleFactor", "*", "shiftFactor"}], ",", " ", "\n", 
-            "\t\t\t\t", "shiftFactor"}], "\n", "\t\t\t\t", "]"}], "+", "#"}], 
-         ",", "\n", "\t\t\t", "#"}], "\n", "\t\t\t", "]"}], "&"}], "@", "\n", 
-      "\t\t\t", 
+            "\t\t\t\t", "shiftFactor"}], "\n", "\t\t\t\t", "]"}], "*)"}], 
+         RowBox[{"shiftFactor", "+", "#"}], ",", "\n", "\t\t\t", "#"}], "\n", 
+        "\t\t\t", "]"}], "&"}], "@", "\n", "\t\t\t", 
       RowBox[{"If", "[", 
        RowBox[{
         RowBox[{"NumericQ", "@", "scaleFactor"}], ",", " ", "\n", "\t\t\t\t", 
         
+        RowBox[{"(*", 
+         RowBox[{"scaleFactor", "*", "rescalePsi"}], "*)"}], "\n", "\t\t\t\t", 
+        RowBox[{"(*", " ", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+           "Try", " ", "to", " ", "adjust", " ", "for", " ", "lack", " ", 
+            "zero"}], "-", 
+           RowBox[{"point", " ", 
+            RowBox[{
+             RowBox[{"shifting", "?", " ", "Can"}], "'"}], "t", " ", 
+            "remember", " ", "why", " ", "this", " ", "is", " ", "here"}]}], 
+          "..."}], " ", "*)"}], "\n", "\t\t\t\t", 
         RowBox[{"With", "[", 
          RowBox[{
           RowBox[{"{", 
@@ -453,11 +496,16 @@ Cell[BoxData[
    3.732513552872191*^9, 3.7325135625066032`*^9}, {3.735141019681045*^9, 
    3.7351410484903316`*^9}, {3.7351412452614613`*^9, 3.735141259107336*^9}, {
    3.735144079070888*^9, 3.7351441727608833`*^9}, {3.735145669607711*^9, 
-   3.7351456886171207`*^9}, {3.735145733865643*^9, 
-   3.735145773565762*^9}},ExpressionUUID->"c38a5e21-d2fc-4b4e-a667-\
+   3.7351456886171207`*^9}, {3.735145733865643*^9, 3.735145773565762*^9}, 
+   3.735232825981833*^9, {3.735507045262415*^9, 3.735507062587534*^9}, {
+   3.735507179844637*^9, 3.735507184310535*^9}, {3.7355072215750523`*^9, 
+   3.7355072225587807`*^9}, {3.735511525573099*^9, 3.735511539568206*^9}, 
+   3.735511645135281*^9, {3.735511683903551*^9, 3.735511706773428*^9}, {
+   3.735511747008789*^9, 
+   3.735511848338615*^9}},ExpressionUUID->"c38a5e21-d2fc-4b4e-a667-\
 4a78411989ed"]
-}, Open  ]]
-}, Closed]],
+}, Closed]]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -509,6 +557,13 @@ Cell[BoxData[{
         ";", "\n", "\t\t", 
        RowBox[{"If", "[", 
         RowBox[{
+         RowBox[{"numTrue", "\[Equal]", "0"}], ",", "\n", "\t\t\t", 
+         RowBox[{"mainSpec", "=", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"True", ",", " ", "wfnLen"}], "]"}]}]}], "\n", "\t\t\t", 
+        "]"}], ";", "\n", "\t\t", 
+       RowBox[{"If", "[", 
+        RowBox[{
          RowBox[{"needed", ">", "0"}], ",", "\n", "\t\t\t", 
          RowBox[{
           RowBox[{"truePos", "=", 
@@ -555,8 +610,8 @@ Cell[BoxData[{
                    RowBox[{
                     RowBox[{
                     RowBox[{"#", ">", "0"}], "&&", 
-                    RowBox[{"#", "<", "wfnLen"}]}], "&"}]}], "\n", "\t", 
-                  "\t\t\t\t\t\t\t", "]"}]}]}], ";", "\n", "\t\t\t\t\t", 
+                    RowBox[{"#", "<=", "wfnLen"}]}], "&"}]}], "\n", 
+                  "\t\t\t\t\t\t\t\t", "]"}]}]}], ";", "\n", "\t\t\t\t\t", 
                RowBox[{"needed", "-=", 
                 RowBox[{"Length", "@", "truePos"}]}], ";"}]}], "\n", 
              "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
@@ -602,7 +657,8 @@ Cell[BoxData[{
    3.731976002090044*^9}, {3.7320078773652067`*^9, 3.73200787870739*^9}, {
    3.73206783934133*^9, 3.732068038084807*^9}, 3.735140982931611*^9, {
    3.735142752905795*^9, 3.7351431210957336`*^9}, {3.735143156645874*^9, 
-   3.7351435538227463`*^9}},ExpressionUUID->"c1406ee7-8200-42a2-ade8-\
+   3.7351435538227463`*^9}, {3.735191964228662*^9, 3.735192166457472*^9}, 
+   3.735192249274312*^9},ExpressionUUID->"c1406ee7-8200-42a2-ade8-\
 4eda6ba7ee4d"]
 }, Closed]],
 
@@ -617,18 +673,24 @@ Cell["\[LeftCeiling]ChemDVRDefaultPlotGetPlotPoints\[RightFloor]", \
   3.7319752993734283`*^9}},ExpressionUUID->"0666a1bb-eb01-4664-ad49-\
 fd84e78f0e17"],
 
-Cell["\[LeftCeiling]Handle zero axes appropriately\[RightFloor]", "Text",
+Cell["\<\
+\[LeftCeiling]
+\tStill don\[CloseCurlyQuote]t handle zero axes appropriately...
+\[RightFloor]\
+\>", "Text",
  Evaluatable->True,
- CellChangeTimes->{{3.732301728510193*^9, 
-  3.7323017347564917`*^9}},ExpressionUUID->"f2b58cde-c620-4a43-94a1-\
+ CellChangeTimes->{{3.732301728510193*^9, 3.7323017347564917`*^9}, {
+  3.735180282651555*^9, 
+  3.735180291379651*^9}},ExpressionUUID->"f2b58cde-c620-4a43-94a1-\
 50e6649e57fa"],
 
 Cell[CellGroupData[{
 
-Cell["\[LeftCeiling]Imp\[RightFloor]", "CodeSubsubsubsection",
+Cell["\[LeftCeiling]iChemDVRDefaultPlotGetPlotPoints\[RightFloor]", \
+"CodeSubsubsubsection",
  Evaluatable->True,
- CellChangeTimes->{{3.731976534007821*^9, 
-  3.731976537189883*^9}},ExpressionUUID->"180b6a6b-f4a5-4e32-beb1-\
+ CellChangeTimes->{{3.731976534007821*^9, 3.731976537189883*^9}, 
+   3.735507107368373*^9},ExpressionUUID->"180b6a6b-f4a5-4e32-beb1-\
 66a0bd285c6f"],
 
 Cell[BoxData[{
@@ -636,9 +698,9 @@ Cell[BoxData[{
   RowBox[{
    RowBox[{"iChemDVRDefaultPlotGetPlotPoints", "[", "\n", "\t", 
     RowBox[{
-    "sel_", ",", "\n", "\t", "pot_", ",", "\n", "\t", "grid_", ",", "\n", 
-     "\t", "scaling_", ",", "\n", "\t", "shifting_", ",", "\n", "\t", 
-     "rescaling_", ",", "\n", "\t", 
+    "eng_", ",", "\n", "\t", "sel_", ",", "\n", "\t", "pot_", ",", "\n", "\t",
+      "grid_", ",", "\n", "\t", "scaling_", ",", "\n", "\t", "shifting_", ",",
+      "\n", "\t", "rescaling_", ",", "\n", "\t", 
      RowBox[{"clip", ":", 
       RowBox[{"_Scaled", "|", 
        RowBox[{"_", "?", "NumericQ"}]}]}]}], "\n", "\t", "]"}], ":=", "\n", 
@@ -651,9 +713,11 @@ Cell[BoxData[{
        "ChemDVRDefaultPlotGetShiftedScaledWavefunctions", "[", "\n", 
         "\t\t\t\t\t", 
         RowBox[{
-        "sel", ",", " ", "pot", ",", " ", "\n", "\t\t\t\t\t", "shifting", ",",
-          " ", "scaling", ",", " ", "rescaling"}], "\n", "\t\t\t\t\t", 
-        "]"}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+        "eng", ",", "\n", "\t\t\t\t\t", "sel", ",", " ", "\n", "\t\t\t\t\t", 
+         "pot", ",", " ", "\n", "\t\t\t\t\t", "shifting", ",", " ", "\n", 
+         "\t\t\t\t\t", "scaling", ",", " ", "\n", "\t\t\t\t\t", "rescaling"}],
+         "\n", "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t", "}"}], ",", "\n", 
+     "\t\t", 
      RowBox[{"MapThread", "[", "\n", "\t\t\t", 
       RowBox[{
        RowBox[{
@@ -673,8 +737,8 @@ Cell[BoxData[{
                RowBox[{"grid", ",", " ", "pspec"}], "]"}], ",", " ", "\n", 
               "\t\t\t\t\t\t", 
               RowBox[{"Pick", "[", 
-               RowBox[{"#2", ",", " ", "pspec"}], "]"}]}], "\n", "\t", "\t", 
-             "\t", "\t\t\t", "}"}]}], "\n", "\t\t\t\t\t", "]"}]}], "\n", 
+               RowBox[{"#2", ",", " ", "pspec"}], "]"}]}], "\n", 
+             "\t\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t\t", "]"}]}], "\n", 
          "\t\t\t\t", "]"}], "&"}], ",", "\n", "\t\t\t", 
        RowBox[{"{", "\n", "\t\t\t\t", 
         RowBox[{"sel", ",", "\n", "\t\t\t\t", "scaledPsi"}], "\n", "\t\t\t\t",
@@ -682,9 +746,9 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"iChemDVRDefaultPlotGetPlotPoints", "[", "\n", "\t", 
    RowBox[{
-   "sel_", ",", "\n", "\t", "pot_", ",", "\n", "\t", "grid_", ",", "\n", "\t",
-     "scaling_", ",", "\n", "\t", "shifting_", ",", "\n", "\t", "rescaling_", 
-    ",", "\n", "\t", 
+   "eng_", ",", "\n", "\t", "sel_", ",", "\n", "\t", "pot_", ",", "\n", "\t", 
+    "grid_", ",", "\n", "\t", "scaling_", ",", "\n", "\t", "shifting_", ",", 
+    "\n", "\t", "rescaling_", ",", "\n", "\t", 
     RowBox[{"clip", ":", 
      RowBox[{"Except", "[", 
       RowBox[{"_", "?", "NumericQ"}], "]"}]}]}], "\n", "\t", "]"}], ":=", 
@@ -697,30 +761,35 @@ Cell[BoxData[{
       "ChemDVRDefaultPlotGetShiftedScaledWavefunctions", "[", "\n", 
        "\t\t\t\t\t", 
        RowBox[{
-       "sel", ",", " ", "pot", ",", " ", "\n", "\t\t\t\t\t", "shifting", ",", 
-        " ", "scaling", ",", " ", "rescaling"}], "\n", "\t\t\t\t\t", "]"}]}], 
-     "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+       "eng", ",", "\n", "\t\t\t\t\t", "sel", ",", " ", "\n", "\t\t\t\t\t", 
+        "pot", ",", " ", "\n", "\t\t\t\t\t", "shifting", ",", " ", "\n", 
+        "\t\t\t\t\t", "scaling", ",", " ", "\n", "\t\t\t\t\t", "rescaling"}], 
+       "\n", "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+    
     RowBox[{"Map", "[", "\n", "\t\t\t", 
      RowBox[{
       RowBox[{
-       RowBox[{"MapThread", "[", 
+       RowBox[{"MapThread", "[", "\n", "\t\t\t\t", 
         RowBox[{
-         RowBox[{"Flatten", "@*", "List"}], ",", " ", 
+         RowBox[{"Flatten", "@*", "List"}], ",", " ", "\n", "\t\t\t\t", 
          RowBox[{"{", 
-          RowBox[{"grid", ",", " ", "#"}], "}"}]}], "]"}], "&"}], ",", "\n", 
-      "\t\t\t", "scaledPsi"}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
-   "]"}]}]}], "CodeInput",
+          RowBox[{"grid", ",", " ", "#"}], "}"}]}], "\n", "\t\t\t\t", "]"}], 
+       "&"}], ",", "\n", "\t\t\t", "scaledPsi"}], "\n", "\t\t\t", "]"}]}], 
+   "\n", "\t\t", "]"}]}]}], "CodeInput",
  CellChangeTimes->{{3.731975043712563*^9, 3.731975164713146*^9}, {
-  3.731975290698099*^9, 3.731975303885252*^9}, {3.731975888360268*^9, 
-  3.731975894163847*^9}, {3.731975929173182*^9, 3.731975965011765*^9}, {
-  3.731976012624704*^9, 3.731976201022738*^9}, {3.7319763472017727`*^9, 
-  3.731976386109108*^9}, {3.731976483291893*^9, 3.731976493169201*^9}, {
-  3.731976762354782*^9, 3.731976774867663*^9}, {3.731987028719762*^9, 
-  3.7319870481716957`*^9}, {3.732005531892686*^9, 3.732005543975174*^9}, {
-  3.732068054481349*^9, 3.73206818317844*^9}, {3.7320695262208633`*^9, 
-  3.732069542761732*^9}, {3.7320725167063837`*^9, 3.732072526651388*^9}, {
-  3.732074159763014*^9, 
-  3.732074177544674*^9}},ExpressionUUID->"bb6e9ed4-4055-4ccc-b079-\
+   3.731975290698099*^9, 3.731975303885252*^9}, {3.731975888360268*^9, 
+   3.731975894163847*^9}, {3.731975929173182*^9, 3.731975965011765*^9}, {
+   3.731976012624704*^9, 3.731976201022738*^9}, {3.7319763472017727`*^9, 
+   3.731976386109108*^9}, {3.731976483291893*^9, 3.731976493169201*^9}, {
+   3.731976762354782*^9, 3.731976774867663*^9}, {3.731987028719762*^9, 
+   3.7319870481716957`*^9}, {3.732005531892686*^9, 3.732005543975174*^9}, {
+   3.732068054481349*^9, 3.73206818317844*^9}, {3.7320695262208633`*^9, 
+   3.732069542761732*^9}, {3.7320725167063837`*^9, 3.732072526651388*^9}, {
+   3.732074159763014*^9, 3.732074177544674*^9}, {3.7351927603509703`*^9, 
+   3.735192813050478*^9}, {3.7351936424931793`*^9, 3.735193673030881*^9}, {
+   3.7352327986618433`*^9, 3.735232807242618*^9}, 3.735232839667863*^9, {
+   3.7355071091912613`*^9, 
+   3.7355071414016933`*^9}},ExpressionUUID->"bb6e9ed4-4055-4ccc-b079-\
 26316cdff1ce"]
 }, Closed]],
 
@@ -903,7 +972,7 @@ Cell[BoxData[{
    RowBox[{
    "gridpoints_", ",", "\n", "\t", "psi_", ",", "\n", "\t", "pot_", ",", "\n",
      "\t", "showPot_", ",", "\n", "\t", "showEng_", ",", "\n", "\t", 
-    "transf_", ",", "\n", "\t", 
+    "transf_", ",", "\n", "\t", "sort_", ",", "\n", "\t", 
     RowBox[{"ops", ":", 
      RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
   "\t", 
@@ -952,8 +1021,8 @@ Cell[BoxData[{
                     RowBox[{"ReleaseHold", "[", "psi", "]"}], "[", 
                     RowBox[{"[", "1", "]"}], "]"}]}], ">", "50"}], ",", "\n", 
                     "\t", "\t\t\t\t\t\t\t\t\t\t", 
-                    RowBox[{"Scaled", "[", ".25", "]"}], ",", "\n", "\t", 
-                    "\t\t\t\t\t\t\t\t\t\t", "All"}], "\n", "\t", 
+                    RowBox[{"Scaled", "[", ".25", "]"}], ",", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t", "All"}], "\n", "\t", 
                    "\t\t\t\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t", 
                 "\t\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t\t\t", 
              "}"}]}], ",", " ", "\n", "\t\t\t\t\t\t", 
@@ -961,8 +1030,9 @@ Cell[BoxData[{
           "\n", "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "]"}]}], ",", 
       "\n", "\t\t\t", 
       RowBox[{"sqr", "=", "\n", "\t\t\t\t", 
-       RowBox[{"TrueQ", "[", "\"\<PlotProbabilityDensity\>\"", "]"}]}], ",", 
-      "\n", "\t\t\t", 
+       RowBox[{"TrueQ", "[", 
+        RowBox[{"OptionValue", "@", "\"\<PlotProbabilityDensity\>\""}], 
+        "]"}]}], ",", "\n", "\t\t\t", 
       RowBox[{"gps", "=", "\n", "\t\t\t\t", 
        RowBox[{"If", "[", 
         RowBox[{
@@ -985,14 +1055,31 @@ Cell[BoxData[{
                  "\t\t\t\t\t\t\t\t\t\t\t", "]"}]}], "\n", 
                "\t\t\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t\t\t", "]"}],
             ",", "\n", "\t\t\t\t\t\t", "gridpoints"}], "\n", "\t\t\t\t\t\t", 
-          "]"}]}], "\n", "\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t", 
-      RowBox[{"za", "=", "\n", "\t\t\t\t\t", 
-       RowBox[{"TrueQ", "@", 
-        RowBox[{"OptionValue", "[", "\"\<ZeroAxis\>\"", "]"}]}]}], ",", "\n", 
-      "\t\t\t\t", 
-      RowBox[{"potVals", "=", 
-       RowBox[{"ReleaseHold", "@", "pot"}]}]}], "\n", "\t\t\t\t", "}"}], ",", 
-    "\n", "\t\t", 
+          "]"}]}], "\n", "\t\t\t\t\t", "]"}]}], ",", 
+      RowBox[{"(*", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"za", "=", "\n", "\t\t\t\t\t", 
+         RowBox[{"TrueQ", "@", 
+          RowBox[{"OptionValue", "[", "\"\<ZeroAxis\>\"", "]"}]}]}], ","}], 
+       "*)"}], "\n", "\t\t\t\t", 
+      RowBox[{"cleanPot", "=", "\n", "\t\t\t\t\t", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"TrueQ", "@", "showPot"}], ",", "\n", "\t", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Normal", "@", "\n", "\t", "\t\t\t\t\t\t", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"#", "//", "MatrixQ"}], "//", "TrueQ"}], ",", "\n", 
+              "\t", "\t\t\t\t\t\t\t", 
+              RowBox[{"Diagonal", "@", "#"}], ",", "\n", "\t", 
+              "\t\t\t\t\t\t\t", "#"}], "\n", "\t", "\t\t\t\t\t\t\t", "]"}]}], 
+           "&"}], "@", 
+          RowBox[{"ReleaseHold", "@", "pot"}]}], ",", "\n", "\t", 
+         "\t\t\t\t\t", "None"}], "\n", "\t", "\t\t\t\t\t", "]"}]}]}], "\n", 
+     "\t\t\t\t", "}"}], ",", "\n", "\t\t", 
     RowBox[{"{", "\n", "\t\t\t", 
      RowBox[{
       RowBox[{"If", "[", 
@@ -1001,61 +1088,84 @@ Cell[BoxData[{
         RowBox[{"wfnsel", "[", 
          RowBox[{"[", "1", "]"}], "]"}], ",", "\n", "\t\t\t\t", "None"}], 
        "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
-      RowBox[{"iChemDVRDefaultPlotGetPlotPoints", "[", "\n", "\t\t\t\t", 
-       RowBox[{
-        RowBox[{"If", "[", 
-         RowBox[{"sqr", ",", " ", 
-          RowBox[{
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{"sort", ",", " ", 
+         RowBox[{"Map", "[", 
+          RowBox[{"SortBy", "[", "Most", "]"}], "]"}], ",", " ", "Identity"}],
+         "]"}], "@", "\n", "\t\t\t", 
+       RowBox[{"iChemDVRDefaultPlotGetPlotPoints", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"wfnsel", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"If", "[", 
+          RowBox[{"sqr", ",", " ", 
+           RowBox[{
+            RowBox[{"wfnsel", "[", 
+             RowBox[{"[", "2", "]"}], "]"}], "^", "2"}], ",", " ", 
            RowBox[{"wfnsel", "[", 
-            RowBox[{"[", "2", "]"}], "]"}], "^", "2"}], ",", " ", 
-          RowBox[{"wfnsel", "[", 
-           RowBox[{"[", "2", "]"}], "]"}]}], "]"}], ",", "\n", "\t\t\t\t", 
-        RowBox[{"If", "[", 
-         RowBox[{"showPot", ",", " ", "pot", ",", " ", "None"}], "]"}], ",", 
-        "\n", "\t\t\t\t", "gps", ",", "\n", "\t\t\t\t", 
-        RowBox[{"Replace", "[", 
-         RowBox[{"scaling", ",", "\n", "\t\t\t\t\t", 
-          RowBox[{"Automatic", "\[RuleDelayed]", 
-           RowBox[{"If", "[", 
-            RowBox[{
-             RowBox[{"rescaling", "=!=", "None"}], ",", " ", "None", ",", " ", 
-             RowBox[{"Scaled", "[", ".5", "]"}]}], "]"}]}]}], "\n", 
-         "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
-        RowBox[{"Replace", "[", 
-         RowBox[{"shift", ",", "\n", "\t\t\t\t\t", 
-          RowBox[{"Automatic", "\[RuleDelayed]", 
-           RowBox[{"If", "[", 
-            RowBox[{
-             RowBox[{"rescaling", "=!=", "None"}], ",", " ", "None", ",", " ", 
-             RowBox[{"Offset", "[", 
+            RowBox[{"[", "2", "]"}], "]"}]}], "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"If", "[", 
+          RowBox[{"showPot", ",", " ", "cleanPot", ",", " ", "None"}], "]"}], 
+         ",", "\n", "\t\t\t\t", "gps", ",", "\n", "\t\t\t\t", "scaling", "\n",
+          "\t\t\t\t", 
+         RowBox[{"(*", 
+          RowBox[{"Replace", "[", 
+           RowBox[{"scaling", ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"Automatic", "\[RuleDelayed]", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"If", "[", 
               RowBox[{
-               RowBox[{"Scaled", "[", "0", "]"}], ",", " ", "0"}], "]"}]}], 
-            "]"}]}]}], "\n", "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
-        "rescaling", ",", "\n", "\t\t\t\t", "clipping"}], "\n", "\t\t\t\t", 
-       "]"}], ",", "\n", "\t\t\t", 
+               RowBox[{"rescaling", "=!=", "None"}], ",", " ", "None", ",", 
+               " ", 
+               RowBox[{"Scaled", "[", ".5", "]"}]}], "]"}]}]}], "\n", 
+           "\t\t\t\t\t", "]"}], "*)"}], ",", "\n", "\t\t\t\t", "shift", "\n", 
+         "\t\t\t\t", 
+         RowBox[{"(*", 
+          RowBox[{"Replace", "[", 
+           RowBox[{"shift", ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"Automatic", "\[RuleDelayed]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"rescaling", "=!=", "None"}], ",", " ", "None", ",", 
+               " ", 
+               RowBox[{"Offset", "[", 
+                RowBox[{
+                 RowBox[{"Scaled", "[", "0", "]"}], ",", " ", "0"}], "]"}]}], 
+              "]"}]}]}], "\n", "\t\t\t\t\t", "]"}], "*)"}], ",", "\n", 
+         "\t\t\t\t", 
+         RowBox[{"Replace", "[", 
+          RowBox[{"rescaling", ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"Automatic", ":>", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"MatchQ", "[", 
+               RowBox[{"scaling", ",", " ", 
+                RowBox[{
+                 RowBox[{"_", "?", "NumericQ"}], "|", "_Scaled"}]}], "]"}], 
+              ",", " ", "None", ",", " ", 
+              RowBox[{"Scaled", "[", ".1", "]"}]}], "]"}]}]}], "\n", 
+          "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", "clipping"}], "\n", 
+        "\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t", 
       RowBox[{"If", "[", 
        RowBox[{
         RowBox[{"TrueQ", "@", "showPot"}], ",", "\n", "\t\t\t\t", 
-        RowBox[{"MapThread", "[", "\n", "\t\t\t\t\t", 
-         RowBox[{
-          RowBox[{"Flatten", "@*", "List"}], ",", "\n", "\t\t\t\t\t", 
-          RowBox[{"{", "\n", "\t\t\t\t\t\t", 
-           RowBox[{"gps", ",", "\n", "\t\t\t\t\t\t", 
-            RowBox[{
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{"sort", ",", " ", 
+           RowBox[{"SortBy", "[", "Most", "]"}], ",", " ", "Identity"}], 
+          "]"}], "@", "\n", "\t\t\t\t", 
+         RowBox[{"MapThread", "[", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"Flatten", "@*", "List"}], ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"gps", ",", "\n", "\t\t\t\t\t\t", 
              RowBox[{
-             "chemDVRDefaultPlotPotentialRescalingFunction", "[", "potResc", 
-              "]"}], "@", "\n", "\t\t\t\t\t\t\t", 
-             RowBox[{"Normal", "@", "\n", "\t\t\t\t\t\t\t\t", 
-              RowBox[{"If", "[", 
-               RowBox[{
-                RowBox[{"potVals", "//", "MatrixQ"}], ",", "\n", 
-                "\t\t\t\t\t\t\t\t\t", 
-                RowBox[{"Diagonal", "@", "potVals"}], ",", "\n", 
-                "\t\t\t\t\t\t\t\t\t", "potVals"}], "\n", "\t\t\t\t\t\t\t\t\t",
-                "]"}]}]}]}], "\n", "\t\t\t\t\t\t", "}"}]}], "\n", 
-         "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", "None"}], "\n", 
-       "\t\t\t\t", "]"}]}], "\n", "\t\t\t", "}"}]}], "\n", "\t\t", 
-   "]"}]}]}], "CodeInput",
+              RowBox[{
+              "chemDVRDefaultPlotPotentialRescalingFunction", "[", "potResc", 
+               "]"}], "@", "\n", "\t\t\t\t\t\t\t", "cleanPot"}]}], "\n", 
+            "\t\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t\t", "]"}]}], ",", "\n", 
+        "\t\t\t\t", "None"}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", 
+     "}"}]}], "\n", "\t\t", "]"}]}]}], "CodeInput",
  CellChangeTimes->{{3.731975043712563*^9, 3.731975164713146*^9}, {
    3.731975290698099*^9, 3.731975303885252*^9}, {3.731975888360268*^9, 
    3.731975894163847*^9}, {3.731975929173182*^9, 3.731975965011765*^9}, {
@@ -1089,9 +1199,31 @@ Cell[BoxData[{
    3.735141840935459*^9}, {3.735142092816682*^9, 3.7351421648389378`*^9}, {
    3.7351426918565607`*^9, 3.735142727298767*^9}, {3.735145166406596*^9, 
    3.735145166960251*^9}, {3.735145416361108*^9, 3.73514541737572*^9}, 
-   3.73514556518228*^9},ExpressionUUID->"fec8a5d3-9873-4484-8975-7c17d737ba87"]
+   3.73514556518228*^9, {3.735180294371439*^9, 3.735180392479905*^9}, {
+   3.735187613829286*^9, 3.735187674828622*^9}, {3.73518781859168*^9, 
+   3.735187820019237*^9}, 3.735188214974463*^9, {3.735188260663917*^9, 
+   3.735188278275301*^9}, {3.735232764456068*^9, 3.7352327672852373`*^9}, {
+   3.735232893518054*^9, 3.735232906172793*^9}, {3.735232938452777*^9, 
+   3.735233018300332*^9}, {3.735343748502863*^9, 3.7353437538496017`*^9}, {
+   3.7355036203856077`*^9, 3.735503643761747*^9}, 3.735503828470243*^9, {
+   3.735504052739889*^9, 3.735504130821657*^9}, {3.735504201398141*^9, 
+   3.73550430337703*^9}, {3.735504697383565*^9, 3.73550470202252*^9}, {
+   3.73550709842658*^9, 3.7355071002684107`*^9}, 3.735507751915182*^9, {
+   3.735511892250731*^9, 3.735511930467518*^9}, {3.735527851454381*^9, 
+   3.735527884041728*^9}},ExpressionUUID->"fec8a5d3-9873-4484-8975-\
+7c17d737ba87"]
 }, Open  ]]
-}, Closed]],
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Plotting Wrappers\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.731972776573567*^9, 3.73197278676336*^9}, {
+  3.735504626036295*^9, 
+  3.735504650794447*^9}},ExpressionUUID->"629e015e-6f95-49db-b8fa-\
+225ed0b6345b"],
 
 Cell[CellGroupData[{
 
@@ -1128,9 +1260,11 @@ Cell[BoxData[
           RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t\t", 
            RowBox[{
             RowBox[{"Flatten", "@", 
-             RowBox[{"{", "\n", "\t", "\t\t\t\t\t\t", 
+             RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
               RowBox[{
-               RowBox[{"PlotStyle", "\[Rule]", "\n", "\t", "\t\t\t\t\t\t\t", 
+               RowBox[{"PlotLegends", "\[Rule]", "None"}], ",", "\n", 
+               "\t\t\t\t\t\t\t", 
+               RowBox[{"PlotStyle", "\[Rule]", "\n", "\t\t\t\t\t\t\t\t", 
                 RowBox[{"Replace", "[", 
                  RowBox[{"potStyle", ",", "\n", "\t", "\t\t\t\t\t\t\t\t", 
                   RowBox[{"Automatic", ":>", "\n", "\t", "\t\t\t\t\t\t\t\t\t", 
@@ -1170,8 +1304,128 @@ Cell[BoxData[
    3.7320071918834476`*^9}, {3.732425488557456*^9, 3.73242548870755*^9}, {
    3.732425572419064*^9, 3.732425613290864*^9}, 3.732425653266344*^9, {
    3.732425711073029*^9, 3.73242571238422*^9}, {3.732425760654337*^9, 
-   3.732425793828751*^9}},ExpressionUUID->"163083ff-8b69-4ff5-a783-\
+   3.732425793828751*^9}, {3.735506837696383*^9, 3.735506844594098*^9}, {
+   3.735513736448484*^9, 
+   3.735513736934824*^9}},ExpressionUUID->"163083ff-8b69-4ff5-a783-\
 5b8ee6e01cdb"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ChemDVRDefaultPlotEnergy\[RightFloor]", \
+"CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.7319728349664288`*^9, 3.731972837675275*^9}, {
+   3.731977253210536*^9, 3.731977257928163*^9}, {3.7319772908739033`*^9, 
+   3.731977292760194*^9}, 
+   3.7355075078208933`*^9},ExpressionUUID->"f1d5f83b-1531-4b8c-92e7-\
+5f27e3b79feb"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRDefaultPlotEnergy", "[", "\n", "\t", 
+    RowBox[{"func_Symbol", ",", " ", "engNumer_", ",", " ", "soln_", ",", " ", 
+     RowBox[{"ops", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n",
+    "\t", 
+   RowBox[{"With", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{"engStyle", "=", "\n", "\t\t\t\t", 
+       RowBox[{"ChemDVRDefaultPlotOptionValue", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{"\"\<EnergyStyle\>\"", ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"{", "ops", "}"}], ",", "\n", "\t\t\t\t\t", "func", ",", 
+         "\n", "\t\t\t\t\t", "Automatic"}], "\n", "\t\t\t\t\t", "]"}]}], "\n",
+       "\t\t\t", "}"}], ",", "\n", "\t\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"engStyle", "=!=", "None"}], ",", "\n", "\t\t\t", 
+       RowBox[{"With", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"{", "\n", "\t\t\t\t\t", 
+          RowBox[{"eng", "=", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"ReplacePart", "[", 
+            RowBox[{"soln", ",", " ", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{"Thread", "[", 
+              RowBox[{
+               RowBox[{"Thread", "[", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"Range", "[", 
+                   RowBox[{"Length", "@", "soln"}], "]"}], ",", " ", 
+                  RowBox[{"-", "1"}]}], "}"}], "]"}], "->", "engNumer"}], 
+              "]"}]}], "\n", "\t\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", 
+          "}"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"func", "[", "\n", "\t\t\t\t\t", 
+          RowBox[{"eng", ",", "\n", "\t", "\t", "\t\t\t", 
+           RowBox[{"Evaluate", "@", "\n", "\t", "\t", "\t\t\t\t", 
+            RowBox[{"FilterRules", "[", "\n", "\t", "\t", "\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"FilterRules", "[", "\n", "\t", "\t", "\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"Flatten", "@", 
+                 RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{
+                   RowBox[{"PlotLegends", "\[Rule]", "None"}], ",", "\n", 
+                   "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{
+                   "PlotStyle", "\[Rule]", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Replace", "[", 
+                    RowBox[{
+                    "engStyle", ",", "\n", "\t", "\t", "\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    "Automatic", ":>", "\n", "\t", "\t", "\t", 
+                    "\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    "{", "\n", "\t", "\t", "\t", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Length", "@", 
+                    RowBox[{"eng", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], "===", "2"}], ",", "\n",
+                     "\t", "\t", "\t", "\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Directive", "[", 
+                    RowBox[{"Dashed", ",", " ", 
+                    RowBox[{"Lighter", "[", 
+                    RowBox[{"Red", ",", " ", ".5"}], "]"}]}], "]"}], ",", 
+                    "\n", "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Directive", "[", 
+                    RowBox[{
+                    RowBox[{"Opacity", "[", ".35", "]"}], ",", " ", 
+                    RowBox[{"Lighter", "[", 
+                    RowBox[{"Red", ",", " ", ".8"}], "]"}]}], "]"}]}], "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", "]"}], "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t", "}"}]}]}], "\n", "\t", "\t",
+                     "\t", "\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t", "\t",
+                    "\t", "\t\t\t\t\t\t", "ops"}], "\n", "\t", "\t", "\t", 
+                  "\t\t\t\t\t\t", "}"}]}], ",", "\n", "\t", "\t", "\t", 
+                "\t\t\t\t\t", 
+                RowBox[{"Options", "@", "func"}]}], "\n", "\t", "\t", 
+               "\t\t\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t\t\t\t", 
+              RowBox[{"Except", "[", "PolarAxes", " ", 
+               RowBox[{"(*", " ", 
+                RowBox[{
+                 RowBox[{
+                 "due", " ", "to", " ", "poor", " ", "implementation", " ", 
+                  "this", " ", "will", " ", "layer"}], "..."}], " ", "*)"}], 
+               "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t", 
+          "]"}]}], "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
+       RowBox[{"{", "}"}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.7319772944998407`*^9, 3.7319773460763407`*^9}, {
+   3.73197740271532*^9, 3.731977499019153*^9}, {3.7320056516347218`*^9, 
+   3.7320056860223217`*^9}, {3.732006012162664*^9, 3.7320062070857563`*^9}, {
+   3.732006261483379*^9, 3.732006265453184*^9}, {3.732007124700583*^9, 
+   3.7320071918834476`*^9}, {3.732425488557456*^9, 3.73242548870755*^9}, {
+   3.732425572419064*^9, 3.732425613290864*^9}, 3.732425653266344*^9, {
+   3.732425711073029*^9, 3.73242571238422*^9}, {3.732425760654337*^9, 
+   3.732425793828751*^9}, {3.735506837696383*^9, 3.735506844594098*^9}, {
+   3.7355074873956823`*^9, 3.735507636816971*^9}, {3.735507771522973*^9, 
+   3.735507832845735*^9}, 3.735508060288265*^9, {3.735513723039133*^9, 
+   3.7355137299227123`*^9}},ExpressionUUID->"4aa4f48a-e21d-44ea-bd4d-\
+1cab764e25df"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -1355,9 +1609,9 @@ Cell[BoxData[
               RowBox[{
                RowBox[{
                 RowBox[{"Except", "[", 
-                 RowBox[{"_Graphics", "|", "_Graphics3D"}], "]"}], ":>", "\n",
-                 "\t", "\t", "\t", "\t\t\t\t\t\t", "failMsg"}], ",", "\n", 
-               "\t", "\t", "\t", "\t\t\t\t\t", 
+                 RowBox[{"_Graphics", "|", "_Graphics3D", "|", "_Legended"}], 
+                 "]"}], ":>", "\n", "\t\t\t\t\t\t\t\t\t", "failMsg"}], ",", 
+               "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
                RowBox[{
                 RowBox[{"g", ":", 
                  RowBox[{"_Graphics", "|", "_Graphics3D"}]}], ":>", "\n", 
@@ -1438,8 +1692,9 @@ Cell[BoxData[
            RowBox[{
             RowBox[{
              RowBox[{"Except", "[", 
-              RowBox[{"_Graphics", "|", "_Graphics3D"}], "]"}], ":>", "\n", 
-             "\t", "\t\t\t\t\t\t", "failMsg"}], ",", "\n", "\t", "\t\t\t\t\t", 
+              RowBox[{"_Graphics", "|", "_Graphics3D", "|", "_Legended"}], 
+              "]"}], ":>", "\n", "\t", "\t\t\t\t\t\t", "failMsg"}], ",", "\n",
+             "\t", "\t\t\t\t\t", 
             RowBox[{
              RowBox[{"g", ":", 
               RowBox[{"_Graphics", "|", "_Graphics3D"}]}], ":>", "\n", "\t", 
@@ -1493,9 +1748,10 @@ Cell[BoxData[
    3.7351407273946457`*^9, 3.735140744999165*^9}, {3.735140797863612*^9, 
    3.735140813403257*^9}, {3.735145866770875*^9, 3.7351458668514223`*^9}, {
    3.735145916497052*^9, 3.7351460375764103`*^9}, {3.735146093362351*^9, 
-   3.735146203419385*^9}},ExpressionUUID->"17ba6b62-f30e-48a7-b74b-\
+   3.735146203419385*^9}, {3.735185080213147*^9, 3.735185082854609*^9}, 
+   3.735185158548678*^9},ExpressionUUID->"17ba6b62-f30e-48a7-b74b-\
 48cd13a9880a"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1536,45 +1792,74 @@ Cell[BoxData[
        RowBox[{"failMsg", "=", "\n", "\t\t\t\t", 
         RowBox[{
         "\"\<Couldn't view solutions for plotting function ``\>\"", "~", 
-         "TemplateApply", "~", "func"}]}]}], "\n", "\t\t\t", "}"}], ",", "\n",
-      "\t\t", 
+         "TemplateApply", "~", "func"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"pengs", "=", "\n", "\t\t\t\t", 
+        RowBox[{"energies", "=!=", "None"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"showeng", "=", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"ChemDVRDefaultPlotOptionValue", "[", "\n", "\t\t\t\t\t", 
+          RowBox[{"PlotLegends", ",", " ", "\n", "\t\t\t\t\t", 
+           RowBox[{"{", "ops", "}"}], ",", " ", "\n", "\t\t\t\t\t", "func", 
+           ",", " ", "\n", "\t\t\t\t\t", "Automatic"}], "\n", "\t\t\t\t\t", 
+          "]"}], "===", "Automatic"}]}]}], "\n", "\t\t\t", "}"}], ",", "\n", 
+     "\t\t", 
      RowBox[{"Table", "[", "\n", "\t\t\t", 
       RowBox[{
        RowBox[{"Replace", "[", "\n", "\t\t\t\t", 
         RowBox[{
-         RowBox[{"func", "[", 
-          RowBox[{
-           RowBox[{"solns", "[", 
-            RowBox[{"[", "i", "]"}], "]"}], ",", "\n", "\t\t\t\t\t", 
-           RowBox[{"Evaluate", "@", "\n", "\t\t\t\t\t\t", 
-            RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t\t\t", 
-             RowBox[{
-              RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
-               RowBox[{"ops", ",", "\n", "\t\t\t\t\t\t\t\t", 
-                RowBox[{"PlotStyle", "->", 
-                 RowBox[{"ps", "[", "i", "]"}]}]}], "\n", "\t\t\t\t\t\t\t\t", 
-               "}"}], ",", "\n", "\t\t\t\t\t\t\t", 
-              RowBox[{"Options", "@", "func"}]}], "\n", "\t\t\t\t\t\t\t", 
-             "]"}]}]}], "\n", "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"If", "[", 
+           RowBox[{"pengs", ",", " ", "\n", "\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"Show", "[", "\n", "\t\t\t\t\t\t", 
+              RowBox[{"#", ",", "\n", "\t\t\t\t\t\t", 
+               RowBox[{
+               "ChemDVRDefaultPlotEnergy", "[", "\n", "\t\t\t\t\t\t\t", 
+                RowBox[{"func", ",", " ", "\n", "\t\t\t\t\t\t\t", 
+                 RowBox[{"energies", "[", 
+                  RowBox[{"[", "i", "]"}], "]"}], ",", " ", "\n", "\t", 
+                 "\t\t\t\t\t\t", 
+                 RowBox[{"solns", "[", 
+                  RowBox[{"[", "i", "]"}], "]"}], ",", " ", "\n", "\t", 
+                 "\t\t\t\t\t\t", "ops"}], "\n", "\t", "\t\t\t\t\t\t", "]"}]}],
+               "\n", "\t\t\t\t\t\t", "]"}], "&"}], ",", "\n", "\t\t\t\t\t", 
+            "Identity"}], "\n", "\t\t\t\t\t", "]"}], "@", "\n", "\t\t\t\t\t", 
+          
+          RowBox[{"func", "[", "\n", "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"solns", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], ",", "\n", "\t", "\t\t\t\t\t", 
+            RowBox[{"Evaluate", "@", "\n", "\t", "\t\t\t\t\t\t", 
+             RowBox[{"FilterRules", "[", "\n", "\t", "\t\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"{", "\n", "\t", "\t\t\t\t\t\t\t\t", 
+                RowBox[{"ops", ",", "\n", "\t", "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"PlotStyle", "->", 
+                  RowBox[{"ps", "[", "i", "]"}]}]}], "\n", "\t", 
+                "\t\t\t\t\t\t\t\t", "}"}], ",", "\n", "\t", "\t\t\t\t\t\t\t", 
+               
+               RowBox[{"Options", "@", "func"}]}], "\n", "\t\t\t\t\t\t\t\t", 
+              "]"}]}]}], "\n", "\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t", 
          RowBox[{"{", "\n", "\t\t\t\t\t", 
           RowBox[{
            RowBox[{
             RowBox[{"Except", "[", 
-             RowBox[{"_Graphics", "|", "_Graphics3D"}], "]"}], ":>", "\n", 
-            "\t\t\t\t\t\t", 
+             RowBox[{"_Graphics", "|", "_Graphics3D", "|", "_Legended"}], 
+             "]"}], ":>", "\n", "\t\t\t\t\t\t", 
             RowBox[{"Failure", "[", 
              RowBox[{"\"\<DVR Viewer\>\"", ",", " ", "failMsg"}], "]"}]}], 
            ",", "\n", "\t\t\t\t\t", 
            RowBox[{
             RowBox[{"g", ":", 
-             RowBox[{"_Graphics", "|", "_Graphics3D"}]}], ":>", "\n", 
-            "\t\t\t\t\t\t", 
+             RowBox[{"_Graphics", "|", "_Graphics3D", "|", "_Legended"}]}], ":>",
+             "\n", "\t\t\t\t\t\t", 
             RowBox[{
              RowBox[{"Function", "[", "\n", "\t\t\t\t\t\t\t", 
               RowBox[{"If", "[", 
                RowBox[{
-                RowBox[{"energies", "=!=", "None"}], ",", "\n", 
-                "\t\t\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{"energies", "=!=", "None"}], "&&", "showeng"}], ",", 
+                "\n", "\t\t\t\t\t\t\t\t", 
                 RowBox[{"Legended", "[", 
                  RowBox[{"#", ",", "\n", "\t\t\t\t\t\t\t\t\t", 
                   RowBox[{"Placed", "[", "\n", "\t\t\t\t\t\t\t\t\t\t", 
@@ -1611,8 +1896,10 @@ Cell[BoxData[
    3.7320081493910713`*^9, 3.7320081859762297`*^9}, 3.7320084654526253`*^9, 
    3.732008511429366*^9, {3.732008743579713*^9, 3.732008785836897*^9}, {
    3.735140756073242*^9, 3.7351407900609713`*^9}, {3.7351439453284283`*^9, 
-   3.735143946383378*^9}, 
-   3.735143979705611*^9},ExpressionUUID->"cfe0763f-100e-489c-801e-\
+   3.735143946383378*^9}, 3.735143979705611*^9, 3.735185093866839*^9, {
+   3.735507649606511*^9, 3.7355077286887083`*^9}, {3.7355078815055017`*^9, 
+   3.735508036798984*^9}, {3.7355137791710567`*^9, 
+   3.735513781101644*^9}},ExpressionUUID->"cfe0763f-100e-489c-801e-\
 b6105e3d2ba4"]
 }, Closed]],
 
@@ -1641,10 +1928,10 @@ Cell[BoxData[
     RowBox[{"{", "\n", "\t\t\t", 
      RowBox[{"ps", "=", "\n", "\t\t\t\t", 
       RowBox[{"ChemDVRDefaultPlotResolvePlotStyle", "[", 
-       RowBox[{"func", ",", " ", 
-        RowBox[{"Length", "@", "solns"}], ",", " ", 
-        RowBox[{"{", "ops", "}"}]}], "]"}]}], "\n", "\t\t\t", "}"}], ",", 
-    "\n", "\t\t", 
+       RowBox[{"func", ",", " ", "\n", "\t\t\t\t\t", 
+        RowBox[{"Length", "@", "solns"}], ",", " ", "\n", "\t\t\t\t\t", 
+        RowBox[{"{", "ops", "}"}]}], "\n", "\t\t\t\t\t", "]"}]}], "\n", 
+     "\t\t\t", "}"}], ",", "\n", "\t\t", 
     RowBox[{"Show", "[", "\n", "\t\t\t", 
      RowBox[{
       RowBox[{"If", "[", 
@@ -1678,18 +1965,19 @@ Cell[BoxData[
            RowBox[{"{", "\n", "\t", "\t\t\t\t\t", 
             RowBox[{
              RowBox[{"Except", "[", 
-              RowBox[{"_Graphics", "|", "_Graphics3D"}], "]"}], ":>", "\n", 
-             "\t", "\t\t\t\t\t\t", "Nothing"}], "\n", "\t", "\t\t\t\t\t", 
-            "}"}]}], "\n", "\t", "\t\t\t\t", "]"}], "&"}], ",", "\n", "\t", 
-        "\t\t\t", "solns"}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", 
-     "]"}]}], "\n", "\t\t", "]"}]}]], "CodeInput",
+              RowBox[{"_Graphics", "|", "_Graphics3D", "|", "_Legended"}], 
+              "]"}], ":>", "\n", "\t", "\t\t\t\t\t\t", "Nothing"}], "\n", 
+            "\t", "\t\t\t\t\t", "}"}]}], "\n", "\t", "\t\t\t\t", "]"}], "&"}],
+         ",", "\n", "\t\t\t\t", "solns"}], "\n", "\t\t\t\t", "]"}]}], "\n", 
+     "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}]], "CodeInput",
  CellChangeTimes->{{3.731977259458197*^9, 3.731977283368187*^9}, {
    3.731977528963332*^9, 3.7319778265004883`*^9}, {3.7319778713559437`*^9, 
    3.7319779994654217`*^9}, {3.731978524045891*^9, 3.73197860655107*^9}, 
    3.732006271731144*^9, {3.732007063999234*^9, 3.732007112147256*^9}, {
    3.7320072488138027`*^9, 3.732007423445397*^9}, {3.7320075495823708`*^9, 
-   3.7320076982121763`*^9}, {3.732008825499819*^9, 
-   3.7320088380192213`*^9}},ExpressionUUID->"66d05291-d6fe-4f91-b367-\
+   3.7320076982121763`*^9}, {3.732008825499819*^9, 3.7320088380192213`*^9}, 
+   3.735185111842861*^9, {3.735506663659054*^9, 3.735506674193047*^9}, 
+   3.735506739655057*^9},ExpressionUUID->"66d05291-d6fe-4f91-b367-\
 fe507c9bf85d"]
 }, Closed]],
 
@@ -1803,18 +2091,43 @@ Cell[BoxData[
             "headFunc", ",", "\n", "\t\t\t\t\t\t\t", "False"}], "\n", 
            "\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t", 
          RowBox[{"TrueQ", "@", "\n", "\t\t\t\t\t\t", 
-          RowBox[{
-          "ChemDVRDefaultPlotOptionValue", "[", "\n", "\t\t\t\t\t\t\t", 
-           RowBox[{"\"\<ShowEnergy\>\"", ",", "\n", "\t\t\t\t\t\t\t", 
-            RowBox[{"{", "ops", "}"}], ",", " ", "\n", "\t\t\t\t\t\t\t", 
-            "headFunc", ",", "\n", "\t\t\t\t\t\t\t", "False"}], "\n", 
-           "\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"Replace", "[", "\n", "\t\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+            "ChemDVRDefaultPlotOptionValue", "[", "\n", "\t\t\t\t\t\t\t\t", 
+             RowBox[{
+             "\"\<ShowEnergy\>\"", ",", "\n", "\t", "\t\t\t\t\t\t\t", 
+              RowBox[{"{", "ops", "}"}], ",", " ", "\n", "\t", 
+              "\t\t\t\t\t\t\t", "headFunc", ",", "\n", "\t", "\t\t\t\t\t\t\t",
+               "False"}], "\n", "\t\t\t\t\t\t\t\t", "]"}], ",", "\n", 
+            "\t\t\t\t\t\t\t", 
+            RowBox[{"Automatic", ":>", "\n", "\t\t\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+              "ChemDVRDefaultPlotOptionValue", "[", "\n", 
+               "\t\t\t\t\t\t\t\t\t", 
+               RowBox[{
+               "\"\<WavefunctionShifting\>\"", ",", "\n", 
+                "\t\t\t\t\t\t\t\t\t", 
+                RowBox[{"{", "ops", "}"}], ",", " ", "\n", "\t", "\t", 
+                "\t\t\t\t\t\t\t", "headFunc", ",", "\n", "\t\t\t\t\t\t\t\t\t",
+                 "False"}], "\n", "\t\t\t\t\t\t\t\t\t", "]"}], "===", 
+              "\"\<Energy\>\""}]}]}], "\n", "\t\t\t\t\t\t\t", "]"}]}], ",", 
+         "\n", "\t\t\t\t\t", 
          RowBox[{"ChemDVRDefaultPlotOptionValue", "[", "\n", "\t\t\t\t\t\t", 
           RowBox[{
           "\"\<CoordinateTransformation\>\"", ",", "\n", "\t\t\t\t\t\t", 
            RowBox[{"{", "ops", "}"}], ",", " ", "\n", "\t\t\t\t\t\t", 
            "headFunc", ",", "\n", "\t\t\t\t\t\t", "None"}], "\n", 
           "\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"TrueQ", "@", "\n", "\t\t\t\t\t\t", 
+          RowBox[{
+          "ChemDVRDefaultPlotOptionValue", "[", "\n", "\t\t\t\t\t\t\t", 
+           RowBox[{
+           "\"\<SortPlotPoints\>\"", ",", "\n", "\t", "\t\t\t\t\t\t", 
+            RowBox[{"{", "ops", "}"}], ",", "\n", "\t", "\t\t\t\t\t\t", 
+            "headFunc", ",", "\n", "\t", "\t\t\t\t\t\t", "False"}], "\n", 
+           "\t", "\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t", 
          RowBox[{"FilterRules", "[", 
           RowBox[{
            RowBox[{"{", "ops", "}"}], ",", "\n", "\t\t\t\t\t\t", 
@@ -1825,7 +2138,7 @@ Cell[BoxData[
       RowBox[{
        RowBox[{"Replace", "[", "\n", "\t\t\t\t", 
         RowBox[{
-         RowBox[{"ChemDVRDefaultPlotOptionValue", "[", 
+         RowBox[{"ChemDVRDefaultPlotOptionValue", "[", "\n", "\t\t\t\t\t", 
           RowBox[{"\"\<PlotFunction\>\"", ",", "\n", "\t\t\t\t\t", 
            RowBox[{"{", "ops", "}"}], ",", " ", "\n", "\t\t\t\t\t", 
            "headFunc", ",", "\n", "\t\t\t\t\t", "False"}], "\n", "\t\t\t\t\t",
@@ -1885,9 +2198,22 @@ Cell[BoxData[
    3.732007944982697*^9}, {3.732007975861072*^9, 3.7320079957069674`*^9}, {
    3.732072136072945*^9, 3.732072223617484*^9}, {3.73514090570042*^9, 
    3.7351409069307423`*^9}, 3.7351409432985983`*^9, {3.73514385079633*^9, 
-   3.7351438555273037`*^9}},ExpressionUUID->"5e012684-e279-4d44-b911-\
+   3.7351438555273037`*^9}, {3.735184908321556*^9, 3.7351849093763103`*^9}, 
+   3.735184950537685*^9, {3.735187542221961*^9, 3.735187604091194*^9}, {
+   3.735506639492797*^9, 3.7355066398345413`*^9}, {3.735507358503689*^9, 
+   3.735507403997183*^9}},ExpressionUUID->"5e012684-e279-4d44-b911-\
 b4e8881a0376"]
+}, Closed]]
 }, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Plot Types\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.731972776573567*^9, 3.73197278676336*^9}, {
+  3.735504626036295*^9, 
+  3.735504659042389*^9}},ExpressionUUID->"b95fc056-7ac3-45f3-8360-\
+005271f008ea"],
 
 Cell[CellGroupData[{
 
@@ -1957,7 +2283,8 @@ Cell[BoxData[{
    3.7319795827927847`*^9, 3.731979693400072*^9}, {3.73198065789436*^9, 
    3.731980711993986*^9}, {3.731980801284092*^9, 3.73198081419991*^9}, {
    3.731980904336831*^9, 3.7319809408394213`*^9}, {3.73200702978957*^9, 
-   3.7320070344846992`*^9}},ExpressionUUID->"038f08e3-72d7-46ee-aea3-\
+   3.7320070344846992`*^9}, {3.735180232943777*^9, 
+   3.73518026197316*^9}},ExpressionUUID->"038f08e3-72d7-46ee-aea3-\
 461dae64eeb5"]
 }, Closed]],
 
@@ -3123,7 +3450,17 @@ Cell[BoxData[{
    3.7320684816565123`*^9}, {3.7320685627322063`*^9, 3.732068571675168*^9}, 
    3.732424709428862*^9},ExpressionUUID->"e77365b2-ffbf-4596-8231-\
 c9cb06011424"]
+}, Closed]]
 }, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Main Function\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.731972776573567*^9, 3.73197278676336*^9}, {
+  3.735504626036295*^9, 
+  3.735504668554535*^9}},ExpressionUUID->"5d25a761-29a5-4a61-9c8f-\
+64f0a525acae"],
 
 Cell[CellGroupData[{
 
@@ -3150,9 +3487,12 @@ Cell[BoxData[{
    RowBox[{"Join", "[", "\n", "\t\t", 
     RowBox[{
      RowBox[{"{", "\n", "\t\t\t", 
-      RowBox[{"\"\<PlotMode\>\"", "\[Rule]", "Automatic"}], "\n", "\t\t\t", 
-      "}"}], ",", "\n", "\t\t", "$ChemDVRDefaultPlotOptions"}], "\n", "\t\t", 
-    "]"}]}], ";"}], "\n", 
+      RowBox[{
+       RowBox[{"\"\<PlotMode\>\"", "\[Rule]", "Automatic"}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"\"\<PruningEnergy\>\"", "\[Rule]", "None"}]}], "\n", "\t\t\t",
+       "}"}], ",", "\n", "\t\t", "$ChemDVRDefaultPlotOptions"}], "\n", "\t\t",
+     "]"}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{"ChemDVRDefaultPlot", "[", "\n", "\t", 
    RowBox[{
@@ -3167,8 +3507,13 @@ Cell[BoxData[{
      RowBox[{"{", "\n", "\t\t\t", 
       RowBox[{
       "gridpoints", ",", "\n", "\t\t\t", "func", ",", "\n", "\t\t\t", "pmode",
-        ",", "\n", "\t\t\t", "gridranges"}], "\n", "\t\t\t", "}"}], ",", "\n",
-      "\t\t", 
+        ",", "\n", "\t\t\t", "gridranges", ",", "\n", "\t\t\t", 
+       RowBox[{"prune", "=", "\n", "\t\t\t\t", 
+        RowBox[{"ChemDVRDefaultPlotOptionValue", "[", "\n", "\t\t\t\t\t", 
+         RowBox[{"\"\<PruningEnergy\>\"", ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"{", "ops", "}"}], ",", "\n", "\t\t\t\t\t", 
+          "ChemDVRDefaultPlot", ",", "\n", "\t\t\t\t\t", "None"}], "\n", 
+         "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
      RowBox[{
       RowBox[{"pmode", "=", "\n", "\t\t\t", 
        RowBox[{"ChemDVRDefaultPlotOptionValue", "[", "\n", "\t\t\t\t", 
@@ -3258,8 +3603,8 @@ Cell[BoxData[{
          "\t\t\t\t", "\"\<Contour\>\"", ",", "\n", "\t\t\t\t\t", 
          RowBox[{
           RowBox[{"gridpoints", "=", "\n", "\t\t\t\t\t\t", 
-           RowBox[{"ChemDVRDefaultGridPointList", "[", 
-            RowBox[{"grid", ",", " ", "\n", "\t", "\t\t\t\t\t\t", 
+           RowBox[{"ChemDVRDefaultGridPointList", "[", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{"grid", ",", " ", "\n", "\t\t\t\t\t\t\t", 
              RowBox[{"FilterRules", "[", 
               RowBox[{
                RowBox[{"{", "ops", "}"}], ",", " ", 
@@ -3438,11 +3783,18 @@ Cell[BoxData[{
                "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t", 
           "]"}], ";", "\n", "\t\t\t", 
          RowBox[{"func", "[", "\n", "\t\t\t\t", 
-          RowBox[{
-          "solutions", ",", "\n", "\t\t\t\t", "gridpoints", ",", "\n", 
-           "\t\t\t\t", "potentialMatrix", ",", "\n", "\t\t\t\t", "ops"}], 
-          "\n", "\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "]"}]}]}], "\n", 
-    "\t\t", "]"}]}]}]}], "CodeInput",
+          RowBox[{"solutions", ",", "\n", "\t\t\t\t", 
+           RowBox[{"ChemDVRDefaultPruneGridPoints", "[", "\n", "\t\t\t\t\t", 
+            RowBox[{
+            "gridpoints", ",", "\n", "\t\t\t\t\t", "potentialMatrix", ",", 
+             "\n", "\t\t\t\t\t", "prune"}], "\n", "\t\t\t\t\t", "]"}], ",", 
+           "\n", "\t\t\t\t", 
+           RowBox[{
+           "ChemDVRDefaultPrunePotentialEnergy", "[", "\n", "\t\t\t\t\t", 
+            RowBox[{"potentialMatrix", ",", "\n", "\t\t\t\t\t", "prune"}], 
+            "\n", "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", "ops"}], "\n", 
+          "\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "]"}]}]}], "\n", "\t\t", 
+    "]"}]}]}]}], "CodeInput",
  CellChangeTimes->{{3.731972781629786*^9, 3.731972818164227*^9}, {
    3.731987071262067*^9, 3.7319870838012133`*^9}, {3.731987255259973*^9, 
    3.731987266055849*^9}, 3.731987348083055*^9, {3.731987423942429*^9, 
@@ -3458,8 +3810,11 @@ Cell[BoxData[{
    3.7320686615507793`*^9, 3.7320687340317793`*^9}, {3.732071664191573*^9, 
    3.7320716683022223`*^9}, {3.73240099710205*^9, 3.732401028289798*^9}, {
    3.732424455710451*^9, 3.73242446377912*^9}, {3.7351405859314423`*^9, 
-   3.735140587091292*^9}, 
-   3.735140930154954*^9},ExpressionUUID->"da63ee8d-cb1e-4a4d-8fa8-\
+   3.735140587091292*^9}, 3.735140930154954*^9, {3.735192845493293*^9, 
+   3.7351928916878033`*^9}, {3.735193370958177*^9, 3.735193401266015*^9}, {
+   3.735193729647746*^9, 3.735193766208962*^9}, {3.73519390754531*^9, 
+   3.735193910588954*^9}, {3.735194017154213*^9, 
+   3.735194021834643*^9}},ExpressionUUID->"da63ee8d-cb1e-4a4d-8fa8-\
 efcf1b48173e"]
 }, Closed]]
 }, Open  ]],
@@ -3475,7 +3830,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"9009c70d-1aad-415c-9701-\
 edff1eaf5262"]
 },
 WindowSize->{788, 764},
-WindowMargins->{{Automatic, 18}, {Automatic, 0}},
+WindowMargins->{{Automatic, -35}, {Automatic, 0}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

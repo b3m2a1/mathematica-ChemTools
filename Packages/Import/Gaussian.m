@@ -85,7 +85,7 @@ iGaussianJobReadVariables[vars_]:=
 		Map[
 			Which[
 				StringMatchQ[#, NumberString], 
-					ToExpression[#], 
+					Internal`StringToDouble[#], 
 				StringMatchQ[#, Whitespace|""],
 					Nothing,
 				True,
@@ -385,8 +385,8 @@ gaussianLogReadParseCartesianCoordinates[s:{__String}]:=
 				Whitespace~~z:NumberString
 				):>
 					{
-						ElementData[ToExpression@what, "Symbol"], 
-							ToExpression@{x, y, z}
+						ChemDataLookup[ToExpression@what, "Symbol"], 
+						Internal`StringToDouble/@{x, y, z}
 						}
 				],
 		s
@@ -412,6 +412,43 @@ GaussianLogRead[log_InputStream, "CartesianCoordinates"]:=
 
 
 (* ::Subsubsubsection::Closed:: *)
+(*MullikenCharges*)
+
+
+
+gaussianLogReadParseMullikenCharges[s:{__String}]:=
+	Map[
+		StringCases[
+			(
+				which:DigitCharacter..~~
+				Whitespace~~what:LetterCharacter..~~
+				Whitespace~~charge:NumberString..~~
+				(Whitespace|"")~~(EndOfLine|EndOfString)
+				):>
+					{
+						what, 
+						Internal`StringToDouble@charge
+						}
+				],
+		s
+		];
+gaussianLogReadParseMullikenCharges[{}]:=
+	{}
+
+
+GaussianLogRead[log_InputStream, "MullikenCharges"]:=
+	iGaussianLogRead[
+		log,
+		{
+		{"Mulliken charges:"}, 
+ {"Sum of Mulliken charges"}
+ },
+		gaussianLogReadParseMullikenCharges,
+		ReadList
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
 (*MultipoleMoments*)
 
 
@@ -432,7 +469,7 @@ gaussianLogReadParseMultipoleMoments[s_String]:=
 										"Z"->3
 										},
 									1
-									]->ToExpression@val
+									]->Internal`StringToDouble@val
 								]
 						},
 					With[
@@ -452,6 +489,7 @@ gaussianLogReadParseMultipoleMoments[s_String]:=
 									]
 							},
 						If[Mod[Length[symms], 3]==0, 
+							If[!NumericQ@#[[1]], RawArray["Real32", #], #]&@
 							Nest[
 								If[Mod[Length[#], 3]==0,
 									Partition[#, 3],
@@ -578,7 +616,7 @@ GaussianLogRead[log_InputStream, "OptimizationScan"]:=
 gaussianLogReadTimeElapsedBlock[elapsed_]:=
 	With[
 		{
-			times=ToExpression@StringCases[elapsed, NumberString],
+			times=Internal`StringToDouble@StringCases[elapsed, NumberString],
 			units={"Days", "Hours", "Minutes", "Seconds"}
 			},
 		With[{mlen=Min[Length/@{times, units}]},
@@ -663,6 +701,7 @@ $GaussianLogKeywords=
 	{
 		"StartDateTime",
 		"CartesianCoordinates",
+		"MullikenCharges",
 		"MultipoleMoments",
 		"ZMatrix",
 		"ZMatrixVariables",
@@ -983,7 +1022,7 @@ iFormattedCheckpointRead[
 								type=="R"&&
 									StringLength[lineParts[[3]]]>4&&
 									StringTake[lineParts[[3]], {-4}]=="E",
-									ToExpression@
+									Internal`StringToDouble@
 										StringReplacePart[lineParts[[3]], "*10^", {-4, -4}],
 								MatchQ[type, "I"|"R"],
 									ToExpression@lineParts[[3]],

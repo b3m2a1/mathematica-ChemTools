@@ -20,7 +20,7 @@
 
 
 $ChemDataSources::usage=
-	"";
+	"A list of ChemData expressions used by ChemDataLookup";
 
 
 ChemDataSource::usage=
@@ -31,7 +31,7 @@ Begin["`Private`"];
 
 
 (* ::Subsection:: *)
-(*Core Sources*)
+(*Setup*)
 
 
 
@@ -62,7 +62,7 @@ chemDataSourceAdd[key_->val_]:=
 	chemDataSourceAdd[key,val]
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*CustomAtoms*)
 
 
@@ -98,7 +98,7 @@ chemDataSourceAdd[
 	]
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*AtomColors*)
 
 
@@ -111,8 +111,13 @@ chemDataSourceAdd[
 	];
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*BondDistances*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*CDSBondDistance*)
 
 
 
@@ -147,33 +152,45 @@ CDSBondDistance[query_,___]:=
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*BondDistances*)
+
+
+
 chemDataSourceAdd[
 	"BondDistances"->
 		ChemData[CDSBondDistance,-1.&]
 	]
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*UnitConversions*)
 
 
 
 chemDataSourceAdd[
 	"UnitConversions"->
-		ChemData[<|
-			"InertialConstant"->
-				UnitConvert[
-					Quantity[1/(8\[Pi]^2),
-						"PlanckConstant"/
-						("AtomicMassUnit"*"Angstroms"^2)],
-					"Megahertz"]
-				|>,
+		ChemData[
+			<|
+				"InertialConstant"->
+					UnitConvert[
+						Quantity[1/(8\[Pi]^2),
+							"PlanckConstant"/
+							("AtomicMassUnit"*"Angstroms"^2)],
+						"Megahertz"
+						]
+					|>,
 			$Failed&]
 	];
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*SpaceGroups*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*CDSSpaceGroup*)
 
 
 
@@ -202,6 +219,11 @@ CDSSpaceGroup[query_,___]:=(
 	);
 
 
+(* ::Subsubsection::Closed:: *)
+(*SpaceGroups*)
+
+
+
 chemDataSourceAdd[
 	"SpaceGroups"->
 		ChemData[
@@ -211,8 +233,13 @@ chemDataSourceAdd[
 	];
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*ElementValences*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*CSDElementValences*)
 
 
 
@@ -228,6 +255,11 @@ CSDElementValences[query_,___]:=
 	)
 
 
+(* ::Subsubsection::Closed:: *)
+(*ElementValences*)
+
+
+
 chemDataSourceAdd[
 	"ElementValences"->
 		ChemData[CSDElementValences,
@@ -235,8 +267,13 @@ chemDataSourceAdd[
 	]
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*PubChemIDs*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*CDSPubChemID*)
 
 
 
@@ -253,14 +290,24 @@ CDSPubChemID[query_,___]:=
 			}]
 
 
+(* ::Subsubsection::Closed:: *)
+(*PubChemIDs*)
+
+
+
 chemDataSourceAdd[
 	"PubChemIDs"->
 		ChemData[CDSPubChemID,$Failed&]
 	];
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*PubChemNames*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*CDSPubChemNames*)
 
 
 
@@ -283,36 +330,46 @@ CDSPubChemNames[query_,___]:=
 		]
 
 
+(* ::Subsubsection::Closed:: *)
+(*PubChemNames*)
+
+
+
 chemDataSourceAdd[
 	"PubChemNames"->
 		ChemData[CDSPubChemNames,$Failed&]
 		]
 
 
-(* ::Subsubsection::Closed:: *)
-(*ComponentIDs*)
+(* ::Subsection:: *)
+(*PubChemComponentIDs*)
 
 
 
 chemDataSourceAdd[
-	"ComponentIDs"->
+	"PubChemComponentIDs"->
 		ChemData[PubChemComponentIDs@#&,$Failed&]
 	]
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*ParentIDs*)
 
 
 
 chemDataSourceAdd[
-	"ParentIDs"->
+	"PubChemParentIDs"->
 		ChemData[PubChemParentIDs@#&,$Failed&]
 	]
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*SimilarIDs*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*CDSSimilarIDs*)
 
 
 
@@ -333,13 +390,18 @@ CDSSimilarIDs[query_,___]:=
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*PubChemSimilarIDs*)
+
+
+
 chemDataSourceAdd[
-	"SimilarIDs"->
+	"PubChemSimilarIDs"->
 		ChemData[CDSSimilarIDs,$Failed&]
 	]
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*2DStructures*)
 
 
@@ -350,6 +412,25 @@ chemDataSourceAdd[
 	]
 
 
+(* ::Subsection:: *)
+(*SDFFiles*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*CDFSDFFile*)
+
+
+
+CDFSDFFile[sdf_]:=
+	Replace[PubChemSDF@sdf,
+		_Missing|$Failed:>
+			Replace[PubChemParentSDF@sdf,
+				_Missing|$Failed:>PubChemComponentSDF@sdf
+				]
+		]
+
+
 (* ::Subsubsection::Closed:: *)
 (*SDFFiles*)
 
@@ -357,15 +438,55 @@ chemDataSourceAdd[
 
 chemDataSourceAdd[
 	"SDFFiles"->
-		ChemData[
-			Replace[PubChemSDF@#,
-				_Missing|$Failed:>
-					Replace[PubChemParentSDF@#,
-						_Missing|$Failed:>PubChemComponentSDF@#
-						]
-				]&,
-			$Failed&]
+		ChemData[CDFSDFFile, $Failed&]
 	]
+
+
+(* ::Subsection:: *)
+(*MolTable*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*CDSMolTable*)
+
+
+
+CDSMolTable[sdf_]:=
+	Replace[
+		ChemDataLookup[sdf, "SDFFiles"],
+		s_String:>
+			ImportString[s, "MolTable"]
+		]
+
+
+(* ::Subsubsection::Closed:: *)
+(*MolTable*)
+
+
+
+chemDataSourceAdd[
+	"MolTable"->
+		ChemData[CDSMolTable, $Failed&]
+	]
+
+
+(* ::Subsection:: *)
+(*PrimaryIsotope*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*CDFPrimaryIsotope*)
+
+
+
+CDFPrimaryIsotope[q_]:=
+	If[ChemDataIsotopeQ@a,
+		Last@First@
+			IsotopeData[IsotopeData[q, "AtomicNumber"]],
+		Last@First@IsotopeData[q]
+		];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -376,14 +497,29 @@ chemDataSourceAdd[
 chemDataSourceAdd[
 	"PrimaryIsotope"->
 		ChemData[
-			If[ChemDataIsotopeQ@#,
-				Last@First@
-					IsotopeData[IsotopeData[#,"AtomicNumber"]],
-				Last@First@IsotopeData[#]
-				]&,
+			CDFPrimaryIsotope,
 			$Failed&
 			]
 		];
+
+
+(* ::Subsection:: *)
+(*StandardName*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*CDSStandardName*)
+
+
+
+CDSStandardName[q_]:=
+	With[{s=Replace[q,{"D"->"H2","T"->"H3"}]},
+		If[ChemDataIsotopeQ@s,
+			IsotopeData[s,"StandardName"],
+			ElementData[s,"StandardName"]
+			]
+		]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -394,12 +530,7 @@ chemDataSourceAdd[
 chemDataSourceAdd[
 	"StandardName"->
 		ChemData[
-			With[{s=Replace[#,{"D"->"H2","T"->"H3"}]},
-				If[ChemDataIsotopeQ@s,
-					IsotopeData[s,"StandardName"],
-					ElementData[s,"StandardName"]
-					]
-				]&,
+			CDSStandardName,
 			$Failed&,
 			<|
 				"X"->"X",
@@ -412,6 +543,31 @@ chemDataSourceAdd[
 				|>
 			]
 	]
+
+
+(* ::Subsection:: *)
+(*Symbol*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*CDSSymbol*)
+
+
+
+CDSSymbol[s_]:=
+	Which[
+		IntegerQ@s,
+			$ChemDataSourcesDontCacheFlag=True;
+			$ChemElements[s],
+		ChemDataIsotopeQ@s,
+			ElementData[
+				ChemDataLookup[s, "AtomicNumber", IsotopeData],
+				"Symbol"
+				],
+		True,
+			ElementData[s, "Symbol"]
+		]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -422,13 +578,7 @@ chemDataSourceAdd[
 chemDataSourceAdd[
 	"Symbol"->
 		ChemData[
-			If[ChemDataIsotopeQ@#,
-				ElementData[
-					ChemDataLookup[#,"AtomicNumber",IsotopeData],
-					"Symbol"
-					],
-				ElementData[#,"Symbol"]
-				]&,
+			CDSSymbol,
 			$Failed&,
 			<|
 				"X"->"X",
@@ -443,8 +593,13 @@ chemDataSourceAdd[
 	]
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*Radius*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*CDSourceRadius*)
 
 
 
@@ -462,6 +617,11 @@ CDSourceRadius[query_,___]:=
 						]
 			]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Radius*)
+
 
 
 chemDataSourceAdd[
@@ -483,8 +643,13 @@ chemDataSourceAdd[
 	];
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*Mass*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*CDSourceMass*)
 
 
 
@@ -497,6 +662,11 @@ CDSourceMass[query_,___]:=
 			],
 		ElementData[query,"AtomicMass"]
 		]
+
+
+(* ::Subsubsection::Closed:: *)
+(*Mass*)
+
 
 
 chemDataSourceAdd[
@@ -518,12 +688,17 @@ chemDataSourceAdd[
 	]
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*NISTMass*)
 
 
 
-CDSourceMass[query_,___]:=
+(* ::Subsubsection::Closed:: *)
+(*CDNISTMass*)
+
+
+
+CDNISTMass[query_,___]:=
 	If[ChemDataIsotopeQ@query,
 		With[{n=ChemDataLookup[query, "AtomicNumber", IsotopeData]},
 			Quantity[
@@ -557,10 +732,15 @@ CDSourceMass[query_,___]:=
 		]
 
 
+(* ::Subsubsection::Closed:: *)
+(*NISTMass*)
+
+
+
 chemDataSourceAdd[
 	"NISTMass"->
 		ChemData[
-			CDSourceMass,
+			CDNISTMass,
 			$Failed&,
 			<|
 				"X"->
@@ -576,6 +756,20 @@ chemDataSourceAdd[
 	]
 
 
+(* ::Subsection:: *)
+(*AtomicNumber*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*CDSAtomicNumber*)
+
+
+
+CDSAtomicNumber[q_]:=
+	ChemDataLookup[q,"AtomicNumber",IsotopeData]
+
+
 (* ::Subsubsection::Closed:: *)
 (*AtomicNumber*)
 
@@ -584,7 +778,7 @@ chemDataSourceAdd[
 chemDataSourceAdd[
 	"AtomicNumber"->
 		ChemData[
-			ChemDataLookup[#,"AtomicNumber",IsotopeData]&,
+			CDSAtomicNumber,
 			$Failed&,
 			<|
 				"X"->
@@ -600,25 +794,35 @@ chemDataSourceAdd[
 	]
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*Electronegativity*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*CDElectronegativity*)
 
 
 
 CDElectronegativity[query_,___]:=
 	If[ChemDataIsotopeQ@query,
 		ChemDataLookup[
-			ChemDataLookup[query,"AtomicNumber",IsotopeData],
+			ChemDataLookup[query, "AtomicNumber", IsotopeData],
 			"Electronegativity"
 			],
-		ElementData[query,"AtomicMass"]
+		ElementData[query, "Electronegativity"]
 		]
+
+
+(* ::Subsubsection::Closed:: *)
+(*Electronegativity*)
+
 
 
 chemDataSourceAdd[
 	"Electronegativity"->
 		ChemData[
-			CDSourceMass,
+			CDElectronegativity,
 			$Failed&,
 			<|
 				"X"->
@@ -634,7 +838,7 @@ chemDataSourceAdd[
 	]
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*ChemDataSource*)
 
 

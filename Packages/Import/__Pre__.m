@@ -138,6 +138,7 @@ If[!TrueQ[`Private`$ImportRegistered["FormattedCheckpoint"]],
 		{
 			"StartDateTime",
 			"CartesianCoordinates",
+			"MullikenCharges",
 			"MultipoleMoments",
 			"ZMatrix",
 			"ZMatrixVariables",

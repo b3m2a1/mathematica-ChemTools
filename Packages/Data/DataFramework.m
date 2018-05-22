@@ -19,15 +19,18 @@
 
 
 
-ChemDataLookup::usage="Looks up relevant chemical data";
-
-
+ChemDataLookup::usage=
+	"Looks up relevant chemical data";
 ChemData::usage=
 	"A wrapper for various chemical data stuff to act like an extensible ChemicalData";
 
 
-ChemDataQuery::usage=
-	"A descriptive head used in to pass multiple parameters to sources";
+PackageScopeBlock[
+	ChemDataQuery::usage=
+		"A descriptive head used in to pass multiple parameters to sources";
+	]
+
+
 ChemDataProperties::usage="Finds properties matching a pattern";
 ChemDataCacheClear::usage="Clears cached data matching a pattern";
 

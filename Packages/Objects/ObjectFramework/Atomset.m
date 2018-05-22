@@ -260,6 +260,9 @@ If[!KeyMemberQ[$ChemObjectDefaults, "Atomset"],
 				"SubstitueAtom"->
 					ChemMethod[AtomsetSubstitueAtom],
 					
+				"ElementPositions"->
+					ChemMethod[AtomsetElementPositions],
+					
 				"Bonds"->
 					ChemProperty[AtomsetBonds],
 				"BondVectors"->
@@ -1901,7 +1904,7 @@ AtomsetAxisAlignmentTransform[
 			coords=ChemGet[ChemGet[obj,"Atoms"],"Position"],
 			abc=AtomsetInertialSystem[obj][[{"AAxis","BAxis","CAxis"}]]
 			},
-		ChemUtilsAxisAlignmentTransform[
+		ChemComputeAxisAlignmentTransform[
 			Replace[a,
 				(ax1_->ax2_):>
 					Rule@@
@@ -2004,7 +2007,7 @@ AtomsetAlignmentTransform[
 							ChemGet[o,"Position"]
 						}]
 				},
-			ChemUtilsAlignmentTransform@
+			ChemComputeAlignmentTransform@
 				Take[pos,{1,3}]->Take[pos,{4,6}]
 			]
 		];
@@ -2016,7 +2019,7 @@ AtomsetAlignmentTransform[
 			___
 			}
 	]:=
-	ChemUtilsAlignmentTransform[
+	ChemComputeAlignmentTransform[
 		AtomsetMassPositions[obj]->
 			b
 		];
@@ -2024,7 +2027,7 @@ AtomsetAlignmentTransform[
 	obj:ChemObjPattern,
 	b:ChemObjPattern?(ChemInstanceQ["Atomset"])
 	]:=
-	ChemUtilsAlignmentTransform[
+	ChemComputeAlignmentTransform[
 		AtomsetMassPositions[obj]->
 			AtomsetMassPositions[b]
 		];
@@ -2055,17 +2058,17 @@ AtomsetAlign[
 
 
 AtomsetInertialTensor[obj:ChemObjPattern]:=
-	ChemUtilsInertialTensor@
+	ChemComputeInertialTensor@
 		AtomsetMassPositions[obj];
 
 
 AtomsetInertialEigensystem[obj:ChemObjPattern]:=
-	ChemUtilsInertialEigensystem@
+	ChemComputeInertialEigensystem@
 		AtomsetElementPositions[obj];
 
 
 AtomsetInertialSystem[obj:ChemObjPattern]:=
-	ChemUtilsInertialSystem@
+	ChemComputeInertialSystem@
 		AtomsetInertialEigensystem[obj];
 
 
@@ -2084,7 +2087,7 @@ AtomsetSymmetryElements//Clear
 
 
 Options[AtomsetSymmetryElements]=
-	Options[ChemUtilsSymmetryElements];
+	Options[ChemComputeSymmetryElements];
 AtomsetSymmetryElements[
 	obj:ChemObjPattern,
 	atomPattern:Except[_?OptionQ]:_,
@@ -2094,7 +2097,7 @@ AtomsetSymmetryElements[
 		If[AssociationQ@stest1&&KeyMemberQ[stest1, Hash@AtomsetElementPositions[obj]],
 			stest1[Hash@AtomsetElementPositions[obj]],
 			With[{
-				smells=ChemUtilsSymmetryElements[
+				smells=ChemComputeSymmetryElements[
 					Cases[AtomsetElementPositions[obj],atomPattern],
 					ops
 					]},
@@ -2107,7 +2110,7 @@ AtomsetSymmetryElements[
 
 
 AtomsetInertialSymmetry[obj:ChemObjPattern]:=
-	ChemUtilsInertialSymmetry@
+	ChemComputeInertialSymmetry@
 		AtomsetElementPositions@obj;
 
 
@@ -2115,13 +2118,13 @@ AtomsetPointGroup//Clear
 
 
 Options[AtomsetPointGroup]=
-	Options[ChemUtilsPointGroup];
+	Options[ChemComputePointGroup];
 AtomsetPointGroup[
 	obj:ChemObjPattern,
 	atomPattern:Except[_?OptionQ]:_,
 	ops:OptionsPattern[]
 	]:=
-	ChemUtilsPointGroup[
+	ChemComputePointGroup[
 		AtomsetSymmetryElements[obj, atomPattern, ops]
 		]
 
@@ -2617,6 +2620,11 @@ AtomsetPsi4Scan[
 		);*)
 
 
+(* ::Subsubsection::Closed:: *)
+(*Orbitals*)
+
+
+
 Options[AtomsetOrbitals]=
 	{
 		"Mode"->"Psi4",
@@ -2698,6 +2706,11 @@ AtomsetOrbitals[
 				]
 			]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*OrbitalsPlot*)
+
 
 
 Options[AtomsetOrbitalsPlot]=
@@ -2804,6 +2817,11 @@ AtomsetOrbitalsPlot[
 		]
 
 
+(* ::Subsubsection::Closed:: *)
+(*Psi4Scan*)
+
+
+
 Options[AtomsetPsi4Scan]=
 	Join[
 		{
@@ -2881,6 +2899,11 @@ AtomsetPsi4Scan[
 	AtomsetPsi4Scan[obj,{specs},ops]
 
 
+(* ::Subsubsection::Closed:: *)
+(*Energy*)
+
+
+
 Options[AtomsetEnergy]=
 	Options[Psi4Energy];
 AtomsetEnergy[obj:ChemObjPattern,ops:OptionsPattern[]]:=
@@ -2889,6 +2912,11 @@ AtomsetEnergy[obj:ChemObjPattern,ops:OptionsPattern[]]:=
 			AtomsetElementPositions@obj,
 			ops
 			]
+
+
+(* ::Subsubsection::Closed:: *)
+(*AtomsetEnergyScan*)
+
 
 
 atomsetEnergyScanPrepSpec[p:{{_,_,_}..}]:=p;
@@ -2947,6 +2975,11 @@ AtomsetEnergyScan[
 
 
 
+(* ::Subsubsection::Closed:: *)
+(*Graphic*)
+
+
+
 Options[AtomsetGraphic]=
 	Join[
 		Options@AtomGraphic,
@@ -2976,6 +3009,11 @@ AtomsetGraphic[obj:ChemObjPattern,ops:OptionsPattern[]]:=
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*symmetryGraphics*)
+
+
+
 symmetryGraphics[as_,
 	atoms_:{Except@_String?(StringMatchQ[("H"|"Hydrogen")~~(NumberString|"")]),_}
 	]:=
@@ -2989,15 +3027,22 @@ symmetryGraphics[as_,
 		]
 
 
+(* ::Subsubsection::Closed:: *)
+(*axesGraphics*)
+
+
+
 axesGraphics[as_,
 	drawAxes:{{_,_,_},{_,_,_},{_,_,_}}|"Inertial":"Inertial",
 	origin:{_,_,_}|"Center"|"CenterOfMass"|True|False:"Center"]:=
 	With[{
 			c=
-				Replace[origin,{
-					"CenterOfMass"|True:>AtomsetCenterOfMass@as,
-					"Center"|False:>AtomsetCenter@as
-					}],
+				Replace[origin,
+					{
+						"CenterOfMass"|True:>AtomsetCenterOfMass@as,
+						"Center"|False:>AtomsetCenter@as
+						}
+					],
 			axes=
 				If[drawAxes==="Inertial",
 					Lookup[AtomsetInertialSystem@as,{"AAxis","BAxis","CAxis"}],
@@ -3019,6 +3064,11 @@ axesGraphics[as_,
 					]
 				}
 		]
+
+
+(* ::Subsubsection::Closed:: *)
+(*Graphic3D*)
+
 
 
 Options[AtomsetGraphic3D]:=

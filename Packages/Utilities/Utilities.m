@@ -159,6 +159,11 @@ ChemUtilsBondList[mx_]:=
 
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*Adjust matrix*)
+
+
+
 guessBondsAdjustRowUp[i_,mx_,inRange_,valences_]:=
 Block[{
 		bondingMatrix=mx,
@@ -250,17 +255,28 @@ guessBondsAdjustBondingMatrix[mx_,inRange_,valences_,order_]:=
 		];
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*Iterate*)
+
+
+
 guessBondsCheckBondingMatrix[mx_,inRange_,valences_,goal_]:=
 	MapThread[
 		If[MatchQ[#2,_Integer],
 			Total@#==#2,
 			MemberQ[#2,Total@#]
 			]&,
-		{mx,valences}];
+		{mx,valences}
+		];
 
 
-guessBondsDetermineBondsStep[mx_,
-	inRange_,valences_,goal_,order_]:=
+guessBondsDetermineBondsStep[
+	mx_,
+	inRange_,
+	valences_,
+	goal_,
+	order_
+	]:=
 	With[{bm=guessBondsAdjustBondingMatrix[mx,inRange,valences,order]},
 		If[Not@*And@@guessBondsCheckBondingMatrix[bm,inRange,valences,goal],
 			Block[{
@@ -306,16 +322,20 @@ guessBondsDetermineBondsStep[mx_,
 		];
 
 
-guessBonds[atoms_,tol_,iters_,multiValent_,goal_,log_]:=
+guessBonds[atoms_, tol_, iters_, multiValent_, goal_, log_, forbidden_]:=
 	With[{
 		inRange=
 			Table[
-				i!=j&&
-				Norm[Subtract@@(Last@atoms[[#]]&/@{i,j})]<=
-					With[{d=
-						ChemDataLookup[
-							{First@atoms[[i]],First@atoms[[j]],1},
-							"BondDistances"]},
+				i!=j&&!MemberQ[forbidden, atoms[[{i, j}, 1]]]&&
+				Norm[Subtract@@atoms[[{i, j}, 2]]]<=
+					With[
+						{
+							d=
+								ChemDataLookup[
+									Query[First@atoms[[i]], First@atoms[[j]], 1],
+									"BondDistances"
+									]
+							},
 						d+Replace[tol,Scaled[p_]:>d*p]
 						],
 				{i,Length@atoms},
@@ -367,6 +387,11 @@ guessBonds[atoms_,tol_,iters_,multiValent_,goal_,log_]:=
 		];
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*Composite*)
+
+
+
 Options[ChemUtilsGuessBonds]={
 	MaxIterations->10,
 	Tolerance->.075,
@@ -374,11 +399,13 @@ Options[ChemUtilsGuessBonds]={
 	"PriorityFunction"->(Switch[First@#,"H",0,"C",1,_,2]&),
 	"LogSteps"->False,
 	"MultiValences"->None,
-	"MakeBondLists"->True
+	"MakeBondLists"->True,
+	"ForbiddenBonds"->{(*{"H", "H"}*)}
 	};
 ChemUtilsGuessBonds[
-	sourceAtoms:{{_String,{__?NumericQ}}..},
-	ops:OptionsPattern[]]:=
+	sourceAtoms:{{_String,{__?NumericQ}, ___}..},
+	ops:OptionsPattern[]
+	]:=
 	With[{
 		atoms=SortBy[sourceAtoms,OptionValue@"PriorityFunction"],
 		tol=OptionValue@Tolerance,
@@ -396,7 +423,13 @@ ChemUtilsGuessBonds[
 						sourceAtoms
 						]
 				}],
-		makeLists=OptionValue@"MakeBondLists"
+		makeLists=OptionValue@"MakeBondLists",
+		forbidden=
+			Sort/@
+				Replace[
+					OptionValue["ForbiddenBonds"], 
+					Except[_List]:>{}
+					]
 		},
 		If[log,
 			<|
@@ -407,14 +440,30 @@ ChemUtilsGuessBonds[
 						ChemUtilsBondList@#
 						]
 				|>&/@
-					guessBonds[atoms,tol,iters,multi,goal,log],
+					guessBonds[atoms, tol, iters, multi, goal, log, forbidden],
 			<|
 				"Atoms"->atoms,
 				"Bonds"->
 					If[makeLists===False,
-						guessBonds[atoms,tol,iters,multi,goal,log],
+						guessBonds[
+							atoms,
+							tol,
+							iters,
+							multi,
+							goal,
+							log,
+							forbidden
+							],
 						ChemUtilsBondList@
-							guessBonds[atoms,tol,iters,multi,goal,log]
+							guessBonds[
+								atoms,
+								tol,
+								iters,
+								multi,
+								goal,
+								log,
+								forbidden
+								]
 						]
 				|>
 			]

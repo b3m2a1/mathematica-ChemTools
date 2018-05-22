@@ -26,7 +26,7 @@ Begin["`Private`"];
 
 
 (* ::Subsection:: *)
-(*ChemDVRDefaultPlot*)
+(*Options*)
 
 
 
@@ -39,15 +39,15 @@ $ChemDVRDefaultPlotOptions=
 	DeleteDuplicatesBy[First]@
 		Join[
 			{
-				"ZeroAxis"->True,
-				"ShowEnergy"->True,
+				"ShowEnergy"->Automatic,
+				"EnergyStyle"->Automatic,
 				"ShowPotential"->True,
 				"PotentialStyle"->Automatic,
 				"WavefunctionSelection"->Automatic,
 				"WavefunctionClipping"->Scaled[.0001],
 				"WavefunctionScaling"->Automatic,
 				"WavefunctionShifting"->Automatic,
-				"WavefunctionRescaling"->None,
+				"WavefunctionRescaling"->Automatic,
 				"PotentialRescaling"->None,
 				"PlotProbabilityDensity"->False,
 				"PlotDisplayMode"->Manipulate,
@@ -73,6 +73,11 @@ ChemDVRDefaultPlotOptionValue[opName_, ops_, f_:None, default_:Automatic]:=
 		]
 
 
+(* ::Subsection:: *)
+(*Wavefunction Manipulations*)
+
+
+
 (* ::Subsubsection::Closed:: *)
 (*ChemDVRDefaultPlotGetShiftedScaledWavefunctions*)
 
@@ -96,7 +101,7 @@ chemDVRDefaultPlotWavefunctionRescalingFunction[
 	Scaled[mm:{_?NumericQ, _?NumericQ}],
 	pot_
 	]:=
-	With[{pmm=mm*If[pot===None, {0, 1}, MinMax[pot]]},
+	With[{pmm=Rescale[mm, {0, 1}, If[pot===None, {0, 1}, MinMax[pot]]]},
 		Map[Rescale[#, MinMax[#], pmm]&]
 		];
 chemDVRDefaultPlotWavefunctionRescalingFunction[
@@ -152,6 +157,7 @@ chemDVRDefaultPlotWavefunctionShift[e_, pot_]:=
 
 
 ChemDVRDefaultPlotGetShiftedScaledWavefunctions[
+	eng_,
 	psi_,
 	pot_,
 	shift_,
@@ -163,21 +169,26 @@ ChemDVRDefaultPlotGetShiftedScaledWavefunctions[
 			rescalePsi=
 				chemDVRDefaultPlotWavefunctionRescalingFunction[rescale, pot][psi],
 			shiftFactor=
-				chemDVRDefaultPlotWavefunctionShift[shift, pot],
+				If[shift==="Energy",
+					eng, 
+					chemDVRDefaultPlotWavefunctionShift[shift, pot]
+					],
 			scaleFactor=
 				Replace[scale,
 					Scaled[s_?NumericQ]:>
 						If[pot===None, None, s*Max@Abs[pot-Min[pot]]]
 					]
 			},
-		If[NumericQ@shiftFactor,
-			If[NumericQ@scaleFactor&&NumericQ@shift, 
+		If[NumericQ@shiftFactor||ListQ@shiftFactor,
+			(*If[NumericQ@scaleFactor&&NumericQ@shift, 
 				scaleFactor*shiftFactor, 
 				shiftFactor
-				]+#,
+				]*)shiftFactor+#,
 			#
 			]&@
 			If[NumericQ@scaleFactor, 
+				(*scaleFactor*rescalePsi*)
+				(* Try to adjust for lack zero-point shifting? Can't remember why this is here... *)
 				With[{maxPsi=Max[Abs[psi]]},
 					MapThread[
 						With[{minPsi=First@MinimalBy[#, Abs]},
@@ -214,6 +225,9 @@ ChemDVRDefaultPlotGetClippedWavefunctionSpec[
 			},
 		numTrue=Count[mainSpec, True];
 		needed=If[wfnLen<50, wfnLen, Ceiling[.1*wfnLen]]-numTrue;
+		If[numTrue==0,
+			mainSpec=ConstantArray[True, wfnLen]
+			];
 		If[needed>0,
 			truePos=First/@Position[mainSpec, True];
 			Do[
@@ -233,7 +247,7 @@ ChemDVRDefaultPlotGetClippedWavefunctionSpec[
 										truePos
 										]
 									],
-								#>0&&#<wfnLen&
+								#>0&&#<=wfnLen&
 								];
 					needed-=Length@truePos;
 					],
@@ -268,16 +282,19 @@ ChemDVRDefaultPlotGetClippedWavefunctionSpec[
 
 
 (* ::Text:: *)
-(*Handle zero axes appropriately*)
+(*
+	Still don\[CloseCurlyQuote]t handle zero axes appropriately...
+*)
 
 
 
 (* ::Subsubsubsection::Closed:: *)
-(*Imp*)
+(*iChemDVRDefaultPlotGetPlotPoints*)
 
 
 
 iChemDVRDefaultPlotGetPlotPoints[
+	eng_,
 	sel_,
 	pot_,
 	grid_,
@@ -290,8 +307,12 @@ iChemDVRDefaultPlotGetPlotPoints[
 		{
 			scaledPsi=
 				ChemDVRDefaultPlotGetShiftedScaledWavefunctions[
-					sel, pot, 
-					shifting, scaling, rescaling
+					eng,
+					sel, 
+					pot, 
+					shifting, 
+					scaling, 
+					rescaling
 					]
 			},
 		MapThread[
@@ -314,6 +335,7 @@ iChemDVRDefaultPlotGetPlotPoints[
 			]
 		];
 iChemDVRDefaultPlotGetPlotPoints[
+	eng_,
 	sel_,
 	pot_,
 	grid_,
@@ -326,12 +348,19 @@ iChemDVRDefaultPlotGetPlotPoints[
 		{
 			scaledPsi=
 				ChemDVRDefaultPlotGetShiftedScaledWavefunctions[
-					sel, pot, 
-					shifting, scaling, rescaling
+					eng,
+					sel, 
+					pot, 
+					shifting, 
+					scaling, 
+					rescaling
 					]
 			},
 		Map[
-			MapThread[Flatten@*List, {grid, #}]&,
+			MapThread[
+				Flatten@*List, 
+				{grid, #}
+				]&,
 			scaledPsi
 			]
 		]
@@ -402,6 +431,7 @@ ChemDVRDefaultPlotGetPlotPoints[
 	showPot_,
 	showEng_,
 	transf_,
+	sort_,
 	ops:OptionsPattern[]
 	]:=
 	With[
@@ -436,7 +466,7 @@ ChemDVRDefaultPlotGetPlotPoints[
 						]
 					],
 			sqr=
-				TrueQ["PlotProbabilityDensity"],
+				TrueQ[OptionValue@"PlotProbabilityDensity"],
 			gps=
 				If[transf===None, 
 					gridpoints, 
@@ -452,46 +482,64 @@ ChemDVRDefaultPlotGetPlotPoints[
 							],
 						gridpoints
 						]
-					],
+					],(*
 				za=
-					TrueQ@OptionValue["ZeroAxis"],
-				potVals=ReleaseHold@pot
+					TrueQ@OptionValue["ZeroAxis"],*)
+				cleanPot=
+					If[TrueQ@showPot,
+						Normal@
+							If[#//MatrixQ//TrueQ,
+								Diagonal@#,
+								#
+								]&@ReleaseHold@pot,
+						None
+						]
 				},
 		{
 			If[TrueQ@showEng,
 				wfnsel[[1]],
 				None
 				],
+			If[sort, Map[SortBy[Most]], Identity]@
 			iChemDVRDefaultPlotGetPlotPoints[
+				wfnsel[[1]],
 				If[sqr, wfnsel[[2]]^2, wfnsel[[2]]],
-				If[showPot, pot, None],
+				If[showPot, cleanPot, None],
 				gps,
-				Replace[scaling,
-					Automatic:>If[rescaling=!=None, None, Scaled[.5]]
+				scaling
+				(*Replace[scaling,
+					Automatic\[RuleDelayed]
+						If[rescaling=!=None, None, Scaled[.5]]
+					]*),
+				shift
+				(*Replace[shift,
+					Automatic\[RuleDelayed]If[rescaling=!=None, None, Offset[Scaled[0], 0]]
+					]*),
+				Replace[rescaling,
+					Automatic:>
+						If[MatchQ[scaling, _?NumericQ|_Scaled], None, Scaled[.1]]
 					],
-				Replace[shift,
-					Automatic:>If[rescaling=!=None, None, Offset[Scaled[0], 0]]
-					],
-				rescaling,
 				clipping
 				],
 			If[TrueQ@showPot,
+				If[sort, SortBy[Most], Identity]@
 				MapThread[
 					Flatten@*List,
 					{
 						gps,
 						chemDVRDefaultPlotPotentialRescalingFunction[potResc]@
-							Normal@
-								If[potVals//MatrixQ,
-									Diagonal@potVals,
-									potVals
-									]
+							cleanPot
 						}
 					],
 				None
 				]
 			}
 		]
+
+
+(* ::Subsection:: *)
+(*Plotting Wrappers*)
+
 
 
 (* ::Subsubsection::Closed:: *)
@@ -518,6 +566,7 @@ ChemDVRDefaultPlotPotential[
 				FilterRules[
 					FilterRules[
 						Flatten@{
+							PlotLegends->None,
 							PlotStyle->
 								Replace[potStyle,
 									Automatic:>
@@ -534,6 +583,62 @@ ChemDVRDefaultPlotPotential[
 						],
 				Except[PolarAxes (* due to poor implementation this will layer... *)]
 				]
+			]
+		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*ChemDVRDefaultPlotEnergy*)
+
+
+
+ChemDVRDefaultPlotEnergy[
+	func_Symbol, engNumer_, soln_, ops:OptionsPattern[]
+	]:=
+	With[
+		{
+			engStyle=
+				ChemDVRDefaultPlotOptionValue[
+					"EnergyStyle",
+					{ops},
+					func,
+					Automatic
+					]
+			},
+		If[engStyle=!=None,
+			With[
+				{
+					eng=
+						ReplacePart[soln, 
+							Thread[Thread[{Range[Length@soln], -1}]->engNumer]
+							]
+					},
+				func[
+					eng,
+					Evaluate@
+						FilterRules[
+							FilterRules[
+								Flatten@{
+									PlotLegends->None,
+									PlotStyle->
+										Replace[engStyle,
+											Automatic:>
+												{
+													If[Length@eng[[1]]===2,
+														Directive[Dashed, Lighter[Red, .5]],
+														Directive[Opacity[.35], Lighter[Red, .8]]
+														]
+													}
+											],
+									ops
+									},
+								Options@func
+								],
+						Except[PolarAxes (* due to poor implementation this will layer... *)]
+						]
+					]
+				],
+			{}
 			]
 		];
 
@@ -637,7 +742,7 @@ ChemDVRDefaultPlotManipulateSolutions[
 										]
 								],
 							{
-								Except[_Graphics|_Graphics3D]:>
+								Except[_Graphics|_Graphics3D|_Legended]:>
 									failMsg,
 								g:_Graphics|_Graphics3D:>
 									Function[
@@ -674,7 +779,7 @@ ChemDVRDefaultPlotManipulateSolutions[
 							]
 						],
 					{
-						Except[_Graphics|_Graphics3D]:>
+						Except[_Graphics|_Graphics3D|_Legended]:>
 							failMsg,
 						g:_Graphics|_Graphics3D:>
 							Function[
@@ -712,26 +817,48 @@ ChemDVRDefaultPlotListSolutions[
 			ps=
 				ChemDVRDefaultPlotResolvePlotStyle[func, Length@solns, {ops}],
 			failMsg=
-				"Couldn't view solutions for plotting function ``"~TemplateApply~func
+				"Couldn't view solutions for plotting function ``"~TemplateApply~func,
+			pengs=
+				energies=!=None,
+			showeng=
+				ChemDVRDefaultPlotOptionValue[
+					PlotLegends, 
+					{ops}, 
+					func, 
+					Automatic
+					]===Automatic
 			},
 		Table[
 			Replace[
-				func[solns[[i]],
-					Evaluate@
-						FilterRules[
-							{
-								ops,
-								PlotStyle->ps[i]
-								},
-							Options@func
+				If[pengs, 
+					Show[
+						#,
+						ChemDVRDefaultPlotEnergy[
+							func, 
+							energies[[i]], 
+							solns[[i]], 
+							ops
 							]
-					],
+						]&,
+					Identity
+					]@
+					func[
+						solns[[i]],
+						Evaluate@
+							FilterRules[
+								{
+									ops,
+									PlotStyle->ps[i]
+									},
+								Options@func
+								]
+						],
 				{
-					Except[_Graphics|_Graphics3D]:>
+					Except[_Graphics|_Graphics3D|_Legended]:>
 						Failure["DVR Viewer", failMsg],
-					g:_Graphics|_Graphics3D:>
+					g:_Graphics|_Graphics3D|_Legended:>
 						Function[
-							If[energies=!=None,
+							If[energies=!=None&&showeng,
 								Legended[#,
 									Placed[
 										Row@{Subscript["E", i],": ", energies[[i]] },
@@ -760,7 +887,10 @@ ChemDVRDefaultPlotShowSolutions[
 	With[
 		{
 			ps=
-				ChemDVRDefaultPlotResolvePlotStyle[func, Length@solns, {ops}]
+				ChemDVRDefaultPlotResolvePlotStyle[func, 
+					Length@solns, 
+					{ops}
+					]
 			},
 		Show[
 			If[pot=!=None, 
@@ -781,7 +911,7 @@ ChemDVRDefaultPlotShowSolutions[
 								]
 						],
 					{
-						Except[_Graphics|_Graphics3D]:>
+						Except[_Graphics|_Graphics3D|_Legended]:>
 							Nothing
 						}
 					]&,
@@ -857,11 +987,20 @@ ChemDVRDefaultPlotBasic[
 							False
 							],
 					TrueQ@
-						ChemDVRDefaultPlotOptionValue[
-							"ShowEnergy",
-							{ops}, 
-							headFunc,
-							False
+						Replace[
+							ChemDVRDefaultPlotOptionValue[
+								"ShowEnergy",
+								{ops}, 
+								headFunc,
+								False
+								],
+							Automatic:>
+								ChemDVRDefaultPlotOptionValue[
+									"WavefunctionShifting",
+									{ops}, 
+									headFunc,
+									False
+									]==="Energy"
 							],
 					ChemDVRDefaultPlotOptionValue[
 						"CoordinateTransformation",
@@ -869,6 +1008,13 @@ ChemDVRDefaultPlotBasic[
 						headFunc,
 						None
 						],
+					TrueQ@
+						ChemDVRDefaultPlotOptionValue[
+							"SortPlotPoints",
+							{ops},
+							headFunc,
+							False
+							],
 					FilterRules[{ops},
 						Options@ChemDVRDefaultPlotGetPlotPoints
 						]
@@ -876,7 +1022,8 @@ ChemDVRDefaultPlotBasic[
 			},
 		ChemDVRDefaultPlotSolutions[
 			Replace[
-				ChemDVRDefaultPlotOptionValue["PlotFunction",
+				ChemDVRDefaultPlotOptionValue[
+					"PlotFunction",
 					{ops}, 
 					headFunc,
 					False
@@ -902,6 +1049,11 @@ ChemDVRDefaultPlotBasic[
 					]
 			]
 	];
+
+
+(* ::Subsection:: *)
+(*Plot Types*)
+
 
 
 (* ::Subsubsection::Closed:: *)
@@ -1508,6 +1660,11 @@ ChemDVRDefaultPlotPolarContour[
 		];
 
 
+(* ::Subsection:: *)
+(*Main Function*)
+
+
+
 (* ::Subsubsection::Closed:: *)
 (*ChemDVRDefaultPlot*)
 
@@ -1519,7 +1676,8 @@ ChemDVRRun::nosup="PlotMode `` is unsupported";
 Options[ChemDVRDefaultPlot]=
 	Join[
 		{
-			"PlotMode"->Automatic
+			"PlotMode"->Automatic,
+			"PruningEnergy"->None
 			},
 		$ChemDVRDefaultPlotOptions
 		];
@@ -1535,7 +1693,14 @@ ChemDVRDefaultPlot[
 			gridpoints,
 			func,
 			pmode,
-			gridranges
+			gridranges,
+			prune=
+				ChemDVRDefaultPlotOptionValue[
+					"PruningEnergy",
+					{ops},
+					ChemDVRDefaultPlot,
+					None
+					]
 			},
 		pmode=
 			ChemDVRDefaultPlotOptionValue[
@@ -1586,7 +1751,8 @@ ChemDVRDefaultPlot[
 					ChemDVRDefaultPlotSpherical,
 				"Contour",
 					gridpoints=
-						ChemDVRDefaultGridPointList[grid, 
+						ChemDVRDefaultGridPointList[
+							grid, 
 							FilterRules[{ops}, Options@ChemDVRDefaultGridPointList]
 							];
 					{"Contour", Length@gridpoints[[1]]},
@@ -1655,8 +1821,15 @@ ChemDVRDefaultPlot[
 				];
 			func[
 				solutions,
-				gridpoints,
-				potentialMatrix,
+				ChemDVRDefaultPruneGridPoints[
+					gridpoints,
+					potentialMatrix,
+					prune
+					],
+				ChemDVRDefaultPrunePotentialEnergy[
+					potentialMatrix,
+					prune
+					],
 				ops
 				]
 			]

@@ -25,6 +25,7 @@ ChemDVRDefaultGrid::usage=
 ChemDVRDefaultNamedGrid::usage="";
 ChemDVRDirectProductGrid::usage=
 	"Creates a direct product grid from two grid functions";
+ChemDVRDefaultPruneGridPoints::usage="";
 ChemDVRDirectProductKineticEnergy::usage=
 	"Creates a direct product ke from two ke functions";
 ChemDVRKroneckerProductKineticEnergy::usage=
@@ -34,6 +35,8 @@ ChemDVRDefaultKineticEnergy::usage=
 ChemDVRDefaultNamedPotential::usage="";
 ChemDVRDefaultPotentialEnergy::usage="";
 ChemDVRDefaultGridPotentialEnergy::usage="";
+ChemDVRDefaultDirectProductPotentialEnergy::usage="";
+ChemDVRDefaultPrunePotentialEnergy::usage="";
 ChemDVRDefaultPrepareHamiltonian::usage=
 ChemDVRDefaultWavefunctions::usage="";
 ChemDVRDefaultGridWavefunctions::usage="";
@@ -76,6 +79,29 @@ ChemDVRDefaultGridPointList[grid_, o:OptionsPattern[]]:=
 				OptionValue["GridPrepFunction"]@grid,
 				Depth[grid]-3
 				]
+			]
+		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*ChemDVRPruneGrid*)
+
+
+
+ChemDVRDefaultPruneGridPoints[gridpoints_, V_, pruningEnergy_]:=
+	Module[{vDiag, prune=pruningEnergy},
+		If[NumericQ@prune||MatchQ[prune, Scaled[_?NumericQ]],
+			vDiag=Normal@Diagonal[ReleaseHold@V];
+			prune=
+				Replace[prune, 
+					{
+						i_?NumericQ:>Rescale[i, MinMax@vDiag],
+						Scaled[s_]:>s
+						}
+					];
+			vDiag=Rescale[vDiag];
+			Pick[gridpoints, #<=prune&/@vDiag],
+			gridpoints
 			]
 		];
 
@@ -282,12 +308,7 @@ ChemDVRDefaultNamedPotential["HarmonicOscillator", ops___?OptionQ]:=
 			k=Lookup[{ops}, "ForceConstant", 1/2],
 			re=Lookup[{ops}, "EquilibriumBondLength", 0]
 			},
-		With[{basic=k*(#-re)^2},
-			If[Length@basic>1,
-				Total[basic],
-				basic
-				]
-			]&
+		k*(#-re)^2&
 		];
 
 
@@ -303,12 +324,7 @@ ChemDVRDefaultNamedPotential["MorseOscillator", ops___?OptionQ]:=
 			a=Lookup[{ops}, "WellWidth", 1],
 			re=Lookup[{ops}, "EquilibriumBondLength", 0]
 			},
-		With[{basic=(de*(1-Exp[-(1/a)*(#-re)])^2)},
-			If[Length@basic>1,
-				Total[basic],
-				basic
-				]
-			]&
+		de*(1-Exp[-(1/a)*(#-re)])^2&
 		];
 
 
@@ -351,14 +367,7 @@ ChemDVRDefaultNamedPotential["MultiWellPolynomial", ops___?OptionQ]:=
 			dep=dep/minDiff,
 			dep=1
 			];
-		With[{expr=dep(mainPol/.\[FormalX]p->#)-(dep*minVal-min)},
-			With[{basic=expr},
-				If[Length@basic>1,
-					Total[basic],
-					basic
-					]
-				]&
-			]
+		Evaluate[dep(mainPol/.\[FormalX]p->#)-(dep*minVal-min)]&
 		];
 
 
@@ -373,12 +382,7 @@ ChemDVRDefaultNamedPotential["HinderedRotor", ops___?OptionQ]:=
 			w=Lookup[{ops}, "WellNumber", 3],
 			d=Lookup[{ops}, "WellDepth", 5.]
 			},
-		With[{basic=d*Cos[w/2*#]},
-			If[Length@basic>1,
-				Total[basic],
-				basic
-				]
-			]&
+		d*Cos[w/2*#]&
 		];
 
 
@@ -613,7 +617,8 @@ iChemDVRDefaultPotentialFunction[
 	]:=
 	Function[
 		Evaluate@
-			MapIndexed[#[Slot@@#2]&, 
+			MapIndexed[
+				#[Slot@@#2]&, 
 				iChemDVRDefaultPotentialFunction[#, ops]&/@{a}
 				]
 		]/.Slot[n_]:>#[[n]];
@@ -695,7 +700,7 @@ ChemDVRDefaultPotentialEnergy[grid_, ops___?OptionQ]:=
 	With[
 		{
 			pf=
-				Replace[Function[e_List]:>Function[Total[e]]]@
+				Replace[Function[{e__}]:>Function[Plus[e]]]@
 					ChemDVRDefaultPotentialEnergyElementFunction[ops],
 			gp=
 				ChemDVRDefaultGridPointList[grid, 
@@ -736,6 +741,52 @@ ChemDVRDefaultGridPotentialEnergy[
 		grid,
 		Normal@Diagonal@pe,
 		ops
+		];
+ChemDVRDefaultGridPotentialEnergy[
+	grid:_List, 
+	pe:_Hold,
+	ops:OptionsPattern[]
+	]:=
+	ChemDVRDefaultGridPotentialEnergy[
+	grid, 
+	ReleaseHold@pe,
+	ops
+	]
+
+
+(* ::Subsubsection::Closed:: *)
+(*ChemDVRDirectProductPotentialEnergy*)
+
+
+
+ChemDVRDefaultDirectProductPotentialEnergy[pemats:{__}]:=
+		ChemDVRKroeneckerProductKineticEnergy@pemats;
+
+
+(* ::Subsubsection::Closed:: *)
+(*ChemDVRDefaultPrunePotentialEnergy*)
+
+
+
+ChemDVRDefaultPrunePotentialEnergy[potMx_, pruningEnergy_]:=
+	Module[{V=ReleaseHold@potMx, vDiag, prune=pruningEnergy, prunePos},
+		If[NumericQ@prune||MatchQ[prune, Scaled[_?NumericQ]],
+			vDiag=Normal@Diagonal[ReleaseHold@V];
+			prune=
+				Replace[prune, 
+					{
+						i_?NumericQ:>Rescale[i, MinMax@vDiag],
+						Scaled[s_]:>s
+						}
+					];
+			vDiag=Rescale[vDiag];
+			prunePos=Flatten@Position[vDiag, _?(#>prune&), 1];
+			V[[
+					Complement[Range[Length@V], prunePos], 
+					Complement[Range[Length@V], prunePos]
+					]],
+			V
+			]
 		]
 
 
@@ -1171,6 +1222,11 @@ iChemDVRDefaultKineticEnergyElementFunction[___]:=
 ChemDVRDefaultKineticEnergyElementFunction//Clear
 
 
+ChemDVRRun::kedimx=
+	"Dimension of grid (``) doesn't match number of kinetic energy element\
+ functions (``)";
+
+
 Options[ChemDVRDefaultKineticEnergyElementFunction]=
 	{
 			"KineticEnergyElementFunction"->Automatic
@@ -1231,19 +1287,22 @@ ChemDVRDefaultKineticEnergyLists[
 	With[
 		{
 			subgrids=
-				Replace[
-					ChemDVRDefaultGridPointList[
-						gridpoints, 
-						FilterRules[{ops}, Options[ChemDVRDefaultGridPointList]]
-						],
-					{
-						l:{__List}:>
-							Map[
-								DeleteDuplicates, 
-								Transpose@l
+				Replace[gridpoints,
+					Except[{{Repeated[_?NumericQ, {3, Infinity}]}..}]:>
+						Replace[
+							ChemDVRDefaultGridPointList[
+								gridpoints, 
+								FilterRules[{ops}, Options[ChemDVRDefaultGridPointList]]
 								],
-						l_List:>{l}
-						}
+							{
+								l:{__List}:>
+									Map[
+										DeleteDuplicates, 
+										Transpose@l
+										],
+								l_List:>{l}
+								}
+							]
 					],
 			masses=
 				OptionValue["Mass"],
@@ -1308,11 +1367,6 @@ ChemDVRDefaultKineticEnergyLists[
 	Try to generate the kinetic energy from a kinetic energy elementfunction
 *)
 
-
-
-ChemDVRRun::kedimx=
-	"Dimension of grid (``) doesn't match number of kinetic energy element\
- functions (``)";
 
 
 Options[ChemDVRDefaultKineticEnergy]=
@@ -1484,7 +1538,11 @@ ChemDVRDefaultWavefunctions[T_, V_, ops:OptionsPattern[]]:=
 		{
 			ham,
 			wfnSel,
-			minMaxDiag,
+			hamDiag,
+			rowSums,
+			rowBounds,
+			rowMin,
+			rowShift,
 			nwfs=OptionValue["NumberOfWavefunctions"],
 			sort=OptionValue["SortEnergies"]=!=False,
 			rephase=OptionValue["CorrectPhase"]=!=False,
@@ -1504,9 +1562,9 @@ ChemDVRDefaultWavefunctions[T_, V_, ops:OptionsPattern[]]:=
 				{
 					Automatic:>
 						If[Head@ham===SparseArray, 
-							-Abs[Min@{Length@ham, 25}],
+							-Abs[Max@{Min@{Floor[Length@ham/10], 25}, 3}],
 							If[solver===Eigenvalues,
-								-Abs[Min@{Length@ham, 25}],
+								-Abs[Max@{Min@{Floor[Length@ham/10], 25}, 3}],
 								Sequence@@{}
 								]
 							],
@@ -1516,10 +1574,17 @@ ChemDVRDefaultWavefunctions[T_, V_, ops:OptionsPattern[]]:=
 					}
 				];
 		If[Length@{wfnSel}>0,
-			minMaxDiag=MinMax@Diagonal[ham];
-			If[minMaxDiag[[1]]<0&&minMaxDiag[[2]]>0,
-				ham=ham-SparseArray[Band[{1,1}]->minMaxDiag[[1]], {Length@ham, Length@ham}]
-				]
+			(*
+			I need to force all eigenvalues to be positive
+			By Gerschgorin's theorm this means I need to push the diagonal large enough
+				such that all of the eigenvalue disks are wholly positive
+			*)
+			hamDiag=Diagonal[ham];
+			rowSums=Total@*Abs/@ham;
+			rowBounds=2*Abs[hamDiag]-rowSums;
+			rowMin=Min@rowBounds;
+			rowShift=2*Abs[rowMin]-Min[hamDiag];
+			ham=ham+SparseArray[Band[{1,1}]->rowShift, {Length@ham, Length@ham}]
 			];
 		wfns=
 			solver[
@@ -1542,21 +1607,21 @@ ChemDVRDefaultWavefunctions[T_, V_, ops:OptionsPattern[]]:=
 			NumericQ@wfns[[1]],
 				(* just energies, so just return them *)
 				If[sort, Sort, Identity]@
-					If[TrueQ[Length[minMaxDiag]==2&&minMaxDiag[[1]]<0&&minMaxDiag[[2]]>0],
-						wfns+minMaxDiag[[1]],
+					If[TrueQ[NumericQ@rowShift],
+						wfns-rowShift,
 						wfns
 						],
 			Length@wfns==2,
 				(* full eigensystem *)
 				wfns=
 					If[sort, #[[{1,2}, Ordering[First@#]]], #]&@
-						If[TrueQ[Length[minMaxDiag]==2&&minMaxDiag[[1]]<0&&minMaxDiag[[2]]>0],
-							{#[[1]]+minMaxDiag[[1]], #[[2]]},
+						If[TrueQ[NumericQ@rowShift],
+							{#[[1]]+rowShift, #[[2]]},
 							#
 							]&@wfns;
 				If[rephase,
 					phase=Sign@wfns[[2, Ordering[First@wfns][[1]]]];
-					{First@wfns,phase*#&/@Last@wfns},
+					{First@wfns, phase*#&/@Last@wfns},
 					wfns
 					],
 			True,
@@ -1573,17 +1638,27 @@ ChemDVRDefaultWavefunctions[T_, V_, ops:OptionsPattern[]]:=
 Options[ChemDVRDefaultGridWavefunctions]=
 	Join[
 		{
-			"ReturnEnergies"->False
+			"ReturnEnergies"->False,
+			"PruningEnergy"->None
 			},
 		Options[ChemDVRDefaultWavefunctionSelection],
 		Options[ChemDVRDefaultGridPointList]
 		];
-ChemDVRDefaultGridWavefunctions[grid_,wfs_, o:OptionsPattern[]]:=
+ChemDVRDefaultGridWavefunctions[
+	grid_, 
+	wfs_,
+	V_,
+	o:OptionsPattern[]
+	]:=
 	With[
 		{
 			coreGridPoints=
-				ChemDVRDefaultGridPointList[grid, 
-					FilterRules[{o}, Options@ChemDVRDefaultGridPointList]
+				ChemDVRDefaultPruneGridPoints[
+					ChemDVRDefaultGridPointList[grid, 
+						FilterRules[{o}, Options@ChemDVRDefaultGridPointList]
+						],
+					V,
+					OptionValue["PruningEnergy"]
 					],
 			wfns=
 				ChemDVRDefaultWavefunctionSelection[
@@ -1612,13 +1687,18 @@ Options[ChemDVRDefaultInterpolatingWavefunctions]=
 ChemDVRDefaultInterpolatingWavefunctions[
 	grid_,
 	wfs_,
+	V_,
 	ops:OptionsPattern[]
 	]:=
 	With[
 		{
 			coreGridPoints=
-				ChemDVRDefaultGridPointList[grid, 
-					FilterRules[{ops}, Options@ChemDVRDefaultGridPointList]
+				ChemDVRDefaultPruneGridPoints[
+					ChemDVRDefaultGridPointList[grid, 
+						FilterRules[{ops}, Options@ChemDVRDefaultGridPointList]
+						],
+					V,
+					OptionValue["PruningEnergy"]
 					],
 			wfns=
 				ChemDVRDefaultWavefunctionSelection[
@@ -1684,13 +1764,18 @@ ChemDVRDefaultExpectationValues[
 	grid_,
 	wfs_,
 	evs_,
+	V:_?SquareMatrixQ|Hold[_?SquareMatrixQ],
 	ops:OptionsPattern[]
 	]:=
 	With[
 		{
 			coreGridPoints=
-				ChemDVRDefaultGridPointList[grid, 
-					FilterRules[{ops}, Options[ChemDVRDefaultGridPointList]]
+				ChemDVRDefaultPruneGridPoints[
+					ChemDVRDefaultGridPointList[grid, 
+						FilterRules[{ops}, Options@ChemDVRDefaultGridPointList]
+						],
+					V,
+					OptionValue["PruningEnergy"]
 					],
 			exfns=
 				Flatten@List@evs,
@@ -1728,13 +1813,18 @@ ChemDVRDefaultOperatorMatrix[
 	grid_,
 	wfs_,
 	evs_,
+	V:_?SquareMatrixQ|Hold[_?SquareMatrixQ],
 	ops:OptionsPattern[]
 	]:=
 	Module[
 		{
 			coreGridPoints=
-				ChemDVRDefaultGridPointList[grid, 
-					FilterRules[{ops}, Options[ChemDVRDefaultGridPointList]]
+				ChemDVRDefaultPruneGridPoints[
+					ChemDVRDefaultGridPointList[grid, 
+						FilterRules[{ops}, Options@ChemDVRDefaultGridPointList]
+						],
+					V,
+					OptionValue["PruningEnergy"]
 					],
 			exfns=
 				Flatten@List@evs,
@@ -1803,7 +1893,7 @@ ChemDVRDefaultOperatorMatrix[
 
 
 (* ::Subsubsection::Closed:: *)
-(*PotentialOptimizedGrid*)
+(*PotentialOptimize*)
 
 
 
@@ -1818,7 +1908,7 @@ iChemDVRDefault1DPOGrid//Clear
 iChemDVRDefault1DPOGrid[
 	grid_,
 	wfs:{{_?NumericQ, ___}, {_List, ___}},
-	bs_Integer
+	bs_
 	]:=
 	Module[
 		{
@@ -1832,20 +1922,20 @@ iChemDVRDefault1DPOGrid[
 				grid,
 				wfs,
 				{#&},
+				{{1, 1}, {0, 0}}(* This is just a dud potential we feed in because it won't be used *),
 				"WavefunctionSelection"->bs
 				];
 		If[!SquareMatrixQ[xmat],
 			xmat=xmat[[1]]
 			];
 		{gps, chob}=Eigensystem[xmat];
-		gporder=Ordering[Abs[gps-xmat[[1]]]];
-		{gps[[gporder]], chob[[gporder]]}
+		{gps, chob, wfs[[2]], wfs[[1, Replace[bs, i_Integer:>;;i]]]}
 		];
 iChemDVRDefault1DPOGrid[
 	grid_,
 	ke_,
 	pe_,
-	bs_Integer
+	bs_
 	]:=
 	iChemDVRDefault1DPOGrid[
 		grid,
@@ -1883,7 +1973,7 @@ chemDVRPOFindGridReordering[new_, old_]:=
 								],
 							{pos, Last@el}
 							],
-						{el, Rest@#}
+						{el, Rest@#2}
 						]
 					]
 				],
@@ -1924,7 +2014,7 @@ Options[ChemDVRDefaultPotentialOptimize]=
 			Options[ChemDVRDefaultKineticEnergy],
 			Options[ChemDVRDefaultPotentialEnergy],
 			{
-				"OptimizedComponents"->All,
+				"OptimizedComponents"->Automatic,
 				"OptimizedCoordinates"->All,
 				"OptimizedBasisSize"->Scaled[.25]
 				}
@@ -1935,21 +2025,7 @@ ChemDVRDefaultPotentialOptimize[
 	]:=
 	Module[
 		{
-			subgrids=
-				Replace[
-					ChemDVRDefaultGridPointList[
-						grid, 
-						FilterRules[{ops}, Options[ChemDVRDefaultGridPointList]]
-						],
-					{
-						l:{__List}:>
-							Map[
-								DeleteDuplicates, 
-								Transpose@l
-								],
-						l_List:>{l}
-						}
-					],
+			subgrids,
 				coordSpec,
 				grids,
 				keels,
@@ -1958,28 +2034,45 @@ ChemDVRDefaultPotentialOptimize[
 				pots,
 				size,
 				newGrid,
-				orders,
+				engs,
+				wfs,
+				invwfs,
 				trans,
+				invs,
 				optSpec,
 				optParts=<||>,
 				optGrids,
 				optKins,
 				optPots,
 				optHams,
-				poKeys
+				poKeys,
+				loKe,
+				loPe,
+				loGr,
+				curCrds,
+				loCrds,
+				orderCrds,
+				keTrans,
+				peTrans
 			},
-		optSpec=
-			Replace[OptionValue["OptimizedComponents"],
-				All->{"Grid", "PotentialEnergy", "KineticEnergy"}
-				];
 		poKeys=
 			{
 				"Grid",
+				"Coordinates",
+				"Ordering",
 				"Transformation",
 				"KineticEnergy",
 				"PotentialEnergy",
-				"Hamiltonian"
+				"Hamiltonian",
+				"Wavefunctions"
 				};
+		optSpec=
+			Replace[OptionValue["OptimizedComponents"],
+				{
+					Automatic->{"Grid", "PotentialEnergy", "KineticEnergy"},
+					All->poKeys
+					}
+				];
 		Replace[
 			Cases[Flatten@List@optSpec,
 				Except[(Alternatives@@poKeys)]
@@ -1998,46 +2091,97 @@ ChemDVRDefaultPotentialOptimize[
 			Message[ChemDVRObject::pono];
 			Throw@$Failed
 			];
+		subgrids=
+			Replace[
+				ChemDVRDefaultGridPointList[
+					grid, 
+					FilterRules[{ops}, Options[ChemDVRDefaultGridPointList]]
+					],
+				{
+					l:{__List}:>
+						Map[
+							DeleteDuplicates, 
+							Transpose@l
+							],
+					l_List:>{l}
+					}
+				];
 		coordSpec=OptionValue["OptimizedCoordinates"];
 		grids=subgrids[[coordSpec]];
+		curCrds=Range[Length@subgrids][[coordSpec]];
+		loCrds=
+			If[Length@grids<Length@subgrids,
+				Complement[Range[Length@grids], curCrds],
+				{}
+				];
+		orderCrds=
+			Ordering[Join[loCrds, curCrds]];
 		keels=
 			ChemDVRDefaultKineticEnergyElementFunction@
 				FilterRules[
 					{ops},
 					Options@ChemDVRDefaultKineticEnergyElementFunction
 					];
-		If[Length@keels!=Length@grids,
-			keels=Flatten[ConstantArray[keels, Length@grids], 1][[coordSpec]]
+		If[Length@keels!=Length@subgrids,
+			keels=
+				Take[Flatten[ConstantArray[keels, Length@subgrids], 1], Length@subgrids]
 			];
 		kins=
 			ChemDVRDefaultKineticEnergyLists[
-				grid,
+				subgrids,
 				keels,
 				FilterRules[{ops}, Options@ChemDVRDefaultKineticEnergyLists]
 				];
+		loKe=kins[[loCrds]];
+		kins=kins[[curCrds]];
 		potFuns=
 			Map[
-				ChemDVRDefaultPotentialEnergyElementFunction["PotentialFunction"->#]&,
-				Replace[
-					OptionValue["PotentialFunction"],
-					a:Except[list:{(_Function|_Symbol)...}]:>
-						ConstantArray[a, Length@subgrids]
+				If[#=!=None,
+					ChemDVRDefaultPotentialEnergyElementFunction["PotentialFunction"->#],
+					#
+					]&,
+				Take[
+					Flatten[
+						ConstantArray[
+							Replace[
+								OptionValue["PotentialFunction"],
+								{
+									a:{_String, ___?OptionQ}:>
+										ConstantArray[a, Length@subgrids],
+									a:Except[_List]:>
+										ConstantArray[a, Length@subgrids]
+									}
+								],
+							Length@subgrids
+							],
+						1
+						],
+					UpTo[Length@subgrids]
 					]
-				][[coordSpec]];
-		If[Length@potFuns!=Length@grids,
-			potFuns=Flatten[ConstantArray[potFuns, Length@grids], 1][[coordSpec]]
+				];
+		If[Length@potFuns!=Length@subgrids,
+			potFuns=
+				Take[
+					Flatten[ConstantArray[potFuns, Length@subgrids], 1], 
+					Length@subgrids
+					]
 			];
 		pots=
 			MapThread[
-				iChemDVRPotentialEnergy,
+				If[#2=!=None,
+					iChemDVRPotentialEnergy[##],
+					None
+					]&,
 				{
-					grids,
+					subgrids,
 					potFuns
 					}
 				];
+		loPe=pots[[loCrds]];
+		pots=pots[[curCrds]];
 		size=
 			Flatten[
-				ConstantArray[OptionValue["OptimizedBasisSize"], Length@grids],
+				ConstantArray[OptionValue["OptimizedBasisSize"], Length@subgrids],
 				1
 				][[coordSpec]];
 		size=
@@ -2046,8 +2190,17 @@ ChemDVRDefaultPotentialOptimize[
 					{
 						i_Integer?Positive:>i,
 						Scaled[i_?(0<#<1&)]:>
-							Ceiling[i*Length@#2],
-						_->All
+							Ceiling[Rescale[i, {0, 1}, {1, Length@#2}]],
+						Span[bits___]:>
+							Apply[
+								Span,
+								Replace[{bits}, 
+									Scaled[i_]:>
+										Ceiling[Rescale[i, {0, 1}, {1, Length@#2}]],
+									1
+									]
+								],
+						Except[{__Integer?Positive}]->All
 						}
 					]&,
 				{
@@ -2065,56 +2218,78 @@ ChemDVRDefaultPotentialOptimize[
 					size
 					}
 				];
-		{newGrid, trans}=
-			{trans[[All, 1]], trans[[All, 2]]};(*
-		orders=
-			MapThread[
-				chemDVRPOFindGridReordering,
-				{
-					newGrid,
-					grids
-					}
-				];*)
-		Table[
-			optParts[bit]=
-				Switch[bit,
-					"Grid",
-						newGrid,
-					"Transformation",
-						trans[[All, 2]],
-					"KineticEnergy",
-						MapThread[
-							(*(Length[#]/#3)**)
-								(#2.#[[;;#3, ;;#3]].Transpose[#2])&,
-							{
-								kins,
-								trans,(*
-								orders,*)
-								size
-								}
-							],
-					"PotentialEnergy",
-						MapThread[
-							(*(Length[#]/#3)**)
-								(#2.#[[#3, ;;#3]].Transpose[#2])&,
-							{
-								pots,
-								trans,(*
-								orders,*)
-								size
-								}
-							],
-					"Hamiltonian",
-						MapThread[
-							(*(Length[#]/#3)**)
-								(#2.#[[#3, ;;#3]].Transpose[#2])&,
-							{
-								kins+pots,
-								trans,(*
-								orders,*)
-								size
-								}
-							]
+		{newGrid, trans, wfs, engs}=
+			Transpose@trans;
+		invwfs=Transpose/@wfs;
+		invs=Transpose/@trans;
+		size=
+			Replace[size, i_Integer:>;;i, 1];
+		Do[
+			If[MemberQ[
+					{
+						"Ordering", "Coordinates",
+						"Grid", "Transformation", 
+						"KineticEnergy", "PotentialEnergy",
+						"Hamiltonian"
+						}, 
+					bit
+					],
+				optParts[bit]=
+					Switch[bit,
+						"Grid",
+							If[Length@loCrds>0,
+								Join[subgrids[[loCrds]], newGrid],
+								newGrid
+								][[orderCrds]],
+						"Transformation",
+							If[Length@loCrds>0,
+								Join[Map[IdentityMatrix[#, SparseArray]&, Length/@grids], trans],
+								trans
+								][[orderCrds]],
+						"KineticEnergy",
+							Join[
+								loKe,
+								MapThread[
+									With[{pretrans=(#5.#.#6)[[#4, #4]]},
+										(*(Length[#]/Length[pretrans])**)(#2.pretrans.#3)
+										]&,
+									{
+										kins,
+										trans,
+										invs,
+										size,
+										wfs,
+										invwfs
+										}
+									]
+								][[orderCrds]],
+						"PotentialEnergy",
+							MapThread[
+								With[{pretrans=(#5.#.#6)[[#4, #4]]},
+									(*(Length[#]/Length[pretrans])**)(#2.pretrans.#3)
+									]&,
+								{
+									pots,
+									trans,
+									invs,
+									size,
+									wfs,
+									invwfs
+									}
+								],
+						"Hamiltonian",
+							MapThread[
+								With[{preshrink=#[[#4, #4]]},
+									(*(Length[#]/Length[preshrink])**)(#2.preshrink.#3)
+									]&,
+								{
+									SparseArray[Band[{1, 1}]->#]&/@engs,
+									trans,
+									invs,
+									size
+									}
+								]
+						]
 					],
 			{bit, DeleteDuplicates@Flatten@List@optSpec}
 			];

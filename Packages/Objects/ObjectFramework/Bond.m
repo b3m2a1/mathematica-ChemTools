@@ -115,6 +115,11 @@ If[!KeyMemberQ[$ChemObjectDefaults, "Bond"],
 
 
 
+(* ::Subsubsection::Closed:: *)
+(*Create*)
+
+
+
 CreateBond[sys:ChemSysPattern|Automatic:Automatic,
 	atom1:ChemObjPattern,atom2:ChemObjPattern,
 	btype_:Automatic,
@@ -128,6 +133,11 @@ CreateBond[sys:ChemSysPattern|Automatic:Automatic,
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*CanFormQ*)
+
+
+
 BondCanFormQ[obj:ChemObjPattern]:=
 	With[{a=ChemGet[obj,"Atoms"]},
 		!MemberQ[Flatten@ChemGet[a,"Bonds"],obj]&&
@@ -135,8 +145,18 @@ BondCanFormQ[obj:ChemObjPattern]:=
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*FormedQ*)
+
+
+
 BondFormedQ[obj:ChemObjPattern]:=
 	MemberQ[Flatten@ChemGet[ChemGet[obj,"Atoms"],"Bonds"],obj]
+
+
+(* ::Subsubsection::Closed:: *)
+(*Form*)
+
 
 
 BondForm[obj:ChemObjPattern,check:True|False:True]:=
@@ -149,12 +169,22 @@ BondForm[obj:ChemObjPattern,check:True|False:True]:=
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Break*)
+
+
+
 BondBreak[obj:ChemObjPattern]:=
 	If[BondFormedQ[obj],
 		AtomRemoveBond[ChemGet[obj,"Atoms"],obj];
 		obj,
 		$Failed
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Vector*)
+
 
 
 BondVector[obj:ChemObjPattern]:=
@@ -165,6 +195,11 @@ BondVector[obj:ChemObjPattern]:=
 			];
 BondVector[objV:ChemObjVectorPattern]:=
 	Subtract@@@ChemGet[ChemGet[objV,"Atoms"],"Position"];
+
+
+(* ::Subsubsection::Closed:: *)
+(*CenterOfMass*)
+
 
 
 BondCenterOfMass[obj:ChemObjPattern]:=
@@ -191,10 +226,20 @@ BondCenterOfMass[objV:ChemObjVectorPattern]:=
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Center*)
+
+
+
 BondCenter[obj:ChemObjPattern]:=
 	Mean@ChemGet["Position"]@ChemGet[obj,"Atoms"];
 BondCenter[objV:ChemObjVectorPattern]:=
 	Mean/@ChemGet[ChemGet[objV,"Atoms"],  "Position"];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Move*)
+
 
 
 BondMove[obj:ChemObjPattern,
@@ -227,6 +272,11 @@ BondMove[objV:ChemObjVectorPattern,
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*StandardDistance*)
+
+
+
 BondStandardDistance[obj:ChemObjPattern]:=
 	With[
 		{
@@ -254,6 +304,11 @@ BondStandardDistance[obj:ChemObjVectorPattern]:=
 			"BondDistances"
 			]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Deviation*)
+
 
 
 BondDeviation[obj:ChemObjPattern]:=
@@ -286,6 +341,11 @@ BondDeviation[objV:ChemObjVectorPattern]:=
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Normal*)
+
+
+
 BondNormal[obj:ChemObjPattern,pt:{_?NumericQ,_,_}]:=
 	With[{ps=ChemGet["Position"]@ChemGet[obj,"Atoms"]},
 		Cross[Subtract@@ps,pt-First@ps]
@@ -299,6 +359,11 @@ BondNormal[objV:ChemObjVectorPattern,pts:{{_?NumericQ,_,_},___}]:=
 		ChemGet["Position"]@ChemGet[objV,"Atoms"],
 		pts
 		}];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Rotate*)
+
 
 
 BondRotate[obj:ChemObjPattern,
@@ -361,6 +426,11 @@ BondRotate[objV:ChemObjVectorPattern,
 					]
 			]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*RotationTransform*)
+
 
 
 BondRotationTransform[obj:ChemObjPattern,
@@ -451,10 +521,20 @@ BondRotationTransform[objV:ChemObjVectorPattern,
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Transform*)
+
+
+
 BondTransform[objV:ChemObjAllPattern,transf_]:=
 	With[{a=Flatten@DeleteDuplicates@ChemGet[objV,"Atoms"]},	
 		AtomTransform[a,transf]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Polarization*)
+
 
 
 BondPolarization[obj:ChemObjPattern]:=
@@ -466,6 +546,11 @@ BondPolarization[obj:ChemObjPattern]:=
 			en*Normalize@vec
 			]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Colors*)
+
 
 
 BondColors[obj:ChemObjPattern]:=
@@ -539,6 +624,11 @@ With[{co=ChemObjPattern,cv=ChemObjVectorPattern,ca=ChemObjAllPattern},
 			);
 		
 	];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Graphic*)
+
 
 
 BondGraphicShapeFunction2D[
@@ -710,6 +800,16 @@ BondGraphic[obj:ChemObjAllPattern,ops:OptionsPattern[]]:=
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Graphic3D*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*SingleBonds*)
+
+
+
 bondGraphics3D1[
 	bondGraphicsColors_,
 	bondGraphicsPositions_,
@@ -797,6 +897,11 @@ bondGraphics3D1Dashed[
 						]
 				}]
 		};
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*DoubleBonds*)
+
 
 
 bondGraphics3D2[
@@ -923,6 +1028,11 @@ bondGraphics3D2Dashed[
 		];
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*TripleBonds*)
+
+
+
 bondGraphics3D3[
 	bondGraphicsColors_,bondGraphicsPositions_,
 	bondGraphicsLabel_, style_,
@@ -1043,6 +1153,11 @@ bondGraphics3D3Dashed[
 		];
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*BondGraphicShapeFunction3D*)
+
+
+
 BondGraphicShapeFunction3D[
 	type_,
 	colors_,
@@ -1097,6 +1212,11 @@ BondGraphicShapeFunction3D[
 				thick, dashing
 				]
 		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*BondGraphic3D*)
+
 
 
 Options[BondGraphic3D]=Options[BondGraphic];

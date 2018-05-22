@@ -24,11 +24,13 @@
 
 
 
-ChemUtilsInertialEigensystem::usage=
+ChemComputeInertialTensor::usage=
+	"Returns the inertial tensor for a collection of masses and positions";
+ChemComputeInertialEigensystem::usage=
 	"Returns the inertial eigensystem for a collection of masses and positions";
-ChemUtilsInertialSystem::usage=
+ChemComputeInertialSystem::usage=
 	"Returns the A, B, and C constants and axes";
-ChemUtilsRotorType::usage=
+ChemComputeRotorType::usage=
 	"Returns the type of molecular rotor that best resembles the collection of atoms";
 
 
@@ -37,10 +39,10 @@ ChemUtilsRotorType::usage=
  
 
 
-ChemUtilsCoordinateBounds::usage=
+ChemComputeCoordinateBounds::usage=
 	"The bounding box of a collection of atoms";
-ChemUtilsCenter::usage="Center of a set of atoms";
-ChemUtilsCenterOfMass::usage="COM of a set of atoms";
+ChemComputeCenter::usage="Center of a set of atoms";
+ChemComputeCenterOfMass::usage="COM of a set of atoms";
 
 
 (* ::Subsubsection::Closed:: *)
@@ -48,9 +50,9 @@ ChemUtilsCenterOfMass::usage="COM of a set of atoms";
 
 
 
-ChemUtilsAlignmentTransform::usage=
+ChemComputeAlignmentTransform::usage=
 	"Arbitrary geometric transform for perfoming alignments";
-ChemUtilsAxisAlignmentTransform::usage=
+ChemComputeAxisAlignmentTransform::usage=
 	"Alignment transform mapping points";
 
 
@@ -63,28 +65,42 @@ Begin["`Private`"];
 
 
 (* ::Subsubsection::Closed:: *)
+(*ChemComputeInertialTensor*)
+
+
+
+ChemComputeInertialTensor//Clear
+
+
+ChemComputeInertialTensor[masses_List, positions_List]:=
+	Total@
+		MapThread[
+			With[{m=#1,x=#2[[1]],y=#2[[2]],z=#2[[3]]},
+				m*{ 
+					{y^2+z^2,-x*y,-x*z},
+					{-x*y,x^2+z^2,-y*z},
+					{-x*z,-y*z,x^2+y^2}
+				}]&,
+			{masses,positions}
+			];
+ChemComputeInertialTensor[massPositions:{{_Real, _List, ___},___}]:=
+	ChemComputeInertialTensor[massPositions[[All,1]], massPositions[[All,2]]];
+ChemComputeInertialTensor[
+	massPositions:{{_String, _List, ___},___}
+	]:=
+	ChemComputeInertialTensor[
+		QuantityMagnitude@ChemDataLookup[massPositions[[All, 1]], "Mass"],
+		massPositions[[All, 2]]
+		]
+
+
+(* ::Subsubsection::Closed:: *)
 (*InertialEigensystem*)
 
 
 
-ChemUtilsInertialTensor[masses_List,positions_List]:=
-	Total@MapThread[
-		With[{m=#1,x=#2[[1]],y=#2[[2]],z=#2[[3]]},
-			m*{ 
-				{y^2+z^2,-x*y,-x*z},
-				{-x*y,x^2+z^2,-y*z},
-				{-x*z,-y*z,x^2+y^2}
-			}]&,{masses,positions}
-		];
-ChemUtilsInertialTensor[massPositions:{{_Real,_List},___}]:=
-	ChemUtilsInertialTensor[massPositions[[All,1]],massPositions[[All,2]]];
-ChemUtilsInertialTensor[massPositions:{{_String,_List},___}]:=
-	ChemUtilsInertialTensor@
-		Map[{QuantityMagnitude@ChemDataLookup[First@#,"AtomicMass"],Last@#}&,massPositions];
-
-
-ChemUtilsInertialEigensystem[args__]:=
-	Replace[ChemUtilsInertialTensor[args],
+ChemComputeInertialEigensystem[args__]:=
+	Replace[ChemComputeInertialTensor[args],
 		tensor:{_List,_List,_List}:>
 			With[{eig=Eigensystem@tensor},
 				With[{ord=Ordering@First@eig},
@@ -107,10 +123,9 @@ inertConversion=
 				"UnitConversions"
 				]
 		];
-ChemDataLookup["InertialConstant","UnitConversions"]=.
 
 
-ChemUtilsInertialSystem[{{ia_,ib_,ic_},{ax_,bx_,cx_}}]:=
+ChemComputeInertialSystem[{{ia_,ib_,ic_},{ax_,bx_,cx_}}]:=
 	<|
 		"A"->Replace[ia,{0|0.->\[Infinity],e_:>inertConversion/e}],
 		"B"->Replace[ib,{0|0.->\[Infinity],e_:>inertConversion/e}],
@@ -120,8 +135,8 @@ ChemUtilsInertialSystem[{{ia_,ib_,ic_},{ax_,bx_,cx_}}]:=
 		"CAxis"->cx,
 		"Units"->Quantity[1,"Megahertz"]
 		|>;
-ChemUtilsInertialSystem[e__]:=
-	ChemUtilsInertialSystem@ChemUtilsInertialEigensystem[e]
+ChemComputeInertialSystem[e__]:=
+	ChemComputeInertialSystem@ChemComputeInertialEigensystem[e]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -129,7 +144,7 @@ ChemUtilsInertialSystem[e__]:=
 
 
 
-ChemUtilsCenter[atoms_]:=
+ChemComputeCenter[atoms_]:=
 	Mean@Map[Last,atoms];
 
 
@@ -138,12 +153,12 @@ ChemUtilsCenter[atoms_]:=
 
 
 
-ChemUtilsCenterOfMass[masses_,positions_]:=
+ChemComputeCenterOfMass[masses_,positions_]:=
 	Mean@WeightedData[positions,masses];
-ChemUtilsCenterOfMass[atoms:{{_Real,_},___}]:=
-	ChemUtilsCenterOfMass[First/@atoms,Last/@atoms];
-ChemUtilsCenterOfMass[atoms:{{_String,_},___}]:=
-	ChemUtilsCenterOfMass@
+ChemComputeCenterOfMass[atoms:{{_Real,_},___}]:=
+	ChemComputeCenterOfMass[First/@atoms,Last/@atoms];
+ChemComputeCenterOfMass[atoms:{{_String,_},___}]:=
+	ChemComputeCenterOfMass@
 		Map[{QuantityMagnitude@ChemDataLookup[First@#,"AtomicMass"],Last@#}&,
 			atoms];
 
@@ -153,7 +168,7 @@ ChemUtilsCenterOfMass[atoms:{{_String,_},___}]:=
 
 
 
-ChemUtilsRotorType[Ic_?NumericQ,Ib_?NumericQ,Ia_?NumericQ]:=
+ChemComputeRotorType[Ic_?NumericQ,Ib_?NumericQ,Ia_?NumericQ]:=
 	If[Ia<10^-5,
 		"Linear",
 		With[{ac=Ic/Ia,ab=Ib/Ia,bc=Ic/Ib},
@@ -169,12 +184,12 @@ ChemUtilsRotorType[Ic_?NumericQ,Ib_?NumericQ,Ia_?NumericQ]:=
 				]
 			]
 		];
-ChemUtilsRotorType[{{Ia_?NumericQ,Ib_?NumericQ,Ic_?NumericQ},_}]:=
-	ChemUtilsRotorType[Ia,Ib,Ic];
-ChemUtilsRotorType[a:{{_Real,_List},___}]:=
-	ChemUtilsRotorType@ChemUtilsInertialEigensystem[a];
-ChemUtilsRotorType[a:{{_String,_List},___}]:=
-	ChemUtilsRotorType@
+ChemComputeRotorType[{{Ia_?NumericQ,Ib_?NumericQ,Ic_?NumericQ},_}]:=
+	ChemComputeRotorType[Ia,Ib,Ic];
+ChemComputeRotorType[a:{{_Real,_List},___}]:=
+	ChemComputeRotorType@ChemComputeInertialEigensystem[a];
+ChemComputeRotorType[a:{{_String,_List},___}]:=
+	ChemComputeRotorType@
 		Map[{
 			QuantityMagnitude@ChemDataLookup[First@#,"AtomicMass"],
 			Last@#}&,a];
@@ -185,7 +200,7 @@ ChemUtilsRotorType[a:{{_String,_List},___}]:=
 
 
 
-ChemUtilsCoordinateBounds[
+ChemComputeCoordinateBounds[
 	atoms:{
 		{_String,{_?NumericQ,_?NumericQ,_?NumericQ}}..
 		},
@@ -221,7 +236,7 @@ ChemUtilsCoordinateBounds[
 
 
 
-ChemUtilsAxisAlignmentTransform//Clear
+ChemComputeAxisAlignmentTransform//Clear
 
 
 axisReplacements=
@@ -240,7 +255,7 @@ axisPatternBase=
 axisPattern=axisPatternBase|-axisPatternBase;
 
 
-ChemUtilsAxisAlignmentTransform[
+ChemComputeAxisAlignmentTransform[
 	a:(axisPattern->axisPattern),
 	b:(axisPattern->axisPattern)|None:None,
 	point:axisPattern:{0,0,0}
@@ -324,18 +339,46 @@ ChemUtilsAxisAlignmentTransform[
 	]
 
 
+ChemComputeAxisAlignmentTransform[
+	elSet:{{_String, _List, ___}, ___},
+	a:(("A"|"B"|"C"|axisPattern)->("A"|"B"|"C"|axisPattern)),
+	b:(("A"|"B"|"C"|axisPattern)->("A"|"B"|"C"|axisPattern))|None:None,
+	point:"Center"|"CenterOfMass"|axisPattern:{0,0,0}
+	]:=
+	With[{is=ChemComputeInertialSystem[elSet]},
+		ChemComputeAxisAlignmentTransform[
+			a/.{
+				"A":>is["AAxis"],
+				"B":>is["BAxis"],
+				"C":>is["CAxis"]
+				},
+			b/.{
+				"A":>is["AAxis"],
+				"B":>is["BAxis"],
+				"C":>is["CAxis"]
+				},
+			Replace[point,
+				{
+					"Center":>ChemComputeCenter[elSet],
+					"CenterOfMass":>ChemComputeCenterOfMass[elSet]
+					}
+				]
+			]
+		]
+
+
 (* ::Subsubsection::Closed:: *)
 (*AlignmentTransform*)
 
 
 
-ChemUtilsAlignmentTransform//Clear
+ChemComputeAlignmentTransform//Clear
 
 
 pt="X"|"Y"|"Z"|{_?NumericQ,_?NumericQ,_?NumericQ};
 
 
-ChemUtilsAlignmentTransform[
+ChemComputeAlignmentTransform[
 	a:{Repeated[pt,3]}->
 		b:{Repeated[pt,3]}
 	]:=
@@ -344,7 +387,7 @@ ChemUtilsAlignmentTransform[
 		},
 		Simplify@
 			Composition[
-				ChemUtilsAxisAlignmentTransform[
+				ChemComputeAxisAlignmentTransform[
 					pos[[1]]-pos[[2]]->pos[[4]]-pos[[5]],
 					pos[[1]]-pos[[3]]->pos[[4]]-pos[[6]],
 					pos[[4]]
@@ -352,21 +395,21 @@ ChemUtilsAlignmentTransform[
 				TranslationTransform[pos[[4]]-pos[[1]]]
 				]
 		];
-ChemUtilsAlignmentTransform[
+ChemComputeAlignmentTransform[
 	a:{{_?StringQ|_?NumericQ,{_?NumericQ,_?NumericQ,_?NumericQ}},___}->
 		b:{{_?StringQ|_?NumericQ,{_?NumericQ,_?NumericQ,_?NumericQ}},___}
 	]:=
 	With[{
 		sys1=
-			ChemUtilsInertialSystem[a],
+			ChemComputeInertialSystem[a],
 		com1=
-			ChemUtilsCenterOfMass[a],
+			ChemComputeCenterOfMass[a],
 		sys2=
-			ChemUtilsInertialSystem[b],
+			ChemComputeInertialSystem[b],
 		com2=
-			ChemUtilsCenterOfMass[b]
+			ChemComputeCenterOfMass[b]
 		},
-		ChemUtilsAlignmentTransform[
+		ChemComputeAlignmentTransform[
 			{com1,com1+sys1["AAxis"],com2+sys1["BAxis"]}->
 				{com2,com2+sys2["AAxis"],com2+sys2["BAxis"]}
 			]

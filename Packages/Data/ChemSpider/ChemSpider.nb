@@ -1,0 +1,1358 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["ChemSpider", "CodeSection",
+ Evaluatable->False,
+ CellChangeTimes->{{3.714666762410379*^9, 3.714666764568714*^9}, 
+   3.733195047796051*^9},ExpressionUUID->"a6651bd2-62ed-490c-b1f3-\
+57cb9cb17d10"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemSpider", "::", "usage"}], "=", 
+   "\"\<Service connection to ChemSpider\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpiderHasQ", "::", "usage"}], "=", 
+   "\"\<Checks whether ChemSpider has a structure or not\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpiderID", "::", "usage"}], "=", 
+   "\"\<Gets the ID or IDs for a compound\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpiderInfo", "::", "usage"}], "=", 
+   "\"\<Gets structure info for a given ID\>\""}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.692465944607993*^9, 3.692465985533883*^9}, {
+  3.69246612070623*^9, 3.692466135182426*^9}, {3.692501604810014*^9, 
+  3.69250163379101*^9}},ExpressionUUID->"3aa3c928-1fac-4a9b-b408-\
+3acdee0c2c33"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemSpiderToken", "::", "usage"}], "=", 
+   "\"\<Token for manual API connection\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpiderRequest", "::", "usage"}], "=", 
+   "\"\<Formats an HTTPRequest for the ChemSpider API\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpiderParse", "::", "usage"}], "=", 
+   "\"\<Parses the output from a ChemSpider call\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpiderImport", "::", "usage"}], "=", 
+   "\"\<Imports a ChemSpider HTTPRequest and caches it\>\""}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.6944030769847593`*^9, 3.694403085097187*^9}, {
+  3.6944032229731207`*^9, 3.694403240423471*^9}, {3.694404188590324*^9, 
+  3.6944042357909527`*^9}, {3.694409524063143*^9, 
+  3.6944095251627283`*^9}},ExpressionUUID->"a922d654-cbad-469e-a2da-\
+986971b92fdf"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpiderScrape", "::", "usage"}], "=", 
+   "\"\<Scrapes data from a ChemSpider page\>\""}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.694409528260363*^9, 
+  3.694409538259139*^9}},ExpressionUUID->"328caf98-64c1-44ee-9450-\
+fd3aa5fc56f4"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"14e1cef3-57eb-4cf5-a684-\
+c2b253242520"],
+
+Cell[CellGroupData[{
+
+Cell["ChemSpider", "CodeSubsection",
+ CellChangeTimes->{{3.692465836906207*^9, 3.6924658384584703`*^9}, {
+  3.710173530365888*^9, 
+  3.7101735305950813`*^9}},ExpressionUUID->"2e35a388-af97-410c-b180-\
+6467af6f8d3e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$chemSpiderSecurityToken", "=", "\n", "\t", 
+   RowBox[{"Quiet", "@", 
+    RowBox[{"Check", "[", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"Import", "@", "\n", "\t\t\t", 
+       RowBox[{"Do", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"f", "=", 
+             RowBox[{"PackageFilePath", "[", 
+              RowBox[{"\"\<Private\>\"", ",", "c"}], "]"}]}], "}"}], ",", 
+           "\n", "\t\t\t\t\t", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"FileExistsQ", "@", "f"}], ",", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"Return", "@", "f"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], 
+          "\n", "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"{", "\n", "\t\t\t\t\t", 
+          RowBox[{"c", ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+            RowBox[{
+            "\"\<ChemSpiderKey.wl\>\"", ",", "\n", "\t\t\t\t\t\t", 
+             "\"\<ChemSpiderKey.m\>\""}], "\n", "\t\t\t\t\t\t", "}"}]}], "\n",
+           "\t\t\t\t", "}"}]}], "]"}]}], ",", "\n", "\t\t\t", "\"\<\>\""}], 
+     "]"}]}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.69257752843452*^9, 3.692577564442772*^9}, {
+   3.692577612802006*^9, 3.692577663914394*^9}, {3.6925798109468613`*^9, 
+   3.692579811096683*^9}, 3.694400983963752*^9, {3.7011459357158537`*^9, 
+   3.701145974351005*^9}, {3.701146078544791*^9, 3.701146130540107*^9}, {
+   3.7011462219156733`*^9, 3.701146432686401*^9}, {3.701148807996621*^9, 
+   3.7011488093249407`*^9}, {3.714675842598935*^9, 
+   3.714675865753487*^9}},ExpressionUUID->"98f45e2d-62cb-4b57-af11-\
+4d97cef2ccda"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"$chemSpiderConnection", "=", "None"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"$ChemSpider", ":=", "\[IndentingNewLine]", 
+   RowBox[{"Replace", "[", 
+    RowBox[{"$chemSpiderConnection", ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"Except", "[", "_ServiceObject", "]"}], ":>", "\n", "\t\t\t", 
+      RowBox[{"With", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"num", "=", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"$ModuleNumber", "+", "20"}], "]"}]}], "}"}], ",", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"With", "[", 
+         RowBox[{
+          RowBox[{"{", "\n", "\t\t\t\t\t", 
+           RowBox[{"preempt", "=", 
+            RowBox[{"\"\<OAuthDialogDump`Private`var$\>\"", "<>", "num"}]}], 
+           "}"}], ",", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{
+           "OAuthDialogDump`Private`$TermsAndConditionsAccepted", "=", 
+            "True"}], ";", "\n", "\t", "\t\t\t\t", 
+           RowBox[{"OAuthDialogDump`Private`$OAuthDialogSaveQ", "=", "True"}],
+            ";", "\n", "\t\t\t\t\t", 
+           RowBox[{"With", "[", 
+            RowBox[{
+             RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+              RowBox[{"listener", "=", "\n", "\t\t\t\t\t\t", 
+               RowBox[{"RunScheduledTask", "[", "\n", "\t\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{"Replace", "[", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"Evaluate", "[", 
+                    RowBox[{"Symbol", "@", "preempt"}], "]"}], "[", 
+                    "\"\<token\>\"", "]"}], ",", 
+                   RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Except", "[", 
+                    RowBox[{"_String", "?", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"StringLength", "@", 
+                    RowBox[{"StringTrim", "[", "#", "]"}]}], ">", "0"}], 
+                    "&"}], ")"}]}], "]"}], ":>", "\n", "\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"(", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Evaluate", "[", 
+                    RowBox[{"Symbol", "@", "preempt"}], "]"}], "[", 
+                    "\"\<token\>\"", "]"}], "=", "\n", "\t", 
+                    "\t\t\t\t\t\t\t\t\t\t", "$chemSpiderSecurityToken"}], 
+                    "\n", "\t", "\t\t\t\t\t\t\t\t\t", ")"}]}], ",", "\n", 
+                    "\t", "\t\t\t\t\t\t\t", 
+                    RowBox[{"e_", ":>", "\n", "\t", "\t\t\t\t\t\t\t\t", 
+                    RowBox[{"(", 
+                    RowBox[{"$chemSpiderSecurityToken", "=", "e"}], ")"}]}]}],
+                     "\n", "\t", "\t\t\t\t\t\t\t", "}"}]}], "]"}], ",", "\n", 
+                 "\t\t\t\t\t\t\t", ".05"}], "\n", "\t\t\t\t\t\t\t", "]"}]}], 
+              "}"}], ",", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"Replace", "[", 
+               RowBox[{
+                RowBox[{"ServiceConnect", "[", "\"\<ChemSpider\>\"", "]"}], 
+                ",", "\n", "\t", "\t\t\t\t\t\t", 
+                RowBox[{"so_ServiceObject", "\[RuleDelayed]", 
+                 RowBox[{"(", 
+                  RowBox[{"$chemSpiderConnection", "=", "so"}], ")"}]}]}], 
+               "\n", "\t\t\t\t\t\t\t", "]"}], ";", "\n", "\t\t\t\t\t\t", 
+              RowBox[{"RemoveScheduledTask", "@", "listener"}], ";", "\n", 
+              "\t\t\t\t\t\t", "$chemSpiderConnection"}]}], "\n", 
+            "\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t", "]"}]}], "\n", 
+       "\t\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.692465522759242*^9, 3.6924656314580097`*^9}, {
+   3.6924657959199333`*^9, 3.692465929064335*^9}, {3.692465997741105*^9, 
+   3.69246600203701*^9}, 3.692474784522749*^9, {3.692578428083809*^9, 
+   3.6925784403237467`*^9}, {3.6925784855541487`*^9, 
+   3.6925784859028053`*^9}, {3.69257956163027*^9, 3.692579694633484*^9}, {
+   3.6925798205305443`*^9, 3.692579864686981*^9}, {3.692579974862463*^9, 
+   3.6925800488342533`*^9}, 3.6925801212059927`*^9, {3.692580267788319*^9, 
+   3.692580413858211*^9}, {3.692585812087956*^9, 3.6925858389343863`*^9}, {
+   3.694396134176619*^9, 3.694396199762479*^9}, {3.694445591309566*^9, 
+   3.694445812899852*^9}, {3.6944458774449053`*^9, 3.694445897874015*^9}, {
+   3.694445935904866*^9, 3.694445936175686*^9}, {3.6944463740900908`*^9, 
+   3.694446378968314*^9}, {3.701148916588503*^9, 
+   3.701148918909791*^9}},ExpressionUUID->"5aa57b8f-b0ec-4ffc-a0c8-\
+f112371b1318"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpiderID", "[", "compound_String", "]"}], ":=", "\n", "\t", 
+   RowBox[{"Replace", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"Normal", "@", 
+      RowBox[{"$ChemSpider", "[", 
+       RowBox[{"\"\<Search\>\"", ",", 
+        RowBox[{"\"\<Query\>\"", "\[Rule]", "compound"}]}], "]"}]}], ",", 
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"l", ":", 
+         RowBox[{"{", "__", "}"}]}], "\[RuleDelayed]", 
+        RowBox[{"Map", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"ToExpression", "@", "#ID"}], "&"}], ",", "l"}], "]"}]}], 
+       ",", "\n", "\t\t\t", 
+       RowBox[{"a_Association", "\[RuleDelayed]", 
+        RowBox[{"ToExpression", "@", 
+         RowBox[{"a", "[", "\"\<ID\>\"", "]"}]}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"_", "->", 
+        RowBox[{"Missing", "[", "\"\<NotAvailable\>\"", "]"}]}]}], "\n", 
+      "\t\t", "}"}]}], "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.692465522759242*^9, 3.6924656314580097`*^9}, {
+   3.6924657959199333`*^9, 3.692465929064335*^9}, {3.692465997741105*^9, 
+   3.69246600203701*^9}, {3.6924661773809643`*^9, 3.692466212962261*^9}, {
+   3.692466437650298*^9, 3.692466526105734*^9}, {3.694432339138113*^9, 
+   3.694432363722189*^9}, 3.7002605998859873`*^9, 
+   3.7002671046222067`*^9},ExpressionUUID->"57724ce7-6557-465d-89d2-\
+6f43567a3819"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpiderInfo", "[", "id_Integer", "]"}], ":=", "\n", "\t", 
+   RowBox[{"$ChemSpider", "[", 
+    RowBox[{"\"\<ExtendedCompoundInformation\>\"", ",", 
+     RowBox[{"\"\<ID\>\"", "\[Rule]", "id"}]}], "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.6924660894654837`*^9, 
+  3.6924661172465982`*^9}},ExpressionUUID->"18989cfd-e1d8-411f-96a4-\
+2fbb0874c6ff"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpiderInfo", "[", 
+    RowBox[{"id_Integer", ",", 
+     RowBox[{"extended_:", "False"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"$ChemSpider", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"TrueQ", "@", "extended"}], ",", "\n", "\t\t\t", 
+       "\"\<ExtendedCompoundInformation\>\"", ",", "\n", "\t\t\t", 
+       "\"\<CompoundInformation\>\""}], "\n", "\t\t\t", "]"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"\"\<ID\>\"", "\[Rule]", "id"}]}], "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.6924660894654837`*^9, 3.6924661172465982`*^9}, {
+  3.694401092222721*^9, 3.694401118726377*^9}, {3.694432288359108*^9, 
+  3.694432288802075*^9}},ExpressionUUID->"e49554de-595c-4108-89f6-\
+05eb76fec0b7"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ChemSpiderHasQ", "[", "compound_String", "]"}], ":=", "\n", "\t", 
+    RowBox[{"!", 
+     RowBox[{"MatchQ", "[", 
+      RowBox[{
+       RowBox[{"Quiet", "@", 
+        RowBox[{"ChemSpiderID", "@", "compound"}]}], ",", "_Missing"}], 
+      "]"}]}]}], ";"}], "\t"}]], "CodeInput",
+ CellChangeTimes->{{3.692501649055663*^9, 
+  3.692501690238096*^9}},ExpressionUUID->"dedbf505-cd15-43e7-b029-\
+aa598dc7e02f"],
+
+Cell[CellGroupData[{
+
+Cell["API Config", "CodeSubsubsubsection",
+ CellChangeTimes->{{3.6944060717963676`*^9, 
+  3.6944060933467493`*^9}},ExpressionUUID->"0c0db752-75fb-4d97-8d4e-\
+9af0bf5521fe"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"$ChemSpiderToken", ":=", "\n", "\t", 
+   RowBox[{"Replace", "[", 
+    RowBox[{"$chemSpiderSecurityToken", ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"Except", "[", 
+       RowBox[{"_String", "?", 
+        RowBox[{"(", 
+         RowBox[{"StringContainsQ", "[", "\"\<-\>\"", "]"}], ")"}]}], "]"}], 
+      "\[Rule]", "\"\<\>\""}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"$ChemSpiderToken", "/:", "\n", "\t", 
+   RowBox[{"HoldPattern", "[", 
+    RowBox[{"Set", "[", 
+     RowBox[{"$ChemSpiderToken", ",", "val_"}], "]"}], "]"}], ":=", "\n", 
+   "\t\t", 
+   RowBox[{"(", "\n", "\t\t\t", 
+    RowBox[{
+     RowBox[{"Export", "[", "\n", "\t\t\t\t", 
+      RowBox[{
+       RowBox[{"PackageFilePath", "[", 
+        RowBox[{"\"\<Private\>\"", ",", "\"\<ChemSpiderKey.wl\>\""}], "]"}], 
+       ",", "\n", "\t\t\t\t", "val"}], "]"}], ";", "\n", "\t\t\t", 
+     RowBox[{"$chemSpiderSecurityToken", "=", "val"}]}], "\n", "\t\t\t", 
+    ")"}]}], ";"}], "\n", 
+ RowBox[{"$ChemSpiderToken", "/:", "\n", "\t", 
+  RowBox[{"HoldPattern", "[", 
+   RowBox[{"Clear", "[", "$ChemSpiderToken", "]"}], "]"}], ":=", "\n", "\t\t", 
+  RowBox[{"Quiet", "@", 
+   RowBox[{"DeleteFile", "@", "\n", "\t\t\t", 
+    RowBox[{"PackageFilePath", "[", 
+     RowBox[{"\"\<Private\>\"", ",", "\"\<ChemSpiderKey.wl\>\""}], 
+     "]"}]}]}]}]}], "CodeInput",
+ CellChangeTimes->{{3.69440207269347*^9, 3.694402159355544*^9}, {
+  3.6944022399316196`*^9, 3.6944022401321383`*^9}, {3.701148774235065*^9, 
+  3.701148867073716*^9}, {3.7011489280430517`*^9, 3.701148956330862*^9}, {
+  3.71467580445205*^9, 
+  3.7146758256515207`*^9}},ExpressionUUID->"4d44e68d-0226-4350-b47d-\
+c9a49703225f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$chemSpiderAPIRoot", "=", "\"\<www.chemspider.com/\>\""}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.6944026440680656`*^9, 
+  3.694402671702694*^9}},ExpressionUUID->"c7a45f80-f3ad-4902-8179-\
+d1bac587505f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"If", "[", 
+   RowBox[{
+    RowBox[{"MatchQ", "[", 
+     RowBox[{"$chemSpiderCallCache", ",", "_Symbol"}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"$chemSpiderCallCache", "=", 
+     RowBox[{"<|", "|>"}]}]}], "\n", "\t", "]"}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.694403096624971*^9, 3.6944031024620647`*^9}, {
+  3.6944098550365953`*^9, 
+  3.6944098600168037`*^9}},ExpressionUUID->"02dbff16-3b9d-4e09-b3c1-\
+4ef2d9607d73"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$chemSpiderReplacements", "=", 
+   RowBox[{"<|", "\n", "\t", 
+    RowBox[{
+     RowBox[{"\"\<CompoundID\>\"", "\[Rule]", "\"\<CSID\>\""}], ",", "\n", 
+     "\t", 
+     RowBox[{
+     "\"\<SearchByFormula\>\"", "\[Rule]", "\"\<SearchByFormula2\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<SearchByMass\>\"", "\[Rule]", "\"\<SearchByMass2\>\""}]}], 
+    "\n", "\t", "|>"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.694404851885391*^9, 3.694404908233231*^9}, 
+   3.694405706100378*^9, {3.694406976741939*^9, 
+   3.694406999042391*^9}},ExpressionUUID->"7b852d11-4ade-44d7-823e-\
+297cf7ccd7fd"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$ChemSpiderAPIs", "=", 
+   RowBox[{"<|", "\n", "\t", 
+    RowBox[{
+     RowBox[{"\"\<Search\>\"", "\[Rule]", "\"\<Search\>\""}], ",", "\n", "\t", 
+     RowBox[{"\"\<MassSpecAPI\>\"", "\[Rule]", "\"\<MassSpecAPI\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<MassSpec\>\"", "\[Rule]", "\"\<MassSpecAPI\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<Spectra\>\"", "\[Rule]", "\"\<Spectra\>\""}], ",", "\n", 
+     "\t", 
+     RowBox[{"\"\<SpectrumAPI\>\"", "\[Rule]", "\"\<Spectra\>\""}], ",", "\n",
+      "\t", 
+     RowBox[{"\"\<InChI\>\"", "\[Rule]", "\"\<InChI\>\""}], ",", "\n", "\t", 
+     RowBox[{"\"\<InChIAPI\>\"", "\[Rule]", "\"\<InChI\>\""}]}], "\n", "\t", 
+    "|>"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.694405364623651*^9, 3.6944054208972282`*^9}, {
+  3.6944054697784243`*^9, 3.694405522762833*^9}, {3.6944055605936527`*^9, 
+  3.694405570278173*^9}},ExpressionUUID->"e8deddfb-3387-43e4-9121-\
+506d06f119e5"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"pullCalls", "[", "api_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"Thread", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"StringTrim", "/@", 
+      RowBox[{"StringCases", "[", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"Import", "@", 
+         RowBox[{"TemplateApply", "[", 
+          RowBox[{"\"\<http://www.chemspider.com/``.asmx\>\"", ",", "api"}], 
+          "]"}]}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"\"\<\\n\>\"", "~~", "Whitespace", "~~", 
+         RowBox[{"WordCharacter", ".."}], "~~", "Whitespace", "~~", 
+         "\"\<\\n\>\""}]}], "\n", "\t\t\t", "]"}]}], "\[Rule]", "api"}], "\n",
+     "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.6944072524226294`*^9, 
+  3.694407304426969*^9}},ExpressionUUID->"740c1157-4b77-4183-92fc-\
+c69e6bd6e20f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$ChemSpiderCalls", "=", 
+   RowBox[{"<|", "\n", "\t", 
+    RowBox[{
+     RowBox[{"\"\<AsyncSimpleSearch\>\"", "\[Rule]", "\"\<Search\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{
+     "\"\<AsyncSimpleSearchOrdered\>\"", "\[Rule]", "\"\<Search\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<CSID2ExtRefs\>\"", "\[Rule]", "\"\<Search\>\""}], ",", "\n",
+      "\t", 
+     RowBox[{"\"\<ElementsSearch\>\"", "\[Rule]", "\"\<Search\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<ElementsSearchOrdered\>\"", "\[Rule]", "\"\<Search\>\""}], 
+     ",", "\n", "\t", 
+     RowBox[{"\"\<GetAsyncSearchResult\>\"", "\[Rule]", "\"\<Search\>\""}], 
+     ",", "\n", "\t", 
+     RowBox[{
+     "\"\<GetAsyncSearchResultPart\>\"", "\[Rule]", "\"\<Search\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<GetAsyncSearchStatus\>\"", "\[Rule]", "\"\<Search\>\""}], 
+     ",", "\n", "\t", 
+     RowBox[{
+     "\"\<GetAsyncSearchStatusAndCount\>\"", "\[Rule]", "\"\<Search\>\""}], 
+     ",", "\n", "\t", 
+     RowBox[{"\"\<GetCompoundInfo\>\"", "\[Rule]", "\"\<Search\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<GetCompoundThumbnail\>\"", "\[Rule]", "\"\<Search\>\""}], 
+     ",", "\n", "\t", 
+     RowBox[{"\"\<GetDataSliceCompounds\>\"", "\[Rule]", "\"\<Search\>\""}], 
+     ",", "\n", "\t", 
+     RowBox[{"\"\<GetRecordDetails\>\"", "\[Rule]", "\"\<Search\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<GetRecordImage\>\"", "\[Rule]", "\"\<Search\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{
+     "\"\<IntrinsicPropertiesSearch\>\"", "\[Rule]", "\"\<Search\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{
+     "\"\<IntrinsicPropertiesSearchOrdered\>\"", "\[Rule]", 
+      "\"\<Search\>\""}], ",", "\n", "\t", 
+     RowBox[{"\"\<LassoSearch\>\"", "\[Rule]", "\"\<Search\>\""}], ",", 
+     RowBox[{"\"\<Mol2CSID\>\"", "\[Rule]", "\"\<Search\>\""}], ",", "\n", 
+     "\t", 
+     RowBox[{"\"\<MolAndDS2CSID\>\"", "\[Rule]", "\"\<Search\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{
+     "\"\<PredictedPropertiesSearch\>\"", "\[Rule]", "\"\<Search\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{
+     "\"\<PredictedPropertiesSearchOrdered\>\"", "\[Rule]", 
+      "\"\<Search\>\""}], ",", "\n", "\t", 
+     RowBox[{"\"\<SimilaritySearch\>\"", "\[Rule]", "\"\<Search\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<SimpleSearch\>\"", "\[Rule]", "\"\<Search\>\""}], ",", "\n",
+      "\t", 
+     RowBox[{"\"\<SimpleSearch2IdList\>\"", "\[Rule]", "\"\<Search\>\""}], 
+     ",", "\n", "\t", 
+     RowBox[{"\"\<StructureSearch\>\"", "\[Rule]", "\"\<Search\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<SubstructureSearch\>\"", "\[Rule]", "\"\<Search\>\""}], ",",
+      "\n", "\t", "\n", "\t", 
+     RowBox[{"\"\<GetRecordMol\>\"", "\[Rule]", "\"\<MassSpecAPI\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<GetRecordsSdf\>\"", "\[Rule]", "\"\<MassSpecAPI\>\""}], ",",
+      "\n", "\t", 
+     RowBox[{"\"\<GetDatabases\>\"", "\[Rule]", "\"\<MassSpecAPI\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{
+     "\"\<GetExtendedCompoundInfo\>\"", "\[Rule]", "\"\<MassSpecAPI\>\""}], 
+     ",", "\n", "\t", 
+     RowBox[{
+     "\"\<GetExtendedCompoundInfoArray\>\"", "\[Rule]", 
+      "\"\<MassSpecAPI\>\""}], ",", "\n", "\t", 
+     RowBox[{
+     "\"\<GetCompressedRecordsSdf\>\"", "\[Rule]", "\"\<MassSpecAPI\>\""}], 
+     ",", "\n", "\t", 
+     RowBox[{
+     "\"\<GetExtendedMolCompoundInfoArray\>\"", "\[Rule]", 
+      "\"\<MassSpecAPI\>\""}], ",", "\n", "\t", 
+     RowBox[{
+     "\"\<GetFormulaArrayAsyncSearchResult\>\"", "\[Rule]", 
+      "\"\<MassSpecAPI\>\""}], ",", "\n", "\t", 
+     RowBox[{
+     "\"\<GetMassArrayAsyncSearchResult\>\"", "\[Rule]", 
+      "\"\<MassSpecAPI\>\""}], ",", "\n", "\t", 
+     RowBox[{"\"\<SearchByFormula2\>\"", "\[Rule]", "\"\<MassSpecAPI\>\""}], 
+     ",", "\n", "\t", 
+     RowBox[{
+     "\"\<SearchByFormulaArrayAsyncOrdered\>\"", "\[Rule]", 
+      "\"\<MassSpecAPI\>\""}], ",", "\n", "\t", 
+     RowBox[{
+     "\"\<SearchByFormulaAsync\>\"", "\[Rule]", "\"\<MassSpecAPI\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{
+     "\"\<SearchByFormulaAsyncOrdered\>\"", "\[Rule]", 
+      "\"\<MassSpecAPI\>\""}], ",", "\n", "\t", 
+     RowBox[{"\"\<SearchByMass2\>\"", "\[Rule]", "\"\<MassSpecAPI\>\""}], ",",
+      "\n", "\t", 
+     RowBox[{
+     "\"\<SearchByMassArrayAsyncOrdered\>\"", "\[Rule]", 
+      "\"\<MassSpecAPI\>\""}], ",", "\n", "\t", 
+     RowBox[{"\"\<SearchByMassAsync\>\"", "\[Rule]", "\"\<MassSpecAPI\>\""}], 
+     ",", "\n", "\t", 
+     RowBox[{
+     "\"\<SearchByMassAsyncOrdered\>\"", "\[Rule]", "\"\<MassSpecAPI\>\""}], 
+     ",", "\n", "\t", "\n", "\t", 
+     RowBox[{"\"\<GetAllSpectraInfo\>\"", "\[Rule]", "\"\<Spectra\>\""}], ",",
+      "\n", "\t", 
+     RowBox[{"\"\<GetCompoundSpectraInfo\>\"", "\[Rule]", "\"\<Spectra\>\""}],
+      ",", "\n", "\t", 
+     RowBox[{"\"\<GetSpectraInfoArray\>\"", "\[Rule]", "\"\<Spectra\>\""}], 
+     ",", "\n", "\t", 
+     RowBox[{"\"\<GetSpectrumInfo\>\"", "\[Rule]", "\"\<Spectra\>\""}], ",", 
+     "\n", "\t", "\n", "\t", 
+     RowBox[{"\"\<CSIDToMol\>\"", "\[Rule]", "\"\<InChI\>\""}], ",", "\n", 
+     "\t", 
+     RowBox[{"\"\<GenerateInChI\>\"", "\[Rule]", "\"\<InChI\>\""}], ",", "\n",
+      "\t", 
+     RowBox[{"\"\<GenerateInChIInfo\>\"", "\[Rule]", "\"\<InChI\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<GenerateInChIKey\>\"", "\[Rule]", "\"\<InChI\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<InChIKeyToCSID\>\"", "\[Rule]", "\"\<InChI\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<InChIKeyToInChI\>\"", "\[Rule]", "\"\<InChI\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<InChIKeyToMol\>\"", "\[Rule]", "\"\<InChI\>\""}], ",", "\n",
+      "\t", 
+     RowBox[{"\"\<InChIToCSID\>\"", "\[Rule]", "\"\<InChI\>\""}], ",", "\n", 
+     "\t", 
+     RowBox[{"\"\<InChIToInChIKey\>\"", "\[Rule]", "\"\<InChI\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<InChIToMol\>\"", "\[Rule]", "\"\<InChI\>\""}], ",", "\n", 
+     "\t", 
+     RowBox[{"\"\<InChIToSMILES\>\"", "\[Rule]", "\"\<InChI\>\""}], ",", "\n",
+      "\t", 
+     RowBox[{"\"\<IsValidInChIKey\>\"", "\[Rule]", "\"\<InChI\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<MolToInChI\>\"", "\[Rule]", "\"\<InChI\>\""}], ",", "\n", 
+     "\t", 
+     RowBox[{"\"\<MolToInChIKey\>\"", "\[Rule]", "\"\<InChI\>\""}], ",", "\n",
+      "\t", 
+     RowBox[{"\"\<ResolveInChIKey\>\"", "\[Rule]", "\"\<InChI\>\""}], ",", 
+     "\n", "\t", 
+     RowBox[{"\"\<SMILESToInChI\>\"", "\[Rule]", "\"\<InChI\>\""}]}], "\n", 
+    "\t", "|>"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.694406565498651*^9, 3.694406625930553*^9}, {
+   3.694406779671281*^9, 3.694406785987116*^9}, {3.694406866085553*^9, 
+   3.694406965364526*^9}, {3.694407161881597*^9, 3.694407170718858*^9}, {
+   3.694407202329521*^9, 3.694407248074381*^9}, {3.694407308678907*^9, 
+   3.694407337954503*^9}, {3.694407374056829*^9, 3.694407375365012*^9}, 
+   3.7011470405949697`*^9},ExpressionUUID->"2b6841c2-f297-4f74-82c6-\
+52f522663ba0"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Request", "CodeSubsubsubsection",
+ CellChangeTimes->{{3.6944060717963676`*^9, 
+  3.694406073971533*^9}},ExpressionUUID->"70997c41-d706-4b3a-87bf-\
+6367b313f467"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "ChemSpiderRequest", "]"}], "=", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"\"\<Token\>\"", "\[Rule]", "Automatic"}], ",", "\n", "\t", "\t", 
+     RowBox[{"\"\<API\>\"", "\[Rule]", "Automatic"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<Function\>\"", "\[Rule]", "\"\<GetCompoundID\>\""}], ",", 
+     "\n", "\t\t", 
+     RowBox[{"\"\<Query\>\"", "\[Rule]", 
+      RowBox[{"{", "}"}]}]}], "\n", "\t\t", "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpiderRequest", "[", 
+    RowBox[{
+     RowBox[{"OptionsPattern", "[", "]"}], ",", 
+     RowBox[{"headers", ":", "_Association", ":", 
+      RowBox[{"<|", "|>"}]}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"HTTPRequest", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"URLBuild", "@", "\n", "\t\t\t", 
+      RowBox[{"<|", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"\"\<Scheme\>\"", "\[Rule]", "\"\<https\>\""}], ",", "\n", 
+        "\t", "\t\t\t", 
+        RowBox[{"\"\<Domain\>\"", "->", "$chemSpiderAPIRoot"}], ",", "\n", 
+        "\t", "\t\t\t", 
+        RowBox[{"\"\<Path\>\"", "\[Rule]", 
+         RowBox[{"{", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"ToLowerCase", "@", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"Replace", "[", 
+              RowBox[{
+               RowBox[{"OptionValue", "@", "\"\<API\>\""}], ",", "\n", 
+               "\t\t\t\t\t\t\t", 
+               RowBox[{"Append", "[", "\n", "\t\t\t\t\t\t\t\t", 
+                RowBox[{"$ChemSpiderAPIs", ",", "\n", "\t\t\t\t\t\t\t\t", 
+                 RowBox[{
+                 "Automatic", "\[RuleDelayed]", "\n", "\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{"Lookup", "[", 
+                   RowBox[{
+                   "$ChemSpiderCalls", ",", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"OptionValue", "@", "\"\<Function\>\""}], ",", 
+                    "\n", "\t\t\t\t\t\t\t\t\t\t", "\"\<Search\>\""}], 
+                   "]"}]}]}], "\n", "\t\t\t\t\t\t\t\t", "]"}]}], "\n", 
+              "\t\t\t\t\t\t\t", "]"}]}], "<>", "\"\<.asmx\>\""}], ",", "\n", 
+           "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"Replace", "[", "$chemSpiderReplacements", "]"}], "@", 
+            "\n", "\t\t\t\t\t\t", 
+            RowBox[{"OptionValue", "@", "\"\<Function\>\""}]}]}], "\n", "\t", 
+          "\t\t\t\t", "}"}]}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"\"\<Query\>\"", "\[Rule]", "\n", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"ReplaceAll", "[", "$chemSpiderReplacements", "]"}], "@", 
+          "\n", "\t\t\t\t\t", 
+          RowBox[{"Map", "[", "\n", "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"ToString", "@*", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{"Replace", "[", 
+              RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{"l_List", "\[RuleDelayed]", 
+                RowBox[{"StringJoin", "@", 
+                 RowBox[{"Riffle", "[", 
+                  RowBox[{
+                   RowBox[{"ToString", "/@", "l"}], ",", "\"\<,\>\""}], 
+                  "]"}]}]}], "\n", "\t\t\t\t\t\t\t\t", "}"}], "]"}]}], ",", 
+            "\n", "\t\t\t\t\t\t", 
+            RowBox[{"Append", "[", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"Replace", "[", 
+               RowBox[{
+                RowBox[{"OptionValue", "@", "\"\<Query\>\""}], ",", 
+                RowBox[{
+                 RowBox[{"Except", "[", "_List", "]"}], "\[Rule]", 
+                 RowBox[{"{", "}"}]}]}], "]"}], ",", "\n", "\t", "\t", 
+              "\t\t\t\t\t\t", 
+              RowBox[{"Replace", "[", "\n", "\t", "\t", "\t\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"Replace", "[", 
+                 RowBox[{
+                  RowBox[{"OptionValue", "@", "\"\<Token\>\""}], ",", 
+                  RowBox[{"Automatic", ":>", "$ChemSpiderToken"}]}], "]"}], 
+                ",", 
+                RowBox[{"{", "\n", "\t", "\t", "\t", "\t\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"s_String", "?", 
+                    RowBox[{"(", 
+                    RowBox[{"StringContainsQ", "[", "\"\<-\>\"", "]"}], 
+                    ")"}]}], "\[RuleDelayed]", 
+                   RowBox[{"(", 
+                    RowBox[{"\"\<token\>\"", "\[Rule]", "s"}], ")"}]}], ",", 
+                  "\n", "\t", "\t", "\t", "\t\t\t\t\t\t", 
+                  RowBox[{"_", "\[Rule]", "Nothing"}]}], "\n", "\t", "\t", 
+                 "\t\t\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t\t\t\t\t\t", 
+               "]"}]}], "\n", "\t\t\t\t\t\t\t\t", "]"}], ",", "\n", 
+            "\t\t\t\t\t\t", 
+            RowBox[{"{", "2", "}"}]}], "]"}]}]}]}], "\n", "\t\t\t\t", 
+       "|>"}]}], ",", "\n", "\t\t", "headers"}], "\n", "\t\t", "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpiderRequest", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"token", ":", 
+      RowBox[{
+       RowBox[{"_String", "?", 
+        RowBox[{"(", 
+         RowBox[{"StringContainsQ", "[", "\"\<-\>\"", "]"}], ")"}]}], "|", 
+       "Automatic"}], ":", "Automatic"}], ",", "\n", "\t", 
+     RowBox[{"api", ":", 
+      RowBox[{"_String", "?", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"KeyMemberQ", "[", 
+           RowBox[{"$ChemSpiderAPIs", ",", "#"}], "]"}], "&"}], "|", 
+         "Automatic"}], ")"}]}], ":", "Automatic"}], ",", "\n", "\t", 
+     "function_String", ",", "\n", "\t", 
+     RowBox[{"query", ":", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"_Rule", "|", "_RuleDelayed"}], ")"}], "..."}]}], ",", "\n", 
+     "\t", 
+     RowBox[{"headers", ":", "_Association", ":", 
+      RowBox[{"<|", "|>"}]}]}], "\n", "\t", "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemSpiderRequest", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"\"\<Token\>\"", "\[Rule]", "token"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<API\>\"", "\[Rule]", "api"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<Function\>\"", "\[Rule]", "function"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<Query\>\"", "\[Rule]", 
+      RowBox[{"{", "query", "}"}]}], ",", "\n", "\t\t", "headers"}], "\n", 
+    "\t\t", "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.69440207269347*^9, 3.6944022373001947`*^9}, {
+   3.6944026335053463`*^9, 3.694402640369328*^9}, {3.6944027418691053`*^9, 
+   3.6944030384083557`*^9}, {3.694403110577298*^9, 3.6944032192045527`*^9}, {
+   3.6944032555998*^9, 3.694403325546316*^9}, {3.694403364302608*^9, 
+   3.694403469795555*^9}, {3.694403742711067*^9, 3.694403843877287*^9}, {
+   3.6944045484067917`*^9, 3.69440455516224*^9}, {3.694404597217626*^9, 
+   3.694404662617922*^9}, {3.694404916180963*^9, 3.694404920633596*^9}, {
+   3.694405583930449*^9, 3.694405623632514*^9}, 3.69440600420963*^9, {
+   3.694406685847774*^9, 3.694406754428707*^9}, {3.694407012283897*^9, 
+   3.694407026001266*^9}, {3.694407390325419*^9, 3.6944074898381653`*^9}, {
+   3.694407522356922*^9, 3.6944075300281057`*^9}, {3.6944075861910152`*^9, 
+   3.6944075918602343`*^9}, {3.700260599898052*^9, 3.7002605999150867`*^9}, {
+   3.700267108094651*^9, 
+   3.700267117478004*^9}},ExpressionUUID->"fa7de0f6-d0cf-4cf2-85d0-\
+85e4be4f3515"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["parseImport", "CodeSubsubsubsection",
+ CellChangeTimes->{{3.6944060717963676`*^9, 3.694406073971533*^9}, {
+  3.694406107987184*^9, 
+  3.69440611015422*^9}},ExpressionUUID->"422c4efe-5f2a-4860-87a4-\
+31dc8921768d"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"parseImport", "[", 
+    RowBox[{"XMLElement", "[", 
+     RowBox[{"\"\<string\>\"", ",", "_", ",", 
+      RowBox[{"{", "s_", "}"}]}], "]"}], "]"}], ":=", "\n", "\t", "s"}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"parseImport", "[", 
+    RowBox[{"XMLElement", "[", 
+     RowBox[{"\"\<int\>\"", ",", "_", ",", 
+      RowBox[{"{", "i_", "}"}]}], "]"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"ToExpression", "@", "i"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.694406489338332*^9, 
+  3.6944065104517603`*^9}},ExpressionUUID->"9cb0075e-30e8-4ee6-b531-\
+7c1b2b199ec8"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"parseImport", "[", 
+    RowBox[{"XMLElement", "[", 
+     RowBox[{"\"\<ArrayOfInt\>\"", ",", "_", ",", 
+      RowBox[{"ints", ":", 
+       RowBox[{"{", "___", "}"}]}]}], "]"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"ToExpression", "@", "\n", "\t\t", 
+    RowBox[{"Replace", "[", 
+     RowBox[{"ints", ",", "\n", "\t", "\t\t", 
+      RowBox[{
+       RowBox[{"XMLElement", "[", 
+        RowBox[{"\"\<int\>\"", ",", 
+         RowBox[{"{", "}"}], ",", 
+         RowBox[{"{", "int_", "}"}]}], "]"}], "\[RuleDelayed]", "int"}], ",", 
+      "\n", "\t\t\t", "1"}], "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"parseImport", "[", "\n", "\t", 
+    RowBox[{"XMLElement", "[", 
+     RowBox[{
+      RowBox[{"\"\<ExtendedCompoundInfo\>\"", "|", "\"\<CompoundInfo\>\""}], 
+      ",", "_", ",", 
+      RowBox[{"info", ":", 
+       RowBox[{"{", "__", "}"}]}]}], "]"}], "\n", "\t", "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{"Replace", "[", 
+    RowBox[{"info", ",", 
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"XMLElement", "[", 
+         RowBox[{"\"\<CSID\>\"", ",", 
+          RowBox[{"{", "}"}], ",", 
+          RowBox[{"{", "id_", "}"}]}], "]"}], "\[RuleDelayed]", "\n", 
+        "\t\t\t", 
+        RowBox[{"\"\<CompoundID\>\"", "->", 
+         RowBox[{"ToExpression", "@", "id"}]}]}], ",", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"XMLElement", "[", 
+         RowBox[{"\"\<InChI\>\"", ",", 
+          RowBox[{"{", "}"}], ",", 
+          RowBox[{"{", "str_", "}"}]}], "]"}], ":>", "\n", "\t\t\t", 
+        RowBox[{"\"\<InChI\>\"", "\[Rule]", "str"}]}], ",", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"XMLElement", "[", 
+         RowBox[{"\"\<InChIKey\>\"", ",", 
+          RowBox[{"{", "}"}], ",", 
+          RowBox[{"{", "k_", "}"}]}], "]"}], ":>", "\n", "\t\t\t", 
+        RowBox[{"\"\<InChIKey\>\"", "\[Rule]", "k"}]}], ",", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"XMLElement", "[", 
+         RowBox[{"\"\<SMILES\>\"", ",", 
+          RowBox[{"{", "}"}], ",", 
+          RowBox[{"{", "s_", "}"}]}], "]"}], ":>", "\n", "\t\t\t", 
+        RowBox[{"\"\<SMILES\>\"", "\[Rule]", "s"}]}], ",", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"XMLElement", "[", 
+         RowBox[{"\"\<AverageMass\>\"", ",", 
+          RowBox[{"{", "}"}], ",", 
+          RowBox[{"{", "s_", "}"}]}], "]"}], "\[RuleDelayed]", "\n", "\t\t\t", 
+        RowBox[{"\"\<AverageMass\>\"", "\[Rule]", 
+         RowBox[{"ToExpression", "@", "s"}]}]}], ",", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"XMLElement", "[", 
+         RowBox[{"\"\<MolecularWeight\>\"", ",", 
+          RowBox[{"{", "}"}], ",", 
+          RowBox[{"{", "s_", "}"}]}], "]"}], "\[RuleDelayed]", "\n", "\t\t\t", 
+        RowBox[{"\"\<MolecularWeight\>\"", "\[Rule]", 
+         RowBox[{"ToExpression", "@", "s"}]}]}], ",", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"XMLElement", "[", 
+         RowBox[{"\"\<MonoisotopicMass\>\"", ",", 
+          RowBox[{"{", "}"}], ",", 
+          RowBox[{"{", "s_", "}"}]}], "]"}], "\[RuleDelayed]", "\n", "\t\t\t", 
+        RowBox[{"\"\<MonoisotopicMass\>\"", "\[Rule]", 
+         RowBox[{"ToExpression", "@", "s"}]}]}], ",", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"XMLElement", "[", 
+         RowBox[{"\"\<NominalMass\>\"", ",", 
+          RowBox[{"{", "}"}], ",", 
+          RowBox[{"{", "s_", "}"}]}], "]"}], "\[RuleDelayed]", "\n", "\t\t\t", 
+        RowBox[{"\"\<NominalMass\>\"", "\[Rule]", 
+         RowBox[{"ToExpression", "@", "s"}]}]}], ",", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"XMLElement", "[", 
+         RowBox[{"\"\<ALogP\>\"", ",", 
+          RowBox[{"{", "}"}], ",", 
+          RowBox[{"{", "s_", "}"}]}], "]"}], "\[RuleDelayed]", "\n", "\t\t\t", 
+        RowBox[{"\"\<ALogP\>\"", "\[Rule]", 
+         RowBox[{"ToExpression", "@", "s"}]}]}], ",", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"XMLElement", "[", 
+         RowBox[{"\"\<XLogP\>\"", ",", 
+          RowBox[{"{", "}"}], ",", 
+          RowBox[{"{", "s_", "}"}]}], "]"}], "\[RuleDelayed]", "\n", "\t\t\t", 
+        RowBox[{"\"\<XLogP\>\"", "\[Rule]", 
+         RowBox[{"ToExpression", "@", "s"}]}]}], ",", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"XMLElement", "[", 
+         RowBox[{"\"\<CommonName\>\"", ",", 
+          RowBox[{"{", "}"}], ",", 
+          RowBox[{"{", "s_", "}"}]}], "]"}], ":>", "\n", "\t\t\t", 
+        RowBox[{"\"\<CommonName\>\"", "\[Rule]", "s"}]}]}], "\n", "\t\t", 
+      "}"}], ",", "\n", "\t\t", "1"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"parseImport", "[", "\n", "\t", 
+    RowBox[{"XMLElement", "[", 
+     RowBox[{"\"\<ArrayOfString\>\"", ",", "_", ",", 
+      RowBox[{"info", ":", 
+       RowBox[{"{", "__", "}"}]}]}], "]"}], "\n", "\t", "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{"Replace", "[", 
+    RowBox[{"info", ",", 
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"XMLElement", "[", 
+        RowBox[{"\"\<string\>\"", ",", "_", ",", 
+         RowBox[{"{", "s_", "}"}]}], "]"}], "\[RuleDelayed]", "s"}], "\n", 
+      "\t\t", "}"}], ",", "\n", "\t\t", "1"}], "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.694404312853942*^9, 3.694404383716008*^9}, {
+  3.694404516931542*^9, 3.694404518617929*^9}, {3.694404798405142*^9, 
+  3.694404836947473*^9}, {3.694404927689991*^9, 3.694405040763464*^9}, {
+  3.694405156069954*^9, 3.694405204286292*^9}, {3.694405768568172*^9, 
+  3.694405917206213*^9}, {3.694406138007181*^9, 
+  3.694406174180707*^9}},ExpressionUUID->"801d1bfd-a5ef-4c83-854e-\
+8dfc8fe05864"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Parse & Import", "CodeSubsubsubsection",
+ CellChangeTimes->{{3.6944060717963676`*^9, 3.694406073971533*^9}, {
+  3.6944061139390593`*^9, 
+  3.6944061216738367`*^9}},ExpressionUUID->"26dc0a49-9ca7-442b-82d3-\
+bf2ee1417bb0"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpiderParse", "[", 
+    RowBox[{
+     RowBox[{"XMLObject", "[", "_", "]"}], "[", 
+     RowBox[{"_", ",", "data_", ",", "_"}], "]"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Replace", "[", 
+    RowBox[{
+     RowBox[{"parseImport", "@", "data"}], ",", 
+     RowBox[{"_parseImport", "\[Rule]", "data"}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpiderParse", "[", "xml_String", "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemSpiderParse", "@", 
+    RowBox[{"ImportString", "[", 
+     RowBox[{"xml", ",", "\"\<XML\>\""}], "]"}]}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.69440207269347*^9, 3.6944022373001947`*^9}, {
+  3.6944026335053463`*^9, 3.694402640369328*^9}, {3.6944027418691053`*^9, 
+  3.6944030384083557`*^9}, {3.694403110577298*^9, 3.6944032192045527`*^9}, {
+  3.6944032555998*^9, 3.694403325546316*^9}, {3.694403364302608*^9, 
+  3.694403469795555*^9}, {3.694403742711067*^9, 3.694403845331263*^9}, {
+  3.694404176149166*^9, 3.6944041830728292`*^9}, {3.694404307309165*^9, 
+  3.694404311556918*^9}, {3.694404391222186*^9, 3.6944043945149384`*^9}, {
+  3.694404483053276*^9, 
+  3.6944044976594133`*^9}},ExpressionUUID->"61ecc592-32d4-4c8c-91dc-\
+1abf7bc0f9de"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemSpiderImport", "[", "req_HTTPRequest", "]"}], ":=", "\n", "\t", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"call", "=", "\n", "\t\t", 
+      RowBox[{"Replace", "[", 
+       RowBox[{
+        RowBox[{"URLParse", "@", 
+         RowBox[{"First", "@", "req"}]}], ",", "\n", "\t\t\t", 
+        RowBox[{"a_", "\[RuleDelayed]", "\n", "\t\t\t\t", 
+         RowBox[{"ReplacePart", "[", 
+          RowBox[{"a", ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"\"\<Query\>\"", "\[Rule]", 
+            RowBox[{"FilterRules", "[", 
+             RowBox[{
+              RowBox[{"a", "[", "\"\<Query\>\"", "]"}], ",", 
+              RowBox[{"Except", "[", "\"\<token\>\"", "]"}]}], "]"}]}]}], 
+          "\n", "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t", "]"}]}], "\n", 
+     "\t\t\t", "}"}], ",", "\n", "\t\t", 
+    RowBox[{"Replace", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"Lookup", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+       "$chemSpiderCallCache", ",", "\n", "\t", "\t\t\t", "call", ",", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"Replace", "[", "\n", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"With", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"imp", "=", 
+              RowBox[{"Import", "[", 
+               RowBox[{"req", ",", "\"\<Text\>\""}], "]"}]}], "}"}], ",", 
+            "\n", "\t\t\t\t\t\t", 
+            RowBox[{"Quiet", "[", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"Check", "[", 
+               RowBox[{
+                RowBox[{"ImportString", "[", 
+                 RowBox[{"imp", ",", "\"\<XML\>\""}], "]"}], ",", "\n", 
+                "\t\t\t\t\t\t\t\t", "imp"}], "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{"(*", "$Failed", "*)"}], "\n", "\t", "\t\t\t\t\t\t\t", 
+               "]"}], ",", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"XML`Parser`XMLGetString", "::", "prserr"}]}], "\n", 
+             "\t\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t\t", "]"}], ",", 
+          "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"x", ":", 
+            RowBox[{
+             RowBox[{"XMLObject", "[", "_", "]"}], "[", "___", "]"}]}], ":>", 
+           "\n", "\t\t\t\t\t\t", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"$chemSpiderCallCache", "[", "call", "]"}], "=", "x"}], 
+            ")"}]}]}], "\n", "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}], 
+      ",", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"x", ":", 
+        RowBox[{
+         RowBox[{"XMLObject", "[", "_", "]"}], "[", "___", "]"}]}], ":>", 
+       RowBox[{"ChemSpiderParse", "@", "x"}]}]}], "\n", "\t\t\t", "]"}]}], 
+   "\n", "\t\t", "]"}]}]], "CodeInput",
+ CellChangeTimes->{{3.69440207269347*^9, 3.6944022373001947`*^9}, {
+  3.6944026335053463`*^9, 3.694402640369328*^9}, {3.6944027418691053`*^9, 
+  3.6944030384083557`*^9}, {3.694403110577298*^9, 3.6944032192045527`*^9}, {
+  3.6944032555998*^9, 3.694403325546316*^9}, {3.694403364302608*^9, 
+  3.694403469795555*^9}, {3.694403742711067*^9, 3.6944038550317574`*^9}, {
+  3.694403885759144*^9, 3.6944040252695303`*^9}, {3.694404064445957*^9, 
+  3.6944041550749407`*^9}, {3.694404273941907*^9, 3.694404278963647*^9}, {
+  3.694404447866065*^9, 3.6944044507685337`*^9}, {3.694406292928996*^9, 
+  3.694406439180491*^9}, {3.700260599926321*^9, 3.700260599932006*^9}, {
+  3.700267119373234*^9, 
+  3.700267124093153*^9}},ExpressionUUID->"be3c6901-8295-46d3-bdaf-\
+2d04d560b5ce"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Scrape", "CodeSubsubsubsection",
+ CellChangeTimes->{{3.6944060717963676`*^9, 3.694406073971533*^9}, {
+  3.6944061139390593`*^9, 3.6944061216738367`*^9}, {3.6944093509818172`*^9, 
+  3.6944093522205133`*^9}},ExpressionUUID->"b4dde373-e6a6-4f17-ad41-\
+9a5ea9bbc33a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"If", "[", 
+   RowBox[{
+    RowBox[{"MatchQ", "[", 
+     RowBox[{"$chemSpiderScrapeCache", ",", "_Symbol"}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"$chemSpiderScrapeCache", "=", 
+     RowBox[{"<|", "|>"}]}]}], "\n", "\t", "]"}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.694409798973741*^9, 
+  3.69440984053992*^9}},ExpressionUUID->"e846435c-665c-4a06-bf12-\
+0bc08cdd2c85"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"pullSpectra", "[", "xml_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"Cases", "[", 
+    RowBox[{"xml", ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"XMLElement", "[", 
+       RowBox[{"\"\<div\>\"", ",", 
+        RowBox[{"{", 
+         RowBox[{"___", ",", 
+          RowBox[{"\"\<class\>\"", "\[Rule]", "\"\<spectra-block\>\""}], ",", 
+          "___"}], "}"}], ",", "d_"}], "]"}], "\[RuleDelayed]", "\n", 
+      "\t\t\t", 
+      RowBox[{"Prepend", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"Cases", "[", 
+         RowBox[{"d", ",", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"XMLElement", "[", 
+            RowBox[{"\"\<span\>\"", ",", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"{", 
+              RowBox[{"___", ",", 
+               RowBox[{"\"\<class\>\"", "\[Rule]", "\"\<prop-value\>\""}], 
+               ",", "___"}], "}"}], ",", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"{", 
+              RowBox[{"___", ",", "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{"XMLElement", "[", 
+                RowBox[{"\"\<a\>\"", ",", 
+                 RowBox[{"{", 
+                  RowBox[{"___", ",", 
+                   RowBox[{"\"\<href\>\"", "\[Rule]", "l_"}], ",", "___"}], 
+                  "}"}], ",", "_"}], "]"}], ",", "\n", "\t\t\t\t\t\t\t", 
+               "___"}], "}"}]}], "\n", "\t\t\t\t\t\t", "]"}], 
+           "\[RuleDelayed]", "\n", "\t\t\t\t\t\t\t", 
+           RowBox[{"XMLElement", "[", 
+            RowBox[{"\"\<tr\>\"", ",", 
+             RowBox[{"{", "}"}], ",", "\n", "\t\t\t\t\t\t\t\t", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"XMLElement", "[", 
+                RowBox[{"\"\<td\>\"", ",", 
+                 RowBox[{"{", "}"}], ",", 
+                 RowBox[{"{", "l", "}"}]}], "]"}], ",", "___"}], "}"}]}], 
+            "\n", "\t\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t", "]"}], 
+        ",", "\n", "\t\t\t\t", 
+        RowBox[{"FirstCase", "[", 
+         RowBox[{"d", ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"XMLElement", "[", 
+           RowBox[{"\"\<span\>\"", ",", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"{", 
+             RowBox[{"___", ",", 
+              RowBox[{
+              "\"\<class\>\"", "\[Rule]", "\"\<user_data_category_name\>\""}],
+               ",", "___"}], "}"}], ",", "_"}], "]"}], ",", "\n", 
+          "\t\t\t\t\t", 
+          RowBox[{"XMLElement", "[", 
+           RowBox[{"\"\<span\>\"", ",", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"{", 
+             RowBox[{"___", ",", 
+              RowBox[{
+              "\"\<class\>\"", "\[Rule]", "\"\<user_data_category_name\>\""}],
+               ",", "___"}], "}"}], ",", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"{", "\"\<Type Not Found\>\"", "}"}]}], "]"}], ",", "\n", 
+          "\t\t\t\t\t", "\[Infinity]"}], "\n", "\t\t\t\t\t", "]"}]}], "\t", 
+       "\n", "\t\t\t\t", "]"}]}], ",", "\n", "\t\t", "\[Infinity]"}], "\n", 
+    "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{"\t\t"}]}], "CodeInput",
+ CellChangeTimes->{{3.694410467421664*^9, 3.694410560918118*^9}, {
+  3.6944108332136793`*^9, 3.694410887089623*^9}, {3.694410952803268*^9, 
+  3.694411165372713*^9}, {3.694411215472321*^9, 
+  3.694411266265399*^9}},ExpressionUUID->"bc045994-a026-450b-96e0-\
+24608ba894a7"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpiderScrape", "[", 
+    RowBox[{"xml", ":", 
+     RowBox[{
+      RowBox[{"XMLObject", "[", "_", "]"}], "[", "__", "]"}]}], "]"}], ":=", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"cache", "=", 
+        RowBox[{"{", "}"}]}], ",", "\n", "\t\t", 
+       RowBox[{"header", "=", "None"}], ",", "\n", "\t\t", 
+       RowBox[{"headerCache", "=", 
+        RowBox[{"{", "}"}]}], ",", "\n", "\t\t", 
+       RowBox[{"prop", "=", "None"}], ",", "\n", "\t\t", 
+       RowBox[{"data", "=", 
+        RowBox[{"{", "}"}]}], ",", "\n", "\t\t", 
+       RowBox[{"propsCacheResults", "=", 
+        RowBox[{"(", "\n", "\t\t\t", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"AppendTo", "[", 
+            RowBox[{"headerCache", ",", "\n", "\t\t\t", 
+             RowBox[{"prop", "\[Rule]", 
+              RowBox[{"Replace", "[", 
+               RowBox[{"data", ",", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"_Rule", ",", "___"}], "}"}], "\[RuleDelayed]", 
+                 RowBox[{"Association", "@", "data"}]}]}], "]"}]}]}], "]"}], 
+           ";", "\n", "\t\t\t", 
+           RowBox[{"data", "=", 
+            RowBox[{"{", "}"}]}], ";", 
+           RowBox[{"prop", "=", "None"}], ";"}], "\n", "\t\t\t", "&"}], "\n", 
+         "\t\t\t", ")"}]}], ",", "\n", "\t\t", 
+       RowBox[{"cacheResults", "=", 
+        RowBox[{"(", "\n", "\t\t\t", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"propsCacheResults", "[", "]"}], ";", "\n", "\t\t\t", 
+           RowBox[{"AppendTo", "[", 
+            RowBox[{"cache", ",", 
+             RowBox[{"header", "\[Rule]", 
+              RowBox[{"Association", "@", "headerCache"}]}]}], "]"}], ";", 
+           "\n", "\t\t\t", 
+           RowBox[{"headerCache", "=", 
+            RowBox[{"{", "}"}]}], ";", 
+           RowBox[{"header", "=", "None"}], ";"}], "\n", "\t\t\t", "&"}], 
+         "\n", "\t\t\t", ")"}]}]}], "\n", "\t\t", "}"}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"Replace", "[", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"Flatten", "@", 
+         RowBox[{"{", "\n", "\t\t\t\t", 
+          RowBox[{"FirstCase", "[", 
+           RowBox[{"xml", ",", "\n", "\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"XMLElement", "[", 
+              RowBox[{"\"\<ul\>\"", ",", "\n", "\t\t\t\t\t\t", 
+               RowBox[{"{", 
+                RowBox[{"___", ",", 
+                 RowBox[{
+                 "\"\<class\>\"", "\[Rule]", 
+                  "\"\<user_data_categories_list\>\""}], ",", "___"}], "}"}], 
+               ",", "data_"}], "]"}], "\[RuleDelayed]", "\n", "\t\t\t\t\t\t", 
+             
+             RowBox[{"Cases", "[", 
+              RowBox[{"data", ",", "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{"XMLElement", "[", 
+                RowBox[{
+                 RowBox[{"\"\<span\>\"", "|", "\"\<tr\>\""}], ",", "___"}], 
+                "]"}], ",", "\n", "\t\t\t\t\t\t\t", "\[Infinity]"}], "\n", 
+              "\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"{", "}"}], ",", "\n", "\t\t\t\t\t", "\[Infinity]"}], 
+           "\n", "\t\t\t\t\t", "]"}], 
+          RowBox[{"(*", 
+           RowBox[{",", "\n", "\t\t\t\t", 
+            RowBox[{"pullSpectra", "@", "xml"}]}], "*)"}], "\n", "\t\t\t\t", 
+          "}"}]}], ",", 
+        RowBox[{"{", "\n", "\t\t\t", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"XMLElement", "[", 
+            RowBox[{"\"\<span\>\"", ",", "\n", "\t\t\t\t", 
+             RowBox[{"{", 
+              RowBox[{"___", ",", 
+               RowBox[{
+               "\"\<class\>\"", "\[Rule]", 
+                "\"\<user_data_category_name\>\""}], ",", "___"}], "}"}], ",", 
+             RowBox[{"{", "p_", "}"}]}], "]"}], "\[RuleDelayed]", "\n", 
+           "\t\t\t\t", 
+           RowBox[{"(", "\n", "\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"header", "=!=", "None"}], ",", "\n", "\t\t\t\t\t\t", 
+               RowBox[{"cacheResults", "[", "]"}]}], "\n", "\t\t\t\t\t\t", 
+              "]"}], ";", "\n", "\t\t\t\t\t", 
+             RowBox[{"header", "=", 
+              RowBox[{"StringTrim", "[", 
+               RowBox[{"p", ",", "\"\<:\>\""}], "]"}]}]}], "\n", "\t\t\t\t\t",
+             ")"}]}], ",", "\n", "\t\t\t", 
+          RowBox[{
+           RowBox[{"XMLElement", "[", 
+            RowBox[{"\"\<span\>\"", ",", "\n", "\t\t\t\t", 
+             RowBox[{"{", 
+              RowBox[{"___", ",", 
+               RowBox[{
+               "\"\<class\>\"", "\[Rule]", 
+                "\"\<user_data_property_name\>\""}], ",", "___"}], "}"}], ",", 
+             RowBox[{"{", "p_", "}"}]}], "]"}], "\[RuleDelayed]", "\n", 
+           "\t\t\t\t", 
+           RowBox[{"(", "\n", "\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"prop", "=!=", "None"}], ",", "\n", "\t\t\t\t\t\t", 
+               RowBox[{"propsCacheResults", "[", "]"}]}], "\n", 
+              "\t\t\t\t\t\t", "]"}], ";", "\n", "\t\t\t\t\t", 
+             RowBox[{"prop", "=", 
+              RowBox[{"StringTrim", "[", 
+               RowBox[{"p", ",", "\"\<:\>\""}], "]"}]}]}], "\n", "\t\t\t\t\t",
+             ")"}]}], ",", "\n", "\t\t\t", 
+          RowBox[{
+           RowBox[{"XMLElement", "[", 
+            RowBox[{"\"\<tr\>\"", ",", "_", ",", 
+             RowBox[{"d", ":", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"XMLElement", "[", 
+                 RowBox[{"\"\<td\>\"", ",", "_", ",", 
+                  RowBox[{"{", 
+                   RowBox[{"val_", ",", "___"}], "}"}]}], "]"}], ",", "___"}],
+                "}"}]}]}], "]"}], "\[RuleDelayed]", "\n", "\t\t\t\t", 
+           RowBox[{"AppendTo", "[", 
+            RowBox[{"data", ",", "\n", "\t\t\t\t\t", 
+             RowBox[{"Replace", "[", 
+              RowBox[{
+               RowBox[{"FirstCase", "[", 
+                RowBox[{"d", ",", 
+                 RowBox[{
+                  RowBox[{"XMLElement", "[", 
+                   RowBox[{"\"\<strong\>\"", ",", "_", ",", 
+                    RowBox[{"{", "s_", "}"}]}], "]"}], "\[RuleDelayed]", 
+                  "s"}], ",", "None", ",", "\[Infinity]"}], "]"}], ",", 
+               RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{"None", "\[Rule]", "val"}], ",", "\n", 
+                 "\t\t\t\t\t\t", 
+                 RowBox[{"s_", "\[RuleDelayed]", 
+                  RowBox[{"(", 
+                   RowBox[{"s", "\[Rule]", "val"}], ")"}]}]}], "\n", 
+                "\t\t\t\t\t\t", "}"}]}], "]"}]}], "\n", "\t\t\t\t\t", 
+            "]"}]}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", "1"}], "]"}],
+       ";", "\n", "\t\t", 
+      RowBox[{"Association", "@", "cache"}]}]}], "\n", "\t", "]"}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.694408031915667*^9, 3.694408470965271*^9}, {
+   3.694408510375267*^9, 3.694408613594183*^9}, {3.694408655828046*^9, 
+   3.694408754630443*^9}, {3.69440880229062*^9, 3.694408822713793*^9}, {
+   3.694408868298868*^9, 3.694408913830291*^9}, {3.694409034528584*^9, 
+   3.69440904942083*^9}, {3.694409085677259*^9, 3.694409116089849*^9}, {
+   3.694409155484778*^9, 3.694409204399641*^9}, {3.694409237871663*^9, 
+   3.694409318779182*^9}, {3.694409356718536*^9, 3.694409516002898*^9}, {
+   3.6944095626151342`*^9, 3.6944097565463533`*^9}, {3.694409887045191*^9, 
+   3.69440999700467*^9}, 3.6944102630005827`*^9, {3.6944104592706013`*^9, 
+   3.694410460901753*^9}, {3.694411278331222*^9, 3.6944112843722057`*^9}, 
+   3.694411969020075*^9},ExpressionUUID->"e6f9c5a4-03ef-4f7f-aee4-\
+d37827a4757f"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpiderScrape", "[", 
+    RowBox[{"s_String", "?", 
+     RowBox[{"(", 
+      RowBox[{"StringContainsQ", "[", "\"\</\>\"", "]"}], ")"}]}], "]"}], ":=",
+    "\n", "\t", 
+   RowBox[{"Lookup", "[", 
+    RowBox[{
+    "$chemSpiderScrapeCache", ",", "\n", "\t\t", "s", ",", "\n", "\t\t", 
+     RowBox[{"Replace", "[", 
+      RowBox[{
+       RowBox[{"Import", "[", 
+        RowBox[{"s", ",", 
+         RowBox[{"{", 
+          RowBox[{"\"\<HTML\>\"", ",", "\"\<XMLObject\>\""}], "}"}]}], "]"}], 
+       ",", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"imp", ":", 
+         RowBox[{
+          RowBox[{"XMLObject", "[", "_", "]"}], "[", "__", "]"}]}], 
+        "\[RuleDelayed]", 
+        RowBox[{"(", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"$chemSpiderScrapeCache", "[", "s", "]"}], "=", "\n", 
+          "\t\t\t\t\t", 
+          RowBox[{"ChemSpiderScrape", "@", "imp"}]}], "\n", "\t\t\t\t\t", 
+         ")"}]}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpiderScrape", "[", "id_Integer", "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemSpiderScrape", "@", "\n", "\t\t", 
+    RowBox[{"TemplateApply", "[", "\n", "\t\t\t", 
+     RowBox[{
+     "\"\<http://www.chemspider.com/Chemical-Structure.``.html\>\"", ",", 
+      "\n", "\t\t\t", "id"}], "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ChemSpiderScrape", "[", "s_String", "]"}], ":=", "\n", "\t", 
+  RowBox[{"Replace", "[", 
+   RowBox[{
+    RowBox[{"ChemSpiderID", "@", "s"}], ",", "\n", "\t\t", 
+    RowBox[{"i_Integer", ":>", 
+     RowBox[{"ChemSpiderScrape", "@", "i"}]}]}], "\n", "\t\t", 
+   "]"}]}]}], "CodeInput",
+ CellChangeTimes->{{3.694408031915667*^9, 3.694408470965271*^9}, {
+   3.694408510375267*^9, 3.694408613594183*^9}, {3.694408655828046*^9, 
+   3.694408754630443*^9}, {3.69440880229062*^9, 3.694408822713793*^9}, {
+   3.694408868298868*^9, 3.694408913830291*^9}, {3.694409034528584*^9, 
+   3.69440904942083*^9}, {3.694409085677259*^9, 3.694409116089849*^9}, {
+   3.694409155484778*^9, 3.694409204399641*^9}, {3.694409237871663*^9, 
+   3.694409318779182*^9}, {3.694409356718536*^9, 3.694409516002898*^9}, {
+   3.6944095626151342`*^9, 3.6944097565463533`*^9}, {3.694409887045191*^9, 
+   3.69440999700467*^9}, 
+   3.6944102630005827`*^9},ExpressionUUID->"8851deaa-ac2a-408c-b07e-\
+28a70840d2b2"]
+}, Closed]]
+}, Closed]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"970cc118-9351-427e-b3b7-\
+73f7fd175c84"]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"ba741543-0a17-4360-9838-\
+02faface8af2"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{Automatic, 227}, {34, Automatic}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

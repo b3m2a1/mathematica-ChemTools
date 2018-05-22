@@ -14,20 +14,20 @@ The easiest way to install  ```ChemTools```  is using a paclet server installati
 
 ```mathematica
  PacletInstall[
- "ChemTools",
- "Site"->
-  "http://www.wolframcloud.com/objects/b3m2a1.paclets/PacletServer"
- ]
+  "ChemTools",
+  "Site"->
+    "http://www.wolframcloud.com/objects/b3m2a1.paclets/PacletServer"
+  ]
 ```
 
 If you've already installed it you can update using:
 
 ```mathematica
  PacletUpdate[
- "ChemTools",
- "Site"->
-  "http://www.wolframcloud.com/objects/b3m2a1.paclets/PacletServer"
- ]
+  "ChemTools",
+  "Site"->
+    "http://www.wolframcloud.com/objects/b3m2a1.paclets/PacletServer"
+  ]
 ```
 
 Alternately you can download this repo as a ZIP file and put extract it in  ```$UserBaseDirectory/Applications```
@@ -38,35 +38,7 @@ Alternately you can download this repo as a ZIP file and put extract it in  ```$
 
 Many functions now live in subcontexts so as to not unnecessarily clutter the global namespace
 
-The things you can currently run are
-
-* ```<<ChemTools`All` ```
-
-* ```<<ChemTools`Objects` ```
-
-  * ```<<ChemTools`Objects`ObjectFramework` ```
-
-  * ```<<ChemTools`Objects`Utilities` ```
-
-  * ```<<ChemTools`Objects`Atom` ```
-
-  * ```<<ChemTools`Objects`Bond` ```
-
-  * ```<<ChemTools`Objects`Atomset` ```
-
-* ```<<ChemTools`Utilities` ```
-
-* ```<<ChemTools`Data` ```
-
-* ```<<ChemTools`DVR` ```
-
-* ```<<ChemTools`Experimental` ```
-
-* ```<<ChemTools`Psi4` ```
-
-* ```<<ChemTools`OpenBabel` ```
-
-* ```<<ChemTools`SP` ```
+The exact structure will be documented when time permits. In the mean time every folder in the Packages directory provides a new context.
 
 ---
 
@@ -103,8 +75,8 @@ Calculate the Gasteiger-charge based electric potential:
 Plot the first molecular orbital:
 
     AtomsetOrbitalsPlot[methyloxirane,
-     "Orbitals"->1
-     ]
+      "Orbitals"->1
+      ]
 
     (*Out:*)
     
@@ -122,7 +94,7 @@ Plot the first molecular orbital:
 
 ### Description
 
-[DataFramework.m](Packages/DataFramework.m)  implements a simple, cached data-lookup system for a collection of different data types. It provides object-oriented access to data in a somewhat similar way to the built-in  [```EntityFramework```](https://www.wolframcloud.com/objects/b3m2a1.paclets/reference/EntityFramework/guide/EntityFramework.html) .  [Objects.m](Packages/Objects.m)  integrates with the data framework to provide atomic radii, standard bond distances, chemical structures, etc.
+[DataFramework.m](Packages/DataFramework.m)  implements a simple, cached data-lookup system for a collection of different data types. It provides object-oriented access to data in a somewhat similar way to the built-in  [```EntityFramework```](https://www.wolframcloud.com/objects/b3m2a1.docs/reference/EntityFramework/guide/EntityFramework.html) .  [Objects.m](Packages/Objects.m)  integrates with the data framework to provide atomic radii, standard bond distances, chemical structures, etc.
 
 ### Examples
 
@@ -265,19 +237,19 @@ Configure a simple scan in Psi4:
     coels=AtomsetElementPositions@co;
     com=ChemUtilsCenterOfMass@coels;
     scanels=
-     Append[
-      ChemUtilsGenerateZMatrix@Append[coels,{"X",com}],
-      {"Ar",Length[coels]+1,3.1077,2,180,1,#}
-      ];
+      Append[
+        ChemUtilsGenerateZMatrix@Append[coels,{"X",com}],
+        {"Ar",Length[coels]+1,3.1077,2,180,1,#}
+        ];
     scan=Psi4EnergyScan[
-     <|
-      "Molecules"->scanels,
-      "Scan"->{{0,180,60}},
-      "Configuration"->{
-       "BasisSet"->"cc-pvqz"
-       }
-      |>
-     ]
+      <|
+        "Molecules"->scanels,
+        "Scan"->{{0,180,60}},
+        "Configuration"->{
+          "BasisSet"->"cc-pvqz"
+          }
+        |>
+      ]
 
     (*Out:*)
     
@@ -312,9 +284,9 @@ Look at the pybel code generated to run this:
 Load a molecule in an interactive PyBel session:
 
     OBPyRun[ChemDataLookup["vinyl chloride", "SDFFiles"]->"vcl",
-     Print[ "vcl" ],
-     "Session"->True
-     ]
+      Print[ "vcl" ],
+      "Session"->True
+      ]
 
     (*Out:*)
     
@@ -323,9 +295,9 @@ Load a molecule in an interactive PyBel session:
 Find at the coordinates of the atoms of the vinyl chloride in the session:
 
     OBPyRun[ChemDataLookup["vinyl chloride", "SDFFiles"]->"vcl",
-     Print[ Map[#."coords"&, "vcl"."atoms" ]],
-     "Session"->True
-     ]//importPyAsJSON
+      Print[ Map[#."coords"&, "vcl"."atoms" ]],
+      "Session"->True
+      ]//importPyAsJSON
 
     (*Out:*)
     
@@ -380,11 +352,11 @@ Load a simple 1D DVR and run it:
 Import a random JPL line list:
 
     spec=
-     ChemSpectrumImport[
-      TemplateApply["https://spec.jpl.nasa.gov/ftp/pub/catalog/c``001.cat",
-       IntegerString[RandomInteger[50],10,3]
-       ]
-      ]
+      ChemSpectrumImport[
+        TemplateApply["https://spec.jpl.nasa.gov/ftp/pub/catalog/c``001.cat",
+          IntegerString[RandomInteger[50],10,3]
+          ]
+        ]
 
     (*Out:*)
     

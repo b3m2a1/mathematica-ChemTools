@@ -19,20 +19,20 @@
 
 
 
-ChemUtilsSymmetryElements::usage=
+ChemComputeSymmetryElements::usage=
 	"Finds all the symmetry elements of a collection of atoms";
-
-
-PackageScopeBlock[ChemUtilsSymmetryGraphicsObjects];
-ChemUtilsSymmetryGraphics::usage=
-	"Plots a collection of symmetry elements";
-ChemUtilsInertialSymmetry::usage=
+ChemComputeInertialSymmetry::usage=
 	"Finds symmetry elements relative to the ABC axes";
-ChemUtilsPointGroup::usage=
+ChemComputePointGroup::usage=
 	"Guesses the point group of the collection of atoms";
 
 
 Begin["`Private`"];
+
+
+(* ::Subsection:: *)
+(*Common Uses*)
+
 
 
 (* ::Subsubsection::Closed:: *)
@@ -95,6 +95,567 @@ symmetryOperationQ[transform_,grps_Association,tol_]:=
 
 
 (* ::Subsubsection::Closed:: *)
+(*uniqueAxesQ*)
+
+
+
+uniqueAxesQComp=
+	Compile[{{center, _Real, 1}, {p, _Real, 1}, {q, _Real, 1}, {tol, _Real}},
+		With[{n1=#/Norm[#]&@p-center,n2=#/Norm[#]&@q-center},
+			Norm[n1-n2]>tol&&
+				Norm[n1+n2]>tol
+			]
+		];
+uniqueAxesQ[center_, p_,q_]:=
+	uniqueAxesQComp[center,p,q, $ChemSymmetryUniquenessThreshold];
+uniqueAxesQ[center_][p_,q_]:=
+	uniqueAxesQComp[center,p,q];
+
+
+(* ::Subsubsection::Closed:: *)
+(*deleteDuplicateAxes*)
+
+
+
+deleteDuplicateAxesInds[tol_]:=
+	Compile[
+		{	{vecs, _Real, 2} },
+		Block[{
+			pickedVecs,
+			tally=0.,
+			vecNorm,
+			angs,
+			order,
+			reorder,
+			angDiffs,
+			angSel,
+			flag=1,
+			tolTrue=tol/100
+			},
+			Times@@
+				Table[
+					vecNorm=Norm@vecs[[i]];
+					angs=
+							Table[(vecs[[i]].vecs[[j]])/(vecNorm*Norm[vecs[[j]]]),
+								{j, i+1, Length@vecs}
+								];
+					Join[
+						Table[1, {o, i}],
+						If[1-tol<Abs[#], 0, 1]&/@angs
+						],
+					{i, Length@vecs}
+					]
+			]
+		];
+deleteDuplicateAxes[axes_, tol_]:=
+	With[{real=Select[axes, Norm[#]>tol&]},
+		If[Length[real]>1,
+			Pick[real,
+				deleteDuplicateAxesInds[tol]@real,
+				1],
+			real
+			]
+		]
+
+
+(* ::Subsubsection::Closed:: *)
+(*enumerateAxes*)
+
+
+
+enumerateAxesNormals=
+	Compile[{{p,_Real,3}},
+		Map[Cross[#[[1]], #[[2]]]&, p]
+		]
+
+
+enumerateAxes[positions_, tol_]:=
+	Replace[enumerateAxesCached[{positions, tol}],
+		Except[_List]:>
+			Set[
+				enumerateAxesCached[{positions, tol}],
+				With[{
+					posReal=
+						deleteDuplicateAxes[
+							positions, 
+							tol
+							]
+					},
+					deleteDuplicateAxes[
+						Join[
+							enumeratePositions[posReal],
+							With[{r=enumeratePlanesSimple[posReal, tol]},
+								If[Length[r]>0,
+									enumerateAxesNormals@r,
+									{}
+									]
+								]
+							],
+						tol
+						]
+					]
+				]
+		]
+
+
+(* ::Subsection:: *)
+(*Compiled Attempt*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*uniquePointsQ*)
+
+
+
+uniquePointsQComp=
+	Compile[{{pt1,_Real,1},{pt2,_Real,1}, {tol,_Real}},
+		Norm[pt1-pt2]>tol
+		]
+uniquePointsQ[pt1_List, pt2_]:=
+	uniquePointsQComp[pt1, pt2, $ChemSymmetryUniquenessThreshold];
+uniquePointsQ[___]:=False
+
+
+(* ::Subsubsection::Closed:: *)
+(*enumeratePlanesIter Basic*)
+
+
+
+(*enumeratePlanesIter1:=enumeratePlanesIter1=With[{
+	$chemSymmEscapeArray=$chemSymmEscapeArray,
+	uniquePointsQComp=uniquePointsQComp,
+	$ChemSymmetryUniquenessThreshold=$ChemSymmetryUniquenessThreshold,
+	enumeratePositionsIter=enumeratePositionsIter
+	},
+		Compile[{
+			{center, _Real, 1}, {positions, _Real, 2},
+			{n, _Integer}, {plen, _Integer}
+			},
+			With[
+				{
+					i=1+Floor[(n-1)/(plen^2)],
+					j=Mod[n, plen^2, 1]
+					},
+				If[i>=j,
+					{$chemSymmEscapeArray, $chemSymmEscapeArray},
+					With[{pt1=enumeratePositionsIter[positions, i, plen]},
+						If[(
+								pt1!=$chemSymmEscapeArray&&
+								uniquePointsQComp[pt1, center,$ChemSymmetryUniquenessThreshold]
+								)//TrueQ,
+							With[{pt2=enumeratePositionsIter[positions, j, plen]},
+								If[(
+									pt2!=$chemSymmEscapeArray&&
+									uniquePointsQComp[pt2, center, $ChemSymmetryUniquenessThreshold]
+									)//TrueQ,
+									{pt1, pt2},
+									{$chemSymmEscapeArray, $chemSymmEscapeArray}
+									]
+								],
+							{$chemSymmEscapeArray, $chemSymmEscapeArray}
+							]
+						]
+					]
+				]
+			]
+		];*)
+
+
+(* ::Subsubsection::Closed:: *)
+(*symmetryTestAxis*)
+
+
+
+(*enumerateAxesIter:=enumerateAxesIter=With[{
+	$chemSymmEscapeArray=$chemSymmEscapeArray,
+	uniquePointsQComp=uniquePointsQComp,
+	$ChemSymmetryUniquenessThreshold=$ChemSymmetryUniquenessThreshold,
+	enumeratePositionsIter=enumeratePositionsIter,
+	enumeratePlanesIter=enumeratePlanesIter
+	},
+	Compile[{
+		{center, _Real, 1}, {positions, _Real, 2},
+		{n, _Integer}, {plen, _Integer}
+		},
+		With[{p=
+			If[n<=plen^2,
+				enumeratePositionsIter[positions, n, plen],
+				With[{s=enumeratePlanesIter[center, positions, n - plen]},
+					If[s=!=$chemSymmEscapeArray,
+						center+Cross[s[[1]]-center, s[[2]]-center],
+						$chemSymmEscapeArray
+						]
+					]
+				]
+				},
+			If[uniquePointsQComp[p,center,$ChemSymmetryUniquenessThreshold],
+				p, 
+				$chemSymmEscapeArray
+				]
+			]
+		]
+	];
+symmetryTestAxis[center_, positions_, n_]:=
+	enumerateAxesIter[center, positions, n, Length@positions];
+symmetryTestAxisCount[positions_]:=
+	Length@positions^4+Length@positions*)
+
+
+(* ::Subsubsection::Closed:: *)
+(*symmetryTestPlane*)
+
+
+
+(*enumeratePlanesIter2:=
+	enumeratePlanesIter2=With[
+	{
+		$chemSymmEscapeArray=$chemSymmEscapeArray,
+		uniquePointsQComp=uniquePointsQComp,
+		$ChemSymmetryUniquenessThreshold=$ChemSymmetryUniquenessThreshold,
+		enumerateAxesIter=enumerateAxesIter
+		},
+		Compile[{
+			{center, _Real, 1}, {positions, _Real, 2},
+			{n, _Integer}, {plen, _Integer}
+			},
+			With[
+				{
+					i=1+Floor[(n-1)/(plen^2)],
+					j=Mod[n, (plen^2), 1]
+					},
+					With[{pt1=enumerateAxesIter[center, positions, i + plen^2, plen]},
+						If[
+							(
+								pt1!=$chemSymmEscapeArray&&
+								uniquePointsQComp[pt1, center, $ChemSymmetryUniquenessThreshold]
+								)//TrueQ,
+							With[{pt2=enumerateAxesIter[center, positions, j, plen]},
+								If[
+									(
+										pt2!=$chemSymmEscapeArray&&
+										uniquePointsQComp[pt2, center, $ChemSymmetryUniquenessThreshold]
+										)//TrueQ,
+									{pt1, pt2},
+									{$chemSymmEscapeArray, $chemSymmEscapeArray}
+									]
+								],
+							{$chemSymmEscapeArray, $chemSymmEscapeArray}
+							]
+						]
+					]
+			]
+		];
+enumeratePlanesIter=
+	With[{
+		enumeratePlanesIter1=enumeratePlanesIter1,
+		enumeratePlanesIter2=enumeratePlanesIter2
+		},
+		Compile[
+			{
+				{center, _Real, 1}, {positions, _Real, 2},
+				{n, _Integer}, {plen, _Integer}
+				},
+			If[ n <= plen^4,
+				enumeratePlanesIter1[center, positions, n, plen],
+				enumeratePlanesIter2[center, positions, n, plen]
+				]
+			]
+		];
+symmetryTestPlane[center_, positions_, n_]:=
+	With[{len=Length@positions},
+		If[ n <= len^4,
+			enumeratePlanesIter[center, positions, n, len],
+			enumeratePlanesIter2[center, positions, n, len]
+			]
+		];
+symmetryTestPlaneCount[positions_]:=
+	Length@positions^4+Length@positions^4;*)
+
+
+(* ::Subsubsection::Closed:: *)
+(*enumerateRotationAxesCompiled*)
+
+
+
+(*enumerateRotationAxesCompiled:=enumerateRotationAxesCompiled=With[
+	{
+		$chemSymmEscapeArray=$chemSymmEscapeArray,
+		uniquePointsQComp=uniquePointsQComp,
+		uniqueAxesQComp=uniqueAxesQComp,
+		$ChemSymmetryUniquenessThreshold=$ChemSymmetryUniquenessThreshold,
+		enumerateAxesIter=enumerateAxesIter,
+		enumeratePlanesIter=enumeratePlanesIter,
+		ChemUtilsRotationAxisOrderComp=ChemUtilsRotationAxisOrderComp
+		},
+		Compile[
+			{
+				{center, _Real, 1},
+				{positions, _Real, 2},
+				{groups, _Integer, 1},
+				{totalCount, _Integer},
+				{linearFlag, _Integer},
+				{tol, _Real}
+				},
+		Block[
+			{
+				triedAxes=
+					Table[$chemSymmEscapeArray,totalCount],
+				successOrders=
+					Table[-1,totalCount],
+				linearQ=linearFlag===1,
+				j,
+				allTrueFlag
+				},
+			Do[
+				triedAxes[[n]]=enumerateAxesIter[center, positions, n];
+				If[triedAxes[[n]]=!=$chemSymmEscapeArray,
+						allTrueFlag=True;
+						If[j=1;
+								While[j<n&&allTrueFlag,
+									allTrueFlag=(
+										triedAxes[[j]]===$chemSymmEscapeArray||
+										uniqueAxesQComp[
+											center,
+											triedAxes[[j]], 
+											triedAxes[[n]],
+											$ChemSymmetryUniquenessThreshold
+											]
+										);
+									j++
+									];
+								allTrueFlag,
+							With[{
+								o=
+									ChemUtilsRotationAxisOrderComp[
+										center,
+										triedAxes[[n]],
+										positions,
+										groups,
+										linearFlag,
+										tol
+										]
+									},
+								If[o>1,
+									successOrders[[n]]=
+										o
+									]
+								]
+							];
+						],
+					{n, totalCount}
+					];
+			Thread[{
+				Select[successOrders, #>1&],
+				Pick[triedAxes, #>1&/@successOrders]
+				}]
+			]
+		]
+	];*)
+
+
+(* ::Subsubsection::Closed:: *)
+(*enumerateSymmetryPlanesCompiled*)
+
+
+
+(*enumerateSymmetryPlanesCompiled:=enumerateSymmetryPlanes=With[
+	{
+		$chemSymmEscapeArray=$chemSymmEscapeArray,
+		uniquePointsQComp=uniquePointsQComp,
+		uniqueAxesQComp=uniqueAxesQComp,
+		$ChemSymmetryUniquenessThreshold=$ChemSymmetryUniquenessThreshold,
+		enumerateAxesIter=enumerateAxesIter,
+		enumeratePlanesIter=enumeratePlanesIter,
+		ChemUtilsPlaneOfSymmetryQComp=ChemUtilsPlaneOfSymmetryQComp
+		},
+		Compile[
+			{
+				{center, _Real, 1},
+				{positions, _Real, 2},
+				{groups, _Integer, 1},
+				{totalCount, _Integer},
+				{tol, _Real}
+				},
+			Block[
+				{
+					triedPlanes=
+						Table[{$chemSymmEscapeArray, $chemSymmEscapeArray}, totalCount],
+					triedNorms=
+						Table[$chemSymmEscapeArray, totalCount],
+					testPlane,
+					testNorm,
+					plen=Length@positions,
+					allTrueFlag,
+					j=1
+					},
+				Do[
+					testPlane=enumeratePlanesIter[center, positions, n, plen];
+					If[testPlane=!={$chemSymmEscapeArray,$chemSymmEscapeArray},
+						testNorm=
+							triedNorms[[n]]=
+									Cross[testPlane[[1]]-center, testPlane[[2]]-center];
+						allTrueFlag=True;
+						If[testPlane[[1]]!={0.,0.,0.}&&
+							(
+								j=1;
+								While[j<n&&allTrueFlag,
+									allTrueFlag=(
+										triedNorms[[j]]===$chemSymmEscapeArray||
+										uniqueAxesQComp[
+											center,
+											triedNorms[[j]], 
+											testNorm,
+											$ChemSymmetryUniquenessThreshold
+											]
+										);
+									j++
+									];
+								allTrueFlag
+								),
+							If[
+									ChemUtilsPlaneOfSymmetryQComp[
+										center,
+										testPlane[[1]],
+										positions,
+										groups,
+										tol
+										],
+								triedPlanes[[n]]=
+									testPlane
+								]
+							];
+						],
+					{n, totalCount}
+					];
+				Select[triedPlanes, 
+					#=!={$chemSymmEscapeArray,$chemSymmEscapeArray}&
+					]
+				]
+			]
+	];*)
+
+
+(* ::Subsubsection::Closed:: *)
+(*enumerateScrewAxesCompiled*)
+
+
+
+(*enumerateScrewAxes:=enumerateScrewAxes=With[
+	{
+		$chemSymmEscapeArray=$chemSymmEscapeArray,
+		uniquePointsQComp=uniquePointsQComp,
+		uniqueAxesQComp=uniqueAxesQComp,
+		$ChemSymmetryUniquenessThreshold=$ChemSymmetryUniquenessThreshold,
+		enumerateAxesIter=enumerateAxesIter,
+		enumeratePlanesIter=enumeratePlanesIter,
+		ChemUtilsScrewAxisOrderComp=ChemUtilsScrewAxisOrderComp
+		},
+		Compile[
+			{
+				{center, _Real, 1},
+				{positions, _Real, 2},
+				{groups, _Integer, 1},
+				{totalCount, _Integer},
+				{linearFlag, _Integer},
+				{tol, _Real}
+				},
+		Block[
+			{
+				triedAxes=
+					Table[$chemSymmEscapeArray,totalCount],
+				successOrders=
+					Table[-1,totalCount],
+				linearQ=linearFlag===1,
+				j,
+				allTrueFlag
+				},
+			Do[
+				triedAxes[[n]]=enumerateAxesIter[center, positions, n];
+				If[triedAxes[[n]]=!=$chemSymmEscapeArray,
+						allTrueFlag=True;
+						If[j=1;
+								While[j<n&&allTrueFlag,
+									allTrueFlag=(
+										triedAxes[[j]]===$chemSymmEscapeArray||
+										uniqueAxesQComp[
+											center,
+											triedAxes[[j]], 
+											triedAxes[[n]],
+											$ChemSymmetryUniquenessThreshold
+											]
+										);
+									j++
+									];
+								allTrueFlag,
+							With[{
+								o=
+									ChemUtilsScrewAxisOrderComp[
+										center,
+										triedAxes[[n]],
+										positions,
+										groups,
+										tol
+										]
+									},
+								If[o>1,
+									successOrders[[n]]=
+										o
+									]
+								]
+							];
+						],
+					{n, totalCount}
+					];
+			Thread[{
+				Select[successOrders, #>1&],
+				Pick[triedAxes, #>1&/@successOrders]
+				}]
+			]
+		]
+	];*)
+
+
+(* ::Subsubsection::Closed:: *)
+(*symmetryTestPosition*)
+
+
+
+$chemSymmEscapeArray=
+	RandomReal[{-.5,.5},3];
+
+
+(*enumeratePositionsIter:=
+	enumeratePositionsIter=With[{$chemSymmEscapeArray=$chemSymmEscapeArray},
+	enumeratePositionsIter=
+		Compile[{{positions, _Real, 2},{n, _Integer}, {plen, _Integer}},
+			With[
+				{
+					i=1+Floor[(n-1)/plen],
+					j=Mod[n, plen, 1]
+					},
+				If[i>j,
+					$chemSymmEscapeArray,
+					Mean[{
+						positions[[i]],
+						positions[[j]]
+						}]
+					]
+				]
+			]
+	];
+symmetryTestPosition[center_, positions_, n_]:=
+	enumeratePositionsIter[positions, n, Length@positions];
+symmetryTestPositionCount[center_, positions_]:=
+	Length@positions^2;*)
+
+
+(* ::Subsection:: *)
+(*InversionCenter*)
+
+
+
+(* ::Subsubsection::Closed:: *)
 (*InversionCenterQ*)
 
 
@@ -112,22 +673,65 @@ ChemUtilsInversionCenterQ[
 			];
 
 
+(* ::Subsection:: *)
+(*RotationAxis*)
+
+
+
 (* ::Subsubsection::Closed:: *)
-(*uniqueAxesQ*)
+(*enumerateRotationAxes*)
 
 
 
-uniqueAxesQComp=
-	Compile[{{center, _Real, 1}, {p, _Real, 1}, {q, _Real, 1}, {tol, _Real}},
-		With[{n1=#/Norm[#]&@p-center,n2=#/Norm[#]&@q-center},
-			Norm[n1-n2]>tol&&
-				Norm[n1+n2]>tol
+enumerateRotationAxes[axes_, groups_,linearQ_, tol_, tol2_]:=
+	With[
+		{
+			ax=
+				Union@@
+					Join[
+						Values@
+							Map[
+								Function[
+									enumerateAxes[#, tol2]
+									],
+								groups
+								],
+						{axes}
+						]
+			},
+		Map[
+			With[
+				{
+					o=
+						ChemUtilsRotationAxisOrder[#, groups, linearQ, tol]
+					},
+				If[o>1,
+					{o, #},
+					Nothing
+					]
+				]&,
+			deleteDuplicateAxes[
+				ax,
+				tol2
+				]
 			]
-		];
-uniqueAxesQ[center_, p_,q_]:=
-	uniqueAxesQComp[center,p,q, $ChemSymmetryUniquenessThreshold];
-uniqueAxesQ[center_][p_,q_]:=
-	uniqueAxesQComp[center,p,q];
+		]
+
+
+(* ::Subsubsection::Closed:: *)
+(*deleteDuplicateRotationAxes*)
+
+
+
+deleteDuplicateRotationAxes[axes_, tol_]:=
+	With[{
+		a=GroupBy[axes, First->Last, DeleteDuplicates]},
+		Join@@
+			KeyValueMap[
+				Thread[{#, Pick[a[#], #2, 1]}]&,
+				deleteDuplicateAxesInds[tol]/@a
+				]
+		]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -256,30 +860,45 @@ ChemUtilsRotationAxisOrder[
 		];
 
 
-(* ::Subsubsection::Closed:: *)
-(*perpendicularAxisQ*)
+(* ::Subsection:: *)
+(*ScrewAxes*)
 
-
-
-perpendicularAxisQ[center_,p_,{q1_,q2_}]:=
-	Not@uniqueAxesQ[center,p,Cross[q1-center,q2-center]];
-perpendicularAxisQ[center_,p_][q_]:=
-	perpendicularAxisQ[center,p,q];
 
 
 (* ::Subsubsection::Closed:: *)
-(*anyPerpendicular*)
+(*enumerateScrewAxes*)
 
 
 
-anyPerpPlane[center_,axes_,planes_]:=
-	AnyTrue[planes,
-		With[{plane=#},
-			AnyTrue[axes,perpendicularAxisQ[center,#,plane]&]
-			]&
-		];
-anyPerpPlane[center_,axes_][planes_]:=
-	anyPerpPlane[center,axes,planes];
+enumerateScrewAxes[axes_, groups_,tol_,tol2_]:=
+	With[
+		{
+			ax=
+				Union@@
+					Join[
+						Values@
+							Map[
+								Function[
+									enumerateAxes[#, tol2]
+									],
+								groups
+								],
+						{axes}
+						]
+			},
+	Map[
+		With[{o=ChemUtilsScrewAxisOrder[#, groups,tol]},
+			If[o>0,
+				{o, #},
+				Nothing
+				]
+			]&,
+		deleteDuplicateAxes[
+			ax,
+			tol2
+			]
+		]
+	]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -390,449 +1009,35 @@ ChemUtilsScrewAxisOrder[
 		];
 
 
-(* ::Subsubsection::Closed:: *)
-(*InertialSymmetry*)
+(* ::Subsection:: *)
+(*Symmetry Planes*)
 
-
-
-ChemUtilsInertialSymmetry[c_,axes_,atoms_,toler:_?NumericQ|Automatic:Automatic]:=
-	With[{tol=Replace[toler, Automatic:>$ChemSymmetryTolerance]},
-		<|
-			"CenterSymmetric"->ChemUtilsInversionCenterQ[c,atoms,tol],
-			"ARotationOrder"->ChemUtilsRotationAxisOrder[{c,c+axes[[1]]},atoms,tol],
-			"BRotationOrder"->ChemUtilsRotationAxisOrder[{c,c+axes[[2]]},atoms,tol],
-			"CRotationOrder"->ChemUtilsRotationAxisOrder[{c,c+axes[[3]]},atoms,tol],
-			"ABSymmetric"->ChemUtilsPlaneOfSymmetryQ[{c,c+axes[[1]],c+axes[[2]]},atoms,tol],
-			"ACSymmetric"->ChemUtilsPlaneOfSymmetryQ[{c,c+axes[[1]],c+axes[[3]]},atoms,tol],
-			"BCSymmetric"->ChemUtilsPlaneOfSymmetryQ[{c,c+axes[[2]],c+axes[[3]]},atoms,tol],
-			"AScrewOrder"->
-				ChemUtilsScrewAxisOrder[{c,c+axes[[1]]},atoms,tol],
-			"BScrewOrder"->
-				ChemUtilsScrewAxisOrder[{c,c+axes[[2]]},atoms,tol],
-			"CScrewOrder"->
-				ChemUtilsScrewAxisOrder[{c,c+axes[[3]]},atoms,tol]
-			|>
-		];
-ChemUtilsInertialSymmetry[atoms_,tol:_?NumericQ|Automatic:Automatic]:=
-	With[{
-		c=ChemUtilsCenterOfMass@atoms,
-		axes=Lookup[ChemUtilsInertialSystem@atoms,{"AAxis","BAxis","CAxis"}]
-		},
-		ChemUtilsInertialSymmetry[c,axes,atoms,
-			Replace[tol, Automatic:>$ChemSymmetryTolerance]]
-		];
 
 
 (* ::Subsubsection::Closed:: *)
-(*symmetryTestPosition*)
+(*perpendicularAxisQ*)
 
 
 
-$chemSymmEscapeArray=
-	RandomReal[{-.5,.5},3];
+perpendicularAxisQ[center_,p_,{q1_,q2_}]:=
+	Not@uniqueAxesQ[center,p,Cross[q1-center,q2-center]];
+perpendicularAxisQ[center_,p_][q_]:=
+	perpendicularAxisQ[center,p,q];
 
 
-(*enumeratePositionsIter:=
-	enumeratePositionsIter=With[{$chemSymmEscapeArray=$chemSymmEscapeArray},
-	enumeratePositionsIter=
-		Compile[{{positions, _Real, 2},{n, _Integer}, {plen, _Integer}},
-			With[
-				{
-					i=1+Floor[(n-1)/plen],
-					j=Mod[n, plen, 1]
-					},
-				If[i>j,
-					$chemSymmEscapeArray,
-					Mean[{
-						positions[[i]],
-						positions[[j]]
-						}]
-					]
-				]
-			]
-	];
-symmetryTestPosition[center_, positions_, n_]:=
-	enumeratePositionsIter[positions, n, Length@positions];
-symmetryTestPositionCount[center_, positions_]:=
-	Length@positions^2;*)
+(* ::Subsubsection::Closed:: *)
+(*anyPerpendicular*)
 
 
-uniquePointsQComp=
-	Compile[{{pt1,_Real,1},{pt2,_Real,1}, {tol,_Real}},
-		Norm[pt1-pt2]>tol
-		]
-uniquePointsQ[pt1_List, pt2_]:=
-	uniquePointsQComp[pt1, pt2, $ChemSymmetryUniquenessThreshold];
-uniquePointsQ[___]:=False
 
-
-(*enumeratePlanesIter1:=enumeratePlanesIter1=With[{
-	$chemSymmEscapeArray=$chemSymmEscapeArray,
-	uniquePointsQComp=uniquePointsQComp,
-	$ChemSymmetryUniquenessThreshold=$ChemSymmetryUniquenessThreshold,
-	enumeratePositionsIter=enumeratePositionsIter
-	},
-		Compile[{
-			{center, _Real, 1}, {positions, _Real, 2},
-			{n, _Integer}, {plen, _Integer}
-			},
-			With[
-				{
-					i=1+Floor[(n-1)/(plen^2)],
-					j=Mod[n, plen^2, 1]
-					},
-				If[i>=j,
-					{$chemSymmEscapeArray, $chemSymmEscapeArray},
-					With[{pt1=enumeratePositionsIter[positions, i, plen]},
-						If[(
-								pt1!=$chemSymmEscapeArray&&
-								uniquePointsQComp[pt1, center,$ChemSymmetryUniquenessThreshold]
-								)//TrueQ,
-							With[{pt2=enumeratePositionsIter[positions, j, plen]},
-								If[(
-									pt2!=$chemSymmEscapeArray&&
-									uniquePointsQComp[pt2, center, $ChemSymmetryUniquenessThreshold]
-									)//TrueQ,
-									{pt1, pt2},
-									{$chemSymmEscapeArray, $chemSymmEscapeArray}
-									]
-								],
-							{$chemSymmEscapeArray, $chemSymmEscapeArray}
-							]
-						]
-					]
-				]
-			]
-		];*)
-
-
-(*enumerateAxesIter:=enumerateAxesIter=With[{
-	$chemSymmEscapeArray=$chemSymmEscapeArray,
-	uniquePointsQComp=uniquePointsQComp,
-	$ChemSymmetryUniquenessThreshold=$ChemSymmetryUniquenessThreshold,
-	enumeratePositionsIter=enumeratePositionsIter,
-	enumeratePlanesIter=enumeratePlanesIter
-	},
-	Compile[{
-		{center, _Real, 1}, {positions, _Real, 2},
-		{n, _Integer}, {plen, _Integer}
-		},
-		With[{p=
-			If[n<=plen^2,
-				enumeratePositionsIter[positions, n, plen],
-				With[{s=enumeratePlanesIter[center, positions, n - plen]},
-					If[s=!=$chemSymmEscapeArray,
-						center+Cross[s[[1]]-center, s[[2]]-center],
-						$chemSymmEscapeArray
-						]
-					]
-				]
-				},
-			If[uniquePointsQComp[p,center,$ChemSymmetryUniquenessThreshold],
-				p, 
-				$chemSymmEscapeArray
-				]
-			]
-		]
-	];
-symmetryTestAxis[center_, positions_, n_]:=
-	enumerateAxesIter[center, positions, n, Length@positions];
-symmetryTestAxisCount[positions_]:=
-	Length@positions^4+Length@positions*)
-
-
-(*enumeratePlanesIter2:=
-	enumeratePlanesIter2=With[
-	{
-		$chemSymmEscapeArray=$chemSymmEscapeArray,
-		uniquePointsQComp=uniquePointsQComp,
-		$ChemSymmetryUniquenessThreshold=$ChemSymmetryUniquenessThreshold,
-		enumerateAxesIter=enumerateAxesIter
-		},
-		Compile[{
-			{center, _Real, 1}, {positions, _Real, 2},
-			{n, _Integer}, {plen, _Integer}
-			},
-			With[
-				{
-					i=1+Floor[(n-1)/(plen^2)],
-					j=Mod[n, (plen^2), 1]
-					},
-					With[{pt1=enumerateAxesIter[center, positions, i + plen^2, plen]},
-						If[
-							(
-								pt1!=$chemSymmEscapeArray&&
-								uniquePointsQComp[pt1, center, $ChemSymmetryUniquenessThreshold]
-								)//TrueQ,
-							With[{pt2=enumerateAxesIter[center, positions, j, plen]},
-								If[
-									(
-										pt2!=$chemSymmEscapeArray&&
-										uniquePointsQComp[pt2, center, $ChemSymmetryUniquenessThreshold]
-										)//TrueQ,
-									{pt1, pt2},
-									{$chemSymmEscapeArray, $chemSymmEscapeArray}
-									]
-								],
-							{$chemSymmEscapeArray, $chemSymmEscapeArray}
-							]
-						]
-					]
-			]
+anyPerpPlane[center_,axes_,planes_]:=
+	AnyTrue[planes,
+		With[{plane=#},
+			AnyTrue[axes,perpendicularAxisQ[center,#,plane]&]
+			]&
 		];
-enumeratePlanesIter=
-	With[{
-		enumeratePlanesIter1=enumeratePlanesIter1,
-		enumeratePlanesIter2=enumeratePlanesIter2
-		},
-		Compile[
-			{
-				{center, _Real, 1}, {positions, _Real, 2},
-				{n, _Integer}, {plen, _Integer}
-				},
-			If[ n <= plen^4,
-				enumeratePlanesIter1[center, positions, n, plen],
-				enumeratePlanesIter2[center, positions, n, plen]
-				]
-			]
-		];
-symmetryTestPlane[center_, positions_, n_]:=
-	With[{len=Length@positions},
-		If[ n <= len^4,
-			enumeratePlanesIter[center, positions, n, len],
-			enumeratePlanesIter2[center, positions, n, len]
-			]
-		];
-symmetryTestPlaneCount[positions_]:=
-	Length@positions^4+Length@positions^4;*)
-
-
-(*enumerateRotationAxesCompiled:=enumerateRotationAxesCompiled=With[
-	{
-		$chemSymmEscapeArray=$chemSymmEscapeArray,
-		uniquePointsQComp=uniquePointsQComp,
-		uniqueAxesQComp=uniqueAxesQComp,
-		$ChemSymmetryUniquenessThreshold=$ChemSymmetryUniquenessThreshold,
-		enumerateAxesIter=enumerateAxesIter,
-		enumeratePlanesIter=enumeratePlanesIter,
-		ChemUtilsRotationAxisOrderComp=ChemUtilsRotationAxisOrderComp
-		},
-		Compile[
-			{
-				{center, _Real, 1},
-				{positions, _Real, 2},
-				{groups, _Integer, 1},
-				{totalCount, _Integer},
-				{linearFlag, _Integer},
-				{tol, _Real}
-				},
-		Block[
-			{
-				triedAxes=
-					Table[$chemSymmEscapeArray,totalCount],
-				successOrders=
-					Table[-1,totalCount],
-				linearQ=linearFlag===1,
-				j,
-				allTrueFlag
-				},
-			Do[
-				triedAxes[[n]]=enumerateAxesIter[center, positions, n];
-				If[triedAxes[[n]]=!=$chemSymmEscapeArray,
-						allTrueFlag=True;
-						If[j=1;
-								While[j<n&&allTrueFlag,
-									allTrueFlag=(
-										triedAxes[[j]]===$chemSymmEscapeArray||
-										uniqueAxesQComp[
-											center,
-											triedAxes[[j]], 
-											triedAxes[[n]],
-											$ChemSymmetryUniquenessThreshold
-											]
-										);
-									j++
-									];
-								allTrueFlag,
-							With[{
-								o=
-									ChemUtilsRotationAxisOrderComp[
-										center,
-										triedAxes[[n]],
-										positions,
-										groups,
-										linearFlag,
-										tol
-										]
-									},
-								If[o>1,
-									successOrders[[n]]=
-										o
-									]
-								]
-							];
-						],
-					{n, totalCount}
-					];
-			Thread[{
-				Select[successOrders, #>1&],
-				Pick[triedAxes, #>1&/@successOrders]
-				}]
-			]
-		]
-	];*)
-
-
-(*enumerateSymmetryPlanesCompiled:=enumerateSymmetryPlanes=With[
-	{
-		$chemSymmEscapeArray=$chemSymmEscapeArray,
-		uniquePointsQComp=uniquePointsQComp,
-		uniqueAxesQComp=uniqueAxesQComp,
-		$ChemSymmetryUniquenessThreshold=$ChemSymmetryUniquenessThreshold,
-		enumerateAxesIter=enumerateAxesIter,
-		enumeratePlanesIter=enumeratePlanesIter,
-		ChemUtilsPlaneOfSymmetryQComp=ChemUtilsPlaneOfSymmetryQComp
-		},
-		Compile[
-			{
-				{center, _Real, 1},
-				{positions, _Real, 2},
-				{groups, _Integer, 1},
-				{totalCount, _Integer},
-				{tol, _Real}
-				},
-			Block[
-				{
-					triedPlanes=
-						Table[{$chemSymmEscapeArray, $chemSymmEscapeArray}, totalCount],
-					triedNorms=
-						Table[$chemSymmEscapeArray, totalCount],
-					testPlane,
-					testNorm,
-					plen=Length@positions,
-					allTrueFlag,
-					j=1
-					},
-				Do[
-					testPlane=enumeratePlanesIter[center, positions, n, plen];
-					If[testPlane=!={$chemSymmEscapeArray,$chemSymmEscapeArray},
-						testNorm=
-							triedNorms[[n]]=
-									Cross[testPlane[[1]]-center, testPlane[[2]]-center];
-						allTrueFlag=True;
-						If[testPlane[[1]]!={0.,0.,0.}&&
-							(
-								j=1;
-								While[j<n&&allTrueFlag,
-									allTrueFlag=(
-										triedNorms[[j]]===$chemSymmEscapeArray||
-										uniqueAxesQComp[
-											center,
-											triedNorms[[j]], 
-											testNorm,
-											$ChemSymmetryUniquenessThreshold
-											]
-										);
-									j++
-									];
-								allTrueFlag
-								),
-							If[
-									ChemUtilsPlaneOfSymmetryQComp[
-										center,
-										testPlane[[1]],
-										positions,
-										groups,
-										tol
-										],
-								triedPlanes[[n]]=
-									testPlane
-								]
-							];
-						],
-					{n, totalCount}
-					];
-				Select[triedPlanes, 
-					#=!={$chemSymmEscapeArray,$chemSymmEscapeArray}&
-					]
-				]
-			]
-	];*)
-
-
-(*enumerateScrewAxes:=enumerateScrewAxes=With[
-	{
-		$chemSymmEscapeArray=$chemSymmEscapeArray,
-		uniquePointsQComp=uniquePointsQComp,
-		uniqueAxesQComp=uniqueAxesQComp,
-		$ChemSymmetryUniquenessThreshold=$ChemSymmetryUniquenessThreshold,
-		enumerateAxesIter=enumerateAxesIter,
-		enumeratePlanesIter=enumeratePlanesIter,
-		ChemUtilsScrewAxisOrderComp=ChemUtilsScrewAxisOrderComp
-		},
-		Compile[
-			{
-				{center, _Real, 1},
-				{positions, _Real, 2},
-				{groups, _Integer, 1},
-				{totalCount, _Integer},
-				{linearFlag, _Integer},
-				{tol, _Real}
-				},
-		Block[
-			{
-				triedAxes=
-					Table[$chemSymmEscapeArray,totalCount],
-				successOrders=
-					Table[-1,totalCount],
-				linearQ=linearFlag===1,
-				j,
-				allTrueFlag
-				},
-			Do[
-				triedAxes[[n]]=enumerateAxesIter[center, positions, n];
-				If[triedAxes[[n]]=!=$chemSymmEscapeArray,
-						allTrueFlag=True;
-						If[j=1;
-								While[j<n&&allTrueFlag,
-									allTrueFlag=(
-										triedAxes[[j]]===$chemSymmEscapeArray||
-										uniqueAxesQComp[
-											center,
-											triedAxes[[j]], 
-											triedAxes[[n]],
-											$ChemSymmetryUniquenessThreshold
-											]
-										);
-									j++
-									];
-								allTrueFlag,
-							With[{
-								o=
-									ChemUtilsScrewAxisOrderComp[
-										center,
-										triedAxes[[n]],
-										positions,
-										groups,
-										tol
-										]
-									},
-								If[o>1,
-									successOrders[[n]]=
-										o
-									]
-								]
-							];
-						],
-					{n, totalCount}
-					];
-			Thread[{
-				Select[successOrders, #>1&],
-				Pick[triedAxes, #>1&/@successOrders]
-				}]
-			]
-		]
-	];*)
+anyPerpPlane[center_,axes_][planes_]:=
+	anyPerpPlane[center,axes,planes];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -1208,146 +1413,9 @@ enumeratePlanesSimple[pts_, tol_]:=
 		]*)
 
 
-(* ::Subsubsection::Closed:: *)
-(*deleteDuplicateAxes*)
+(* ::Subsection:: *)
+(*Symmetry Planes*)
 
-
-
-deleteDuplicateAxesInds[tol_]:=
-	Compile[
-		{	{vecs, _Real, 2} },
-		Block[{
-			pickedVecs,
-			tally=0.,
-			vecNorm,
-			angs,
-			order,
-			reorder,
-			angDiffs,
-			angSel,
-			flag=1,
-			tolTrue=tol/100
-			},
-			Times@@
-				Table[
-					vecNorm=Norm@vecs[[i]];
-					angs=
-							Table[(vecs[[i]].vecs[[j]])/(vecNorm*Norm[vecs[[j]]]),
-								{j, i+1, Length@vecs}
-								];
-					Join[
-						Table[1, {o, i}],
-						If[1-tol<Abs[#], 0, 1]&/@angs
-						],
-					{i, Length@vecs}
-					]
-			]
-		];
-deleteDuplicateAxes[axes_, tol_]:=
-	With[{real=Select[axes, Norm[#]>tol&]},
-		If[Length[real]>1,
-			Pick[real,
-				deleteDuplicateAxesInds[tol]@real,
-				1],
-			real
-			]
-		]
-
-
-(* ::Subsubsection::Closed:: *)
-(*deleteDuplicateRotationAxes*)
-
-
-
-deleteDuplicateRotationAxes[axes_, tol_]:=
-	With[{
-		a=GroupBy[axes, First->Last, DeleteDuplicates]},
-		Join@@
-			KeyValueMap[
-				Thread[{#, Pick[a[#], #2, 1]}]&,
-				deleteDuplicateAxesInds[tol]/@a
-				]
-		]
-
-
-(* ::Subsubsection::Closed:: *)
-(*enumerateAxes*)
-
-
-
-enumerateAxesNormals=
-	Compile[{{p,_Real,3}},
-		Map[Cross[#[[1]], #[[2]]]&, p]
-		]
-
-
-enumerateAxes[positions_, tol_]:=
-	Replace[enumerateAxesCached[{positions, tol}],
-		Except[_List]:>
-			Set[
-				enumerateAxesCached[{positions, tol}],
-				With[{
-					posReal=
-						deleteDuplicateAxes[
-							positions, 
-							tol
-							]
-					},
-					deleteDuplicateAxes[
-						Join[
-							enumeratePositions[posReal],
-							With[{r=enumeratePlanesSimple[posReal, tol]},
-								If[Length[r]>0,
-									enumerateAxesNormals@r,
-									{}
-									]
-								]
-							],
-						tol
-						]
-					]
-				]
-		]
-
-
-(* ::Subsubsection::Closed:: *)
-(*enumerateRotationAxes*)
-
-
-
-enumerateRotationAxes[axes_, groups_,linearQ_, tol_, tol2_]:=
-	With[
-		{
-			ax=
-				Union@@
-					Join[
-						Values@
-							Map[
-								Function[
-									enumerateAxes[#, tol2]
-									],
-								groups
-								],
-						{axes}
-						]
-			},
-		Map[
-			With[
-				{
-					o=
-						ChemUtilsRotationAxisOrder[#, groups, linearQ, tol]
-					},
-				If[o>1,
-					{o, #},
-					Nothing
-					]
-				]&,
-			deleteDuplicateAxes[
-				ax,
-				tol2
-				]
-			]
-		]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -1472,39 +1540,41 @@ ChemUtilsPlaneOfSymmetryQ[
 
 
 (* ::Subsubsection::Closed:: *)
-(*enumerateScrewAxes*)
+(*InertialSymmetry*)
 
 
 
-enumerateScrewAxes[axes_, groups_,tol_,tol2_]:=
-	With[
-		{
-			ax=
-				Union@@
-					Join[
-						Values@
-							Map[
-								Function[
-									enumerateAxes[#, tol2]
-									],
-								groups
-								],
-						{axes}
-						]
-			},
-	Map[
-		With[{o=ChemUtilsScrewAxisOrder[#, groups,tol]},
-			If[o>0,
-				{o, #},
-				Nothing
-				]
-			]&,
-		deleteDuplicateAxes[
-			ax,
-			tol2
-			]
-		]
-	]
+ChemComputeInertialSymmetry[c_,axes_,atoms_,toler:_?NumericQ|Automatic:Automatic]:=
+	With[{tol=Replace[toler, Automatic:>$ChemSymmetryTolerance]},
+		<|
+			"CenterSymmetric"->ChemUtilsInversionCenterQ[c,atoms,tol],
+			"ARotationOrder"->ChemUtilsRotationAxisOrder[{c,c+axes[[1]]},atoms,tol],
+			"BRotationOrder"->ChemUtilsRotationAxisOrder[{c,c+axes[[2]]},atoms,tol],
+			"CRotationOrder"->ChemUtilsRotationAxisOrder[{c,c+axes[[3]]},atoms,tol],
+			"ABSymmetric"->ChemUtilsPlaneOfSymmetryQ[{c,c+axes[[1]],c+axes[[2]]},atoms,tol],
+			"ACSymmetric"->ChemUtilsPlaneOfSymmetryQ[{c,c+axes[[1]],c+axes[[3]]},atoms,tol],
+			"BCSymmetric"->ChemUtilsPlaneOfSymmetryQ[{c,c+axes[[2]],c+axes[[3]]},atoms,tol],
+			"AScrewOrder"->
+				ChemUtilsScrewAxisOrder[{c,c+axes[[1]]},atoms,tol],
+			"BScrewOrder"->
+				ChemUtilsScrewAxisOrder[{c,c+axes[[2]]},atoms,tol],
+			"CScrewOrder"->
+				ChemUtilsScrewAxisOrder[{c,c+axes[[3]]},atoms,tol]
+			|>
+		];
+ChemComputeInertialSymmetry[atoms_,tol:_?NumericQ|Automatic:Automatic]:=
+	With[{
+		c=ChemUtilsCenterOfMass@atoms,
+		axes=Lookup[ChemUtilsInertialSystem@atoms,{"AAxis","BAxis","CAxis"}]
+		},
+		ChemComputeInertialSymmetry[c,axes,atoms,
+			Replace[tol, Automatic:>$ChemSymmetryTolerance]]
+		];
+
+
+(* ::Subsection:: *)
+(*Symmetry Elements*)
+
 
 
 (* ::Subsubsection::Closed:: *)
@@ -1519,9 +1589,11 @@ $ChemSymmetryUniquenessThreshold=.0001;
 Options[ChemUtilsRawSymmetryElements]=
 	{
 		Tolerance->Automatic,
-		"UniquenessThreshold"->Automatic
+		"UniquenessThreshold"->Automatic,
+		"ReturnElements"->All
 		};
-ChemUtilsRawSymmetryElements[atoms_,
+ChemUtilsRawSymmetryElements[
+	atoms_,
 	ops:OptionsPattern[]
 	]:=
 	Block[{
@@ -1541,11 +1613,25 @@ ChemUtilsRawSymmetryElements[atoms_,
 			tol=
 				$ChemSymmetryTolerance,
 			tol2=
-				$ChemSymmetryUniquenessThreshold
+				$ChemSymmetryUniquenessThreshold,
+			ret=
+				Replace[OptionValue["ReturnElements"],
+					{
+						All->
+							{
+								"Center", 
+								"CenterSymmetric", 
+								"RotationAxes", 
+								"SymmetryPlanes", 
+								"ScrewAxes"
+								},
+						s_String:>{s}
+						}
+					]
 			},
 			With[{
 				axes=
-					Last@ChemUtilsInertialEigensystem@atoms,
+					Last@ChemComputeInertialEigensystem@atoms,
 				groups=
 					Map[#-center&]/@
 						Round[
@@ -1553,12 +1639,13 @@ ChemUtilsRawSymmetryElements[atoms_,
 							.0001
 							],
 				linear=
-					ChemUtilsRotorType[atoms]==="Linear"
+					ChemComputeRotorType[atoms]==="Linear"
 				},
+			AssociationThread[ret->Lookup[#, ret]]&@
 				<|
-					"Center"->
+					"Center":>
 						center,
-					"CenterSymmetric"->
+					"CenterSymmetric":>
 						ChemUtilsInversionCenterQ[
 							Select[
 								Join@@Values@groups,
@@ -1566,12 +1653,12 @@ ChemUtilsRawSymmetryElements[atoms_,
 								],
 							tol
 							],
-					"RotationAxes"->
+					"RotationAxes":>
 						Replace[
 							enumerateRotationAxes[
 								axes,
 								groups,
-								ChemUtilsRotorType[
+								ChemComputeRotorType[
 									MapThread[
 										Thread@*List,
 										{Keys[groups],Values[groups]}
@@ -1584,7 +1671,7 @@ ChemUtilsRawSymmetryElements[atoms_,
 								{o, Normalize[v] + center},
 							1
 							],
-					"SymmetryPlanes"->
+					"SymmetryPlanes":>
 						Replace[
 							enumerateSymmetryPlanes[
 								axes,
@@ -1596,7 +1683,7 @@ ChemUtilsRawSymmetryElements[atoms_,
 								{Normalize[v1]+center, Normalize[v2]+center},
 							1
 							],
-					"ScrewAxes"->
+					"ScrewAxes":>
 						Replace[
 							enumerateScrewAxes[
 								axes,
@@ -1746,7 +1833,7 @@ ChemUtilsSymmetryElementGroup[
 		Graph@
 			Flatten@{
 				(* Map things to themselves *)
-				Map[#<->#&, axes],
+				Map[#\[UndirectedEdge]#&, axes],
 				Table[
 					With[{
 						fpl=
@@ -1772,7 +1859,7 @@ ChemUtilsSymmetryElementGroup[
 									],
 								l_List:>
 									(* An element was found so connect it to a *)
-									a<->l
+									a\[UndirectedEdge]l
 								]
 							]&/@fpl
 						],
@@ -1814,7 +1901,7 @@ ChemUtilsSymmetryElementGroup["SymmetryPlanes",
 	ConnectedComponents[
 		Graph@Flatten@
 			Join[
-				Map[#<->#&, planes],
+				Map[#\[UndirectedEdge]#&, planes],
 				Table[
 					With[{
 						fpl=
@@ -1847,7 +1934,7 @@ ChemUtilsSymmetryElementGroup["SymmetryPlanes",
 									Nothing
 									],
 								l_List:>
-									a<->l
+									a\[UndirectedEdge]l
 								]
 							]&/@fpl
 						],
@@ -2028,7 +2115,7 @@ ChemUtilsSymmetryElementExpandClass[objAssoc_, fns_]:=
 
 
 
-Options[ChemUtilsSymmetryElements]=
+Options[ChemComputeSymmetryElements]=
 	Join[
 		Options[ChemUtilsRawSymmetryElements],
 		{
@@ -2037,7 +2124,7 @@ Options[ChemUtilsSymmetryElements]=
 			"FullClasses"->True
 			}
 		];
-ChemUtilsSymmetryElements[atoms_, ops:OptionsPattern[]]:=
+ChemComputeSymmetryElements[atoms_, ops:OptionsPattern[]]:=
 	Module[
 		{
 			raw=
@@ -2095,6 +2182,11 @@ ChemUtilsSymmetryElements[atoms_, ops:OptionsPattern[]]:=
 					]
 			|>
 		]
+
+
+(* ::Subsection:: *)
+(*Computations*)
+
 
 
 (* ::Subsubsection::Closed:: *)
@@ -2229,7 +2321,7 @@ ChemUtilsIdentifyPointGroup[
 
 
 
-ChemUtilsPointGroup[
+ChemComputePointGroup[
 	smels_Association
 	]:=
 	ChemUtilsIdentifyPointGroup@@
@@ -2243,130 +2335,14 @@ ChemUtilsPointGroup[
 				"ScrewAxes"
 				}
 			];
-Options[ChemUtilsPointGroup]=
-	Options@ChemUtilsSymmetryElements;
-ChemUtilsPointGroup[
+Options[ChemComputePointGroup]=
+	Options@ChemComputeSymmetryElements;
+ChemComputePointGroup[
 	atoms:{{_String,__}..},
 	ops:OptionsPattern[]
 	]:=
-	ChemUtilsPointGroup@
-		ChemUtilsSymmetryElements[atoms, ops];
-
-
-(* ::Subsubsection::Closed:: *)
-(*Graphics*)
-
-
-
-ChemUtilsSymmetryGraphicsObjects[
-	symmEls_Association,
-	boxSize_?NumericQ,
-	OptionsPattern[]
-	]:=
-	With[{symm=symmEls["Elements"], m=boxSize, M=boxSize+.15},
-		<|
-			"InversionCenter"->
-				If[symm["CenterSymmetric"],
-					{Red,AbsolutePointSize@10,Point@symm["Center"]},
-					{}
-					],
-			"RotationAxes"->
-				{
-					AbsoluteThickness[1],
-					Map[
-						With[{v=Normalize[Last@#-symm["Center"]]},
-							Line@{symm["Center"]+v*M,symm["Center"]-v*M}
-							]&,
-						symm["RotationAxes"]
-						]
-					},
-			"SymmetryPlanes"->
-				Map[
-					With[{n=Cross[symm["Center"]-First@#,symm["Center"]-Last@#],N=48},
-						{
-							Opacity[.25],
-							Polygon@
-								NestList[
-									RotationTransform[2.\[Pi]/N,n,symm["Center"]],
-									symm["Center"]+m*Normalize[symm["Center"]-First@#],
-									N]
-							}
-						]&,
-					symm["SymmetryPlanes"]
-					],
-			"ScrewAxes"->
-				{
-					Red,
-					AbsoluteThickness[2],
-					Dashed,
-					Map[
-						With[{v=Normalize[Last@#-symm["Center"]]},
-							Line@{symm["Center"]+v*M,symm["Center"]-v*M}
-							]&,
-						symm["ScrewAxes"]	
-						]
-					}
-			|>
-		]
-
-
-Options[ChemUtilsSymmetryGraphicsObjects]=
-	Options[ChemUtilsSymmetryElements];
-ChemUtilsSymmetryGraphicsObjects[
-	atoms_?(Length[#]>=3&),
-	ops:OptionsPattern[]
-	]:=
-	With[{
-		symm=
-			ChemUtilsSymmetryElements[atoms,
-				"ReturnFunctions"->False,
-				"DetermineClasses"->False,
-				ops
-				],
-		m=.5+Max@
-				Map[Abs,
-					Thread@CoordinateBoundingBox[Last/@atoms]
-					]},
-		ChemUtilsSymmetryGraphicsObjects[symm,m]
-		]
-
-
-Options[ChemUtilsSymmetryGraphics]=
-	Join[
-		Options[Graphics3D],
-		Options[ChemUtilsSymmetryGraphicsObjects]
-		];
-ChemUtilsSymmetryGraphics[
-	symm_Association,
-	boxSize_?NumericQ,
-	types:
-		"InversionCenter"|"RotationAxes"|"SymmetryPlanes"|"ScrewAxes"|
-			{("InversionCenter"|"RotationAxes"|"SymmetryPlanes"|"ScrewAxes")..}:
-		{"InversionCenter","RotationAxes","SymmetryPlanes","ScrewAxes"},
-	ops:OptionsPattern[]
-	]:=
-	Graphics3D[
-		Lookup[
-			ChemUtilsSymmetryGraphicsObjects[symm,boxSize,
-				Sequence@@FilterRules[{ops},Options@ChemUtilsSymmetryGraphicsObjects]
-				],
-			types
-			],
-		ops
-		];
-ChemUtilsSymmetryGraphics[
-	atoms_List?(Length[#]>=3&),
-	ops:OptionsPattern[]
-	]:=
-	With[{
-		symm=ChemUtilsSymmetryElements@atoms,
-		m=.5+Max@
-				Map[Abs,
-					Thread@CoordinateBoundingBox[Last/@atoms]
-					]},
-		ChemUtilsSymmetryGraphics[symm,m,ops]
-		]
-	
+	ChemComputePointGroup@
+		ChemComputeSymmetryElements[atoms, ops];
 
 
 End[];

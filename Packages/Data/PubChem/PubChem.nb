@@ -1,0 +1,845 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["PubChem", "CodeSection",
+ Evaluatable->False,
+ CellChangeTimes->{{3.714666762410379*^9, 3.714666764568714*^9}, 
+   3.7331950909649057`*^9},ExpressionUUID->"a6651bd2-62ed-490c-b1f3-\
+57cb9cb17d10"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemCompound", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Symbolic head for an entry in the PubChem compound db\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemSubstance", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Symbolic head for an entry in the PubChem substance db\>\""}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.70019160156431*^9, 
+  3.700191625098404*^9}},ExpressionUUID->"20444d32-0166-4e61-a5d4-\
+6ad1c6570e99"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"$PubChem", "::", "usage"}], "=", 
+   "\"\<Service connection to PubChem\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemID", "::", "usage"}], "=", "\"\<Gets a compound ID\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemComponentIDs", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Gets the component IDs for a PubChem structure\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemParentIDs", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Gets the parent IDs for a given ID\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemSubstanceIDs", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Gets the substance IDs for a given ID\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemRelatedIDs", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Gets CIDs relating to a compound\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemHasQ", "::", "usage"}], "=", 
+   "\"\<Checks whether PubChem has a structure or not\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemStructure", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Gets structure for a given ID or compound\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemSDF", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Gets the (proper) 3D SDF for a given ID\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemParentSDF", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Gets the SDF for the parent IDs\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemComponentSDF", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Gets the SDF for the component IDs\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemInfo", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Pulls the CompoundProperties for the specs\>\""}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.692465944607993*^9, 3.692465985533883*^9}, {
+  3.69246612070623*^9, 3.692466135182426*^9}, {3.692466950252087*^9, 
+  3.692466970960862*^9}, {3.692467014117978*^9, 3.6924670176054163`*^9}, {
+  3.692467271053967*^9, 3.692467289714563*^9}, {3.6925015800288897`*^9, 
+  3.692501601200018*^9}, {3.692581019840118*^9, 3.692581033099921*^9}, {
+  3.700187859125108*^9, 3.70018789703255*^9}, {3.700188078769946*^9, 
+  3.700188111774426*^9}, {3.700188369618637*^9, 3.700188381577156*^9}, {
+  3.700188444326523*^9, 3.700188492131769*^9}, {3.700189327414714*^9, 
+  3.700189328659156*^9}, {3.700189399818462*^9, 3.700189415269874*^9}, {
+  3.700190205783684*^9, 3.700190229787643*^9}, {3.700191560596197*^9, 
+  3.700191598284184*^9}, {3.700256024529978*^9, 3.7002560415697203`*^9}, {
+  3.700272599926701*^9, 3.700272612089264*^9}, {3.700272780894232*^9, 
+  3.700272794534484*^9}},ExpressionUUID->"91dfd78b-c024-4f11-bb4e-\
+7757cdab72a8"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"14e1cef3-57eb-4cf5-a684-\
+c2b253242520"],
+
+Cell[CellGroupData[{
+
+Cell["PubChem", "CodeSubsection",
+ CellChangeTimes->{{3.692467024875112*^9, 
+  3.6924670259003572`*^9}},ExpressionUUID->"53f4dfaf-0f81-4c70-8263-\
+737c47d5a5f7"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"PubChemCompound", "~", "SetAttributes", "~", "Listable"}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"PubChemSubstance", "~", "SetAttributes", "~", "Listable"}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.7001917082176027`*^9, 
+  3.700191718855242*^9}},ExpressionUUID->"6e39f62f-b289-4264-adba-\
+f5829425bf7e"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"$pubChemConnection", "=", "\n", "\t", "None"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"$PubChem", ":=", "\[IndentingNewLine]", 
+   RowBox[{"Replace", "[", 
+    RowBox[{"$pubChemConnection", ",", "\n", "\t\t", 
+     RowBox[{"None", "\[Rule]", 
+      RowBox[{"(", 
+       RowBox[{"$pubChemConnection", "=", 
+        RowBox[{"ServiceConnect", "[", "\"\<PubChem\>\"", "]"}]}], ")"}]}]}], 
+    "\n", "\t\t", "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.6924670865254173`*^9, 3.6924671499122458`*^9}, 
+   3.69247478841084*^9, 
+   3.7001883059017973`*^9},ExpressionUUID->"2149080b-75e8-4047-98eb-\
+549b5f83d75e"],
+
+Cell[CellGroupData[{
+
+Cell["CIDs", "CodeSubsubsubsection",
+ CellChangeTimes->{{3.700276368878008*^9, 
+  3.700276369659925*^9}},ExpressionUUID->"3c7e84ac-9492-45fe-aca9-\
+e59668a9aea7"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"pubChemSearchKeys", "=", "\n", "\t", 
+   RowBox[{"Alternatives", "@@", 
+    RowBox[{"{", "\n", "\t\t", 
+     RowBox[{
+     "\"\<CompoundID\>\"", ",", "\n", "\t", "\t", "\"\<SMILES\>\"", ",", "\n",
+       "\t\t", "\"\<Name\>\"", ",", "\n", "\t", "\t", "\"\<InChI\>\"", ",", 
+      "\n", "\t", "\t", "\"\<InChIKey\>\"", ",", "\n", "\t", "\t", 
+      "\"\<Formula\>\""}], "\n", "\t", "\t", "}"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"pubChemCIDPull", "[", 
+    RowBox[{"id_", ",", "key_", ",", "ops___"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Replace", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"Replace", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"Normal", "@", 
+        RowBox[{"$PubChem", "[", 
+         RowBox[{"\"\<CompoundCID\>\"", ",", 
+          RowBox[{"key", "\[Rule]", "id"}], ",", "ops"}], "]"}]}], ",", 
+       RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"l_List", "\[RuleDelayed]", 
+          RowBox[{"Map", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"ToExpression", "@", "#CompoundID"}], "&"}], ",", "l"}], 
+           "]"}]}], ",", "\n", "\t", "\t\t\t", 
+         RowBox[{"a_Association", "\[RuleDelayed]", 
+          RowBox[{"ToExpression", "@", 
+           RowBox[{"a", "[", "\"\<CompoundID\>\"", "]"}]}]}], ",", "\n", "\t",
+          "\t\t\t", 
+         RowBox[{"_", "\[RuleDelayed]", 
+          RowBox[{"Missing", "[", "\"\<NotAvailable\>\"", "]"}]}]}], "\n", 
+        "\t\t\t", "}"}]}], "]"}], ",", 
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", "i_", "}"}], "\[RuleDelayed]", "i"}], ",", "\n", "\t\t", 
+       
+       RowBox[{
+        RowBox[{"{", "}"}], ":>", 
+        RowBox[{"Missing", "[", "\"\<NotAvailable\>\"", "]"}]}]}], "\n", "\t",
+       "}"}]}], "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.700252189939971*^9, 3.700252217454082*^9}, {
+  3.700252429532839*^9, 3.700252477363627*^9}, {3.700252520318674*^9, 
+  3.700252524991756*^9}, {3.700256981814011*^9, 3.700256983668354*^9}, {
+  3.700276109383932*^9, 
+  3.700276118061131*^9}},ExpressionUUID->"a27c395c-c8d3-4b46-b9ba-\
+14441c35a641"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"pubChemNamePattern", "=", "\n", "\t", 
+   RowBox[{
+    RowBox[{"_String", "?", 
+     RowBox[{"(", 
+      RowBox[{"Not", "@*", 
+       RowBox[{"StringMatchQ", "[", 
+        RowBox[{"DigitCharacter", ".."}], "]"}]}], ")"}]}], "|", "\n", "\t\t", 
+    RowBox[{"{", 
+     RowBox[{"__String", "?", 
+      RowBox[{"(", 
+       RowBox[{"Not", "@*", 
+        RowBox[{"StringMatchQ", "[", 
+         RowBox[{"DigitCharacter", ".."}], "]"}]}], ")"}]}], "}"}]}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.700254226358428*^9, 
+  3.70025423600112*^9}},ExpressionUUID->"ee41fd6f-9aad-4f54-8e0b-\
+24351fba41bb"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemID", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"compound", ":", "pubChemNamePattern"}], ",", "\n", "\t", 
+     RowBox[{"Optional", "[", 
+      RowBox[{"\"\<Name\>\"", ",", "\"\<Name\>\""}], "]"}]}], "\n", "\t", 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"pubChemCIDPull", "[", 
+    RowBox[{"compound", ",", "\"\<Name\>\""}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemID", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"compound", ":", 
+      RowBox[{"Entity", "[", 
+       RowBox[{"\"\<Chemical\>\"", ",", "_"}], "]"}]}], ",", "\n", "\t", 
+     RowBox[{"Optional", "[", 
+      RowBox[{"\"\<Name\>\"", ",", "\"\<Name\>\""}], "]"}]}], "\n", "\t", 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"PubChemID", "[", 
+    RowBox[{
+     RowBox[{"CommonName", "@", "compound"}], ",", "\"\<Name\>\""}], "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemID", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"id_String", "?", 
+      RowBox[{"(", 
+       RowBox[{"StringMatchQ", "[", 
+        RowBox[{"DigitCharacter", ".."}], "]"}], ")"}]}], ",", "\n", "\t", 
+     RowBox[{"Optional", "[", 
+      RowBox[{"\"\<Name\>\"", ",", "\"\<Name\>\""}], "]"}]}], "\n", "\t", 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"PubChemID", "@", 
+    RowBox[{"ToExpression", "@", "id"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemID", "[", 
+    RowBox[{
+     RowBox[{"id_Integer", "?", "Positive"}], ",", "\t", "\n", "\t", 
+     RowBox[{"Optional", "[", 
+      RowBox[{"\"\<Name\>\"", ",", "\"\<Name\>\""}], "]"}]}], "]"}], ":=", 
+   "\n", "\t", "id"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemID", "[", 
+    RowBox[{"_Integer", ",", 
+     RowBox[{"Optional", "[", 
+      RowBox[{"\"\<Name\>\"", ",", "\"\<Name\>\""}], "]"}]}], "]"}], ":=", 
+   "\n", "\t", 
+   RowBox[{"Missing", "[", "\"\<NotAvailable\>\"", "]"}]}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.692467216279251*^9, 3.6924672554515333`*^9}, 
+   3.6924673225649*^9, {3.692467373914995*^9, 3.692467505382325*^9}, {
+   3.700187534237657*^9, 3.700187544683407*^9}, {3.7001876472266912`*^9, 
+   3.700187686280418*^9}, {3.700187739891675*^9, 3.700187768965087*^9}, {
+   3.700188496607759*^9, 3.700188577280849*^9}, {3.7001886732416477`*^9, 
+   3.700188709865777*^9}, {3.700188752281726*^9, 3.700188908080984*^9}, {
+   3.700188941664998*^9, 3.700188965148419*^9}, {3.700189006240889*^9, 
+   3.700189178859482*^9}, 3.70018920890658*^9, {3.7002513734528713`*^9, 
+   3.700251384336275*^9}, {3.700251988340307*^9, 3.700252015876563*^9}, {
+   3.700252165807261*^9, 3.7002521731975613`*^9}, {3.700252224329329*^9, 
+   3.700252300782194*^9}, {3.7002523330264587`*^9, 3.700252334549362*^9}, {
+   3.700252423804397*^9, 3.700252425715255*^9}, {3.7002524609666643`*^9, 
+   3.7002524746497602`*^9}, {3.7002542237973423`*^9, 3.700254240643263*^9}, {
+   3.7002608882158318`*^9, 3.700260895844722*^9}, {3.700276424536058*^9, 
+   3.700276427739893*^9}, {3.710103654776285*^9, 
+   3.710103681317111*^9}},ExpressionUUID->"2b3afc38-fbd5-4939-968a-\
+12c7d04ac8dd"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemID", "[", 
+    RowBox[{"keys_", ",", "\"\<Formula\>\"", ",", "ops___"}], "]"}], ":=", 
+   "\n", "\t", 
+   RowBox[{"pubChemCIDPull", "[", 
+    RowBox[{"keys", ",", "\"\<Formula\>\"", ",", 
+     RowBox[{"Method", "\[Rule]", "\"\<FormulaSearch\>\""}], ",", "ops"}], 
+    "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.700252338652907*^9, 3.700252342995326*^9}, {
+  3.7002523993710938`*^9, 3.7002524124046*^9}, {3.7002525150194407`*^9, 
+  3.70025254406223*^9}, {3.700260899349204*^9, 
+  3.700260904629916*^9}},ExpressionUUID->"5382e9fd-a558-42ef-9d52-\
+becd18c061ec"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"pubChemCIDrelated", "[", 
+    RowBox[{"id_", ",", "args__"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Replace", "[", 
+    RowBox[{
+     RowBox[{"PubChemID", "@", "id"}], ",", 
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Except", "[", 
+         RowBox[{"_Integer", "|", 
+          RowBox[{"{", "__Integer", "}"}]}], "]"}], ":>", "\n", "\t\t\t", 
+        "$Failed"}], ",", "\n", "\t\t", 
+       RowBox[{"i_", ":>", "\n", "\t\t\t", 
+        RowBox[{"Replace", "[", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"\"\<CompoundID\>\"", "/.", 
+           RowBox[{"Normal", "@", "\n", "\t\t\t\t\t", 
+            RowBox[{"Check", "[", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"$PubChem", "[", 
+               RowBox[{
+               "\"\<CompoundCID\>\"", ",", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+                RowBox[{"\"\<CompoundID\>\"", "\[Rule]", "i"}], ",", "\n", 
+                "\t\t\t\t\t\t\t", "args"}], "\n", "\t\t\t\t\t\t\t", "]"}], 
+              ",", "\n", "\t\t\t\t\t\t", 
+              RowBox[{"<|", 
+               RowBox[{"\"\<CompoundID\>\"", "\[Rule]", "$Failed"}], "|>"}]}],
+              "\n", "\t\t\t\t\t\t", "]"}]}]}], ",", 
+          RowBox[{"{", "\n", "\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"{", "s_", "}"}], "\[RuleDelayed]", "s"}], ",", "\n", 
+            "\t\t\t\t", 
+            RowBox[{
+             RowBox[{"{", "}"}], "\[RuleDelayed]", 
+             RowBox[{"Missing", "[", "\"\<NotFound\>\"", "]"}]}]}], "\n", 
+           "\t\t\t\t", "}"}]}], "]"}]}]}], "\n", "\t\t", "}"}]}], "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"cidTypes", "=", "\n", "\t", 
+   RowBox[{"Alternatives", "@@", 
+    RowBox[{"{", "\n", "\t\t", 
+     RowBox[{
+     "\"\<Original\>\"", ",", "\n", "\t", "\t", "\"\<Parent\>\"", ",", "\n", 
+      "\t", "\t", "\"\<Component\>\"", ",", "\n", "\t", "\t", 
+      "\"\<Similar2D\>\"", ",", "\n", "\t", "\t", "\"\<Similar3D\>\"", ",", 
+      "\n", "\t", "\t", "\"\<SameStereo\>\"", ",", "\n", "\t", "\t", 
+      "\"\<SameIsotopes\>\"", ",", "\n", "\t", "\t", 
+      "\"\<SameConnectivity\>\"", ",", "\n", "\t", "\t", 
+      "\"\<SameTautomer\>\"", ",", "\n", "\t", "\t", "\"\<SameParent\>\"", 
+      ",", "\n", "\t", "\t", "\"\<SameParentStereo\>\"", ",", "\n", "\t", 
+      "\t", "\"\<SameParentIsotopes\>\"", ",", "\n", "\t", "\t", 
+      "\"\<SameParentConnectivity\>\"", ",", "\n", "\t", "\t", 
+      "\"\<SameParentTautomer\>\""}], "\n", "\t\t", "}"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemRelatedIDs", "[", 
+    RowBox[{"id_", ",", 
+     RowBox[{"cidType", ":", "cidTypes"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"pubChemCIDrelated", "[", 
+    RowBox[{"id", ",", "\n", "\t\t", 
+     RowBox[{"\"\<CIDType\>\"", "\[Rule]", "cidType"}]}], "\n", "\t\t", 
+    "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemParentIDs", "[", "id_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"PubChemRelatedIDs", "[", 
+    RowBox[{"id", ",", "\"\<Parent\>\""}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemComponentIDs", "[", "id_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"PubChemRelatedIDs", "[", 
+    RowBox[{"id", ",", "\"\<Component\>\""}], "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.692467216279251*^9, 3.6924672554515333`*^9}, 
+   3.6924673225649*^9, {3.692467373914995*^9, 3.692467505382325*^9}, {
+   3.700187534237657*^9, 3.700187544683407*^9}, {3.7001876472266912`*^9, 
+   3.700187686280418*^9}, {3.700187739891675*^9, 3.700187768965087*^9}, {
+   3.700188496607759*^9, 3.700188577280849*^9}, {3.7001886732416477`*^9, 
+   3.700188709865777*^9}, {3.700188752281726*^9, 3.700188908080984*^9}, {
+   3.700188941664998*^9, 3.700188965148419*^9}, {3.700189006240889*^9, 
+   3.700189178859482*^9}, 3.70018920890658*^9, {3.700189466709619*^9, 
+   3.7001894704532347`*^9}, {3.70018961652853*^9, 3.700189654155875*^9}, 
+   3.70025124336033*^9, {3.700272251505321*^9, 3.700272273410171*^9}, {
+   3.7002725734082623`*^9, 3.700272583069178*^9}, {3.700273004315207*^9, 
+   3.70027302047398*^9}, 3.7002764010881023`*^9, {3.700276445649612*^9, 
+   3.700276470841166*^9}},ExpressionUUID->"9fb325d0-2592-41bd-bad1-\
+ae364cb12a7a"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Info", "CodeSubsubsubsection",
+ CellChangeTimes->{{3.700276378205859*^9, 
+  3.700276379867024*^9}},ExpressionUUID->"a076b6c7-768f-4ec5-ae89-\
+c96cba2c516b"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"pubChemInfoOps", "=", "\n", "\t", 
+   RowBox[{"Alternatives", "@@", 
+    RowBox[{"{", "\n", "\t\t", 
+     RowBox[{
+     "\"\<CompoundID\>\"", ",", " ", "\n", "\t", "\t", "\"\<SMILES\>\"", ",", 
+      " ", "\n", "\t", "\t", "\"\<Name\>\"", ",", "\n", "\t", "\t", 
+      "\"\<InChI\>\"", ",", "\n", "\t", "\t", "\"\<InChIKey\>\"", ",", "\n", 
+      "\t", "\t", "\"\<Formula\>\"", ",", "\n", "\t", "\t", 
+      "\"\<RecordType\>\""}], "\n", "\t\t", "}"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"pubChemInfoPull", "[", 
+    RowBox[{"ids_", ",", 
+     RowBox[{"mode", ":", "pubChemInfoOps"}], ",", "ops___"}], "]"}], ":=", 
+   "\n", "\t", 
+   RowBox[{"Replace", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"Normal", "@", 
+      RowBox[{"$PubChem", "[", 
+       RowBox[{"\"\<CompoundProperties\>\"", ",", 
+        RowBox[{"mode", "\[Rule]", "ids"}], ",", "ops"}], "]"}]}], ",", 
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", "i_", "}"}], "\[RuleDelayed]", "i"}], ",", "\n", "\t\t", 
+       
+       RowBox[{
+        RowBox[{"{", "}"}], ":>", 
+        RowBox[{"Missing", "[", "\"\<NotAvailable\>\"", "]"}]}]}], "\n", 
+      "\t\t", "}"}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemInfo", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"compounds", ":", "pubChemNamePattern"}], ",", "\n", "\t", 
+     RowBox[{"Optional", "[", 
+      RowBox[{"\"\<Name\>\"", ",", "\"\<Name\>\""}], "]"}], ",", "\n", "\t", 
+     "ops___"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"pubChemInfoPull", "[", 
+    RowBox[{"compounds", ",", "\"\<Name\>\""}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemInfo", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"compounds", ":", "pubChemNamePattern"}], ",", "\n", "\t", 
+     "\"\<Formula\>\"", ",", "\n", "\t", "ops___"}], "]"}], ":=", "\n", "\t", 
+   
+   RowBox[{"pubChemInfoPull", "[", 
+    RowBox[{
+    "compounds", ",", "\n", "\t\t", "\"\<Formula\>\"", ",", "\n", "\t\t", 
+     RowBox[{"Method", "\[Rule]", "\"\<FormulaSearch\>\""}]}], "\n", "\t\t", 
+    "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemInfo", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"ids", ":", 
+      RowBox[{"_Integer", "|", 
+       RowBox[{"{", "__Integer", "}"}]}]}], ",", "\n", "\t", "ops___"}], 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"pubChemInfoPull", "[", 
+    RowBox[{"ids", ",", "\"\<CompoundID\>\"", ",", "ops"}], "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemInfo", "[", 
+    RowBox[{"ids_", ",", 
+     RowBox[{"key", ":", "pubChemInfoOps"}], ",", "ops___"}], "]"}], ":=", 
+   "\n", "\t", 
+   RowBox[{"pubChemInfoPull", "[", 
+    RowBox[{"ids", ",", "key", ",", "ops"}], "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.700254158647633*^9, 3.700254205170328*^9}, {
+   3.700254244115066*^9, 3.7002543962153807`*^9}, {3.7002545086940193`*^9, 
+   3.700254519122384*^9}, 3.700254724352034*^9, {3.700254780827668*^9, 
+   3.700254785728116*^9}, {3.700255960381753*^9, 3.7002560134949408`*^9}, {
+   3.700256288498317*^9, 3.700256322787106*^9}, {3.7002566914673767`*^9, 
+   3.700256711148694*^9}, {3.7002569743682613`*^9, 
+   3.7002569759508057`*^9}},ExpressionUUID->"4bc41fcc-a832-4ea0-91c5-\
+ff574fd84345"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["SIDs", "CodeSubsubsubsection",
+ CellChangeTimes->{{3.700276407318166*^9, 
+  3.7002764082279167`*^9}},ExpressionUUID->"17fc885e-2286-4fdd-8ded-\
+19d114972d53"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"sidTypes", "=", "\n", "\t", 
+   RowBox[{"Alternatives", "@@", 
+    RowBox[{"{", "\n", "\t\t", 
+     RowBox[{
+     "All", ",", "\n", "\t\t", "\"\<Standardized\>\"", ",", "\n", "\t", "\t", 
+      "\"\<Component\>\""}], "\n", "\t", "\t", "}"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"pubChemSID", "[", 
+    RowBox[{"id_", ",", "args__"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Replace", "[", 
+    RowBox[{
+     RowBox[{"PubChemID", "@", "id"}], ",", 
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Except", "[", 
+         RowBox[{"_Integer", "|", 
+          RowBox[{"{", "__Integer", "}"}]}], "]"}], ":>", "\n", "\t\t\t", 
+        "$Failed"}], ",", "\n", "\t\t", 
+       RowBox[{"i_", ":>", "\n", "\t\t\t", 
+        RowBox[{"Replace", "[", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"\"\<SubstanceID\>\"", "/.", 
+           RowBox[{"Normal", "@", "\n", "\t\t\t\t\t", 
+            RowBox[{"$PubChem", "[", 
+             RowBox[{"\"\<CompoundSID\>\"", ",", "\n", "\t", "\t", "\t\t\t\t", 
+              RowBox[{"\"\<CompoundID\>\"", "\[Rule]", "i"}], ",", "\n", "\t",
+               "\t\t\t\t\t", "args"}], "\n", "\t", "\t\t\t\t\t", "]"}]}]}], 
+          ",", 
+          RowBox[{"{", "\n", "\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"{", "s_", "}"}], "\[RuleDelayed]", "s"}], ",", "\n", 
+            "\t\t\t\t", 
+            RowBox[{
+             RowBox[{"{", "}"}], "\[RuleDelayed]", 
+             RowBox[{"Missing", "[", "\"\<NotFound\>\"", "]"}]}]}], "\n", 
+           "\t\t\t\t", "}"}]}], "]"}]}]}], "\n", "\t\t", "}"}]}], "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemSubstanceIDs", "[", 
+    RowBox[{"id_", ",", 
+     RowBox[{"sid", ":", "sidTypes", ":", "All"}]}], "]"}], ":=", "\n", "\t", 
+   
+   RowBox[{"pubChemSID", "[", 
+    RowBox[{"id", ",", 
+     RowBox[{"\"\<SIDType\>\"", "->", "sid"}]}], "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.692467216279251*^9, 3.6924672554515333`*^9}, 
+   3.6924673225649*^9, {3.692467373914995*^9, 3.692467505382325*^9}, {
+   3.700187534237657*^9, 3.700187544683407*^9}, {3.7001876472266912`*^9, 
+   3.700187686280418*^9}, {3.700187739891675*^9, 3.700187768965087*^9}, {
+   3.700188496607759*^9, 3.700188577280849*^9}, {3.7001886732416477`*^9, 
+   3.700188709865777*^9}, {3.700188752281726*^9, 3.700188908080984*^9}, {
+   3.700188941664998*^9, 3.700188965148419*^9}, {3.700189006240889*^9, 
+   3.7001893186503572`*^9}, 3.700189462133254*^9, {3.700189582304023*^9, 
+   3.7001896076455584`*^9}, {3.700189660664624*^9, 3.700189667215473*^9}, {
+   3.7002514012677927`*^9, 
+   3.700251425318317*^9}},ExpressionUUID->"202bbcb7-38f9-4a5d-a6a2-\
+90ff0ea444ec"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["2D", "CodeSubsubsubsection",
+ CellChangeTimes->{{3.700276480462545*^9, 
+  3.700276480886649*^9}},ExpressionUUID->"53bd1c9f-e83f-4093-b2c2-\
+1eaebcfca40e"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemStructure", "[", "compound_String", "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{"Replace", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"\"\<MOL\>\"", "/.", "\n", "\t\t\t", 
+      RowBox[{"Quiet", "@", "\n", "\t\t\t\t", 
+       RowBox[{"Check", "[", 
+        RowBox[{
+         RowBox[{"Normal", "@", 
+          RowBox[{"$PubChem", "[", 
+           RowBox[{"\"\<CompoundSDF\>\"", ",", 
+            RowBox[{"{", 
+             RowBox[{"\"\<Name\>\"", "\[Rule]", " ", "compound"}], "}"}]}], 
+           "]"}]}], ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"{", 
+          RowBox[{"\"\<MOL\>\"", "\[Rule]", 
+           RowBox[{"{", "$Failed", "}"}]}], "}"}]}], "]"}]}]}], ",", 
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", "s_", "}"}], "\[RuleDelayed]", "s"}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{
+        RowBox[{"{", "}"}], ":>", 
+        RowBox[{"Missing", "[", "\"\<NotAvailable\>\"", "]"}]}]}], "\n", 
+      "\t\t", "}"}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemStructure", "[", "id_Integer", "]"}], ":=", "\n", "\t", 
+   RowBox[{"Replace", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"\"\<MOL\>\"", "/.", "\n", "\t\t\t", 
+      RowBox[{"Quiet", "@", "\n", "\t\t\t\t", 
+       RowBox[{"Check", "[", 
+        RowBox[{
+         RowBox[{"Normal", "@", 
+          RowBox[{"$PubChem", "[", 
+           RowBox[{"\"\<CompoundSDF\>\"", ",", 
+            RowBox[{"{", 
+             RowBox[{"\"\<CompoundID\>\"", "\[Rule]", " ", "id"}], "}"}]}], 
+           "]"}]}], ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"{", 
+          RowBox[{"\"\<MOL\>\"", "\[Rule]", 
+           RowBox[{"{", "$Failed", "}"}]}], "}"}]}], "]"}]}]}], ",", 
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", "s_", "}"}], "\[RuleDelayed]", "s"}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{
+        RowBox[{"{", "}"}], ":>", 
+        RowBox[{"Missing", "[", "\"\<NotAvailable\>\"", "]"}]}]}], "\n", 
+      "\t\t", "}"}]}], "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.6924670865254173`*^9, 3.692467169383542*^9}, {
+  3.692467546333551*^9, 3.692467578745427*^9}, {3.7001882705431643`*^9, 
+  3.700188297199452*^9}, {3.700189801717927*^9, 3.700189804093666*^9}, {
+  3.700192641216981*^9, 3.700192712395548*^9}, {3.700192751804303*^9, 
+  3.7001927890387163`*^9}},ExpressionUUID->"aec292f4-c67b-4dca-9a02-\
+de0285674659"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["3D", "CodeSubsubsubsection",
+ CellChangeTimes->{{3.700276492486102*^9, 
+  3.7002764928384047`*^9}},ExpressionUUID->"f17b1ec0-4f89-4912-9a19-\
+a08cd0380435"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"pubChemStructureLoc", "[", "cid_", "]"}], ":=", "\n", "\t", 
+    RowBox[{"URLBuild", "@", "\n", "\t\t", 
+     RowBox[{"<|", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"\"\<Scheme\>\"", "\[Rule]", "\"\<https\>\""}], ",", "\n", 
+       "\t", "\t\t", 
+       RowBox[{
+       "\"\<Domain\>\"", "\[Rule]", "\"\<pubchem.ncbi.nlm.nih.gov\>\""}], ",",
+        "\n", "\t", "\t\t", 
+       RowBox[{"\"\<Path\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{
+         "\"\<rest\>\"", ",", "\"\<pug\>\"", ",", "\"\<compound\>\"", ",", 
+          "\"\<cid\>\"", ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"ToString", "@", "cid"}], ",", "\"\<record\>\"", ",", 
+          "\"\<SDF\>\""}], "}"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"\"\<Query\>\"", "\[Rule]", 
+        RowBox[{"{", "\n", "\t", "\t\t\t", 
+         RowBox[{"\"\<record_type\>\"", "\[Rule]", "\"\<3d\>\""}], "\n", 
+         "\t\t\t\t", "}"}]}]}], "\n", "\t\t\t", "|>"}]}]}], ";"}], 
+  "\t"}]], "CodeInput",
+ CellChangeTimes->{{3.692580580497135*^9, 3.6925807906003227`*^9}, 
+   3.692580843670232*^9, {3.700192000472041*^9, 3.700192010933495*^9}, 
+   3.70024830236382*^9, {3.700248510704659*^9, 3.700248511943933*^9}, 
+   3.700260599940834*^9, 
+   3.700267081018441*^9},ExpressionUUID->"a90b4383-2e73-4468-be06-\
+c0768a511a0d"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemSDF", "[", "\n", "\t", 
+    RowBox[{"cid", ":", 
+     RowBox[{"_Integer", "|", "\n", "\t\t", 
+      RowBox[{"(", 
+       RowBox[{"_String", "?", 
+        RowBox[{"(", 
+         RowBox[{"StringMatchQ", "[", 
+          RowBox[{"DigitCharacter", ".."}], "]"}], ")"}]}], ")"}]}]}], "\n", 
+    "\t\t", "]"}], ":=", "\n", "\t", 
+   RowBox[{"Replace", "[", 
+    RowBox[{
+     RowBox[{"Quiet", "@", 
+      RowBox[{"Import", "[", 
+       RowBox[{
+        RowBox[{"pubChemStructureLoc", "[", "cid", "]"}], ",", 
+        "\"\<Text\>\""}], "]"}]}], ",", "\n", "\t\t", 
+     RowBox[{"$Failed", ":>", "\n", "\t\t\t", 
+      RowBox[{"Missing", "[", "\"\<NotAvailable\>\"", "]"}]}]}], "\n", "\t\t",
+     "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.692580940067198*^9, 3.6925809548163233`*^9}, 
+   3.6925810002315903`*^9, {3.692581335914504*^9, 3.692581348808894*^9}, {
+   3.692581384319212*^9, 3.6925814830896273`*^9}, {3.700188352229184*^9, 
+   3.700188355688902*^9}, 3.700189438927491*^9, {3.7001898206374817`*^9, 
+   3.70018992584402*^9}, {3.700189975900996*^9, 3.700190197725258*^9}, {
+   3.700190478608886*^9, 3.700190478723258*^9}, 3.700248195560319*^9, {
+   3.700248397255348*^9, 3.700248430136684*^9}, 3.7002485173905563`*^9, {
+   3.7002653070048637`*^9, 3.7002653136696568`*^9}, 
+   3.700265389872939*^9},ExpressionUUID->"3a982efe-a2e9-4402-ac23-\
+e97532377b61"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"pubChemSDFPull", "[", 
+    RowBox[{"idList_", ",", "take_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Replace", "[", 
+    RowBox[{"idList", ",", 
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", "}"}], "->", "\n", "\t\t\t", 
+        RowBox[{"Missing", "[", "\"\<NotFound\>\"", "]"}]}], ",", "\n", 
+       "\t\t", 
+       RowBox[{"i_Integer", ":>", 
+        RowBox[{"PubChemSDF", "@", "i"}]}], ",", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"i", ":", 
+         RowBox[{"{", "__", "}"}]}], "\[RuleDelayed]", "\n", "\t\t\t", 
+        RowBox[{"Map", "[", 
+         RowBox[{"PubChemSDF", ",", "\n", "\t\t\t\t", 
+          RowBox[{"Take", "[", 
+           RowBox[{"i", ",", 
+            RowBox[{"Replace", "[", 
+             RowBox[{"take", ",", 
+              RowBox[{"_Integer", "->", 
+               RowBox[{"UpTo", "[", "take", "]"}]}]}], "]"}]}], "]"}]}], "\n",
+          "\t\t\t\t", "]"}]}]}], "\n", "\t\t", "}"}]}], "]"}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.692580940067198*^9, 3.6925809548163233`*^9}, 
+   3.6925810002315903`*^9, {3.692581335914504*^9, 3.692581348808894*^9}, {
+   3.692581384319212*^9, 3.6925814830896273`*^9}, {3.700188352229184*^9, 
+   3.700188355688902*^9}, 3.700189438927491*^9, {3.7001898206374817`*^9, 
+   3.70018992584402*^9}, {3.700189975900996*^9, 3.700190197725258*^9}, {
+   3.700190478608886*^9, 3.700190478723258*^9}, 3.700248195560319*^9, {
+   3.700248254548623*^9, 
+   3.700248284300516*^9}},ExpressionUUID->"0317c9aa-1e52-44e1-b176-\
+25b3fc73f989"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemSDF", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"compound", ":", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"Entity", "[", 
+        RowBox[{"\"\<Chemical\>\"", ",", "_"}], "]"}], "|", "\n", "\t\t", 
+       RowBox[{"_String", "?", 
+        RowBox[{"(", 
+         RowBox[{"Not", "@*", 
+          RowBox[{"(", 
+           RowBox[{"StringMatchQ", "[", 
+            RowBox[{"DigitCharacter", ".."}], "]"}], ")"}]}], ")"}]}]}]}], 
+     ",", "\n", "\t", 
+     RowBox[{"take_:", "All"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"pubChemSDFPull", "[", 
+    RowBox[{
+     RowBox[{"PubChemID", "@", "compound"}], ",", "take"}], "]"}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.692580940067198*^9, 3.6925809548163233`*^9}, 
+   3.6925810002315903`*^9, {3.692581335914504*^9, 3.692581348808894*^9}, {
+   3.692581384319212*^9, 3.6925814830896273`*^9}, {3.700188352229184*^9, 
+   3.700188355688902*^9}, 3.700189438927491*^9, {3.7001898206374817`*^9, 
+   3.70018992584402*^9}, {3.700189975900996*^9, 3.700190197725258*^9}, {
+   3.700190478608886*^9, 3.700190478723258*^9}, 3.700248195560319*^9, {
+   3.700248254548623*^9, 3.700248284300516*^9}, 3.700248520528453*^9, {
+   3.7101043031141787`*^9, 
+   3.7101043261898403`*^9}},ExpressionUUID->"551849e7-a9d6-43c6-acea-\
+2fbbe343139a"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemParentSDF", "[", 
+    RowBox[{"compound_", ",", 
+     RowBox[{"take_:", "All"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"pubChemSDFPull", "[", 
+    RowBox[{
+     RowBox[{"PubChemParentIDs", "@", "compound"}], ",", "take"}], "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemComponentSDF", "[", 
+    RowBox[{"compound_", ",", 
+     RowBox[{"take_:", "All"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"pubChemSDFPull", "[", 
+    RowBox[{
+     RowBox[{"PubChemComponentIDs", "@", "compound"}], ",", "take"}], "]"}]}],
+   ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemSubstanceSDF", "[", 
+    RowBox[{"compound_", ",", 
+     RowBox[{"take_:", "5"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"pubChemSDFPull", "[", 
+    RowBox[{
+     RowBox[{"PubChemSubstanceIDs", "@", "compound"}], ",", "take"}], "]"}]}],
+   ";"}], "\n"}], "CodeInput",
+ CellChangeTimes->{{3.692580940067198*^9, 3.6925809548163233`*^9}, 
+   3.6925810002315903`*^9, {3.692581335914504*^9, 3.692581348808894*^9}, {
+   3.692581384319212*^9, 3.6925814830896273`*^9}, {3.700188352229184*^9, 
+   3.700188355688902*^9}, 3.700189438927491*^9, {3.7001898206374817`*^9, 
+   3.70018992584402*^9}, {3.700189975900996*^9, 3.700190197725258*^9}, {
+   3.700190478608886*^9, 3.700190478723258*^9}, 3.700248195560319*^9, {
+   3.700248254548623*^9, 3.70024827764217*^9}, {3.7002727418088493`*^9, 
+   3.700272764552825*^9}},ExpressionUUID->"503d2253-bbfe-455a-9af9-\
+09e223bab6b9"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemHasQ", "[", 
+    RowBox[{"compound", ":", 
+     RowBox[{
+      RowBox[{"Entity", "[", 
+       RowBox[{"\"\<Chemical\>\"", ",", "_"}], "]"}], "|", "_String"}]}], 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"!", 
+    RowBox[{"MatchQ", "[", 
+     RowBox[{
+      RowBox[{"Quiet", "@", 
+       RowBox[{"PubChemID", "@", "compound"}]}], ",", 
+      RowBox[{"_Missing", "|", "$Failed"}]}], "]"}]}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.69250170096043*^9, 3.692501706182172*^9}, {
+  3.70019266256714*^9, 3.700192664844187*^9}, {3.7101044090302687`*^9, 
+  3.710104411610794*^9}},ExpressionUUID->"f7bfe9b3-8b80-4ff5-a3c5-\
+ad4925915192"]
+}, Open  ]]
+}, Closed]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"970cc118-9351-427e-b3b7-\
+73f7fd175c84"]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"ba741543-0a17-4360-9838-\
+02faface8af2"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{Automatic, 227}, {34, Automatic}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+
