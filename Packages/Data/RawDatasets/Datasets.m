@@ -44,6 +44,11 @@ $ChemMMFF94TorsionAngleData::usage="";
 Begin["`Private`"];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Load*)
+
+
+
 ChemDataLookup::nolod="Couldn't load resource ``, got ``";
 
 
@@ -71,7 +76,15 @@ ChemDatasetWebResourceFile[name_]:=
 		URLBuild[
 			<|
 				"Scheme"->"user", 
-				"Path"->{"b3m2a1.datasets", "ChemTools", name<>".wl"}
+				"Path"->
+					{
+						"b3m2a1.paclets", 
+						"PacletServer", 
+						"Resources",
+						"ChemTools", 
+						"Datasets", 
+						name<>".wl"
+						}
 				|>
 			];
 
@@ -131,6 +144,11 @@ ChemDatasetLoad[name_, Optional[Automatic, Automatic]]:=
 	ChemDatasetLoad[name, "File"]
 
 
+(* ::Subsubsection::Closed:: *)
+(*Register*)
+
+
+
 ChemDatasetRegister[base:Hold[_Symbol]|Automatic:Automatic, name_, pat_]:=
 	Replace[
 		If[base===Automatic,
@@ -145,6 +163,11 @@ ChemDatasetRegister[base:Hold[_Symbol]|Automatic:Automatic, name_, pat_]:=
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*$ChemCustomAtoms*)
+
+
+
 (* ::Text:: *)
 (*A set of non-standard atoms used internally sometimes*)
 
@@ -153,28 +176,73 @@ ChemDatasetRegister[base:Hold[_Symbol]|Automatic:Automatic, name_, pat_]:=
 ChemDatasetRegister["ChemCustomAtoms", _Association?AssociationQ]
 
 
+(* ::Subsubsection::Closed:: *)
+(*$ChemIsotopicMasses*)
+
+
+
 ChemDatasetRegister["ChemIsotopicMasses", _Association?AssociationQ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*$ChemAtomColors*)
+
 
 
 ChemDatasetRegister["ChemAtomColors", _Association?AssociationQ]
 
 
+(* ::Subsubsection::Closed:: *)
+(*$ChemElements*)
+
+
+
 ChemDatasetRegister["ChemElements", _Association?AssociationQ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*$ChemSpaceGroups*)
+
 
 
 ChemDatasetRegister["ChemSpaceGroups", _Association?AssociationQ]
 
 
+(* ::Subsubsection::Closed:: *)
+(*$ChemBondDistances*)
+
+
+
 ChemDatasetRegister["ChemBondDistances", _Association?AssociationQ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*$ChemElementValences*)
+
 
 
 ChemDatasetRegister["ChemElementValences", _Association?AssociationQ]
 
 
+(* ::Subsubsection::Closed:: *)
+(*$ChemCharacterTables*)
+
+
+
 ChemDatasetRegister["ChemCharacterTables", _Association?AssociationQ]
 
 
+(* ::Subsubsection::Closed:: *)
+(*$ChemCorrelationTables*)
+
+
+
 ChemDatasetRegister["ChemCorrelationTables", _Association?AssociationQ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*$ChemTanabeSuganoData*)
+
 
 
 ChemDatasetRegister[
@@ -184,11 +252,21 @@ ChemDatasetRegister[
 	]
 
 
+(* ::Subsubsection::Closed:: *)
+(*$ChemMMMFF94AtomTypes*)
+
+
+
 ChemDatasetRegister[
 	$ChemMMFF94AtomTypes, 
 	"MMFF94AtomTypes", 
 	_Association?AssociationQ
 	]
+
+
+(* ::Subsubsection::Closed:: *)
+(*$ChemMMMFF94BondData*)
+
 
 
 ChemDatasetRegister[
@@ -198,6 +276,11 @@ ChemDatasetRegister[
 	]
 
 
+(* ::Subsubsection::Closed:: *)
+(*$ChemMMFF94BondAngleData*)
+
+
+
 ChemDatasetRegister[
 	$ChemMMFF94BondAngleData, 
 	"MMFF94BondAngleData", 
@@ -205,11 +288,21 @@ ChemDatasetRegister[
 	]
 
 
+(* ::Subsubsection::Closed:: *)
+(*$ChemMMFF94StretchBendData*)
+
+
+
 ChemDatasetRegister[
 	$ChemMMFF94StretchBendData, 
 	"MMFF94StretchBendData", 
 	_Association?AssociationQ
 	]
+
+
+(* ::Subsubsection::Closed:: *)
+(*$ChemMMFF94TorsionAngleData*)
+
 
 
 ChemDatasetRegister[

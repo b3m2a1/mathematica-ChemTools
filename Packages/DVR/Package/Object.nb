@@ -81,7 +81,7 @@ Cell[BoxData[{
   3.699743870905731*^9}, {3.7000047236127377`*^9, 
   3.700004723621628*^9}},ExpressionUUID->"1515556b-5d44-47ec-8d2d-\
 f0863a75cf14"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -201,7 +201,7 @@ Cell[BoxData[
    3.7323028711239967`*^9}},ExpressionUUID->"a0653ae4-202b-49e1-8cbb-\
 a656d8240fd0"]
 }, Closed]]
-}, Open  ]],
+}, Closed]],
 
 Cell[BoxData[
  RowBox[{
@@ -972,16 +972,12 @@ Cell[BoxData[
    3.725752741992021*^9}},ExpressionUUID->"129d92c7-910a-45f6-a26c-\
 41b8390fd1db"]
 }, Closed]]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
-Cell["\[LeftCeiling]ChemDVRObject\[RightFloor]", "CodeSubsection",
- Evaluatable->True,
- CellChangeTimes->{{3.6991966763172083`*^9, 3.699196677485319*^9}, {
-   3.699201363329368*^9, 3.6992013650563927`*^9}, 
-   3.700004724121943*^9},ExpressionUUID->"dcc42bd4-fc39-4313-b4d7-\
-2920f9bc832c"],
+Cell["\[LeftCeiling]Base Methods\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"dcc42bd4-fc39-4313-b4d7-2920f9bc832c"],
 
 Cell[CellGroupData[{
 
@@ -2546,11 +2542,86 @@ ba00d5a1be3f"]
 
 Cell[CellGroupData[{
 
-Cell["\[LeftCeiling]Run\[RightFloor]", "CodeSubsubsection",
+Cell["\[LeftCeiling]Notebook\[RightFloor]", "CodeSubsubsection",
  Evaluatable->True,
- CellChangeTimes->{{3.699203074921628*^9, 
-  3.699203075680646*^9}},ExpressionUUID->"48ec542e-c8b7-45cd-bc13-\
-b2f10b3fe710"],
+ CellChangeTimes->{{3.6992164115355043`*^9, 
+  3.699216412743689*^9}},ExpressionUUID->"b6375e8d-b58e-400c-bc15-\
+b7c008a5c38b"],
+
+Cell[BoxData[
+ RowBox[{"ChemDVRNotebook", "//", "Clear"}]], "CodeInput",
+ CellChangeTimes->{{3.725750804339913*^9, 
+  3.725750805168111*^9}},ExpressionUUID->"1a697234-c53b-4e79-a536-\
+c9952d7c89bc"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "ChemDVRNotebook", "]"}], "=", "\n", "\t", 
+   RowBox[{"Join", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{"\"\<SaveObject\>\"", "\[Rule]", "True"}], "\n", "\t\t\t", 
+      "}"}], ",", "\n", "\t\t", 
+     RowBox[{"Options", "@", "Notebook"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ChemDVRNotebook", "[", "\n", "\t", 
+   RowBox[{
+    RowBox[{"obj", ":", "dvrObjPattern"}], ",", "\n", "\t", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"With", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{"so", "=", 
+      RowBox[{"OptionValue", "[", "\"\<SaveObject\>\"", "]"}]}], "\n", 
+     "\t\t\t", "}"}], ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"If", "[", 
+      RowBox[{"so", ",", "\n", "\t\t\t", 
+       RowBox[{"ChemDVRSave", "@", "obj"}]}], "\n", "\t\t\t", "]"}], ";", 
+     "\n", "\t\t", 
+     RowBox[{"CreateDocument", "@", "\n", "\t\t\t", 
+      RowBox[{"Notebook", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"First", "@", "\n", "\t", "\t\t\t\t", 
+         RowBox[{"Get", "[", 
+          RowBox[{"PackageFilePath", "[", 
+           RowBox[{
+           "\"\<Resources\>\"", ",", " ", "\"\<Templates\>\"", ",", " ", 
+            "\"\<DVRNotebook.nb\>\""}], "]"}], "]"}]}], ",", "\n", "\t", 
+        "\t\t\t", 
+        RowBox[{"FilterRules", "[", "\n", "\t", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"{", "\n", "\t", "\t\t\t\t\t", 
+           RowBox[{"ops", ",", "\n", "\t", "\t\t\t\t\t", 
+            RowBox[{"WindowTitle", "\[Rule]", 
+             RowBox[{"ChemDVRGet", "[", 
+              RowBox[{"obj", ",", "\"\<UUID\>\""}], "]"}]}]}], "\n", "\t", 
+           "\t\t\t\t\t", "}"}], ",", "\n", "\t", "\t\t\t\t", 
+          RowBox[{"Options", "@", "Notebook"}]}], "\n", "\t", "\t\t\t\t", 
+         "]"}]}], "\n", "\t", "\t\t\t", "]"}]}]}]}], "\n", "\t\t", 
+   "]"}]}]}], "CodeInput",
+ CellChangeTimes->{{3.6992164140005836`*^9, 3.6992164502732773`*^9}, {
+   3.699216543161448*^9, 3.6992165757947474`*^9}, {3.69921702949203*^9, 
+   3.699217119965397*^9}, {3.6992171652019577`*^9, 3.6992177523990793`*^9}, {
+   3.6992178364829493`*^9, 3.699217870403246*^9}, {3.6992179315570993`*^9, 
+   3.699218068469788*^9}, {3.699313762968474*^9, 3.699313806540395*^9}, {
+   3.6993139255650883`*^9, 3.69931392578755*^9}, {3.700004724573234*^9, 
+   3.7000047246249228`*^9}, 3.709508493025963*^9, {3.725750774614238*^9, 
+   3.7257508124228277`*^9}, {3.725751085594125*^9, 3.7257511565373287`*^9}, {
+   3.725751550408649*^9, 3.725751610074643*^9}, {3.725751644339746*^9, 
+   3.725751686621216*^9}},ExpressionUUID->"d8de4986-047f-42cc-839b-\
+bfcfb9bcc0e3"]
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Run\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"f5cbb795-430b-4dbd-be0b-421441a28da6"],
 
 Cell[BoxData[
  RowBox[{
@@ -2564,7 +2635,7 @@ Cell[BoxData[
 Cell[CellGroupData[{
 
 Cell["\[LeftCeiling]iChemDVRGetRuntimeOptions\[RightFloor]", \
-"CodeSubsubsubsection",
+"CodeSubsubsection",
  Evaluatable->True,
  CellChangeTimes->{
   3.732420860018095*^9},ExpressionUUID->"da8213d9-1207-4c95-84f1-\
@@ -2574,50 +2645,105 @@ Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"iChemDVRGetRuntimeOptions", "[", "keys__String", "]"}], ":=", 
-   "\n", "\t", 
-   RowBox[{"Sequence", "@@", 
-    RowBox[{"Normal", "@", "\n", "\t\t", 
-     RowBox[{"Fold", "[", "\n", "\t\t\t", 
+   "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"If", "[", 
       RowBox[{
        RowBox[{
-        RowBox[{"KeyDrop", "[", "\n", "\t\t\t\t", 
-         RowBox[{
-          RowBox[{"Merge", "[", "\n", "\t", "\t\t\t\t", 
-           RowBox[{
-            RowBox[{"{", "\n", "\t", "\t\t\t\t\t", 
+        RowBox[{"{", "keys", "}"}], "===", 
+        RowBox[{"{", "\"\<View\>\"", "}"}]}], ",", " ", 
+       RowBox[{
+        RowBox[{"Apply", "[", "Sequence", "]"}], "@*", "Echo", "@*", "List"}],
+        ",", " ", 
+       RowBox[{"##", "&"}]}], "]"}], "@"}], "*)"}], "\n", "\t", 
+   RowBox[{"With", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{"passedOpts", "=", "\n", "\t", "\t\t\t", 
+       RowBox[{"dvrOpsLookup", "[", "\n", "\t", "\t", "\t", "\t\t", 
+        RowBox[{
+         RowBox[{"{", "RunRuntimeOptions", "}"}], ",", " ", "\n", "\t", "\t", 
+         "\t", "\t\t", "\"\<PassedOptions\>\"", ",", "\n", "\t", "\t", "\t", 
+         "\t\t", 
+         RowBox[{"{", "}"}]}], "\n", "\t", "\t\t\t\t", "]"}]}], "\n", "\t", 
+      "\t\t", "}"}], ",", "\n", "\t", "\t", 
+     RowBox[{"Sequence", "@@", 
+      RowBox[{"Normal", "@", "\n", "\t\t\t", 
+       RowBox[{"Merge", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"{", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"Fold", "[", "\n", "\t", "\t\t\t\t\t", 
+            RowBox[{
              RowBox[{
-              RowBox[{"dvrOpsLookup", "[", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"KeyDrop", "[", "\n", "\t", "\t", "\t", "\t\t\t\t", 
                RowBox[{
-                RowBox[{"{", "#", "}"}], ",", " ", "\n", "\t\t\t\t\t\t\t", 
-                RowBox[{"#2", "<>", "\"\<Options\>\""}], ",", "\n", "\t", 
-                "\t", "\t", "\t", "\t\t\t", 
-                RowBox[{"{", "}"}]}], "\n", "\t", "\t", "\t", "\t\t\t\t", 
-               "]"}], ",", "\n", "\t\t\t\t\t\t", "#"}], "\n", "\t\t\t\t\t\t", 
-             "}"}], ",", "\n", "\t\t\t\t\t", "First"}], "\n", "\t", 
-           "\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
-          RowBox[{"#2", "<>", "\"\<Options\>\""}]}], "\n", "\t\t\t\t", "]"}], 
-        "&"}], ",", "\n", "\t\t\t", 
-       RowBox[{"Flatten", "@", 
-        RowBox[{"{", "RunRuntimeOptions", "}"}]}], ",", "\n", "\t\t\t", 
-       RowBox[{"Reverse", "@", 
-        RowBox[{"{", 
-         RowBox[{"\"\<Passed\>\"", ",", " ", "keys"}], "}"}]}]}], "\n", 
-      "\t\t\t", "]"}]}]}]}], ";"}]], "CodeInput",
- CellChangeTimes->{{3.731971721095667*^9, 3.731971741997733*^9}, {
-   3.731972459943149*^9, 3.731972469122239*^9}, {3.73197252901712*^9, 
-   3.731972530061943*^9}, {3.734206753987462*^9, 3.734206772646048*^9}, {
-   3.734206837147683*^9, 3.734206838266088*^9}, {3.734206876511608*^9, 
-   3.7342068819147377`*^9}, {3.73420692081847*^9, 3.7342069432709312`*^9}, {
-   3.7351514067865753`*^9, 3.7351514831114817`*^9}, {3.735162092894074*^9, 
-   3.735162093210257*^9}, 3.7351621380270557`*^9, {3.735162202873274*^9, 
-   3.735162235240933*^9}},ExpressionUUID->"2a7fc280-6e69-4015-bf64-\
-f3bad471dd16"]
-}, Closed]],
+                RowBox[{
+                "Merge", "[", "\n", "\t", "\t", "\t", "\t", "\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"{", "\n", "\t", "\t", "\t", "\t", "\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{
+                    "dvrOpsLookup", "[", "\n", "\t", "\t", "\t", 
+                    "\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"{", "#", "}"}], ",", " ", "\n", "\t", "\t", "\t",
+                     "\t\t\t\t\t\t\t", 
+                    RowBox[{"#2", "<>", "\"\<Options\>\""}], ",", "\n", "\t", 
+                    "\t", "\t", "\t", "\t", "\t", "\t", "\t\t\t", 
+                    RowBox[{"{", "}"}]}], "\n", "\t", "\t", "\t", "\t", "\t", 
+                    "\t", "\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t", 
+                    "\t\t\t\t\t\t", "#"}], "\n", "\t", "\t", "\t", 
+                   "\t\t\t\t\t\t", "}"}], ",", "\n", "\t", "\t", "\t", 
+                  "\t\t\t\t\t", "First"}], "\n", "\t", "\t", "\t", "\t", 
+                 "\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+                RowBox[{"#2", "<>", "\"\<Options\>\""}]}], "\n", "\t", "\t", 
+               "\t", "\t\t\t\t", "]"}], "&"}], ",", "\n", "\t", "\t\t\t\t\t", 
+             "passedOpts", ",", "\n", "\t", "\t\t\t\t\t", 
+             RowBox[{"Reverse", "@", 
+              RowBox[{"{", "keys", "}"}]}]}], "\n", "\t", "\t\t\t\t\t", "]"}],
+            ",", "\n", "\t", "\t\t\t\t", 
+           RowBox[{"Fold", "[", "\n", "\t", "\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"KeyDrop", "[", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+               RowBox[{
+                RowBox[{
+                "Merge", "[", "\n", "\t", "\t", "\t", "\t", "\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{"{", "\n", "\t", "\t", "\t", "\t", "\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{
+                    "dvrOpsLookup", "[", "\n", "\t", "\t", "\t", 
+                    "\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"{", "#", "}"}], ",", " ", "\n", "\t", "\t", "\t",
+                     "\t\t\t\t\t\t\t", 
+                    RowBox[{"#2", "<>", "\"\<Options\>\""}], ",", "\n", "\t", 
+                    "\t", "\t", "\t", "\t", "\t", "\t", "\t\t\t", 
+                    RowBox[{"{", "}"}]}], "\n", "\t", "\t", "\t", "\t", "\t", 
+                    "\t", "\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t", 
+                    "\t\t\t\t\t\t", "#"}], "\n", "\t", "\t", "\t", 
+                   "\t\t\t\t\t\t", "}"}], ",", "\n", "\t", "\t", "\t", 
+                  "\t\t\t\t\t", "First"}], "\n", "\t", "\t", "\t", "\t", 
+                 "\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+                RowBox[{"#2", "<>", "\"\<Options\>\""}]}], "\n", "\t", "\t", 
+               "\t", "\t\t\t\t", "]"}], "&"}], ",", "\n", "\t", "\t", 
+             "\t\t\t\t", 
+             RowBox[{"{", "RunRuntimeOptions", "}"}], ",", "\n", "\t", "\t", 
+             "\t\t\t\t", 
+             RowBox[{"Reverse", "@", 
+              RowBox[{"{", "keys", "}"}]}]}], "\n", "\t\t\t\t\t\t", "]"}]}], 
+          "\n", "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", "First"}], "\n", 
+        "\t\t\t", "]"}]}]}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"2a7fc280-6e69-4015-bf64-f3bad471dd16"]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
-Cell["\[LeftCeiling]iChemDVRRunHamiltonian\[RightFloor]", \
-"CodeSubsubsubsection",
+Cell["\[LeftCeiling]iChemDVRRunHamiltonian\[RightFloor]", "CodeSubsubsection",
+ 
  Evaluatable->True,
  CellChangeTimes->{
   3.7324208626033487`*^9, {3.735159731362295*^9, 
@@ -2651,7 +2777,7 @@ Cell[BoxData[
 Cell[CellGroupData[{
 
 Cell["\[LeftCeiling]iChemDVRRunGridPotentialEnergy\[RightFloor]", \
-"CodeSubsubsubsection",
+"CodeSubsubsection",
  Evaluatable->True,
  CellChangeTimes->{
   3.7324208626033487`*^9, {3.734897704653696*^9, 
@@ -2698,7 +2824,7 @@ Cell[BoxData[
 Cell[CellGroupData[{
 
 Cell["\[LeftCeiling]iChemDVRRunGridKineticEnergy\[RightFloor]", \
-"CodeSubsubsubsection",
+"CodeSubsubsection",
  Evaluatable->True,
  CellChangeTimes->{
   3.7324208626033487`*^9, {3.734897704653696*^9, 3.734897707034191*^9}, {
@@ -2746,7 +2872,7 @@ Cell[BoxData[
 Cell[CellGroupData[{
 
 Cell["\[LeftCeiling]iChemDVRRunWavefunctions\[RightFloor]", \
-"CodeSubsubsubsection",
+"CodeSubsubsection",
  Evaluatable->True,
  CellChangeTimes->{
   3.7324208626033487`*^9, {3.735159731362295*^9, 3.735159733144512*^9}, {
@@ -2803,8 +2929,7 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
-Cell["\[LeftCeiling]iChemDVRRunEnergies\[RightFloor]", "CodeSubsubsubsection",
- 
+Cell["\[LeftCeiling]iChemDVRRunEnergies\[RightFloor]", "CodeSubsubsection",
  Evaluatable->True,
  CellChangeTimes->{
   3.7324208626033487`*^9, {3.735159731362295*^9, 3.735159733144512*^9}, {
@@ -2860,7 +2985,7 @@ Cell[BoxData[
 Cell[CellGroupData[{
 
 Cell["\[LeftCeiling]iChemDVRRunGridWavefunctions\[RightFloor]", \
-"CodeSubsubsubsection",
+"CodeSubsubsection",
  Evaluatable->True,
  CellChangeTimes->{
   3.7324208626033487`*^9},ExpressionUUID->"f16a0d28-84dc-4cce-bf57-\
@@ -2921,7 +3046,7 @@ Cell[BoxData[
 Cell[CellGroupData[{
 
 Cell["\[LeftCeiling]iChemDVRRunInterpolatingWavefunctions\[RightFloor]", \
-"CodeSubsubsubsection",
+"CodeSubsubsection",
  Evaluatable->True,
  CellChangeTimes->{
   3.7324208692026443`*^9},ExpressionUUID->"e5df2a6e-9676-4f01-97df-\
@@ -2983,7 +3108,7 @@ a6135924d514"]
 Cell[CellGroupData[{
 
 Cell["\[LeftCeiling]iChemDVRRunExpectationValues\[RightFloor]", \
-"CodeSubsubsubsection",
+"CodeSubsubsection",
  Evaluatable->True,
  CellChangeTimes->{
   3.732420876842416*^9},ExpressionUUID->"caaab80e-53f5-408e-89ca-\
@@ -3056,7 +3181,7 @@ a7a39082e7de"]
 Cell[CellGroupData[{
 
 Cell["\[LeftCeiling]iChemDVRRunOperatorMatrix\[RightFloor]", \
-"CodeSubsubsubsection",
+"CodeSubsubsection",
  Evaluatable->True,
  CellChangeTimes->{
   3.732420883642754*^9},ExpressionUUID->"1a7bd58b-6ec1-4bea-a16f-\
@@ -3125,7 +3250,7 @@ a50b7621f9a0"]
 
 Cell[CellGroupData[{
 
-Cell["\[LeftCeiling]iChemDVRRun\[RightFloor]", "CodeSubsubsubsection",
+Cell["\[LeftCeiling]iChemDVRRun\[RightFloor]", "CodeSubsubsection",
  Evaluatable->True,
  CellChangeTimes->{
   3.732420888067032*^9},ExpressionUUID->"71364a2d-f264-4063-8d15-\
@@ -3992,7 +4117,13 @@ Cell[BoxData[
           RowBox[{"iChemDVRGetRuntimeOptions", "[", "$dvrvw", "]"}]}], "\n", 
          "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}]}]}], "\n", "\t\t", 
     "]"}]}], ";"}]], \
-"CodeInput",ExpressionUUID->"cf991749-e396-417e-94ae-f407430bfb5e"],
+"CodeInput",ExpressionUUID->"cf991749-e396-417e-94ae-f407430bfb5e"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ChemDVRRun\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"4d51b935-7081-4162-84d9-5481143fcda6"],
 
 Cell[BoxData[
  RowBox[{
@@ -4143,89 +4274,12 @@ Cell[BoxData[
    3.7317863940986853`*^9}, {3.7351619902007732`*^9, 
    3.73516205037779*^9}},ExpressionUUID->"4f751eef-826d-4ae2-b5de-\
 783aa1910291"]
-}, Open  ]]
+}, Closed]]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
-Cell["\[LeftCeiling]Notebook\[RightFloor]", "CodeSubsubsection",
- Evaluatable->True,
- CellChangeTimes->{{3.6992164115355043`*^9, 
-  3.699216412743689*^9}},ExpressionUUID->"b6375e8d-b58e-400c-bc15-\
-b7c008a5c38b"],
-
-Cell[BoxData[
- RowBox[{"ChemDVRNotebook", "//", "Clear"}]], "CodeInput",
- CellChangeTimes->{{3.725750804339913*^9, 
-  3.725750805168111*^9}},ExpressionUUID->"1a697234-c53b-4e79-a536-\
-c9952d7c89bc"],
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{
-   RowBox[{"Options", "[", "ChemDVRNotebook", "]"}], "=", "\n", "\t", 
-   RowBox[{"Join", "[", "\n", "\t\t", 
-    RowBox[{
-     RowBox[{"{", "\n", "\t\t\t", 
-      RowBox[{"\"\<SaveObject\>\"", "\[Rule]", "True"}], "\n", "\t\t\t", 
-      "}"}], ",", "\n", "\t\t", 
-     RowBox[{"Options", "@", "Notebook"}]}], "\n", "\t\t", "]"}]}], 
-  ";"}], "\n", 
- RowBox[{
-  RowBox[{"ChemDVRNotebook", "[", "\n", "\t", 
-   RowBox[{
-    RowBox[{"obj", ":", "dvrObjPattern"}], ",", "\n", "\t", 
-    RowBox[{"ops", ":", 
-     RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
-  "\t", 
-  RowBox[{"With", "[", "\n", "\t\t", 
-   RowBox[{
-    RowBox[{"{", "\n", "\t\t\t", 
-     RowBox[{"so", "=", 
-      RowBox[{"OptionValue", "[", "\"\<SaveObject\>\"", "]"}]}], "\n", 
-     "\t\t\t", "}"}], ",", "\n", "\t\t", 
-    RowBox[{
-     RowBox[{"If", "[", 
-      RowBox[{"so", ",", "\n", "\t\t\t", 
-       RowBox[{"ChemDVRSave", "@", "obj"}]}], "\n", "\t\t\t", "]"}], ";", 
-     "\n", "\t\t", 
-     RowBox[{"CreateDocument", "@", "\n", "\t\t\t", 
-      RowBox[{"Notebook", "[", "\n", "\t\t\t\t", 
-       RowBox[{
-        RowBox[{"First", "@", "\n", "\t", "\t\t\t\t", 
-         RowBox[{"Get", "[", 
-          RowBox[{"PackageFilePath", "[", 
-           RowBox[{
-           "\"\<Resources\>\"", ",", " ", "\"\<Templates\>\"", ",", " ", 
-            "\"\<DVRNotebook.nb\>\""}], "]"}], "]"}]}], ",", "\n", "\t", 
-        "\t\t\t", 
-        RowBox[{"FilterRules", "[", "\n", "\t", "\t\t\t\t", 
-         RowBox[{
-          RowBox[{"{", "\n", "\t", "\t\t\t\t\t", 
-           RowBox[{"ops", ",", "\n", "\t", "\t\t\t\t\t", 
-            RowBox[{"WindowTitle", "\[Rule]", 
-             RowBox[{"ChemDVRGet", "[", 
-              RowBox[{"obj", ",", "\"\<UUID\>\""}], "]"}]}]}], "\n", "\t", 
-           "\t\t\t\t\t", "}"}], ",", "\n", "\t", "\t\t\t\t", 
-          RowBox[{"Options", "@", "Notebook"}]}], "\n", "\t", "\t\t\t\t", 
-         "]"}]}], "\n", "\t", "\t\t\t", "]"}]}]}]}], "\n", "\t\t", 
-   "]"}]}]}], "CodeInput",
- CellChangeTimes->{{3.6992164140005836`*^9, 3.6992164502732773`*^9}, {
-   3.699216543161448*^9, 3.6992165757947474`*^9}, {3.69921702949203*^9, 
-   3.699217119965397*^9}, {3.6992171652019577`*^9, 3.6992177523990793`*^9}, {
-   3.6992178364829493`*^9, 3.699217870403246*^9}, {3.6992179315570993`*^9, 
-   3.699218068469788*^9}, {3.699313762968474*^9, 3.699313806540395*^9}, {
-   3.6993139255650883`*^9, 3.69931392578755*^9}, {3.700004724573234*^9, 
-   3.7000047246249228`*^9}, 3.709508493025963*^9, {3.725750774614238*^9, 
-   3.7257508124228277`*^9}, {3.725751085594125*^9, 3.7257511565373287`*^9}, {
-   3.725751550408649*^9, 3.725751610074643*^9}, {3.725751644339746*^9, 
-   3.725751686621216*^9}},ExpressionUUID->"d8de4986-047f-42cc-839b-\
-bfcfb9bcc0e3"]
-}, Closed]],
-
-Cell[CellGroupData[{
-
-Cell["\[LeftCeiling]OOP Interface\[RightFloor]", "CodeSubsubsection",
+Cell["\[LeftCeiling]OOP Interface\[RightFloor]", "CodeSubsection",
  Evaluatable->True,
  CellChangeTimes->{{3.711059468448546*^9, 3.711059470712175*^9}, {
   3.727732155572032*^9, 
@@ -4546,8 +4600,7 @@ Cell[BoxData[
  CellChangeTimes->{{3.727732352529777*^9, 
   3.727732360933573*^9}},ExpressionUUID->"d293b01f-3f5d-464d-a4b0-\
 c22cb7adc485"]
-}, Closed]]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -4797,7 +4850,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"9009c70d-1aad-415c-9701-\
 edff1eaf5262"]
 },
 WindowSize->{788, 764},
-WindowMargins->{{Automatic, 41}, {Automatic, 23}},
+WindowMargins->{{49, Automatic}, {Automatic, 35}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

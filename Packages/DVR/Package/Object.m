@@ -386,7 +386,7 @@ ChemDVRClear[
 
 
 (* ::Subsection:: *)
-(*ChemDVRObject*)
+(*Base Methods*)
 
 
 
@@ -954,6 +954,47 @@ ChemDVRView[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 
 
 (* ::Subsubsection::Closed:: *)
+(*Notebook*)
+
+
+
+ChemDVRNotebook//Clear
+
+
+Options[ChemDVRNotebook]=
+	Join[
+		{
+			"SaveObject"->True
+			},
+		Options@Notebook
+		];
+ChemDVRNotebook[
+	obj:dvrObjPattern,
+	ops:OptionsPattern[]
+	]:=
+	With[
+		{
+			so=OptionValue["SaveObject"]
+			},
+		If[so,
+			ChemDVRSave@obj
+			];
+		CreateDocument@
+			Notebook[
+				First@
+					Get[PackageFilePath["Resources", "Templates", "DVRNotebook.nb"]],
+				FilterRules[
+					{
+						ops,
+						WindowTitle->ChemDVRGet[obj,"UUID"]
+						},
+					Options@Notebook
+					]
+				]
+		]
+
+
+(* ::Subsection:: *)
 (*Run*)
 
 
@@ -961,34 +1002,68 @@ ChemDVRView[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 ChemDVRRun::badops="Options `` aren't valid for ChemDVRRun (OptionQ failed)"
 
 
-(* ::Subsubsubsection::Closed:: *)
+(* ::Subsubsection::Closed:: *)
 (*iChemDVRGetRuntimeOptions*)
 
 
 
 iChemDVRGetRuntimeOptions[keys__String]:=
-	Sequence@@Normal@
-		Fold[
-			KeyDrop[
-				Merge[
-					{
-						dvrOpsLookup[
-							{#}, 
-							#2<>"Options",
-							{}
-							],
-						#
-						},
-					First
-					],
-				#2<>"Options"
-				]&,
-			Flatten@{RunRuntimeOptions},
-			Reverse@{"Passed", keys}
-			];
+(*If[{keys}==={"View"}, Apply[Sequence]@*Echo@*List, ##&]@*)
+	With[
+		{
+			passedOpts=
+				dvrOpsLookup[
+					{RunRuntimeOptions}, 
+					"PassedOptions",
+					{}
+					]
+			},
+		Sequence@@Normal@
+			Merge[
+				{
+					Fold[
+						KeyDrop[
+							Merge[
+								{
+									dvrOpsLookup[
+										{#}, 
+										#2<>"Options",
+										{}
+										],
+									#
+									},
+								First
+								],
+							#2<>"Options"
+							]&,
+						passedOpts,
+						Reverse@{keys}
+						],
+					Fold[
+						KeyDrop[
+							Merge[
+								{
+									dvrOpsLookup[
+										{#}, 
+										#2<>"Options",
+										{}
+										],
+									#
+									},
+								First
+								],
+							#2<>"Options"
+							]&,
+						{RunRuntimeOptions},
+						Reverse@{keys}
+						]
+				},
+			First
+			]
+		];
 
 
-(* ::Subsubsubsection::Closed:: *)
+(* ::Subsubsection::Closed:: *)
 (*iChemDVRRunHamiltonian*)
 
 
@@ -1004,7 +1079,7 @@ iChemDVRRunHamiltonian[obj_]:=
 		];
 
 
-(* ::Subsubsubsection::Closed:: *)
+(* ::Subsubsection::Closed:: *)
 (*iChemDVRRunGridPotentialEnergy*)
 
 
@@ -1024,7 +1099,7 @@ iChemDVRRunGridPotentialEnergy[obj_]:=
 		];
 
 
-(* ::Subsubsubsection::Closed:: *)
+(* ::Subsubsection::Closed:: *)
 (*iChemDVRRunGridKineticEnergy*)
 
 
@@ -1044,7 +1119,7 @@ iChemDVRRunGridKineticEnergy[obj_]:=
 		];
 
 
-(* ::Subsubsubsection::Closed:: *)
+(* ::Subsubsection::Closed:: *)
 (*iChemDVRRunWavefunctions*)
 
 
@@ -1071,7 +1146,7 @@ iChemDVRRunWavefunctions[obj_]:=
 		]
 
 
-(* ::Subsubsubsection::Closed:: *)
+(* ::Subsubsection::Closed:: *)
 (*iChemDVRRunEnergies*)
 
 
@@ -1099,7 +1174,7 @@ iChemDVRRunEnergies[obj_]:=
 		]
 
 
-(* ::Subsubsubsection::Closed:: *)
+(* ::Subsubsection::Closed:: *)
 (*iChemDVRRunGridWavefunctions*)
 
 
@@ -1127,7 +1202,7 @@ iChemDVRRunGridWavefunctions[obj_]:=
 		];
 
 
-(* ::Subsubsubsection::Closed:: *)
+(* ::Subsubsection::Closed:: *)
 (*iChemDVRRunInterpolatingWavefunctions*)
 
 
@@ -1155,7 +1230,7 @@ iChemDVRRunInterpolatingWavefunctions[obj_]:=
 		];
 
 
-(* ::Subsubsubsection::Closed:: *)
+(* ::Subsubsection::Closed:: *)
 (*iChemDVRRunExpectationValues*)
 
 
@@ -1190,7 +1265,7 @@ iChemDVRRunExpectationValues[obj_]:=
 		];
 
 
-(* ::Subsubsubsection::Closed:: *)
+(* ::Subsubsection::Closed:: *)
 (*iChemDVRRunOperatorMatrix*)
 
 
@@ -1225,7 +1300,7 @@ iChemDVRRunOperatorMatrix[obj_]:=
 		]
 
 
-(* ::Subsubsubsection::Closed:: *)
+(* ::Subsubsection::Closed:: *)
 (*iChemDVRRun*)
 
 
@@ -1552,6 +1627,11 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*ChemDVRRun*)
+
+
+
 ChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 	Catch@With[{m=If[$Notebooks,dvrOpsLookup[ops,Monitor,False],False]},
 		Switch[m,
@@ -1592,48 +1672,7 @@ ChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 		];
 
 
-(* ::Subsubsection::Closed:: *)
-(*Notebook*)
-
-
-
-ChemDVRNotebook//Clear
-
-
-Options[ChemDVRNotebook]=
-	Join[
-		{
-			"SaveObject"->True
-			},
-		Options@Notebook
-		];
-ChemDVRNotebook[
-	obj:dvrObjPattern,
-	ops:OptionsPattern[]
-	]:=
-	With[
-		{
-			so=OptionValue["SaveObject"]
-			},
-		If[so,
-			ChemDVRSave@obj
-			];
-		CreateDocument@
-			Notebook[
-				First@
-					Get[PackageFilePath["Resources", "Templates", "DVRNotebook.nb"]],
-				FilterRules[
-					{
-						ops,
-						WindowTitle->ChemDVRGet[obj,"UUID"]
-						},
-					Options@Notebook
-					]
-				]
-		]
-
-
-(* ::Subsubsection::Closed:: *)
+(* ::Subsection:: *)
 (*OOP Interface*)
 
 

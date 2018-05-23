@@ -35,7 +35,17 @@ Begin["`Private`"];
 
 
 
+(* ::Subsubsection::Closed:: *)
+(*$ChemDataSourcesDontCacheFlag*)
+
+
+
 $ChemDataSourcesDontCacheFlag=False;
+
+
+(* ::Subsubsection::Closed:: *)
+(*$ChemDataSources*)
+
 
 
 If[!AssociationQ@$ChemDataSources,
@@ -54,12 +64,98 @@ $ChemDataSources/:
 				);
 
 
+(* ::Subsubsection::Closed:: *)
+(*chemDataSourceAdd*)
+
+
+
 chemDataSourceAdd[key_,val_]:=
 	If[!KeyMemberQ[$ChemDataSources,key],
 		$ChemDataSources[key]=val
 		];
 chemDataSourceAdd[key_->val_]:=
 	chemDataSourceAdd[key,val]
+
+
+(* ::Subsubsection::Closed:: *)
+(*chemDataCAQ*)
+
+
+
+chemDataCAQ[q_]:=
+	KeyExistsQ[$ChemCustomAtoms, q]
+
+
+(* ::Subsubsection::Closed:: *)
+(*chemDataSourceGetQueryString*)
+
+
+
+chemDataSourceGetQueryString[q_String]:=
+	If[!chemDataCAQ[q]||StringLength[q]<3,
+		q,
+		ChemDataLookup[q, "Symbol"]
+		];
+chemDataSourceGetQueryString[q_]:=
+	q;
+
+
+(* ::Subsubsection::Closed:: *)
+(*chemDataCARouter*)
+
+
+
+chemDataCARouter[q_, f1_, prop_]:=
+	With[{ca=ChemDataLookup["CustomAtoms", q]},
+		If[AssociationQ@ca, 
+			ca[prop],
+			f1[q]
+			]
+		];
+chemDataCARouter[f_, prop_][q_]:=
+	chemDataCARouter[q, f, prop];
+
+
+(* ::Subsubsection::Closed:: *)
+(*chemDataIsoElRouter*)
+
+
+
+chemDataIsoElRouter[q_, prop_]:=
+	If[ChemDataIsotopeQ@q,
+		ElementData[ChemDataLookup[q, "Symbol"], prop],
+		ElementData[q, prop]
+		]
+
+
+(* ::Subsection:: *)
+(*CustomAtoms*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*CDCustomAtoms*)
+
+
+
+CDCustomAtoms[All]:=
+	$ChemCustomAtoms;
+CDCustomAtoms[q_]:=
+	$ChemCustomAtoms[q];
+
+
+(* ::Subsubsection::Closed:: *)
+(*chemDataSourceAdd*)
+
+
+
+chemDataSourceAdd[
+	"CustomAtoms"->
+		ChemData[
+			CDCustomAtoms,
+			Missing["NoAtom", #]&
+			]
+	]
 
 
 (* ::Subsection:: *)
@@ -103,17 +199,66 @@ chemDataSourceAdd[
 
 
 
+(* ::Subsubsection::Closed:: *)
+(*CDAtomColor*)
+
+
+
+CDAtomColor[All]:=
+	Join[
+		EntityValue["Element", "IconColor", "Association"],
+		$ChemAtomColors
+		];
+CDAtomColor[q_]:=
+	chemDataIsoElRouter[q, "IconColor"];
+
+
+(* ::Subsubsection::Closed:: *)
+(*AtomColors*)
+
+
+
 chemDataSourceAdd[
 	"AtomColors"->
-			ChemData[$ChemAtomColors,
-			(ElementData[#,"IconColor"]&)
-			]
+			ChemData[
+				chemDataCARouter[CDAtomColor, "Color"]],
+				GrayLevel[.5, .5]&
+				]
 	];
 
 
 (* ::Subsection:: *)
 (*BondDistances*)
 
+
+
+(* ::Subsubsection::Closed:: *)
+(*CDSBondListPre*)
+
+
+
+CDSBondListPre[q_String]:=
+	Which[
+		StringContainsQ[q, "=_"|"_="|"-="|"=-"],
+			Append[StringSplit[q, "=_"|"_="|"-="|"=-", 2], 3],
+		StringContainsQ[q, "="], 
+			Append[StringSplit[q, "=", 2], 2], 
+		StringContainsQ[q, "-"], 
+			Append[StringSplit[q, "-", 2], 2], 
+		True,
+			With[
+				{
+					splitties=
+						StringJoin/@
+							Partition[
+								Rest@StringSplit[q, cap:LetterCharacter?(Not@*LowerCaseQ):>cap, 3],
+								UpTo[2]
+								]
+					},
+				Append[splitties, 1]
+				]
+		];
+CDSBondListPre[q_]:=q
 
 
 (* ::Subsubsection::Closed:: *)
@@ -124,31 +269,16 @@ chemDataSourceAdd[
 CDSBondDistance[query_,___]:=
 	With[{q=If[AtomQ@query,query,List@@query]},
 		$ChemDataSourcesDontCacheFlag=True;
-		$ChemBondDistances@
-		Append[
-			Sort@#[[;;2]],
-			#[[3]]
-			]&@
-		Replace[q,{
-			s_String:>
-				Append[
-					If[StringLength[query]>2&&
-						LowerCaseQ@StringTake[s,{2}],
-						StringJoin/@
-							Partition[
-								Prepend[
-									StringSplit[
-										StringTake[First@query,{2,-1}],
-										c_?(Not@*LowerCaseQ):>c,3],
-									StringTake[First@query,{1}]
-									],
-									2],
-						{StringTake[s,{1}],StringTake[s,{2,-1}]}
-						],
-					1],
-			{a_,b_}:>
-				{a,b,1}
-			}]
+		With[{prepped=CDSBondListPre[q]},
+			(*If[AnyTrue[prepped, chemDataCAQ],
+				prepped,*)
+				$ChemBondDistances@
+					Append[
+						Sort@prepped[[;;2]],
+						prepped[[3]]
+						]
+				(*]*)
+			]
 		];
 
 
@@ -159,7 +289,10 @@ CDSBondDistance[query_,___]:=
 
 chemDataSourceAdd[
 	"BondDistances"->
-		ChemData[CDSBondDistance,-1.&]
+		ChemData[
+			CDSBondDistance, 
+			-1.&
+			]
 	]
 
 
@@ -168,19 +301,26 @@ chemDataSourceAdd[
 
 
 
+(* ::Subsubsection::Closed:: *)
+(*CDUnitConversion*)
+
+
+
+CDUnitConversion[q_]:=
+	$ChemUnitConversions[q]
+
+
+(* ::Subsubsection::Closed:: *)
+(*UnitConversions*)
+
+
+
 chemDataSourceAdd[
 	"UnitConversions"->
 		ChemData[
-			<|
-				"InertialConstant"->
-					UnitConvert[
-						Quantity[1/(8\[Pi]^2),
-							"PlanckConstant"/
-							("AtomicMassUnit"*"Angstroms"^2)],
-						"Megahertz"
-						]
-					|>,
-			$Failed&]
+			CDUnitConversion,
+			$Failed&
+			]
 	];
 
 
@@ -244,15 +384,20 @@ chemDataSourceAdd[
 
 
 CSDElementValences[query_,___]:=
-(
-	$ChemDataSourcesDontCacheFlag=True;
-	Lookup[$ChemElementValences,
-		query,
-		Lookup[$ChemElementValences,
-			ElementData[query,"Symbol"]
+	With[
+		{
+			qReal=ChemDataLookup[query, "Symbol"]
+			},
+		$ChemDataSourcesDontCacheFlag=True;
+		Replace[
+			Lookup[
+				$ChemElementValences, 
+				qReal, 
+				ElementData[qReal, "Valence"]
+				],
+			i_Integer:>{i}
 			]
 		]
-	)
 
 
 (* ::Subsubsection::Closed:: *)
@@ -262,8 +407,10 @@ CSDElementValences[query_,___]:=
 
 chemDataSourceAdd[
 	"ElementValences"->
-		ChemData[CSDElementValences,
-			Missing["NotAvailable",#]&]
+		ChemData[
+			chemDataCARouter[CSDElementValences, "Valences"],
+			Missing["NoValences", #]&
+			]
 	]
 
 
@@ -423,10 +570,13 @@ chemDataSourceAdd[
 
 
 CDFSDFFile[sdf_]:=
-	Replace[PubChemSDF@sdf,
-		_Missing|$Failed:>
-			Replace[PubChemParentSDF@sdf,
-				_Missing|$Failed:>PubChemComponentSDF@sdf
+	Replace[$ChemSDFFiles[sdf],
+		Except[_String]:>
+			Replace[PubChemSDF@sdf,
+				_Missing|$Failed:>
+					Replace[PubChemParentSDF@sdf,
+						_Missing|$Failed:>PubChemComponentSDF@sdf
+						]
 				]
 		]
 
@@ -482,10 +632,14 @@ chemDataSourceAdd[
 
 
 CDFPrimaryIsotope[q_]:=
-	If[ChemDataIsotopeQ@a,
-		Last@First@
+	Replace[
+		If[ChemDataIsotopeQ@q,
 			IsotopeData[IsotopeData[q, "AtomicNumber"]],
-		Last@First@IsotopeData[q]
+			IsotopeData[q]
+			],
+		{
+			{{___, e_}, ___}:>e
+			}
 		];
 
 
@@ -578,17 +732,8 @@ CDSSymbol[s_]:=
 chemDataSourceAdd[
 	"Symbol"->
 		ChemData[
-			CDSSymbol,
-			$Failed&,
-			<|
-				"X"->"X",
-				"Invisible"->
-					"Invisible",
-				"Black"->
-					"Black",
-				"White"->
-					"White"
-				|>
+			chemDataCARouter[CDSSymbol, "Symbol"],
+			$Failed&
 			]
 	]
 
@@ -627,18 +772,8 @@ CDSourceRadius[query_,___]:=
 chemDataSourceAdd[
 	"Radius"->
 		ChemData[
-			CDSourceRadius,
-			Quantity[25.,"Picometers"]&,
-			<|
-				"X"->
-					Quantity[50.,"Picometers"],
-				"Invisible"->
-					Quantity[50.,"Picometers"],
-				"Black"->
-					Quantity[50.,"Picometers"],
-				"White"->
-					Quantity[50.,"Picometers"]
-				|>
+			chemDataCARouter[CDSourceRadius, "Radius"],
+			Quantity[25., "Picometers"]&
 			]
 	];
 
@@ -672,18 +807,8 @@ CDSourceMass[query_,___]:=
 chemDataSourceAdd[
 	"Mass"->
 		ChemData[
-			CDSourceMass,
-			$Failed&,
-			<|
-				"X"->
-					Quantity[0.,"AtomicMassUnit"],
-				"Invisible"->
-					Quantity[0.,"AtomicMassUnit"],
-				"Black"->
-					Quantity[0.,"AtomicMassUnit"],
-				"White"->
-					Quantity[0.,"AtomicMassUnit"]
-				|>
+			chemDataCARouter[CDSourceMass, "Mass"],
+			Missing["NoMass", #]&
 			]
 	]
 
@@ -741,17 +866,7 @@ chemDataSourceAdd[
 	"NISTMass"->
 		ChemData[
 			CDNISTMass,
-			$Failed&,
-			<|
-				"X"->
-					Quantity[0.,"AtomicMassUnit"],
-				"Invisible"->
-					Quantity[0.,"AtomicMassUnit"],
-				"Black"->
-					Quantity[0.,"AtomicMassUnit"],
-				"White"->
-					Quantity[0.,"AtomicMassUnit"]
-				|>
+			Missing["NoNISTMass", #]&
 			]
 	]
 
@@ -778,18 +893,8 @@ CDSAtomicNumber[q_]:=
 chemDataSourceAdd[
 	"AtomicNumber"->
 		ChemData[
-			CDSAtomicNumber,
-			$Failed&,
-			<|
-				"X"->
-					-1,
-				"Invisible"->
-					-2,
-				"Black"->
-					-3,
-				"White"->
-					-4
-				|>
+			chemDataCARouter[CDSAtomicNumber, "AtomicNumber"],
+			Missing["NoAtomicNumber", #]&
 			]
 	]
 
@@ -822,18 +927,8 @@ CDElectronegativity[query_,___]:=
 chemDataSourceAdd[
 	"Electronegativity"->
 		ChemData[
-			CDElectronegativity,
-			$Failed&,
-			<|
-				"X"->
-					0,
-				"Invisible"->
-					0,
-				"Black"->
-					0,
-				"White"->
-					0
-				|>
+			chemDataCARouter[CDElectronegativity, "Electronegativity"],
+			Missing["NoElectronegativity", #]&
 			]
 	]
 
