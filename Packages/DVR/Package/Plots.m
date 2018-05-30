@@ -573,10 +573,12 @@ ChemDVRDefaultPlotPotential[
 										{
 											If[Length@pot[[1]]===2,
 												Directive[Dashed, Gray],
-												Directive[Opacity[.5], Gray]
-												]
+												Directive[Opacity[.15], GrayLevel[.85]]
+												],
+											ClippingStyle->None
 											}
 									],
+							Cases[potStyle, _?OptionQ],
 							ops
 							},
 						Options@func

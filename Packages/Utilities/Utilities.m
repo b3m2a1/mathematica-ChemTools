@@ -260,7 +260,7 @@ guessBondsAdjustBondingMatrix[mx_,inRange_,valences_,order_]:=
 
 
 
-guessBondsCheckBondingMatrix[mx_,inRange_,valences_,goal_]:=
+guessBondsCheckBondingMatrix[mx_, inRange_, valences_, goal_]:=
 	MapThread[
 		If[MatchQ[#2,_Integer],
 			Total@#==#2,
@@ -400,29 +400,33 @@ Options[ChemUtilsGuessBonds]={
 	"LogSteps"->False,
 	"MultiValences"->None,
 	"MakeBondLists"->True,
-	"ForbiddenBonds"->{(*{"H", "H"}*)}
+	"ForbiddenBonds"->{}
 	};
 ChemUtilsGuessBonds[
 	sourceAtoms:{{_String,{__?NumericQ}, ___}..},
 	ops:OptionsPattern[]
 	]:=
 	With[{
-		atoms=SortBy[sourceAtoms,OptionValue@"PriorityFunction"],
+		atoms=SortBy[sourceAtoms, OptionValue@"PriorityFunction"],
 		tol=OptionValue@Tolerance,
 		iters=OptionValue@MaxIterations,
 		goal=
-			Replace[OptionValue@"Charge",{
-				r_Real:>Ceiling@r,
-				Except[_Integer]->1
-				}],
+			Replace[OptionValue@"Charge",
+				{
+					r_Real:>Ceiling@r,
+					Except[_Integer]->1
+					}
+				],
 		log=TrueQ@OptionValue@"LogSteps",
 		multi=
-			Replace[OptionValue@"MultiValences",{
-				Automatic:>
-					Map[ChemDataLookup[First@#,"ElementValences"]&,
-						sourceAtoms
-						]
-				}],
+			Replace[OptionValue@"MultiValences",
+				{
+					Automatic:>
+						Map[ChemDataLookup[First@#, "ElementValences"]&,
+							sourceAtoms
+							]
+					}
+				],
 		makeLists=OptionValue@"MakeBondLists",
 		forbidden=
 			Sort/@

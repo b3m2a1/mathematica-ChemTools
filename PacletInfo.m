@@ -1,6 +1,6 @@
 Paclet[
   Name -> "ChemTools",
-  Version -> "1.2.2",
+  Version -> "1.2.3",
   Creator -> "b3m2a1@gmail.com",
   Description -> "A collection of tools for doing chemistry",
   Thumbnail -> "PacletIcon.png",
@@ -8,9 +8,7 @@ Paclet[
     	{
      		"Kernel",
      		"Root" -> ".",
-     		"Context" -> {"ChemTools`"},
-     		Root -> ".",
-     		Context -> {"ChemTools`"}
+     		"Context" -> {"ChemTools`"}
      	},
     	{"FrontEnd"},
     	{"Formats"},

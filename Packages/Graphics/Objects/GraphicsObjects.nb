@@ -2003,7 +2003,7 @@ Cell[BoxData[
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"2c6c8c86-84b6-40a5-b6ac-c13de329aa37"]
 }, Closed]]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -3410,12 +3410,20 @@ Cell[BoxData[
       RowBox[{
        RowBox[{
         RowBox[{
-         RowBox[{"Length", "@", "bonds"}], "\[Equal]", "0"}], "&&", "gb"}], 
-       ",", "\n", "\t\t\t", 
+         RowBox[{"Length", "@", "bonds"}], "\[Equal]", "0"}], "&&", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"TrueQ", "@", "gb"}], "||", 
+          RowBox[{"OptionQ", "@", "gb"}]}], ")"}]}], ",", "\n", "\t\t\t", 
        RowBox[{
         RowBox[{"bonds", "=", 
-         RowBox[{"ChemUtilsGuessBonds", "[", "atoms", "]"}]}], ";", "\n", 
-        "\t\t\t", 
+         RowBox[{"ChemUtilsGuessBonds", "[", 
+          RowBox[{"atoms", ",", " ", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"OptionQ", "@", "gb"}], ",", " ", "gb", ",", " ", 
+             RowBox[{"Sequence", "@@", 
+              RowBox[{"{", "}"}]}]}], "]"}]}], "]"}]}], ";", "\n", "\t\t\t", 
         RowBox[{"batMap", "=", "\n", "\t\t\t\t", 
          RowBox[{"Association", "@", "\n", "\t\t\t\t\t", 
           RowBox[{"MapIndexed", "[", "\n", "\t\t\t\t\t\t", 
@@ -3512,7 +3520,7 @@ Cell[BoxData[
       RowBox[{"atoms", ",", " ", "bonds"}], "}"}]}]}], "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"791d879b-a092-4391-9bd1-0f929f3b335d"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 

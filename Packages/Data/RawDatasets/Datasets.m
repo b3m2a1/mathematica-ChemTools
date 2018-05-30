@@ -34,6 +34,7 @@ $ChemElementValences::usage="";
 $ChemCharacterTables::usage="";
 $ChemCorrelationTables::usage="";
 $ChemTanabeSuganoData::usage="";
+$ChemUnitConversions::usage="";
 $ChemMMMFF94AtomTypes::usage="";
 $ChemMMMFF94BondData::usage="";
 $ChemMMFF94BondAngleData::usage="";
@@ -55,8 +56,20 @@ ChemDataLookup::nolod="Couldn't load resource ``, got ``";
 $ChemDatasetsCachePermanent=False;
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDatasetPacletFile*)
+
+
+
 ChemDatasetPacletFile[name_]:=
 	PackageFilePath["Resources", "Datasets", name<>".wl"];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDatasetTempFile*)
+
+
+
 ChemDatasetTempFile[name_]:=
 	FileNameJoin[
 		{
@@ -65,12 +78,26 @@ ChemDatasetTempFile[name_]:=
 			name<>".wl"
 			}
 		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDatasetAppDataFile*)
+
+
+
 ChemDatasetAppDataFile[name_]:=
 	FileNameJoin[
 		{$UserBaseDirectory, "ApplicationData", "ChemTools", 
 			"Datasets", name<>".wl"
 			}
 		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDatasetWebResourceFile*)
+
+
+
 ChemDatasetWebResourceFile[name_]:=
 	First@CloudObject@
 		URLBuild[
@@ -87,6 +114,11 @@ ChemDatasetWebResourceFile[name_]:=
 						}
 				|>
 			];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDatasetDownload*)
+
 
 
 ChemDatasetDownload[name_, "File"]:=
@@ -113,6 +145,11 @@ ChemDatasetDownload[name_, "File"]:=
 				TemplateApply["Downloading dataset `` from ``", {name, source}]
 			]
 		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDatasetLoad*)
+
 
 
 ChemDatasetLoad[name_, mode:"File"]:=
@@ -248,6 +285,18 @@ ChemDatasetRegister["ChemCorrelationTables", _Association?AssociationQ]
 ChemDatasetRegister[
 	$ChemTanabeSuganoData, 
 	"ChemTanabeSuganoDiagrams", 
+	_Association?AssociationQ
+	]
+
+
+(* ::Subsubsection::Closed:: *)
+(*$ChemUnitConversions*)
+
+
+
+ChemDatasetRegister[
+	$ChemUnitConversions, 
+	"ChemUnitConversions", 
 	_Association?AssociationQ
 	]
 

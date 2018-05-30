@@ -70,8 +70,8 @@ $ChemDataSources/:
 
 
 chemDataSourceAdd[key_,val_]:=
-	If[!KeyMemberQ[$ChemDataSources,key],
-		$ChemDataSources[key]=val
+	If[!KeyMemberQ[$ChemDataSources, key],
+		$ChemDataSources[key]=Prepend[val, key]
 		];
 chemDataSourceAdd[key_->val_]:=
 	chemDataSourceAdd[key,val]
@@ -106,7 +106,7 @@ chemDataSourceGetQueryString[q_]:=
 
 
 chemDataCARouter[q_, f1_, prop_]:=
-	With[{ca=ChemDataLookup["CustomAtoms", q]},
+	With[{ca=ChemDataLookup[q, "CustomAtoms"]},
 		If[AssociationQ@ca, 
 			ca[prop],
 			f1[q]
@@ -220,10 +220,10 @@ CDAtomColor[q_]:=
 
 chemDataSourceAdd[
 	"AtomColors"->
-			ChemData[
-				chemDataCARouter[CDAtomColor, "Color"]],
-				GrayLevel[.5, .5]&
-				]
+		ChemData[
+			chemDataCARouter[CDAtomColor, "Color"],
+			GrayLevel[.5, .5]&
+			]
 	];
 
 

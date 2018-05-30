@@ -1655,8 +1655,8 @@ ChemGraphicsAtomsetGetAtomsBonds[elSet_, gb_, as_]:=
 		atoms=
 			ChemGraphicsAtomsetAlignAtoms[atoms, as];
 		bonds=Cases[elSet, {_Integer, _Integer, ___}];
-		If[Length@bonds==0&&gb,
-			bonds=ChemUtilsGuessBonds[atoms];
+		If[Length@bonds==0&&(TrueQ@gb||OptionQ@gb),
+			bonds=ChemUtilsGuessBonds[atoms, If[OptionQ@gb, gb, Sequence@@{}]];
 			batMap=
 				Association@
 					MapIndexed[

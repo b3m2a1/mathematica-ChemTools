@@ -25,14 +25,16 @@ ChemData::usage=
 	"A wrapper for various chemical data stuff to act like an extensible ChemicalData";
 
 
+ChemDataProperties::usage="Finds properties matching a pattern";
+ChemDataCacheClear::usage="Clears cached data matching a pattern";
+
+
 PackageScopeBlock[
 	ChemDataQuery::usage=
 		"A descriptive head used in to pass multiple parameters to sources";
+	$ChemDataCache::usage="The standard cache for data lookup",
+	$Context
 	]
-
-
-ChemDataProperties::usage="Finds properties matching a pattern";
-ChemDataCacheClear::usage="Clears cached data matching a pattern";
 
 
 Begin["`Private`"];
@@ -47,8 +49,8 @@ ChemData::badsrc=
 	"$ChemDataSources can only take ChemData object";
 
 
-If[Not@AssociationQ@$chemDataCache,
-	$chemDataCache=<||>
+If[Not@AssociationQ@$ChemDataCache,
+	$ChemDataCache=<||>
 	];
 
 
@@ -57,19 +59,29 @@ If[Not@AssociationQ@$chemDataCache,
 
 
 
-ChemData[data:Except[_String],fallback_,cache_:<||>][
+ChemData[
+	name:_String|None:None,
+	data:Except[_String], 
+	fallback:Except[_String], 
+	cache:Except[_String]:<||>
+	][
 	key:Except["Properties"],
-	attr_:None]:=
+	attr_:None
+	]:=
 	Replace[
-		Lookup[cache,key,data[key]],{
-		e:Except[_Missing]:>
-			Replace[e,
-				_Association|{__Rule}:>
-					Lookup[e,attr,fallback[key,attr]]
-				],
-		_:>
-			fallback[key,attr]
-		}];
+		Lookup[cache, key, data[key]],
+		{
+			a:(_Association|{(_Rule|_RuleDelayed)..})?(attr=!=name&):>
+				Lookup[a, attr, fallback[key, attr]],
+			_Missing|$Failed:>
+				fallback[key, attr]
+			}
+		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*extractProps*)
+
 
 
 extractProps[data_]:=
@@ -86,9 +98,17 @@ extractProps[data_]:=
 			]
 
 
-ChemData[data:Except[_String],
+(* ::Subsubsubsection::Closed:: *)
+(*Properties*)
+
+
+
+ChemData[
+	name:_String|None:None,
+	data:Except[_String],
 	fallback_,
-	cache_:<||>]["Properties"]:=
+	cache_:<||>
+	]["Properties"]:=
 	Join[
 		extractProps@cache,
 		extractProps@data,
@@ -121,37 +141,43 @@ chemDataPrep[props_]:=
 		}]
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*OOP*)
+
+
+
 ChemData/:
-	Set[ChemData[name_String],props_]:=
+	Set[ChemData[name_String], props_]:=
 		($ChemDataSources[name]=
 			chemDataPrep[props]);
 ChemData/:
-	SetDelayed[ChemData[name_String],props_]:=
+	SetDelayed[ChemData[name_String], props_]:=
 		($ChemDataSources[name]:=
 			props);
 ChemData/:
-	Unset[ChemData[name_String],props_]:=
+	Unset[ChemData[name_String], props_]:=
 		($ChemDataSources[name]=.);
 
 
 ChemData::nosrc="No data source \"``\"";
 ChemData::newsrc="No data source \"``\". Creating new one.";
-chemDataSet[name_,key_,value_]:=
+chemDataSet[name_, key_, value_]:=
 	(
-		$chemDataCache[ChemDataQuery[key,name]]=.;
-		If[KeyMemberQ[$ChemDataSources,name],
+		$ChemDataCache[ChemDataQuery[key, name]]=.;
+		If[KeyMemberQ[$ChemDataSources, name],
 			Replace[$ChemDataSources[name],{
-				ChemData[a_,b_]:>
+				ChemData[name, a_, b_]:>
 					($ChemDataSources[name]=
-						ChemData[a,b,<|key->value|>];),
-				ChemData[a_,b_,c_]:>
+						ChemData[name, a, b, <|key->value|>];),
+				ChemData[name, a_, b_, c_]:>
 					($ChemDataSources[name]=
-						ChemData[a,b,Append[c,key->value]];)
+						ChemData[name, a, b, Append[c,key->value]];)
 				}],
 			Message[ChemData::newsrc,name];
 			$ChemDataSources[name]=
 				ChemData[
-					(Missing["KeyAbsent",#]&),
+					name,
+					(Missing["KeyAbsent", #]&),
 					$Failed&,
 					<|key->value|>
 					]
@@ -161,19 +187,20 @@ chemDataSet[name_,key_,value_]:=
 
 chemDataSetDelayed[name_,key_,value_]:=
 	(
-		$chemDataCache[ChemDataQuery[key,name]]=.;
+		$ChemDataCache[ChemDataQuery[key, name]]=.;
 		If[KeyMemberQ[$ChemDataSources,name],
 			Replace[$ChemDataSources[name],{
-				ChemData[a_,b_]:>
+				ChemData[name, a_, b_]:>
 					($ChemDataSources[name]=
-						ChemData[a,b,<|key:>value|>];),
-				ChemData[a_,b_,c_]:>
+						ChemData[a, b,<|key:>value|>];),
+				ChemData[name, a_, b_, c_]:>
 					($ChemDataSources[name]=
-						ChemData[a,b,Append[c,key:>value]];)
+						ChemData[name, a, b, Append[c,key:>value]];)
 				}],
 			Message[ChemData::newsrc,name];
 			$ChemDataSources[name]=
 				ChemData[
+					name,
 					(Missing["KeyAbsent",#]&),
 					$Failed&,
 					<|key:>value|>
@@ -185,27 +212,29 @@ chemDataSetDelayed~SetAttributes~HoldRest;
 
 chemDataUnset[name_,key_]:=
 	(
-		$chemDataCache[ChemDataQuery[key,name]]=.;
-		If[KeyMemberQ[$ChemDataSources,name],
-			Replace[$ChemDataSources[name],{
-				ChemData[a_,b_,c_]:>
-					($ChemDataSources[name]=
-						ChemData[a,b,KeyDrop[c,key]];)
-				}],
+		$ChemDataCache[ChemDataQuery[key, name]]=.;
+		If[KeyMemberQ[$ChemDataSources, name],
+			Replace[$ChemDataSources[name],
+				{
+					ChemData[name, a_, b_, c_]:>
+						($ChemDataSources[name]=
+							ChemData[name, a, b, KeyDrop[c,key]];)
+					}
+				],
 			Message[ChemData::nosrc,name];
 			];
 		);
 
 
 ChemData/:
-	HoldPattern[Set[ChemData[name_String][key_],val_]]:=
-	chemDataSet[name,key,val];
+	HoldPattern[Set[ChemData[name_String][key_], val_]]:=
+	chemDataSet[name, key, val];
 ChemData/:
-	HoldPattern[SetDelayed[ChemData[name_String][key_],val_]]:=
-	chemDataSetDelayed[name,key,val];
+	HoldPattern[SetDelayed[ChemData[name_String][key_], val_]]:=
+	chemDataSetDelayed[name, key, val];
 ChemData/:
 	HoldPattern[Unset[ChemData[name_String][key_]]]:=
-	chemDataUnset[name,key];
+	chemDataUnset[name, key];
 
 
 `Package`PackageAddAutocompletions[
@@ -220,21 +249,35 @@ ChemData/:
 
 
 Format[
-	d:ChemData[data:Except[_String],
-		fallback_]
+	d:
+	ChemData[
+		name:_String|None:None,
+		data:Except[_String],
+		fallback_
+		]
 	]:=
 	RawBoxes@BoxForm`ArrangeSummaryBox[
 		"ChemData",
 		d,
 		None,
 		{
-			BoxForm`MakeSummaryItem[{
-				"Properties: ",
-				Replace[
-					d["Properties"],
-					Except[{__}]->"Unknown"
+			If[name===None,
+				Nothing,
+				BoxForm`MakeSummaryItem[
+					{
+						"Name: ", name
+						},
+					StandardForm
 					]
-				},
+				],
+			BoxForm`MakeSummaryItem[
+				{
+					"Properties: ",
+						Replace[
+							d["Properties"],
+							Except[{__}]->"Unknown"
+							]
+					},
 				StandardForm
 				]
 			},
@@ -268,44 +311,57 @@ Format[
 
 
 Format[
-	d:ChemData[data:Except[_String],
+	d:ChemData[
+		name:_String|None:None,
+		data:Except[_String],
 		fallback_,
-		cache_:<||>]
-	]:=
-	RawBoxes@BoxForm`ArrangeSummaryBox[
-		"ChemData",
-		d,
-		None,
-		{
-			BoxForm`MakeSummaryItem[{
-				"Properties: ",
-				d["Properties"]
-				},
-				StandardForm
-				]
-			},
-		{
-			BoxForm`MakeSummaryItem[{
-				"Data: ",
-				Short[data,1]
-				},
-				StandardForm
-				],
-			BoxForm`MakeSummaryItem[{
-				"FallBack: ",
-				Short[fallback,1]
-				},
-				StandardForm
-				],
-			BoxForm`MakeSummaryItem[{
-				"Cache Length: ",
-				Length@cache
-				},
-				StandardForm
-				]
-			},
-		StandardForm
+		cache_:<||>
 		]
+	]:=
+	RawBoxes@
+		BoxForm`ArrangeSummaryBox[
+			"ChemData",
+			d,
+			None,
+			{
+				If[name===None,
+					Nothing,
+					BoxForm`MakeSummaryItem[
+						{
+							"Name: ", name
+							},
+						StandardForm
+						]
+					],
+				BoxForm`MakeSummaryItem[{
+					"Properties: ",
+					d["Properties"]
+					},
+					StandardForm
+					]
+				},
+			{
+				BoxForm`MakeSummaryItem[{
+					"Data: ",
+					Short[data,1]
+					},
+					StandardForm
+					],
+				BoxForm`MakeSummaryItem[{
+					"FallBack: ",
+					Short[fallback,1]
+					},
+					StandardForm
+					],
+				BoxForm`MakeSummaryItem[{
+					"Cache Length: ",
+					Length@cache
+					},
+					StandardForm
+					]
+				},
+			StandardForm
+			]
 
 
 (* ::Subsection:: *)
@@ -316,7 +372,7 @@ Format[
 ChemDataProperties[pat_:"*",
 	datasource:IsotopeData|ElementData|ChemicalData|_ChemData]:=
 	With[{props=datasource["Properties"]},
-		Cases[Replace[props,Entity[_,p_]:>p],
+		Cases[Replace[props, Entity[_,p_]:>p],
 			_String?(StringMatchQ[pat])]
 		];
 ChemDataProperties[pat_:"*",
@@ -338,11 +394,11 @@ ChemDataProperties[thing_,pat_:"*"]:=
 
 ChemDataCacheClear[string_:_,attr_:_]:=
 	With[{old=
-		KeySelect[$chemDataCache,
+		KeySelect[$ChemDataCache,
 			MatchQ[ChemDataQuery[string,attr]]
 			]},
-		$chemDataCache=
-			KeySelect[$chemDataCache,
+		$ChemDataCache=
+			KeySelect[$ChemDataCache,
 				Not@*MatchQ[ChemDataQuery[string,attr]]];
 		old
 		];
@@ -354,7 +410,7 @@ ChemDataCacheClear[string_:_,attr_:_]:=
 
 
 chemDataCacheThreadSet[keys:{__},vals:{__}]:=
-	AssociateTo[$chemDataCache,
+	AssociateTo[$ChemDataCache,
 		Thread[keys->vals]
 		];
 chemDataCacheThreadSet[ChemDataQuery[l:{__},k_],v:{__}]:=
@@ -364,7 +420,7 @@ chemDataCacheThreadSet[ChemDataQuery[l:{__},k_],v:{__}]:=
 		];
 		
 chemDataCacheThreadSetDelayed[keys:{__},vals:{__}]:=
-	AssociateTo[$chemDataCache,
+	AssociateTo[$ChemDataCache,
 		Thread[keys:>vals]
 		];
 chemDataCacheThreadSetDelayed[ChemDataQuery[l:{__},k_],v:{__}]:=
@@ -376,21 +432,21 @@ chemDataCacheThreadSetDelayed~SetAttributes~HoldRest;
 
 
 chemDataCacheThreadUnset[keys:{__}]:=
-	KeyDropFrom[$chemDataCache,keys];
+	KeyDropFrom[$ChemDataCache,keys];
 chemDataCacheThreadUnset[ChemDataQuery[l:{__},k_]]:=
 	chemDataCacheThreadUnset[Map[ChemDataQuery[#,k]&,l]];
 
 
 ChemDataLookup/:HoldPattern[
 		Set[ChemDataLookup[name:Except[_List],attr_],val_]]:=
-	($chemDataCache[ChemDataQuery[name,attr]]=val);
+	($ChemDataCache[ChemDataQuery[name,attr]]=val);
 ChemDataLookup/:HoldPattern[
 		SetDelayed[
 			ChemDataLookup[name:Except[_List],attr_],val_]]:=
-	($chemDataCache[ChemDataQuery[name,attr]]:=val);
+	($ChemDataCache[ChemDataQuery[name,attr]]:=val);
 ChemDataLookup/:HoldPattern[
 		Unset[ChemDataLookup[name:Except[_List],attr_]]]:=
-	($chemDataCache[ChemDataQuery[name,attr]]=.);
+	($ChemDataCache[ChemDataQuery[name,attr]]=.);
 
 
 ChemDataLookup/:
@@ -416,23 +472,24 @@ ChemDataLookup/:
 ChemDataLookup//Clear
 
 
-$ChemDataSpecialArgsPat=Except[_Key|_List|_Query|_Blank|_Pattern|_Optional]
+$ChemDataSpecialArgsPat=
+	Except[_Key|_List|_Query|_Blank|_Pattern|_Optional];
 
 
 (* ::Subsubsubsection::Closed:: *)
-(*ChemDataLookup*)
+(*Relookup*)
 
 
 
 ChemDataLookup[
 	string:$ChemDataSpecialArgsPat,
 	attr_,
-	o__,
+	o___,
 	"Overwrite"->True
 	]:=
 	(
-		$chemDataCache[ChemDataQuery[string,attr]]=.;
-		ChemDataLookup[string,attr,o]
+		$ChemDataCache[ChemDataQuery[string, attr]]=.;
+		ChemDataLookup[string, attr, o]
 		);
 
 
@@ -448,24 +505,34 @@ ChemDataLookup[
 		IsotopeData|ElementData|
 		ChemicalData|_ChemData
 	]:=
-	If[TrueQ@attr===None,
-		dataSource[Replace[string,{"D"->"H2","T"->"H3"}],attr],
-		Lookup[$chemDataCache,ChemDataQuery[string,attr],
-			With[{d=
-				dataSource[
-					Replace[string,{"D"->"H2","T"->"H3"}],
-					attr]},
+	With[{k=If[attr===None, Hash@dataSource, attr]},
+		Lookup[
+			$ChemDataCache, 
+			ChemDataQuery[string, k],
+			With[
+				{
+					d=
+						dataSource[
+							Replace[string,{"D"->"H2","T"->"H3"}],
+							attr
+							]
+						},
 				If[TrueQ@$ChemDataSourcesDontCacheFlag,
 					$ChemDataSourcesDontCacheFlag=False;
 					d,
-					$chemDataCache[ChemDataQuery[string,attr]]=d
+					$ChemDataCache[ChemDataQuery[string, k]]=d
 					]
 				]
 			]
 		];
 
 
-ChemDataLookup[
+(* ::Subsubsubsubsection::Closed:: *)
+(*Default*)
+
+
+
+(*ChemDataLookup[
 	string:$ChemDataSpecialArgsPat,
 	attr_,
 	dataSource:
@@ -475,23 +542,23 @@ ChemDataLookup[
 	]:=
 	If[attr===None,
 		Replace[
-			dataSource[Replace[string,{"D"->"H2","T"->"H3"}],
+			dataSource[Replace[string,{"D"\[Rule]"H2","T"\[Rule]"H3"}],
 				attr],
-			_Missing->default],
-		Lookup[$chemDataCache,ChemDataQuery[string,attr],
+			_Missing\[Rule]default],
+		Lookup[$ChemDataCache,ChemDataQuery[string,attr],
 			With[{d=
 				Replace[
-					dataSource[Replace[string,{"D"->"H2","T"->"H3"}],
+					dataSource[Replace[string,{"D"\[Rule]"H2","T"\[Rule]"H3"}],
 						attr],
-					_Missing->default]},
+					_Missing\[Rule]default]},
 				If[TrueQ@$ChemDataSourcesDontCacheFlag,
 					$ChemDataSourcesDontCacheFlag=False;
 					d,
-					$chemDataCache[ChemDataQuery[string,attr]]=d
+					$ChemDataCache[ChemDataQuery[string,attr]]=d
 					]
 				]
 			]
-		];
+		];*)
 
 
 (* ::Subsubsubsection::Closed:: *)
@@ -504,20 +571,34 @@ ChemDataLookup[
 	attr_,
 	source_String?(KeyMemberQ[$ChemDataSources,#]&)
 	]:=
-	ChemDataLookup[string,attr,$ChemDataSources[source]];
+	ChemDataLookup[
+		string,
+		attr,
+		$ChemDataSources[source]
+		];
 
 
-ChemDataLookup[
+(* ::Subsubsubsubsection::Closed:: *)
+(*Default*)
+
+
+
+(*ChemDataLookup[
 	string:$ChemDataSpecialArgsPat,
 	attr_,
-	source_String?(KeyMemberQ[$ChemDataSources,#]&),default_
+	source_String?(KeyMemberQ[$ChemDataSources,#]&),
+	default_
 	]:=
-	ChemDataLookup[string,attr,
-		$ChemDataSources[source],default];
+	ChemDataLookup[
+		string,
+		attr,
+		$ChemDataSources[source],
+		default
+		];*)
 
 
 (* ::Subsubsubsection::Closed:: *)
-(*All Built-Ins*)
+(*Two-Argument*)
 
 
 
@@ -527,7 +608,12 @@ ChemDataLookup[
 		ChemicalData|ElementData|IsotopeData|
 		_String?(KeyMemberQ[$ChemDataSources,#]&)
 	]:=
-	ChemDataLookup[string,source,source];
+	ChemDataLookup[string, source, source];
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Default*)
+
 
 
 ChemDataLookup[
@@ -537,7 +623,7 @@ ChemDataLookup[
 		_String?(KeyMemberQ[$ChemDataSources,#]&),
 	default_
 	]:=
-	ChemDataLookup[string,source,source,default];
+	ChemDataLookup[string, None, source, default];
 
 
 (* ::Subsubsubsection::Closed:: *)
@@ -549,14 +635,29 @@ ChemDataLookup[
 	string:$ChemDataSpecialArgsPat,
 	attr_
 	]:=
-	ChemDataLookup[string,attr,ChemDataSource@string];
+	ChemDataLookup[
+		string,
+		attr,
+		ChemDataSource@string
+		];
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Default*)
+
 
 
 ChemDataLookup[
 	string:$ChemDataSpecialArgsPat,
-	attr_,default_
+	attr_,
+	default_
 	]:=
-	ChemDataLookup[string,attr,ChemDataSource@string,default];
+	ChemDataLookup[
+		string,
+		attr,
+		ChemDataSource@string,
+		default
+		];
 
 
 (* ::Subsubsubsection::Closed:: *)
@@ -582,15 +683,16 @@ ChemDataLookup[Query[a__], b__]:=
 
 
 
-ChemDataLookup[attr:Except[_Association]][
+(*ChemDataLookup[attr:Except[_Association]][
 	string:Except[_Key]]:=
 	ChemDataLookup[string,attr];
 ChemDataLookup[spc:_Association][string_]:=
-	ChemDataLookup[string,
+	ChemDataLookup[
+		string,
 		Lookup[spc,"Property",None],
-		Lookup[spc,"Source",Sequence[]],
-		Lookup[spc,"Default",Sequence[]]
-		];
+		Lookup[spc,"Source",Sequence[]](*,
+		Lookup[spc,"Default",Sequence[]]*)
+		];*)
 
 
 (* ::Subsection:: *)
