@@ -1,0 +1,1753 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["\[LeftCeiling]Newtonian Dynamics\[RightFloor]", "CodeSection",
+ Evaluatable->True,ExpressionUUID->"fb603ae8-7347-45ee-b7e3-7eb9a7e2694b"],
+
+Cell["\<\
+\[LeftCeiling]
+\tNewtonian dynamics via velocity Verlet
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"44026ff4-f7a9-40c9-b271-28165a9b7720"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"$FieldNewtDyn", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}]], "CodeInput",ExpressionUUID->"98c8599e-83d3-4e8b-8a57-50527f09bc60"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"3d8d5459-ac66-40e8-8f2b-\
+f6777a6a634e"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Propagator\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"eb12abb0-b472-4083-bf87-5f6d907c69b4"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]FieldNewtDynPropC\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"f3feba97-df2f-455e-a5aa-882036046e03"],
+
+Cell["\<\
+\[LeftCeiling]
+\tCompiled propagator to be used by the ND. Uses the velocity Verlet algorithm.
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"e25d40e9-3078-4c5c-8162-f0ece6a8980c"],
+
+Cell[BoxData[
+ RowBox[{"FieldNewtDynPropC", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"82fba0b8-ad27-4c6e-9cbb-640d118991eb"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GE", "=", "Compile`GetElement"}], 
+  ";"}]], "CodeInput",ExpressionUUID->"bf54b0c5-bab5-414c-b7d7-c04321e814fe"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"SetAttributes", "[", 
+   RowBox[{"compileHold", ",", " ", "HoldAllComplete"}], "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"SetAttributes", "[", 
+   RowBox[{"moduleHold", ",", " ", "HoldAllComplete"}], "]"}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"cec9b4a4-d171-438a-8a24-e383c7ea042b"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"FieldNewtDynPropC", "[", 
+    RowBox[{"field_", ",", " ", "friction_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{"GE", "=", "Compile`GetElement"}], "\n", "\t\t\t", "}"}], ",", 
+     "\n", "\t\t", 
+     RowBox[{"Compile", "@@", "\n", "\t\t\t", 
+      RowBox[{"ReplaceAll", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"compileHold", "[", "\n", "\t", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"{", "\n", "\t", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"initCoordsAndVels", ",", " ", "_Real", ",", " ", "3"}], 
+             "}"}], ",", "\n", "\t", "\t", "\t\t\t\t", 
+            RowBox[{"{", 
+             RowBox[{"tInit", ",", " ", "_Real"}], "}"}], ",", "  ", "\n", 
+            "\t", "\t", "\t\t\t\t", 
+            RowBox[{"{", 
+             RowBox[{"dt", ",", " ", "_Real"}], "}"}], ",", "\n", "\t", "\t", 
+            "\t", "\t", "\t\t", 
+            RowBox[{"{", 
+             RowBox[{"tSteps", ",", " ", "_Integer"}], "}"}], ",", "\n", "\t",
+             "\t", "\t", "\t\t\t", 
+            RowBox[{"{", 
+             RowBox[{"storeTraj", ",", " ", "_Integer"}], "}"}]}], "\n", "\t",
+            "\t", "\t", "\t\t\t", "}"}], ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"moduleHold", "[", "\n", "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{
+             "totalCoords", ",", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+              "realTraj", ",", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+              "storedSteps", ",", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+              RowBox[{"storedStepPointer", "=", "1"}], ",", "\n", "\t", "\t", 
+              "\t\t\t\t\t", 
+              RowBox[{"coordVec", "=", 
+               RowBox[{"initCoordsAndVels", "[", 
+                RowBox[{"[", "1", "]"}], "]"}]}], ",", "\n", "\t", "\t", 
+              "\t\t\t\t\t", "coordVecOld", ",", "\n", "\t", "\t", 
+              "\t\t\t\t\t", 
+              RowBox[{"velVec", "=", 
+               RowBox[{"initCoordsAndVels", "[", 
+                RowBox[{"[", "2", "]"}], "]"}]}], ",", "\n", "\t", "\t", 
+              "\t\t\t\t\t", "dispVec", ",", "\n", "\t", "\t", "\t\t\t\t\t", 
+              "disp", ",", "\n", "\t", "\t", "\t\t\t\t\t", "walkerDim", ",", 
+              "\n", "\t", "\t", "\t\t\t\t\t", "walkerNum", ",", "\n", "\t", 
+              "\t", "\t\t\t\t\t", 
+              RowBox[{"totT", "=", "tInit"}], ",", "\n", "\t", "\t", 
+              "\t\t\t\t\t", "fric", ",", "\n", "\t", "\t", "\t\t\t\t\t", 
+              "forceVal", ",", "\n", "\t", "\t", "\t\t\t\t\t", "velOld", ",", 
+              "\n", "\t", "\t", "\t\t\t\t\t", "wCoord"}], "\n", "\t", "\t", 
+             "\t\t\t\t\t", "}"}], ",", "\n", "\t", "\t", "\t\t\t\t", 
+            RowBox[{
+             RowBox[{"walkerNum", "=", 
+              RowBox[{"Length", "@", "coordVec"}]}], ";", "\n", "\t", "\t", 
+             "\t\t\t\t", 
+             RowBox[{"walkerDim", "=", 
+              RowBox[{
+               RowBox[{"Dimensions", "[", "coordVec", "]"}], "[", 
+               RowBox[{"[", "2", "]"}], "]"}]}], ";", "\n", "\t", "\t", 
+             "\t\t\t\t", 
+             RowBox[{"realTraj", "=", 
+              RowBox[{"Min", "@", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"Max", "@", 
+                  RowBox[{"{", 
+                   RowBox[{"storeTraj", ",", " ", "1"}], "}"}]}], ",", " ", 
+                 "tSteps"}], "}"}]}]}], ";", "\n", "\t", "\t", "\t\t\t\t", 
+             RowBox[{"storedSteps", "=", "\n", "\t", "\t", "\t\t\t\t\t", 
+              RowBox[{"Table", "[", "\n", "\t", "\t", "\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"Ceiling", "[", 
+                 RowBox[{"tSteps", "*", 
+                  RowBox[{"i", "/", "realTraj"}]}], "]"}], ",", " ", "\n", 
+                "\t", "\t", "\t\t\t\t\t\t", 
+                RowBox[{"{", 
+                 RowBox[{"i", ",", " ", 
+                  RowBox[{"Min", "@", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Max", "@", 
+                    RowBox[{"{", 
+                    RowBox[{"realTraj", ",", " ", "1"}], "}"}]}], ",", " ", 
+                    "tSteps"}], "}"}]}]}], "}"}]}], "\n", "\t", "\t", "\t", 
+               "\t\t\t\t\t", "]"}]}], ";", "\n", "\t", "\t", "\t", "\t\t\t", 
+             RowBox[{"totalCoords", "=", 
+              RowBox[{"Table", "[", 
+               RowBox[{"initCoordsAndVels", ",", " ", 
+                RowBox[{"{", 
+                 RowBox[{"i", ",", " ", "realTraj"}], "}"}]}], "]"}]}], ";", 
+             "\n", "\t", "\t", "\t\t\t\t", 
+             RowBox[{"Do", "[", "\n", "\t", "\t", "\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"coordVecOld", "=", "coordVec"}], ";", "\n", "\t", 
+                "\t", "\t\t\t\t\t", 
+                RowBox[{"Do", "[", "\n", "\t", "\t", "\t\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"fric", "=", 
+                    RowBox[{"friction", "[", 
+                    RowBox[{
+                    RowBox[{"GE", "[", 
+                    RowBox[{"coordVec", ",", " ", "i"}], "]"}], ",", " ", 
+                    "totT"}], "]"}]}], ";", "\n", "\t", "\t", "\t\t\t\t\t\t", 
+                   
+                   RowBox[{"velOld", "=", 
+                    RowBox[{"GE", "[", 
+                    RowBox[{"velVec", ",", " ", "i"}], "]"}]}], ";", "\n", 
+                   "\t", "\t", "\t\t\t\t\t\t", 
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"fric", "\[NotEqual]", "0"}], ",", " ", 
+                    RowBox[{"velOld", "*=", 
+                    RowBox[{"(", 
+                    RowBox[{"1.", "-", "fric"}], ")"}]}]}], "]"}], ";", "\n", 
+                   "\t", "\t", "\t\t\t\t\t\t", 
+                   RowBox[{"wCoord", "=", 
+                    RowBox[{"GE", "[", 
+                    RowBox[{"coordVec", ",", " ", "i"}], "]"}]}], ";", "\n", 
+                   "\t", "\t", "\t\t\t\t\t\t", 
+                   RowBox[{"(*", " ", 
+                    RowBox[{
+                    "Compute", " ", "the", " ", "force", " ", "on", " ", 
+                    "walker", " ", "i"}], " ", "*)"}], "\n", "\t", "\t", 
+                   "\t\t\t\t\t\t", 
+                   RowBox[{"forceVal", "=", 
+                    RowBox[{"field", "[", "wCoord", "]"}]}], ";", "\n", 
+                   "\t\t\t\t\t\t\t\t", 
+                   RowBox[{"(*", " ", 
+                    RowBox[{
+                    "Compute", " ", "new", " ", "position", " ", "and", " ", 
+                    "velocity", " ", "of", " ", "walker"}], " ", "*)"}], "\n",
+                    "\t\t\t\t\t\t\t\t", 
+                   RowBox[{"wCoord", "=", 
+                    RowBox[{"wCoord", "+", 
+                    RowBox[{"dt", "*", "velOld"}], "+", 
+                    RowBox[{
+                    RowBox[{"dt", "^", "2"}], "*", 
+                    RowBox[{"forceVal", "/", "2"}]}]}]}], ";", "\n", "\t", 
+                   "\t", "\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"coordVec", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "=", "wCoord"}], ";", 
+                   "\n", "\t\t\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"velVec", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "=", 
+                    RowBox[{"velOld", "+", 
+                    RowBox[{"dt", "*", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"forceVal", "+", 
+                    RowBox[{"field", "[", "wCoord", "]"}]}], ")"}], "/", 
+                    "2"}]}]}]}]}], ",", "\n", "\t\t\t\t\t\t\t\t", 
+                  RowBox[{"{", 
+                   RowBox[{"i", ",", " ", "walkerNum"}], "}"}]}], "\n", 
+                 "\t\t\t\t\t\t\t\t", "]"}], ";", "\n", "\t\t\t\t\t\t\t", 
+                RowBox[{"totT", "+=", "dt"}], ";", "\n", "\t", "\t", "\t", 
+                "\t\t\t\t", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"n", "\[Equal]", 
+                   RowBox[{"storedSteps", "[", 
+                    RowBox[{"[", "storedStepPointer", "]"}], "]"}]}], ",", 
+                  "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"totalCoords", "[", 
+                    RowBox[{"[", "storedStepPointer", "]"}], "]"}], "=", 
+                    RowBox[{"{", 
+                    RowBox[{"coordVec", ",", " ", "velVec"}], "}"}]}], ";", 
+                   "\n", "\t", "\t", "\t\t\t\t\t\t", 
+                   RowBox[{"storedStepPointer", "++"}]}]}], "\n", "\t", "\t", 
+                 "\t\t\t\t\t\t", "]"}], ";"}], ",", "\n", "\t", "\t", "\t", 
+               "\t\t\t\t", 
+               RowBox[{"{", 
+                RowBox[{"n", ",", " ", "tSteps"}], "}"}]}], "\n", "\t", "\t", 
+              "\t", "\t", "\t\t\t", "]"}], ";", "\n", "\t", "\t", "\t", 
+             "\t\t\t", "totalCoords"}]}], "\n", "\t", "\t", "\t", "\t\t\t", 
+           "]"}], ",", "\n", "\t", "\t", "\t", "\t\t", 
+          RowBox[{
+          "CompilationOptions", "\[Rule]", "\n", "\t", "\t", "\t", "\t\t\t", 
+           RowBox[{"{", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+            RowBox[{"\"\<InlineExternalDefinitions\>\"", "->", "True"}], "\n",
+             "\t", "\t", "\t", "\t\t\t\t", "}"}]}], ",", "\n", "\t", "\t", 
+          "\t", "\t\t", 
+          RowBox[{
+          "RuntimeOptions", "\[Rule]", "\n", "\t", "\t", "\t", "\t\t\t", 
+           RowBox[{"{", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+            RowBox[{
+             RowBox[{"\"\<CatchMachineOverflow\>\"", "\[Rule]", "False"}], 
+             ",", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+             RowBox[{
+             "\"\<CatchMachineIntegerOverflow\>\"", "\[Rule]", "False"}], ",",
+              "\n", "\t", "\t", "\t", "\t\t\t\t", 
+             RowBox[{"\"\<CompareWithTolerance\>\"", "\[Rule]", "False"}], 
+             ",", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+             RowBox[{"\"\<EvaluateSymbolically\>\"", "\[Rule]", "False"}], 
+             ",", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+             RowBox[{"\"\<WarningMessages\>\"", "\[Rule]", "False"}]}], "\n", 
+            "\t", "\t", "\t\t\t\t\t", "}"}]}], ",", "\n", "\t", "\t", 
+          "\t\t\t", 
+          RowBox[{"CompilationTarget", "->", "\"\<C\>\""}], ",", "\n", "\t", 
+          "\t", "\t\t\t", 
+          RowBox[{"Parallelization", "\[Rule]", "True"}]}], "\n", "\t", 
+         "\t\t\t\t", "]"}], ",", "\n", "\t", "\t\t\t", 
+        RowBox[{"moduleHold", "\[Rule]", "Module"}]}], "\n", "\t", "\t\t\t", 
+       "]"}]}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"f9de6687-c8f2-42e2-a887-5378a23d56c6"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]FieldNewtDynPropFunc\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"573f82cb-8991-4325-9382-1c606d3a338b"],
+
+Cell[BoxData[
+ RowBox[{"FieldNewtDynPropFunc", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"47f86000-6e63-4f90-a76e-a61cd21061b2"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FieldNewtDynPropFunc", "[", "obj_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"field", "=", 
+       RowBox[{"obj", "[", "\"\<FieldForceFunction\>\"", "]"}]}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"fric", "=", 
+       RowBox[{"obj", "[", "\"\<FrictionFunction\>\"", "]"}]}]}], "\n", 
+     "\t\t\t", "}"}], ",", "\n", "\t\t", 
+    RowBox[{"FieldNewtDynPropC", "[", "\n", "\t\t\t", 
+     RowBox[{"field", ",", "\n", "\t\t\t", "fric"}], "\n", "\t\t\t", "]"}]}], 
+   "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"d8ad278f-6dc0-4135-92f6-14ee628ad8d9"]
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Defaults\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"21f503e3-5a3f-4edb-9d39-5f4bc235a2a0"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]DistGen\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"f491f463-9174-4b1c-9b1e-83ac285b585c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"FieldNewtDynDistGen", "[", 
+    RowBox[{"walkers_", ",", " ", "devs_"}], "]"}], ":=", "\n", "\t\t", 
+   RowBox[{"Thread", "@", 
+    RowBox[{"NormalDistribution", "[", 
+     RowBox[{"0", ",", " ", "devs"}], "]"}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"8884da6e-02b0-49de-ac69-13697171a57c"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ProbFunc\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"ff933096-1a04-4188-9862-ae281373b13c"],
+
+Cell[BoxData[
+ RowBox[{"FieldNewtDynProbFunc", "=", "\n", "\t", 
+  RowBox[{
+   RowBox[{"Exp", "[", 
+    RowBox[{"-", "#"}], "]"}], 
+   "&"}]}]], \
+"CodeInput",ExpressionUUID->"f0beb83a-9ccc-4c0a-ace7-b22c4a3b90b9"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WalkerValidate\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"b8bdf9b2-05cd-4f88-9367-4a4813908134"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FieldNewtDynWalkerValidate", "[", "walks_", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"MatchQ", "[", 
+   RowBox[{"walks", ",", " ", "\n", "\t\t", 
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"__", "?", "NumericQ"}], "}"}], ",", " ", "___List"}], "}"}],
+       ",", "\n", "\t", "\t\t", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"__", "?", "NumericQ"}], "}"}], ",", " ", "___List"}], 
+       "}"}]}], "\n", "\t\t\t", "}"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"b0e39f64-e533-4950-912f-f38a3fb806ae"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WalkerBoxFunction\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"9f7eb976-e0ef-40dd-822a-305a4190c7db"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"FieldNewtDynWalkerBoxFunction", "[", "walks_", "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{"CoordinateBounds", "@", 
+    RowBox[{"Flatten", "[", 
+     RowBox[{
+      RowBox[{"walks", "[", 
+       RowBox[{"[", 
+        RowBox[{";;", " ", ";;", "2"}], "]"}], "]"}], ",", " ", "1"}], 
+     "]"}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"782bda95-f895-41dd-8d35-7bc40e449ccc"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Plot\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"a90c1b9e-03d1-40bb-b2f4-20c9a2d7a7a7"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]readjustPointPlot\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"93182d94-2796-4e5a-8413-cc5b4fd07d74"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"readjustPointPlot", "[", "plot_", "]"}], ":=", "\n", 
+  RowBox[{"ReplacePart", "[", 
+   RowBox[{"plot", ",", "\n", "\t", 
+    RowBox[{"1", "\[Rule]", "\n", "\t\t", 
+     RowBox[{"With", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{"pts", "=", "\n", "\t\t\t\t", 
+         RowBox[{"Cases", "[", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"plot", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], ",", "\n", "\t", "\t", "\t\t\t", 
+           " ", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"d___", ",", " ", 
+              RowBox[{"Point", "[", "p_", "]"}], ",", " ", "___"}], "}"}], 
+            "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Flatten", "[", 
+               RowBox[{
+                RowBox[{"Directive", "[", "d", "]"}], ",", " ", "1", ",", 
+                "  ", "Directive"}], "]"}], ",", " ", 
+              RowBox[{"p", "[", 
+               RowBox[{"[", "1", "]"}], "]"}]}], "}"}]}], ",", " ", "\n", 
+           "\t", "\t", "\t\t\t", "Infinity"}], "\n", "\t", "\t", "\t\t\t", 
+          "]"}]}], "\n", "\t", "\t", "\t\t", "}"}], ",", "\n", "\t", "\t", 
+       "\t", 
+       RowBox[{"{", "\n", "\t", "\t", "\t\t", 
+        RowBox[{
+         RowBox[{"pts", "[", 
+          RowBox[{"[", 
+           RowBox[{"1", ",", " ", "1"}], "]"}], "]"}], ",", "\n", "\t\t\t\t", 
+         
+         RowBox[{"Point", "[", 
+          RowBox[{
+           RowBox[{"pts", "[", 
+            RowBox[{"[", 
+             RowBox[{"All", ",", " ", 
+              RowBox[{"-", "1"}]}], "]"}], "]"}], ",", " ", "\n", "\t", "\t", 
+           "\t\t\t", 
+           RowBox[{"VertexColors", "\[Rule]", 
+            RowBox[{"pts", "[", 
+             RowBox[{"[", 
+              RowBox[{"All", ",", " ", "1"}], "]"}], "]"}]}]}], "]"}]}], "\n",
+         "\t", "\t", "\t\t", "}"}]}], "\n", "\t\t\t", "]"}]}]}], "\n", "\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"91c41c6b-0c55-4805-a93d-bdde623529cd"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]plotCostFunction\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"9f5e38d2-bbb5-4fd9-81e6-89d890fa0c00"],
+
+Cell[BoxData[
+ RowBox[{"plotCostFunction", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"32a6dca4-f60c-4ff1-a1ab-7d1f8bd11ef1"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"plotCostFunction", "[", 
+   RowBox[{
+   "dim_", ",", " ", "cbs_", ",", " ", "cf_", ",", " ", "t_", ",", " ", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"Switch", "[", 
+   RowBox[{"dim", ",", "\n", "\t\t", "1", ",", "\n", "\t\t\t", 
+    RowBox[{"Plot", "[", 
+     RowBox[{
+      RowBox[{"cf", "[", 
+       RowBox[{
+        RowBox[{"{", "x", "}"}], ",", " ", "t"}], "]"}], ",", " ", 
+      RowBox[{"{", 
+       RowBox[{"x", ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", " ", "1"}], "]"}], "]"}], ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", " ", "2"}], "]"}], "]"}]}], "}"}], ",", " ", "\n",
+       "\t\t\t\t", 
+      RowBox[{"Evaluate", "@", 
+       RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"Flatten", "@", 
+          RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"Lookup", "[", 
+             RowBox[{
+              RowBox[{"{", "ops", "}"}], ",", " ", 
+              "\"\<CostFunctionStyle\>\"", ",", " ", 
+              RowBox[{"{", "}"}]}], "]"}], ",", "\n", "\t", "\t", "\t\t\t\t", 
+            
+            RowBox[{"PlotStyle", "\[Rule]", 
+             RowBox[{"Directive", "[", 
+              RowBox[{"Dashed", ",", " ", "Gray"}], "]"}]}], ",", "\n", 
+            "\t\t\t\t\t\t", "ops"}], "\n", "\t\t\t\t\t\t", "}"}]}], ",", "\n",
+          "\t\t\t\t\t", 
+         RowBox[{"Options", "@", "Plot"}]}], "\n", "\t\t\t\t\t", "]"}]}]}], 
+     "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t", "2", ",", "\n", "\t\t\t", 
+    RowBox[{"ContourPlot", "[", "\n", "\t\t\t\t", 
+     RowBox[{
+      RowBox[{"cf", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"x", ",", " ", "y"}], "}"}], ",", " ", "t"}], "]"}], ",", 
+      " ", "\n", "\t\t\t\t", 
+      RowBox[{"{", 
+       RowBox[{"x", ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", " ", "1"}], "]"}], "]"}], ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", " ", "2"}], "]"}], "]"}]}], "}"}], ",", " ", "\n",
+       "\t\t\t\t", 
+      RowBox[{"{", 
+       RowBox[{"y", ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"2", ",", " ", "1"}], "]"}], "]"}], ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"2", ",", " ", "2"}], "]"}], "]"}]}], "}"}], ",", "\n", 
+      "\t\t\t\t", 
+      RowBox[{"Evaluate", "@", "\n", "\t\t\t\t\t", 
+       RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"Flatten", "@", 
+          RowBox[{"{", "\n", "\t", "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"Lookup", "[", 
+             RowBox[{
+              RowBox[{"{", "ops", "}"}], ",", " ", 
+              "\"\<CostFunctionStyle\>\"", ",", " ", 
+              RowBox[{"{", "}"}]}], "]"}], ",", "\n", "\t", "\t\t\t\t\t\t", 
+            RowBox[{
+            "ColorFunction", "\[Rule]", "\n", "\t", "\t\t\t\t\t\t\t", 
+             RowBox[{"With", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"cd", "=", 
+                 RowBox[{
+                 "ColorData", "[", "\"\<M10DefaultGradient\>\"", "]"}]}], 
+                "}"}], ",", "\n", "\t", "\t", "\t", "\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"Directive", "[", 
+                 RowBox[{
+                  RowBox[{"Opacity", "[", ".25", "]"}], ",", " ", 
+                  RowBox[{"cd", "[", "#", "]"}]}], "]"}], "&"}]}], "\n", "\t",
+               "\t", "\t", "\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t", 
+            "\t\t\t\t\t\t", "ops"}], "\n", "\t", "\t\t\t\t\t\t", "}"}]}], ",",
+          "\n", "\t", "\t\t\t\t\t", 
+         RowBox[{"Options", "@", "ContourPlot"}]}], "\n", "\t", "\t\t\t\t\t", 
+        "]"}]}]}], "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t", "3", ",", "\n",
+     "\t\t\t", 
+    RowBox[{"ContourPlot3D", "[", "\n", "\t\t\t\t", 
+     RowBox[{
+      RowBox[{"cf", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"x", ",", " ", "y", ",", " ", "z"}], "}"}], ",", " ", "t"}], 
+       "]"}], ",", " ", "\n", "\t\t\t\t", 
+      RowBox[{"{", 
+       RowBox[{"x", ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", " ", "1"}], "]"}], "]"}], ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", " ", "2"}], "]"}], "]"}]}], "}"}], ",", " ", "\n",
+       "\t\t\t\t", 
+      RowBox[{"{", 
+       RowBox[{"y", ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"2", ",", " ", "1"}], "]"}], "]"}], ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"2", ",", " ", "2"}], "]"}], "]"}]}], "}"}], ",", "\n", 
+      "\t\t\t\t", 
+      RowBox[{"{", 
+       RowBox[{"z", ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"2", ",", " ", "1"}], "]"}], "]"}], ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"2", ",", " ", "2"}], "]"}], "]"}]}], "}"}], ",", "\n", 
+      "\t\t\t\t", 
+      RowBox[{"Evaluate", "[", "\n", "\t\t\t\t\t", 
+       RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"Flatten", "@", 
+          RowBox[{"{", "\n", "\t", "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"Lookup", "[", 
+             RowBox[{
+              RowBox[{"{", "ops", "}"}], ",", " ", 
+              "\"\<CostFunctionStyle\>\"", ",", " ", 
+              RowBox[{"{", "}"}]}], "]"}], ",", "\n", "\t", "\t\t\t\t\t\t", 
+            RowBox[{
+            "ColorFunction", "\[Rule]", "\n", "\t", "\t\t\t\t\t\t\t", 
+             RowBox[{"With", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"cd", "=", 
+                 RowBox[{
+                 "ColorData", "[", "\"\<M10DefaultGradient\>\"", "]"}]}], 
+                "}"}], ",", "\n", "\t", "\t", "\t", "\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"Directive", "[", 
+                 RowBox[{
+                  RowBox[{"Opacity", "[", ".25", "]"}], ",", " ", 
+                  RowBox[{"cd", "[", "#", "]"}]}], "]"}], "&"}]}], "\n", "\t",
+               "\t", "\t", "\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t", 
+            "\t\t\t\t\t\t", "ops"}], "\n", "\t", "\t\t\t\t\t\t", "}"}]}], ",",
+          "\n", "\t", "\t\t\t\t\t", 
+         RowBox[{"Options", "@", "ContourPlot3D"}]}], "\n", "\t\t\t\t\t\t", 
+        "]"}], "\n", "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}], ",", 
+    "\n", "\t\t", "_", ",", "\n", "\t\t\t", "$Failed"}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"093ddfbc-52d3-4263-aaac-efadd3d9e35a"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]plotState\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"31f84e8b-33d4-4bc4-8bc3-b5ee57c54856"],
+
+Cell[BoxData[
+ RowBox[{"FieldNewtDynPlotState", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"d505a66b-b990-4877-b70e-a11fd9aadb4a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FieldNewtDynPlotState", "[", 
+   RowBox[{
+   "walkers_", ",", " ", "cbs_", ",", " ", "t_", ",", " ", "obj_", ",", " ", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"dim", "=", 
+      RowBox[{"Length", "@", 
+       RowBox[{"walkers", "[", 
+        RowBox[{"[", 
+         RowBox[{"1", ",", " ", "1"}], "]"}], "]"}]}]}], 
+     RowBox[{"(*", 
+      RowBox[{",", " ", 
+       RowBox[{"cf", "=", 
+        RowBox[{"obj", "[", "\"\<CostFunction\>\"", "]"}]}]}], "*)"}], "}"}], 
+    ",", "\n", "\t\t", 
+    RowBox[{"Show", "[", 
+     RowBox[{"(*", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"plotCostFunction", "[", 
+        RowBox[{
+        "dim", ",", " ", "cbs", ",", " ", "cf", ",", " ", "t", ",", " ", 
+         "ops"}], "]"}], ","}], "*)"}], "\n", "\t\t\t", 
+     RowBox[{"Switch", "[", 
+      RowBox[{"dim", ",", "\n", "\t\t\t\t", "1", ",", "\n", "\t\t\t\t", 
+       RowBox[{"readjustPointPlot", "@", "\n", "\t\t\t\t\t", 
+        RowBox[{"ListPlot", "[", "\n", "\t\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"#", "[", 
+                RowBox[{"[", "1", "]"}], "]"}], ",", " ", "1"}], "}"}], "}"}],
+             "&"}], "/@", 
+           RowBox[{"walkers", "[", 
+            RowBox[{"[", "1", "]"}], "]"}]}], ",", " ", "\n", "\t\t\t\t\t\t", 
+          
+          RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
+             RowBox[{"ops", ",", "\n", "\t\t\t\t\t\t\t\t", 
+              RowBox[{"PlotRange", "\[Rule]", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"1.01", "*", 
+                  RowBox[{"cbs", "[", 
+                   RowBox[{"[", "1", "]"}], "]"}]}], ",", " ", 
+                 RowBox[{"{", 
+                  RowBox[{".8", ",", " ", "1.2"}], "}"}]}], "}"}]}], ",", 
+              "\n", "\t\t\t\t\t\t\t\t", 
+              RowBox[{"Frame", "\[Rule]", "True"}], ",", "\n", "\t", "\t", 
+              "\t", "\t\t\t\t\t", 
+              RowBox[{"Axes", "\[Rule]", "False"}]}], "\n", 
+             "\t\t\t\t\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{"Options", "@", "ListPlot"}]}], "\n", "\t\t\t\t\t\t\t", 
+           "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t", "2",
+        ",", "\n", "\t\t\t\t", 
+       RowBox[{"readjustPointPlot", "@", "\n", "\t\t\t\t\t", 
+        RowBox[{"ListPlot", "[", "\n", "\t\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"List", "/@", 
+           RowBox[{"walkers", "[", 
+            RowBox[{"[", "1", "]"}], "]"}]}], ",", " ", "\n", "\t\t\t\t\t\t", 
+          
+          RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
+             RowBox[{"ops", ",", "\n", "\t\t\t\t\t\t\t\t", 
+              RowBox[{"PlotRange", "\[Rule]", 
+               RowBox[{"1.01", "*", "cbs"}]}], ",", "\n", "\t\t\t\t\t\t\t\t", 
+              
+              RowBox[{"Frame", "\[Rule]", "True"}], ",", "\n", "\t", "\t", 
+              "\t", "\t\t\t\t\t", 
+              RowBox[{"Axes", "\[Rule]", "False"}], ",", "\n", 
+              "\t\t\t\t\t\t\t\t", 
+              RowBox[{"AspectRatio", "\[Rule]", "Full"}]}], "\n", 
+             "\t\t\t\t\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{"Options", "@", "ListPlot"}]}], "\n", "\t\t\t\t\t\t\t", 
+           "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t", "3",
+        ",", "\n", "\t\t\t\t", 
+       RowBox[{"readjustPointPlot", "@", "\n", "\t\t\t\t\t", 
+        RowBox[{"ListPointPlot3D", "[", "\n", "\t\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"List", "/@", 
+           RowBox[{"walkers", "[", 
+            RowBox[{"[", "1", "]"}], "]"}]}], ",", " ", "\n", "\t\t\t\t\t\t", 
+          
+          RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
+             RowBox[{"ops", ",", "\n", "\t\t\t\t\t\t\t\t", 
+              RowBox[{"PlotRange", "\[Rule]", 
+               RowBox[{"1.01", "*", "cbs"}]}], ",", "\n", "\t\t\t\t\t\t\t\t", 
+              
+              RowBox[{"BoxRatios", "\[Rule]", "Automatic"}]}], "\n", 
+             "\t\t\t\t\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{"Options", "@", "ListPointPlot3D"}]}], "\n", 
+           "\t\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], ",", 
+       "\n", "\t\t\t\t", "_", ",", "\n", "\t", "\t\t\t\t", 
+       RowBox[{"Throw", "[", "$Failed", "]"}]}], "\n", "\t\t\t\t", "]"}], 
+     "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"285b122e-49d6-4033-a9b3-98e5393e5a70"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]applyPlotTheming\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"b26058a5-f1b9-45ac-8bfc-6028fb317b40"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"applyPlotTheming", "[", "\n", "\t", 
+   RowBox[{
+   "coreData_", ",", "\n", "\t", "baseFunction_", ",", "\n", "\t", 
+    "inheritFrom_", ",", "\n", "\t", 
+    RowBox[{"o", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"inheritBase", "=", 
+       RowBox[{
+        RowBox[{"Flatten", "[", 
+         RowBox[{"{", "inheritFrom", "}"}], "]"}], "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], ",", "\n", "\t", "\t\t", "theme", 
+      ",", "\n", "\t", "\t\t", "premethod", ",", "\n", "\t", "\t\t", "method",
+       ",", "\n", "\t", "\t\t", "defaultstyle", ",", "\n", "\t", "\t\t", 
+      "defaultcf", ",", "\n", "\t", "\t\t", "cf", ",", "\n", "\t", "\t\t", 
+      "opts", ",", "\n", "\t", "\t\t", "threeDFlag", ",", "\n", "\t", "\t\t", 
+      "ticks"}], "\n", "\t", "\t\t", "}"}], ",", "\n", "\t", "\t", 
+    RowBox[{
+     RowBox[{"opts", " ", "=", " ", "\n", "\t", "\t\t", 
+      RowBox[{"Flatten", " ", "@", " ", 
+       RowBox[{"{", "o", "}"}]}]}], ";", "\n", "\t", "\t", 
+     RowBox[{"Quiet", "[", "\n", "\t", "\t\t", 
+      RowBox[{"theme", " ", "=", " ", 
+       RowBox[{"OptionValue", "[", 
+        RowBox[{"inheritFrom", ",", " ", "opts", ",", " ", "PlotTheme"}], 
+        "]"}]}], "\n", "\t", "\t\t", "]"}], ";", "\n", "\t", "\t", 
+     RowBox[{"theme", "=", 
+      RowBox[{"Charting`ResolvePlotTheme", "[", 
+       RowBox[{"theme", ",", " ", "inheritBase"}], "]"}]}], ";", "\n", "\t", 
+     "\t", 
+     RowBox[{"Quiet", "[", 
+      RowBox[{"premethod", " ", "=", 
+       RowBox[{"Quiet", "@", " ", 
+        RowBox[{"OptionValue", "[", 
+         RowBox[{"inheritBase", ",", " ", "theme", ",", " ", "Method"}], 
+         "]"}]}]}], "]"}], ";", "\n", "\t", "\t", 
+     RowBox[{"premethod", " ", "=", " ", 
+      RowBox[{"Charting`ConstructMethod", "@", " ", "premethod"}]}], ";", 
+     "\n", "\t", "\t", 
+     RowBox[{"theme", " ", "=", " ", 
+      RowBox[{"FilterRules", "[", 
+       RowBox[{"theme", ",", " ", 
+        RowBox[{"Except", " ", "@", " ", "Method"}]}], "]"}]}], ";", "\n", 
+     "\t", "\t", 
+     RowBox[{"theme", " ", "=", "\n", "\t", "\t\t", 
+      RowBox[{"FilterRules", "[", "\n", "\t", "\t\t\t", 
+       RowBox[{"theme", ",", "\n", "\t", "\t", "\t\t", 
+        RowBox[{"Join", "@@", 
+         RowBox[{"Map", "[", 
+          RowBox[{"Options", ",", " ", 
+           RowBox[{"Flatten", "[", 
+            RowBox[{"{", "inheritFrom", "}"}], "]"}]}], "]"}]}]}], "\n", "\t",
+        "\t", "\t\t", "]"}]}], ";", "\n", "\t", "\t", 
+     RowBox[{"opts", " ", "=", " ", 
+      RowBox[{"Flatten", "[", 
+       RowBox[{"{", 
+        RowBox[{"opts", ",", " ", "theme"}], "}"}], "]"}]}], ";", "\n", "\t", 
+     "\t", 
+     RowBox[{"method", "=", 
+      RowBox[{"Quiet", "@", 
+       RowBox[{"OptionValue", "[", 
+        RowBox[{"inheritFrom", ",", " ", "opts", ",", " ", "Method"}], 
+        "]"}]}]}], ";", "\n", "\t", "\t", 
+     RowBox[{"method", "=", "\n", "\t", "\t\t", 
+      RowBox[{"Charting`parseMethod", "[", "\n", "\t", "\t\t\t", 
+       RowBox[{
+        RowBox[{"Charting`ConstructMethod", "@", "method"}], ",", "\n", "\t", 
+        "\t", "\t\t", "premethod"}], "\n", "\t", "\t", "\t\t", "]"}]}], ";", 
+     "\n", "\t", "\t", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "defaultstyle", ",", " ", "defaultcf", ",", " ", "cf", ",", " ", 
+        "ticks"}], "}"}], " ", "=", "\n", "\t", "\t\t", 
+      RowBox[{"Quiet", " ", "@", " ", "\n", "\t", "\t\t\t", 
+       RowBox[{"OptionValue", "[", "\n", "\t", "\t", "\t\t\t", 
+        RowBox[{"inheritFrom", ",", "\n", "\t", "\t", "\t", "\t\t", 
+         RowBox[{"Flatten", " ", "@", " ", 
+          RowBox[{"{", 
+           RowBox[{"method", ",", " ", "opts"}], "}"}]}], ",", "\n", "\t", 
+         "\t", "\t", "\t\t", 
+         RowBox[{"{", 
+          RowBox[{
+          "\"\<DefaultPlotStyle\>\"", ",", " ", 
+           "\"\<DefaultColorFunction\>\"", ",", " ", "ColorFunction", ",", 
+           " ", "Ticks"}], "}"}]}], "\n", "\t", "\t", "\t\t\t", "]"}]}]}], 
+     ";", "\n", "\t", "\t", 
+     RowBox[{"cf", " ", "=", " ", 
+      RowBox[{"Charting`customColorFunction", "[", 
+       RowBox[{"inheritBase", ",", " ", "cf", ",", " ", "defaultcf"}], 
+       "]"}]}], ";", "\n", "\t", "\t", 
+     RowBox[{"threeDFlag", " ", "=", " ", 
+      RowBox[{"StringContainsQ", "[", 
+       RowBox[{
+        RowBox[{"SymbolName", "[", "inheritBase", "]"}], ",", " ", 
+        "\"\<3D\>\""}], "]"}]}], ";", "\n", "\t", "\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"Visualization`Utilities`TicksQ", "[", "ticks", "]"}], ",", 
+       "\n", "\t", "\t\t", 
+       RowBox[{"ticks", " ", "=", " ", "\n", "\t", "\t\t\t", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+          "threeDFlag", ",", "\n", "\t", "\t", "\t\t\t", 
+           "Visualization`Utilities`TicksExpand3D", ",", "\n", "\t", "\t", 
+           "\t\t\t", "Visualization`Utilities`TicksExpand"}], "\n", "\t", 
+          "\t", "\t\t\t", "]"}], " ", "@", " ", "ticks"}]}], ",", "\n", "\t", 
+       "\t\t", 
+       RowBox[{"ticks", " ", "=", " ", "\n", "\t", "\t\t\t", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+          "threeDFlag", ",", "\n", "\t", "\t", "\t\t\t", 
+           "Visualization`Utilities`TicksExpand3D", ",", "\n", "\t", "\t", 
+           "\t\t\t", "Visualization`Utilities`TicksExpand"}], "\n", "\t", 
+          "\t", "\t\t\t", "]"}], " ", "@", " ", "Automatic"}]}]}], "\n", "\t",
+       "\t\t", "]"}], ";", "\n", "\t", "\t", 
+     RowBox[{"ticks", " ", "=", "\n", "\t", "\t\t", 
+      RowBox[{"Visualization`Utilities`ScaleTicks", "[", "\n", "\t", "\t\t\t", 
+       RowBox[{
+        RowBox[{"ConstantArray", "[", "\n", "\t", "\t", "\t\t\t", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"Identity", ",", " ", "Identity"}], "}"}], ",", "\n", "\t",
+           "\t", "\t\t\t", 
+          RowBox[{"If", "[", 
+           RowBox[{"threeDFlag", ",", " ", "3", ",", " ", "2"}], "]"}]}], 
+         "\n", "\t", "\t", "\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t\t", 
+        "ticks"}], "\n", "\t", "\t", "\t\t", "]"}]}], ";", "\n", "\t", "\t", 
+     RowBox[{"opts", "=", "\n", "\t", "\t\t", 
+      RowBox[{"Join", "[", "\n", "\t", "\t\t\t", 
+       RowBox[{"opts", ",", "\n", "\t", "\t", "\t\t", 
+        RowBox[{"{", "\n", "\t", "\t", "\t\t\t", 
+         RowBox[{
+          RowBox[{"\"\<DefaultPlotStyle\>\"", "\[Rule]", "defaultstyle"}], 
+          ",", "\n", "\t", "\t", "\t\t\t", 
+          RowBox[{"ColorFunction", "\[Rule]", "cf"}], ",", "\n", "\t", "\t", 
+          "\t\t\t", 
+          RowBox[{"Ticks", "\[Rule]", "ticks"}]}], "\n", "\t", "\t", "\t\t\t",
+          "}"}]}], "\n", "\t", "\t", "\t\t", "]"}]}], ";", "\n", "\t", "\t", 
+     RowBox[{"baseFunction", "[", "\n", "\t", "\t\t", 
+      RowBox[{"coreData", ",", "\n", "\t", "\t\t", 
+       RowBox[{"Charting`FilterGraphicsOptions", "[", "\n", "\t", "\t\t\t", 
+        RowBox[{
+         RowBox[{"Flatten", "@", 
+          RowBox[{"{", 
+           RowBox[{"opts", ",", " ", 
+            RowBox[{"Method", "\[Rule]", "method"}]}], "}"}]}], ",", "\n", 
+         "\t", "\t\t\t", 
+         RowBox[{"Options", "@", "baseFunction"}]}], "\n", "\t", "\t\t\t", 
+        "]"}]}], "\n", "\t", "\t\t", "]"}]}]}], "\n", "\t", "\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"44578de8-bb1f-4b6f-8b4b-562f324a5b77"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]customArrows3D\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"c246f1a6-d39e-4ae9-8beb-ee89bcb8ee99"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "customArrows3D", "]"}], "=", "\n", "\t", 
+   RowBox[{"Join", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"Options", "[", "ListVectorPlot3D", "]"}], ",", "\n", "\t", "\t", 
+     RowBox[{
+     "Options", "[", "System`VectorPlotsDump`iListVectorPlot3D", "]"}], ",", 
+     "\n", "\t", "\t", "Charting`$GraphicsExtraOptions"}], "\n", "\t", "\t", 
+    "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"customArrows3D", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"coords_", ",", " ", "vels_"}], "}"}], ",", "  ", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"velNorms", "=", 
+       RowBox[{"Norm", "/@", "vels"}]}], ",", " ", "\n", "\t", "\t\t", 
+      "velMax", ",", "\n", "\t", "\t\t", 
+      RowBox[{"boxSize", "=", 
+       RowBox[{"Max", "@", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", 
+           RowBox[{"(", 
+            RowBox[{"Subtract", "@@", 
+             RowBox[{"MinMax", "@", 
+              RowBox[{"CoordinateBounds", "[", "coords", "]"}]}]}], ")"}]}], 
+          ",", " ", ".001"}], "}"}]}]}], ",", "\n", "\t", "\t\t", 
+      RowBox[{"defps", "=", 
+       RowBox[{"OptionValue", "[", "\"\<DefaultPlotStyle\>\"", "]"}]}], ",", 
+      "\n", "\t", "\t\t", 
+      RowBox[{"cf", "=", "\n", "\t\t\t\t", 
+       RowBox[{"Replace", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+         "Charting`customColorFunction", "[", "\n", "\t", "\t", "\t\t\t\t", 
+          RowBox[{"ListVectorPlot3D", ",", "\n", "\t", "\t", "\t\t\t\t", 
+           RowBox[{"OptionValue", "[", "VectorColorFunction", "]"}], ",", 
+           "\n", "\t", "\t", "\t\t\t\t", 
+           RowBox[{
+           "OptionValue", "[", "\"\<DefaultColorFunction\>\"", "]"}]}], "\n", 
+          "\t", "\t", "\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t\t\t", 
+         RowBox[{"cd_ColorDataFunction", "\[RuleDelayed]", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"cd", "[", "#", "]"}], "&"}], ")"}]}]}], "\n", "\t", "\t",
+         "\t\t\t", "]"}]}], ",", "\n", "\t", "\t\t", "velVecs", ",", "\n", 
+      "\t", "\t\t", "ps", ",", "\n", "\t", "\t\t", "hackColorMap"}], "\n", 
+     "\t", "\t\t", "}"}], ",", "\n", "\t", "\t", 
+    RowBox[{
+     RowBox[{"velMax", "=", 
+      RowBox[{"Max", "@", "velNorms"}]}], ";", "\n", "\t\t", 
+     RowBox[{"ps", "=", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"Charting`customVectorStyle", "[", " ", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "VectorStyle", "]"}], ",", "\n", "\t", 
+         "\t", "\t\t", "defps", ",", "\n", "\t", "\t", "\t\t", "1"}], "\n", 
+        "\t", "\t", "\t\t", "]"}], "[", 
+       RowBox[{"[", "1", "]"}], "]"}]}], ";", "\n", "\t", "\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"velMax", "!=", "0"}], ",", "\n", "\t", "\t\t", 
+       RowBox[{
+        RowBox[{"velVecs", "=", 
+         RowBox[{"Thread", "[", 
+          RowBox[{"{", 
+           RowBox[{"coords", ",", " ", 
+            RowBox[{"coords", "+", 
+             RowBox[{"vels", "*", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"boxSize", "/", "10"}], "/", "velMax"}], ")"}]}]}]}], 
+           "}"}], "]"}]}], ";", "\n", "\t", "\t\t", 
+        RowBox[{"hackColorMap", "=", "\n", "\t", "\t\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"cf", "===", "None"}], ",", "\n", "\t", "\t\t\t", 
+           "Nothing", ",", "\n", "\t", "\t\t\t", 
+           RowBox[{"Association", "@", "\n", "\t\t\t\t\t", 
+            RowBox[{"MapThread", "[", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"#", "[", 
+                 RowBox[{"[", "1", "]"}], "]"}], "\[Rule]", 
+                RowBox[{"(", 
+                 RowBox[{"cf", "@@", 
+                  RowBox[{"Flatten", "[", 
+                   RowBox[{"Prepend", "[", "##", "]"}], "]"}]}], ")"}]}], 
+               "&"}], ",", "\n", "\t", "\t", "\t\t\t\t", 
+              RowBox[{"{", "\n", "\t", "\t", "\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"OptionValue", "@", "VectorColorFunctionScaling"}], 
+                  ",", "\n", "\t", "\t", "\t\t\t\t\t\t", 
+                  RowBox[{"Rescale", "@", "velVecs"}], ",", "\n", "\t", "\t", 
+                  "\t\t\t\t\t\t", "velVecs"}], "\n", "\t", "\t", 
+                 "\t\t\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t\t\t\t\t", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"OptionValue", "@", "VectorColorFunctionScaling"}], 
+                  ",", "\n", "\t", "\t", "\t\t\t\t\t\t", 
+                  RowBox[{"Rescale", "@", "velNorms"}], ",", "\n", "\t", "\t",
+                   "\t\t\t\t\t\t", "velNorms"}], "\n", "\t", "\t", 
+                 "\t\t\t\t\t\t", "]"}]}], "\n", "\t", "\t", "\t\t\t\t\t", 
+               "}"}]}], "\n", "\t", "\t", "\t\t\t\t", "]"}]}]}], "\n", "\t", 
+          "\t\t\t", "]"}]}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"hackColorMap", "=", "\n", "\t\t\t\t", 
+        RowBox[{"AssociationMap", "[", 
+         RowBox[{"Nothing", ",", "  ", 
+          RowBox[{"Rescale", "@", "coords"}]}], "]"}]}]}], "\n", "\t\t\t", 
+      "]"}], ";", "\n", "\t", "\t", 
+     RowBox[{"Show", "[", "\n", "\t", "\t\t", 
+      RowBox[{
+       RowBox[{"ListPointPlot3D", "[", 
+        RowBox[{"coords", ",", "\n", "\t", "\t\t\t", 
+         RowBox[{"FilterRules", "[", "\n", "\t", "\t\t\t\t", 
+          RowBox[{
+           RowBox[{"Flatten", "@", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+              "ColorFunctionScaling", "\[Rule]", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{"OptionValue", "@", "VectorColorFunctionScaling"}]}], 
+              ",", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"ColorFunction", "\[Rule]", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"cf", "=!=", "None"}], ",", "\n", "\t", "\t", "\t", 
+                 "\t\t\t\t\t\t", 
+                 RowBox[{"With", "[", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"nf", "=", 
+                    RowBox[{"Nearest", "[", 
+                    RowBox[{"Keys", "@", "hackColorMap"}], "]"}]}], "}"}], 
+                   ",", "\n", "\t", "\t", "\t", "\t\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"hackColorMap", "[", 
+                    RowBox[{
+                    RowBox[{"nf", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"#", ",", " ", "#2", ",", " ", "#3"}], "}"}], 
+                    "]"}], "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "]"}], "&"}]}], "\n", 
+                  "\t", "\t", "\t", "\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t", 
+                 "\t", "\t", "\t\t\t\t\t\t", "cf"}], "\n", "\t", 
+                "\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t", "\t", 
+              "\t\t\t\t\t", "ops", ",", "\n", "\t", "\t", "\t\t\t\t\t", 
+              RowBox[{"PlotStyle", "\[Rule]", "ps"}], ",", "\n", "\t", "\t", 
+              "\t\t\t\t\t", 
+              RowBox[{"BoxRatios", "\[Rule]", "Automatic"}]}], "\n", "\t", 
+             "\t\t\t\t\t\t", "}"}]}], ",", " ", "\n", "\t", "\t\t\t\t", 
+           RowBox[{"Options", "@", "ListPointPlot3D"}]}], "\n", "\t", 
+          "\t\t\t\t", "]"}]}], "\n", "\t", "\t\t\t", "]"}], ",", "\n", "\t", 
+       "\t\t", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"velMax", "!=", "0"}], ",", "\n", "\t", "\t\t\t", 
+         RowBox[{"Graphics3D", "[", "\n", "\t", "\t\t\t\t", 
+          RowBox[{
+           RowBox[{"MapThread", "[", "\n", "\t", "\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"Flatten", "@*", "List"}], ",", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"Replace", "[", 
+                RowBox[{
+                 RowBox[{"Quiet", "@", 
+                  RowBox[{"OptionValue", "[", "VectorScale", "]"}]}], ",", 
+                 "\n", "\t", "\t\t\t\t\t\t\t", 
+                 RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{
+                   RowBox[{"Automatic", ":>", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Thread", "@", 
+                    RowBox[{"Arrowheads", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"velNorms", "/", "velMax"}], "/", "25"}], ",", 
+                    " ", 
+                    RowBox[{"Appearance", "\[Rule]", "\"\<Projected\>\""}]}], 
+                    "]"}]}]}], ",", "\n", "\t", "\t\t\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"n", ":", 
+                    RowBox[{"_", "?", "NumericQ"}]}], "\[RuleDelayed]", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    "ConstantArray", "[", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"Arrowheads", "[", 
+                    RowBox[{"n", ",", " ", 
+                    RowBox[{"Appearance", "\[Rule]", "\"\<Projected\>\""}]}], 
+                    "]"}], ",", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Length", "@", "velNorms"}]}], "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", 
+                   "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"Scaled", "[", "n_", "]"}], ":>", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Thread", "@", 
+                    RowBox[{"Arrowheads", "[", 
+                    RowBox[{
+                    RowBox[{"n", "*", 
+                    RowBox[{"velNorms", "/", "velMax"}]}], ",", " ", 
+                    RowBox[{"Appearance", "\[Rule]", "\"\<Projected\>\""}]}], 
+                    "]"}]}]}], ",", "\n", "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"unitLen_", ",", " ", "arat_"}], "}"}], ":>", 
+                    "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    "ConstantArray", "[", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{
+                    "Arrowheads", "[", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Replace", "[", 
+                    RowBox[{
+                    "unitLen", ",", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"Tiny", "\[Rule]", ".01"}], ",", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Small", "\[Rule]", ".025"}], ",", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Medium", "\[Rule]", ".035"}], ",", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Large", "\[Rule]", ".05"}], ",", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"n_", "?", "NumericQ"}], "\[RuleDelayed]", 
+                    RowBox[{"velMax", "/", "n"}]}]}], "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", "}"}]}], "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t", "]"}], "*", "arat"}], ",", 
+                    "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Appearance", "\[Rule]", "\"\<Projected\>\""}]}], 
+                    "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", "]"}], ",", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Length", "@", "velNorms"}]}], "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", 
+                   "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    "unitLen_", ",", " ", "arat_", ",", " ", "sFun_"}], "}"}],
+                     ":>", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    "MapThread", "[", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{
+                    "Arrowheads", "[", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"sFun", "[", 
+                    RowBox[{
+                    RowBox[{"Sequence", "@@", "#"}], ",", " ", "#2"}], "]"}], 
+                    "*", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Replace", "[", 
+                    RowBox[{
+                    "unitLen", ",", "\n", "\t", "\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    
+                    RowBox[{"{", "\n", "\t", "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"Tiny", "\[Rule]", ".01"}], ",", "\n", "\t", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Small", "\[Rule]", ".025"}], ",", "\n", "\t", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Medium", "\[Rule]", ".035"}], ",", "\n", "\t", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Large", "\[Rule]", ".05"}], ",", "\n", "\t", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"n_", "?", "NumericQ"}], "\[RuleDelayed]", 
+                    RowBox[{"velMax", "/", "n"}]}]}], "\n", "\t", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", "}"}]}], "\n", "\t", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t", "]"}], "*", "arat"}], "&"}],
+                     ",", " ", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Appearance", "\[Rule]", "\"\<Projected\>\""}]}], 
+                    "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", "]"}], ",", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    "velVecs", ",", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    "velNorms"}], "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", "}"}]}], 
+                    "\n", "\t\t\t\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", 
+                   "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{"_", ":>", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    "ConstantArray", "[", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"Arrowheads", "[", 
+                    RowBox[{"Appearance", "\[Rule]", "\"\<Projected\>\""}], 
+                    "]"}], ",", "\n", "\t", "\t", "\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Length", "@", "velNorms"}]}], "\n", "\t", "\t", 
+                    "\t\t\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t", 
+                  "\t\t\t\t\t\t\t\t", "}"}]}], "\n", "\t", "\t\t\t\t\t\t\t", 
+                "]"}], ",", "\n", "\t", "\t\t\t\t\t\t", 
+               RowBox[{"ConstantArray", "[", 
+                RowBox[{"ps", ",", 
+                 RowBox[{"Length", "@", "velNorms"}]}], "]"}], ",", "\n", 
+               "\t", "\t\t\t\t\t\t", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"cf", "===", "None"}], ",", "\n", "\t", 
+                 "\t\t\t\t\t\t\t", "Nothing", ",", "\n", "\t", 
+                 "\t\t\t\t\t\t\t", 
+                 RowBox[{"Values", "@", "hackColorMap"}]}], "\n", "\t", 
+                "\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t", "\t\t\t\t\t\t", 
+               RowBox[{"Thread", "[", 
+                RowBox[{"Arrow", "@", "velVecs"}], "]"}]}], "\n", "\t", 
+              "\t\t\t\t\t\t", "}"}]}], "\n", "\t", "\t\t\t\t\t", "]"}], ",", 
+           "\n", "\t", "\t\t\t\t", 
+           RowBox[{"FilterRules", "[", 
+            RowBox[{
+             RowBox[{"{", "ops", "}"}], ",", " ", 
+             RowBox[{"Options", "@", "Graphics3D"}]}], "]"}]}], "\n", 
+          "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"{", "}"}]}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", 
+      "]"}]}]}], "\n", "\t\t", 
+   "]"}]}]}], \
+"CodeInput",ExpressionUUID->"2d723779-16bb-4cb4-a0f1-738871b86e91"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]customArrows2D\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"a620c5ac-b5fa-4214-8eb6-b366f7abecc0"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "customArrows2D", "]"}], "=", "\n", "\t", 
+   RowBox[{"Join", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"Options", "[", "ListVectorPlot", "]"}], ",", "\n", "\t\t", 
+     RowBox[{"Options", "[", "System`VectorPlotsDump`iListVectorPlot", "]"}], 
+     ",", "\n", "\t\t", "Charting`$GraphicsExtraOptions"}], "\n", "\t\t", 
+    "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"customArrows", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"coords_", ",", " ", "vels_"}], "}"}], ",", "  ", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"velNorms", "=", 
+       RowBox[{"Norm", "/@", "vels"}]}], ",", " ", "\n", "\t", "\t\t", 
+      "velMax", ",", "\n", "\t", "\t\t", 
+      RowBox[{"boxSize", "=", 
+       RowBox[{"Max", "@", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", 
+           RowBox[{"(", 
+            RowBox[{"Subtract", "@@", 
+             RowBox[{"MinMax", "@", 
+              RowBox[{"CoordinateBounds", "[", "coords", "]"}]}]}], ")"}]}], 
+          ",", " ", ".001"}], "}"}]}]}], ",", "\n", "\t", "\t\t", 
+      RowBox[{"defps", "=", 
+       RowBox[{"OptionValue", "[", "\"\<DefaultPlotStyle\>\"", "]"}]}], ",", 
+      "\n", "\t", "\t\t", 
+      RowBox[{"cf", "=", "\n", "\t\t\t\t", 
+       RowBox[{"Replace", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"Charting`customColorFunction", "[", "\n", "\t\t\t\t\t\t", 
+          RowBox[{"ListVectorPlot", ",", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"OptionValue", "[", "VectorColorFunction", "]"}], ",", 
+           "\n", "\t", "\t", "\t\t\t\t", 
+           RowBox[{
+           "OptionValue", "[", "\"\<DefaultColorFunction\>\"", "]"}]}], "\n", 
+          "\t", "\t", "\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t\t\t", 
+         RowBox[{"cd_ColorDataFunction", "\[RuleDelayed]", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"cd", "[", "#", "]"}], "&"}], ")"}]}]}], "\n", "\t", "\t",
+         "\t\t\t", "]"}]}], ",", "\n", "\t", "\t\t", "velVecs", ",", "\n", 
+      "\t", "\t\t", "ps", ",", "\n", "\t", "\t\t", "hackColorMap"}], "\n", 
+     "\t", "\t\t", "}"}], ",", "\n", "\t", "\t", 
+    RowBox[{
+     RowBox[{"velMax", "=", 
+      RowBox[{"Max", "@", "velNorms"}]}], ";", "\n", "\t\t", 
+     RowBox[{"ps", "=", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"Charting`customVectorStyle", "[", " ", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "VectorStyle", "]"}], ",", "\n", "\t", 
+         "\t", "\t\t", "defps", ",", "\n", "\t", "\t", "\t\t", "1"}], "\n", 
+        "\t", "\t", "\t\t", "]"}], "[", 
+       RowBox[{"[", "1", "]"}], "]"}]}], ";", "\n", "\t", "\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"velMax", "!=", "0"}], ",", "\n", "\t", "\t\t", 
+       RowBox[{
+        RowBox[{"velVecs", "=", 
+         RowBox[{"Thread", "[", 
+          RowBox[{"{", 
+           RowBox[{"coords", ",", " ", 
+            RowBox[{"coords", "+", 
+             RowBox[{"vels", "*", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"boxSize", "/", "10"}], "/", "velMax"}], ")"}]}]}]}], 
+           "}"}], "]"}]}], ";", "\n", "\t", "\t\t", 
+        RowBox[{"hackColorMap", "=", "\n", "\t", "\t\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"cf", "===", "None"}], ",", "\n", "\t", "\t\t\t", 
+           "Nothing", ",", "\n", "\t", "\t\t\t", 
+           RowBox[{"Association", "@", "\n", "\t\t\t\t\t", 
+            RowBox[{"MapThread", "[", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"#", "[", 
+                 RowBox[{"[", "1", "]"}], "]"}], "\[Rule]", 
+                RowBox[{"(", 
+                 RowBox[{"cf", "@@", 
+                  RowBox[{"Flatten", "[", 
+                   RowBox[{"Prepend", "[", "##", "]"}], "]"}]}], ")"}]}], 
+               "&"}], ",", "\n", "\t", "\t", "\t\t\t\t", 
+              RowBox[{"{", "\n", "\t", "\t", "\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"OptionValue", "@", "VectorColorFunctionScaling"}], 
+                  ",", "\n", "\t", "\t", "\t\t\t\t\t\t", 
+                  RowBox[{"Rescale", "@", "velVecs"}], ",", "\n", "\t", "\t", 
+                  "\t\t\t\t\t\t", "velVecs"}], "\n", "\t", "\t", 
+                 "\t\t\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t\t\t\t\t", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"OptionValue", "@", "VectorColorFunctionScaling"}], 
+                  ",", "\n", "\t", "\t", "\t\t\t\t\t\t", 
+                  RowBox[{"Rescale", "@", "velNorms"}], ",", "\n", "\t", "\t",
+                   "\t\t\t\t\t\t", "velNorms"}], "\n", "\t", "\t", 
+                 "\t\t\t\t\t\t", "]"}]}], "\n", "\t", "\t", "\t\t\t\t\t", 
+               "}"}]}], "\n", "\t", "\t", "\t\t\t\t", "]"}]}]}], "\n", "\t", 
+          "\t\t\t", "]"}]}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"hackColorMap", "=", "\n", "\t\t\t\t", 
+        RowBox[{"AssociationMap", "[", 
+         RowBox[{"Nothing", ",", "  ", 
+          RowBox[{"Rescale", "@", "coords"}]}], "]"}]}]}], "\n", "\t\t\t", 
+      "]"}], ";", "\n", "\t\t", 
+     RowBox[{"Show", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"ListPlot", "[", 
+        RowBox[{"coords", ",", "\n", "\t\t\t\t", 
+         RowBox[{"FilterRules", "[", "\n", "\t", "\t\t\t\t", 
+          RowBox[{
+           RowBox[{"Flatten", "@", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+              "ColorFunctionScaling", "\[Rule]", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{"OptionValue", "@", "VectorColorFunctionScaling"}]}], 
+              ",", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"ColorFunction", "\[Rule]", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"cf", "=!=", "None"}], ",", "\n", "\t", "\t", "\t", 
+                 "\t\t\t\t\t\t", 
+                 RowBox[{"With", "[", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"nf", "=", 
+                    RowBox[{"Nearest", "[", 
+                    RowBox[{"Keys", "@", "hackColorMap"}], "]"}]}], "}"}], 
+                   ",", "\n", "\t", "\t", "\t", "\t\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"hackColorMap", "[", 
+                    RowBox[{
+                    RowBox[{"nf", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"#", ",", " ", "#2", ",", " ", "#3"}], "}"}], 
+                    "]"}], "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "]"}], "&"}]}], "\n", 
+                  "\t", "\t", "\t", "\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t", 
+                 "\t", "\t", "\t\t\t\t\t\t", "cf"}], "\n", "\t", 
+                "\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t", "\t", 
+              "\t\t\t\t\t", "ops", ",", "\n", "\t", "\t", "\t\t\t\t\t", 
+              RowBox[{"PlotStyle", "\[Rule]", "ps"}]}], "\n", 
+             "\t\t\t\t\t\t\t", "}"}]}], ",", " ", "\n", "\t\t\t\t\t", 
+           RowBox[{"Options", "@", "ListPlot"}]}], "\n", "\t\t\t\t\t", 
+          "]"}]}], "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"velMax", "!=", "0"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"Graphics", "[", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"MapThread", "[", "\n", "\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"Flatten", "@*", "List"}], ",", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"Replace", "[", 
+                RowBox[{
+                 RowBox[{"Quiet", "@", 
+                  RowBox[{"OptionValue", "[", "VectorScale", "]"}]}], ",", 
+                 "\n", "\t", "\t\t\t\t\t\t\t", 
+                 RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{
+                   RowBox[{"Automatic", ":>", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Thread", "@", 
+                    RowBox[{"Arrowheads", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"velNorms", "/", "velMax"}], "/", "25"}], ",", 
+                    " ", 
+                    RowBox[{"Appearance", "\[Rule]", "\"\<Projected\>\""}]}], 
+                    "]"}]}]}], ",", "\n", "\t", "\t\t\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"n", ":", 
+                    RowBox[{"_", "?", "NumericQ"}]}], "\[RuleDelayed]", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    "ConstantArray", "[", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"Arrowheads", "[", 
+                    RowBox[{"n", ",", " ", 
+                    RowBox[{"Appearance", "\[Rule]", "\"\<Projected\>\""}]}], 
+                    "]"}], ",", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Length", "@", "velNorms"}]}], "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", 
+                   "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"Scaled", "[", "n_", "]"}], ":>", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Thread", "@", 
+                    RowBox[{"Arrowheads", "[", 
+                    RowBox[{
+                    RowBox[{"n", "*", 
+                    RowBox[{"velNorms", "/", "velMax"}]}], ",", " ", 
+                    RowBox[{"Appearance", "\[Rule]", "\"\<Projected\>\""}]}], 
+                    "]"}]}]}], ",", "\n", "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"unitLen_", ",", " ", "arat_"}], "}"}], ":>", 
+                    "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    "ConstantArray", "[", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{
+                    "Arrowheads", "[", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Replace", "[", 
+                    RowBox[{
+                    "unitLen", ",", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"Tiny", "\[Rule]", ".01"}], ",", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Small", "\[Rule]", ".025"}], ",", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Medium", "\[Rule]", ".035"}], ",", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Large", "\[Rule]", ".05"}], ",", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"n_", "?", "NumericQ"}], "\[RuleDelayed]", 
+                    RowBox[{"velMax", "/", "n"}]}]}], "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", "}"}]}], "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t", "]"}], "*", "arat"}], ",", 
+                    "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Appearance", "\[Rule]", "\"\<Projected\>\""}]}], 
+                    "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", "]"}], ",", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Length", "@", "velNorms"}]}], "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", 
+                   "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    "unitLen_", ",", " ", "arat_", ",", " ", "sFun_"}], "}"}],
+                     ":>", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    "MapThread", "[", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{
+                    "Arrowheads", "[", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"sFun", "[", 
+                    RowBox[{
+                    RowBox[{"Sequence", "@@", "#"}], ",", " ", "#2"}], "]"}], 
+                    "*", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Replace", "[", 
+                    RowBox[{
+                    "unitLen", ",", "\n", "\t", "\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    
+                    RowBox[{"{", "\n", "\t", "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"Tiny", "\[Rule]", ".01"}], ",", "\n", "\t", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Small", "\[Rule]", ".025"}], ",", "\n", "\t", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Medium", "\[Rule]", ".035"}], ",", "\n", "\t", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Large", "\[Rule]", ".05"}], ",", "\n", "\t", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"n_", "?", "NumericQ"}], "\[RuleDelayed]", 
+                    RowBox[{"velMax", "/", "n"}]}]}], "\n", "\t", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", "}"}]}], "\n", "\t", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t", "]"}], "*", "arat"}], "&"}],
+                     ",", " ", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Appearance", "\[Rule]", "\"\<Projected\>\""}]}], 
+                    "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", "]"}], ",", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    "velVecs", ",", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    "velNorms"}], "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", "}"}]}], 
+                    "\n", "\t\t\t\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", 
+                   "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{"_", ":>", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    "ConstantArray", "[", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"Arrowheads", "[", 
+                    RowBox[{"Appearance", "\[Rule]", "\"\<Projected\>\""}], 
+                    "]"}], ",", "\n", "\t", "\t", "\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Length", "@", "velNorms"}]}], "\n", "\t", "\t", 
+                    "\t\t\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t", 
+                  "\t\t\t\t\t\t\t\t", "}"}]}], "\n", "\t", "\t\t\t\t\t\t\t", 
+                "]"}], ",", "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{"ConstantArray", "[", 
+                RowBox[{"ps", ",", 
+                 RowBox[{"Length", "@", "velNorms"}]}], "]"}], ",", "\n", 
+               "\t", "\t\t\t\t\t\t", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"cf", "===", "None"}], ",", "\n", "\t", 
+                 "\t\t\t\t\t\t\t", "Nothing", ",", "\n", "\t", 
+                 "\t\t\t\t\t\t\t", 
+                 RowBox[{"Values", "@", "hackColorMap"}]}], "\n", "\t", 
+                "\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t", "\t\t\t\t\t\t", 
+               RowBox[{"Thread", "[", 
+                RowBox[{"Arrow", "@", "velVecs"}], "]"}]}], "\n", "\t", 
+              "\t\t\t\t\t\t", "}"}]}], "\n", "\t", "\t\t\t\t\t", "]"}], ",", 
+           "\n", "\t", "\t\t\t\t", 
+           RowBox[{"FilterRules", "[", 
+            RowBox[{
+             RowBox[{"{", "ops", "}"}], ",", " ", 
+             RowBox[{"Options", "@", "Graphics"}]}], "]"}]}], "\n", 
+          "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"{", "}"}]}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", 
+      "]"}]}]}], "\n", "\t\t", 
+   "]"}]}]}], \
+"CodeInput",ExpressionUUID->"24a0a13d-463e-4b95-877e-34472178960e"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PlotVelocities\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"e8cafba0-783a-4a72-bf35-e8b006837d82"],
+
+Cell[BoxData[
+ RowBox[{"FieldNewtDynPlotVelocities", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"34913541-c995-474c-a526-5860146e7c31"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "FieldNewtDynPlotVelocities", "]"}], "=", "\n", 
+   "\t", 
+   RowBox[{"Options", "[", "ListVectorPlot3D", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"FieldNewtDynPlotVelocities", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"coords_", ",", " ", "vels_"}], "}"}], ",", " ", "cbs_", ",", 
+    " ", "t_", ",", " ", "obj_", ",", " ", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"dim", "=", 
+      RowBox[{"Length", "@", 
+       RowBox[{"vels", "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}]}], "}"}], ",", "\n", "\t\t", 
+    RowBox[{"Switch", "[", "\n", "\t\t\t", 
+     RowBox[{"dim", ",", "\n", "\t\t\t", "1", ",", "\n", "\t\t\t\t", 
+      RowBox[{"applyPlotTheming", "[", "\n", "\t\t\t\t\t", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"Thread", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Flatten", "@", "coords"}], ",", " ", "1."}], "}"}], 
+           "]"}], ",", " ", 
+          RowBox[{"Thread", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Flatten", "@", "vels"}], ",", " ", "1"}], "}"}], 
+           "]"}]}], "}"}], ",", "\n", "\t\t\t\t\t", "customArrows2D", ",", 
+        "\n", "\t\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{
+         "ListVectorPlot3D", ",", 
+          "System`VectorPlotsDump`iListVectorPlot3D"}], "}"}], ",", "\n", 
+        "\t\t\t\t\t", "ops", ",", "\n", "\t\t\t\t\t", 
+        RowBox[{"PlotRange", "->", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"1.01", "*", 
+            RowBox[{"cbs", "[", 
+             RowBox[{"[", "1", "]"}], "]"}]}], ",", " ", 
+           RowBox[{"{", 
+            RowBox[{".8", ",", " ", "1.2"}], "}"}]}], "}"}]}]}], "\n", 
+       "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t", "2", ",", "\n", "\t\t\t\t", 
+      RowBox[{"applyPlotTheming", "[", "\n", "\t\t\t\t\t", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"coords", ",", " ", "vels"}], "}"}], ",", "\n", "\t\t\t\t\t",
+         "customArrows2D", ",", "\n", "\t\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{
+         "ListVectorPlot3D", ",", 
+          "System`VectorPlotsDump`iListVectorPlot3D"}], "}"}], ",", "\n", 
+        "\t", "\t", "\t\t\t", "ops", ",", "\n", "\t", "\t", "\t\t\t", 
+        RowBox[{"PlotRange", "\[Rule]", 
+         RowBox[{"1.01", "*", "cbs"}]}]}], "\n", "\t\t\t\t\t", "]"}], ",", 
+      "\n", "\t\t\t", "3", ",", "\n", "\t\t\t\t", 
+      RowBox[{"applyPlotTheming", "[", "\n", "\t\t\t\t\t", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"coords", ",", " ", "vels"}], "}"}], ",", "\n", "\t", "\t", 
+        "\t", "\t\t", "customArrows3D", ",", "\n", "\t", "\t", "\t", "\t", 
+        "\t", 
+        RowBox[{"{", 
+         RowBox[{
+         "ListVectorPlot3D", ",", 
+          "System`VectorPlotsDump`iListVectorPlot3D"}], "}"}], ",", "\n", 
+        "\t", "\t", "\t\t\t", "ops", ",", "\n", "\t", "\t", "\t\t\t", 
+        RowBox[{"PlotRange", "\[Rule]", 
+         RowBox[{"1.01", "*", "cbs"}]}]}], "\n", "\t\t\t\t\t", "]"}], ",", 
+      "\n", "\t\t\t", "_", ",", "\n", "\t\t\t\t", 
+      RowBox[{"Throw", "[", "$Failed", "]"}]}], "\n", "\t\t\t", "]"}]}], "\n",
+    "\t\t", "]"}]}]}], \
+"CodeInput",ExpressionUUID->"7237b7c1-c02d-45a6-92eb-bc875654d7ba"]
+}, Closed]]
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Specification\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"508aa43c-1f2c-49bc-8cd9-557bbff441cd"],
+
+Cell[BoxData[
+ RowBox[{"$FieldNewtDyn", "=", "\n", "\t", 
+  RowBox[{"<|", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"\"\<RequiredProperties\>\"", "->", "\n", "\t\t\t", 
+     RowBox[{"{", "\n", "\t\t\t\t", 
+      RowBox[{
+      "\"\<FrictionFunction\>\"", ",", "\n", "\t\t\t\t", 
+       "\"\<FieldForceFunction\>\""}], "\n", "\t\t\t\t", "}"}]}], ",", "\n", 
+    "\t\t", 
+    RowBox[{
+    "\"\<PropagatorGenerator\>\"", "->", "\n", "\t\t\t", 
+     "FieldNewtDynPropFunc"}], ",", "\n", "\t\t", 
+    RowBox[{"\"\<FrictionFunction\>\"", "->", "\n", "\t\t\t", 
+     RowBox[{"(", 
+      RowBox[{"0", "&"}], ")"}]}], ",", "\n", "\t\t", 
+    RowBox[{
+    "\"\<WalkerValidationFunction\>\"", "->", "\n", "\t\t\t", 
+     "FieldNewtDynWalkerValidate"}], ",", "\n", "\t\t", 
+    RowBox[{
+    "\"\<WalkerBoxFunction\>\"", "->", "\n", "\t\t\t", 
+     "FieldNewtDynWalkerBoxFunction"}], ",", "\n", "\t\t", 
+    RowBox[{
+    "\"\<PlotFunction\>\"", "->", "\n", "\t\t\t", "FieldNewtDynPlotState"}], 
+    ",", "\n", "\t\t", 
+    RowBox[{"\"\<ExtraPlotFunctions\>\"", "->", "\n", "\t\t\t", 
+     RowBox[{"{", "\n", "\t\t\t\t", 
+      RowBox[{
+      "\"\<PlotVelocities\>\"", "\[Rule]", "\n", "\t\t\t\t\t", 
+       "FieldNewtDynPlotVelocities"}], "\n", "\t\t\t\t", "}"}]}]}], "\n", 
+   "\t\t", "|>"}]}]], \
+"CodeInput",ExpressionUUID->"3434e216-d77a-401f-be46-565268848b0b"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"506b0cf0-c39a-4e16-a947-\
+03210c40cd17"],
+
+Cell[BoxData["$FieldNewtDyn"], \
+"CodeInput",ExpressionUUID->"47074340-0f46-457d-b543-6bc68970077b"]
+}, Open  ]]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"d26a08c5-b364-47f3-97f0-\
+ea7c9161311a"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{Automatic, 126}, {Automatic, 8}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackagePlain.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

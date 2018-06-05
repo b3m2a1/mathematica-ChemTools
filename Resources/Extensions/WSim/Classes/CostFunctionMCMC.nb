@@ -1,0 +1,797 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["\[LeftCeiling]PES Walker MCMC\[RightFloor]", "CodeSection",
+ Evaluatable->True,ExpressionUUID->"fb603ae8-7347-45ee-b7e3-7eb9a7e2694b"],
+
+Cell["\<\
+\[LeftCeiling]
+\tAn MCMC that will propagate over a PES
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"44026ff4-f7a9-40c9-b271-28165a9b7720"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"$PESWalkerMCMC", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}]], "CodeInput",ExpressionUUID->"98c8599e-83d3-4e8b-8a57-50527f09bc60"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"3d8d5459-ac66-40e8-8f2b-\
+f6777a6a634e"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Propagator\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"eb12abb0-b472-4083-bf87-5f6d907c69b4"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PESWalkerPropC\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"f3feba97-df2f-455e-a5aa-882036046e03"],
+
+Cell["\<\
+\[LeftCeiling]
+\tCompiled propagator to be used by the MCMC
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"e25d40e9-3078-4c5c-8162-f0ece6a8980c"],
+
+Cell[BoxData[{
+ RowBox[{"SetAttributes", "[", 
+  RowBox[{"compileHold", ",", " ", "HoldAllComplete"}], "]"}], "\n", 
+ RowBox[{"SetAttributes", "[", 
+  RowBox[{"moduleHold", ",", " ", "HoldAllComplete"}], 
+  "]"}]}], "CodeInput",ExpressionUUID->"5849f722-b248-4608-8149-78fd2c942137"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"PESWalkerPropC", "[", 
+   RowBox[{"pot_", ",", " ", "dists_", ",", " ", "prob_"}], "]"}], ":=", "\n",
+   "\t", 
+  RowBox[{"With", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{"distMap", "=", "\n", "\t\t\t\t", 
+      RowBox[{"Quiet", "@", "\n", "\t\t\t\t\t", 
+       RowBox[{"MapThread", "[", "\n", "\t\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"RandomVariate", "[", "\n", "\t", "\t\t\t\t\t\t", 
+           RowBox[{"#", ",", " ", "\n", "\t", "\t\t\t\t\t\t", 
+            RowBox[{"{", 
+             RowBox[{"#2", ",", " ", "walkerDim"}], "}"}]}], "\n", "\t", 
+           "\t\t\t\t\t\t", "]"}], "&"}], ",", " ", "\n", "\t", "\t\t\t\t\t", 
+         RowBox[{"Transpose", "@", "dists"}]}], "\n", "\t", "\t\t\t\t\t", 
+        "]"}]}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+    RowBox[{"Compile", "@@", "\n", "\t\t\t", 
+     RowBox[{"ReplaceAll", "[", "\n", "\t\t\t\t", 
+      RowBox[{
+       RowBox[{"compileHold", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"initCoords", ",", " ", "_Real", ",", " ", "2"}], "}"}], 
+           ",", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"{", 
+            RowBox[{"tInit", ",", " ", "_Real"}], "}"}], ",", "  ", "\n", 
+           "\t\t\t\t\t\t", 
+           RowBox[{"{", 
+            RowBox[{"dt", ",", " ", "_Real"}], "}"}], ",", "\n", "\t", "\t", 
+           "\t", "\t", "\t\t", 
+           RowBox[{"{", 
+            RowBox[{"tSteps", ",", " ", "_Integer"}], "}"}], ",", "\n", "\t", 
+           "\t", "\t", "\t\t\t", 
+           RowBox[{"{", 
+            RowBox[{"storeTraj", ",", " ", "_Integer"}], "}"}]}], "\n", "\t", 
+          "\t", "\t", "\t\t\t", "}"}], ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"moduleHold", "[", "\n", "\t\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{
+            "totalCoords", ",", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+             "realTraj", ",", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+             "storedSteps", ",", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+             RowBox[{"storedStepPointer", "=", "1"}], ",", "\n", "\t", "\t", 
+             "\t", "\t\t\t\t", 
+             RowBox[{"coordVec", "=", "initCoords"}], ",", "\n", "\t", "\t", 
+             "\t", "\t\t\t\t", 
+             RowBox[{"walkerDim", "=", 
+              RowBox[{"Length", "[", 
+               RowBox[{"initCoords", "[", 
+                RowBox[{"[", "1", "]"}], "]"}], "]"}]}], ",", "\n", "\t", 
+             "\t", "\t", "\t", "\t\t\t", "proposedSteps", ",", "\n", "\t", 
+             "\t", "\t", "\t", "\t\t\t", "coordVec1", ",", "\n", "\t", "\t", 
+             "\t", "\t", "\t\t\t", "peVec", ",", "\n", "\t", "\t", "\t", "\t",
+              "\t\t\t", "peVec1", ",", "\n", "\t\t\t\t\t\t\t", "condProbs", 
+             ",", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{"totT", "=", "tInit"}], ",", "\n", "\t\t\t\t\t\t\t", 
+             "totE"}], "\n", "\t\t\t\t\t\t\t", "}"}], ",", "\n", 
+           "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"realTraj", "=", 
+             RowBox[{"Min", "@", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"Max", "@", 
+                 RowBox[{"{", 
+                  RowBox[{"storeTraj", ",", " ", "1"}], "}"}]}], ",", " ", 
+                "tSteps"}], "}"}]}]}], ";", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"storedSteps", "=", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{"Table", "[", "\n", "\t\t\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"Ceiling", "[", 
+                RowBox[{"tSteps", "*", 
+                 RowBox[{"i", "/", "realTraj"}]}], "]"}], ",", " ", "\n", 
+               "\t\t\t\t\t\t\t\t", 
+               RowBox[{"{", 
+                RowBox[{"i", ",", " ", 
+                 RowBox[{"Min", "@", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"Max", "@", 
+                    RowBox[{"{", 
+                    RowBox[{"realTraj", ",", " ", "1"}], "}"}]}], ",", " ", 
+                    "tSteps"}], "}"}]}]}], "}"}]}], "\n", "\t", "\t", "\t", 
+              "\t\t\t\t\t", "]"}]}], ";", "\n", "\t", "\t", "\t", "\t\t\t", 
+            RowBox[{"totalCoords", "=", 
+             RowBox[{"Table", "[", 
+              RowBox[{"initCoords", ",", " ", 
+               RowBox[{"{", 
+                RowBox[{"i", ",", " ", "realTraj"}], "}"}]}], "]"}]}], ";", 
+            "\n", "\t", "\t", "\t", "\t\t\t", 
+            RowBox[{"Do", "[", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"peVec", "=", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Length", "[", "#", "]"}], ">", "0"}], ",", " ", 
+                    RowBox[{"Norm", "[", "#", "]"}], ",", " ", "#"}], "]"}], 
+                    "&"}], "[", 
+                   RowBox[{"pot", "[", 
+                    RowBox[{"#", ",", " ", "totT"}], "]"}], "]"}], "&"}], "/@",
+                  "coordVec"}]}], ";", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+               RowBox[{"proposedSteps", "=", "\n", "\t\t\t\t\t\t\t\t", 
+                RowBox[{"Flatten", "[", 
+                 RowBox[{"distMap", ",", " ", "1"}], "]"}]}], ";", "\n", "\t",
+                "\t", "\t", "\t\t\t\t", 
+               RowBox[{"coordVec1", "=", 
+                RowBox[{"coordVec", "+", "proposedSteps"}]}], ";", "\n", 
+               "\t\t\t\t\t\t\t", 
+               RowBox[{"peVec1", "=", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Length", "[", "#", "]"}], ">", "0"}], ",", " ", 
+                    RowBox[{"Norm", "[", "#", "]"}], ",", " ", "#"}], "]"}], 
+                    "&"}], "[", 
+                   RowBox[{"pot", "[", 
+                    RowBox[{"#", ",", " ", "totT"}], "]"}], "]"}], "&"}], "/@",
+                  "coordVec1"}]}], ";", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+               RowBox[{"condProbs", "=", 
+                RowBox[{"RandomReal", "[", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{"0", ",", " ", "1"}], "}"}], ",", " ", 
+                  RowBox[{"Length", "@", "coordVec"}]}], "]"}]}], ";", "\n", 
+               "\t\t\t\t\t\t\t", 
+               RowBox[{"coordVec", "=", "\n", "\t\t\t\t\t\t\t\t", 
+                RowBox[{
+                "MapThread", "[", "\n", "\t", "\t", "\t", "\t\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"#5", "<", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"prob", "[", 
+                    RowBox[{"#", ",", " ", "totT"}], "]"}], "/", 
+                    RowBox[{"prob", "[", 
+                    RowBox[{"#2", ",", " ", "totT"}], "]"}]}], ")"}]}], ",", 
+                    " ", "#3", ",", " ", "#4"}], "]"}], "&"}], ",", "\n", 
+                  "\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{
+                   "peVec1", ",", "\n", "\t\t\t\t\t\t\t\t\t\t", "peVec", ",", 
+                    "\n", "\t", "\t", "\t", "\t", "\t", "\t\t\t\t\t", 
+                    "coordVec1", ",", "\n", "\t", "\t", "\t", "\t", "\t", 
+                    "\t\t\t\t\t", "coordVec", ",", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t", "condProbs"}], "\n", 
+                   "\t\t\t\t\t\t\t\t\t\t", "}"}]}], "\n", 
+                 "\t\t\t\t\t\t\t\t\t", "]"}]}], ";", "\n", "\t", "\t", "\t", 
+               "\t", "\t\t\t", 
+               RowBox[{"totT", "+=", "dt"}], ";", "\n", "\t", "\t", "\t", 
+               "\t\t\t\t", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"n", "\[Equal]", 
+                  RowBox[{"storedSteps", "[", 
+                   RowBox[{"[", "storedStepPointer", "]"}], "]"}]}], ",", 
+                 "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"totalCoords", "[", 
+                    RowBox[{"[", "storedStepPointer", "]"}], "]"}], "=", 
+                   "coordVec"}], ";", "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
+                  RowBox[{"storedStepPointer", "++"}]}]}], "\n", "\t", "\t", 
+                "\t", "\t\t\t\t\t", "]"}], ";"}], ",", "\n", "\t", "\t", "\t",
+               "\t\t\t\t", 
+              RowBox[{"{", 
+               RowBox[{"n", ",", " ", "tSteps"}], "}"}]}], "\n", "\t", "\t", 
+             "\t", "\t", "\t\t\t", "]"}], ";", "\n", "\t", "\t", "\t", 
+            "\t\t\t", "totalCoords"}]}], "\n", "\t", "\t", "\t", "\t\t\t", 
+          "]"}], ",", "\n", "\t", "\t", "\t", "\t\t", 
+         RowBox[{
+         "CompilationOptions", "\[Rule]", "\n", "\t", "\t", "\t", "\t\t\t", 
+          RowBox[{"{", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+           RowBox[{"\"\<InlineExternalDefinitions\>\"", "->", "True"}], "\n", 
+           "\t", "\t", "\t", "\t\t\t\t", "}"}]}], ",", "\n", "\t", "\t", "\t",
+          "\t\t", 
+         RowBox[{
+         "RuntimeOptions", "\[Rule]", "\n", "\t", "\t", "\t", "\t\t\t", 
+          RowBox[{"{", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+           RowBox[{
+            RowBox[{"\"\<CatchMachineOverflow\>\"", "\[Rule]", "False"}], ",",
+             "\n", "\t", "\t", "\t", "\t\t\t\t", 
+            RowBox[{
+            "\"\<CatchMachineIntegerOverflow\>\"", "\[Rule]", "False"}], ",", 
+            "\n", "\t", "\t", "\t", "\t\t\t\t", 
+            RowBox[{"\"\<CompareWithTolerance\>\"", "\[Rule]", "False"}], ",",
+             "\n", "\t", "\t", "\t", "\t\t\t\t", 
+            RowBox[{"\"\<EvaluateSymbolically\>\"", "\[Rule]", "False"}], ",",
+             "\n", "\t", "\t", "\t", "\t\t\t\t", 
+            RowBox[{"\"\<WarningMessages\>\"", "\[Rule]", "False"}]}], "\n", 
+           "\t\t\t\t\t\t\t", "}"}]}], ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"CompilationTarget", "->", "\"\<C\>\""}], ",", "\n", 
+         "\t\t\t\t\t", 
+         RowBox[{"Parallelization", "\[Rule]", "True"}]}], "\n", "\t\t\t\t\t",
+         "]"}], ",", "\n", "\t\t\t", 
+       RowBox[{"moduleHold", "\[Rule]", "Module"}]}], "\n", "\t\t\t", 
+      "]"}]}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"f9de6687-c8f2-42e2-a887-5378a23d56c6"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PESWalkerPropFunc\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"573f82cb-8991-4325-9382-1c606d3a338b"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"PESWalkerPropFunc", "[", "obj_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"pot", "=", 
+       RowBox[{"obj", "[", "\"\<CostFunction\>\"", "]"}]}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"distGen", "=", 
+       RowBox[{"obj", "[", "\"\<DistributionGenerator\>\"", "]"}]}], ",", 
+      "\n", "\t\t\t", 
+      RowBox[{"prob", "=", 
+       RowBox[{"obj", "[", "\"\<ProbabilityFunction\>\"", "]"}]}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"walkers", "=", 
+       RowBox[{"obj", "[", "\"\<Walkers\>\"", "]"}]}], ",", "\n", "\t\t\t", 
+      RowBox[{"masses", "=", 
+       RowBox[{"Replace", "[", 
+        RowBox[{
+         RowBox[{"obj", "[", "\"\<StandardDeviations\>\"", "]"}], ",", " ", 
+         RowBox[{
+          RowBox[{"Except", "[", 
+           RowBox[{
+            RowBox[{"_", "?", "NumericQ"}], "|", 
+            RowBox[{"{", 
+             RowBox[{"__", "?", "NumericQ"}], "}"}]}], "]"}], ":>", "1"}]}], 
+        "]"}]}], ",", "\n", "\t\t\t", "dists"}], "\n", "\t\t\t", "}"}], ",", 
+    "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"dists", "=", "\n", "\t\t\t", 
+      RowBox[{"distGen", "[", "\n", "\t\t\t\t", 
+       RowBox[{"walkers", ",", " ", "\n", "\t\t\t\t", 
+        RowBox[{"Take", "[", "\n", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"Flatten", "[", 
+           RowBox[{
+            RowBox[{"ConstantArray", "[", 
+             RowBox[{"masses", ",", " ", 
+              RowBox[{"Length", "@", "walkers"}]}], "]"}], ",", " ", "1"}], 
+           "]"}], ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"Length", "@", "walkers"}]}], "\n", "\t\t\t\t\t", "]"}]}], 
+       "\n", "\t\t\t\t", "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"PESWalkerPropC", "[", "\n", "\t\t\t", 
+      RowBox[{"pot", ",", " ", "\n", "\t\t\t", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"#", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], ",", " ", 
+            RowBox[{"Length", "@", "#"}]}], "}"}], "&"}], ",", " ", 
+         RowBox[{"SplitBy", "[", 
+          RowBox[{"dists", ",", " ", "Identity"}], "]"}]}], "]"}], ",", " ", 
+       "\n", "\t\t\t", "prob"}], "\n", "\t\t\t", "]"}]}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"d8ad278f-6dc0-4135-92f6-14ee628ad8d9"]
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Defaults\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"21f503e3-5a3f-4edb-9d39-5f4bc235a2a0"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]DistGen\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"f491f463-9174-4b1c-9b1e-83ac285b585c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"PESWalkerDistGen", "[", 
+    RowBox[{"walkers_", ",", " ", "devs_"}], "]"}], ":=", "\n", "\t\t", 
+   RowBox[{"Thread", "@", 
+    RowBox[{"NormalDistribution", "[", 
+     RowBox[{"0", ",", " ", "devs"}], "]"}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"8884da6e-02b0-49de-ac69-13697171a57c"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ProbFunc\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"ff933096-1a04-4188-9862-ae281373b13c"],
+
+Cell[BoxData[
+ RowBox[{"PESWalkerProbFunc", "=", "\n", "\t", 
+  RowBox[{
+   RowBox[{"Exp", "[", 
+    RowBox[{"-", "#"}], "]"}], 
+   "&"}]}]], \
+"CodeInput",ExpressionUUID->"f0beb83a-9ccc-4c0a-ace7-b22c4a3b90b9"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WalkerValidate\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"b8bdf9b2-05cd-4f88-9367-4a4813908134"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"PESWalkerWalkerValidate", "[", "walks_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"MatchQ", "[", 
+   RowBox[{"walks", ",", " ", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"__", "?", "NumericQ"}], "}"}], ",", " ", "___List"}], "}"}]}],
+    "]"}]}]], \
+"CodeInput",ExpressionUUID->"b0e39f64-e533-4950-912f-f38a3fb806ae"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Plot\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"1bd2067e-8098-4160-a9ff-bf3e89178df2"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]readjustPointPlot\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"f764be12-a53b-4fe1-a402-d8b68b3fcd4a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"readjustPointPlot", "[", "plot_", "]"}], ":=", "\n", 
+  RowBox[{"ReplacePart", "[", 
+   RowBox[{"plot", ",", "\n", "\t", 
+    RowBox[{"1", "\[Rule]", "\n", "\t\t", 
+     RowBox[{"With", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{"pts", "=", "\n", "\t\t\t\t", 
+         RowBox[{"Cases", "[", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"plot", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], ",", "\n", "\t", "\t", "\t\t\t", 
+           " ", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"d___", ",", " ", 
+              RowBox[{"Point", "[", "p_", "]"}], ",", " ", "___"}], "}"}], 
+            "\[RuleDelayed]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Flatten", "[", 
+               RowBox[{
+                RowBox[{"Directive", "[", "d", "]"}], ",", "1", ",", "  ", 
+                "Directive"}], "]"}], ",", " ", 
+              RowBox[{"p", "[", 
+               RowBox[{"[", "1", "]"}], "]"}]}], "}"}]}], ",", " ", "\n", 
+           "\t", "\t", "\t\t\t", "Infinity"}], "\n", "\t", "\t", "\t\t\t", 
+          "]"}]}], "\n", "\t", "\t", "\t\t", "}"}], ",", "\n", "\t", "\t", 
+       "\t", 
+       RowBox[{"{", "\n", "\t", "\t", "\t\t", 
+        RowBox[{
+         RowBox[{"pts", "[", 
+          RowBox[{"[", 
+           RowBox[{"1", ",", " ", "1"}], "]"}], "]"}], ",", "\n", "\t\t\t\t", 
+         
+         RowBox[{"Point", "[", 
+          RowBox[{
+           RowBox[{"pts", "[", 
+            RowBox[{"[", 
+             RowBox[{"All", ",", " ", 
+              RowBox[{"-", "1"}]}], "]"}], "]"}], ",", " ", "\n", "\t", "\t", 
+           "\t\t\t", 
+           RowBox[{"VertexColors", "\[Rule]", 
+            RowBox[{"pts", "[", 
+             RowBox[{"[", 
+              RowBox[{"All", ",", " ", "1"}], "]"}], "]"}]}]}], "]"}]}], "\n",
+         "\t", "\t", "\t\t", "}"}]}], "\n", "\t\t\t", "]"}]}]}], "\n", "\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"6aa598f8-2c56-4003-a7bb-dc59751e979e"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]plotCostFunction\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"fb50fe0a-7409-4f4a-bb10-622df32bdb4b"],
+
+Cell[BoxData[
+ RowBox[{"plotCostFunction", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"d4372151-ba70-460e-bc5f-46514f3ba0a8"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"plotCostFunction", "[", 
+   RowBox[{
+   "dim_", ",", " ", "cbs_", ",", " ", "cf_", ",", " ", "t_", ",", " ", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"Switch", "[", 
+   RowBox[{"dim", ",", "\n", "\t\t", "1", ",", "\n", "\t\t\t", 
+    RowBox[{"Plot", "[", 
+     RowBox[{
+      RowBox[{"cf", "[", 
+       RowBox[{
+        RowBox[{"{", "x", "}"}], ",", " ", "t"}], "]"}], ",", " ", 
+      RowBox[{"{", 
+       RowBox[{"x", ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", " ", "1"}], "]"}], "]"}], ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", " ", "2"}], "]"}], "]"}]}], "}"}], ",", " ", "\n",
+       "\t\t\t\t", 
+      RowBox[{"Evaluate", "@", 
+       RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"Flatten", "@", 
+          RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"Lookup", "[", 
+             RowBox[{
+              RowBox[{"{", "ops", "}"}], ",", " ", 
+              "\"\<CostFunctionStyle\>\"", ",", " ", 
+              RowBox[{"{", "}"}]}], "]"}], ",", "\n", "\t", "\t", "\t\t\t\t", 
+            
+            RowBox[{"PlotStyle", "\[Rule]", 
+             RowBox[{"Directive", "[", 
+              RowBox[{"Dashed", ",", " ", "Gray"}], "]"}]}], ",", "\n", 
+            "\t\t\t\t\t\t", "ops"}], "\n", "\t\t\t\t\t\t", "}"}]}], ",", "\n",
+          "\t\t\t\t\t", 
+         RowBox[{"Options", "@", "Plot"}]}], "\n", "\t\t\t\t\t", "]"}]}]}], 
+     "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t", "2", ",", "\n", "\t\t\t", 
+    RowBox[{"ContourPlot", "[", "\n", "\t\t\t\t", 
+     RowBox[{
+      RowBox[{"cf", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"x", ",", " ", "y"}], "}"}], ",", " ", "t"}], "]"}], ",", 
+      " ", "\n", "\t\t\t\t", 
+      RowBox[{"{", 
+       RowBox[{"x", ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", " ", "1"}], "]"}], "]"}], ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", " ", "2"}], "]"}], "]"}]}], "}"}], ",", " ", "\n",
+       "\t\t\t\t", 
+      RowBox[{"{", 
+       RowBox[{"y", ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"2", ",", " ", "1"}], "]"}], "]"}], ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"2", ",", " ", "2"}], "]"}], "]"}]}], "}"}], ",", "\n", 
+      "\t\t\t\t", 
+      RowBox[{"Evaluate", "@", "\n", "\t\t\t\t\t", 
+       RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"Flatten", "@", 
+          RowBox[{"{", "\n", "\t", "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"Lookup", "[", 
+             RowBox[{
+              RowBox[{"{", "ops", "}"}], ",", " ", 
+              "\"\<CostFunctionStyle\>\"", ",", " ", 
+              RowBox[{"{", "}"}]}], "]"}], ",", "\n", "\t", "\t\t\t\t\t\t", 
+            RowBox[{
+            "ColorFunction", "\[Rule]", "\n", "\t", "\t\t\t\t\t\t\t", 
+             RowBox[{"With", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"cd", "=", 
+                 RowBox[{
+                 "ColorData", "[", "\"\<M10DefaultGradient\>\"", "]"}]}], 
+                "}"}], ",", "\n", "\t", "\t", "\t", "\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"Directive", "[", 
+                 RowBox[{
+                  RowBox[{"Opacity", "[", ".25", "]"}], ",", " ", 
+                  RowBox[{"cd", "[", "#", "]"}]}], "]"}], "&"}]}], "\n", "\t",
+               "\t", "\t", "\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t", 
+            "\t\t\t\t\t\t", "ops"}], "\n", "\t", "\t\t\t\t\t\t", "}"}]}], ",",
+          "\n", "\t", "\t\t\t\t\t", 
+         RowBox[{"Options", "@", "ContourPlot"}]}], "\n", "\t", "\t\t\t\t\t", 
+        "]"}]}]}], "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t", "3", ",", "\n",
+     "\t\t\t", 
+    RowBox[{"ContourPlot3D", "[", "\n", "\t\t\t\t", 
+     RowBox[{
+      RowBox[{"cf", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"x", ",", " ", "y", ",", " ", "z"}], "}"}], ",", " ", "t"}], 
+       "]"}], ",", " ", "\n", "\t\t\t\t", 
+      RowBox[{"{", 
+       RowBox[{"x", ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", " ", "1"}], "]"}], "]"}], ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", " ", "2"}], "]"}], "]"}]}], "}"}], ",", " ", "\n",
+       "\t\t\t\t", 
+      RowBox[{"{", 
+       RowBox[{"y", ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"2", ",", " ", "1"}], "]"}], "]"}], ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"2", ",", " ", "2"}], "]"}], "]"}]}], "}"}], ",", "\n", 
+      "\t\t\t\t", 
+      RowBox[{"{", 
+       RowBox[{"z", ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"2", ",", " ", "1"}], "]"}], "]"}], ",", " ", 
+        RowBox[{"cbs", "[", 
+         RowBox[{"[", 
+          RowBox[{"2", ",", " ", "2"}], "]"}], "]"}]}], "}"}], ",", "\n", 
+      "\t\t\t\t", 
+      RowBox[{"Evaluate", "[", "\n", "\t\t\t\t\t", 
+       RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"Flatten", "@", 
+          RowBox[{"{", "\n", "\t", "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"Lookup", "[", 
+             RowBox[{
+              RowBox[{"{", "ops", "}"}], ",", " ", 
+              "\"\<CostFunctionStyle\>\"", ",", " ", 
+              RowBox[{"{", "}"}]}], "]"}], ",", "\n", "\t", "\t\t\t\t\t\t", 
+            RowBox[{
+            "ColorFunction", "\[Rule]", "\n", "\t", "\t\t\t\t\t\t\t", 
+             RowBox[{"With", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"cd", "=", 
+                 RowBox[{
+                 "ColorData", "[", "\"\<M10DefaultGradient\>\"", "]"}]}], 
+                "}"}], ",", "\n", "\t", "\t", "\t", "\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"Directive", "[", 
+                 RowBox[{
+                  RowBox[{"Opacity", "[", ".25", "]"}], ",", " ", 
+                  RowBox[{"cd", "[", "#", "]"}]}], "]"}], "&"}]}], "\n", "\t",
+               "\t", "\t", "\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t", 
+            "\t\t\t\t\t\t", "ops"}], "\n", "\t", "\t\t\t\t\t\t", "}"}]}], ",",
+          "\n", "\t", "\t\t\t\t\t", 
+         RowBox[{"Options", "@", "ContourPlot3D"}]}], "\n", "\t\t\t\t\t\t", 
+        "]"}], "\n", "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}], ",", 
+    "\n", "\t\t", "_", ",", "\n", "\t\t\t", "$Failed"}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"75a6d77a-bafc-4c63-abc1-07e7214d63fe"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]plotState\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"019099df-01a4-4e3a-b2b6-51ce46f03ce1"],
+
+Cell[BoxData[
+ RowBox[{"PESWalkerPlotState", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"1d927f84-da18-4ace-a738-4403cffa44eb"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"PESWalkerPlotState", "[", 
+   RowBox[{
+   "walkers_", ",", " ", "cbs_", ",", " ", "t_", ",", " ", "obj_", ",", " ", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"dim", "=", 
+       RowBox[{"Length", "@", 
+        RowBox[{"walkers", "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}]}], ",", " ", 
+      RowBox[{"cf", "=", 
+       RowBox[{"obj", "[", "\"\<CostFunction\>\"", "]"}]}]}], "}"}], ",", 
+    "\n", "\t\t", 
+    RowBox[{"Show", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"plotCostFunction", "[", 
+       RowBox[{
+       "dim", ",", " ", "cbs", ",", " ", "cf", ",", " ", "t", ",", " ", 
+        "ops"}], "]"}], ",", "\n", "\t\t\t", 
+      RowBox[{"Switch", "[", 
+       RowBox[{"dim", ",", "\n", "\t\t\t\t", "1", ",", "\n", "\t\t\t\t", 
+        RowBox[{"readjustPointPlot", "@", "\n", "\t\t\t\t\t", 
+         RowBox[{"ListPlot", "[", "\n", "\t\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"#", "[", 
+                 RowBox[{"[", "1", "]"}], "]"}], ",", " ", 
+                RowBox[{"cf", "[", 
+                 RowBox[{"#", ",", " ", "t"}], "]"}]}], "}"}], "}"}], "&"}], "/@",
+             "walkers"}], ",", " ", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
+              RowBox[{"ops", ",", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{"PlotRange", "\[Rule]", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"1.01", "*", 
+                   RowBox[{"cbs", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], ",", " ", "Automatic"}],
+                  "}"}]}], ",", "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
+               RowBox[{"Frame", "\[Rule]", "True"}], ",", "\n", "\t", "\t", 
+               "\t", "\t\t\t\t\t", 
+               RowBox[{"Axes", "\[Rule]", "False"}]}], "\n", 
+              "\t\t\t\t\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{"Options", "@", "ListPlot"}]}], "\n", "\t\t\t\t\t\t\t", 
+            "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t", 
+        "2", ",", "\n", "\t\t\t\t", 
+        RowBox[{"readjustPointPlot", "@", "\n", "\t\t\t\t\t", 
+         RowBox[{"ListPlot", "[", "\n", "\t\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"List", "/@", "walkers"}], ",", " ", "\n", "\t\t\t\t\t\t", 
+           
+           RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
+              RowBox[{"ops", ",", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{"PlotRange", "\[Rule]", 
+                RowBox[{"1.01", "*", "cbs"}]}], ",", "\n", "\t", "\t", "\t", 
+               "\t\t\t\t\t", 
+               RowBox[{"Frame", "\[Rule]", "True"}], ",", "\n", "\t", "\t", 
+               "\t", "\t\t\t\t\t", 
+               RowBox[{"Axes", "\[Rule]", "False"}]}], "\n", 
+              "\t\t\t\t\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{"Options", "@", "ListPlot"}]}], "\n", "\t\t\t\t\t\t\t", 
+            "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t", 
+        "3", ",", "\n", "\t\t\t\t\t", 
+        RowBox[{"ListPointPlot3D", "[", "\n", "\t\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"List", "/@", "walkers"}], ",", " ", "\n", "\t\t\t\t\t\t", 
+          RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
+             RowBox[{"ops", ",", "\n", "\t\t\t\t\t\t\t\t", 
+              RowBox[{"PlotRange", "\[Rule]", 
+               RowBox[{"1.01", "*", "cbs"}]}]}], "\n", "\t\t\t\t\t\t\t\t", 
+             "}"}], ",", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{"Options", "@", "ListPointPlot3D"}]}], "\n", 
+           "\t\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t\t", "]"}], ",", "\n", 
+        "\t\t\t\t", "_", ",", "\n", "\t", "\t\t\t\t", 
+        RowBox[{"Throw", "[", "$Failed", "]"}]}], "\n", "\t\t\t\t", "]"}]}], 
+     "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"b34e8313-c2aa-4c49-bbe0-923b0ae3fb5c"]
+}, Closed]]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Specification\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"508aa43c-1f2c-49bc-8cd9-557bbff441cd"],
+
+Cell[BoxData[
+ RowBox[{"$PESWalkerMCMC", "=", "\n", "\t", 
+  RowBox[{"<|", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"\"\<RequiredProperties\>\"", "->", "\n", "\t\t\t", 
+     RowBox[{"{", "\n", "\t\t\t\t", 
+      RowBox[{
+      "\"\<CostFunction\>\"", ",", "\n", "\t\t\t\t", 
+       "\"\<DistributionGenerator\>\"", ",", "\n", "\t\t\t\t", 
+       "\"\<ProbabilityFunction\>\"", ",", "\n", "\t\t\t\t", 
+       "\"\<StandardDeviations\>\""}], "\n", "\t\t\t\t", "}"}]}], ",", "\n", 
+    "\t\t", 
+    RowBox[{
+    "\"\<PropagatorGenerator\>\"", "->", "\n", "\t\t\t", 
+     "PESWalkerPropFunc"}], ",", "\n", "\t\t", 
+    RowBox[{
+    "\"\<WalkerValidationFunction\>\"", "->", "\n", "\t\t\t", 
+     "PESWalkerWalkerValidate"}], ",", "\n", "\t\t", 
+    RowBox[{
+    "\"\<ProbabilityFunction\>\"", "->", "\n", "\t\t\t", 
+     "PESWalkerProbFunc"}], ",", "\n", "\t\t", 
+    RowBox[{
+    "\"\<DistributionGenerator\>\"", "->", "\n", "\t\t\t", 
+     "PESWalkerDistGen"}], ",", "\n", "\t\t", 
+    RowBox[{
+    "\"\<PlotFunction\>\"", "->", "\n", "\t\t\t", "PESWalkerPlotState"}], ",",
+     "\n", "\t\t", 
+    RowBox[{"\"\<StandardDeviations\>\"", "->", "\n", "\t\t\t", "1"}]}], "\n",
+    "\t\t", "|>"}]}]], \
+"CodeInput",ExpressionUUID->"3434e216-d77a-401f-be46-565268848b0b"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"506b0cf0-c39a-4e16-a947-\
+03210c40cd17"],
+
+Cell[BoxData["$PESWalkerMCMC"], \
+"CodeInput",ExpressionUUID->"47074340-0f46-457d-b543-6bc68970077b"]
+}, Open  ]]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"d26a08c5-b364-47f3-97f0-\
+ea7c9161311a"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{177, Automatic}, {Automatic, 13}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackagePlain.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

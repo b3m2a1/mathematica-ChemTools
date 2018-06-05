@@ -1,0 +1,529 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["\[LeftCeiling]Ising MCMC\[RightFloor]", "CodeSection",
+ Evaluatable->True,ExpressionUUID->"fb603ae8-7347-45ee-b7e3-7eb9a7e2694b"],
+
+Cell["\<\
+\[LeftCeiling]
+\tAn MCMC that performs as the pure original 2D Ising model
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"44026ff4-f7a9-40c9-b271-28165a9b7720"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"$IsingMCMC", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}]], "CodeInput",ExpressionUUID->"98c8599e-83d3-4e8b-8a57-50527f09bc60"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"3d8d5459-ac66-40e8-8f2b-\
+f6777a6a634e"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Propagator\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"eb12abb0-b472-4083-bf87-5f6d907c69b4"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]IsingPropC\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"f3feba97-df2f-455e-a5aa-882036046e03"],
+
+Cell["\<\
+\[LeftCeiling]
+\tCompiled propagator to be used by the MCMC. 
+\tEssential enhancements by Henrik Schumacher:
+\t\thttps://mathematica.stackexchange.com/a/174328/38205
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"e25d40e9-3078-4c5c-8162-f0ece6a8980c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"IsingPropC", "[", 
+   RowBox[{"states_", ",", " ", "field_", ",", " ", "prob_"}], "]"}], ":=", 
+  "\n", "\t", 
+  RowBox[{"Compile", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"initCoords", ",", " ", "_Integer", ",", " ", "2"}], "}"}], 
+      ",", "\n", "\t\t\t", 
+      RowBox[{"{", 
+       RowBox[{"tInit", ",", " ", "_Real"}], "}"}], ",", "  ", "\n", "\t\t\t", 
+      RowBox[{"{", 
+       RowBox[{"dt", ",", " ", "_Real"}], "}"}], ",", "\n", "\t", "\t\t", 
+      RowBox[{"{", 
+       RowBox[{"tSteps", ",", " ", "_Integer"}], "}"}], ",", "\n", "\t\t\t", 
+      RowBox[{"{", 
+       RowBox[{"storeTraj", ",", " ", "_Integer"}], "}"}]}], "\n", "\t\t\t", 
+     "}"}], ",", "\n", "\t\t", 
+    RowBox[{"Module", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"{", "\n", "\t\t\t\t", 
+       RowBox[{
+       "totalCoords", ",", "\n", "\t\t\t\t", "realTraj", ",", "\n", 
+        "\t\t\t\t", "storedSteps", ",", "\n", "\t\t\t\t", 
+        RowBox[{"storedStepPointer", "=", "1"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"coordMat", "=", "initCoords"}], ",", "\n", "\t\t\t\t", 
+        "proposedSteps", ",", "\n", "\t\t\t\t", "coordMat1", ",", "\n", 
+        "\t\t\t\t", "peMat", ",", "\n", "\t\t\t\t", "condProbs", ",", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"totT", "=", "tInit"}], ",", "\n", "\t\t\t\t", "totE", ",", 
+        "\n", "\t\t\t\t", "potEl", ",", "\n", "\t\t\t\t", "gridNRows", ",", 
+        "\n", "\t\t\t\t", "gridNCols", ",", "\n", "\t\t\t\t", "giL", ",", " ",
+         "giLj", ",", "\n", "\t\t\t\t", "giM", ",", " ", "giMj", ",", "\n", 
+        "\t\t\t\t", "gjL", ",", " ", "gjLi", ",", "\n", "\t\t\t\t", "gjM", 
+        ",", " ", "gjMi", ",", "\n", "\t\t\t\t", "posF", ",", "\n", 
+        "\t\t\t\t", "up", ",", " ", "down", ",", "\n", "\t\t\t\t", "left", 
+        ",", " ", "right", ",", "\n", "\t\t\t\t", "spinIJ", ",", " ", 
+        "potElOld"}], "\n", "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "number", " ", "of", " ", "steps", " ", "to", " ", "be", " ", "used", 
+        " ", "in", " ", "the", " ", "trajectory"}], " ", "*)"}], "\n", 
+      "\t\t\t", 
+      RowBox[{
+       RowBox[{"realTraj", "=", 
+        RowBox[{"Min", "@", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Max", "@", 
+            RowBox[{"{", 
+             RowBox[{"storeTraj", ",", " ", "1"}], "}"}]}], ",", " ", 
+           "tSteps"}], "}"}]}]}], ";", "\n", "\t\t\t", 
+       RowBox[{"(*", " ", 
+        RowBox[{"steps", " ", "to", " ", "be", " ", "cached"}], " ", "*)"}], 
+       "\n", "\t\t\t", 
+       RowBox[{"storedSteps", "=", "\n", "\t\t\t\t", 
+        RowBox[{"Table", "[", "\n", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"Ceiling", "[", 
+           RowBox[{"tSteps", "*", 
+            RowBox[{"i", "/", "realTraj"}]}], "]"}], ",", " ", "\n", 
+          "\t\t\t\t\t", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", " ", 
+            RowBox[{"Min", "@", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"Max", "@", 
+                RowBox[{"{", 
+                 RowBox[{"realTraj", ",", " ", "1"}], "}"}]}], ",", " ", 
+               "tSteps"}], "}"}]}]}], "}"}]}], "\n", "\t\t\t\t\t", "]"}]}], 
+       ";", "\n", "\t\t\t", 
+       RowBox[{"(*", " ", 
+        RowBox[{"preallocated", " ", "trajectory", " ", "block"}], " ", 
+        "*)"}], "\n", "\t\t\t", 
+       RowBox[{"totalCoords", "=", 
+        RowBox[{"Table", "[", 
+         RowBox[{"initCoords", ",", " ", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", " ", "realTraj"}], "}"}]}], "]"}]}], ";", "\n", 
+       "\t\t\t", 
+       RowBox[{"gridNRows", "=", 
+        RowBox[{"Length", "@", "initCoords"}]}], ";", "\n", "\t\t\t", 
+       RowBox[{"gridNCols", "=", 
+        RowBox[{
+         RowBox[{"Dimensions", "[", "initCoords", "]"}], "[", 
+         RowBox[{"[", "2", "]"}], "]"}]}], ";", "\n", "\t\t\t", 
+       RowBox[{"up", " ", "=", " ", 
+        RowBox[{"RotateLeft", "[", 
+         RowBox[{"Range", "[", "gridNRows", "]"}], "]"}]}], ";", "\n", 
+       "\t\t\t", 
+       RowBox[{"down", " ", "=", " ", 
+        RowBox[{"RotateRight", "[", 
+         RowBox[{"Range", "[", "gridNRows", "]"}], "]"}]}], ";", "\n", 
+       "\t\t\t", 
+       RowBox[{"left", " ", "=", " ", 
+        RowBox[{"RotateLeft", "[", 
+         RowBox[{"Range", "[", "gridNCols", "]"}], "]"}]}], ";", "\n", 
+       "\t\t\t", 
+       RowBox[{"right", " ", "=", " ", 
+        RowBox[{"RotateRight", "[", 
+         RowBox[{"Range", "[", "gridNCols", "]"}], "]"}]}], ";", "\n", 
+       "\t\t\t", 
+       RowBox[{"Do", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"peMat", "=", "\n", "\t\t\t\t\t", 
+           RowBox[{"(*", 
+            RowBox[{
+            "calculate", " ", "PE", " ", "on", " ", "the", " ", "grid", " ", 
+             "from", " ", "nearest", " ", "neighbors"}], "*)"}], "\n", 
+           "\t\t\t\t\t", 
+           RowBox[{"Table", "[", "\n", "\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"giL", " ", "=", " ", 
+               RowBox[{"Compile`GetElement", "[", 
+                RowBox[{"up", ",", " ", "i"}], "]"}]}], ";", "\n", 
+              "\t\t\t\t\t\t", 
+              RowBox[{"giM", " ", "=", " ", 
+               RowBox[{"Compile`GetElement", "[", 
+                RowBox[{"down", ",", " ", "i"}], "]"}]}], ";", "\n", 
+              "\t\t\t\t\t\t", 
+              RowBox[{"Table", "[", "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"posF", "=", 
+                  RowBox[{"field", "[", 
+                   RowBox[{"i", ",", " ", "j", ",", " ", "totT"}], "]"}]}], 
+                 ";", "\n", "\t\t\t\t\t\t\t", 
+                 RowBox[{"gjL", " ", "=", " ", 
+                  RowBox[{"Compile`GetElement", "[", 
+                   RowBox[{"left", ",", " ", "j"}], "]"}]}], ";", "\n", 
+                 "\t\t\t\t\t\t\t", 
+                 RowBox[{"gjM", " ", "=", " ", 
+                  RowBox[{"Compile`GetElement", "[", 
+                   RowBox[{"right", ",", " ", "j"}], "]"}]}], ";", "\n", 
+                 "\t\t\t\t\t\t\t", 
+                 RowBox[{"spinIJ", "=", 
+                  RowBox[{"Compile`GetElement", "[", 
+                   RowBox[{"coordMat", ",", " ", "i", ",", " ", "j"}], 
+                   "]"}]}], ";", "\n", "\t\t\t\t\t\t\t", 
+                 RowBox[{"Times", "[", "\n", "\t\t\t\t\t\t\t\t", 
+                  RowBox[{
+                   RowBox[{"-", "spinIJ"}], ",", "\n", "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{"Plus", "[", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"posF", ",", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Compile`GetElement", "[", 
+                    RowBox[{"coordMat", ",", " ", "giL", ",", " ", "j"}], 
+                    "]"}], ",", "\n", "\t", "\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Compile`GetElement", "[", 
+                    RowBox[{"coordMat", ",", " ", "giM", ",", " ", "j"}], 
+                    "]"}], ",", "\n", "\t", "\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Compile`GetElement", "[", 
+                    RowBox[{"coordMat", ",", " ", "i", ",", " ", "gjL"}], 
+                    "]"}], ",", "\n", "\t", "\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Compile`GetElement", "[", 
+                    RowBox[{"coordMat", ",", " ", "i", ",", " ", "gjM"}], 
+                    "]"}]}], "\n", "\t", "\t\t\t\t\t\t\t\t\t", "]"}]}], "\n", 
+                  "\t\t\t\t\t\t\t\t", "]"}]}], ",", " ", "\n", 
+                "\t\t\t\t\t\t\t", 
+                RowBox[{"{", 
+                 RowBox[{"j", ",", " ", "gridNCols"}], "}"}]}], "\n", 
+               "\t\t\t\t\t\t\t", "]"}]}], ",", " ", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", " ", "gridNRows"}], "}"}]}], "\n", 
+            "\t\t\t\t\t\t", "]"}]}], ";", "\n", "\t\t\t\t", 
+          RowBox[{"(*", " ", 
+           RowBox[{"create", " ", "new", " ", "spin", " ", "matrix"}], " ", 
+           "*)"}], "\n", "\t\t\t\t", 
+          RowBox[{"coordMat1", "=", "\n", "\t\t\t\t\t", 
+           RowBox[{"RandomChoice", "[", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"states", ",", " ", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"{", 
+              RowBox[{"gridNRows", ",", " ", "gridNCols"}], "}"}]}], "\n", 
+            "\t\t\t\t\t\t", "]"}]}], ";", "\n", "\t\t\t\t", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+           "compute", " ", "conditional", " ", "probabilities", " ", "for", 
+            " ", "transition"}], " ", "*)"}], "\n", "\t\t\t\t", 
+          RowBox[{"condProbs", "=", 
+           RowBox[{"RandomReal", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"0", ",", " ", "1"}], "}"}], ",", " ", 
+             RowBox[{"{", 
+              RowBox[{"gridNRows", ",", " ", "gridNCols"}], "}"}]}], "]"}]}], 
+          ";", "\n", "\t\t\t\t", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+           "make", " ", "new", " ", "spin", " ", "matrix", " ", "from", " ", 
+            "MH", " ", "criterion"}], " ", "*)"}], "\n", "\t\t\t\t", 
+          RowBox[{"Do", "[", "\n", "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"giL", " ", "=", " ", 
+              RowBox[{"Compile`GetElement", "[", 
+               RowBox[{"up", ",", " ", "i"}], "]"}]}], ";", "\n", 
+             "\t\t\t\t\t\t", 
+             RowBox[{"giM", " ", "=", " ", 
+              RowBox[{"Compile`GetElement", "[", 
+               RowBox[{"down", ",", " ", "i"}], "]"}]}], ";", "\n", 
+             "\t\t\t\t\t\t", 
+             RowBox[{"Do", "[", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"posF", "=", 
+                 RowBox[{"field", "[", 
+                  RowBox[{"i", ",", " ", "j", ",", " ", "totT"}], "]"}]}], 
+                ";", "\n", "\t\t\t\t\t\t\t", 
+                RowBox[{"gjL", " ", "=", " ", 
+                 RowBox[{"Compile`GetElement", "[", 
+                  RowBox[{"left", ",", " ", "j"}], "]"}]}], ";", "\n", 
+                "\t\t\t\t\t\t\t", 
+                RowBox[{"gjM", " ", "=", " ", 
+                 RowBox[{"Compile`GetElement", "[", 
+                  RowBox[{"right", ",", " ", "j"}], "]"}]}], ";", "\n", 
+                "\t\t\t\t\t\t\t", 
+                RowBox[{"spinIJ", "=", 
+                 RowBox[{"Compile`GetElement", "[", 
+                  RowBox[{"coordMat1", ",", " ", "i", ",", " ", "j"}], 
+                  "]"}]}], ";", "\n", "\t\t\t\t\t\t\t", 
+                RowBox[{"potEl", "=", "\n", "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"Times", "[", "\n", "\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{
+                   RowBox[{"-", "spinIJ"}], ",", "\n", "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{"Plus", "[", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"posF", ",", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Compile`GetElement", "[", 
+                    RowBox[{"coordMat", ",", " ", "giL", ",", " ", "j"}], 
+                    "]"}], ",", "\n", "\t", "\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Compile`GetElement", "[", 
+                    RowBox[{"coordMat", ",", " ", "giM", ",", " ", "j"}], 
+                    "]"}], ",", "\n", "\t", "\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Compile`GetElement", "[", 
+                    RowBox[{"coordMat", ",", " ", "i", ",", " ", "gjL"}], 
+                    "]"}], ",", "\n", "\t", "\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Compile`GetElement", "[", 
+                    RowBox[{"coordMat", ",", " ", "i", ",", " ", "gjM"}], 
+                    "]"}]}], "\n", "\t", "\t\t\t\t\t\t\t\t\t", "]"}]}], "\n", 
+                  "\t\t\t\t\t\t\t\t\t", "]"}]}], ";", "\n", "\t\t\t\t\t\t\t", 
+                
+                RowBox[{"(*", "\n", "\t\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{
+                  "For", " ", "unknown", " ", "reasons", " ", "using", " ", 
+                   "GetElement", " ", "crashes", " ", "here"}], "..."}], "\n",
+                  "\t\t\t\t\t\t", "*)"}], "\n", "\t\t\t\t\t\t\t", 
+                RowBox[{"potElOld", "=", 
+                 RowBox[{"peMat", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"i", ",", " ", "j"}], "]"}], "]"}]}], ";", "\n", 
+                "\t\t\t\t\t\t\t", 
+                RowBox[{"If", "[", "\n", "\t\t\t\t\t\t\t\t", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Compile`GetElement", "[", 
+                    RowBox[{"condProbs", ",", " ", "i", ",", " ", "j"}], 
+                    "]"}], "<", 
+                   RowBox[{"(", "\n", "\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"prob", "[", 
+                    RowBox[{"potEl", ",", " ", "totT"}], "]"}], "/", 
+                    RowBox[{"prob", "[", 
+                    RowBox[{"potElOld", ",", " ", "totT"}], "]"}]}], "\n", 
+                    "\t\t\t\t\t\t\t\t\t", ")"}]}], ",", " ", "\n", 
+                  "\t\t\t\t\t\t\t\t", 
+                  RowBox[{
+                   RowBox[{"coordMat", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"i", ",", " ", "j"}], "]"}], "]"}], "=", 
+                   RowBox[{"Compile`GetElement", "[", 
+                    RowBox[{"coordMat1", ",", " ", "i", ",", " ", "j"}], 
+                    "]"}]}]}], "\n", "\t\t\t\t\t\t\t\t", "]"}]}], ",", " ", 
+               "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{"{", 
+                RowBox[{"j", ",", " ", "gridNCols"}], "}"}]}], "\n", 
+              "\t\t\t\t\t\t\t", "]"}]}], ",", " ", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", " ", "gridNRows"}], "}"}]}], "\n", 
+           "\t\t\t\t\t\t", "]"}], ";", "\n", "\t\t\t\t", 
+          RowBox[{"totT", "+=", "dt"}], ";", "\n", "\t\t\t\t", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"n", "\[Equal]", 
+             RowBox[{"storedSteps", "[", 
+              RowBox[{"[", "storedStepPointer", "]"}], "]"}]}], ",", "\n", 
+            "\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"totalCoords", "[", 
+               RowBox[{"[", "storedStepPointer", "]"}], "]"}], "=", 
+              "coordMat"}], ";", "\n", "\t\t\t\t\t", 
+             RowBox[{"storedStepPointer", "++"}]}]}], "\n", "\t\t\t\t\t", 
+           "]"}], ";"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"{", 
+          RowBox[{"n", ",", " ", "tSteps"}], "}"}]}], "\n", "\t\t\t\t", "]"}],
+        ";", "\n", "\t\t\t", "totalCoords"}]}], "\n", "\t\t\t", "]"}], ",", 
+    "\n", "\t\t", 
+    RowBox[{"CompilationOptions", "\[Rule]", "\n", "\t\t\t", 
+     RowBox[{"{", "\n", "\t\t\t\t", 
+      RowBox[{"\"\<InlineExternalDefinitions\>\"", "->", "True"}], "\n", 
+      "\t\t\t\t", "}"}]}], ",", "\n", "\t\t", 
+    RowBox[{"RuntimeOptions", "\[Rule]", "\"\<Speed\>\""}], ",", "\n", "\t\t", 
+    RowBox[{"CompilationTarget", "->", "\"\<C\>\""}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"f9de6687-c8f2-42e2-a887-5378a23d56c6"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]IsingPropFunc\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"573f82cb-8991-4325-9382-1c606d3a338b"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"IsingPropFunc", "[", "obj_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"states", "=", 
+       RowBox[{"Replace", "[", 
+        RowBox[{
+         RowBox[{"obj", "[", "\"\<States\>\"", "]"}], ",", " ", 
+         RowBox[{
+          RowBox[{"Except", "[", 
+           RowBox[{"{", "__Integer", "}"}], "]"}], "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1"}], ",", " ", "1"}], "}"}]}]}], "]"}]}], ",", 
+      "\n", "\t\t\t", 
+      RowBox[{"ff", "=", 
+       RowBox[{"obj", "[", "\"\<FieldFunction\>\"", "]"}]}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"prob", "=", 
+       RowBox[{"obj", "[", "\"\<ProbabilityFunction\>\"", "]"}]}]}], "\n", 
+     "\t\t\t", "}"}], ",", "\n", "\t\t", 
+    RowBox[{"IsingPropC", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"Floor", "@", "states"}], ",", "\n", "\t\t\t", "ff", ",", "\n", 
+      "\t\t\t", "prob"}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"d8ad278f-6dc0-4135-92f6-14ee628ad8d9"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Defaults\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"21f503e3-5a3f-4edb-9d39-5f4bc235a2a0"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ProbFunc\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"ff933096-1a04-4188-9862-ae281373b13c"],
+
+Cell[BoxData[
+ RowBox[{"IsingProbFunc", "=", "\n", "\t", 
+  RowBox[{
+   RowBox[{"Exp", "[", 
+    RowBox[{"-", "#"}], "]"}], 
+   "&"}]}]], \
+"CodeInput",ExpressionUUID->"f0beb83a-9ccc-4c0a-ace7-b22c4a3b90b9"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WalkerValidate\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"b8bdf9b2-05cd-4f88-9367-4a4813908134"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"IsingWalkerValidate", "[", "walks_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"MatrixQ", "[", 
+   RowBox[{"walks", ",", " ", "IntegerQ"}], 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"b0e39f64-e533-4950-912f-f38a3fb806ae"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Plot\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"ab8530c6-9157-449f-b1df-61f553334768"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"IsingPlotFunction", "[", 
+   RowBox[{
+   "walks_", ",", " ", "cbs_", ",", " ", "t_", ",", " ", "obj_", ",", " ", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"ArrayPlot", "[", "\n", "\t\t", 
+   RowBox[{"walks", ",", "\n", "\t\t", "ops", ",", "\n", "\t\t", 
+    RowBox[{"ColorRules", "\[Rule]", "\n", "\t\t\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"states", "=", 
+         RowBox[{"obj", "[", "\"\<States\>\"", "]"}]}], "}"}], ",", "\n", 
+       "\t\t\t\t", 
+       RowBox[{"MapIndexed", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"#", "\[Rule]", 
+           RowBox[{"GrayLevel", "[", 
+            RowBox[{"Rescale", "[", 
+             RowBox[{
+              RowBox[{"#2", "[", 
+               RowBox[{"[", "1", "]"}], "]"}], ",", " ", 
+              RowBox[{"{", 
+               RowBox[{"1", ",", " ", 
+                RowBox[{"Length", "@", "states"}]}], "}"}]}], "]"}], "]"}]}], 
+          "&"}], ",", " ", "states"}], "]"}]}], "\n", "\t\t\t\t", "]"}]}]}], 
+   "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"004f5403-98f0-41f8-83d0-977fbc019d41"]
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Specification\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"508aa43c-1f2c-49bc-8cd9-557bbff441cd"],
+
+Cell[BoxData[
+ RowBox[{"$IsingMCMC", "=", "\n", "\t", 
+  RowBox[{"<|", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"\"\<RequiredProperties\>\"", "->", "\n", "\t\t\t", 
+     RowBox[{"{", "\n", "\t\t\t\t", 
+      RowBox[{
+      "\"\<FieldFunction\>\"", ",", "\n", "\t\t\t\t", 
+       "\"\<ProbabilityFunction\>\"", ",", "\n", "\t\t\t\t", 
+       "\"\<States\>\""}], "\n", "\t\t\t\t", "}"}]}], ",", "\n", "\t\t", 
+    RowBox[{
+    "\"\<PropagatorGenerator\>\"", "->", "\n", "\t\t\t", "IsingPropFunc"}], 
+    ",", "\n", "\t\t", 
+    RowBox[{
+    "\"\<WalkerValidationFunction\>\"", "->", "\n", "\t\t\t", 
+     "IsingWalkerValidate"}], ",", "\n", "\t\t", 
+    RowBox[{
+    "\"\<ProbabilityFunction\>\"", "->", "\n", "\t\t\t", "IsingProbFunc"}], 
+    ",", "\n", "\t\t", 
+    RowBox[{
+    "\"\<PlotFunction\>\"", "->", "\n", "\t\t\t", "IsingPlotFunction"}], ",", 
+    "\n", "\t\t", 
+    RowBox[{"\"\<States\>\"", "\[Rule]", "\n", "\t\t\t", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"-", "1"}], ",", " ", "1"}], "}"}]}], ",", "\n", "\t\t", 
+    RowBox[{"\"\<FieldFunction\>\"", "->", "\n", "\t\t\t", 
+     RowBox[{"(", 
+      RowBox[{"0", "&"}], ")"}]}]}], "\n", "\t\t", 
+   "|>"}]}]], \
+"CodeInput",ExpressionUUID->"3434e216-d77a-401f-be46-565268848b0b"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"506b0cf0-c39a-4e16-a947-\
+03210c40cd17"],
+
+Cell[BoxData["$IsingMCMC"], \
+"CodeInput",ExpressionUUID->"47074340-0f46-457d-b543-6bc68970077b"]
+}, Open  ]]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"d26a08c5-b364-47f3-97f0-\
+ea7c9161311a"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{Automatic, 245}, {Automatic, 0}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackagePlain.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

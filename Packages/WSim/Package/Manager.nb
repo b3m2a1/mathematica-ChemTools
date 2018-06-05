@@ -1,0 +1,972 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["WSim Manager", \
+"CodeSection",ExpressionUUID->"600a5c00-6b03-4914-95f6-f9109819a6a1"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"$WSimRequiredSettings", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"WSimValidateObject", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"WSimInitialize", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"WSimReset", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"a45848a2-a44b-469d-81ab-0e0d3328badc"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"WSimGetPropagator", "::", "usage"}], "=", 
+   "\"\<Generates the actual propagator function\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"WSimValidatePropagator", "::", "usage"}], "=", 
+   "\"\<Ensure propagator is compiled\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"WSimPropagateWalkers", "::", "usage"}], "=", 
+   "\"\<Propagates an object's walkers\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"WSimEquilibrateSystem", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"WSimStepSystem", "::", "usage"}], "=", 
+  "\"\<\>\""}]}], \
+"CodeInput",ExpressionUUID->"3ced021b-934b-4d21-b558-d2cc663da015"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"WSimPlotTrajectory", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"WSimPlotSnapshot", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"WSimAnimateTrajectories", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"69027c1b-e869-4a82-b40a-6427ac1e5f92"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"a0e126ec-6eb7-44b3-a94f-\
+0220319c789e"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"PackageLoadPacletDependency", "[", "\"\<SymbolObjects`\>\"", "]"}],
+   ";"}], "\n", 
+ RowBox[{"<<", 
+  "SymbolObjects`Package`"}]}], \
+"CodeInput",ExpressionUUID->"bb346c67-882d-4624-b494-3e4b05dbc04c"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Object Setup\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"6e456e37-19dc-4f68-abb6-048890ea0cbe"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]$WSimRequiredSettings\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"63ede10d-59d9-472a-8e2b-7aef1801646f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$WSimRequiredSettings", "=", "\n", "\t", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{
+    "\"\<PropagatorGenerator\>\"", ",", "\n", "\t\t", 
+     "\"\<WalkerValidationFunction\>\"", ",", "\n", "\t\t", 
+     "\"\<PlotFunction\>\""}], "\n", "\t\t", "}"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"23c13283-c6ac-4259-ad7b-1f13deb8f5e3"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WSimValidateObject\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"e5daa6aa-ccb0-4364-96e0-3c740754cfda"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"WalkerSimulator", "::", "noopa"}], "=", 
+   "\"\<WSim object missing `` settings.\>\""}], 
+  ";"}]], "CodeInput",ExpressionUUID->"b49b78a9-9973-42c3-853a-a9f5a0f5779e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"WSimValidateObject", "[", "obj_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"With", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"keys", "=", 
+       RowBox[{"Keys", "@", "obj"}]}], ",", " ", "\n", "\t", "\t\t", 
+      RowBox[{"extraNeeds", "=", 
+       RowBox[{"Replace", "[", 
+        RowBox[{
+         RowBox[{"obj", "[", "\"\<RequiredProperties\>\"", "]"}], ",", " ", 
+         RowBox[{
+          RowBox[{"Except", "[", "_List", "]"}], "->", 
+          RowBox[{"{", "}"}]}]}], "]"}]}]}], "\n", "\t", "\t\t", "}"}], ",", 
+    "\n", "\t\t", 
+    RowBox[{"Replace", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"Complement", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"Join", "[", "\n", "\t\t\t\t\t", 
+         RowBox[{
+         "$WSimRequiredSettings", ",", "\n", "\t\t\t\t\t", "extraNeeds"}], 
+         "\n", "\t\t\t\t\t", "]"}], ",", " ", "\n", "\t\t\t\t", "keys"}], 
+       "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
+      RowBox[{"{", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"k", ":", 
+          RowBox[{"{", "__", "}"}]}], ":>", "\n", "\t\t\t\t\t", 
+         RowBox[{"(", "\n", "\t\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"Message", "[", 
+            RowBox[{
+             RowBox[{"WalkerSimulator", "::", "noopa"}], ",", " ", 
+             RowBox[{"StringRiffle", "[", 
+              RowBox[{"k", ",", " ", "\"\<, \>\""}], "]"}]}], "]"}], ";", 
+           "\n", "\t\t\t\t\t\t", "False"}], "\n", "\t\t\t\t\t\t", ")"}]}], 
+        ",", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"{", "}"}], "\[Rule]", "True"}]}], "\n", "\t\t\t\t", "}"}]}],
+      "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"2f0e3a7a-aa27-4c5c-9c97-410cc1c486cf"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WSimInitialize\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"7136ff6b-1c23-4cc1-a8a2-a5f849055728"],
+
+Cell[BoxData[
+ RowBox[{"WSimInitialize", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"7bc6dd83-1051-4249-9933-13d3bef0e32a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"WSimInitialize", "[", "\n", "\t", 
+   RowBox[{"class_", ",", "\n", "\t", "obj_", ",", "\n", "\t", 
+    RowBox[{"classFile", ":", 
+     RowBox[{"_String", "|", "None"}], ":", "None"}], ",", "\n", "\t", 
+    RowBox[{"walkers", ":", "_List"}], ",", "\n", "\t", 
+    RowBox[{"ops", ":", 
+     RowBox[{"___", "?", "OptionQ"}]}]}], "\n", "\t", "]"}], ":=", "\n", "\t", 
+  RowBox[{"(", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"AssociateTo", "[", "\n", "\t\t\t", 
+     RowBox[{"obj", ",", "\n", "\t\t\t", 
+      RowBox[{"{", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"\"\<Class\>\"", "\[Rule]", "classFile"}], ",", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"\"\<Walkers\>\"", "\[Rule]", "walkers"}], ",", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"\"\<Trajectory\>\"", "\[Rule]", "\n", "\t\t\t\t\t", 
+         RowBox[{"{", 
+          RowBox[{"Replace", "[", 
+           RowBox[{"walkers", ",", " ", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"l_List", ",", " ", 
+               RowBox[{"___", "?", "OptionQ"}]}], "}"}], "\[RuleDelayed]", 
+             "l"}], ",", " ", "1"}], "]"}], "}"}]}], ",", "\n", "\t\t\t\t", 
+        "ops"}], "\n", "\t\t\t\t", "}"}]}], "\n", "\t\t\t", "]"}], ";", "\n", 
+    "\t\t", 
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"StringQ", "@", "classFile"}], ",", " ", 
+      RowBox[{"WSimLoadClass", "[", 
+       RowBox[{"obj", ",", " ", "classFile"}], "]"}]}], "]"}], ";", "\n", 
+    "\t\t", 
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"WSimValidateObject", "[", "obj", "]"}], ",", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"obj", "[", "\"\<TrajectoryTimes\>\"", "]"}], "=", "\n", "\t",
+         "\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"obj", "[", "\"\<CurrentTime\>\"", "]"}], "}"}]}], ";", "\n",
+        "\t", "\t\t", 
+       RowBox[{
+        RowBox[{"obj", "[", "\"\<InitialConditions\>\"", "]"}], "=", "\n", 
+        "\t", "\t\t\t", 
+        RowBox[{"Block", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"$SObjGetNew", "=", "False"}], "}"}], ",", "\n", "\t", 
+          "\t\t\t\t", 
+          RowBox[{"obj", "[", 
+           RowBox[{"[", 
+            RowBox[{"{", 
+             RowBox[{
+             "\"\<Walkers\>\"", ",", " ", "\"\<TimeStep\>\"", ",", " ", 
+              "\"\<CurrentTime\>\""}], "}"}], "]"}], "]"}]}], "\n", "\t", 
+         "\t\t\t\t", "]"}]}], ";", "\n", "\t\t\t", "obj"}], ",", "\n", 
+      "\t\t\t", "$Failed"}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+   ")"}]}]], \
+"CodeInput",ExpressionUUID->"afd86077-4ccb-4bd0-801a-f911039876b3"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WSimReset\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"e37d2176-b506-4e65-a482-d8a169bd8389"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"WSimReset", "[", "obj_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"Block", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"$SObjGetDecorate", "=", "False"}], "}"}], ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"obj", "[", "\"\<CurrentTime\>\"", "]"}], "=", 
+      RowBox[{"obj", "[", 
+       RowBox[{"\"\<InitialConditions\>\"", ",", " ", "\"\<CurrentTime\>\""}],
+        "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"obj", "[", "\"\<TimeStep\>\"", "]"}], "=", 
+      RowBox[{"obj", "[", 
+       RowBox[{"\"\<InitialConditions\>\"", ",", " ", "\"\<TimeStep\>\""}], 
+       "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"obj", "[", "\"\<Walkers\>\"", "]"}], "=", 
+      RowBox[{"obj", "[", 
+       RowBox[{"\"\<InitialConditions\>\"", ",", " ", "\"\<Walkers\>\""}], 
+       "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"AssociateTo", "[", "\n", "\t\t\t", 
+      RowBox[{"obj", ",", "\n", "\t\t\t", 
+       RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"\"\<Trajectory\>\"", "->", "\n", "\t\t\t\t\t", 
+          RowBox[{"{", 
+           RowBox[{"obj", "[", "\"\<Walkers\>\"", "]"}], "}"}]}], ",", "\n", 
+         "\t\t\t\t", 
+         RowBox[{"\"\<TrajectoryTimes\>\"", "->", "\n", "\t\t\t\t\t", 
+          RowBox[{"{", 
+           RowBox[{"obj", "[", "\"\<CurrentTime\>\"", "]"}], "}"}]}], ",", 
+         "\n", "\t\t\t\t", 
+         RowBox[{"\"\<Runtime\>\"", "->", "\n", "\t\t\t\t\t", "0."}], ",", 
+         "\n", "\t\t\t\t", 
+         RowBox[{"\"\<Steps\>\"", "->", "\n", "\t\t\t\t\t", "0"}]}], "\n", 
+        "\t\t\t\t", "}"}]}], "\n", "\t\t\t", "]"}], ";"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"0af2a17e-9f52-491b-a4ad-5a7e49eef7f2"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Propagation Methods\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"e97b9378-6a41-4ec5-b657-72f8fbec047f"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WSimValidatePropagator\[RightFloor]", "CodeSubsubsection",
+ 
+ Evaluatable->True,ExpressionUUID->"c101b903-b827-43d5-a205-6c56275e3615"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"WalkerSimulator", "::", "perfwarn"}], "=", "\n", "\t", 
+   "\"\<Warning: ``. Performance may be significantly impacted\>\""}], 
+  ";"}]], "CodeInput",ExpressionUUID->"4ee38367-b89a-4375-a984-b7975475358d"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Needs", "[", "\"\<CompiledFunctionTools`\>\"", "]"}], 
+  ";"}]], "CodeInput",ExpressionUUID->"bfce021b-5b09-4e23-a2c6-cbd48d82e3dc"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"WSimValidatePropagator", "[", "propFunc_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", "propStr", "\n", "\t\t\t", "}"}], ",", "\n", 
+    "\t\t", 
+    RowBox[{
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Head", "[", "propFunc", "]"}], "=!=", "CompiledFunction"}], 
+       ",", "\n", "\t\t\t", 
+       RowBox[{"Message", "[", 
+        RowBox[{
+         RowBox[{"WalkerSimulator", "::", "perfwarn"}], ",", " ", 
+         "\"\<Propagator function isn't compiled\>\""}], "]"}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{
+        RowBox[{"propStr", "=", 
+         RowBox[{"CompilePrint", "[", "propFunc", "]"}]}], ";", "\n", 
+        "\t\t\t", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"StringContainsQ", "[", 
+           RowBox[{"propStr", ",", " ", "\"\<MainEvaluate\>\""}], "]"}], ",", 
+          "\n", "\t\t\t\t", 
+          RowBox[{"Message", "[", 
+           RowBox[{
+            RowBox[{"WalkerSimulator", "::", "perfwarn"}], ",", " ", 
+            "\"\<Propagator function calls MainEvaluate\>\""}], "]"}]}], "\n",
+          "\t\t\t\t", "]"}], ";"}]}], "\n", "\t\t\t", "]"}], ";", "\n", 
+     "\t\t", "True"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"9733bc5a-9182-411b-900d-4e3a0c489b57"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WSimGetPropagator\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"c512c719-8acd-411e-ad0a-8b3bd08762e5"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"WalkerSimulator", "::", "badprop"}], "=", "\n", "\t", 
+   "\"\<Propagator is invalid.\>\""}], 
+  ";"}]], "CodeInput",ExpressionUUID->"b62fc560-28c8-4241-8c5e-a6a72aefcc51"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"WSimGetPropagator", "[", "obj_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"mprop", "=", 
+      RowBox[{
+       RowBox[{"obj", "[", "\"\<PropagatorGenerator\>\"", "]"}], "[", "obj", 
+       "]"}]}], "}"}], ",", "\n", "\t\t", 
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"WSimValidatePropagator", "@", "mprop"}], ",", " ", "\n", 
+      "\t\t\t", "mprop", ",", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"Message", "[", 
+        RowBox[{"WalkerSimulator", "::", "badprop"}], "]"}], ";", "\n", 
+       "\t\t\t", 
+       RowBox[{"Throw", "@", "$Failed"}]}]}], "\n", "\t\t\t", "]"}]}], "\n", 
+   "\t\t", "]"}]}]], \
+"CodeInput",ExpressionUUID->"991a17b0-886e-492a-b57c-d75e6e6b16c8"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WSimPropagateWalkers\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"44285cee-7cb1-4fbf-ab21-db9ba05b93ab"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"WSimPropagateWalkers", "[", 
+    RowBox[{
+    "obj_", ",", " ", "tInit_", ",", " ", "dt_", ",", " ", "nSteps_", ",", 
+     " ", "traj_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Module", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"prop", "=", "\n", "\t\t\t\t", 
+        RowBox[{"obj", "[", "\"\<Propagator\>\"", "]"}]}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"walkers", "=", "\n", "\t\t\t\t", 
+        RowBox[{"Developer`ToPackedArray", "@", 
+         RowBox[{"obj", "[", "\"\<Walkers\>\"", "]"}]}]}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"st", "=", 
+        RowBox[{"obj", "[", "\"\<SimulationTime\>\"", "]"}]}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"ct", "=", 
+        RowBox[{"obj", "[", "\"\<CurrentTime\>\"", "]"}]}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"tUnit", "=", 
+        RowBox[{"obj", "[", "\"\<TimeUnits\>\"", "]"}]}], ",", "\n", "\t\t\t",
+        "newTraj", ",", "\n", "\t\t\t", "runTime"}], "\n", "\t\t\t", "}"}], 
+     ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"runTime", ",", " ", "newTraj"}], "}"}], "=", "\n", "\t\t\t", 
+       
+       RowBox[{"AbsoluteTiming", "@", 
+        RowBox[{"prop", "[", "\n", "\t\t\t\t", 
+         RowBox[{
+         "walkers", ",", "\n", "\t\t\t\t", "tInit", ",", "\n", "\t\t\t\t", 
+          "dt", ",", "\n", "\t\t\t\t", "nSteps", ",", "\n", "\t\t\t\t", 
+          "traj"}], "\n", "\t\t\t\t", "]"}]}]}], ";", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"obj", "[", "\"\<Steps\>\"", "]"}], "+=", "nSteps"}], ";", 
+      "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"obj", "[", "\"\<Runtime\>\"", "]"}], "+=", "runTime"}], ";", 
+      "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"obj", "[", "\"\<StepTime\>\"", "]"}], "=", 
+       RowBox[{
+        RowBox[{"obj", "[", "\"\<Runtime\>\"", "]"}], "/", 
+        RowBox[{"obj", "[", "\"\<Steps\>\"", "]"}]}]}], ";", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"obj", "[", "\"\<Walkers\>\"", "]"}], "=", "\n", "\t\t\t", 
+       RowBox[{"Developer`ToPackedArray", "@", 
+        RowBox[{"newTraj", "[", 
+         RowBox[{"[", 
+          RowBox[{"-", "1"}], "]"}], "]"}]}]}], ";", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"obj", "[", "\"\<Trajectory\>\"", "]"}], "=", "\n", "\t\t\t", 
+       RowBox[{"Developer`ToPackedArray", "@", 
+        RowBox[{"Join", "[", 
+         RowBox[{
+          RowBox[{"obj", "[", "\"\<Trajectory\>\"", "]"}], ",", " ", 
+          "newTraj"}], "]"}]}]}], ";", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"obj", "[", "\"\<CurrentTime\>\"", "]"}], "=", "\n", "\t\t\t", 
+       
+       RowBox[{"Which", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"StringQ", "@", "tUnit"}], ",", " ", "\n", "\t\t\t\t\t", 
+         RowBox[{"UnitConvert", "[", "\n", "\t\t\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Quantity", "[", 
+             RowBox[{
+              RowBox[{"dt", "*", "nSteps"}], ",", " ", "tUnit"}], "]"}], "+", 
+            "\n", "\t\t\t\t\t\t\t\t", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"QuantityQ", "@", "tInit"}], ",", " ", "\n", 
+              "\t\t\t\t\t\t\t\t\t", "tInit", ",", " ", "\n", 
+              "\t\t\t\t\t\t\t\t\t", 
+              RowBox[{"Quantity", "[", 
+               RowBox[{"tInit", ",", " ", "tUnit"}], "]"}]}], "\n", 
+             "\t\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t\t\t", 
+           "tUnit"}], "\n", "\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"QuantityQ", "@", "ct"}], ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"Quantity", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"dt", "*", "nSteps"}], "+", "tInit"}], ",", " ", 
+           RowBox[{"QuantityUnit", "@", "ct"}]}], "]"}], ",", "\n", 
+         "\t\t\t\t", "True", ",", "\n", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"dt", "*", "nSteps"}], "+", "tInit"}]}], "\n", "\t\t\t\t", 
+        "]"}]}], ";", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"obj", "[", "\"\<TrajectoryTimes\>\"", "]"}], "=", "\n", 
+       "\t\t\t", 
+       RowBox[{"Join", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"obj", "[", "\"\<TrajectoryTimes\>\"", "]"}], ",", " ", "\n",
+          "\t\t\t\t", 
+         RowBox[{"Rest", "@", 
+          RowBox[{"Subdivide", "[", 
+           RowBox[{"ct", ",", " ", 
+            RowBox[{"obj", "[", "\"\<CurrentTime\>\"", "]"}], ",", " ", 
+            RowBox[{"Length", "@", "newTraj"}]}], "]"}]}]}], "\n", "\t\t\t\t",
+         "]"}]}], ";", "\n", "\t\t", 
+      RowBox[{"obj", "[", "\"\<CurrentTime\>\"", "]"}]}]}], "\n", "\t\t", 
+    "]"}]}], ";"}]], \
+"CodeInput",ExpressionUUID->"0a73ace3-a729-4b5c-ab31-a8b0aa2f4f41"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"WSimPropagateWalkers", "[", "obj_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"tUnit", "=", 
+       RowBox[{"obj", "[", "\"\<TimeUnits\>\"", "]"}]}], ",", "\n", "\t\t\t", 
+      
+      RowBox[{"tCur", "=", 
+       RowBox[{"obj", "[", "\"\<CurrentTime\>\"", "]"}]}], ",", "\n", 
+      "\t\t\t", "tInit", ",", "\n", "\t\t\t", 
+      RowBox[{"ts", "=", 
+       RowBox[{"obj", "[", "\"\<TimeStep\>\"", "]"}]}], ",", " ", "\n", "\t", 
+      "\t\t", 
+      RowBox[{"st", "=", 
+       RowBox[{"obj", "[", "\"\<SimulationTime\>\"", "]"}]}], ",", " ", "\n", 
+      "\t\t\t", 
+      RowBox[{"samp", "=", 
+       RowBox[{"obj", "[", "\"\<TrajectorySampling\>\"", "]"}]}], ",", "\n", 
+      "\t\t\t", "nstep"}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"ts", "=", "\n", "\t\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"StringQ", "@", "tUnit"}], "&&", 
+         RowBox[{"QuantityQ", "@", "ts"}]}], ",", "\n", "\t\t\t\t\t", 
+        RowBox[{"QuantityMagnitude", "@", "\n", "\t\t\t\t\t\t", 
+         RowBox[{"UnitConvert", "[", 
+          RowBox[{"ts", ",", " ", "tUnit"}], "]"}]}], ",", "\n", "\t\t\t\t\t", 
+        RowBox[{"QuantityMagnitude", "@", "ts"}]}], "\n", "\t\t\t\t\t", 
+       "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"st", "=", "\n", "\t\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"StringQ", "@", "tUnit"}], "&&", 
+         RowBox[{"QuantityQ", "@", "st"}]}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"QuantityMagnitude", "@", "\n", "\t\t\t\t\t", 
+         RowBox[{"UnitConvert", "[", 
+          RowBox[{"st", ",", " ", "tUnit"}], "]"}]}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"QuantityMagnitude", "@", "st"}]}], "\n", "\t\t\t\t", "]"}]}],
+      ";", "\n", "\t\t", 
+     RowBox[{"nstep", "=", "\n", "\t\t\t", 
+      RowBox[{"Ceiling", "@", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"ts", "\[Equal]", "0"}], ",", " ", "st", ",", " ", 
+         RowBox[{"st", "/", "ts"}]}], "]"}]}]}], ";", "\n", "\t\t", 
+     RowBox[{"samp", "=", "\n", "\t\t\t", 
+      RowBox[{"Replace", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"Floor", "@", "\n", "\t\t\t\t\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"StringQ", "@", "tUnit"}], "&&", 
+            RowBox[{"QuantityQ", "@", "samp"}]}], ",", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"st", "/", 
+            RowBox[{"QuantityMagnitude", "@", 
+             RowBox[{"UnitConvert", "[", 
+              RowBox[{"samp", ",", " ", "tUnit"}], "]"}]}]}], ",", "\n", 
+           "\t\t\t\t\t\t", "samp"}], "\n", "\t\t\t\t\t\t", "]"}]}], ",", "\n",
+         "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"Except", "[", "_Integer", "]"}], "\[Rule]", "1"}]}], "\n", 
+       "\t\t\t\t", "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"tInit", "=", "\n", "\t\t\t", 
+      RowBox[{"QuantityMagnitude", "@", "\n", "\t\t\t\t", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"StringQ", "@", "tUnit"}], "&&", 
+          RowBox[{"QuantityQ", "@", "tCur"}]}], ",", " ", "\n", "\t\t\t\t\t", 
+         
+         RowBox[{"UnitConvert", "[", 
+          RowBox[{"tCur", ",", " ", "tUnit"}], "]"}], ",", "\n", "\t\t\t\t\t",
+          "tCur"}], "\n", "\t\t\t\t\t", "]"}]}]}], ";", "\n", "\t\t", 
+     RowBox[{"WSimPropagateWalkers", "[", "\n", "\t\t\t", 
+      RowBox[{
+      "obj", ",", " ", "\n", "\t\t\t", "tInit", ",", "\n", "\t\t\t", "ts", 
+       ",", "\n", "\t\t\t", "nstep", ",", "\n", "\t\t\t", "samp"}], "\n", 
+      "\t\t\t", "]"}]}]}], "\n", "\t", "\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"9f26dec6-c8c1-4a37-be5b-eb5bf5ebdd9d"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WSimEquilibrateSystem\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"14e890ff-8196-4af4-865e-d4fa066790b2"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"WSimEquilibrateSystem", "[", 
+   RowBox[{"obj_", ",", " ", 
+    RowBox[{"howLong_:", "1000"}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"t1", "=", 
+       RowBox[{"obj", "[", "\"\<TrajectorySampling\>\"", "]"}]}], ",", " ", 
+      RowBox[{"t2", "=", 
+       RowBox[{"obj", "[", "\"\<SimulationTime\>\"", "]"}]}], ",", " ", 
+      RowBox[{"t3", "=", 
+       RowBox[{"obj", "[", "\"\<TimeStep\>\"", "]"}]}]}], "}"}], ",", "\n", 
+    "\t\t", 
+    RowBox[{"Internal`WithLocalSettings", "[", "\n", "\t", "\t\t", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"obj", "[", "\"\<TrajectorySampling\>\"", "]"}], "=", "1"}], 
+       ";", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"obj", "[", "\"\<SimulationTime\>\"", "]"}], "=", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"QuantityQ", "@", "t3"}], "&&", 
+           RowBox[{"QuantityQ", "@", "howLong"}]}], ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"Floor", "[", 
+           RowBox[{"QuantityMagnitude", "[", 
+            RowBox[{"howLong", "/", 
+             RowBox[{"UnitConvert", "[", 
+              RowBox[{"t3", ",", " ", 
+               RowBox[{"QuantityUnit", "@", "howLong"}]}], "]"}]}], "]"}], 
+           "]"}], ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"Floor", "@", 
+           RowBox[{"QuantityMagnitude", "@", "howLong"}]}]}], "\n", 
+         "\t\t\t\t\t", "]"}]}], ";", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"obj", "[", "\"\<TimeStep\>\"", "]"}], "=", "0"}]}], ",", 
+      "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"obj", "[", "\"\<Propagate\>\"", "]"}], "[", "]"}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"obj", "[", "\"\<TrajectorySampling\>\"", "]"}], "=", "t1"}], 
+       ";", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"obj", "[", "\"\<SimulationTime\>\"", "]"}], "=", "t2"}], ";",
+        "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"obj", "[", "\"\<TimeStep\>\"", "]"}], "=", "t3"}]}]}], "\n", 
+     "\t\t\t", "]"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"3d450b2e-c5f9-4fd7-87c6-cf9a0c94182f"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WSimStepSystem\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"19196960-085b-4cc4-8519-a21614ab7df3"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"WSimStepSystem", "[", 
+   RowBox[{"obj_", ",", " ", 
+    RowBox[{"howMany_:", "1"}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"t1", "=", 
+       RowBox[{"obj", "[", "\"\<TrajectorySampling\>\"", "]"}]}], ",", " ", 
+      RowBox[{"st", "=", 
+       RowBox[{"obj", "[", "\"\<SimulationTime\>\"", "]"}]}], ",", " ", 
+      RowBox[{"ts", "=", 
+       RowBox[{"obj", "[", "\"\<TimeStep\>\"", "]"}]}]}], "}"}], ",", "\n", 
+    "\t\t", 
+    RowBox[{"Internal`WithLocalSettings", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"obj", "[", "\"\<TrajectorySampling\>\"", "]"}], "=", "1"}], 
+       ";", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"obj", "[", "\"\<SimulationTime\>\"", "]"}], "=", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"howMany", "*", "\n", "\t\t\t\t\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"QuantityQ", "@", "st"}], "&&", 
+            RowBox[{"QuantityQ", "@", "ts"}]}], ",", "\n", "\t", "\t\t\t\t\t", 
+           RowBox[{"UnitConvert", "[", 
+            RowBox[{"ts", ",", " ", 
+             RowBox[{"QuantityUnit", "@", "st"}]}], "]"}], ",", "\n", "\t", 
+           "\t\t\t\t\t", "ts"}], "\n", "\t", "\t\t\t\t\t", "]"}]}]}], ";"}], 
+      ",", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"obj", "[", "\"\<Propagate\>\"", "]"}], "[", "]"}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"obj", "[", "\"\<TrajectorySampling\>\"", "]"}], "=", "t1"}], 
+       ";", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"obj", "[", "\"\<SimulationTime\>\"", "]"}], "=", "st"}], 
+       ";"}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"363e28cd-874a-468d-8102-58dffb8ea72f"]
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Plotting Methods\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"8e19a1ed-b926-457a-be17-3737d24e22e9"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WSimPlotTrajectory\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"273160fb-8dd8-4d78-a472-2a23c3a10625"],
+
+Cell[BoxData[
+ RowBox[{"WSimPlotTrajectory", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"80f73795-c546-4a30-9591-8f8ae72ab062"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"WSimPlotTrajectory", "[", "\n", "\t", 
+   RowBox[{"obj_", ",", " ", "\n", "\t", 
+    RowBox[{"plotFun", ":", 
+     RowBox[{"_String", "|", "Automatic"}], ":", "Automatic"}], ",", "\n", 
+    "\t", 
+    RowBox[{"trajSel", ":", 
+     RowBox[{
+      RowBox[{"{", "__Integer", "}"}], "|", "_Span", "|", "All"}], ":", 
+     "All"}], ",", " ", "\n", "\t", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"ts", "=", 
+       RowBox[{"obj", "[", "\"\<TimeStep\>\"", "]"}]}], ",", "\n", "\t\t\t", 
+      RowBox[{"st", "=", 
+       RowBox[{"obj", "[", "\"\<SimulationTime\>\"", "]"}]}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"tsamp", "=", 
+       RowBox[{"Replace", "[", 
+        RowBox[{
+         RowBox[{"obj", "[", "\"\<TrajectorySampling\>\"", "]"}], ",", " ", 
+         RowBox[{
+          RowBox[{"Except", "[", "_Integer", "]"}], "\[Rule]", "1"}]}], 
+        "]"}]}], ",", " ", "\n", "\t\t\t", "steps", ",", "\n", "\t\t\t", 
+      RowBox[{"walkers", "=", 
+       RowBox[{"obj", "[", "\"\<Trajectory\>\"", "]"}]}], ",", "\n", "\t\t\t", 
+      RowBox[{"pl", "=", "\n", "\t\t\t\t", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"plotFun", "===", "Automatic"}], ",", " ", "\n", "\t", 
+         "\t\t\t\t", 
+         RowBox[{"obj", "[", "\"\<PlotFunction\>\"", "]"}], ",", "\n", 
+         "\t\t\t\t\t", 
+         RowBox[{"Lookup", "[", 
+          RowBox[{
+           RowBox[{"Replace", "[", 
+            RowBox[{
+             RowBox[{"obj", "[", "\"\<ExtraPlotFunctions\>\"", "]"}], ",", 
+             " ", 
+             RowBox[{
+              RowBox[{"Except", "[", 
+               RowBox[{"_", "?", "OptionQ"}], "]"}], "\[RuleDelayed]", 
+              RowBox[{"<|", "|>"}]}]}], "]"}], ",", "\n", "\t\t\t\t\t\t", 
+           "plotFun", ",", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"obj", "[", "\"\<PlotFunction\>\"", "]"}]}], "\n", 
+          "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "]"}]}], ",", "\n", 
+      "\t\t\t", "timeSteps", ",", "\n", "\t\t\t", 
+      RowBox[{"times", "=", 
+       RowBox[{"obj", "[", "\"\<TrajectoryTimes\>\"", "]"}]}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"wbf", "=", 
+       RowBox[{"Replace", "[", 
+        RowBox[{
+         RowBox[{"obj", "[", "\"\<WalkerBoxFunction\>\"", "]"}], ",", " ", 
+         RowBox[{"_Missing", "\[RuleDelayed]", "CoordinateBounds"}]}], 
+        "]"}]}], ",", "\n", "\t\t\t", "fullWalkers", ",", "\n", "\t\t\t", 
+      "cbs", ",", "\n", "\t\t\t", "potPlot"}], "\n", "\t\t\t", "}"}], ",", 
+    "\n", "\t\t", 
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Length", "@", "walkers"}], ">", "0"}], ",", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"walkers", "=", 
+        RowBox[{"walkers", "[", 
+         RowBox[{"[", "trajSel", "]"}], "]"}]}], ";", "\n", "\t\t\t", 
+       RowBox[{"timeSteps", "=", 
+        RowBox[{"QuantityMagnitude", "@", 
+         RowBox[{"times", "[", 
+          RowBox[{"[", "trajSel", "]"}], "]"}]}]}], ";", "\n", "\t\t\t", 
+       RowBox[{"fullWalkers", "=", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"walkers", ",", " ", "1"}], "]"}]}], ";", "\n", "\t\t\t", 
+       RowBox[{"cbs", "=", 
+        RowBox[{"wbf", "[", "fullWalkers", "]"}]}], ";", "\n", "\t\t\t", 
+       RowBox[{"Replace", "[", 
+        RowBox[{
+         RowBox[{"Lookup", "[", 
+          RowBox[{
+           RowBox[{"Flatten", "@", 
+            RowBox[{"{", "ops", "}"}]}], ",", " ", "PlotRange"}], "]"}], ",", 
+         "\n", "\t\t\t\t", 
+         RowBox[{"l_List", ":>", "\n", "\t\t\t\t\t", 
+          RowBox[{"Set", "[", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"cbs", ",", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"MapThread", "[", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"ListQ", "@", "#2"}], "&&", 
+                  RowBox[{
+                   RowBox[{"Length", "@", "#2"}], "\[Equal]", "2"}], "&&", 
+                  RowBox[{"AllTrue", "[", 
+                   RowBox[{"#2", ",", " ", "NumericQ"}], "]"}]}], ",", " ", 
+                 "#2", ",", " ", "#"}], "]"}], "&"}], ",", "\n", 
+              "\t\t\t\t\t\t\t", 
+              RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"PadRight", "[", 
+                 RowBox[{"cbs", ",", " ", 
+                  RowBox[{"Length", "@", "l"}], ",", " ", 
+                  RowBox[{"{", 
+                   RowBox[{"0", ",", " ", "0"}], "}"}]}], "]"}], ",", "\n", 
+                "\t\t\t\t\t\t\t\t", "l"}], "\n", "\t\t\t\t\t\t\t\t", "}"}]}], 
+             "\n", "\t\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}]}],
+         "\n", "\t\t\t\t", "]"}], ";", "\n", "\t\t\t", 
+       RowBox[{"MapThread", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"pl", "[", 
+           RowBox[{
+           "#", ",", " ", "cbs", ",", " ", "#2", ",", " ", "obj", ",", " ", 
+            "ops"}], "]"}], "&"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"{", "\n", "\t\t\t\t\t", 
+          RowBox[{"walkers", ",", "\n", "\t\t\t\t\t", "timeSteps"}], "\n", 
+          "\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t", "]"}]}], ",", "\n", 
+      "\t\t\t", "$Failed"}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"440a7069-ecd5-49b3-8566-14d7bd97c8e0"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WSimAnimateTrajectories\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"86ebef6b-b4cf-492e-80bd-8fd2972f107c"],
+
+Cell[BoxData[
+ RowBox[{"WSimAnimateTrajectories", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"9612e0d5-6b0a-4c64-b484-b360e13f0cae"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"WSimAnimateTrajectories", "[", "\n", "\t", 
+   RowBox[{"obj_", ",", " ", "\n", "\t", 
+    RowBox[{"plotFun", ":", 
+     RowBox[{"_String", "|", "Automatic"}], ":", "Automatic"}], ",", "\n", 
+    "\t", 
+    RowBox[{"trajSel", ":", 
+     RowBox[{
+      RowBox[{"{", "__Integer", "}"}], "|", "_Span", "|", "All"}], ":", 
+     "All"}], ",", " ", "\n", "\t", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"DynamicModule", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{"tl", "=", "\n", "\t\t\t\t", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"TrueQ", "@", 
+          RowBox[{"Lookup", "[", 
+           RowBox[{
+            RowBox[{"{", "ops", "}"}], ",", " ", "Rasterize", ",", " ", 
+            "False"}], "]"}]}], ",", "\n", "\t", "\t", "\t\t\t\t", 
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{"Rasterize", "[", 
+            RowBox[{"#", ",", " ", 
+             RowBox[{"Sequence", "@@", 
+              RowBox[{"FilterRules", "[", 
+               RowBox[{
+                RowBox[{"{", "ops", "}"}], ",", " ", 
+                RowBox[{"Options", "@", "Rasterize"}]}], "]"}]}]}], "]"}], 
+           "&"}], "]"}], ",", "\n", "\t\t\t\t\t\t", "Identity"}], "\n", 
+        "\t\t\t\t\t\t", "]"}], "@", 
+       RowBox[{"WSimPlotTrajectory", "[", 
+        RowBox[{
+        "obj", ",", " ", "plotFun", ",", " ", "trajSel", ",", " ", "ops"}], 
+        "]"}]}]}], "\n", "\t", "\t\t", "}"}], ",", "\n", "\t\t", 
+    RowBox[{"Interpretation", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"Animate", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"tl", "[", 
+         RowBox[{"[", "i", "]"}], "]"}], ",", " ", "\n", "\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"i", ",", " ", "1", ",", " ", "\"\<Snapshot\>\""}], "}"}], 
+          ",", " ", "1", ",", " ", 
+          RowBox[{"Length", "@", "tl"}], ",", " ", "1"}], "}"}], ",", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"Evaluate", "@", 
+         RowBox[{"FilterRules", "[", 
+          RowBox[{
+           RowBox[{"{", "ops", "}"}], ",", " ", 
+           RowBox[{"Options", "@", "Animate"}]}], "]"}]}]}], "\n", "\t\t\t\t",
+        "]"}], ",", "\n", "\t\t\t", "tl"}], "\n", "\t\t\t", "]"}]}], "\n", 
+   "\t\t", "]"}]}]], \
+"CodeInput",ExpressionUUID->"7e22ece3-42c2-42ea-844d-a7fded8866b6"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WSimPlotSnapshot\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"f044e36b-4fe3-436a-b1c3-0e6d975b48af"],
+
+Cell[BoxData[
+ RowBox[{"WSimPlotSnapshot", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"4f707bd9-bcf0-4db9-9c8a-1e2b86fccaa7"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"WSimPlotSnapshot", "[", 
+   RowBox[{"obj_", ",", " ", "\n", "\t", 
+    RowBox[{"plotFun", ":", 
+     RowBox[{"_String", "|", "Automatic"}], ":", "Automatic"}], ",", " ", 
+    "\n", "\t", 
+    RowBox[{"which", ":", "_Integer", ":", 
+     RowBox[{"-", "1"}]}], ",", " ", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{
+   RowBox[{"WSimPlotTrajectory", "[", 
+    RowBox[{"obj", ",", " ", "plotFun", ",", " ", 
+     RowBox[{"{", "which", "}"}], ",", " ", "ops"}], "]"}], "[", 
+   RowBox[{"[", "1", "]"}], 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"519613cc-4b9f-4167-9386-ec61c7128616"]
+}, Closed]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"e0226586-7bce-4136-9351-\
+03492f69c9f2"]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"39f66b78-619c-456c-845a-\
+ad997e9e1089"]
+},
+WindowSize->{808, 764},
+WindowMargins->{{Automatic, 0}, {0, Automatic}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

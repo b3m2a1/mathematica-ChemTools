@@ -1,3 +1,5 @@
+(* ::Package:: *)
+
 (* This is a conveniece file so Needs["App`Pkg`"] can be used *)
 BeginPackage[
    StringRiffle[
@@ -8,7 +10,7 @@ BeginPackage[
           ][[1]],
         FileNameSplit[
           FileNameTake[
-            StringTrim[$InputFileName, ".m"],
+            StringTrim[$InputFileName, ".wl"],
             -2
             ]
           ],

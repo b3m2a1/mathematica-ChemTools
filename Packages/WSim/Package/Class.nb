@@ -1,0 +1,223 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["WSim Class Manager", \
+"CodeSection",ExpressionUUID->"600a5c00-6b03-4914-95f6-f9109819a6a1"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"$WSimClassPath", "::", "usage"}], "=", 
+   "\"\<The path on which to look for WSim class files\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"WSimGetClassNames", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"WSimGetClassProperties", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"WSimApplyClassProperties", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"WSimLoadClass", "::", "usage"}], "=", 
+   "\"\<Loads the WSim Class\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"a45848a2-a44b-469d-81ab-0e0d3328badc"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"a0e126ec-6eb7-44b3-a94f-\
+0220319c789e"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Class System\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"6e456e37-19dc-4f68-abb6-048890ea0cbe"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]$WSimClassPath\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"48d091ca-d622-462a-9633-ed7c53113021"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$WSimClassPath", "=", "\n", "\t", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"PackageFilePath", "[", 
+      RowBox[{
+      "\"\<Resources\>\"", ",", " ", "\"\<Extensions\>\"", ",", " ", 
+       "\"\<WSim\>\"", ",", " ", "\"\<Classes\>\""}], "]"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"FileNameJoin", "@", 
+      RowBox[{"{", "\n", "\t\t\t", 
+       RowBox[{
+       "$UserBaseDirectory", ",", " ", "\"\<ApplicationData\>\"", ",", " ", 
+        "\n", "\t\t\t", "\"\<ChemTools\>\"", ",", " ", "\"\<Extensions\>\"", 
+        ",", " ", "\"\<WSim\>\"", ",", " ", "\"\<Classes\>\""}], "\n", 
+       "\t\t\t", "}"}]}]}], "\n", "\t\t", "}"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"6342a12f-f376-450c-8c5c-113916830e12"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WSimGetClassNames\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"02344275-5775-440c-bd23-855241edbba7"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"WSimGetClassNames", "[", "]"}], ":=", "\n", "\t", 
+  RowBox[{"FileBaseName", "/@", 
+   RowBox[{"FileNames", "[", 
+    RowBox[{
+     RowBox[{"___", "~~", 
+      RowBox[{"(", 
+       RowBox[{"\"\<.m\>\"", "|", "\"\<.wl\>\""}], ")"}]}], ",", " ", 
+     "$WSimClassPath"}], 
+    "]"}]}]}]], \
+"CodeInput",ExpressionUUID->"57da7bec-5208-4c04-928d-deeb96f184d0"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WSimGetClassProperties\[RightFloor]", "CodeSubsubsection",
+ 
+ Evaluatable->True,ExpressionUUID->"33777263-a3a5-4e21-abbe-4ff237e146bc"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"WalkerSimulator", "::", "noclass"}], "=", 
+   "\"\<No WSim class found at ``. Must return settings association.\>\""}], 
+  ";"}]], "CodeInput",ExpressionUUID->"c0cb2330-e2b7-48f2-8022-59142c4f6740"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"WSimGetClassProperties", "[", 
+   RowBox[{"obj_", ",", " ", "f_"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"With", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{"testCont", "=", "\n", "\t\t\t\t", 
+      RowBox[{
+       RowBox[{"Context", "[", "WalkerSimulator", "]"}], "<>", "\n", 
+       "\t\t\t\t\t", 
+       RowBox[{"StringDelete", "[", 
+        RowBox[{
+         RowBox[{"FileBaseName", "[", "f", "]"}], ",", " ", 
+         RowBox[{"Except", "[", "WordCharacter", "]"}]}], "]"}], "<>", 
+       "\"\<`\>\""}]}], "\n", "\t", "\t\t", "}"}], ",", "\t", "\n", "\t\t", 
+    RowBox[{"Block", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"$ContextPath", "=", 
+        RowBox[{"{", "\"\<System`\>\"", "}"}]}], "}"}], ",", "\n", "\t", 
+      "\t\t", 
+      RowBox[{"Internal`WithLocalSettings", "[", "\n", "\t", "\t\t\t", 
+       RowBox[{
+        RowBox[{"BeginPackage", "[", "\n", "\t", "\t", "\t\t\t", 
+         RowBox[{"testCont", ",", "\n", "\t", "\t", "\t\t\t", 
+          RowBox[{"Select", "[", 
+           RowBox[{"$PackageContexts", ",", " ", 
+            RowBox[{"StringContainsQ", "[", "\"\<WSim\>\"", "]"}]}], "]"}]}], 
+         "\n", "\t", "\t", "\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t\t", 
+        RowBox[{"With", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"res", "=", 
+            RowBox[{"Get", "[", "f", "]"}]}], "}"}], ",", "\n", "\t", "\t", 
+          "\t\t\t", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"AssociationQ", "@", "res"}], ",", "\n", "\t", 
+            "\t\t\t\t\t", 
+            RowBox[{"WSimApplyClassSettings", "[", 
+             RowBox[{"obj", ",", " ", "res"}], "]"}], ",", "\n", "\t", 
+            "\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"Message", "[", 
+              RowBox[{
+               RowBox[{"WalkerSimulator", "::", "noclass"}], ",", " ", "f"}], 
+              "]"}], ";", "\n", "\t", "\t", "\t\t\t\t", 
+             RowBox[{"Throw", "[", "$Failed", "]"}]}]}], "\n", "\t", "\t", 
+           "\t\t\t\t", "]"}]}], "\n", "\t", "\t", "\t\t\t", "]"}], ",", "\n", 
+        "\t", "\t", "\t\t", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"$Context", "===", "testCont"}], ",", " ", 
+          RowBox[{"EndPackage", "[", "]"}]}], "]"}]}], "\n", "\t", "\t\t\t", 
+       "]"}]}], "\n", "\t", "\t\t", "]"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"c5747670-6f4f-4bee-9fb5-4863172831f9"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WSimApplyClassSettings\[RightFloor]", "CodeSubsubsection",
+ 
+ Evaluatable->True,ExpressionUUID->"3c9dc5cd-259c-414f-a45b-9205ed908ff4"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"WSimApplyClassSettings", "[", 
+   RowBox[{"obj_", ",", " ", "res_"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"AssociateTo", "[", "\n", "\t\t", 
+   RowBox[{"obj", ",", "\n", "\t\t", 
+    RowBox[{"KeyDrop", "[", 
+     RowBox[{"res", ",", " ", 
+      RowBox[{"Keys", "@", "obj"}]}], "]"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"a485ea72-a567-484c-9a6a-4fd1c5ecfdd7"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WSimLoadClass\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"0aab5f06-9a1d-4878-b322-895f5371415a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"WSimLoadClass", "[", 
+   RowBox[{"obj_", ",", " ", "class_"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"Replace", "[", 
+   RowBox[{
+    RowBox[{"FileNames", "[", 
+     RowBox[{
+      RowBox[{"class", "~~", 
+       RowBox[{"(", 
+        RowBox[{"\"\<.m\>\"", "|", "\"\<.wl\>\""}], ")"}]}], ",", " ", 
+      "$WSimClassPath"}], "]"}], ",", "\n", "\t\t", 
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"f_", ",", " ", "___"}], "}"}], "\[RuleDelayed]", "\n", 
+      "\t\t\t\t", 
+      RowBox[{"WSimGetClassProperties", "[", 
+       RowBox[{"obj", ",", " ", "f"}], "]"}]}], "\n", "\t\t\t", "}"}]}], "\n",
+    "\t\t", "]"}]}]], \
+"CodeInput",ExpressionUUID->"7049b1be-3e91-4b97-a799-1dc7c38200f4"]
+}, Closed]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"e0226586-7bce-4136-9351-\
+03492f69c9f2"]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"39f66b78-619c-456c-845a-\
+ad997e9e1089"]
+},
+WindowSize->{808, 764},
+WindowMargins->{{190, Automatic}, {Automatic, 0}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+
