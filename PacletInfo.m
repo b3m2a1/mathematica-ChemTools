@@ -1,6 +1,6 @@
 Paclet[
   Name -> "ChemTools",
-  Version -> "1.2.4",
+  Version -> "1.2.5",
   Creator -> "b3m2a1@gmail.com",
   Description -> "A collection of tools for doing chemistry",
   Thumbnail -> "PacletIcon.png",
@@ -18,6 +18,7 @@ Paclet[
      		"Resources" -> {
        			"Datasets",
        			"Extensions",
+       			"Icons",
        			"PaletteGenerators",
        			"Templates"
        		},

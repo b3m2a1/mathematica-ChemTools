@@ -7,23 +7,23 @@
 
 
 Unprotect[ChemTools`PackageScope`Private`$TopLevelLoad];
-ChemTools`PackageScope`Private`$TopLevelLoad=
-	MemberQ[$ContextPath, "Global`"];
+ChemTools`PackageScope`Private`$TopLevelLoad=MemberQ[$ContextPath, "Global`"];
 
 
 BeginPackage["ChemTools`"];
 
 
-ChemTools::usage=
-	"ChemTools is a manager head for the ChemTools package";
+ClearAll[ChemTools];
+ChemTools::usage="ChemTools is a manager head for the ChemTools package";
 
 
 (* ::Subsubsection::Closed:: *)
 (*$ContextPath*)
 
 
-$ContextPath=
-	Join[$ContextPath,
+System`Private`NewContextPath@
+	Join[
+		$ContextPath,
 		"ChemTools`"<>
 			StringReplace[
 				FileNameDrop[#,FileNameDepth@DirectoryName@$InputFileName],
@@ -55,13 +55,32 @@ $ContextPath=
 
 Unprotect["`PackageScope`Private`*"];
 Begin["`PackageScope`Private`"];
-
-
-Clear[ChemTools];
+AppendTo[$ContextPath, $Context];
 
 
 (* ::Subsection:: *)
 (*Constants*)
+
+
+$PackageDirectory::usage="";
+$PackageName::usage="";
+$PackageListing::usage="";
+$PackageContexts::usage="";
+$PackageDeclared::usage="";
+$PackageFEHiddenSymbols::usage="";
+$PackageScopedSymbols::usage="";
+$PackageLoadSpecs::usage="";
+$AllowPackageSymbolDefinitions::usage="";
+$AllowPackageRescoping::usage="";
+$AllowPackageRecoloring::usage="";
+$AllowPackageAutocompletions::usage="";
+
+
+(* ::Subsubsection::Closed:: *)
+(*Begin*)
+
+
+Begin["`Constants`"];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -87,7 +106,8 @@ $PackageName=
 ChemTools["PackageListing"]:=$PackageListing;
 $PackageListing=<||>;
 ChemTools["Contexts"]:=$PackageContexts;
-$PackageContexts={
+$PackageContexts=
+	{
 		"ChemTools`",
 		"ChemTools`PackageScope`Private`",
 		"ChemTools`PackageScope`Package`"
@@ -185,8 +205,26 @@ $AllowPackageAutocompletions=
 		Lookup[$PackageLoadSpecs, "AllowAutocompletions"],
 		Except[True|False]->$TopLevelLoad
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*End*)
+
+
+End[]
 (* ::Subsection:: *)
 (*Paths*)
+
+
+PackageFilePath::usage="";
+PackageFEFile::usage="";
+
+
+(* ::Subsubsection::Closed:: *)
+(*Begin*)
+
+
+Begin["`Paths`"]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -224,8 +262,39 @@ PackagePathSymbol[parts___String,sym_String]:=
 PackagePathSymbol[parts___String,sym_Symbol]:=
 	PackagePathSymbol[parts,Evaluate@SymbolName@Unevaluated[sym]];
 PackagePathSymbol~SetAttributes~HoldRest;
+
+
+(* ::Subsubsection::Closed:: *)
+(*End*)
+
+
+End[]
 (* ::Subsection:: *)
 (*Loading*)
+
+
+$PackageFileContexts::usage="";
+$DeclaredPackages::usage="";
+$LoadedPackages::usage="";
+
+
+PackageExecute::usage="";
+PackageLoadPackage::usage="";
+PackageLoadDeclare::usage="";
+PackageAppLoad::usage="";
+PackageAppGet::usage="";
+PackageAppNeeds::usage="";
+PackageScopeBlock::usage="";
+PackageFERehideSymbols::usage="Predeclared here...";
+PackageDecontext::usage="";
+PackageRecontext::usage="";
+
+
+(* ::Subsubsection::Closed:: *)
+(*Begin*)
+
+
+Begin["`Loading`"]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -275,26 +344,19 @@ PackageFileContext[f_String?FileExistsQ]:=
 
 
 PackageExecute[expr_]:=
-	CompoundExpression[
-		Block[{$ContextPath={"System`"}},
-			BeginPackage["ChemTools`"];
-			$ContextPath=
-				DeleteDuplicates[
-					Join[$ContextPath,$PackageContexts]
-					];
-			CheckAbort[
-				With[{res=expr},
-					EndPackage[];
-					res
-					],
-				EndPackage[]
-				]
-			]
+	Internal`WithLocalSettings[
+		System`Private`NewContextPath@
+			Prepend[
+				$PackageContexts,
+				"System`"
+				],
+		expr,
+		System`Private`RestoreContextPath[]
 		];
 PackageExecute~SetAttributes~HoldFirst
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*PackagePullDeclarations*)
 
 
@@ -364,32 +426,36 @@ PackageLoadPackage[heldSym_,context_,pkgFile_->syms_]:=
 	Block[{
 		$loadingChain=
 			If[ListQ@$loadingChain,$loadingChain,{}],
-		$inLoad=TrueQ[$inLoad],
-		$ContextPath=$ContextPath
+		$inLoad=TrueQ[$inLoad]
 		},
-		If[!MemberQ[$loadingChain,pkgFile],
-			With[{$$inLoad=$inLoad},
-				$inLoad=True;
-				If[$AllowPackageRecoloring,
-					Internal`SymbolList[False]
-					];
-				Replace[Thread[syms,HoldPattern],
-					Verbatim[HoldPattern][{s__}]:>Clear[s]
-					];
-				If[Not@MemberQ[$ContextPath,context],
-					$ContextPath=Prepend[$ContextPath,context];
-					];
-				Block[{PackageFEHiddenBlock=Null},
-					PackageAppGet[context,pkgFile];
-					];
-				Unprotect[$LoadedPackages];
-				AppendTo[$LoadedPackages,pkgFile];
-				Protect[$LoadedPackages];
-				If[!$$inLoad&&$AllowPackageRecoloring,
-					Internal`SymbolList[True]
-					];
-				ReleaseHold[heldSym]
-				]
+		Internal`WithLocalSettings[
+			System`Private`NewContextPath@$ContextPath,
+			If[!MemberQ[$loadingChain,pkgFile],
+				AppendTo[$loadingChain, pkgFile];
+				With[{$$inLoad=$inLoad},
+					$inLoad=True;
+					If[$AllowPackageRecoloring,
+						Internal`SymbolList[False]
+						];
+					Replace[Thread[syms,HoldPattern],
+						Verbatim[HoldPattern][{s__}]:>Clear[s]
+						];
+					If[Not@MemberQ[$ContextPath,context],
+						$ContextPath=Prepend[$ContextPath,context];
+						];
+					Block[{PackageFEHiddenBlock=Null},
+						PackageAppGet[context,pkgFile];
+						];
+					Unprotect[$LoadedPackages];
+					AppendTo[$LoadedPackages, pkgFile];
+					Protect[$LoadedPackages];
+					If[!$$inLoad&&$AllowPackageRecoloring,
+						Internal`SymbolList[True]
+						];
+					ReleaseHold[heldSym]
+					]
+				],
+			System`Private`RestoreContextPath[]
 			]
 		];
 
@@ -656,12 +722,36 @@ PackageRecontext[
 			1
 			]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*End*)
+
+
+End[]
 (* ::Subsection:: *)
 (*Dependencies*)
 
 
 ChemTools::nodep="Couldn't load dependency `` of type ``";
 ChemTools::nodup="Couldn't update dependency `` of type ``";
+
+
+PackageExtendContextPath::usage="";
+PackageInstallPackageDependency::usage="";
+PackageLoadPackageDependency::usage="";
+PackageCheckPacletDependency::usage="";
+PackageInstallPacletDependency::usage="";
+PackageLoadPacletDependency::usage="";
+PackageUpdatePacletDependency::usage="";
+PackageLoadResourceDependency::usage="";
+
+
+(* ::Subsubsection::Closed:: *)
+(*Begin*)
+
+
+Begin["`Dependencies`"];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -873,7 +963,9 @@ PackageLoadPacletDependency[dep_String?(StringEndsQ["`"]), ops:OptionsPattern[]]
 			];
 		Needs[dep];
 		PackageExtendContextPath@
-			Select[$Packages, StringStartsQ[dep]];,
+			Select[$Packages, 
+				StringStartsQ[#, dep]&&StringFreeQ[#, "`Private`"]&
+				];,
 		System`Private`RestoreContextPath[];
 		]
 
@@ -943,51 +1035,97 @@ PackageUpdatePacletDependency[
 	First@PackageUpdatePacletDependency[{dep}, ops]
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*PackageLoadResourceDependency*)
 
 
 (* ::Text:: *)
 (*Nothing I've implemented yet, but could be very useful for installing resources for a paclet*)
+
+
+(* ::Subsubsection:: *)
+(*End*)
+
+
+End[]
 (* ::Subsection:: *)
 (*Exceptions*)
 
 
+PackageExceptionBlock::usage="";
+
+
+PackageThrowException::usage="";
+PackageCatchException::usage="";
+PackageCatchExceptionCallback::usage="";
+
+
+PackageThrowMessage::usage="";
+PackageCatchMessage::usage="";
+
+
+PackageFailureException::usage="";
+PackageRaiseException::usage="";
+
+
 (* ::Subsubsection::Closed:: *)
-(*PackageThrow*)
+(*Begin*)
 
 
-PackageThrow[value_, tag:_String:"Failure"]:=
+Begin["`Exceptions`Private`"]
+
+
+(* ::Subsubsection::Closed:: *)
+(*PackageThrowException*)
+
+
+PackageThrowException[value:Except[_Failure], tag:_String:"Failure"]:=
 	Throw[value, $PackageName<>tag];
+PackageThrowException[f_Failure]:=
+	Throw[f, f[[1]]];
 
 
 (* ::Subsubsection::Closed:: *)
-(*PackageCatch*)
+(*PackageCatchException*)
 
 
 $PackageCatchCallback=(#&);
 
 
-PackageCatch[expr_, tag:_String:"Failure", callback_:Automatic]:=
-	Catch[expr, $PackageName<>tag, 
-		Replace[callback, Automatic:>$PackageCatchCallback]
+PackageCatchExceptionHandler[tag_]:=
+	$PackageCatchCallback;
+
+
+PackageCatchException[
+	expr:Except[_String], 
+	tag:_String:"Failure", 
+	callback_:Automatic
+	]:=
+	Catch[expr, 
+		$PackageName<>tag, 
+		Replace[callback, Automatic:>PackageCatchExceptionHandler[tag]]
 		];
-PackageCatch~SetAttributes~HoldFirst
+PackageCatchException[tag_String, callback_:Automatic]:=
+	Function[Null,
+		PackageCatchException[#, tag, callback],
+		HoldFirst
+		];
+PackageCatchException~SetAttributes~HoldFirst
 
 
-(* ::Subsubsection:: *)
-(*PackageMessage*)
+(* ::Subsubsection::Closed:: *)
+(*PackageThrowMessage*)
 
 
 $PackageErrorMessage=
 	"ChemTools encountered exception ``";
 
 
-Options[PackageMessage]=
+Options[PackageThrowMessage]=
 	{
 		"MessageParameters":>{}
 		};
-PackageMessage[
+PackageThrowMessage[
 	msg_MessageName, 
 	body_String,
 	ops:OptionsPattern[]
@@ -996,46 +1134,46 @@ PackageMessage[
 		Set[msg, body];
 		Message[msg, Sequence@@OptionValue["MessageParameters"]]
 		);
-PackageMessage[
+PackageThrowMessage[
 	tag_?StringQ,
 	body_String,
 	ops:OptionsPattern[]
 	]:=
-	PackageMessage[
+	PackageThrowMessage[
 		MessageName[ChemTools, tag],
 		body,
 		ops
 		];
-PackageMessage[
+PackageThrowMessage[
 	tag_?StringQ
 	]:=
-	PackageMessage[
+	PackageThrowMessage[
 		MessageName[ChemTools, tag],
 		$PackageErrorMessage,
 		"MessageParameters"->{tag}
 		];
-PackageMessage~SetAttributes~HoldAll
+PackageThrowMessage~SetAttributes~HoldAll
 
 
-(* ::Subsubsection:: *)
-(*PackageCheck*)
+(* ::Subsubsection::Closed:: *)
+(*PackageCatchMessage*)
 
 
-$PackageCheckMessage=
+$PackageCatchMessageMessage=
 	"Check caught exceptions ``";
 
 
-$PackageCheckCallback=
+$PackageCatchMessageCallback=
 	Function[
 		PackageRaiseException[
 			"Check",
-			$PackageCheckMessage,
+			$PackageCatchMessageMessage,
 			"MessageParameters"->Thread[HoldForm[$MessageList]]
 			]
 		];
 
 
-PackageCheck[
+PackageCatchMessage[
 	expr_,
 	failexpr_:Automatic,
 	msg:{___String}:{}
@@ -1045,32 +1183,27 @@ PackageCheck[
 		{
 			{}:>
 				Check[expr, 
-					Replace[failexpr, {Automatic:>$PackageCheckCallback[]}]
+					Replace[failexpr, {Automatic:>$PackageCatchMessageCallback[]}]
 					],
 			Hold[msgs_]:>
 				Check[expr, 
-					Replace[failexpr, {Automatic:>$PackageCheckCallback[]}], 
+					Replace[failexpr, {Automatic:>$PackageCatchMessageCallback[]}], 
 					msgs
 					],
 			_:>
-				Replace[failexpr, {Automatic:>$PackageCheckCallback[]}]
+				Replace[failexpr, {Automatic:>$PackageCatchMessageCallback[]}]
 			}
 		];
-PackageCheck~SetAttributes~HoldAll;
+PackageCatchMessage~SetAttributes~HoldAll;
 
 
-(* ::Subsubsection:: *)
-(*PackageFailure*)
+(* ::Subsubsection::Closed:: *)
+(*PackageFailureException*)
 
 
-Options[PackageFailure]=
-	Join[
-		Options[PackageMessage],
-		{
-			"FailureTag"->Automatic
-			}
-		];
-PackageFailure[
+Options[PackageFailureException]=
+	Options[PackageThrowMessage];
+PackageFailureException[
 	msg_MessageName,
 	body_?StringQ,
 	ops:OptionsPattern[]
@@ -1079,10 +1212,7 @@ PackageFailure[
 		OptionValue[Automatic, Automatic, "MessageParameters", Hold],
 		Hold[params_]:>
 			Failure[
-				$PackageName<>
-					Replace[OptionValue["FailureTag"], 
-						Automatic:>Hold[msg][[1, 2]]
-						],
+				$PackageName<>Hold[msg][[1, 2]],
 				<|
 					"MessageTemplate":>
 						msg,
@@ -1091,39 +1221,39 @@ PackageFailure[
 					|>
 				]
 		];
-PackageFailure[
+PackageFailureException[
 	tag:_?StringQ:"Exception",
 	body_?StringQ,
 	ops:OptionsPattern[]
 	]:=
 	(
 		Set[MessageName[ChemTools, tag], body];
-		PackageFailure[
+		PackageFailureException[
 			MessageName[ChemTools, tag],
 			body,
 			ops
 			]
 		);
-PackageFailure~SetAttributes~HoldFirst
+PackageFailureException~SetAttributes~HoldFirst
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*PackageRaiseException*)
 
 
 Options[PackageRaiseException]=
-	Options[PackageFailure]
+	Options[PackageFailureException]
 PackageRaiseException[
 	msg_MessageName,
 	body_?StringQ,
 	ops:OptionsPattern[]
 	]:=
 	(
-		PackageMessage[msg, body, 
-			FilterRules[{ops}, Options[PackageMessage]]
+		PackageThrowMessage[msg, body, 
+			Evaluate@FilterRules[{ops}, Options[PackageThrowMessage]]
 			];
-		PackageThrow[
-			PackageFailure[msg, body, ops]
+		PackageThrowException[
+			PackageFailureException[msg, body, ops]
 			]
 		);
 PackageRaiseException[
@@ -1143,8 +1273,66 @@ PackageRaiseException[tag_?StringQ]:=
 		"MessageParameters"->{tag}
 		];
 PackageRaiseException~SetAttributes~HoldFirst
+
+
+(* ::Subsubsection::Closed:: *)
+(*PackageExceptionBlock*)
+
+
+$PackageErrorStackDepth=0;
+Protect[$PackageErrorStackDepth];
+
+
+PackageExceptionBlock//Clear
+PackageExceptionBlock/:
+	HoldPattern[
+		SetDelayed[lhs_, 
+			peb:PackageExceptionBlock[_, _String]
+			]
+		]:=
+	SetDelayed[lhs,
+		Block[{$PackageExceptionBlockResult},
+			$PackageExceptionBlockResult=peb;
+			peb/;!FailureQ@peb
+			]
+		];
+PackageExceptionBlock[
+	expr_,
+	tag_String
+	]:=
+	Block[
+		{
+			$PackageErrorStackDepth=$PackageErrorStackDepth+1,
+			result
+			},
+		result=PackageCatchException[expr, tag, #&];
+		If[FailureQ@result&&$PackageErrorStackDepth>1,
+			PackageThrowException[result]
+			];
+		result(*/;!FailureQ@result*)
+		];
+PackageExceptionBlock[tag_String]:=
+	Function[Null, PackageExceptionBlock[#, tag], HoldFirst];
+PackageExceptionBlock~SetAttributes~HoldFirst;
+
+
+(* ::Subsubsection::Closed:: *)
+(*End*)
+
+
+End[]
 (* ::Subsection:: *)
 (*Autocompletion*)
+
+
+PackageAddAutocompletions::usage="";
+
+
+(* ::Subsubsection::Closed:: *)
+(*Begin*)
+
+
+Begin["`Autocomplete`"];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -1262,7 +1450,7 @@ $PackageAutocompletionAliases=
 		};
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*AddAutocompletions Convenience*)
 
 
@@ -1346,8 +1534,29 @@ PackageSetAutocompletionData[]:=
 						}
 					]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*End*)
+
+
+End[]
 (* ::Subsection:: *)
 (*FrontEnd*)
+
+
+PackageFEHiddenBlock::usage="";
+PackageFEUnhideSymbols::usage="";
+PackageFERehideSymbols::usage="";
+PackageFEUnhidePackage::usage="";
+PackageFERehidePackage::usage="";
+
+
+(* ::Subsubsection::Closed:: *)
+(*Begin*)
+
+
+Begin["`FrontEnd`"]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -1612,8 +1821,28 @@ PackageFERehidePackage[spec:_String|_List,a___]/;TrueQ[$AllowPackageRecoloring]:
 	PackageFERehidePackage[PackageFilePath@Flatten@{"Packages",spec},a];
 
 
+(* ::Subsubsection::Closed:: *)
+(*End*)
+
+
+End[]
+
+
 (* ::Subsection:: *)
 (*Post-Processing*)
+
+
+PackagePostProcessPrepSpecs::usage="";
+PackagePrepPackageSymbol::usage="";
+PackagePostProcessExposePackages::usage="";
+PackagePostProcessRehidePackages::usage="";
+PackagePostProcessDecontextPackages::usage="";
+PackagePostProcessContextPathReassign::usage="";
+PackageAttachMainAutocomplete::usage="";
+PackagePreemptShadowing::usage="";
+
+
+Begin["`PostProcess`"];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -1819,7 +2048,30 @@ PackageAttachMainAutocomplete[]:=
 		];
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
+(*PreventShadowing*)
+
+
+PackagePreemptShadowing[]:=
+	Replace[
+		Hold[{m___}]:>
+			Off[m]
+			]@
+		Thread[
+			ToExpression[
+				Map[#<>"$"&, Names["`PackageScope`Private`*"]
+				],
+				StandardForm,
+				Function[Null, 
+					Hold[MessageName[#, "shdw"]],
+					HoldAllComplete
+					]
+				],
+			Hold
+			]
+
+
+(* ::Subsubsection::Closed:: *)
 (*PackagePrepPackageSymbol*)
 
 
@@ -1834,10 +2086,14 @@ PackagePrepPackageSymbol[]:=
 		]
 
 
+End[];
+
+
 (* ::Subsection:: *)
 (*End*)
 
 
+$ContextPath=DeleteCases[$ContextPath, $Context];
 End[];
 
 
@@ -1868,7 +2124,7 @@ Protect["`PackageScope`Private`*"];
 Unprotect[`PackageScope`Private`$loadAbort];
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*Post-Process*)
 
 
@@ -1887,35 +2143,15 @@ Unprotect[`PackageScope`Private`$PackageScopedSymbols];
 Clear[`PackageScope`Private`$PackageScopedSymbols];
 
 
-(* ::Subsubsection::Closed:: *)
-(*Preempt Shadowing*)
-
-
 (* Hide `PackageScope`Private` shadowing *)
-
-
-Replace[
-	Hold[{`PackageScope`Private`m___}]:>
-		Off[`PackageScope`Private`m]
-		]@
-Thread[
-	ToExpression[
-		Map[#<>"$"&, Names["`PackageScope`Private`*"]
-		],
-		StandardForm,
-		Function[Null, 
-			Hold[MessageName[#, "shdw"]],
-			HoldAllComplete
-			]
-		],
-	Hold
-	]
+`PackageScope`Private`PackagePreemptShadowing[]
 
 
 (* ::Subsubsection:: *)
 (*EndPackage / Reset $ContextPath*)
 
 
+System`Private`ResetContextPath[]
 EndPackage[];
 
 

@@ -21,7 +21,8 @@ Map[
     "Graphics",
     "Utilities",
     "Compute",
-    "Import"
+    "Import",
+    "Formats"
     }
   ]
 

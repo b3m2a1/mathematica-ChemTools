@@ -62,9 +62,12 @@ ChemImportObject::nofmt=
 ChemImportObjectString[
 	system:ChemSysPattern|Automatic:Automatic,
 	string_String?(Not@*FileExistsQ),
-	format:"MolTable"|"ZMatrix"|"GaussianJob"|"FormattedCheckpoint"|Automatic
+	format:"XYZTable"|"MolTable"|"ZMatrix"|"GaussianJob"|"FormattedCheckpoint"|Automatic
 	]:=
 	Switch[format,
+		"XYZTable",
+			chemObjectImport[system,
+				ChemImportXYZ@string],
 		"MolTable",
 			chemObjectImport[system,
 				ChemImportMolTable@string],
@@ -99,8 +102,8 @@ ChemImportObjectString[
 	Optional[Automatic,Automatic]]:=
 	With[{attempts=
 		If[StringContainsQ[string,"V2000"|"V3000"],
-			{"MolTable","ZMatrix"},
-			{"ZMatrix","MolTable"}
+			{"MolTable", "ZMatrix"},
+			{"ZMatrix", "MolTable"}
 			]
 		},
 		Replace[
@@ -137,6 +140,8 @@ ChemImportObject[
 		Replace[format,
 			Automatic:>
 				Switch[FileExtension@file,
+					"xyz",
+						"XYZTable",
 					"mol"|"sdf",
 						"MolTable",
 					"zmat",
@@ -151,8 +156,10 @@ ChemImportObject[
 				]
 			},
 		Switch[form,	
+			"XYZTable",
+				ChemImportObjectString[system, Import[file, "Text"], form],
 			"MolTable"|"ZMatrix",
-				ChemImportObjectString[system, Import[file,"Text"], form],
+				ChemImportObjectString[system, Import[file, "Text"], form],
 			"GaussianJob"|"FormattedCheckpoint",
 				chemObjectImport[system,
 					gaussianImportObjectData[
@@ -201,10 +208,6 @@ ChemImportObject[
 
 
 
-ChemImportObject::no3d=
-	"No 3D structure found for identifier ``. Attempting to use a 2D structure instead";
-ChemImportObject::nostr=
-	"No structure found for identifier ``";
 ChemImportObject[
 	system:ChemSysPattern|Automatic:Automatic,
 	structure:
@@ -216,23 +219,11 @@ ChemImportObject[
 			Not@FileExistsQ@#&&
 			Not@StringContainsQ[#,"\n"|$PathnameSeparator]
 			&),
-	format:"MolTable"|"ZMatrix"|Automatic:Automatic]:=
-	Replace[
-		Replace[
-			Quiet[ChemDataLookup[structure,"SDFFiles"],ServiceExecute::serrormsg],
-			$Failed:>(
-				Message[ChemImportObject::no3d, structure];
-				ChemDataLookup[structure,"2DStructures",
-					"Overwrite"->True]
-				)
-			],
-		{
-			mol_String:>
-				ChemImportObjectString[system, mol, "MolTable"],
-			mols:{__String}:>
-				Map[ChemImportObjectString[system,#,"MolTable"]&,mols],
-			_:>(Message[ChemImportObject::nostr,structure];$Failed)
-			}
+	format:"MolTable"|"ZMatrix"|Automatic:Automatic
+	]:=
+	ChemImportChemicalStructure[
+		structure,
+		ChemImportObjectString[system, #, "MolTable"]&
 		];
 
 

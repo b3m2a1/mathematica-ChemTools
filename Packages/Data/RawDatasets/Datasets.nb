@@ -223,47 +223,58 @@ Cell[BoxData[
       RowBox[{"source", "=", 
        RowBox[{"ChemDatasetWebResourceFile", "[", "name", "]"}]}]}], "\n", 
      "\t\t\t", "}"}], ",", "\n", "\t\t", 
-    RowBox[{"Monitor", "[", "\n", "\t\t\t", 
-     RowBox[{
-      RowBox[{"If", "[", 
-       RowBox[{
+    RowBox[{
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"!", 
+        RowBox[{"DirectoryQ", "@", 
+         RowBox[{"DirectoryName", "@", "target"}]}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"CreateDirectory", "[", 
         RowBox[{
-         RowBox[{"URLDownload", "[", 
+         RowBox[{"DirectoryName", "@", "target"}], ",", " ", 
+         RowBox[{"CreateIntermediateDirectories", "\[Rule]", "True"}]}], 
+        "]"}]}], "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
+     RowBox[{"Monitor", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"TrueQ", "[", 
           RowBox[{
-          "source", ",", " ", "target", ",", " ", "\"\<StatusCode\>\""}], 
-          "]"}], "<", "400"}], ",", "\n", "\t\t\t\t", "target", ",", "\n", 
-        "\t\t\t\t", 
-        RowBox[{"Failure", "[", 
-         RowBox[{
-         "\"\<ChemDatasetDownload\>\"", ",", " ", "\n", "\t\t\t\t\t", 
-          RowBox[{"\"\<MessageTemplate\>\"", "->", "\n", "\t\t\t\t\t\t", 
-           RowBox[{"TemplateApply", "[", 
+           RowBox[{"URLDownload", "[", 
             RowBox[{
-            "\"\<Couldn't download `` from ``\>\"", ",", "\n", 
-             "\t\t\t\t\t\t ", 
-             RowBox[{"{", 
-              RowBox[{"name", ",", " ", "source"}], "}"}]}], "\n", 
-            "\t\t\t\t\t\t ", "]"}]}]}], "\n", "\t\t\t\t\t", "]"}]}], "\n", 
-       "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
-      RowBox[{"Internal`LoadingPanel", "@", "\n", "\t\t\t\t", 
-       RowBox[{"TemplateApply", "[", 
-        RowBox[{"\"\<Downloading dataset `` from ``\>\"", ",", " ", 
-         RowBox[{"{", 
-          RowBox[{"name", ",", " ", "source"}], "}"}]}], "]"}]}]}], "\n", 
-     "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}]], "CodeInput",
- CellChangeTimes->{{3.733193340976232*^9, 3.7331933519514027`*^9}, {
-   3.7331934384635887`*^9, 3.733193452365506*^9}, {3.733193618198996*^9, 
-   3.7331936369709578`*^9}, {3.733193677359159*^9, 3.73319368478643*^9}, {
-   3.733193831246002*^9, 3.7331939791488667`*^9}, {3.733194056958961*^9, 
-   3.7331941135415983`*^9}, {3.733194156912039*^9, 3.733194160748084*^9}, 
-   3.733250651951086*^9},ExpressionUUID->"52bac43a-f080-40d6-874d-\
-419c9df43707"]
+            "source", ",", " ", "target", ",", " ", "\"\<StatusCode\>\""}], 
+            "]"}], "<", "400"}], "]"}], ",", "\n", "\t\t\t\t", "target", ",", 
+         "\n", "\t\t\t\t", 
+         RowBox[{"Failure", "[", 
+          RowBox[{"\"\<ChemDatasetDownload\>\"", ",", " ", "\n", "\t\t\t\t\t", 
+           RowBox[{"\"\<MessageTemplate\>\"", "->", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"TemplateApply", "[", 
+             RowBox[{
+             "\"\<Couldn't download `` from ``\>\"", ",", "\n", 
+              "\t\t\t\t\t\t ", 
+              RowBox[{"{", 
+               RowBox[{"name", ",", " ", "source"}], "}"}]}], "\n", 
+             "\t\t\t\t\t\t ", "]"}]}]}], "\n", "\t\t\t\t\t", "]"}]}], "\n", 
+        "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
+       RowBox[{"Internal`LoadingPanel", "@", "\n", "\t\t\t\t", 
+        RowBox[{"TemplateApply", "[", 
+         RowBox[{"\"\<Downloading dataset `` from ``\>\"", ",", " ", 
+          RowBox[{"{", 
+           RowBox[{"name", ",", " ", "source"}], "}"}]}], "]"}]}]}], "\n", 
+      "\t\t\t", "]"}]}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"52bac43a-f080-40d6-874d-419c9df43707"]
 }, Closed]],
 
 Cell[CellGroupData[{
 
 Cell["\[LeftCeiling]ChemDatasetLoad\[RightFloor]", "CodeSubsubsubsection",
  Evaluatable->True,ExpressionUUID->"69efa2f0-0f50-44dc-978a-7b1ada347c14"],
+
+Cell[BoxData[
+ RowBox[{"ChemDatasetLoad", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"c0983c6e-b12f-4a7e-92d7-1671bf41f97a"],
 
 Cell[BoxData[{
  RowBox[{
@@ -299,21 +310,31 @@ Cell[BoxData[{
        RowBox[{"fail_", "\[RuleDelayed]", "\n", "\t\t\t", 
         RowBox[{"(", "\n", "\t\t\t\t", 
          RowBox[{
-          RowBox[{"Message", "[", 
+          RowBox[{"PackageThrowMessage", "[", "\n", "\t\t\t\t\t", 
            RowBox[{
-            RowBox[{"ChemDataLookup", "::", "nolod"}], ",", " ", "name", ",", 
-            " ", "fail"}], "]"}], ";", "\n", "\t\t\t\t", 
+           "\"\<NoDataset\>\"", ",", "\n", "\t\t\t\t\t", 
+            "\"\<Couldn't load resource ``, got ``\>\"", ",", " ", "\n", 
+            "\t\t\t\t\t", 
+            RowBox[{"\"\<MessageParameters\>\"", "\[Rule]", 
+             RowBox[{"{", 
+              RowBox[{"name", ",", " ", "fail"}], "}"}]}]}], "\n", 
+           "\t\t\t\t\t", "]"}], ";", "\n", "\t\t\t\t", 
           RowBox[{"SetDelayed", "[", "\n", "\t\t\t\t\t", 
            RowBox[{
             RowBox[{"ChemDatasetLoad", "[", 
              RowBox[{"name", ",", " ", "mode"}], "]"}], ",", " ", "\n", 
             "\t\t\t\t\t", 
-            RowBox[{"Message", "[", 
+            RowBox[{"PackageThrowMessage", "[", "\n", "\t\t\t\t\t\t", 
              RowBox[{
-              RowBox[{"ChemDataLookup", "::", "nolod"}], ",", " ", "name", 
-              ",", " ", "fail"}], "]"}]}], "\n", "\t\t\t\t\t", "]"}], ";", 
-          "\n", "\t\t\t\t", "fail"}], "\n", "\t\t\t\t", ")"}]}]}], "\n", 
-      "\t\t", "}"}]}], "\n", "\t", "]"}]}], ";"}], "\n", 
+             "\"\<NoDataset\>\"", ",", "\n", "\t\t\t\t\t\t", 
+              "\"\<Couldn't load resource ``, got ``\>\"", ",", " ", "\n", 
+              "\t", "\t\t\t\t\t", 
+              RowBox[{"\"\<MessageParameters\>\"", "\[Rule]", 
+               RowBox[{"{", 
+                RowBox[{"name", ",", " ", "fail"}], "}"}]}]}], "\n", "\t", 
+             "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "]"}], ";", "\n", 
+          "\t\t\t\t", "fail"}], "\n", "\t\t\t\t", ")"}]}]}], "\n", "\t\t", 
+      "}"}]}], "\n", "\t", "]"}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{"ChemDatasetLoad", "[", 
    RowBox[{"name_", ",", " ", 
@@ -321,65 +342,61 @@ Cell[BoxData[{
      RowBox[{"Automatic", ",", " ", "Automatic"}], "]"}]}], "]"}], ":=", "\n",
    "\t", 
   RowBox[{"ChemDatasetLoad", "[", 
-   RowBox[{"name", ",", " ", "\"\<File\>\""}], "]"}]}]}], "CodeInput",
- CellChangeTimes->{{3.733193455030879*^9, 3.733193659546884*^9}, {
-   3.7331938129677353`*^9, 3.7331938214200573`*^9}, {3.733194167226017*^9, 
-   3.733194180732336*^9}, {3.733194588121162*^9, 3.733194598652158*^9}, {
-   3.733250531735051*^9, 3.7332506057310753`*^9}, 
-   3.733250719248515*^9},ExpressionUUID->"3c522a74-2733-4a53-bc7e-\
-17aa0c21e950"]
+   RowBox[{"name", ",", " ", "\"\<File\>\""}], 
+   "]"}]}]}], \
+"CodeInput",ExpressionUUID->"3c522a74-2733-4a53-bc7e-17aa0c21e950"]
 }, Open  ]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
 Cell["\[LeftCeiling]Register\[RightFloor]", "CodeSubsubsection",
- Evaluatable->True,
- CellChangeTimes->{{3.733195209137868*^9, 
-  3.7331952101751757`*^9}},ExpressionUUID->"712c0e03-6a64-40aa-8c7f-\
-a8660af95fb2"],
+ Evaluatable->True,ExpressionUUID->"712c0e03-6a64-40aa-8c7f-a8660af95fb2"],
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{
-   RowBox[{"ChemDatasetRegister", "[", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"ctx", "=", "$Context"}], "}"}], ",", "\n", "\t", 
     RowBox[{
-     RowBox[{"base", ":", 
+     RowBox[{"ChemDatasetRegister", "[", 
       RowBox[{
-       RowBox[{"Hold", "[", "_Symbol", "]"}], "|", "Automatic"}], ":", 
-      "Automatic"}], ",", " ", "name_", ",", " ", "pat_"}], "]"}], ":=", "\n",
-    "\t", 
-   RowBox[{"Replace", "[", "\n", "\t\t", 
-    RowBox[{
-     RowBox[{"If", "[", 
-      RowBox[{
-       RowBox[{"base", "===", "Automatic"}], ",", "\n", "\t\t\t", 
-       RowBox[{"ToExpression", "[", 
+       RowBox[{"base", ":", 
         RowBox[{
-         RowBox[{"\"\<$\>\"", "<>", "name"}], ",", " ", "StandardForm", ",", 
-         " ", "Hold"}], "]"}], ",", "\n", "\t\t\t", "base"}], "\n", "\t\t\t", 
-      "]"}], ",", "\n", "\t\t", 
-     RowBox[{
-      RowBox[{"Hold", "[", "sym_", "]"}], ":>", "\n", "\t\t\t", 
-      RowBox[{"If", "[", 
-       RowBox[{
-        RowBox[{"!", 
-         RowBox[{"MatchQ", "[", 
+         RowBox[{"Hold", "[", "_Symbol", "]"}], "|", "Automatic"}], ":", 
+        "Automatic"}], ",", " ", "name_", ",", " ", "pat_"}], "]"}], ":=", 
+     "\n", "\t", "\t", 
+     RowBox[{"Replace", "[", "\n", "\t", "\t\t", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"base", "===", "Automatic"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"ToExpression", "[", "\n", "\t\t\t\t\t", 
           RowBox[{
-           RowBox[{"OwnValues", "[", "sym", "]"}], ",", 
-           RowBox[{"{", 
-            RowBox[{"_", "\[RuleDelayed]", "pat"}], "}"}]}], "]"}]}], ",", 
-        "\n", "\t", "\t\t\t", 
-        RowBox[{"sym", ":=", "\n", "\t", "\t\t\t\t", 
-         RowBox[{"sym", "=", 
-          RowBox[{"ChemDatasetLoad", "[", "name", "]"}]}]}]}], "\n", 
-       "\t\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}], ";"}]], "CodeInput",
- CellChangeTimes->{{3.733193048385305*^9, 3.733193194315797*^9}, {
-  3.733193305164516*^9, 3.733193336293623*^9}, {3.7331934162609777`*^9, 
-  3.733193435110495*^9}, {3.7331945767824078`*^9, 3.733194580964802*^9}, {
-  3.733194631409696*^9, 3.733194673929583*^9}, {3.7331948059698887`*^9, 
-  3.733194845039756*^9}},ExpressionUUID->"c5eb27a9-54cc-4301-bd67-\
-73134dfab3c8"]
+           RowBox[{
+            RowBox[{"StringTrim", "[", 
+             RowBox[{"$Context", ",", " ", "\"\<Private`\>\""}], "]"}], "<>", 
+            "\"\<$\>\"", "<>", "name"}], ",", " ", "StandardForm", ",", " ", 
+           "Hold"}], "]"}], ",", "\n", "\t", "\t\t\t", "base"}], "\n", "\t", 
+        "\t\t\t", "]"}], ",", "\n", "\t", "\t\t", 
+       RowBox[{
+        RowBox[{"Hold", "[", "sym_", "]"}], ":>", "\n", "\t", "\t\t\t", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"!", 
+           RowBox[{"MatchQ", "[", 
+            RowBox[{
+             RowBox[{"OwnValues", "[", "sym", "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"_", "\[RuleDelayed]", "pat"}], "}"}]}], "]"}]}], ",", 
+          "\n", "\t", "\t", "\t\t\t", 
+          RowBox[{"sym", ":=", "\n", "\t", "\t", "\t\t\t\t", 
+           RowBox[{"sym", "=", 
+            RowBox[{"ChemDatasetLoad", "[", "name", "]"}]}]}]}], "\n", 
+         "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "]"}]}]}], "\n", "\t", 
+   "]"}], ";"}]], \
+"CodeInput",ExpressionUUID->"c5eb27a9-54cc-4301-bd67-73134dfab3c8"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -566,14 +583,10 @@ Cell["\[LeftCeiling]$ChemTanabeSuganoData\[RightFloor]", "CodeSubsubsection",
 Cell[BoxData[
  RowBox[{"ChemDatasetRegister", "[", "\n", "\t", 
   RowBox[{
-  "$ChemTanabeSuganoData", ",", " ", "\n", "\t", 
+   RowBox[{"Hold", "[", "$ChemTanabeSuganoData", "]"}], ",", " ", "\n", "\t", 
    "\"\<ChemTanabeSuganoDiagrams\>\"", ",", " ", "\n", "\t", 
    RowBox[{"_Association", "?", "AssociationQ"}]}], "\n", "\t", 
-  "]"}]], "CodeInput",
- CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
-  3.7331947238044167`*^9, 3.733194789042117*^9}, {3.733194853293475*^9, 
-  3.733194858920754*^9}},ExpressionUUID->"a701c679-161f-4af5-81a1-\
-8480e72ebbc2"]
+  "]"}]], "CodeInput",ExpressionUUID->"a701c679-161f-4af5-81a1-8480e72ebbc2"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -584,11 +597,11 @@ Cell["\[LeftCeiling]$ChemUnitConversions\[RightFloor]", "CodeSubsubsection",
 Cell[BoxData[
  RowBox[{"ChemDatasetRegister", "[", "\n", "\t", 
   RowBox[{
-  "$ChemUnitConversions", ",", " ", "\n", "\t", "\"\<ChemUnitConversions\>\"",
-    ",", " ", "\n", "\t", 
+   RowBox[{"Hold", "[", "$ChemUnitConversions", "]"}], ",", " ", "\n", "\t", 
+   "\"\<ChemUnitConversions\>\"", ",", " ", "\n", "\t", 
    RowBox[{"_Association", "?", "AssociationQ"}]}], "\n", "\t", 
   "]"}]], "CodeInput",ExpressionUUID->"1bdd78ac-a9e0-40d3-a679-fc65fa09c893"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -601,14 +614,10 @@ Cell["\[LeftCeiling]$ChemMMMFF94AtomTypes\[RightFloor]", "CodeSubsubsection",
 Cell[BoxData[
  RowBox[{"ChemDatasetRegister", "[", "\n", "\t", 
   RowBox[{
-  "$ChemMMFF94AtomTypes", ",", " ", "\n", "\t", "\"\<MMFF94AtomTypes\>\"", 
-   ",", " ", "\n", "\t", 
+   RowBox[{"Hold", "[", "$ChemMMFF94AtomTypes", "]"}], ",", " ", "\n", "\t", 
+   "\"\<MMFF94AtomTypes\>\"", ",", " ", "\n", "\t", 
    RowBox[{"_Association", "?", "AssociationQ"}]}], "\n", "\t", 
-  "]"}]], "CodeInput",
- CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
-  3.7331947238044167`*^9, 3.733194789042117*^9}, {3.733194853293475*^9, 
-  3.733194900742152*^9}},ExpressionUUID->"04bee1a5-6a57-41f7-8dfe-\
-1b68cec00a1e"]
+  "]"}]], "CodeInput",ExpressionUUID->"04bee1a5-6a57-41f7-8dfe-1b68cec00a1e"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -623,14 +632,10 @@ f17a7e824334"],
 Cell[BoxData[
  RowBox[{"ChemDatasetRegister", "[", "\n", "\t", 
   RowBox[{
-  "$ChemMMMFF94BondData", ",", " ", "\n", "\t", "\"\<MMFF94BondData\>\"", ",",
-    " ", "\n", "\t", 
+   RowBox[{"Hold", "@", "$ChemMMMFF94BondData"}], ",", " ", "\n", "\t", 
+   "\"\<MMFF94BondData\>\"", ",", " ", "\n", "\t", 
    RowBox[{"_Association", "?", "AssociationQ"}]}], "\n", "\t", 
-  "]"}]], "CodeInput",
- CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
-  3.7331947238044167`*^9, 3.733194789042117*^9}, {3.733194853293475*^9, 
-  3.7331949138990917`*^9}},ExpressionUUID->"85b2d08f-0c6f-461f-ba09-\
-6ee02cd547d1"]
+  "]"}]], "CodeInput",ExpressionUUID->"85b2d08f-0c6f-461f-ba09-6ee02cd547d1"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -645,15 +650,10 @@ Cell["\[LeftCeiling]$ChemMMFF94BondAngleData\[RightFloor]", \
 Cell[BoxData[
  RowBox[{"ChemDatasetRegister", "[", "\n", "\t", 
   RowBox[{
-  "$ChemMMFF94BondAngleData", ",", " ", "\n", "\t", 
+   RowBox[{"Hold", "@", "$ChemMMFF94BondAngleData"}], ",", " ", "\n", "\t", 
    "\"\<MMFF94BondAngleData\>\"", ",", " ", "\n", "\t", 
    RowBox[{"_Association", "?", "AssociationQ"}]}], "\n", "\t", 
-  "]"}]], "CodeInput",
- CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
-  3.7331947238044167`*^9, 3.733194789042117*^9}, {3.733194853293475*^9, 
-  3.7331949138990917`*^9}, {3.733195151517922*^9, 
-  3.733195154527211*^9}},ExpressionUUID->"43f1bc8a-1432-4960-972c-\
-95c12f53eb24"]
+  "]"}]], "CodeInput",ExpressionUUID->"43f1bc8a-1432-4960-972c-95c12f53eb24"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -668,15 +668,10 @@ c60eb2d6f88a"],
 Cell[BoxData[
  RowBox[{"ChemDatasetRegister", "[", "\n", "\t", 
   RowBox[{
-  "$ChemMMFF94StretchBendData", ",", " ", "\n", "\t", 
+   RowBox[{"Hold", "@", "$ChemMMFF94StretchBendData"}], ",", " ", "\n", "\t", 
    "\"\<MMFF94StretchBendData\>\"", ",", " ", "\n", "\t", 
    RowBox[{"_Association", "?", "AssociationQ"}]}], "\n", "\t", 
-  "]"}]], "CodeInput",
- CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
-  3.7331947238044167`*^9, 3.733194789042117*^9}, {3.733194853293475*^9, 
-  3.7331949138990917`*^9}, {3.733195151517922*^9, 
-  3.733195166442972*^9}},ExpressionUUID->"ac750217-9754-4387-8461-\
-bb7cb493abfc"]
+  "]"}]], "CodeInput",ExpressionUUID->"ac750217-9754-4387-8461-bb7cb493abfc"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -691,15 +686,10 @@ Cell["\[LeftCeiling]$ChemMMFF94TorsionAngleData\[RightFloor]", \
 Cell[BoxData[
  RowBox[{"ChemDatasetRegister", "[", "\n", "\t", 
   RowBox[{
-  "$ChemMMFF94TorsionAngleData", ",", " ", "\n", "\t", 
-   "\"\<MMFF94TorsionAngleData\>\"", ",", " ", "\n", "\t", 
+   RowBox[{"Hold", "@", "$ChemMMFF94TorsionAngleData"}], ",", " ", "\n", 
+   "\t", "\"\<MMFF94TorsionAngleData\>\"", ",", " ", "\n", "\t", 
    RowBox[{"_Association", "?", "AssociationQ"}]}], "\n", "\t", 
-  "]"}]], "CodeInput",
- CellChangeTimes->{{3.7331946820586863`*^9, 3.733194690034141*^9}, {
-  3.7331947238044167`*^9, 3.733194789042117*^9}, {3.733194853293475*^9, 
-  3.7331949138990917`*^9}, {3.733195151517922*^9, 
-  3.733195179315353*^9}},ExpressionUUID->"612886c0-aee2-4ad3-b874-\
-bf327173bfe8"]
+  "]"}]], "CodeInput",ExpressionUUID->"612886c0-aee2-4ad3-b874-bf327173bfe8"]
 }, Closed]]
 }, Open  ]],
 
@@ -714,7 +704,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"8a2e883f-7c41-4538-8511-\
 dab71d3211a5"]
 },
 WindowSize->{808, 755},
-WindowMargins->{{43, Automatic}, {Automatic, 25}},
+WindowMargins->{{Automatic, 259}, {Automatic, 44}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

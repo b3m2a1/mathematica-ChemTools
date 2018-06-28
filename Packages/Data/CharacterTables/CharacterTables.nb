@@ -1,0 +1,971 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Character Table Tools", \
+"CodeSection",ExpressionUUID->"d2ac9a5c-c90b-42fc-a608-5e8204c912c8"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Character Table \[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.718853024502158*^9, 3.718853028962484*^9}, {
+  3.719608697705126*^9, 
+  3.719608698258009*^9}},ExpressionUUID->"d0363eab-0fd6-4e31-a61a-\
+2e88b996f5c1"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"CharacterTable", "::", "usage"}], "=", 
+   "\"\<Storage class for character table data\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"CharacterTableData", "::", "usage"}], "=", 
+   "\"\<Looks up char table data\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"718c2ac6-d598-40fa-9131-f30cc571cc45"]\
+
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]CorrelationTables\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.720740981228923*^9, 
+  3.720740983939513*^9}},ExpressionUUID->"f76a36c1-80c6-4fa7-9ec2-\
+3ee82a126352"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"CorrelationTableData", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"CorrelationTableFormatted", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.720740985621992*^9, 
+  3.720741040259161*^9}},ExpressionUUID->"d1e92da2-6542-4a7d-bda1-\
+faee5792e2e7"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"157c965f-412f-4ce0-8dd2-\
+5cd530b84c80"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]CharacterTable\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"2582ee0e-3ab5-4057-b768-63ed55e8a6c5"],
+
+Cell["\<\
+\[LeftCeiling]
+\tProvide accessors to functions cooked in at package level to decrease the \
+amount of top-level cruft
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"b54f0867-7be2-4676-bc3f-b752e5f954a2"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]$charTables Keys\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"586c18b9-0e46-41e6-ad02-b141472b8dc6"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$charTables", "=", "\n", "\t", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{
+    "\"\<Cs\>\"", ",", "\"\<Ci\>\"", ",", "\"\<C1\>\"", ",", "\"\<C2\>\"", 
+     ",", "\"\<C3\>\"", ",", "\"\<C4\>\"", ",", "\"\<C5\>\"", ",", 
+     "\"\<C6\>\"", ",", "\"\<C7\>\"", ",", "\"\<C8\>\"", ",", "\n", "\t\t", 
+     "\"\<D2\>\"", ",", "\"\<D3\>\"", ",", "\"\<D4\>\"", ",", "\"\<D5\>\"", 
+     ",", "\"\<D6\>\"", ",", "\n", "\t\t", "\"\<C2h\>\"", ",", "\"\<C3h\>\"", 
+     ",", "\"\<C4h\>\"", ",", "\"\<C5h\>\"", ",", "\"\<C6h\>\"", ",", "\n", 
+     "\t\t", "\"\<C2v\>\"", ",", "\"\<C3v\>\"", ",", "\"\<C4v\>\"", ",", 
+     "\"\<C5v\>\"", ",", "\"\<C6v\>\"", ",", "\"\<Civ\>\"", ",", "\n", 
+     "\t\t", "\"\<D2d\>\"", ",", "\"\<D3d\>\"", ",", "\"\<D4d\>\"", ",", 
+     "\"\<D5d\>\"", ",", "\"\<D6d\>\"", ",", "\n", "\t\t", "\"\<D2h\>\"", 
+     ",", "\"\<D3h\>\"", ",", "\"\<D4h\>\"", ",", "\"\<D5h\>\"", ",", 
+     "\"\<D6h\>\"", ",", "\"\<D8h\>\"", ",", "\"\<Dih\>\"", ",", "\n", 
+     "\t\t", "\"\<S4\>\"", ",", "\"\<S6\>\"", ",", "\"\<S8\>\"", ",", "\n", 
+     "\t\t", "\"\<T\>\"", ",", "\"\<Th\>\"", ",", "\"\<Td\>\"", ",", "\n", 
+     "\t\t", "\"\<O\>\"", ",", "\"\<Oh\>\"", ",", "\n", "\t\t", "\"\<I\>\"", 
+     ",", "\"\<Ih\>\"", ",", "\n", "\t\t", "\"\<K\>\"", ",", "\"\<Kh\>\""}], 
+    "\n", "\t\t", "}"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.718488304153041*^9, 
+  3.718488350879648*^9}},ExpressionUUID->"e0dc843c-1ee6-4efb-94ac-\
+15103b86e6dc"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]CharacterTableGrid\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"e92aff6e-94de-42a8-8a95-7b8bbfef3a64"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"CharacterTableGrid", "[", "data_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"Grid", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Prepend", "[", "\n", "\t\t\t", 
+       RowBox[{"Prepend", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"data", "[", "\"\<SymmetryClasses\>\"", "]"}], "[", 
+          RowBox[{"[", 
+           RowBox[{"All", ",", " ", "\"\<Formatted\>\""}], "]"}], "]"}], ",", 
+         "\n", "\t\t\t\t", 
+         RowBox[{"data", "[", 
+          RowBox[{"\"\<PointGroup\>\"", ",", " ", "\"\<Formatted\>\""}], 
+          "]"}]}], "\n", "\t\t\t\t", "]"}], "\n", "\t\t\t", "]"}], "@", "\n", 
+      "\t\t", 
+      RowBox[{"MapThread", "[", "\n", "\t\t\t", 
+       RowBox[{"Prepend", ",", "\n", "\t\t\t", 
+        RowBox[{"{", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"data", "[", "\"\<CharacterTable\>\"", "]"}], ",", "\n", 
+          "\t\t\t\t", 
+          RowBox[{
+           RowBox[{"data", "[", "\"\<IrreducibleRepresentations\>\"", "]"}], 
+           "[", 
+           RowBox[{"[", 
+            RowBox[{"All", ",", " ", "\"\<Formatted\>\""}], "]"}], "]"}]}], 
+         "\n", "\t\t\t\t", "}"}]}], "\n", "\t\t\t", "]"}]}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"Alignment", "\[Rule]", "Right"}], ",", "\n", "\t\t", 
+     RowBox[{"Dividers", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"2", "\[Rule]", "Black"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"2", "\[Rule]", "Black"}], "}"}]}], "}"}]}]}], "\n", "\t\t", 
+    "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.71777091444899*^9, 3.717770920121542*^9}, {
+   3.717809953371232*^9, 3.7178101030490522`*^9}, {3.7178101775477343`*^9, 
+   3.717810179554345*^9}, {3.717812313325799*^9, 3.71781231361127*^9}, {
+   3.7178126371747026`*^9, 3.7178126714652357`*^9}, 3.7178767685112333`*^9, 
+   3.717876934867185*^9, {3.718488908612834*^9, 
+   3.718488952700521*^9}},ExpressionUUID->"18dad617-7b7e-488e-a1d7-\
+a7d5fbfc3868"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]CharacterTable\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"e532735e-f042-417a-83ab-c365f85dd330"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"CharacterTable", "[", "data_Association", "]"}], "[", "k__", 
+   "]"}], ":=", "\n", "\t", 
+  RowBox[{"data", "[", "k", "]"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"CharacterTable", "[", "pg_String", "]"}], ":=", "\n", "\t", 
+   RowBox[{"CharacterTable", "@", 
+    RowBox[{"$ChemCharacterTables", "[", "pg", "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"CharacterTable", "/:", 
+   RowBox[{"Normal", "[", 
+    RowBox[{"CharacterTable", "[", "data_Association", "]"}], "]"}], ":=", 
+   "\n", "\t", "data"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"CharacterTable", "/:", 
+   RowBox[{"Part", "[", 
+    RowBox[{
+     RowBox[{"CharacterTable", "[", "data_Association", "]"}], ",", " ", 
+     "i__"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Replace", "[", 
+    RowBox[{
+     RowBox[{"{", "i", "}"}], ",", 
+     RowBox[{"{", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", "s_String", "}"}], ":>", "\n", "\t\t\t", 
+        RowBox[{"CharacterTableData", "[", 
+         RowBox[{
+          RowBox[{"CharacterTable", "@", "data"}], ",", "\n", "\t\t\t\t", 
+          RowBox[{"{", 
+           RowBox[{"\"\<IrreducibleRepresentation\>\"", ",", " ", "s"}], 
+           "}"}], ",", "\n", "\t\t\t\t", "\"\<Vector\>\""}], "\n", "\t\t\t\t",
+          "]"}]}], ",", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"s_String", ",", " ", "e__"}], "}"}], "\[RuleDelayed]", "\n",
+         "\t\t\t", 
+        RowBox[{
+         RowBox[{"CharacterTableData", "[", 
+          RowBox[{
+           RowBox[{"CharacterTable", "@", "data"}], ",", "\n", "\t\t\t\t", 
+           RowBox[{"{", 
+            RowBox[{"\"\<IrreducibleRepresentation\>\"", ",", " ", "s"}], 
+            "}"}], ",", "\n", "\t\t\t\t", "\"\<Vector\>\""}], "\n", 
+          "\t\t\t\t", "]"}], "[", 
+         RowBox[{"[", "e", "]"}], "]"}]}], ",", "\n", "\t\t", 
+       RowBox[{"_", ":>", "\n", "\t\t\t", 
+        RowBox[{
+         RowBox[{"data", "[", "\"\<CharacterTable\>\"", "]"}], "[", 
+         RowBox[{"[", "i", "]"}], "]"}]}]}], "\n", "\t\t", "}"}]}], "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"CharacterTable", "/:", 
+   RowBox[{"Dataset", "[", 
+    RowBox[{"CharacterTable", "[", "data_Association", "]"}], "]"}], ":=", 
+   "\n", "\t", 
+   RowBox[{"Dataset", "@", "data"}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"1da23d2f-2501-4f2c-a270-4b0649460725"]\
+
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Format\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"6796d00a-92ec-4659-97fb-0231060c6e07"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"Format", "[", 
+    RowBox[{"CharacterTable", "[", "data_Association", "]"}], "]"}], ":=", 
+   "\n", "\t", 
+   RowBox[{"RawBoxes", "@", 
+    RowBox[{"TemplateBox", "[", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"ToBoxes", "/@", 
+       RowBox[{"{", 
+        RowBox[{"data", ",", " ", 
+         RowBox[{"CharacterTableGrid", "[", "data", "]"}]}], "}"}]}], ",", 
+      "\n", "\t\t", "\"\<CharacterTable\>\"", ",", "\n", "\t\t", 
+      RowBox[{"InterpretationFunction", ":>", "\n", "\t\t\t", 
+       RowBox[{"Function", "[", "\n", "\t\t\t\t", 
+        RowBox[{"RowBox", "@", 
+         RowBox[{"{", 
+          RowBox[{
+          "\"\<CharacterTable\>\"", ",", "\"\<[\>\"", ",", "#", ",", 
+           "\"\<]\>\""}], "}"}]}], "\n", "\t\t\t\t", "]"}]}], ",", "\n", 
+      "\t\t", 
+      RowBox[{"DisplayFunction", ":>", "\n", "\t\t\t", 
+       RowBox[{"Function", "[", "\n", "\t\t\t\t", 
+        RowBox[{"StyleBox", "[", "\n", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"RowBox", "@", 
+           RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+            RowBox[{
+            "\"\<CharacterTable\>\"", ",", "\n", "\t", "\t", "\t", "\t\t\t", 
+             "\"\<[\>\"", ",", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"PanelBox", "[", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"#2", ",", "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{"Appearance", "\[Rule]", 
+                RowBox[{"{", "\n", "\t", "\t", "\t\t\t\t\t\t", 
+                 RowBox[{
+                 "\"\<Default\>\"", "->", "\n", "\t", "\t", "\t\t\t\t\t\t\t", 
+                  
+                  RowBox[{"FrontEnd`FileName", "[", 
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    "\"\<Typeset\>\"", ",", " ", "\"\<SummaryBox\>\""}], 
+                    "}"}], ",", " ", "\"\<Panel.9.png\>\""}], "]"}]}], "\n", 
+                 "\t", "\t", "\t\t\t\t\t\t", "}"}]}]}], "\n", "\t", "\t", 
+              "\t\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t\t\t\t", 
+             "\"\<]\>\""}], "\n", "\t\t\t\t\t\t", "}"}]}], ",", "\n", "\t", 
+          "\t", "\t\t\t", 
+          RowBox[{"ShowStringCharacters", "\[Rule]", "False"}]}], "\n", 
+         "\t\t\t\t\t", "]"}], "\n", "\t\t\t\t", "]"}]}], ",", "\n", "\t\t", 
+      RowBox[{"Editable", "\[Rule]", "False"}], ",", "\n", "\t\t", 
+      RowBox[{"Selectable", "\[Rule]", "False"}]}], "\n", "\t\t", "]"}]}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.717859967767227*^9, 3.7178600212849703`*^9}, {
+  3.7178767685237713`*^9, 3.717876768580845*^9}, {3.7183806283067303`*^9, 
+  3.7183806336124477`*^9}, {3.718481514210058*^9, 3.71848162238299*^9}, {
+  3.718481673516848*^9, 3.718481686617539*^9}, {3.718481718135181*^9, 
+  3.7184818040241537`*^9}, {3.7184818380193577`*^9, 3.718481851109977*^9}, {
+  3.718489574045616*^9, 3.7184895751758432`*^9}, {3.718493172878209*^9, 
+  3.718493312647789*^9}, {3.7184933603294687`*^9, 
+  3.718493378289163*^9}},ExpressionUUID->"7fc4e12d-7a30-4b87-be30-\
+93a7b4b528d9"]
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Character Table Data\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.7188539945998163`*^9, 
+  3.718854001830181*^9}},ExpressionUUID->"7ce799e6-4aa3-4723-a01e-\
+82541dff8b34"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]CharacterTableData\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.718484886449679*^9, 
+  3.718484889704946*^9}},ExpressionUUID->"80421404-ede8-4700-8b29-\
+d48778c7082d"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"CharacterTableData", "[", "ct_String", "]"}], ":=", "\n", "\t", 
+   RowBox[{"CharacterTable", "[", "ct", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"CharacterTableData", "[", "ct_CharacterTable", "]"}], ":=", "\n", 
+   "\t", "ct"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"CharacterTableData", "[", 
+    RowBox[{
+     RowBox[{"ct", ":", 
+      RowBox[{"_String", "|", "_CharacterTable"}]}], ",", "\n", "\t", 
+     RowBox[{"prop", ":", 
+      RowBox[{"Alternatives", "@@", "$CharacterTableKeys"}]}]}], "\n", "\t", 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{
+    RowBox[{"CharacterTableData", "[", "ct", "]"}], "[", "prop", "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"CharacterTableData", "[", 
+    RowBox[{
+     RowBox[{"ct", ":", 
+      RowBox[{"_String", "|", "_CharacterTable"}]}], ",", "\n", "\t", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"\"\<IrreducibleRepresentation\>\"", "|", "\"\<IR\>\""}], ",", 
+       " ", 
+       RowBox[{"irrep", ":", 
+        RowBox[{"_String", "|", "_Integer"}]}]}], "}"}]}], "\n", "\t", "]"}], 
+   ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"coredata", "=", 
+       RowBox[{"CharacterTableData", "[", "ct", "]"}]}], "}"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"irpos", "=", "\n", "\t\t\t", 
+         RowBox[{"Switch", "[", 
+          RowBox[{
+          "irrep", ",", "\n", "\t\t\t\t", "_Integer", ",", "\n", "\t\t\t\t\t",
+            "irrep", ",", "\n", "\t\t\t\t", "_String", ",", "\n", 
+           "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"FirstPosition", "[", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+               "coredata", "[", "\"\<IrreducibleRepresentations\>\"", "]"}], 
+               "[", 
+               RowBox[{"[", 
+                RowBox[{"All", ",", " ", "\"\<ID\>\""}], "]"}], "]"}], ",", 
+              " ", "\n", "\t\t\t\t\t\t", "irrep", ",", "\n", "\t\t\t\t\t\t", 
+              "$Failed"}], "\n", "\t\t\t\t\t\t", "]"}], "[", 
+            RowBox[{"[", "1", "]"}], "]"}], ",", "\n", "\t\t\t\t", "_", ",", 
+           "\n", "\t\t\t\t\t", "$Failed"}], "\n", "\t\t\t\t", "]"}]}], "\n", 
+        "\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"<|", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"\"\<PointGroup\>\"", "->", 
+           RowBox[{"coredata", "[", "\"\<PointGroup\>\"", "]"}]}], ",", "\n", 
+          "\t\t\t\t", 
+          RowBox[{"\"\<Data\>\"", "->", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+            "coredata", "[", "\"\<IrreducibleRepresentations\>\"", "]"}], "[", 
+            RowBox[{"[", "irpos", "]"}], "]"}]}], ",", "\n", "\t\t\t\t", 
+          RowBox[{"\"\<Vector\>\"", "->", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"coredata", "[", "\"\<CharacterTable\>\"", "]"}], "[", 
+            RowBox[{"[", "irpos", "]"}], "]"}]}], ",", "\n", "\t\t\t\t", 
+          RowBox[{"\"\<LinearFunctions\>\"", "->", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"coredata", "[", "\"\<LinearFunctions\>\"", "]"}], "[", 
+            RowBox[{"[", "irpos", "]"}], "]"}]}], ",", "\n", "\t\t\t\t", 
+          RowBox[{"\"\<NonLinearFunctions\>\"", "->", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"coredata", "[", "\"\<NonLinearFunctions\>\"", "]"}], "[", 
+            RowBox[{"[", "irpos", "]"}], "]"}]}]}], "\n", "\t\t\t\t", "|>"}], 
+        "/;", 
+        RowBox[{
+         RowBox[{"Length", "[", 
+          RowBox[{
+          "coredata", "[", "\"\<IrreducibleRepresentations\>\"", "]"}], "]"}],
+          ">=", "irpos"}]}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}],
+   ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"CharacterTableData", "[", 
+    RowBox[{
+     RowBox[{"ct", ":", 
+      RowBox[{"_String", "|", "_CharacterTable"}]}], ",", "\n", "\t", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"\"\<SymmetryClass\>\"", "|", "\"\<SC\>\""}], ",", " ", 
+       RowBox[{"sc", ":", 
+        RowBox[{"_String", "|", "_Integer"}]}]}], "}"}]}], "\n", "\t", "]"}], 
+   ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"coredata", "=", 
+       RowBox[{"CharacterTableData", "[", "ct", "]"}]}], "}"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"scpos", "=", "\n", "\t\t\t", 
+         RowBox[{"Switch", "[", 
+          RowBox[{
+          "sc", ",", "\n", "\t\t\t\t", "_Integer", ",", "\n", "\t\t\t\t\t", 
+           "sc", ",", "\n", "\t\t\t\t", "_String", ",", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"FirstPosition", "[", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"coredata", "[", "\"\<SymmetryClasses\>\"", "]"}], "[", 
+               RowBox[{"[", 
+                RowBox[{"All", ",", " ", "\"\<ID\>\""}], "]"}], "]"}], ",", 
+              " ", "\n", "\t\t\t\t\t\t", "sc", ",", "\n", "\t\t\t\t\t\t", 
+              "$Failed"}], "\n", "\t\t\t\t\t\t", "]"}], "[", 
+            RowBox[{"[", "1", "]"}], "]"}], ",", "\n", "\t\t\t\t", "_", ",", 
+           "\n", "\t\t\t\t\t", "$Failed"}], "\n", "\t\t\t\t", "]"}]}], "\n", 
+        "\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"<|", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"\"\<PointGroup\>\"", "->", "\n", "\t\t\t\t\t", 
+           RowBox[{"coredata", "[", "\"\<PointGroup\>\"", "]"}]}], ",", "\n", 
+          "\t\t\t\t", 
+          RowBox[{"\"\<Data\>\"", "->", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"coredata", "[", "\"\<SymmetryClasses\>\"", "]"}], "[", 
+            RowBox[{"[", "scpos", "]"}], "]"}]}], ",", "\n", "\t\t\t\t", 
+          RowBox[{"\"\<Vector\>\"", "->", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"coredata", "[", "\"\<CharacterTable\>\"", "]"}], "[", 
+            RowBox[{"[", "scpos", "]"}], "]"}]}]}], "\n", "\t\t\t\t", "|>"}], 
+        "/;", 
+        RowBox[{
+         RowBox[{"Length", "[", 
+          RowBox[{"coredata", "[", "\"\<SymmetryClasses\>\"", "]"}], "]"}], ">=",
+          "scpos"}]}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.717860134269479*^9, 3.7178601752568293`*^9}, {
+  3.717867892684504*^9, 3.717867906700008*^9}, {3.7178767685896893`*^9, 
+  3.71787676860343*^9}, {3.717877095807343*^9, 3.7178771460432777`*^9}, {
+  3.717877200482452*^9, 3.717877467985156*^9}, {3.717877544588147*^9, 
+  3.7178775458824987`*^9}, {3.717877668190426*^9, 3.717877695684146*^9}, {
+  3.717878188041369*^9, 3.717878322691427*^9}, {3.7178784377813873`*^9, 
+  3.717878449634811*^9}, {3.7178784998949537`*^9, 3.717878646413746*^9}, {
+  3.717878815381378*^9, 3.7178788354195633`*^9}, {3.718488440324703*^9, 
+  3.7184884901995783`*^9}, {3.718488522756549*^9, 3.7184885925958757`*^9}, {
+  3.718488729821208*^9, 3.7184887937363157`*^9}, {3.7184937962777863`*^9, 
+  3.718493836516139*^9}, {3.71849388256243*^9, 3.71849389528098*^9}, {
+  3.718493929675577*^9, 3.71849400967712*^9}, {3.7184940925879*^9, 
+  3.718494121917987*^9}},ExpressionUUID->"75216594-a746-4a6f-aaca-\
+756a7f72e925"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"$CharacterTableThingProps", "=", "\n", "\t", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{
+    "\"\<PointGroup\>\"", ",", "\n", "\t\t", "\"\<Vector\>\"", ",", "\n", 
+     "\t\t", "\"\<SymmetryClass\>\"", ",", "\n", "\t\t", 
+     "\"\<IrreducibleRepresentation\>\"", ",", "\n", "\t\t", "\"\<Data\>\"", 
+     ",", "\n", "\t\t", "\"\<LinearFunctions\>\"", ",", "\n", "\t\t", 
+     "\"\<NonLinearFunctions\>\""}], "\n", "\t\t", "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"CharacterTableData", "[", 
+   RowBox[{
+    RowBox[{"ct", ":", 
+     RowBox[{"_String", "|", "_CharacterTable"}]}], ",", "\n", "\t", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"p", ":", 
+       RowBox[{
+       "\"\<IrreducibleRepresentation\>\"", "|", "\"\<IR\>\"", "|", 
+        "\"\<SymmetryClass\>\"", "|", "\"\<SC\>\""}]}], ",", " ", 
+      RowBox[{"thing", ":", 
+       RowBox[{"_String", "|", "_Integer"}]}]}], "}"}], ",", "\n", "\t", 
+    RowBox[{"prop", ":", 
+     RowBox[{
+      RowBox[{"Alternatives", "@@", "$CharacterTableThingProps"}], "|", "\n", 
+      "\t\t", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Alternatives", "@@", "$CharacterTableThingProps"}], ",", 
+        "__String"}], "}"}]}]}]}], "\n", "\t", "]"}], ":=", "\n", "\t", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"base", "=", 
+      RowBox[{"CharacterTableData", "[", 
+       RowBox[{"ct", ",", " ", 
+        RowBox[{"{", 
+         RowBox[{"p", ",", " ", "thing"}], "}"}]}], "]"}]}], "}"}], ",", "\n",
+     "\t\t", 
+    RowBox[{
+     RowBox[{"base", "@@", 
+      RowBox[{"Flatten", "[", 
+       RowBox[{"{", "prop", "}"}], "]"}]}], "/;", 
+     RowBox[{"AssociationQ", "@", "base"}]}]}], "\n", "\t\t", 
+   "]"}]}]}], "CodeInput",
+ CellChangeTimes->{{3.717860134269479*^9, 3.7178601752568293`*^9}, {
+   3.717867892684504*^9, 3.717867906700008*^9}, {3.7178767685896893`*^9, 
+   3.71787676860343*^9}, {3.717877095807343*^9, 3.7178771460432777`*^9}, {
+   3.717877200482452*^9, 3.717877467985156*^9}, {3.717877544588147*^9, 
+   3.7178775458824987`*^9}, {3.717877668190426*^9, 3.717877695684146*^9}, {
+   3.717878188041369*^9, 3.717878322691427*^9}, {3.7178784377813873`*^9, 
+   3.717878449634811*^9}, {3.7178784998949537`*^9, 3.717878695092469*^9}, {
+   3.718488424449608*^9, 3.718488433637224*^9}, 3.7184908778143063`*^9, {
+   3.71849594891413*^9, 3.718495953892415*^9}, {3.7184959928265553`*^9, 
+   3.71849601558349*^9}},ExpressionUUID->"5292e39d-82ff-4474-b59a-\
+19c1430a8395"],
+
+Cell[BoxData[
+ RowBox[{"PackageAddAutocompletions", "[", 
+  RowBox[{"\"\<CharacterTableData\>\"", ",", "\n", "\t", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{"$charTables", ",", " ", "\n", "\t\t", 
+     RowBox[{"Join", "[", 
+      RowBox[{"$CharacterTableKeys", ",", " ", "\n", "\t\t\t", 
+       RowBox[{"{", 
+        RowBox[{
+        "\"\<SymmetryClass\>\"", ",", " ", 
+         "\"\<IrreducibleRepresentation\>\""}], "}"}]}], "\n", "\t\t\t", 
+      "]"}], ",", "\n", "\t\t", "$CharacterTableThingProps"}], "\n", "\t\t", 
+    "}"}]}], "\n", "\t", "]"}]], "CodeInput",
+ CellChangeTimes->{{3.7178679077411423`*^9, 3.717867922065774*^9}, {
+   3.717867972830257*^9, 3.717867991452084*^9}, 3.7178764470385017`*^9, {
+   3.717876768611763*^9, 3.717876768616387*^9}, {3.717876959813991*^9, 
+   3.717876966306796*^9}, {3.7178784608271*^9, 3.7178784887213182`*^9}, {
+   3.717878637118063*^9, 3.717878640502264*^9}, {3.717878698095524*^9, 
+   3.717878698275576*^9}, {3.717878858829851*^9, 3.717878860235633*^9}, 
+   3.718488404741959*^9},ExpressionUUID->"07215ccc-75b3-4623-82a8-\
+c541f1152099"]
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]CorrelationTables\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.7207394965820312`*^9, 
+  3.720739500364892*^9}},ExpressionUUID->"68baeb64-831f-4a59-b54f-\
+2d381d72d90e"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]correlationTableDataLoad\[RightFloor]", \
+"CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"148d6012-30ac-4054-be1d-7c6c0588c4ae"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"correlationTableDataLoad", "[", "]"}], ":=", "\n", "\t", 
+  RowBox[{"If", "[", 
+   RowBox[{
+    RowBox[{"!", 
+     RowBox[{"AssociationQ", "[", "$CorrelationTableKeys", "]"}]}], ",", " ", 
+    "\n", "\t\t", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"PackageAddAutocompletions", "[", 
+       RowBox[{"#", ",", " ", "\n", "\t\t\t", 
+        RowBox[{"$CorrelationTableKeys", "=", "\n", "\t\t\t\t", 
+         RowBox[{"{", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"Sort", "@", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"Map", "[", 
+             RowBox[{
+              RowBox[{"#ID", "&"}], ",", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"Keys", "[", "$ChemCorrelationTables", "]"}]}], "\n", 
+             "\t\t\t\t\t\t\t", "]"}]}], ",", " ", "\n", "\t\t\t\t\t", 
+           RowBox[{"Sort", "@", 
+            RowBox[{"DeleteDuplicates", "@", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{"#ID", "&"}], ",", " ", 
+               RowBox[{"Flatten", "[", 
+                RowBox[{"Values", "[", 
+                 RowBox[{"Keys", "/@", "$ChemCorrelationTables"}], "]"}], 
+                "]"}]}], "]"}]}]}]}], "\n", "\t\t\t\t\t", "}"}]}]}], "\n", 
+       "\t\t\t", "]"}], "&"}], "/@", 
+     RowBox[{"{", 
+      RowBox[{"CorrelationTableData", ",", " ", "CorrelationTableFormatted"}],
+       "}"}]}]}], "\n", "\t\t", "]"}]}]], "CodeInput",
+ CellChangeTimes->{{3.720740183878381*^9, 3.7207402966437807`*^9}, {
+  3.7207403291767817`*^9, 3.7207403613394337`*^9}, {3.7207416665700407`*^9, 
+  3.720741666576314*^9}, {3.720759562893228*^9, 3.720759570481097*^9}, {
+  3.720760156565125*^9, 
+  3.720760157947002*^9}},ExpressionUUID->"afb11265-28d4-48f5-b4b2-\
+06a07392706f"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]CorrelationTableData\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"1620cf87-48fb-4c0f-8ac5-d7f9cddd1d79"],
+
+Cell[BoxData[
+ RowBox[{"CorrelationTableData", "//", "Clear"}]], "CodeInput",
+ CellChangeTimes->{{3.720743313780532*^9, 
+  3.720743317916144*^9}},ExpressionUUID->"1220ba44-207d-471c-b371-\
+5c7895b275a6"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"CorrelationTableData", "[", "k_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"d", "=", 
+       RowBox[{"KeySelect", "[", 
+        RowBox[{"$ChemCorrelationTables", ",", " ", 
+         RowBox[{
+          RowBox[{"StringMatchQ", "[", 
+           RowBox[{"#ID", ",", " ", "k"}], "]"}], "&"}]}], "]"}]}], "}"}], 
+     ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"correlationTableDataLoad", "[", "]"}], ";", "\n", "\t\t", 
+      RowBox[{"d", "/;", 
+       RowBox[{
+        RowBox[{"AssociationQ", "[", "d", "]"}], "&&", 
+        RowBox[{
+         RowBox[{"Length", "[", "d", "]"}], ">", "0"}]}]}]}]}], "\n", "\t\t", 
+    "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"CorrelationTableData", "[", 
+    RowBox[{"k_", ",", " ", "k2_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"d", "=", 
+       RowBox[{"CorrelationTableData", "[", "k", "]"}]}], "}"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{
+      RowBox[{"With", "[", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"{", "\n", "\t\t\t\t", 
+         RowBox[{"d2", "=", "\n", "\t\t\t\t\t", 
+          RowBox[{"Select", "[", "\n", "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"Map", "[", 
+             RowBox[{
+              RowBox[{"KeySelect", "[", 
+               RowBox[{
+                RowBox[{"StringMatchQ", "[", 
+                 RowBox[{"#ID", ",", " ", "k2"}], "]"}], "&"}], "]"}], ",", 
+              " ", "d"}], "]"}], ",", "\n", "\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Length", "[", "#", "]"}], ">", "0"}], "&"}]}], "\n", 
+           "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "}"}], ",", "\n", 
+        "\t\t\t", 
+        RowBox[{"d2", "/;", 
+         RowBox[{
+          RowBox[{"Length", "[", "d2", "]"}], ">", "0"}]}]}], "\n", "\t\t\t", 
+       "]"}], "/;", 
+      RowBox[{
+       RowBox[{"AssociationQ", "[", "d", "]"}], "&&", 
+       RowBox[{
+        RowBox[{"Length", "[", "d", "]"}], ">", "0"}]}]}]}], "\n", "\t\t", 
+    "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"CorrelationTableData", "[", 
+    RowBox[{"k_", ",", " ", "k2_", ",", " ", "i_"}], "]"}], ":=", "\n", "\t", 
+   
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"d", "=", 
+       RowBox[{"CorrelationTableData", "[", 
+        RowBox[{"k", ",", " ", "k2"}], "]"}]}], "}"}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"With", "[", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"{", "\n", "\t\t\t\t", 
+         RowBox[{"d2", "=", "\n", "\t\t\t\t\t", 
+          RowBox[{"Select", "[", "\n", "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"Map", "[", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"Select", "[", 
+               RowBox[{
+                RowBox[{"Map", "[", 
+                 RowBox[{"KeySelect", "[", 
+                  RowBox[{
+                   RowBox[{"StringMatchQ", "[", 
+                    RowBox[{"#ID", ",", " ", "i"}], "]"}], "&"}], "]"}], 
+                 "]"}], ",", " ", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"Length", "[", "#", "]"}], ">", "0"}], "&"}]}], 
+               "]"}], ",", "\n", "\t\t\t\t\t\t\t", "d"}], "\n", 
+             "\t\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Length", "[", "#", "]"}], ">", "0"}], "&"}]}], "\n", 
+           "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "}"}], ",", "\n", 
+        "\t\t\t", 
+        RowBox[{"d2", "/;", 
+         RowBox[{
+          RowBox[{"Length", "[", "d2", "]"}], ">", "0"}]}]}], "\n", "\t\t\t", 
+       "]"}], "/;", 
+      RowBox[{
+       RowBox[{"AssociationQ", "[", "d", "]"}], "&&", 
+       RowBox[{
+        RowBox[{"Length", "[", "d", "]"}], ">", "0"}]}]}]}], "\n", "\t\t", 
+    "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.720739561488414*^9, 3.720739582199483*^9}, {
+   3.720740154961701*^9, 3.720740178574615*^9}, {3.72074025605546*^9, 
+   3.720740261607415*^9}, {3.7207403155612507`*^9, 3.7207403229584637`*^9}, {
+   3.720740379554841*^9, 3.7207404096129293`*^9}, {3.720740684880869*^9, 
+   3.720740825615755*^9}, {3.720740920618351*^9, 3.72074097243609*^9}, 
+   3.720741666557392*^9, {3.72074191008136*^9, 3.720741926522889*^9}, {
+   3.720742038383687*^9, 3.720742043949986*^9}, {3.72074264577457*^9, 
+   3.72074267153004*^9}, 3.7207427137716618`*^9, {3.720742750832094*^9, 
+   3.720742776762339*^9}, {3.7207428166360493`*^9, 3.720742840710911*^9}, 
+   3.7207429558346863`*^9, {3.720743088631518*^9, 3.720743089534095*^9}, {
+   3.720743287505414*^9, 3.720743307241897*^9}, {3.72074343690023*^9, 
+   3.7207434869125233`*^9}, {3.720759700918076*^9, 
+   3.720759785056747*^9}},ExpressionUUID->"95917e9b-5b45-468e-b63a-\
+09e70e2323a0"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"correlationTableFormatIrrep", "[", "e_", "]"}], ":=", "\n", "\t", 
+   
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"Replace", "[", 
+       RowBox[{"l_List", "\[RuleDelayed]", 
+        RowBox[{"Plus", "@@", "l"}]}], "]"}], "@", "\n", "\t\t", 
+      RowBox[{"Replace", "[", 
+       RowBox[{"#", ",", " ", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"n_Integer", ",", "s_"}], "}"}], "\[RuleDelayed]", 
+         RowBox[{"Row", "@", 
+          RowBox[{"{", 
+           RowBox[{"n", ",", "\"\<\[ThinSpace]\>\"", ",", " ", "s"}], 
+           "}"}]}]}], ",", " ", "2"}], "]"}]}], "&"}], "@", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"ReplaceAll", "[", 
+      RowBox[{"a_Association", "\[RuleDelayed]", 
+       RowBox[{"a", "[", "\"\<Formatted\>\"", "]"}]}], "]"}], "@", "e"}]}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"correlationTableFormatMap", "[", "l_Association", "]"}], ":=", 
+   "\n", "\t", 
+   RowBox[{"Map", "[", "\n", "\t\t", 
+    RowBox[{"correlationTableFormatIrrep", ",", "\n", "\t\t", 
+     RowBox[{"KeyMap", "[", 
+      RowBox[{
+       RowBox[{"Key", "[", "\"\<Formatted\>\"", "]"}], ",", " ", "l"}], 
+      "]"}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"correlationTableFormatAll", "[", "l_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"Map", "[", "\n", "\t\t", 
+   RowBox[{"correlationTableFormatMap", ",", "\n", "\t\t", 
+    RowBox[{"KeyMap", "[", 
+     RowBox[{
+      RowBox[{"Key", "[", "\"\<Formatted\>\"", "]"}], ",", " ", "l"}], 
+     "]"}]}], "\n", "\t\t", "]"}]}]}], "CodeInput",
+ CellChangeTimes->{{3.720741071230857*^9, 3.720741151702613*^9}, {
+  3.720741210771242*^9, 3.720741224161304*^9}, {3.7207421304857273`*^9, 
+  3.7207421401828403`*^9}},ExpressionUUID->"6d68f0eb-4587-44e7-9674-\
+d6d860607698"],
+
+Cell[BoxData[
+ RowBox[{"CorrelationTableFormatted", "//", "Clear"}]], "CodeInput",
+ CellChangeTimes->{{3.720741590934739*^9, 
+  3.720741591574247*^9}},ExpressionUUID->"4a52e06a-b0db-4f99-9b79-\
+c0f3c283618f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"correlationTableApplyFormatting", "[", 
+   RowBox[{"d_", ",", " ", "d2_", ",", " ", "i_"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"Grid", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"Prepend", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"Transpose", "@", "\n", "\t\t\t\t", 
+       RowBox[{"Prepend", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"Values", "[", 
+          RowBox[{"Values", "/@", "d2"}], "]"}], ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"Keys", "@", 
+          RowBox[{"d2", "[", 
+           RowBox[{"[", "1", "]"}], "]"}]}]}], "\n", "\t\t\t\t\t", "]"}]}], 
+      ",", "\n", "\t\t\t", 
+      RowBox[{"Prepend", "[", 
+       RowBox[{
+        RowBox[{"Keys", "[", "d2", "]"}], ",", " ", 
+        RowBox[{
+         RowBox[{"Keys", "[", "d", "]"}], "[", 
+         RowBox[{"[", 
+          RowBox[{"i", ",", " ", "\"\<Formatted\>\""}], "]"}], "]"}]}], " ", 
+       "]"}]}], "\n", "\t\t\t", "]"}], ",", "\n", "\t\t", 
+    RowBox[{"Alignment", "\[Rule]", "Left"}], ",", "\n", "\t\t", 
+    RowBox[{"Dividers", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"2", "\[Rule]", "Gray"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"2", "\[Rule]", "Gray"}], "}"}]}], "}"}]}], ",", "\n", "\t\t", 
+    RowBox[{"Background", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"1", "\[Rule]", 
+         RowBox[{"GrayLevel", "[", ".95", "]"}]}], "}"}], ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"1", "\[Rule]", 
+         RowBox[{"GrayLevel", "[", ".95", "]"}]}], "}"}]}], "}"}]}], ",", 
+    "\n", "\t\t", 
+    RowBox[{"Frame", "\[Rule]", "True"}], ",", "\n", "\t\t", 
+    RowBox[{"FrameStyle", "\[Rule]", "Gray"}]}], "\n", "\t\t", 
+   "]"}]}]], "CodeInput",
+ CellChangeTimes->{{3.720742287416976*^9, 3.720742303915732*^9}, {
+  3.720760220591148*^9, 
+  3.720760232840695*^9}},ExpressionUUID->"0a0c7124-a1b3-4952-9f5f-\
+be2673bcff9d"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]CorrelationTableFormatted\[RightFloor]", \
+"CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"c6866221-245b-4ca9-aa80-796537dbf6cd"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"CorrelationTableFormatted", "[", "k__", "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"d", "=", 
+       RowBox[{"CorrelationTableData", "[", "k", "]"}]}], "}"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{
+      RowBox[{"Column", "@", "\n", "\t\t\t", 
+       RowBox[{"MapIndexed", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"With", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"d2", "=", 
+              RowBox[{"correlationTableFormatAll", "[", "#", "]"}]}], "}"}], 
+            ",", "\n", "\t", "\t", "\t\t\t", 
+            RowBox[{"correlationTableApplyFormatting", "[", 
+             RowBox[{"d", ",", " ", "d2", ",", " ", 
+              RowBox[{"#2", "[", 
+               RowBox[{"[", "1", "]"}], "]"}]}], "]"}]}], "\n", "\t\t\t\t\t", 
+           "]"}], "&"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"Values", "@", "d"}]}], "\n", "\t\t\t\t", "]"}]}], "/;", 
+      RowBox[{"AssociationQ", "[", "d", "]"}]}]}], "\n", "\t\t", "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"CorrelationTableFormatted", "[", 
+      RowBox[{"k_", ",", " ", "v_"}], "]"}], ":=", "\n", "\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"d", "=", 
+         RowBox[{"CorrelationTableData", "[", "k", "]"}]}], "}"}], ",", "\n", 
+       "\t\t", 
+       RowBox[{
+        RowBox[{"With", "[", "\n", "\t\t\t", 
+         RowBox[{
+          RowBox[{"{", "\n", "\t\t\t\t", 
+           RowBox[{"d2", "=", 
+            RowBox[{"KeySelect", "[", 
+             RowBox[{"d", ",", " ", 
+              RowBox[{
+               RowBox[{"#ID", "\[Equal]", "v"}], "&"}]}], "]"}]}], "\n", 
+           "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+          RowBox[{
+           RowBox[{"correlationTableApplyFormatting", "[", "\n", "\t\t\t\t", 
+            RowBox[{"d2", ",", "\n", "\t\t\t\t", 
+             RowBox[{"correlationTableFormatAll", "[", 
+              RowBox[{"d2", "[", 
+               RowBox[{"[", "1", "]"}], "]"}], "]"}]}], "\n", "\t\t\t\t", 
+            "]"}], "/;", 
+           RowBox[{
+            RowBox[{"Length", "[", "d2", "]"}], ">", "0"}]}]}], "\n", 
+         "\t\t\t", "]"}], "/;", 
+        RowBox[{"AssociationQ", "[", "d", "]"}]}]}], "\n", "\t\t", "]"}]}], 
+    ";", "\n", 
+    RowBox[{
+     RowBox[{"CorrelationTableFormatted", "[", 
+      RowBox[{"k_", ",", " ", "v_", ",", " ", "i_"}], "]"}], ":=", "\n", "\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"d", "=", 
+         RowBox[{"CorrelationTableData", "[", 
+          RowBox[{"k", ",", " ", "v"}], "]"}]}], "}"}], ",", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"correlationTableFormatIrrep", "[", "d", "]"}], "/;", 
+        RowBox[{
+         RowBox[{"Head", "[", "d", "]"}], "=!=", "CorrelationTableData"}]}]}],
+       "\n", "\t\t", "]"}]}]}], "*)"}]}]}], "CodeInput",
+ CellChangeTimes->{{3.7207395241915092`*^9, 3.720739541119821*^9}, {
+   3.7207404265574827`*^9, 3.720740508441844*^9}, {3.720740548848199*^9, 
+   3.720740663839756*^9}, {3.72074083281968*^9, 3.7207408336717253`*^9}, {
+   3.720740901151753*^9, 3.720740909747262*^9}, {3.7207410523804007`*^9, 
+   3.720741070529304*^9}, 3.720741132708338*^9, {3.720741232614229*^9, 
+   3.720741430760811*^9}, {3.720741523613948*^9, 3.720741584431902*^9}, {
+   3.720741964521957*^9, 3.720742019328233*^9}, {3.720742057073667*^9, 
+   3.7207420764248466`*^9}, {3.7207421940540543`*^9, 3.720742247603777*^9}, {
+   3.7207422855547533`*^9, 3.7207425901724873`*^9}, {3.720743112262857*^9, 
+   3.7207431231235943`*^9}, {3.720743157641807*^9, 3.720743230829021*^9}, {
+   3.7207602389956017`*^9, 
+   3.720760243459387*^9}},ExpressionUUID->"42f0dda1-5af5-4215-a365-\
+2ca83327d4e3"]
+}, Closed]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"9dae9c7f-d808-48b9-8812-\
+3aa07b57a375"]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"c0e74177-b209-4e3c-9a82-\
+f28fd1c77508"]
+},
+WindowSize->{806, 755},
+WindowMargins->{{23, Automatic}, {20, Automatic}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

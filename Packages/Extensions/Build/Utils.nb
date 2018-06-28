@@ -1,0 +1,495 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Extension Aids", "CodeSection",
+ CellChangeTimes->{{3.695442821048379*^9, 3.695442824286845*^9}, {
+  3.699311157563952*^9, 
+  3.699311158690661*^9}},ExpressionUUID->"440812be-6e79-47ff-b092-\
+cf11b9f539b6"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemExtensions", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Directory for all extensions\>\""}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.695442958133177*^9, 
+  3.6954429693293457`*^9}},ExpressionUUID->"00c8d9c5-1200-4292-b121-\
+a45e9daff8b4"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemExtensionFile", "::", "usage"}], "=", 
+   "\"\<Picks a file matching a pattern\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemExtensionDir", "::", "usage"}], "=", 
+   "\"\<Directory for an extension\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemExtensionBin", "::", "usage"}], "=", 
+   "\"\<Binary executable for an extension\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemExtensionsApp", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemExtensionsDev", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"cba63c09-02f2-475a-8ca6-e25a4e87a8bb"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"PyToolsLoad", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Ensures PyTools is loaded\>\""}], 
+  ";"}]], "CodeInput",ExpressionUUID->"4e2be17c-a795-46c7-8c82-a0ced0fe636e"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"terminalRead", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Little reader terminal\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"terminalRunNoBlocking", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Non-blocking reader\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"3eb7eb39-1ee9-41c8-9e4f-4e7e211b4964"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], \
+"InputSection",ExpressionUUID->"3c002dd9-2664-42ef-b588-79df0d280349"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Directories\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.714673361638348*^9, 
+  3.714673368523608*^9}},ExpressionUUID->"e4f0257e-5515-4e10-ae97-\
+095db9c9b610"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$ChemExtensionsDev", "=", "\n", "\t", 
+   RowBox[{"FileNameJoin", "@", 
+    RowBox[{"{", "\n", "\t\t", 
+     RowBox[{
+     "$UserBaseDirectory", ",", "\n", "\t\t", "\"\<ApplicationData\>\"", ",", 
+      "\n", "\t\t", "\"\<ChemTools\>\"", ",", "\n", "\t\t", 
+      "\"\<Extensions\>\""}], "\n", "\t\t", "}"}]}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.714673116736537*^9, 3.7146731227903957`*^9}, {
+  3.7150965024461813`*^9, 3.715096504699551*^9}, {3.715262461831321*^9, 
+  3.7152624620140457`*^9}, {3.715262540318747*^9, 3.7152625419720078`*^9}, {
+  3.715262836514627*^9, 3.715262843326581*^9}, {3.7180480864578323`*^9, 
+  3.718048106314349*^9}},ExpressionUUID->"abe83f90-4a69-4965-b69b-\
+0ddf8575bacb"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$ChemExtensionsApp", "=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"baseD", "=", "\n", "\t\t", 
+       RowBox[{"Replace", "[", "\n", "\t\t\t", 
+        RowBox[{"$InputFileName", ",", "\n", "\t\t\t", 
+         RowBox[{"{", "\n", "\t\t\t\t", 
+          RowBox[{
+           RowBox[{"\"\<\>\"", "\[RuleDelayed]", 
+            RowBox[{"ParentDirectory", "@", 
+             RowBox[{"NotebookDirectory", "[", "]"}]}]}], ",", "\n", 
+           "\t\t\t\t", 
+           RowBox[{"e_", "\[RuleDelayed]", "$PackageDirectory"}]}], "\n", 
+          "\t\t\t\t", "}"}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "}"}], 
+     ",", "\n", "\t\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"DirectoryQ", "@", 
+        RowBox[{"FileNameJoin", "@", 
+         RowBox[{"{", 
+          RowBox[{
+          "baseD", ",", " ", "\"\<Resources\>\"", ",", " ", 
+           "\"\<Extensions\>\""}], "}"}]}]}], ",", "\n", "\t", "\t\t", 
+       RowBox[{"FileNameJoin", "@", 
+        RowBox[{"{", 
+         RowBox[{
+         "baseD", ",", " ", "\"\<Resources\>\"", ",", " ", 
+          "\"\<Extensions\>\""}], "}"}]}], ",", "\n", "\t", "\t\t", "baseD"}],
+       "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.714673125471698*^9, 3.7146731388235703`*^9}, {
+  3.7180481008783817`*^9, 3.718048112595955*^9}, {3.721165574321892*^9, 
+  3.721165609887396*^9}},ExpressionUUID->"1319355f-a2f7-440c-bc84-\
+5a624568f390"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$ChemExtensions", "=", "\n", "\t", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{"DirectoryQ", "@", "$ChemExtensionsDev"}], ",", "\n", "\t\t", 
+     "$ChemExtensionsDev", ",", "\n", "\t\t", "$ChemExtensionsApp"}], "\n", 
+    "\t\t", "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.694983197171823*^9, 3.694983207843958*^9}, {
+  3.6993115162574*^9, 3.699311552175992*^9}, {3.714673032401599*^9, 
+  3.7146731019859962`*^9}, {3.714673135554194*^9, 
+  3.7146731485077*^9}},ExpressionUUID->"de63c3a3-f70a-4927-990d-d2850d23c037"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemExtensionDir", "[", "thing_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"FileNameJoin", "@", 
+    RowBox[{"{", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"SelectFirst", "[", 
+       RowBox[{
+        RowBox[{"{", "\n", "\t\t\t", 
+         RowBox[{
+         "\"\</usr/local/bin\>\"", ",", "\n", "\t", "\t\t", 
+          "\"\</usr/bin\>\"", ",", "\n", "\t\t\t", "$ChemExtensionsDev", ",", 
+          "\n", "\t\t\t", "$ChemExtensionsApp"}], "\n", "\t\t\t", "}"}], ",", 
+        "\n", "\t\t\t", 
+        RowBox[{
+         RowBox[{"DirectoryQ", "@", 
+          RowBox[{"FileNameJoin", "@", 
+           RowBox[{"{", 
+            RowBox[{"#", ",", "thing"}], "}"}]}]}], "&"}], ",", "\n", 
+        "\t\t\t", "$ChemExtensions"}], "\n", "\t\t\t", "]"}], ",", "\n", 
+      "\t\t", "thing"}], "\n", "\t\t", "}"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemExtensionFile", "[", "thing_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"FileNameJoin", "@", 
+    RowBox[{"{", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"SelectFirst", "[", 
+       RowBox[{
+        RowBox[{"{", "\n", "\t\t\t", 
+         RowBox[{
+         "\"\</usr/local/bin\>\"", ",", "\n", "\t", "\t\t", 
+          "\"\</usr/bin\>\"", ",", "\n", "\t\t\t", "$ChemExtensionsDev", ",", 
+          "\n", "\t\t\t", "$ChemExtensionsApp"}], "\n", "\t\t\t", "}"}], ",", 
+        "\n", "\t\t\t", 
+        RowBox[{
+         RowBox[{"FileExistsQ", "@", 
+          RowBox[{"FileNameJoin", "@", 
+           RowBox[{"{", 
+            RowBox[{"#", ",", "thing"}], "}"}]}]}], "&"}], ",", "\n", 
+        "\t\t\t", "$ChemExtensions"}], "\n", "\t\t\t", "]"}], ",", "\n", 
+      "\t\t", "thing"}], "\n", "\t\t", "}"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ChemExtensionBin", "[", "thing_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"d", "=", 
+      RowBox[{"ChemExtensionDir", "[", "thing", "]"}]}], "}"}], ",", "\n", 
+    "\t\t", 
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"FileNameTake", "[", 
+        RowBox[{"d", ",", 
+         RowBox[{"{", 
+          RowBox[{"-", "2"}], "}"}]}], "]"}], "===", "\"\<bin\>\""}], ",", 
+      "\n", "\t\t\t", "d", ",", "\n", "\t\t\t", 
+      RowBox[{"FileNameJoin", "@", 
+       RowBox[{"{", 
+        RowBox[{"d", ",", "\"\<bin\>\"", ",", 
+         RowBox[{"FileBaseName", "[", "d", "]"}]}], "}"}]}]}], "\n", "\t\t\t",
+      "]"}]}], "\n", "\t\t", "]"}]}]}], "CodeInput",
+ CellChangeTimes->{{3.714673167514658*^9, 3.714673216037385*^9}, {
+  3.715260963392027*^9, 3.715261014659299*^9}, {3.715261122269219*^9, 
+  3.715261178085524*^9}, {3.7154742503319607`*^9, 3.715474250762661*^9}, {
+  3.721165662137145*^9, 
+  3.721165683672183*^9}},ExpressionUUID->"1b9f1910-16c2-43a6-80ca-\
+352063e154a6"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PythonSessions\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.715311210778803*^9, 
+  3.7153112134194813`*^9}},ExpressionUUID->"1f22d7db-68b6-4ac1-82d6-\
+ed0d748c4bd0"],
+
+Cell["\<\
+\[LeftCeiling]
+\tDelegated to my PyTools package:
+\t\thttps://www.wolframcloud.com/objects/b3m2a1.paclets/PacletServer/main.\
+html#pytools
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,
+ CellChangeTimes->{{3.732393292824538*^9, 
+  3.732393324183743*^9}},ExpressionUUID->"1aca87ff-9e54-46e0-b100-\
+90bc1490c61d"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"PyToolsLoad", "[", "]"}], ":=", "\n", "\t", 
+  RowBox[{"(", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"PackageLoadPacletDependency", "[", 
+     RowBox[{"\"\<PyTools`\>\"", ",", "\n", "\t", "\t\t", 
+      RowBox[{
+      "\"\<Site\>\"", "\[Rule]", 
+       "\"\<http://www.wolframcloud.com/objects/b3m2a1.paclets/PacletServer\>\
+\""}]}], "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
+    RowBox[{"<<", "PyTools`Symbolic`"}], ";", "\n", "\t\t", 
+    "PyTools`Symbolic`ToPython"}], "\n", "\t\t", 
+   ")"}]}]], \
+"CodeInput",ExpressionUUID->"d2b6b01f-5bb7-45a1-9c7a-85835e1621b7"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]terminalRead\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.693359920059135*^9, 
+  3.6933599233871193`*^9}},ExpressionUUID->"d1d71b3b-824e-4df8-830b-\
+54e45875dad2"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"terminalRead", "[", 
+    RowBox[{"p_", ",", "readVar_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"$terminalProcessKillFlag", "=", "False"}], "}"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{
+      RowBox[{"Replace", "[", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"ReadString", "[", 
+         RowBox[{
+          RowBox[{"ProcessConnection", "[", 
+           RowBox[{"p", ",", "\"\<StandardOutput\>\""}], "]"}], ",", 
+          "EndOfBuffer"}], "]"}], ",", 
+        RowBox[{"{", "\n", "\t", "\t\t\t", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"s_String", "?", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"StringLength", "@", "#"}], ">", "0"}], "&"}], ")"}]}],
+            "\[RuleDelayed]", 
+           RowBox[{"AppendTo", "[", 
+            RowBox[{"readVar", ",", "s"}], "]"}]}], ",", "\n", "\t", "\t\t\t", 
+          RowBox[{"EndOfFile", "\[RuleDelayed]", 
+           RowBox[{"(", 
+            RowBox[{"$terminalProcessKillFlag", "=", "True"}], ")"}]}]}], 
+         "\n", "\t", "\t\t\t", "}"}]}], "]"}], ";", "\n", "\t", "\t", 
+      RowBox[{"Replace", "[", "\n", "\t", "\t\t", 
+       RowBox[{
+        RowBox[{"ReadString", "[", 
+         RowBox[{
+          RowBox[{"ProcessConnection", "[", 
+           RowBox[{"p", ",", "\"\<StandardError\>\""}], "]"}], ",", 
+          "EndOfBuffer"}], "]"}], ",", 
+        RowBox[{"{", "\n", "\t", "\t\t\t", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"s_String", "?", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"StringLength", "@", "#"}], ">", "0"}], "&"}], ")"}]}],
+            "\[RuleDelayed]", 
+           RowBox[{"AppendTo", "[", 
+            RowBox[{"readVar", ",", "s"}], "]"}]}], ",", "\n", "\t", "\t\t\t", 
+          RowBox[{"EndOfFile", "\[RuleDelayed]", 
+           RowBox[{"(", 
+            RowBox[{"$terminalProcessKillFlag", "=", "True"}], ")"}]}]}], 
+         "\n", "\t", "\t\t\t", "}"}]}], "]"}], ";", "\n", "\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{"$terminalProcessKillFlag", ",", 
+        RowBox[{"KillProcess", "@", "p"}]}], "]"}]}]}], "\n", "\t\t", "]"}]}],
+   ";"}], "\n", 
+ RowBox[{
+  RowBox[{"terminalRead", "~", "SetAttributes", "~", "HoldRest"}], 
+  ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.6928958939197273`*^9, 3.692895994194886*^9}, {
+  3.692896041113612*^9, 
+  3.6928960940149813`*^9}},ExpressionUUID->"6c662aec-8842-45bf-909a-\
+9090dd15ba41"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"terminalRun", "[", 
+    RowBox[{"cmd_", ",", "o___"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"p", "=", 
+       RowBox[{"StartProcess", "[", 
+        RowBox[{"cmd", ",", "o"}], "]"}]}], "}"}], ",", "\n", "\t\t", 
+     RowBox[{"Block", "[", 
+      RowBox[{
+       RowBox[{"{", "\n", "\t\t\t", 
+        RowBox[{"$terminalDownloadStrings", "=", 
+         RowBox[{"{", 
+          RowBox[{"StringJoin", "@", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Riffle", "[", 
+              RowBox[{"cmd", ",", "\"\< \>\""}], "]"}], ",", "\"\<\\n\>\""}], 
+            "}"}]}], "}"}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"terminalRead", "[", 
+         RowBox[{"p", ",", "$terminalDownloadStrings"}], "]"}], ";", "\n", 
+        "\t\t\t", 
+        RowBox[{"Monitor", "[", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"While", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"ProcessStatus", "@", "p"}], "===", "\"\<Running\>\""}], 
+            ",", "\n", "\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"terminalRead", "[", 
+              RowBox[{"p", ",", "$terminalDownloadStrings"}], "]"}], ";", 
+             "\n", "\t\t\t\t\t", 
+             RowBox[{"Pause", "[", ".1", "]"}], ";"}]}], "\n", "\t\t\t\t\t", 
+           "]"}], ",", "\n", "\t\t\t\t", 
+          RowBox[{"Dynamic", "[", "\n", "\t\t\t\t", 
+           RowBox[{
+            RowBox[{"Framed", "[", "\n", "\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"Column", "@", 
+               RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{"Style", "[", 
+                  RowBox[{
+                   RowBox[{"StringJoin", "@", 
+                    RowBox[{"Riffle", "[", 
+                    RowBox[{"cmd", ",", "\"\< \>\""}], "]"}]}], ",", "\n", 
+                   "\t\t\t\t\t\t\t", 
+                   RowBox[{"GrayLevel", "[", ".2", "]"}]}], "]"}], ",", "\n", 
+                 "\t\t\t\t\t\t", 
+                 RowBox[{"Framed", "[", "\n", "\t\t\t\t\t\t\t", 
+                  RowBox[{
+                   RowBox[{"Pane", "[", 
+                    RowBox[{
+                    RowBox[{"Dynamic", "@", 
+                    RowBox[{"StringJoin", "@", "$terminalDownloadStrings"}]}],
+                     ",", "\n", "\t\t\t\t\t\t\t\t", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"250", ",", "500"}], "}"}], ",", "100"}], "}"}], 
+                    ",", "\n", "\t", "\t\t\t\t\t\t\t", 
+                    RowBox[{"Scrollbars", "\[Rule]", "Automatic"}], ",", "\n",
+                     "\t", "\t\t\t\t\t\t\t", 
+                    RowBox[{"ScrollPosition", "\[Rule]", 
+                    RowBox[{"{", 
+                    RowBox[{"0", ",", 
+                    RowBox[{
+                    RowBox[{"Dynamic", "@", "25"}], "*", 
+                    RowBox[{"Length", "@", "$terminalDownloadStrings"}]}]}], 
+                    "}"}]}]}], "\n", "\t\t\t\t\t\t\t\t", "]"}], ",", "\n", 
+                   "\t\t\t\t\t\t\t", 
+                   RowBox[{"Background", "\[Rule]", "White"}]}], "\n", 
+                  "\t\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t\t", "}"}]}], 
+              ",", "\n", "\t\t\t\t\t", 
+              RowBox[{"Background", "\[Rule]", 
+               RowBox[{"GrayLevel", "[", ".95", "]"}]}], ",", "\n", 
+              "\t\t\t\t\t", 
+              RowBox[{"RoundingRadius", "\[Rule]", "5"}]}], "\n", 
+             "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
+            RowBox[{"TrackedSymbols", "\[RuleDelayed]", 
+             RowBox[{"{", "}"}]}]}], "\n", "\t\t\t\t", "]"}]}], "\n", 
+         "\t\t\t\t", "]"}], ";", "\n", "\t\t\t", 
+        RowBox[{"StringJoin", "@", "$terminalDownloadStrings"}]}]}], "\n", 
+      "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"ec9a6056-410b-4361-8e3e-c212b045d0f7"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"terminalRunNoBlocking", "[", 
+    RowBox[{"cmd_", ",", "o___"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"p", "=", 
+        RowBox[{"StartProcess", "[", 
+         RowBox[{"cmd", ",", "o"}], "]"}]}], ",", 
+       RowBox[{"s", "=", 
+        RowBox[{"Unique", "@", "\"\<$terminalDownloadStrings$\>\""}]}]}], 
+      "}"}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"s", "=", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"StringJoin", "@", 
+          RowBox[{"Riffle", "[", 
+           RowBox[{"cmd", ",", "\"\< \>\""}], "]"}]}], ",", "\"\<\\n\>\""}], 
+        "}"}]}], ";", "\n", "\t\t", 
+      RowBox[{"Interpretation", "[", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"Dynamic", "[", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"terminalRead", "[", 
+           RowBox[{"p", ",", "s"}], "]"}], ";", "\n", "\t\t\t\t", 
+          RowBox[{"Framed", "[", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"Column", "@", 
+             RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"StringJoin", "@", 
+                RowBox[{"Riffle", "[", 
+                 RowBox[{"cmd", ",", "\"\< \>\""}], "]"}]}], ",", "\n", "\t", 
+               "\t\t\t\t\t", 
+               RowBox[{"Framed", "@", "\n", "\t", "\t\t\t\t\t\t", 
+                RowBox[{"Pane", "[", 
+                 RowBox[{
+                  RowBox[{"StringJoin", "@", "s"}], ",", "\n", 
+                  "\t\t\t\t\t\t\t\t", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"250", ",", "500"}], "}"}], ",", "100"}], "}"}], 
+                  ",", "\n", "\t", "\t\t\t\t\t\t\t", 
+                  RowBox[{"Scrollbars", "\[Rule]", "Automatic"}], ",", "\n", 
+                  "\t", "\t\t\t\t\t\t\t", 
+                  RowBox[{"ScrollPosition", "\[Rule]", 
+                   RowBox[{"{", 
+                    RowBox[{"0", ",", 
+                    RowBox[{"22", "*", 
+                    RowBox[{"Length", "@", "s"}]}]}], "}"}]}]}], "\n", 
+                 "\t\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t\t", "}"}]}],
+             ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"RoundingRadius", "\[Rule]", "5"}]}], "\n", "\t\t\t\t\t", 
+           "]"}]}], "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
+        RowBox[{"StringJoin", "@", "s"}]}], "\n", "\t\t\t", "]"}]}]}], "\n", 
+    "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"ee198815-1b0e-4fc4-bfdc-43c0c8b7ea2a"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"febfca82-efd7-4acb-b319-\
+5e93d51e8b80"]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"f1a47073-41ee-444e-a8c8-\
+d1cc3810b3c0"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{Automatic, 145}, {-19, Automatic}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+
