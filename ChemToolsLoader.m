@@ -345,13 +345,15 @@ PackageFileContext[f_String?FileExistsQ]:=
 
 PackageExecute[expr_]:=
 	Internal`WithLocalSettings[
+		Begin[$PackageContexts[[1]]];
 		System`Private`NewContextPath@
 			Prepend[
 				$PackageContexts,
 				"System`"
-				],
+				];,
 		expr,
-		System`Private`RestoreContextPath[]
+		System`Private`RestoreContextPath[];
+		End[];
 		];
 PackageExecute~SetAttributes~HoldFirst
 
@@ -952,7 +954,7 @@ Options[PackageLoadPacletDependency]=
 		];
 PackageLoadPacletDependency[dep_String?(StringEndsQ["`"]), ops:OptionsPattern[]]:=
 	Internal`WithLocalSettings[
-		System`Private`NewContextPath[{"System`", dep}];,
+		System`Private`NewContextPath[{dep, "System`"}];,
 		If[PackageCheckPacletDependency[dep],
 			If[TrueQ@OptionValue["Update"],
 				PackageUpdatePacletDependency[dep,
@@ -2151,7 +2153,7 @@ Clear[`PackageScope`Private`$PackageScopedSymbols];
 (*EndPackage / Reset $ContextPath*)
 
 
-System`Private`ResetContextPath[]
+System`Private`RestoreContextPath[]
 EndPackage[];
 
 

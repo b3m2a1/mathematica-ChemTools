@@ -272,7 +272,14 @@ Cell[CellGroupData[{
 Cell["\[LeftCeiling]zmBits\[RightFloor]", "CodeSubsubsubsection",
  Evaluatable->True,ExpressionUUID->"2a392d8c-15cc-49d8-abc7-ab86ed227205"],
 
-Cell[BoxData[{
+Cell["\<\
+\[LeftCeiling]
+\tNorm calc
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"e6d77cc0-5d81-414f-ad7a-bfdd6f2db036"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{"zmNorm", "=", "\n", "\t", 
    RowBox[{"Function", "[", 
@@ -281,7 +288,16 @@ Cell[BoxData[{
       RowBox[{"crd1", ",", "crd2"}], "}"}], ",", "\n", "\t\t", 
      RowBox[{"Norm", "[", 
       RowBox[{"crd2", "-", "crd1"}], "]"}]}], "\n", "\t\t", "]"}]}], 
-  ";"}], "\n", 
+  ";"}]], "CodeInput",ExpressionUUID->"d2b78e0c-bf8b-42a5-a181-a2ce05f61641"],
+
+Cell["\<\
+\[LeftCeiling]
+\tAngle calc
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"8bf24b02-b1f7-440b-92cb-d3dbd651ff7b"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{"zmVAngle", "=", "\n", "\t", 
    RowBox[{"Function", "[", 
@@ -298,7 +314,17 @@ Cell[BoxData[{
         RowBox[{"!", 
          RowBox[{"TrueQ", "[", "$ZMatrixInRadians", "]"}]}], ",", " ", 
         RowBox[{"1", "/", "Degree"}], ",", " ", "1"}], "]"}]}]}], "\n", 
-    "\t\t", "]"}]}], ";"}], "\n", 
+    "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"ba1e3b01-c278-46e1-a8bb-3fc3b37a67e9"],
+
+Cell["\<\
+\[LeftCeiling]
+\tDihedral calc
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"129f9d25-ec58-428c-bd63-e3db841400c8"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{"zmDAngle", "=", "\n", "\t", 
    RowBox[{"Function", "[", 
@@ -306,31 +332,45 @@ Cell[BoxData[{
      RowBox[{"{", 
       RowBox[{"crd1", ",", "crd2", ",", "crd3", ",", "crd4"}], "}"}], ",", 
      "\n", "\t\t", 
-     RowBox[{"With", "[", 
+     RowBox[{"Module", "[", "\n", "\t\t\t", 
       RowBox[{
-       RowBox[{"{", 
-        RowBox[{"caxis", "=", 
-         RowBox[{"crd3", "-", "crd2"}]}], "}"}], ",", "\n", "\t\t\t", 
+       RowBox[{"{", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"b1", "=", 
+          RowBox[{"crd2", "-", "crd1"}]}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"b2", "=", 
+          RowBox[{"crd3", "-", "crd2"}]}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"b3", "=", 
+          RowBox[{"crd4", "-", "crd3"}]}], ",", "\n", "\t\t\t\t", "n1", ",", 
+         "\n", "\t\t\t\t", "n2", ",", "\n", "\t\t\t\t", "m1"}], "\n", 
+        "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", 
        RowBox[{
-        RowBox[{"VectorAngle", "[", "\n", "\t\t\t\t", 
-         RowBox[{
+        RowBox[{"n1", "=", 
+         RowBox[{"Normalize", "@", 
           RowBox[{"Cross", "[", 
-           RowBox[{
-            RowBox[{"crd4", "-", "crd3"}], ",", "caxis"}], "]"}], ",", "\n", 
-          "\t", "\t\t\t", 
+           RowBox[{"b1", ",", " ", "b2"}], "]"}]}]}], ";", "\n", "\t\t\t", 
+        RowBox[{"n2", "=", 
+         RowBox[{"Normalize", "@", 
           RowBox[{"Cross", "[", 
-           RowBox[{
-            RowBox[{"crd2", "-", "crd1"}], ",", 
-            RowBox[{"-", "caxis"}]}], "]"}]}], "\n", "\t\t\t\t", "]"}], "*", 
-        RowBox[{"If", "[", 
-         RowBox[{
-          RowBox[{"!", 
-           RowBox[{"TrueQ", "[", "$ZMatrixInRadians", "]"}]}], ",", " ", 
-          RowBox[{"1", "/", "Degree"}], ",", " ", "1"}], "]"}]}]}], "\n", 
-      "\t", "\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
-  ";"}]}], "CodeInput",ExpressionUUID->"d2b78e0c-bf8b-42a5-a181-a2ce05f61641"]\
-
-}, Closed]],
+           RowBox[{"b2", ",", " ", "b3"}], "]"}]}]}], ";", "\n", "\t\t\t", 
+        RowBox[{"m1", "=", 
+         RowBox[{"Cross", "[", 
+          RowBox[{"n1", ",", " ", 
+           RowBox[{"Normalize", "[", "b2", "]"}]}], "]"}]}], ";", "\n", 
+        "\t\t\t", 
+        RowBox[{
+         RowBox[{"ArcTan", "[", 
+          RowBox[{
+           RowBox[{"n1", ".", "n2"}], ",", " ", 
+           RowBox[{"m1", ".", "n2"}]}], "]"}], "*", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"!", 
+            RowBox[{"TrueQ", "[", "$ZMatrixInRadians", "]"}]}], ",", " ", 
+           RowBox[{"1", "/", "Degree"}], ",", " ", "1"}], "]"}]}]}]}], "\n", 
+      "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"61dc0919-3c97-4b37-8ab3-6a41118de60a"]
+}, Open  ]],
 
 Cell[CellGroupData[{
 

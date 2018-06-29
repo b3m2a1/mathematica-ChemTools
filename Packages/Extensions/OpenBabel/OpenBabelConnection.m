@@ -57,7 +57,7 @@ OBParse::usage=
 
 
 
-OBMolecularEnergy::usage="A basic energy calculator";
+OBForceFieldEnergy::usage="A basic energy calculator";
 OBFormatConvert::usage="A molecular format converter";
 OBRingMap::usage="Maps a function over a molecule"
 
@@ -330,13 +330,19 @@ obabWriteTmp[fil_, string_]:=
 
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*$OBOptions*)
+
+
+
 $OBOptions=<|
 	"ImportStart"->"f",
 	"ImportEnd"->"l",
+	"OutputFile"->"O",
 	"SingleMolecule"->"t",
 	"IgnoreErrors"->"e",
 	"CompressOutput"->"z",
-	"MultipleOutputs"->"m"
+	"MultipleOutputs"->"m",
 	"DeleteHydrogens"->"d",
 	"AddHydrogens"->"h",
 	"pHAppropriateHydrogens"->"p",
@@ -348,61 +354,82 @@ $OBOptions=<|
 	|>;
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*OBParamConvert*)
+
+
+
+OBParamConvert//Clear
+
+
+OBParamConvert[v_String]:=
+	If[StringLength@DirectoryName[v]>0&&DirectoryQ@DirectoryName[v],
+		ExpandFileName[v],
+		v
+		];
+OBParamConvert[e_]:=
+	ToString[e]
+
+
 (* ::Subsubsection::Closed:: *)
 (*obabRun*)
 
 
 
 obabRun[a_]:=
-	Block[{
-		babelDir=
-			Replace[
-				Lookup[a, "OpenBabel", $OpenBabel],
-				OpenBabel[d_, ___]:>d
-				],
-		binary=
-			Replace[
-				Lookup[a, "Mode", Automatic],
-				{
-					OpenBabel[d_, m_]:>m,
-					Except[_String]->
-						Replace[Lookup[a, "OpenBabel", $OpenBabel],
-							{
-								OpenBabel[d_, m_]:>m,
-								_->"obabel"
-								}
-							]
-					}
-				],
-		processDir=a["Directory"],
-		inputData=a["Input"],inputFiles,
-		outputSpecs=a["Output"],
-		babelOps=Lookup[a,"Options",{}]
-		},
-		binary=FileNameJoin@{babelDir,"bin",binary};
-		If[!FileExistsQ@binary,Return[$Failed]];
-		(* set process directory *)
-		processDir=
-			Replace[processDir,{
-				Automatic:>
-					Switch[inputData,
-						_String?FileExistsQ,
-							DirectoryName@inputData,
-						_->$TemporaryDirectory
-						],
-				Except[_String?DirectoryQ]->
-					$TemporaryDirectory
-				}];
+	Block[
+		{
+			babelDir=
+				Replace[
+					Lookup[a, "OpenBabel", $OpenBabel],
+					OpenBabel[d_, ___]:>d
+					],
+			binary=
+				Replace[
+					Lookup[a, "Mode", Automatic],
+					{
+						OpenBabel[d_, m_]:>m,
+						Except[_String]->
+							Replace[Lookup[a, "OpenBabel", $OpenBabel],
+								{
+									OpenBabel[d_, m_]:>m,
+									_->"obabel"
+									}
+								]
+						}
+					],
+			processDir=a["Directory"],
+			inputData=a["Input"],
+			inputFiles,
+			outputSpecs=a["Output"],
+			babelOps=Lookup[a, "Options", {}],
+			runData,
+			obcommand
+			},
+		binary=FileNameJoin@{babelDir, "bin", binary};
+		If[!FileExistsQ@binary, 
+			PackageRaiseException[
+				"OpenBabelRun",
+				"No OpenBabel binary found at ``",
+				"MessageParameters"->{binary}
+				]
+			];
 		(* gather input files *)
 		inputFiles=
 			Switch[inputData,
 				_String?FileExistsQ,
-					<|FileNameTake@inputData->inputData|>,
+					<|FileNameTake@inputData->ExpandFileName@inputData|>,
+				{__String?FileExistsQ},
+					Association@
+						Map[
+							FileNameTake@#->ExpandFileName@#&,
+							inputData
+							],
 				_String,
 					With[
 						{
 							filname=
-								FileNameJoin@{processDir,"input"}
+								FileNameJoin@{processDir, "input"}
 								},
 						<|
 							FileNameTake@filname->
@@ -423,33 +450,84 @@ obabRun[a_]:=
 						"MessageParameters"->{inputData}
 						]
 				];
-			babelOps=
-				Replace[Flatten@{Normal@babelOps},{
-					(k_->True):>
-						If[KeyMemberQ[$OBOptions,k],
-							"-"<>$OBOptions[k],
-							k
+		(* set process directory *)
+		processDir=
+			Replace[processDir,
+				{
+					Automatic:>
+						Switch[inputFiles[[1]],
+							_String?FileExistsQ,
+								DirectoryName@inputFiles[[1]],
+							_, 
+								$TemporaryDirectory
 							],
-					(_->False)->
-						Nothing,
-					(k_->v_):>
-						(Lookup[$OBOptions,k,k]->ToString@v)
-					},
-					1];
-			RunProcess[Flatten@{
-				binary,
-				Values@inputFiles,
-				Sequence@@babelOps
-				},
-				ProcessDirectory->processDir,
-				ProcessEnvironment->
-					StringJoin@
-						Riffle[{
-							babelDir,
-							DirectoryName@binary,
-							Environment["PATH"]
-							},":"
-							]
+					Except[_String?DirectoryQ]->
+						$TemporaryDirectory
+					}
+				];
+			babelOps=
+				Replace[
+					Flatten@{Normal@babelOps},
+					{
+						(k_->True):>
+							If[KeyExistsQ[$OBOptions, k],
+								"-"<>$OBOptions[k],
+								k
+								],
+						(_->False)->
+							Nothing,
+						(k_->v_):>
+							(
+								"-"<>Lookup[$OBOptions, k, k]<>""<>
+									OBParamConvert[v]
+								)
+						},
+					1
+					];
+			obcommand=
+				Flatten@
+						{
+							FileBaseName@binary,
+							ExpandFileName/@Values@inputFiles,
+							Sequence@@babelOps
+							};
+			If[Lookup[a, "EchoCommand", False],
+				Echo@obcommand
+				];
+			runData=
+				RunProcess[
+					obcommand,
+					ProcessDirectory->
+						processDir,
+					ProcessEnvironment->
+						<|
+							"PATH"->
+								StringJoin@
+									Riffle[
+										{
+											DirectoryName@binary,
+											FileNameJoin@{babelDir, "bin"},
+											Environment["PATH"]
+											},
+										":"
+										]
+							|>
+					];
+			If[Lookup[a, "EmitMessages", False],
+				With[{errdats=StringTrim@runData["StandardError"]},
+					If[StringLength[errdats]>0,
+						Message[OpenBabel::runerr,errdats]
+						]
+					];
+				Replace[runData["StandardOutput"], 
+					_String?(StringMatchQ[Whitespace])|""->Null
+					],
+				Replace[
+					StringTrim[
+						runData["StandardError"]<>"\n\n"<>runData["StandardOutput"]
+						], 
+					""->Null
+					]
 				]
 		]
 
@@ -540,6 +618,49 @@ pybelRunProcessRun[a_]:=
 
 
 (* ::Subsubsubsection::Closed:: *)
+(*pybelSessionStart*)
+
+
+
+pybelSessionStart[sessionTag_, processDir_, babelDir_]:=
+	PySessionStart[sessionTag,
+		ProcessDirectory->
+			processDir,
+		ProcessEnvironment-><|
+			"PATH"->
+				Environment["PATH"],
+			"PYTHONPATH"->
+				StringRiffle[
+					{
+						FileNameJoin@{babelDir, "lib", $OBPythonInterpreter,"site-packages"},
+						FileNameJoin@{babelDir, "scripts", "python"}
+						},
+					":"
+					]
+			|>
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*pybelSessionRunInputFile*)
+
+
+
+pybelSessionRunInputFile[sessionTag_, inputFile_]:=
+	PySessionRun[sessionTag,
+		"_pybel_tmp_file = open('"<>ExpandFileName@inputFile<>"')"
+			<>"\n"<>
+		"try:"
+			<>"\n\t"<>
+		"exec(_pybel_tmp_file.read())"
+			<>"\n"<>
+		"finally:"
+			<>"\n\t"<>
+			"_pybel_tmp_file.close()"
+		]
+
+
+(* ::Subsubsubsection::Closed:: *)
 (*pybelSessionRun*)
 
 
@@ -555,68 +676,66 @@ pybelSessionRun[a_, sessionTag_:"pybel"]:=
 				],
 		processDir=a["Directory"],
 		inputFile=a["Input"],
-		outputSpecs=a["Output"]
+		outputSpecs=a["Output"],
+		tmpFile
 		},
 		If[!
 			AllTrue[{
-				{"lib",$OBPythonInterpreter,"site-packages"},
-				{"lib","_openbabel.so"}
+				{"lib", $OBPythonInterpreter, "site-packages"},
+				{"lib", "_openbabel.so"}
 				},
 				FileExistsQ@FileNameJoin@Flatten@{babelDir,#}&
 				],
 			Return[$Failed]
 			];
 		processDir=
-			Replace[processDir,{
-				Automatic:>
-					Switch[inputFile,
-						_String?FileExistsQ,
-							DirectoryName@inputFile,
-						_->$TemporaryDirectory
-						],
-				Except[_String?DirectoryQ]->
-					$TemporaryDirectory
-				}];
+			Replace[processDir,
+				{
+					Automatic:>
+						Switch[inputFile,
+							_String?FileExistsQ,
+								DirectoryName@inputFile,
+							_,
+								$TemporaryDirectory
+							],
+					Except[_String?DirectoryQ]->
+						$TemporaryDirectory
+					}
+				];
 		inputFile=
 			Switch[inputFile,
 				_String?FileExistsQ,
-					Import[inputFile,"Text"],
-				_String,
 					inputFile,
+				_String,
+					tmpFile=CreateFile[];
+					Export[tmpFile, inputFile, "Text"];
+					inputFile=tmpFile,
 				_Association|_List,
-					Sequence@@
-						Replace[Flatten@{Normal@inputFile},{
-							(fn_->s_):>
-								s
-							},
-						1
-						]
+					tmpFile=CreateFile[];
+					Export[tmpFile, 
+						StringRiffle[
+							Replace[Flatten@{Normal@inputFile},{
+								(fn_->s_):>
+									s
+								},
+							1
+							],
+							"\n\n"
+							],
+						"Text"
+						];
+					inputFile=tmpFile
 				];
 			With[{
 				t1=
-					PySessionRun[sessionTag,
-						inputFile
-						]
+					pybelSessionRunInputFile[sessionTag, inputFile]
 				},
 				If[!AssociationQ@t1,
-					PySessionStart[sessionTag,
-						ProcessDirectory->
-							processDir,
-						ProcessEnvironment-><|
-							"PATH"->
-								Environment["PATH"],
-							"PYTHONPATH"->
-								StringJoin@
-									Riffle[{
-										FileNameJoin@{babelDir,"lib",$OBPythonInterpreter,"site-packages"},
-										FileNameJoin@{babelDir,"scripts","python"}
-										},":"
-										]
-							|>
+					pybelSessionStart[sessionTag,
+						processDir,
+						babelDir
 						];
-					PySessionRun[sessionTag,
-						inputFile
-						],
+					pybelSessionRunInputFile[sessionTag, inputFile],
 					t1
 					]
 				]
@@ -633,8 +752,34 @@ pybelRun[a_]:=
 	Replace[Lookup[a, "Session", Options[OBPyRun, "Session"][[1, 2]]],
 		{
 			True:>pybelSessionRun@a,
+			"Close":>
+				(
+					PySessionRemove["pybel"];
+					<| 
+						"StandardError"->"",
+						"StandardOutput"->""
+						|>
+					),
+			"Restart":>
+				(
+					PySessionRemove["pybel"];
+					pybelSessionRun@a
+					),
 			s_String?(StringMatchQ[(WordCharacter|"-")..]):>
 				pybelSessionRun[a, s],
+			{"Close", s_String?(StringMatchQ[(WordCharacter|"-")..])}:>
+				(
+					PySessionRemove[s];
+					<| 
+						"StandardError"->"",
+						"StandardOutput"->""
+						|>
+					),
+			{"Restart", s_String?(StringMatchQ[(WordCharacter|"-")..])}:>
+				(
+					PySessionRemove[s];
+					pybelSessionRun[a, s]
+					),
 			Automatic:>
 				If[PySessionActive["pybel"],
 					pybelSessionRun@a,
@@ -651,6 +796,13 @@ pybelRun[a_]:=
 
 
 
+Options[OBRun]=
+	{
+		"EmitMessages"->False,
+		"EchoCommand"->False,
+		"Directory"->Automatic,
+		"Mode"->Automatic
+		};
 OBRun[a_Association]:=
 PackageExceptionBlock["OpenBabelRun"]@
 	Block[{babelDir, binary},
@@ -672,27 +824,27 @@ PackageExceptionBlock["OpenBabelRun"]@
 				];
 		babelDir=
 			Replace[a["Directory"],
-				Automatic|Except[_String?DirectoryQ]:>
-				Replace[a["Mode"],
-					{
-						s_String?FileExistsQ:>
-							Replace[
-								FileNameJoin@
-									SequenceCases[FileNameSplit@s,
-										{base__,$obprefix,___}:>
-											FileNameJoin@{base,$obprefix}
-										],{
-								{d_}:>d,
-								_->$OBDir
-								}],
-						_->
-							$OBDir
-						}]
+				Except[_String?DirectoryQ]:>
+					Replace[a["Mode"],
+						{
+							s_String?FileExistsQ:>
+								Replace[
+									FileNameJoin@
+										SequenceCases[FileNameSplit@s,
+											{base__, $obprefix,___}:>
+												FileNameJoin@{base,$obprefix}
+											],{
+									{d_}:>d,
+									_->$OBDir
+									}],
+							_->
+								Automatic
+							}]
 				];
 		Switch[binary,
 			"Pybel",
 				pybelRun@Merge[{a,
-					"Directory"->babelDir,
+					"Directory"->Replace[babelDir, Automatic->$OBDir],
 					"Input"->
 						Replace[a["Input"],
 							inp_Association:>
@@ -707,7 +859,10 @@ PackageExceptionBlock["OpenBabelRun"]@
 OBRun[f_String?FileExistsQ,args___String, ops___?OptionQ]:=
 	OBRun@<|
 		"Input"->{f, args},
-		"Options"->Flatten@{ops}
+		"Options"->
+			FilterRules[Flatten@{ops}, Except[Options@OBRun]],
+		Sequence@@
+			FilterRules[Flatten@{ops}, Options@OBRun]
 		|>;
 
 
@@ -782,44 +937,55 @@ OBPyCommand[
 	molecules_:{},
 	body_
 	]:=
-	PackageExceptionBlock["FormatConvert"]@
-		PyColumn@Flatten@{
-			$OBPyHeader,
-			MapIndexed[
-				Replace[#,
-					{
-						(fmt_->thing_->name_String):>
-							OBPyMoleculeString[
-								fmt->thing,
-								name
-								],
-						(thing_->name_String?(StringMatchQ[(WordCharacter|"_")..])):>
-							OBPyMoleculeString[
-								thing,
-								name
-								],
-						(fmt_String->thing:Except[_String?(StringMatchQ[(WordCharacter|"_")..])]):>
-							OBPyMoleculeString[
-								fmt->thing,
-								"pybelMol"<>If[#2[[1]]>1,ToString@First@#2,""]
-								],
-						_:>
-							OBPyMoleculeString[
-								#,
-								"pybelMol"<>If[#2[[1]]>1,ToString@First@#2,""]
-								]
-						}
-					]&,
-				If[!ListQ[molecules]||ChemFormatsDetect[molecules]==="MolTable",
-					{molecules},
-					molecules
+	PackageExceptionBlock["OpenBabelRun"]@
+		Module[{basecmd, stringcounter},
+			basecmd=
+			PyColumn@Flatten@{
+				$OBPyHeader,
+				MapIndexed[
+					Replace[#,
+						{
+							(fmt_->thing_->name_String):>
+								OBPyMoleculeString[
+									fmt->thing,
+									name
+									],
+							(thing_->name_String?(StringMatchQ[(WordCharacter|"_")..])):>
+								OBPyMoleculeString[
+									thing,
+									name
+									],
+							(fmt_String->thing:Except[_String?(StringMatchQ[(WordCharacter|"_")..])]):>
+								OBPyMoleculeString[
+									fmt->thing,
+									"pybelMol"<>If[#2[[1]]>1,ToString@First@#2,""]
+									],
+							_:>
+								OBPyMoleculeString[
+									#,
+									"pybelMol"<>If[#2[[1]]>1,ToString@First@#2,""]
+									]
+							}
+						]&,
+					If[!ListQ[molecules]||ChemFormatsDetect[molecules]==="MolTable",
+						{molecules},
+						molecules
+						]
+					],
+				If[SymbolicPythonQ[body]||StringQ[Unevaluated[body]],
+					body,
+					ToSymbolicPython[body]
 					]
-				],
-			If[SymbolicPythonQ[body]||StringQ[Unevaluated[body]],
-				body,
-				ToSymbolicPython[body]
+				};
+		basecmd=ToPython@basecmd;
+		If[!StringQ@basecmd, 
+			PackageRaiseException["OpenBabelRun",
+				"Input `` could not be converted to python",
+				"MessageParameters"->{HoldForm[body]}
 				]
-			}//ToPython;
+			];
+		basecmd(*//StringDelete["\n\n"]*)
+		];
 OBPyCommand~SetAttributes~HoldRest
 
 
@@ -838,6 +1004,9 @@ OpenBabel::runerr="Error in OpenBabel run:
 ``";
 
 
+OBPyRun//Clear
+
+
 Options[OBPyRun]=
 	{
 		"OpenBabel"->Automatic,
@@ -854,6 +1023,7 @@ OBPyRun[
 	ops:OptionsPattern[]
 	]:=
 	PackageExceptionBlock["FormatConvert"]@
+	PackageExceptionBlock["OpenBabelRun"]@
 		With[{f=$OBPyRunFileString=OBPyCommand[molecules, body]},
 			If[OptionValue["EchoFile"],
 				Echo[f]
@@ -876,8 +1046,19 @@ OBPyRun[
 						]
 					]
 				];
+		Replace[
+			s_String:>
+				Replace[
+					Quiet@
+						ImportString[
+							StringReplace[s, "'"->"\""],
+							"JSON"
+							], 
+					$Failed->s
+					]
+			]@
 			If[Length[#]===1,
-				If[StringLength@#[[1]]>0,#[[1]]],
+				If[StringLength@#[[1]]>0, #[[1]]],
 				#
 				]&@
 			Lookup[
@@ -893,23 +1074,48 @@ OBPyRun~SetAttributes~HoldAll
 
 
 (* ::Subsubsection::Closed:: *)
-(*OBMolecularEnergy*)
+(*OBForceFieldEnergy*)
 
 
 
-OBMolecularEnergy[molecule_,ops:OptionsPattern[]]:=
-	OBPyRun[molecule,
-		ff = openbabel.OBForceField.FindForceField[PyString@"MMFF94"];
-		If[ff == 0,
-		  Print["Could not find forcefield"]
-		  ];
-		ff.SetLogLevel[openbabel."OBFF_LOGLVL_HIGH"];
-		ff.SetLogToStdErr[];
-		If[ff.Setup[pybelMol.OBMol] == 0,
-		  Print["Could not set up forcefield"]
-		  ];
-		Print[ff.Energy[]],
-		ops
+OBForceFieldEnergy[molecule_,ops:OptionsPattern[]]:=
+	With[
+		{
+			log=
+				Replace[
+					Lookup[{ops}, "LogLevel", "Medium"],
+					Except[_String]->"None"
+					],
+			ll=
+				Replace[Lookup[{ops}, "LogLevel", "Medium"], 
+					{
+						s_String:>
+							"OBFF_LOGLVL_"<>
+								StringTrim[ToUpperCase[s], "OBFF_LOGLVL_"],
+						_->
+							"OBFF_LOGLVL_NONE"
+						}
+					],
+			field=Lookup[{ops}, "ForceField", "UFF"]
+			},
+		OBPyRun[molecule,
+			ff = openbabel.OBForceField.FindForceField[PyString@field];
+			If[!ff,
+			  Throw["Could not find forcefield"]
+			  ];
+			ff.SetLogLevel[openbabel."OBFF_LOGLVL_NONE"];
+			ff.SetLogToStdOut[];
+			pybelMol.setup = ff.Setup[pybelMol.OBMol];
+			If[!pybelMol.setup,
+			  Throw["Could not set up forcefield"]
+			  ];
+			ff.SetLogLevel[openbabel.ll];
+			If[MemberQ[{PyString["None"], PyString["Low"]}, PyString@log], 
+				ff.Energy[]//Print,
+				ff.Energy[]
+				];,
+			Evaluate@FilterRules[{ops}, Except["LogLevel"|"ForceField"]]
+			]
 		]
 
 

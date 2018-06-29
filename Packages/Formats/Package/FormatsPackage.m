@@ -128,10 +128,26 @@ $ZMatrixInRadians=True
 
 
 
+(* ::Text:: *)
+(*
+	Norm calc
+*)
+
+
+
 zmNorm=
 	Function[{crd1,crd2},
 		Norm[crd2-crd1]
 		];
+
+
+(* ::Text:: *)
+(*
+	Angle calc
+*)
+
+
+
 zmVAngle=
 	Function[{crd1,crd2,crd3},
 		VectorAngle[
@@ -139,13 +155,30 @@ zmVAngle=
 			crd2-crd1
 			]*If[!TrueQ[$ZMatrixInRadians], 1/Degree, 1]
 		];
+
+
+(* ::Text:: *)
+(*
+	Dihedral calc
+*)
+
+
+
 zmDAngle=
 	Function[{crd1,crd2,crd3,crd4},
-		With[{caxis=crd3-crd2},
-			VectorAngle[
-				Cross[crd4-crd3,caxis],
-				Cross[crd2-crd1,-caxis]
-				]*If[!TrueQ[$ZMatrixInRadians], 1/Degree, 1]
+		Module[
+			{
+				b1=crd2-crd1,
+				b2=crd3-crd2,
+				b3=crd4-crd3,
+				n1,
+				n2,
+				m1
+				},
+			n1=Normalize@Cross[b1, b2];
+			n2=Normalize@Cross[b2, b3];
+			m1=Cross[n1, Normalize[b2]];
+			ArcTan[n1.n2, m1.n2]*If[!TrueQ[$ZMatrixInRadians], 1/Degree, 1]
 			]
 		];
 
