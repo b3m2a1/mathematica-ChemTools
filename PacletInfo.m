@@ -1,6 +1,6 @@
 Paclet[
   Name -> "ChemTools",
-  Version -> "1.2.5",
+  Version -> "1.2.6",
   Creator -> "b3m2a1@gmail.com",
   Description -> "A collection of tools for doing chemistry",
   Thumbnail -> "PacletIcon.png",

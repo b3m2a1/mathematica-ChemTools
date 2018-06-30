@@ -1277,16 +1277,16 @@ PackageRaiseException[tag_?StringQ]:=
 PackageRaiseException~SetAttributes~HoldFirst
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*PackageExceptionBlock*)
 
 
-$PackageErrorStackDepth=0;
-Protect[$PackageErrorStackDepth];
+$PackageExceptionStack={};
+Protect[$PackageExceptionStack];
 
 
 PackageExceptionBlock//Clear
-PackageExceptionBlock/:
+(*PackageExceptionBlock/:
 	HoldPattern[
 		SetDelayed[lhs_, 
 			peb:PackageExceptionBlock[_, _String]
@@ -1297,18 +1297,20 @@ PackageExceptionBlock/:
 			$PackageExceptionBlockResult=peb;
 			peb/;!FailureQ@peb
 			]
-		];
+		];*)
 PackageExceptionBlock[
 	expr_,
 	tag_String
 	]:=
 	Block[
 		{
-			$PackageErrorStackDepth=$PackageErrorStackDepth+1,
+			$PackageExceptionStack=
+				Append[$PackageExceptionStack, tag],
 			result
 			},
 		result=PackageCatchException[expr, tag, #&];
-		If[FailureQ@result&&$PackageErrorStackDepth>1,
+		If[MatchQ[result, Failure[_String?(StringEndsQ[tag]), _]]&&
+			MemberQ[Most@$PackageExceptionStack, tag],
 			PackageThrowException[result]
 			];
 		result(*/;!FailureQ@result*)

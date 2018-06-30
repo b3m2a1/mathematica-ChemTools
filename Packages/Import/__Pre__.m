@@ -10,6 +10,9 @@
 
 
 
+`Private`$ImportRegistered//Clear
+
+
 (* ::Subsubsection::Closed:: *)
 (*MolTable*)
 
@@ -19,17 +22,13 @@ If[!TrueQ[`Private`$ImportRegistered["MolTable"]],
 	ImportExport`RegisterImport[
 		"MolTable",
 		ChemImportMolTable,
-		{ 
-			"Graphics" :> 
-				Function@
-					With[{`Private`paramList={##}}, 
-						ChemGraphics[Rest@#, Rest@`Private`paramList]&/@#
-						],
-			"Graphics3D" :> 
-				Function@
-					With[{`Private`paramList={##}}, 
-						ChemGraphics3D[Rest@#, Rest@`Private`paramList]&/@#
-						]
+		{
+			"Atoms" :> ChemImportPostProcessElementPositions,
+			"Bonds" :> ChemImportPostProcessBondLists,
+			"AtomsBonds" :> ChemImportPostProcessElementsBonds,
+			"Properties" :> ChemImportPostProcessSupplementaryInfo,
+			"Graphics" :> ChemImportPostProcessGraphics,
+			"Graphics3D" :> ChemImportPostProcessGraphics3D
 			},
 		"FunctionChannels"->{"Streams"}
 		];
@@ -38,28 +37,47 @@ If[!TrueQ[`Private`$ImportRegistered["MolTable"]],
 
 
 (* ::Subsubsection::Closed:: *)
-(*Chemical Structure*)
+(*Entity*)
 
 
 
-If[!TrueQ[`Private`$ImportRegistered["ChemicalStructure"]],
+If[!TrueQ[`Private`$ImportRegistered["ChemEntity"]],
 	ImportExport`RegisterImport[
-		"ChemicalStructure",
-		ChemImportChemicalStructure,
+		"ChemEntity",
+		ChemImportEntity,
 		{
-			"ElementPositions":>
-				Replace[
-					{
-						`Private`l:
-							{{{{__Integer}, ___}, ___}, ___}:>
-								Map[Cases[First@#, {_String, _List}]&, `Private`l],
-						`Private`l:{{{__Integer}, ___}, ___}:>
-							Cases[First@`Private`l, {_String, _List}]
-						}
-					]
+			"Atoms" :> ChemImportPostProcessElementPositions,
+			"Bonds" :> ChemImportPostProcessBondLists,
+			"AtomsBonds" :> ChemImportPostProcessElementsBonds,
+			"Properties" :> ChemImportPostProcessSupplementaryInfo,
+			"Graphics" :> ChemImportPostProcessGraphics,
+			"Graphics3D" :> ChemImportPostProcessGraphics3D
 			}
 		];
-	`Private`$ImportRegistered["ChemicalStructure"]=True
+	`Private`$ImportRegistered["ChemEntity"]=True
+	]
+
+
+(* ::Subsubsection::Closed:: *)
+(*Format*)
+
+
+
+If[!TrueQ[`Private`$ImportRegistered["ChemFormat"]],
+	ImportExport`RegisterImport[
+		"ChemFormat",
+		ChemImportFormat,
+		{
+			"Atoms" :> ChemImportPostProcessElementPositions,
+			"Bonds" :> ChemImportPostProcessBondLists,
+			"AtomsBonds" :> ChemImportPostProcessElementsBonds,
+			"Properties" :> ChemImportPostProcessSupplementaryInfo,
+			"Graphics" :> ChemImportPostProcessGraphics,
+			"Graphics3D" :> ChemImportPostProcessGraphics3D
+			},
+		"FunctionChannels"->{"Streams"}
+		];
+	`Private`$ImportRegistered["ChemFormat"]=True
 	]
 
 
@@ -72,17 +90,13 @@ If[!TrueQ[`Private`$ImportRegistered["ZMatrix"]],
 	ImportExport`RegisterImport[
 		"ZMatrix",
 		ChemImportZMatrix,
-		{ 
-			"Graphics" :> 
-				Function@
-					With[{`Private`paramList={##}}, 
-						ChemGraphics[Rest@#, Rest@`Private`paramList]&/@#
-						],
-			"Graphics3D" :> 
-				Function@
-					With[{`Private`paramList={##}}, 
-						ChemGraphics3D[Rest@#, Rest@`Private`paramList]&/@#
-						]
+		{
+			"Atoms" :> ChemImportPostProcessElementPositions,
+			"Bonds" :> ChemImportPostProcessBondLists,
+			"AtomsBonds" :> ChemImportPostProcessElementsBonds,
+			"Properties" :> ChemImportPostProcessSupplementaryInfo,
+			"Graphics" :> ChemImportPostProcessGraphics,
+			"Graphics3D" :> ChemImportPostProcessGraphics3D
 			},
 		"FunctionChannels"->{"Streams"}
 		];
@@ -99,17 +113,13 @@ If[!TrueQ[`Private`$ImportRegistered["XYZTable"]],
 	ImportExport`RegisterImport[
 		"XYZTable",
 		ChemImportXYZ,
-		{ 
-			"Graphics" :> 
-				Function@
-					With[{`Private`paramList={##}}, 
-						ChemGraphics[Rest@#, Rest@`Private`paramList]&/@#
-						],
-			"Graphics3D" :> 
-				Function@
-					With[{`Private`paramList={##}}, 
-						ChemGraphics3D[Rest@#, Rest@`Private`paramList]&/@#
-						]
+		{
+			"Atoms" :> ChemImportPostProcessElementPositions,
+			"Bonds" :> ChemImportPostProcessBondLists,
+			"AtomsBonds" :> ChemImportPostProcessElementsBonds,
+			"Properties" :> ChemImportPostProcessSupplementaryInfo,
+			"Graphics" :> ChemImportPostProcessGraphics,
+			"Graphics3D" :> ChemImportPostProcessGraphics3D
 			},
 		"FunctionChannels"->{"Streams"}
 		];

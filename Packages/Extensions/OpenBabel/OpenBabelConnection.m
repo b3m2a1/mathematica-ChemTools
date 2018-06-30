@@ -38,6 +38,8 @@ OBOutput::usage=
 
 
 $OBPythonInterpreter::usage="The interpreter for OpenBabel";
+$OBPyRunFileString::usage="The string fed as an input to OpenBabel";
+$OBPyRunErrorMessage::usage="The error message returned from OpenBabel";
 
 
 OBRun::usage=
@@ -73,40 +75,26 @@ PyToolsLoad[]
 
 
 
-$eigen3src="http://bitbucket.org/eigen/eigen/get/3.2.10.zip";
+(* ::Subsubsection::Closed:: *)
+(*openbabelsrc*)
+
 
 
 $openbabelsrc=
 	"https://sourceforge.net/projects/openbabel/files/latest/download?source=files";
 
 
-eigenDownload[dir_String?DirectoryQ]:=
-		With[{
-			tmpDir=
-				CreateDirectory@
-					FileNameJoin@{
-						$TemporaryDirectory,
-						StringJoin@RandomSample[Alphabet[],10]
-						}
-			},
-			With[{
-				f=URLDownload[$eigen3src,FileNameJoin@{tmpDir,"eigen3_tmp.zip"}],
-				out=FileNameJoin@{dir,"eigen3"}
-				},
-				ExtractArchive[f,tmpDir];
-				DeleteFile[f];
-				If[DirectoryQ@out,DeleteDirectory[out,DeleteContents->True]];
-				CopyDirectory[First@FileNames["*",tmpDir],out];
-				Quiet@DeleteDirectory[tmpDir,DeleteContents->True];
-				Replace[
-					out,
-					Except[_String?FileExistsQ]->$Failed
-					]
-			]
-		];
+(* ::Subsubsection::Closed:: *)
+(*obprefix*)
+
 
 
 $obprefix="openbabel";
+
+
+(* ::Subsubsection::Closed:: *)
+(*openbabelDownload*)
+
 
 
 openbabelDownload[dir_String?DirectoryQ]:=
@@ -118,116 +106,160 @@ openbabelDownload[dir_String?DirectoryQ]:=
 						StringJoin@RandomSample[Alphabet[],10]
 						}
 			},
-			With[{
-				f=URLDownload[$openbabelsrc,
-					FileNameJoin@{tmpDir,"openbabel-src.tar.gz"}],
-				out=FileNameJoin@{dir,$obprefix}
-				},
-				ExtractArchive[f,tmpDir];
-				DeleteFile[f];
-				If[DirectoryQ@out,DeleteDirectory[out,DeleteContents->True]];
-				CopyDirectory[First@FileNames["*",tmpDir],out];
-				Quiet@DeleteDirectory[tmpDir,DeleteContents->True];
-				Replace[
-					out,
-					Except[_String?FileExistsQ]->$Failed
-					]
+			Monitor[
+				With[
+					{
+						f=URLDownload[$openbabelsrc,
+							FileNameJoin@{tmpDir,"openbabel-src.tar.gz"}],
+						out=FileNameJoin@{dir,$obprefix}
+						},
+					ExtractArchive[f,tmpDir];
+					DeleteFile[f];
+					If[DirectoryQ@out,DeleteDirectory[out,DeleteContents->True]];
+					CopyDirectory[First@FileNames["*",tmpDir],out];
+					Quiet@DeleteDirectory[tmpDir,DeleteContents->True];
+					Replace[
+						out,
+						Except[_String?FileExistsQ]:>
+							PackageRaiseException["OpenBabelBuild",
+								"OpenBabel failed to download to ``",
+								"MessageParameters"->{out}
+								]
+						]
+					],
+				Internal`LoadingPanel["Downloading OpenBabel"]
+				]
+		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*obDownload*)
+
+
+
+obDownload[parentDir_]:=
+	If[!FileExistsQ@FileNameJoin@{parentDir,$obprefix}||
+		Length[
+			Select[DirectoryQ]@
+				FileNames["*", FileNameJoin@{parentDir,$obprefix}]
+			]===0,
+		openbabelDownload@parentDir
+		]
+
+
+(* ::Subsubsection::Closed:: *)
+(*obNonEmptyDirQ*)
+
+
+
+obNonEmptyDirQ[parentDir_]:=
+	DirectoryQ@FileNameJoin@{parentDir,$obprefix}&&
+		Length[FileNames["*",FileNameJoin@{parentDir,$obprefix}]]>0
+
+
+(* ::Subsubsection::Closed:: *)
+(*obNoBinQ*)
+
+
+
+obNoBinQ[parentDir_]:=
+	!DirectoryQ@FileNameJoin@{parentDir,$obprefix,"bin"}
+
+
+(* ::Subsubsection::Closed:: *)
+(*obBuild*)
+
+
+
+obBuild//Clear
+
+
+OBBuild::nodir="Directory `` not found";
+obBuild[dir:_String?DirectoryQ|Automatic]:=
+	Module[
+		{
+			parentDir=ExpandFileName@dir
+			},
+		If[obNonEmptyDirQ[parentDir],
+			Function[Null, AbsoluteTiming[#], HoldFirst]@
+				{	
+					If[obNoBinQ[parentDir],
+						RunInTerminal[
+							{
+								CMakeBinary[],
+								FileNameJoin@{parentDir, $obprefix},
+								"-DCMAKE_INSTALL_PREFIX="<>
+									FileNameJoin@{parentDir, $obprefix},
+								"-DRUN_SWIG=ON",
+								"-DSWIG_EXECUTABLE="<>SwigBinary[],
+								"-DSWIG_DIR="<>SwigBuild[],
+								"-DPYTHON_BINDINGS=ON",
+								"-DEIGEN3_INCLUDE_DIR="<>EigenBuild[]
+								},
+							ProcessEnvironment-><|
+								"PATH"->
+									StringJoin@{
+										Environment["PATH"],
+										":",
+										Riffle[{
+												FileNameJoin@{parentDir,"cmake","bin"},
+												FileNameJoin@{parentDir,$obprefix}
+												},
+											":"
+											]
+										}
+								|>,
+							ProcessDirectory->
+								FileNameJoin@{parentDir,$obprefix}
+							]
+						],
+					If[!FileExistsQ@FileNameJoin@{
+								parentDir,
+								$obprefix,"build","bin","obabel"
+								},
+						RunInTerminal[{"make","install"},
+							ProcessDirectory->
+								ExpandFileName@FileNameJoin@{parentDir,$obprefix}
+							]
+						],
+					If[FileExistsQ@
+							FileNameJoin@{parentDir,$obprefix,"bin","obabel"},
+							FileNameJoin@{parentDir,$obprefix}
+							]
+					}//If[Last@Last@#=!=Null,
+						TemplateApply["Built to `pkg`. Took `time`.",
+								<|
+									"time"->(
+										$OBBuildLogs=Last@#;
+										UnitConvert[Quantity[First@#,"Seconds"],"Minutes"]
+										),
+									"pkg"->Last@Last@#
+									|>
+								],
+						PackageRaiseException[
+							"OpenBabelBuild",
+							"Failed to build OpenBabel to ``",
+							"MessageParameters"->{FileNameJoin@{parentDir,$obprefix}}
+							]
+						]&,
+			PackageRaiseException[
+				"OpenBabelBuild",
+				"Directory `` is the `` directory",
+				"MessageParameters"->{parentDir, $obprefix}
+				]
 			]
 		];
 
 
-OBBuild::nodir="Directory `` not found";
-obBuild[
-	dir_?DirectoryQ,
-	eigen:_String?DirectoryQ|Automatic:Automatic]:=
-	With[{parentDir=ExpandFileName@dir},
-	If[DirectoryQ@FileNameJoin@{parentDir,$obprefix}&&
-		Length[FileNames["*",FileNameJoin@{parentDir,$obprefix}]]>0,
-		AbsoluteTiming[{
-		If[(!DirectoryQ@FileNameJoin@{parentDir,$obprefix,"bin"})&&
-				cmakeCheck@parentDir,
-			terminalRun[{
-				If[FileExistsQ@FileNameJoin@{parentDir,"cmake","bin","cmake"},
-					FileNameJoin@{parentDir,"cmake","bin","cmake"},
-					"cmake"
-					],
-				FileNameJoin@{parentDir,$obprefix},
-				"-DCMAKE_INSTALL_PREFIX="<>
-					FileNameJoin@{parentDir,$obprefix},
-				"-DRUN_SWIG=ON",
-				"-DSWIG_EXECUTABLE="<>FileNameJoin@{parentDir,"swig","bin","swig"},
-				"-DSWIG_DIR="<>FileNameJoin@{parentDir,"swig"},
-				"-DPYTHON_BINDINGS=ON",
-				"-DEIGEN3_INCLUDE_DIR="<>
-					Replace[eigen,
-						Automatic:>FileNameJoin@{parentDir,"eigen3"}
-						]
-				},
-				ProcessEnvironment-><|
-					"PATH"->
-						StringJoin@{
-							Environment["PATH"],
-							":",
-							Riffle[{
-									FileNameJoin@{parentDir,"cmake","bin"},
-									FileNameJoin@{parentDir,$obprefix}
-									},
-								":"
-								]
-							}
-					|>,
-				ProcessDirectory->
-					FileNameJoin@{parentDir,$obprefix}
-				]
-			],
-		If[!FileExistsQ@FileNameJoin@{
-					parentDir,
-					$obprefix,"build","bin","obabel"
-					},
-			terminalRun[{"make","install"},
-				ProcessDirectory->
-					ExpandFileName@FileNameJoin@{parentDir,$obprefix}
-				]
-			],
-		If[FileExistsQ@
-				FileNameJoin@{parentDir,$obprefix,"bin","obabel"},
-				FileNameJoin@{parentDir,$obprefix}
-				]
-		}]//If[Last@Last@#=!=Null,
-			TemplateApply["Built to `pkg`. Took `time`.",
-					<|
-						"time"->(
-							$OBBuildLogs=Last@#;
-							UnitConvert[Quantity[First@#,"Seconds"],"Minutes"]
-							),
-						"pkg"->Last@Last@#
-						|>
-					],
-			$Failed
-			]&,
-		Message[OBBuild::nodir,FileNameJoin@{parentDir,$obprefix}]
-		]
-	];
-
-
 OBBuild[parentDir:_?DirectoryQ]:=
-	(
-		If[!cmakeCheck@parentDir,
-			cmakeBuild@parentDir
-			];
-		If[!FileExistsQ@FileNameJoin@{parentDir,"eigen3"},
-			eigenDownload@parentDir
-			];
-		SwigBuild[parentDir];
-		If[!FileExistsQ@FileNameJoin@{parentDir,$obprefix}||
-			Length[
-				Select[DirectoryQ]@
-					FileNames["*",FileNameJoin@{parentDir,$obprefix}]
-				]===0,
-			openbabelDownload@parentDir
-			];
-		obBuild@parentDir
-		);
+	PackageExceptionBlock["OpenBabelBuild"]@
+		(
+			CMakeBuild[];
+			EigenBuild[];
+			SwigBuild[];
+			obDownload[parentDir];
+			obBuild@parentDir
+			);
 OBBuild[Optional[Automatic,Automatic]]:=
 	OBBuild[DirectoryName[$OBDir]]
 
@@ -237,20 +269,86 @@ OBBuild[Optional[Automatic,Automatic]]:=
 
 
 
-$OBDir=ChemExtensionDir[$obprefix];
+(* ::Subsubsection::Closed:: *)
+(*FindOpenBabel*)
+
+
+
+$OpenBabelPath=
+	{
+		$ChemExtensionsApp,
+		$ChemExtensionsDev
+		}
+
+
+FindOpenBabel[]:=
+	Replace[
+		StringTrim@
+			RunProcess[			
+				{If[$OperatingSystem=="Windows","where", "which"], "obabel"},
+				"StandardOutput"
+				],
+		{
+			ob_String?(StringLength[#]>0&&FileExistsQ[#]&&OBDirQ[DirectoryName@#]&):>
+				DirectoryName@ob,
+			_:>
+				SelectFirst[
+					FileNames["*babel*",
+						$OpenBabelPath
+						],
+					OBDirQ,
+					ChemExtensionDir[$obprefix]
+					]
+			}
+		]
+
+
+(* ::Subsubsection::Closed:: *)
+(*$OpenBabel*)
+
+
+
+$OBDir:=$OBDir=FindOpenBabel[];
 $OpenBabel:=OpenBabel[$OBDir, "obabel"];
 
 
-$OBPythonInterpreter="python2.7";
+(* ::Subsubsection::Closed:: *)
+(*FindOBPythonInterpreter*)
 
 
-OBDirQ[babelDir_]:=
-	AllTrue[{
-		{"lib",$OBPythonInterpreter,"site-packages"},
-		{"lib","_openbabel.so"}
-		},
-		FileExistsQ@FileNameJoin@Flatten@{babelDir,#}&
-		]
+
+FindOBPythonInterpreter[dir_]:=
+	Replace[
+			FileNames["python*", FileNameJoin@{dir, "lib"}],
+			{
+				{f_, ___}:>
+					FileNameTake[f],
+				_->"python2.7"
+				}
+			]
+
+
+$OBPythonInterpreter:=
+	$OBPythonInterpreter=FindOBPythonInterpreter[$OBDir];
+
+
+(* ::Subsubsection::Closed:: *)
+(*OBDirQ*)
+
+
+
+OBDirQ//Clear
+
+
+OBDirQ[babelDir_String]:=
+	AllTrue[
+		{
+			{"lib", FindOBPythonInterpreter[babelDir], "site-packages"},
+			{"lib", "_openbabel.so"}
+			},
+		FileExistsQ@FileNameJoin@Flatten@{babelDir, #}&
+		];
+OBDirQ[_]:=False
 
 
 (* ::Subsubsection::Closed:: *)
@@ -315,6 +413,11 @@ Format[OpenBabel[dir_?OBDirQ, prog:_String:"obabel"]]:=
 
 (* ::Subsection:: *)
 (*Run*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*obabWriteTmp*)
 
 
 
@@ -547,23 +650,22 @@ $pybelSession:=
 
 
 pybelRunProcessRun[a_]:=
-	Block[{
-		babelDir=
-			Replace[Lookup[a, "OpenBabel", $OpenBabel],
-				OpenBabel[d_, ___]:>d
-				],
-		processDir=a["Directory"],
-		inputFile=a["Input"],
-		outputSpecs=a["Output"]
-		},
-		If[!
-			AllTrue[{
-				{"lib",$OBPythonInterpreter,"site-packages"},
-				{"lib","_openbabel.so"}
-				},
-				FileExistsQ@FileNameJoin@Flatten@{babelDir,#}&
-				],
-			Return[$Failed]
+	Block[
+		{
+			babelDir=
+				Replace[Lookup[a, "OpenBabel", $OpenBabel],
+					OpenBabel[d_, ___]:>d
+					],
+			processDir=a["Directory"],
+			inputFile=a["Input"],
+			outputSpecs=a["Output"]
+			},
+		If[!OBDirQ@babelDir,
+			PackageRaiseException[
+				"OpenBabelRun",
+				"Directory `` doesn't hold an OpenBabel installation",
+				"MessageParameters"->{babelDir}
+				]
 			];
 		processDir=
 			Replace[processDir,{
@@ -607,10 +709,18 @@ pybelRunProcessRun[a_]:=
 						Environment["PATH"],
 					"PYTHONPATH"->
 						StringJoin@
-							Riffle[{
-								FileNameJoin@{babelDir,"lib",$OBPythonInterpreter,"site-packages"},
-								FileNameJoin@{babelDir,"scripts","python"}
-								},":"
+							Riffle[
+								{
+									FileNameJoin@
+										{
+											babelDir, 
+											"lib", 
+											FindOBPythonInterpreter[babelDir],
+											"site-packages"
+											},
+									FileNameJoin@{babelDir, "scripts", "python"}
+									},
+								":"
 								]
 					|>
 				]
@@ -671,7 +781,7 @@ pybelSessionRun//Clear
 pybelSessionRun[a_, sessionTag_:"pybel"]:=
 	Block[{
 		babelDir=
-			Replace[Lookup[a, "OpenBabel", $OpenBabel],
+			Echo@Replace[Lookup[a, "OpenBabel", $OpenBabel],
 				OpenBabel[d_, ___]:>d
 				],
 		processDir=a["Directory"],
@@ -679,14 +789,12 @@ pybelSessionRun[a_, sessionTag_:"pybel"]:=
 		outputSpecs=a["Output"],
 		tmpFile
 		},
-		If[!
-			AllTrue[{
-				{"lib", $OBPythonInterpreter, "site-packages"},
-				{"lib", "_openbabel.so"}
-				},
-				FileExistsQ@FileNameJoin@Flatten@{babelDir,#}&
-				],
-			Return[$Failed]
+		If[!OBDirQ@babelDir,
+			PackageRaiseException[
+				"OpenBabelRun",
+				"Directory `` doesn't hold an OpenBabel installation",
+				"MessageParameters"->{babelDir}
+				]
 			];
 		processDir=
 			Replace[processDir,
@@ -843,15 +951,19 @@ PackageExceptionBlock["OpenBabelRun"]@
 				];
 		Switch[binary,
 			"Pybel",
-				pybelRun@Merge[{a,
-					"Directory"->Replace[babelDir, Automatic->$OBDir],
-					"Input"->
-						Replace[a["Input"],
-							inp_Association:>
-								OBPyConfig@inp
-							]
-					},
-					Last],
+				pybelRun@
+					Merge[
+						{
+							a,
+							"Directory"->Replace[babelDir, Automatic->$OBDir],
+							"Input"->
+								Replace[a["Input"],
+									inp_Association:>
+										OBPyConfig@inp
+									]
+							},
+						Last
+					],
 			_,
 				obabRun@Merge[{a, "Directory"->babelDir, "Mode"->binary},Last]
 				]
@@ -920,7 +1032,7 @@ OBPyMoleculeString[fmt_String->molspec:_List|_String, name_]:=
 		ChemFormatsCanonicalFormat[fmt]
 		];
 OBPyMoleculeString[molspec:_List|_String, name_]:=
-	With[{fmt=ChemFormatsDetect[molspec]},
+	With[{fmt=ChemFormatsDetect[molspec, True]},
 		OBPyMoleculeString[
 			fmt->molspec,
 			name
@@ -942,35 +1054,38 @@ OBPyCommand[
 			basecmd=
 			PyColumn@Flatten@{
 				$OBPyHeader,
-				MapIndexed[
-					Replace[#,
-						{
-							(fmt_->thing_->name_String):>
-								OBPyMoleculeString[
-									fmt->thing,
-									name
-									],
-							(thing_->name_String?(StringMatchQ[(WordCharacter|"_")..])):>
-								OBPyMoleculeString[
-									thing,
-									name
-									],
-							(fmt_String->thing:Except[_String?(StringMatchQ[(WordCharacter|"_")..])]):>
-								OBPyMoleculeString[
-									fmt->thing,
-									"pybelMol"<>If[#2[[1]]>1,ToString@First@#2,""]
-									],
-							_:>
-								OBPyMoleculeString[
-									#,
-									"pybelMol"<>If[#2[[1]]>1,ToString@First@#2,""]
-									]
-							}
-						]&,
-					If[!ListQ[molecules]||ChemFormatsDetect[molecules]==="MolTable",
-						{molecules},
-						molecules
-						]
+				If[molecules=!=None,
+					MapIndexed[
+						Replace[#,
+							{
+								(fmt_->thing_->name_String):>
+									OBPyMoleculeString[
+										fmt->thing,
+										name
+										],
+								(thing_->name_String?(StringMatchQ[(WordCharacter|"_")..])):>
+									OBPyMoleculeString[
+										thing,
+										name
+										],
+								(fmt_String->thing:Except[_String?(StringMatchQ[(WordCharacter|"_")..])]):>
+									OBPyMoleculeString[
+										fmt->thing,
+										"pybelMol"<>If[#2[[1]]>1,ToString@First@#2,""]
+										],
+								_:>
+									OBPyMoleculeString[
+										#,
+										"pybelMol"<>If[#2[[1]]>1,ToString@First@#2,""]
+										]
+								}
+							]&,
+						If[!ListQ[molecules]||ChemFormatsDetect[molecules, False]==="MolTable",
+							{molecules},
+							molecules
+							]
+						],
+					Nothing
 					],
 				If[SymbolicPythonQ[body]||StringQ[Unevaluated[body]],
 					body,
@@ -1016,7 +1131,7 @@ Options[OBPyRun]=
 		"EchoFile"->False
 		};
 OBPyRun[
-	molecules_:{},
+	molecules:_List|_String|_Rule|None:None,
 	body:Except[_Rule|_RuleDelayed|_FilterRules|{(_Rule|_RuleDelayed|_FilterRules)..}],
 	imps:"StandardError"|"StandardOutput"|{Repeated["StandardError"|"StandardOutput",2]}:
 		"StandardOutput",
@@ -1033,16 +1148,22 @@ OBPyRun[
 					OBRun[
 						<|
 							ops,
-							"OpenBabel"->Replace[OptionValue["OpenBabel"],Automatic:>$OBDir],
+							"OpenBabel"->
+								Replace[OptionValue["OpenBabel"], Automatic:>$OpenBabel],
 							"Mode"->"Pybel",
 							"Input"->f
 							|>
 						]
 				},
+			$OBPyRunErrorMessage=StringTrim@runData["StandardError"];
 			If[OptionValue["EmitMessages"],
 				With[{errdats=StringTrim@runData["StandardError"]},
 					If[StringLength[errdats]>0,
-						Message[OpenBabel::runerr,errdats]
+						PackageThrowMessage[
+							"OpenBabelError",
+							"Error in OpenBabel run:\n\n``",
+							"MessageParameters"->{errdats}
+							]
 						]
 					]
 				];
@@ -1050,10 +1171,9 @@ OBPyRun[
 			s_String:>
 				Replace[
 					Quiet@
-						ImportString[
-							StringReplace[s, "'"->"\""],
-							"JSON"
-							], 
+						Replace[ImportString[s, "RawJSON"], 
+							$Failed:>ImportString[StringReplace[s, "'"->"\""], "RawJSON"]
+							],
 					$Failed->s
 					]
 			]@

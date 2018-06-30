@@ -300,21 +300,82 @@ Cell[BoxData[
    3.7323949747089243`*^9},ExpressionUUID->"0e441802-d53a-4a41-b4f0-\
 a766f4473811"],
 
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]FindPsi4\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"32ba07db-327d-4921-9f79-725d6b7a5759"],
+
+Cell[BoxData[
+ RowBox[{"$Psi4Path", "=", "\n", "\t", 
+  RowBox[{"{", "\n", "\t\t", 
+   RowBox[{"$ChemExtensionsApp", ",", "\n", "\t\t", "$ChemExtensionsDev"}], 
+   "\n", "\t\t", 
+   "}"}]}]], \
+"CodeInput",ExpressionUUID->"87859e84-903f-487b-8300-2a75c6692ac5"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FindPsi4", "[", "]"}], ":=", "\n", "\t", 
+  RowBox[{"Replace", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"StringTrim", "@", "\n", "\t\t\t", 
+     RowBox[{"RunProcess", "[", "\t\t\t", "\n", "\t\t\t\t", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"$OperatingSystem", "\[Equal]", "\"\<Windows\>\""}], ",", 
+           " ", "\"\<where\>\"", ",", " ", "\"\<which\>\""}], "]"}], ",", 
+         " ", "\"\<psi4\>\""}], "}"}], ",", "\n", "\t", "\t", "\t", "\t", 
+       "\"\<StandardOutput\>\""}], "\n", "\t\t\t\t", "]"}]}], ",", "\n", 
+    "\t\t", 
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"psi4_String", "?", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"StringLength", "[", "#", "]"}], ">", "0"}], "&&", 
+           RowBox[{"FileExistsQ", "[", "#", "]"}], "&&", 
+           RowBox[{"psi4Q", "[", 
+            RowBox[{"Nest", "[", 
+             RowBox[{"DirectoryName", ",", " ", "#", ",", " ", "2"}], "]"}], 
+            "]"}]}], "&"}], ")"}]}], ":>", "\n", "\t\t\t\t", 
+       RowBox[{"Nest", "[", 
+        RowBox[{"DirectoryName", ",", " ", "psi4", ",", " ", "2"}], "]"}]}], 
+      ",", "\n", "\t\t\t", 
+      RowBox[{"_", ":>", "\n", "\t\t\t\t", 
+       RowBox[{"SelectFirst", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"FileNames", "[", 
+          RowBox[{"\"\<*psi*\>\"", ",", "\n", "\t\t\t\t\t\t", "$Psi4Path"}], 
+          "\n", "\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t", "psi4Q", ",", 
+         "\n", "\t\t\t\t\t", 
+         RowBox[{"ChemExtensionDir", "[", "\"\<psi4\>\"", "]"}]}], "\n", 
+        "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "}"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"5129cfea-5f43-42c5-9711-8a1eedf33976"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]$Psi4Dir\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"77e7c884-2516-4378-8fed-aa8c155810c7"],
+
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"$Psi4Dir", "=", 
-   RowBox[{"ChemExtensionDir", "[", "\"\<psi4\>\"", "]"}]}], ";"}], "\n", 
+  RowBox[{"$Psi4Dir", ":=", 
+   RowBox[{"$Psi4Dir", "=", 
+    RowBox[{"FindPsi4", "[", "]"}]}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{"$Psi4", ":=", 
-   RowBox[{"Psi4", "@", "$Psi4Dir"}]}], ";"}]}], "CodeInput",
- CellChangeTimes->{{3.6930176858489037`*^9, 3.693017709189357*^9}, {
-  3.693961847955546*^9, 3.693961864745289*^9}, {3.694049553201191*^9, 
-  3.6940495534228907`*^9}, {3.6940496184639874`*^9, 3.694049632765332*^9}, {
-  3.694983186110354*^9, 3.694983191786837*^9}, {3.71467288088306*^9, 
-  3.714672898123023*^9}, {3.714673016563662*^9, 3.7146730182320223`*^9}, {
-  3.71467334387904*^9, 
-  3.714673371268086*^9}},ExpressionUUID->"23e5410a-7ecd-46ec-9fd7-\
-5a09d7d05af0"]
+   RowBox[{"Psi4", "@", "$Psi4Dir"}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"23e5410a-7ecd-46ec-9fd7-5a09d7d05af0"]\
+
+}, Closed]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -335,7 +396,7 @@ Cell[BoxData[
   RowBox[{
    RowBox[{"psi4Download", "[", 
     RowBox[{"parentDir_", "?", "DirectoryQ"}], "]"}], ":=", "\n", "\t", 
-   RowBox[{"terminalRun", "[", 
+   RowBox[{"RunInTerminal", "[", 
     RowBox[{"{", "\n", "\t\t", 
      RowBox[{
      "\"\<git\>\"", ",", "\"\<clone\>\"", ",", "\"\<--recursive\>\"", ",", 
@@ -345,16 +406,100 @@ Cell[BoxData[
        RowBox[{"FileNameJoin", "@", 
         RowBox[{"{", 
          RowBox[{"parentDir", ",", "\"\<psi4\>\""}], "}"}]}]}]}], "\n", 
-     "\t\t", "}"}], "]"}]}], ";"}]], "CodeInput",
- CellChangeTimes->{{3.69288886167144*^9, 3.6928888751956873`*^9}, 
-   3.6928890031482563`*^9, {3.692895112962769*^9, 3.692895149503747*^9}, {
-   3.692895322812512*^9, 3.692895534167807*^9}, {3.692895661607231*^9, 
-   3.692895670929484*^9}, {3.692896380324155*^9, 3.692896404645656*^9}, {
-   3.692896435812254*^9, 3.692896438244317*^9}, {3.692916368808413*^9, 
-   3.6929163819926*^9}, {3.692916422223001*^9, 3.692916429468998*^9}, {
-   3.692916460285389*^9, 
-   3.692916461235633*^9}},ExpressionUUID->"ed251be3-5bbe-47a1-b569-\
-877bf318f082"]
+     "\t\t", "}"}], "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"ed251be3-5bbe-47a1-b569-877bf318f082"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]psi4DirInittedQ\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"b8a8c4cd-4af3-4037-9ad1-ac055631c4e2"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"psi4DirInittedQ", "[", "parentDir_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"DirectoryQ", "@", 
+   RowBox[{"FileNameJoin", "@", 
+    RowBox[{"{", 
+     RowBox[{"parentDir", ",", " ", "\"\<psi4\>\""}], 
+     "}"}]}]}]}]], \
+"CodeInput",ExpressionUUID->"d01152a8-4bd4-4580-8e56-8f7b73d082a3"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]psi4NoBinQ\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"dced52b7-45ee-4a71-9d3c-6a3bc4775e2c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"psi4HasBinQ", "[", "parentDir_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"FileExistsQ", "@", 
+   RowBox[{"FileNameJoin", "@", 
+    RowBox[{"{", 
+     RowBox[{
+     "parentDir", ",", " ", "\"\<psi4\>\"", ",", " ", "\"\<bin\>\"", ",", 
+      " ", "\"\<psi4\>\""}], 
+     "}"}]}]}]}]], \
+"CodeInput",ExpressionUUID->"8c59b2ae-4d04-446d-be8d-403e92df2923"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]psi4NoBuildDirQ\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"87b62cbd-9869-4ebb-a197-ab723f938af7"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"psi4NoBuildDirQ", "[", "parentDir_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"!", 
+   RowBox[{"DirectoryQ", "@", 
+    RowBox[{"FileNameJoin", "@", 
+     RowBox[{"{", 
+      RowBox[{
+      "parentDir", ",", " ", "\"\<psi4\>\"", ",", " ", "\"\<objdir\>\""}], 
+      "}"}]}]}]}]}]], \
+"CodeInput",ExpressionUUID->"f69959d5-4eca-49b1-9a4e-05808de9e81b"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]psi4BuildObjDir\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"bc80db38-5b4b-43db-9b05-8d284ca85280"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"psi4BuildObjDir", "[", "parentDir_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"ExpandFileName", "@", 
+   RowBox[{"FileNameJoin", "@", 
+    RowBox[{"{", 
+     RowBox[{"parentDir", ",", "\"\<psi4\>\"", ",", "\"\<objdir\>\""}], 
+     "}"}]}]}]}]], \
+"CodeInput",ExpressionUUID->"969bf5d5-36d2-466d-99b3-fbb98c449d5c"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]psi4BuildUnstagedQ\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"a05fb478-1e20-4403-b5ae-297cca1abb05"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"psi4BuildUnfinishedQ", "[", "parentDir_", "]"}], ":=", "\n", "\t", 
+  
+  RowBox[{"!", 
+   RowBox[{"DirectoryQ", "@", "\n", "\t\t\t", 
+    RowBox[{"FileNameJoin", "@", 
+     RowBox[{"{", "\n", "\t\t\t\t", 
+      RowBox[{
+      "parentDir", ",", "\n", "\t\t\t\t", "\"\<psi4\>\"", ",", 
+       "\"\<objdir\>\"", ",", "\"\<stage\>\"", ",", "\n", "\t\t\t\t", 
+       RowBox[{"FileNameTake", "[", 
+        RowBox[{
+         RowBox[{"ExpandFileName", "@", "parentDir"}], ",", "1"}], "]"}]}], 
+      "\n", "\t\t\t\t", 
+      "}"}]}]}]}]}]], \
+"CodeInput",ExpressionUUID->"88b6d7f3-934a-4892-bf5b-db75dea719a3"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -373,20 +518,11 @@ Cell[BoxData[{
     RowBox[{"parentDir_", "?", "DirectoryQ"}], "]"}], ":=", "\n", "\t", 
    RowBox[{"If", "[", 
     RowBox[{
-     RowBox[{"DirectoryQ", "@", 
-      RowBox[{"FileNameJoin", "@", 
-       RowBox[{"{", 
-        RowBox[{"parentDir", ",", " ", "\"\<psi4\>\""}], "}"}]}]}], ",", "\n",
-      "\t\t", 
+     RowBox[{"psi4DirInittedQ", "@", "parentDir"}], ",", "\n", "\t\t", 
      RowBox[{
       RowBox[{"If", "[", 
        RowBox[{
-        RowBox[{"FileExistsQ", "@", 
-         RowBox[{"FileNameJoin", "@", 
-          RowBox[{"{", 
-           RowBox[{
-           "parentDir", ",", " ", "\"\<psi4\>\"", ",", " ", "\"\<bin\>\"", 
-            ",", " ", "\"\<psi4\>\""}], "}"}]}]}], ",", "\n", "\t\t\t", 
+        RowBox[{"psi4HasBinQ", "@", "parentDir"}], ",", "\n", "\t\t\t", 
         RowBox[{"{", 
          RowBox[{"0", ",", " ", 
           RowBox[{"{", 
@@ -395,160 +531,95 @@ Cell[BoxData[{
              RowBox[{
              "parentDir", ",", " ", "\"\<psi4\>\"", ",", " ", "\"\<bin\>\""}],
               "}"}]}], "}"}]}], "}"}], ",", "\n", "\t\t\t", 
-        RowBox[{"AbsoluteTiming", "[", "\n", "\t\t\t\t", 
+        RowBox[{"AbsoluteTiming", "@", "\n", "\t\t\t\t", 
          RowBox[{"{", "\n", "\t\t\t\t\t", 
           RowBox[{
            RowBox[{"If", "[", 
             RowBox[{
-             RowBox[{
-              RowBox[{"(", 
-               RowBox[{"!", 
-                RowBox[{"DirectoryQ", "@", 
-                 RowBox[{"FileNameJoin", "@", 
-                  RowBox[{"{", 
-                   RowBox[{
-                   "parentDir", ",", " ", "\"\<psi4\>\"", ",", " ", 
-                    "\"\<objdir\>\""}], "}"}]}]}]}], ")"}], "&&", "\n", "\t", 
-              "\t", "\t", "\t\t\t\t", 
-              RowBox[{"CMakeCheck", "@", "parentDir"}]}], ",", "\n", "\t", 
-             "\t", "\t", "\t\t\t", 
-             RowBox[{"terminalRun", "[", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+             RowBox[{"psi4NoBuildDirQ", "@", "parentDir"}], ",", "\n", 
+             "\t\t\t\t\t\t", 
+             RowBox[{"RunInTerminal", "[", "\n", "\t\t\t\t\t\t\t", 
               RowBox[{
-               RowBox[{"{", "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
+               RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
                 RowBox[{
-                 RowBox[{"If", "[", 
-                  RowBox[{
-                   RowBox[{"FileExistsQ", "@", 
-                    RowBox[{"FileNameJoin", "@", 
-                    RowBox[{"{", 
-                    RowBox[{
-                    "parentDir", ",", "\"\<cmake\>\"", ",", "\"\<bin\>\"", 
-                    ",", "\"\<cmake\>\""}], "}"}]}]}], ",", "\n", "\t", "\t", 
-                   "\t", "\t", "\t", "\t", "\t\t\t", 
-                   RowBox[{"ExpandFileName", "@", 
-                    RowBox[{"FileNameJoin", "@", 
-                    RowBox[{"{", 
-                    RowBox[{
-                    "parentDir", ",", "\"\<cmake\>\"", ",", "\"\<bin\>\"", 
-                    ",", "\"\<cmake\>\""}], "}"}]}]}], ",", "\n", "\t", "\t", 
-                   "\t", "\t", "\t", "\t", "\t\t\t", "\"\<cmake\>\""}], "\n", 
-                  "\t", "\t", "\t", "\t", "\t", "\t", "\t\t\t", "]"}], ",", 
-                 "\n", "\t", "\t", "\t", "\t", "\t", "\t", "\t\t", 
-                 "\"\<-H.\>\"", ",", "\"\<-Bobjdir\>\"", ",", "\n", "\t", 
-                 "\t", "\t", "\t", "\t", "\t", "\t\t", 
+                 RowBox[{"CMakeBinary", "[", "]"}], ",", "\n", 
+                 "\t\t\t\t\t\t\t\t", "\"\<-H.\>\"", ",", "\"\<-Bobjdir\>\"", 
+                 ",", "\n", "\t", "\t", "\t", "\t", "\t", "\t", "\t\t", 
                  RowBox[{
                  "\"\<-DCMAKE_INSTALL_PREFIX=\>\"", "<>", "\n", "\t", "\t", 
                   "\t", "\t", "\t", "\t", "\t\t\t", 
                   RowBox[{"ExpandFileName", "@", 
                    RowBox[{"FileNameJoin", "@", 
                     RowBox[{"{", 
-                    RowBox[{"parentDir", ",", "\"\<psi4\>\""}], "}"}]}]}]}]}],
-                 "\n", "\t", "\t", "\t", "\t", "\t\t\t\t", "}"}], ",", "\n", 
-               "\t", "\t", "\t", "\t", "\t", "\t\t", 
+                    RowBox[{"parentDir", ",", " ", "\"\<psi4\>\""}], 
+                    "}"}]}]}]}]}], "\n", "\t", "\t", "\t", "\t", "\t\t\t\t", 
+                "}"}], ",", "\n", "\t", "\t", "\t", "\t", "\t", "\t\t", 
                RowBox[{"ProcessEnvironment", "\[Rule]", 
                 RowBox[{"<|", "\n", "\t", "\t", "\t", "\t", "\t", "\t\t\t", 
                  RowBox[{
-                 "\"\<PATH\>\"", "\[Rule]", "\n", "\t", "\t", "\t", "\t", 
-                  "\t", "\t\t\t\t", 
-                  RowBox[{"StringJoin", "@", 
+                 "\"\<PATH\>\"", "\[Rule]", "\n", "\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{"StringRiffle", "[", "\n", "\t\t\t\t\t\t\t\t\t\t", 
                    RowBox[{
-                   "{", "\n", "\t", "\t", "\t", "\t", "\t", "\t\t\t\t\t", 
+                    RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
                     RowBox[{
                     RowBox[{"Environment", "[", "\"\<PATH\>\"", "]"}], ",", 
-                    "\n", "\t", "\t", "\t", "\t", "\t", "\t\t\t\t\t", 
-                    "\"\<:\>\"", ",", "\n", "\t", "\t", "\t", "\t", "\t", 
-                    "\t\t\t\t\t", 
-                    RowBox[{"Riffle", "[", 
-                    RowBox[{
-                    RowBox[{
-                    "{", "\n", "\t", "\t", "\t", "\t", "\t", "\t\t\t\t\t\t\t", 
-                    RowBox[{
+                    "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
                     RowBox[{"ExpandFileName", "@", 
                     RowBox[{"FileNameJoin", "@", 
                     RowBox[{"{", 
-                    RowBox[{
-                    "parentDir", ",", "\"\<cmake\>\"", ",", "\"\<bin\>\""}], 
-                    "}"}]}]}], ",", "\n", "\t", "\t", "\t", "\t", "\t", 
-                    "\t\t\t\t\t\t\t", 
-                    RowBox[{"ExpandFileName", "@", 
-                    RowBox[{"FileNameJoin", "@", 
-                    RowBox[{"{", 
-                    RowBox[{"parentDir", ",", "\"\<psi4\>\""}], "}"}]}]}]}], 
-                    "\n", "\t", "\t", "\t", "\t", "\t", "\t\t\t\t\t\t\t", 
-                    "}"}], ",", "\n", "\t", "\t", "\t", "\t", "\t", 
-                    "\t\t\t\t\t\t", "\"\<:\>\""}], "\n", "\t", "\t", "\t", 
-                    "\t\t\t\t\t\t\t\t", "]"}]}], "\n", "\t", "\t", "\t", 
-                    "\t\t\t\t\t\t\t", "}"}]}]}], "\n", "\t", "\t", "\t", 
-                 "\t\t\t\t\t", "|>"}]}], ",", "\n", "\t", "\t", "\t", 
-               "\t\t\t\t", 
+                    RowBox[{"parentDir", ",", " ", "\"\<psi4\>\""}], 
+                    "}"}]}]}]}], "\n", "\t\t\t\t\t\t\t\t\t\t\t", "}"}], ",", 
+                    "\n", "\t\t\t\t\t\t\t\t\t\t", "\"\<:\>\""}], "\n", 
+                   "\t\t\t\t\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t\t\t\t", 
+                 "|>"}]}], ",", "\n", "\t\t\t\t\t\t\t", 
                RowBox[{"ProcessDirectory", "\[Rule]", 
                 RowBox[{"ExpandFileName", "@", 
                  RowBox[{"FileNameJoin", "@", 
                   RowBox[{"{", 
                    RowBox[{"parentDir", ",", "\"\<psi4\>\""}], "}"}]}]}]}]}], 
               "\n", "\t", "\t", "\t", "\t\t\t\t", "]"}]}], "\n", "\t", "\t", 
-            "\t", "\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t", "\t\t", 
+            "\t", "\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t", 
            RowBox[{"If", "[", 
             RowBox[{
-             RowBox[{"!", 
-              RowBox[{"DirectoryQ", "@", "\n", "\t", "\t", "\t", "\t\t\t\t", 
-               RowBox[{"FileNameJoin", "@", 
-                RowBox[{"{", "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
-                 RowBox[{
-                 "parentDir", ",", "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
-                  "\"\<psi4\>\"", ",", "\"\<objdir\>\"", ",", "\"\<stage\>\"",
-                   ",", "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
-                  RowBox[{"FileNameTake", "[", 
-                   RowBox[{
-                    RowBox[{"ExpandFileName", "@", "parentDir"}], ",", "1"}], 
-                   "]"}]}], "}"}]}]}]}], ",", "\n", "\t", "\t", "\t", 
-             "\t\t\t", 
+             RowBox[{"psi4BuildUnfinishedQ", "[", "parentDir", "]"}], ",", 
+             "\n", "\t\t\t\t\t\t", 
              RowBox[{
-              RowBox[{"terminalRun", "[", 
+              RowBox[{"RunInTerminal", "[", 
                RowBox[{
                 RowBox[{"{", 
                  RowBox[{
                  "\"\<make\>\"", ",", 
                   "\"\<-j`getconf _NPROCESSORS_ONLN`\>\""}], "}"}], ",", "\n",
-                 "\t", "\t", "\t", "\t", "\t\t\t", 
+                 "\t\t\t\t\t\t\t", 
                 RowBox[{"ProcessDirectory", "\[Rule]", 
-                 RowBox[{"ExpandFileName", "@", 
-                  RowBox[{"FileNameJoin", "@", 
-                   RowBox[{"{", 
-                    RowBox[{
-                    "parentDir", ",", "\"\<psi4\>\"", ",", "\"\<objdir\>\""}],
-                     "}"}]}]}]}]}], "\n", "\t", "\t", "\t", "\t", "\t\t\t", 
-               "]"}], ";", "\n", "\t", "\t", "\t", "\t", "\t\t", 
-              RowBox[{"terminalRun", "[", 
+                 RowBox[{"psi4BuildObjDir", "[", "parentDir", "]"}]}]}], "\n",
+                "\t\t\t\t\t\t\t", "]"}], ";", "\n", "\t\t\t\t\t\t", 
+              RowBox[{"RunInTerminal", "[", 
                RowBox[{
                 RowBox[{"{", 
                  RowBox[{"\"\<make\>\"", ",", "\"\<install\>\""}], "}"}], ",",
-                 "\n", "\t", "\t", "\t", "\t", "\t\t\t", 
+                 "\n", "\t\t\t\t\t\t\t", 
                 RowBox[{"ProcessDirectory", "\[Rule]", 
-                 RowBox[{"ExpandFileName", "@", 
-                  RowBox[{"FileNameJoin", "@", 
-                   RowBox[{"{", 
-                    RowBox[{
-                    "parentDir", ",", "\"\<psi4\>\"", ",", "\"\<objdir\>\""}],
-                     "}"}]}]}]}]}], "\n", "\t", "\t", "\t", "\t\t\t\t", 
-               "]"}]}]}], "\n", "\t", "\t", "\t", "\t\t\t", "]"}], ",", "\n", 
-           "\t", "\t", "\t", "\t\t", 
-           RowBox[{"With", "[", 
+                 RowBox[{"psi4BuildObjDir", "[", "parentDir", "]"}]}]}], "\n",
+                "\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t\t", "]"}], ",",
+            "\n", "\t\t\t\t\t", 
+           RowBox[{"With", "[", "\n", "\t\t\t\t\t", 
             RowBox[{
-             RowBox[{"{", 
-              RowBox[{"psi4", "=", "\n", "\t", "\t", "\t", "\t\t\t", 
+             RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+              RowBox[{"psi4", "=", "\n", "\t\t\t\t\t\t\t", 
                RowBox[{
-               "ExpandFileName", "@", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+               "ExpandFileName", "@", "\n", "\t", "\t", "\t", "\t", 
+                "\t\t\t\t", 
                 RowBox[{"FileNameJoin", "@", 
-                 RowBox[{"{", "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
+                 RowBox[{"{", "\n", "\t", "\t", "\t", "\t", "\t\t\t\t\t", 
                   RowBox[{
                   "parentDir", ",", " ", "\"\<psi4\>\"", ",", " ", 
                    "\"\<objdir\>\"", ",", " ", "\"\<stage\>\"", ",", "\n", 
-                   "\t", "\t", "\t", "\t\t\t\t\t", 
+                   "\t", "\t", "\t", "\t", "\t\t\t\t\t", 
                    RowBox[{"ExpandFileName", "@", "parentDir"}], ",", " ", 
-                   "\"\<psi4\>\""}], "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
-                  "}"}]}]}]}], "\n", "\t", "\t", "\t", "\t\t\t\t", "}"}], ",",
-              "\n", "\t", "\t", "\t", "\t\t\t", 
+                   "\"\<psi4\>\""}], "\n", "\t", "\t", "\t", "\t", 
+                  "\t\t\t\t\t", "}"}]}]}]}], "\n", "\t", "\t", "\t", 
+              "\t\t\t\t", "}"}], ",", "\n", "\t", "\t", "\t", "\t\t\t", 
              RowBox[{"If", "[", 
               RowBox[{
                RowBox[{"DirectoryQ", "@", "psi4"}], ",", "\n", "\t", "\t", 
@@ -580,47 +651,61 @@ Cell[BoxData[{
                     "parentDir", ",", " ", "\"\<psi4\>\"", ",", " ", 
                     "\"\<dist\>\"", ",", " ", "\"\<psi4\>\""}], "}"}]}]}], 
                  "\n", "\t", "\t", "\t", "\t\t\t\t\t", "]"}]}]}], "\n", "\t", 
-              "\t", "\t", "\t\t\t\t", "]"}]}], "\n", "\t", "\t", "\t\t\t\t", 
-            "]"}]}], "\n", "\t\t\t\t\t", "}"}], "\n", "\t\t\t\t", "]"}]}], 
-       "\n", "\t\t\t", "]"}], "//", 
+              "\t", "\t", "\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], 
+          "\n", "\t\t\t\t\t", "}"}]}]}], "\n", "\t\t\t", "]"}], "//", "\n", 
+      "\t\t\t", 
       RowBox[{
        RowBox[{"If", "[", 
         RowBox[{
          RowBox[{
           RowBox[{"Last", "@", 
-           RowBox[{"Last", "@", "#"}]}], "=!=", "Null"}], ",", "\n", "\t\t\t", 
+           RowBox[{"Last", "@", "#"}]}], "=!=", "Null"}], ",", "\n", "\t", 
+         "\t\t\t", 
          RowBox[{
           RowBox[{"$Psi4BuildLogs", "=", 
-           RowBox[{"Last", "@", "#"}]}], ";", "\n", "\t\t\t", 
+           RowBox[{"Last", "@", "#"}]}], ";", "\n", "\t", "\t\t\t", 
           RowBox[{"TemplateApply", "[", 
            RowBox[{
-           "\"\<Built to `pkg`. Took `time`.\>\"", ",", "\n", "\t", 
+           "\"\<Built to `pkg`. Took `time`.\>\"", ",", "\n", "\t", "\t", 
             "\t\t\t\t", 
-            RowBox[{"<|", "\n", "\t", "\t\t\t\t\t", 
+            RowBox[{"<|", "\n", "\t", "\t", "\t\t\t\t\t", 
              RowBox[{
-              RowBox[{"\"\<time\>\"", "\[Rule]", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"\"\<time\>\"", "\[Rule]", "\n", "\t", "\t\t\t\t\t\t\t", 
                RowBox[{"UnitConvert", "[", 
                 RowBox[{
                  RowBox[{"Quantity", "[", 
                   RowBox[{
                    RowBox[{"First", "@", "#"}], ",", "\"\<Seconds\>\""}], 
-                  "]"}], ",", "\"\<Minutes\>\""}], "]"}]}], ",", "\n", 
+                  "]"}], ",", "\"\<Minutes\>\""}], "]"}]}], ",", "\n", "\t", 
               "\t\t\t\t\t\t", 
               RowBox[{"\"\<pkg\>\"", "\[Rule]", 
                RowBox[{"Last", "@", 
-                RowBox[{"Last", "@", "#"}]}]}]}], "\n", "\t\t\t\t\t\t", 
-             "|>"}]}], "]"}]}], ",", "\n", "\t\t\t", "$Failed"}], "\n", 
-        "\t\t\t", "]"}], "&"}]}], ",", "\n", "\t\t", 
-     RowBox[{"Message", "[", 
+                RowBox[{"Last", "@", "#"}]}]}]}], "\n", "\t", "\t\t\t\t\t\t", 
+             "|>"}]}], "]"}]}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"PackageRaiseException", "[", 
+          RowBox[{
+          "\"\<Psi4Build\>\"", ",", "\n", "\t\t\t\t\t", 
+           "\"\<Failed to build Psi4 to ``\>\"", ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"\"\<MessageParameters\>\"", "\[Rule]", 
+            RowBox[{"{", 
+             RowBox[{"FileNameJoin", "@", 
+              RowBox[{"{", 
+               RowBox[{"parentDir", ",", "\"\<psi4\>\""}], "}"}]}], "}"}]}]}],
+           "\n", "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}], "&"}]}], ",",
+      "\n", "\t\t", 
+     RowBox[{"PackageRaiseException", "[", 
       RowBox[{
-       RowBox[{"Psi4Build", "::", "nodir"}], ",", 
-       RowBox[{"FileNameJoin", "@", 
+      "\"\<Psi4Build\>\"", ",", "\n", "\t\t\t", 
+       "\"\<Failed to download psi4 to ``\>\"", ",", "\n", "\t\t\t", 
+       RowBox[{"\"\<MessageParameters\>\"", "\[Rule]", 
         RowBox[{"{", 
-         RowBox[{"parentDir", ",", "\"\<psi4\>\""}], "}"}]}]}], "]"}]}], "\n",
-     "\t\t", "]"}]}], 
+         RowBox[{"FileNameJoin", "@", 
+          RowBox[{"{", 
+           RowBox[{"parentDir", ",", "\"\<psi4\>\""}], "}"}]}], "}"}]}]}], 
+      "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
   ";"}]}], "CodeInput",ExpressionUUID->"491b4349-0c56-40ef-80cc-785607930fa2"]\
 
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -632,37 +717,42 @@ Cell[BoxData[{
   RowBox[{
    RowBox[{"Psi4Build", "[", 
     RowBox[{"parentDir_", "?", "DirectoryQ"}], "]"}], ":=", "\n", "\t", 
-   RowBox[{"(", "\n", "\t\t", 
-    RowBox[{
-     RowBox[{"If", "[", 
+   RowBox[{
+    RowBox[{"PackageExceptionBlock", "[", "\"\<Psi4Build\>\"", "]"}], "@", 
+    "\n", "\t\t", 
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"$OperatingSystem", "\[Equal]", "\"\<Windows\>\""}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"PackageRaiseException", "[", 
+       RowBox[{
+       "\"\<Psi4Build\>\"", ",", "\n", "\t\t\t\t", 
+        "\"\<psi4 is designed for Unix systems only\>\""}], "\n", "\t\t\t\t", 
+       "]"}], ",", "\n", "\t\t\t", 
       RowBox[{
-       RowBox[{"!", 
-        RowBox[{"CMakeCheck", "@", "parentDir"}]}], ",", "\n", "\t", "\t\t", 
-       RowBox[{"cmakeBuild", "@", "parentDir"}]}], "\n", "\t", "\t\t", "]"}], 
-     ";", "\n", "\t", "\t", 
-     RowBox[{"If", "[", 
-      RowBox[{
-       RowBox[{"!", 
-        RowBox[{"FileExistsQ", "@", 
-         RowBox[{"FileNameJoin", "@", 
-          RowBox[{"{", 
-           RowBox[{"parentDir", ",", " ", "\"\<psi4\>\""}], "}"}]}]}]}], ",", 
-       "\n", "\t", "\t\t", 
-       RowBox[{"psi4Download", "@", "parentDir"}]}], "\n", "\t", "\t\t", 
-      "]"}], ";", "\n", "\t", "\t", 
-     RowBox[{"psi4Build", "@", "parentDir"}]}], "\n", "\t", "\t", ")"}]}], 
-  ";"}], "\n", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"!", 
+          RowBox[{"FileExistsQ", "@", 
+           RowBox[{"FileNameJoin", "@", 
+            RowBox[{"{", 
+             RowBox[{"parentDir", ",", " ", "\"\<psi4\>\""}], "}"}]}]}]}], 
+         ",", "\n", "\t", "\t", "\t\t", 
+         RowBox[{"psi4Download", "@", "parentDir"}]}], "\n", "\t", "\t", 
+        "\t\t", "]"}], ";", "\n", "\t", "\t", "\t", 
+       RowBox[{"psi4Build", "@", "parentDir"}]}]}], "\n", "\t\t\t", "]"}]}]}],
+   ";"}], "\n", 
  RowBox[{
   RowBox[{
    RowBox[{"Psi4Build", "[", 
     RowBox[{"Optional", "[", 
-     RowBox[{"Automatic", ",", "Automatic"}], "]"}], "]"}], ":=", "\n", "\t", 
-   
+     RowBox[{"Automatic", ",", " ", "Automatic"}], "]"}], "]"}], ":=", "\n", 
+   "\t", 
    RowBox[{"Psi4Build", "[", 
     RowBox[{"DirectoryName", "[", "$Psi4Dir", "]"}], "]"}]}], 
   ";"}]}], "CodeInput",ExpressionUUID->"07afcbb0-2faf-40a4-a912-a79af50c6619"]\
 
-}, Closed]]
+}, Open  ]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -2051,7 +2141,7 @@ Cell[BoxData[
       "\t\t", "StandardForm"}], "\n", "\t\t", "]"}]}]}], 
   ";"}]], "CodeInput",ExpressionUUID->"5f0db930-2871-4e66-92fd-4e8734d3e8c1"]
 }, Open  ]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -2314,7 +2404,7 @@ Cell[BoxData[
       RowBox[{"_String", "|", "_Alternatives", "|", "_StringExpression"}], 
       ":", "\"\<output.dat\>\""}], ",", "\n", "\t", 
      RowBox[{"processFunction", ":", 
-      RowBox[{"RunProcess", "|", "terminalRun"}], ":", "RunProcess"}]}], 
+      RowBox[{"RunProcess", "|", "RunInTerminal"}], ":", "RunProcess"}]}], 
     "]"}], ":=", "\n", "\t", 
    RowBox[{"With", "[", 
     RowBox[{
@@ -2393,22 +2483,8 @@ Cell[BoxData[
                 RowBox[{"FileNameTake", "@", "file"}], "\[Rule]", 
                 RowBox[{"ExpandFileName", "@", "file"}]}], "|>"}], ")"}]}]}], 
            "]"}]}], "\n", "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "]"}]}], 
-    "\n", "\t\t", "]"}]}], ";"}]], "CodeInput",
- CellChangeTimes->{{3.6929788063263817`*^9, 3.692978983048954*^9}, {
-   3.69297905088942*^9, 3.692979102789563*^9}, {3.692979153560109*^9, 
-   3.692979169338525*^9}, {3.6929795572052383`*^9, 3.6929796124327393`*^9}, {
-   3.6929796485626717`*^9, 3.692979729377586*^9}, {3.692979898627293*^9, 
-   3.692979922594273*^9}, {3.692979952987194*^9, 3.692979986856925*^9}, {
-   3.69298029460646*^9, 3.692980322529147*^9}, {3.692980576291909*^9, 
-   3.692980774649495*^9}, {3.6930013287761497`*^9, 3.6930013390218573`*^9}, 
-   3.6930023720714693`*^9, {3.693002476101475*^9, 3.693002485570496*^9}, {
-   3.693004110848448*^9, 3.69300411613522*^9}, {3.693007030834546*^9, 
-   3.693007072501177*^9}, {3.693007375886285*^9, 3.693007390477736*^9}, {
-   3.693015504889181*^9, 3.693015512254259*^9}, {3.693015771466997*^9, 
-   3.693015818752634*^9}, {3.693078250134224*^9, 3.6930782510991793`*^9}, 
-   3.693084314094707*^9, {3.694180785666008*^9, 
-   3.694180907843865*^9}},ExpressionUUID->"06a4d31a-d242-4d1c-890b-\
-762cef6f0783"]
+    "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"06a4d31a-d242-4d1c-890b-762cef6f0783"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -4307,8 +4383,8 @@ Cell[BoxData[
      " ", "set", " ", "optking"}], " ", "*)"}], "\n", 
   RowBox[{
    RowBox[{"psi4GeometryFrozenPositions", "[", "\n", "\t", 
-    RowBox[{"mList_", ",", "\n", "\t", "positions_"}], "\n", "\t", "]"}], ":=",
-    "\n", "\t", 
+    RowBox[{"mList_", ",", "\n", "\t", "positions_"}], "\n", "\t", "]"}], ":=", \
+"\n", "\t", 
    RowBox[{"psi4GeometryFrozenSettingPrep", "@", "\n", "\t\t", 
     RowBox[{"Replace", "[", 
      RowBox[{"positions", ",", 
@@ -5538,8 +5614,8 @@ Cell[BoxData[{
                     RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
                     RowBox[{
                     RowBox[{"mnVars", "=", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
-                    RowBox[{"KeyValueMap", "[", "\n", 
-                    "\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    "KeyValueMap", "[", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t\t", 
                     RowBox[{
                     RowBox[{
                     RowBox[{"PyDot", "[", 
@@ -7715,7 +7791,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"7cca8c6f-6b37-47bf-b801-\
 ef2e76014dba"]
 },
 WindowSize->{809, 748},
-WindowMargins->{{Automatic, 224}, {Automatic, 23}},
+WindowMargins->{{Automatic, 92}, {Automatic, 27}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

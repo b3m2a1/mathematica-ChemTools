@@ -1,0 +1,320 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Eigen", \
+"CodeSection",ExpressionUUID->"440812be-6e79-47ff-b092-cf11b9f539b6"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"$EigenDirectory", "::", "usage"}], "=", 
+   "\"\<The directory eigen3 is built into\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"EigenCheck", "::", "usage"}], "=", 
+   "\"\<Checks that eigen3 is installed\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"EigenBuild", "::", "usage"}], "=", 
+   "\"\<Gets the eigen3 system\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"ce706ba7-50f2-467b-ac4b-a9a81c553bbe"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"3c002dd9-2664-42ef-b588-\
+79df0d280349"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]FindEigen\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"e49d91b4-c5c6-42bc-a014-3255bf0fccb1"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$EigenPath", "=", "\n", "\t", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{"$ChemExtensionsDev", ",", "\n", "\t\t", "$ChemExtensionsApp"}], 
+    "\n", "\t\t", "}"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"f6441cc4-55a3-4c44-9258-1854f61c2c33"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FindEigen", "[", "]"}], ":=", "\n", "\t", 
+  RowBox[{"Replace", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"StringTrim", "@", "\n", "\t\t\t", 
+     RowBox[{"RunProcess", "[", "\t\t\t", "\n", "\t\t\t\t", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"$OperatingSystem", "\[Equal]", "\"\<Windows\>\""}], ",", 
+           "\"\<where\>\"", ",", " ", "\"\<which\>\""}], "]"}], ",", " ", 
+         "\"\<eigen3\>\""}], "}"}], ",", "\n", "\t", "\t", "\t", "\t", 
+       "\"\<StandardOutput\>\""}], "\n", "\t\t\t\t", "]"}]}], ",", "\n", 
+    "\t\t", 
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ob_String", "?", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"StringLength", "[", "#", "]"}], ">", "0"}], "&&", 
+           RowBox[{"FileExistsQ", "[", "#", "]"}], "&&", "\n", "\t\t\t\t", 
+           RowBox[{"eigenDirQ", "[", 
+            RowBox[{"Nest", "[", 
+             RowBox[{"DirectoryName", ",", " ", "#", ",", " ", "2"}], "]"}], 
+            "]"}]}], "&"}], ")"}]}], ":>", "\n", "\t\t\t\t", 
+       RowBox[{"Nest", "[", 
+        RowBox[{"DirectoryName", ",", " ", "ob", ",", " ", "2"}], "]"}]}], 
+      ",", "\n", "\t\t\t", 
+      RowBox[{"_", ":>", "\n", "\t\t\t\t", 
+       RowBox[{"SelectFirst", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"FileNames", "[", 
+          RowBox[{"\"\<*eigen*\>\"", ",", " ", "$EigenPath"}], "]"}], ",", 
+         "\n", "\t\t\t\t\t", "eigenDirQ", ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"ChemExtensionDir", "[", "\"\<eigen3\>\"", "]"}]}], "\n", 
+        "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "}"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"806db965-e7d6-4b97-be59-614f8baf65f3"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]$EigenDirectory\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"dd8e912e-995e-4316-b360-c18fb6274578"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$EigenDirectory", ":=", "\n", "\t", 
+   RowBox[{"$EigenDirectory", "=", 
+    RowBox[{"FindEigen", "[", "]"}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"2b7b6530-88e9-434d-bca9-8f0b1d5208af"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]eigenCheck\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"cd81a76f-da7d-470d-b501-9299e0596a57"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"eigenDirQ", "[", "dir_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"FileExistsQ", "@", 
+   RowBox[{"FileNameJoin", "@", 
+    RowBox[{"{", 
+     RowBox[{"dir", ",", " ", "\"\<Eigen\>\""}], 
+     "}"}]}]}]}]], \
+"CodeInput",ExpressionUUID->"e038f938-d079-4cf1-80f3-60b17b07be12"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"eigenCheck", "[", "dir_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"eigenDirQ", "@", 
+   RowBox[{"FileNameJoin", "@", 
+    RowBox[{"{", 
+     RowBox[{"dir", ",", " ", "\"\<eigen3\>\""}], 
+     "}"}]}]}]}]], \
+"CodeInput",ExpressionUUID->"53d4b887-23a3-4fc9-9968-3a2806c78d95"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]EigenCheck\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"ab231bdc-fe82-45c8-93bc-9f358657cc57"],
+
+Cell[BoxData[
+ RowBox[{"EigenCheck", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"81d0e175-a929-4972-a7e0-255a4c53cec9"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"EigenCheck", "[", 
+   RowBox[{"dir_:", "Automatic"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"eigenCheck", "@", "\n", "\t\t", 
+   RowBox[{"Replace", "[", 
+    RowBox[{"dir", ",", " ", 
+     RowBox[{"Automatic", "\[RuleDelayed]", 
+      RowBox[{"DirectoryName", "@", "$EigenDirectory"}]}]}], 
+    "]"}]}]}]], \
+"CodeInput",ExpressionUUID->"2b008dff-5840-40ff-8943-5772fcef413c"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]$eigen3src\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"1a5dd55a-90ff-4911-81b9-1343c6ba34ae"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+  "$eigen3src", "=", 
+   "\"\<http://bitbucket.org/eigen/eigen/get/3.2.10.zip\>\""}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.694982306778208*^9, 3.694982325444524*^9}, {
+  3.695007574726783*^9, 
+  3.695007579425181*^9}},ExpressionUUID->"979a93b3-de37-496d-a2ff-\
+8e43684cf825"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]eigenDownload\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"36d11615-2822-4087-9746-e8080d806264"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"eigenDownload", "[", 
+    RowBox[{"dir_String", "?", "DirectoryQ"}], "]"}], ":=", "\n", "\t\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{"tmpDir", "=", "\n", "\t\t\t\t", 
+       RowBox[{"CreateDirectory", "@", "\n", "\t\t\t\t\t", 
+        RowBox[{"FileNameJoin", "@", 
+         RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+          RowBox[{"$TemporaryDirectory", ",", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"StringJoin", "@", 
+            RowBox[{"RandomSample", "[", 
+             RowBox[{
+              RowBox[{"Alphabet", "[", "]"}], ",", "10"}], "]"}]}]}], "\n", 
+          "\t\t\t\t\t\t", "}"}]}]}]}], "\n", "\t\t\t", "}"}], ",", "\n", 
+     "\t\t\t", 
+     RowBox[{"Monitor", "[", "\n", "\t\t\t\t", 
+      RowBox[{
+       RowBox[{"With", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"f", "=", 
+            RowBox[{"URLDownload", "[", 
+             RowBox[{"$eigen3src", ",", 
+              RowBox[{"FileNameJoin", "@", 
+               RowBox[{"{", 
+                RowBox[{"tmpDir", ",", "\"\<eigen3_tmp.zip\>\""}], "}"}]}]}], 
+             "]"}]}], ",", "\n", "\t", "\t", "\t", "\t", "\t", "\t", 
+           RowBox[{"out", "=", 
+            RowBox[{"FileNameJoin", "@", 
+             RowBox[{"{", 
+              RowBox[{"dir", ",", " ", "\"\<eigen3\>\""}], "}"}]}]}]}], "\n", 
+          "\t", "\t\t\t\t\t", "}"}], ",", "\n", "\t", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"ExtractArchive", "[", 
+           RowBox[{"f", ",", " ", "tmpDir"}], "]"}], ";", "\n", "\t\t\t\t\t", 
+          
+          RowBox[{"DeleteFile", "[", "f", "]"}], ";", "\n", "\t", "\t\t\t\t", 
+          
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"DirectoryQ", "@", "out"}], ",", " ", 
+            RowBox[{"DeleteDirectory", "[", 
+             RowBox[{"out", ",", " ", 
+              RowBox[{"DeleteContents", "\[Rule]", "True"}]}], "]"}]}], "]"}],
+           ";", "\n", "\t", "\t\t\t\t", 
+          RowBox[{"CopyDirectory", "[", 
+           RowBox[{
+            RowBox[{"First", "@", 
+             RowBox[{"FileNames", "[", 
+              RowBox[{"\"\<*\>\"", ",", "tmpDir"}], "]"}]}], ",", " ", 
+            "out"}], "]"}], ";", "\n", "\t\t\t\t\t", 
+          RowBox[{"Quiet", "@", 
+           RowBox[{"DeleteDirectory", "[", 
+            RowBox[{"tmpDir", ",", 
+             RowBox[{"DeleteContents", "\[Rule]", "True"}]}], "]"}]}], ";", 
+          "\n", "\t", "\t\t\t\t", 
+          RowBox[{"Replace", "[", "\n", "\t", "\t\t\t\t\t", 
+           RowBox[{"out", ",", "\n", "\t", "\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"Except", "[", 
+              RowBox[{"_String", "?", "FileExistsQ"}], "]"}], ":>", "\n", 
+             "\t\t\t\t\t\t\t", 
+             RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t\t\t\t\t", 
+              RowBox[{
+              "\"\<EigenBuild\>\"", ",", "\n", "\t\t\t\t\t\t\t\t", 
+               "\"\<Eigen3 failed to download to ``\>\"", ",", "\n", 
+               "\t\t\t\t\t\t\t\t", 
+               RowBox[{"\"\<MessageParameters\>\"", "\[Rule]", 
+                RowBox[{"{", "out", "}"}]}]}], "\n", "\t\t\t\t\t\t\t\t", 
+              "]"}]}]}], "\n", "\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t", 
+        "]"}], ",", "\n", "\t\t\t", 
+       RowBox[{
+       "Internal`LoadingPanel", "[", "\"\<Downloading eigen3\>\"", "]"}]}], 
+      "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"42e56854-daf8-49ad-8094-67ce3b5bcf79"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]EigenBuild\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"98c7a1b4-3303-43ca-9a59-36e3ab013914"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"EigenBuild", "[", 
+    RowBox[{"d", ":", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"_String", "?", "DirectoryQ"}], "|", "Automatic"}], ")"}], ":",
+      "Automatic"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{
+    RowBox[{"PackageExceptionBlock", "[", "\"\<EigenBuild\>\"", "]"}], "@", 
+    "\n", "\t\t", 
+    RowBox[{"Which", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"eigenDirQ", "@", 
+       RowBox[{"Replace", "[", 
+        RowBox[{"d", ",", " ", 
+         RowBox[{"Automatic", "\[RuleDelayed]", "$EigenDirectory"}]}], 
+        "]"}]}], ",", "\n", "\t\t\t\t", 
+      RowBox[{"Replace", "[", 
+       RowBox[{"d", ",", " ", 
+        RowBox[{"Automatic", "\[RuleDelayed]", "$EigenDirectory"}]}], "]"}], 
+      ",", "\n", "\t\t\t", 
+      RowBox[{"EigenCheck", "@", "d"}], ",", "\n", "\t\t\t\t", 
+      RowBox[{"FileNameJoin", "@", 
+       RowBox[{"{", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"Replace", "[", 
+          RowBox[{"d", ",", " ", 
+           RowBox[{"Automatic", "\[RuleDelayed]", 
+            RowBox[{"ParentDirectory", "@", "$EigenDirectory"}]}]}], "]"}], 
+         ",", "\n", "\t\t\t\t\t", "\"\<eigen3\>\""}], "\n", "\t\t\t\t\t", 
+        "}"}]}], ",", "\n", "\t\t\t", "True", ",", "\n", "\t\t\t\t", 
+      RowBox[{"eigenDownload", "[", 
+       RowBox[{"Replace", "[", 
+        RowBox[{"d", ",", 
+         RowBox[{"Automatic", "\[RuleDelayed]", 
+          RowBox[{"DirectoryName", "@", "$EigenDirectory"}]}]}], "]"}], 
+       "]"}]}], "\n", "\t\t\t", "]"}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"d65d841a-f13f-4303-81a2-3336ca3dd229"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"febfca82-efd7-4acb-b319-\
+5e93d51e8b80"]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"f1a47073-41ee-444e-a8c8-\
+d1cc3810b3c0"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{139, Automatic}, {Automatic, 46}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

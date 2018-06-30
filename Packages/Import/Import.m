@@ -6,7 +6,22 @@ ChemImportXYZ::usage="Imports XYZ data";
 ChemImportMolTable::usage="Imports MolTable data";
 ChemImportZMatrix::usage="Imports ZMatrix data";
 ChemImportGraphics::usage="Imports Graphics data";
-ChemImportChemicalStructure::usage="Attempts to import a structure";
+ChemImportEntity::usage="Attempts to import a structure";
+ChemImportFormat::usage="Imports a format with the help of OpenBabel";
+
+
+ChemImportPostProcessElementPositions::usage=
+	"Post processor to get elements and positions";
+ChemImportPostProcessBondLists::usage=
+	"Post processor to get the bond lists";
+ChemImportPostProcessElementsBonds::usage=
+	"Post processor to get the atoms and bonds";
+ChemImportPostProcessSupplementaryInfo::usage=
+	"Post processor to get the supp info";
+ChemImportPostProcessGraphics::usage=
+	"Post processor to get Graphics";
+ChemImportPostProcessGraphics3D::usage=
+	"Post processor to get Graphics3D";
 
 
 Begin["`Private`"];
@@ -304,59 +319,65 @@ ChemImportMolTableString[s_String?(StringContainsQ["\n"])]:=
 		With[{blockChunks=
 			Join[
 				StringCases[
-					s,{
-					StartOfString~~id:(Except["\n"]..):>
-						{"Props","ID"->id},
-					StartOfString~~(Except["\n"]..)~~"\n"~~
-						"  "~~name:(Except["\n"]..):>
-						{"Props","IDTag"->name},
-					(StartOfLine~~nums:((basicDigitPattern)~~
-						(Except["\n"]..))~~
-							If[StringContainsQ[s, ("V2000"|"V3000")], 
-								("V2000"|"V3000"), 
-								""
-								]):>
-						{"Numbers", ToExpression@StringTake[nums,{{1,3},{4,6}}]},
-					(
-						"> <"~~prop:Except[">"]..~~">"~~val:Except["<"]..~~"\n\n":>	
-							RuleCondition[
-								{"Props",
-									StringJoin@
-										(
+					s,
+					{
+						StartOfString~~id:(Except["\n"]...)~~
+							"\n"~~name:(Except["\n"]...):>
+							Sequence@@{
+								If[StringLength@id>0, {"Props", "ID"->id}, Nothing],
+								If[StringLength@StringTrim@name>0, 
+									{"Props", "IDTag"->StringTrim@name}, 
+									Nothing
+									]
+								},
+						(StartOfLine~~nums:((basicDigitPattern)~~
+							(Except["\n"]..))~~
+								If[StringContainsQ[s, ("V2000"|"V3000")], 
+									("V2000"|"V3000"), 
+									""
+									]):>
+							{"Numbers", ToExpression@StringTake[nums,{{1,3},{4,6}}]},
+						(
+							"> <"~~prop:Except[">"]..~~">"~~val:Except["<"]..~~"\n\n":>	
+								RuleCondition[
+									{"Props",
+										StringJoin@
 											(
-												Switch[#,
-													(*
-											Replace isn't capturing the variable appropriately here for 
-											who knows what reason
-											*)
-													"pubchem",
-														Nothing,
-													"id",
-														"ID",
-													"rmsd",
-														"RMSD",
-													"cid",
-														"CID",
-													"mmff94",
-														"MMFF94",
-													"sid",
-														"SID",
-													_,
-														ToUpperCase[StringTake[#,1]]<>
-															StringTake[#,{2,-1}]
-													]
-												)&/@ToLowerCase@StringSplit[prop,"_"]
-											)->
-											Replace[
-												DeleteCases[{}]@ImportString[val,"Table"],{
-												{{i_}}:>i,
-												l:{{_}..}:>Flatten[l]
-												}]
-										},
-								True
-								]
-						)
-					}],
+												(
+													Switch[#,
+														(*
+												Replace isn't capturing the variable appropriately here for 
+												who knows what reason
+												*)
+														"pubchem",
+															Nothing,
+														"id",
+															"ID",
+														"rmsd",
+															"RMSD",
+														"cid",
+															"CID",
+														"mmff94",
+															"MMFF94",
+														"sid",
+															"SID",
+														_,
+															ToUpperCase[StringTake[#,1]]<>
+																StringTake[#,{2,-1}]
+														]
+													)&/@ToLowerCase@StringSplit[prop,"_"]
+												)->
+												Replace[
+													DeleteCases[{}]@ImportString[val,"Table"],{
+													{{i_}}:>i,
+													l:{{_}..}:>Flatten[l]
+													}]
+											},
+									True
+									]
+							)
+						}
+					],
 				StringCases[
 					StringSplit[s,
 						(StartOfLine~~((basicDigitPattern)~~
@@ -752,56 +773,271 @@ gaussianImportObjectData[file:_String?FileExistsQ|_InputStream, "FormattedCheckp
 
 
 (* ::Subsection:: *)
-(*Structure*)
+(*Entity*)
 
 
 
-ChemImportChemicalStructure::no3D=
+ChemImportEntity//Clear
+
+
+ChemImportEntity::no3D=
 	"No 3D structure found for identifier ``. Attempting to use a 2D structure instead";
-ChemImportChemicalStructure::nostr=
+ChemImportEntity::nostr=
 	"No structure found for identifier ``";
-ChemImportChemicalStructure[
-	structure:
+
+
+ChemImportEntity[
+	structure:(
 		_PubChemCompound|
 		_PubChemSubstance|
 		_Integer|
-		Entity["Chemical",_]|
+		Entity["Chemical", _]|
 		_String?(
+		Function[	
 			Not@FileExistsQ@#&&
-			Not@StringContainsQ[#,"\n"|$PathnameSeparator]
-			&),
-	postProcessFunction_:ChemImportMolTableString
+			StringMatchQ[#, (WordCharacter|"-"|","|"("|")"|"+"|Whitespace)..]
+			]
+			)
+		),
+	postProcess:(Except[_?OptionQ]):ChemImportMolTableString,
+	ops:OptionsPattern[]
 	]:=
-	Replace[
+	PackageExceptionBlock["ImportEntity"]@
 		Replace[
-			Quiet[ChemDataLookup[structure,"SDFFiles"],ServiceExecute::serrormsg],
-			$Failed:>(
-				PackageThrowMessage[
-					"ImportStructure3D",
-					"No 3D structure found for ``. Attempting to usage a 2D structure"
-					"MessageParameters"->{structure}
-					];
-				ChemDataLookup[structure,"2DStructures",
-					"Overwrite"->True]
-				)
-			],
+			Replace[
+				Quiet[ChemDataLookup[structure, "SDFFiles"], ServiceExecute::serrormsg],
+				$Failed:>(
+					PackageThrowMessage[
+						"ImportEntity",
+						"No 3D structure found for entity ``. Attempting to use a 2D structure",
+						"MessageParameters"->{structure}
+						];
+					ChemDataLookup[structure,"2DStructures",
+						"Overwrite"->True]
+					)
+				],
+			{
+				mol_String:>
+					postProcess@mol,
+				mols:{__String}:>
+					Map[postProcess, mols],
+				_:>
+					PackageRaiseException["ImportEntity", 
+						"No structure found for entity ``",
+						"MessageParameters"->{structure}
+						]
+				}
+			];
+
+
+ChemImportEntity[
+	structure:_InputStream|(_String?FileExistsQ),
+	postProcess:Except[_?OptionQ]:ChemImportMolTableString,
+	ops:OptionsPattern[]
+	]:=
+	PackageExceptionBlock["ImportEntity"]@
+		ChemImportEntity[Import[structure, "Text"], postProcess];
+
+
+ChemImportEntity[
+	structure:Except[_InputStream|(_String?FileExistsQ)],
+	postProcess:Except[_?OptionQ]:ChemImportMolTableString,
+	ops:OptionsPattern[]
+	]:=
+	PackageExceptionBlock["ImportEntity"]@
+		PackageRaiseException[
+			"ImportEntity",
+			"Import of entity `` unsupported",
+			"MessageParameters"->{structure}
+			]
+
+
+(* ::Subsection:: *)
+(*Format*)
+
+
+
+ChemImportFormat[
+	data:_InputStream,
+	fmt_String,
+	ops:OptionsPattern[]
+	]:=
+	PackageExceptionBlock["OpenBabelRun"]@
+	PackageExceptionBlock["Import"]@
+		If[MemberQ[$ChemOpenBabelReadFormats, ToUpperCase@fmt],
+			ChemFormatsOBImport[
+				ReadString@data,
+				ToUpperCase@fmt,
+				ops
+				],
+			PackageRaiseException["Import",
+				"Format `` is unsupported for import",
+				"MessageParameters"->{ToUpperCase@fmt}
+				]
+			];
+
+
+ChemImportFormat[
+	data:_InputStream,
+	fmt:Except[_String|_?OptionQ],
+	ops:OptionsPattern[]
+	]:=
+	PackageExceptionBlock["Import"]@
+		PackageRaiseException["Import",
+			"Format `` is unsupported for import",
+			"MessageParameters"->{fmt}
+			]
+
+
+ChemImportFormat[
+	data:_InputStream,
+	ops:OptionsPattern[]
+	]:=
+	ChemImportFormat[data, 
+		Lookup[{ops}, "Format", None],
+		FilterRules[{ops}, Options[OBPyRun]]
+		];
+
+
+ChemImportFormat[s_String, args___]:=
+	PackageExceptionBlock["Import"]@
+		Internal`WithLocalSettings[
+			$$stream=
+				Replace[
+					If[FileExistsQ@s, 
+						Quiet@OpenRead@s,
+						StringToStream@s
+						],
+					{
+						$Failed:>
+							PackageRaiseException["Import",
+								"Couldn't import from ``",
+								"MessageParameters"->{s}
+								]
+						}
+					],
+			ChemImportFormat[$$stream, args],
+			Quiet@Close@$$stream
+			];
+
+
+(* ::Subsection:: *)
+(*Post Process*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*ChemImportPostProcessElementPositions*)
+
+
+
+ChemImportPostProcessElementPositions//Clear
+iChemImportPostProcessElementPositions[mt_]:=
+	Replace[mt,
 		{
-			mol_String:>
-				postProcessFunction@mol,
-			mols:{__String}:>
-				Map[postProcessFunction, mols],
-			_:>
-				PackageRaiseException["ImportStructure", 
-					"No structure found for identifier ``",
-					"MessageParameters"->{structure}
-					]
+			l:
+				{{{{__Integer}, ___}, ___}, ___}:>
+					Map[Cases[First@#, {_String, _List}]&, l],
+			l:{{{__Integer}, ___}, ___}:>
+				{Cases[First@l, {_String, _List}]}
 			}
 		];
-ChemImportChemicalStructure[
-	structure:_InputStream|_String?(FileExistsQ),
-	postProcess_:ChemImportMolTableString
-	]:=
-	ChemImportChemicalStructure[Import[structure, "Text"], postProcess];
+ChemImportPostProcessElementPositions[mt:Except[_Failure], ops:OptionsPattern[]]:=
+	iChemImportPostProcessElementPositions[mt]//Replace[{s_}:>s];
+ChemImportPostProcessElementPositions[f_Failure, ops:OptionsPattern[]]:=
+	f
+
+
+(* ::Subsubsection::Closed:: *)
+(*ChemImportPostProcessBondLists*)
+
+
+
+ChemImportPostProcessBondLists//Clear
+iChemImportPostProcessBondLists[mt_]:=
+	Replace[mt,
+		{
+			l:
+				{{{{__Integer}, ___}, ___}, ___}:>
+					Map[Cases[Rest@First@#, {_Integer, _Integer, ___}]&, l],
+			l:{{{__Integer}, ___}, ___}:>
+				{Cases[Rest@First@l, {_Integer, _Integer, ___}]}
+			}
+		];
+ChemImportPostProcessBondLists[mt:Except[_Failure], ops:OptionsPattern[]]:=
+	iChemImportPostProcessBondLists[mt]//Replace[{s_}:>s];
+ChemImportPostProcessBondLists[f_Failure, ops:OptionsPattern[]]:=
+	f
+
+
+(* ::Subsubsection::Closed:: *)
+(*ChemImportPostProcessElementsBonds*)
+
+
+
+ChemImportPostProcessElementsBonds//Clear
+iChemImportPostProcessElementsBonds[mt_]:=
+	Replace[mt,
+		{
+			l:
+				{{{{__Integer}, ___}, ___}, ___}:>
+					Rest@*First/@l,
+			l:{{{__Integer}, ___}, ___}:>
+				{Rest@First@l}
+			}
+		];
+ChemImportPostProcessElementsBonds[mt:Except[_Failure], ops:OptionsPattern[]]:=
+	iChemImportPostProcessElementsBonds[mt]//Replace[{s_}:>s];
+ChemImportPostProcessElementsBonds[f_Failure, ops:OptionsPattern[]]:=
+	f;
+
+
+(* ::Subsubsection::Closed:: *)
+(*ChemImportPostProcessSupplementaryInfo*)
+
+
+
+ChemImportPostProcessSupplementaryInfo//Clear
+iChemImportPostProcessSupplementaryInfo[mt_]:=
+	Replace[mt,
+		{
+			l:
+				{{{{__Integer}, ___}, ___}, ___}:>
+					Map[Last@#&, l],
+			l:{{{__Integer}, ___}, ___}:>
+				{Last@l}
+			}
+		];
+ChemImportPostProcessSupplementaryInfo[mt:Except[_Failure], ops:OptionsPattern[]]:=
+	iChemImportPostProcessSupplementaryInfo[mt]//Replace[{s_}:>s];
+ChemImportPostProcessSupplementaryInfo[f_Failure, ops:OptionsPattern[]]:=
+	f
+
+
+(* ::Subsubsection::Closed:: *)
+(*ChemImportPostProcessGraphics*)
+
+
+
+ChemImportPostProcessGraphics//Clear
+ChemImportPostProcessGraphics[mt:Except[_Failure], ops:OptionsPattern[]]:=
+		ChemGraphics[#, ops]&/@
+			iChemImportPostProcessElementsBonds[mt]//Replace[{s_}:>s];
+ChemImportPostProcessGraphics[f_Failure, ops:OptionsPattern[]]:=
+	f
+
+
+(* ::Subsubsection::Closed:: *)
+(*ChemImportPostProcessGraphics3D*)
+
+
+
+ChemImportPostProcessGraphics3D//Clear
+ChemImportPostProcessGraphics3D[mt:Except[_Failure], ops:OptionsPattern[]]:=
+		ChemGraphics3D[#, ops]&/@
+			iChemImportPostProcessElementsBonds[mt]//Replace[{s_}:>s]
+ChemImportPostProcessGraphics3D[f_Failure, ops:OptionsPattern[]]:=
+	f
 
 
 End[];

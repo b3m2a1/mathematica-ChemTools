@@ -195,6 +195,15 @@ AtomsetAtomMemberQ::usage=
 
 
 (* ::Subsubsection::Closed:: *)
+(*Conversions*)
+
+
+
+AtomsetToString::usage="Converts an atomset to a MOL string";
+AtomsetToZMatrix::usage="Converts an atomset to a ZMatrix";
+
+
+(* ::Subsubsection::Closed:: *)
 (*Graphics*)
 
 
@@ -323,7 +332,14 @@ If[!KeyMemberQ[$ChemObjectDefaults, "Atomset"],
 					ChemMethod[AtomsetOrbitals],
 				"OrbitalsPlot"->
 					ChemMethod[AtomsetOrbitalsPlot],
-					
+				
+				"MolTable"->
+					ChemMethod[AtomsetMolTable],
+				"ZMatrix"->
+					ChemMethod[AtomsetZMatrix],
+				"Convert"->
+					ChemMethod[AtomsetFormatConvert],
+				
 				"Graphic"->ChemMethod[
 					With[{o={##}},
 						AtomsetGraphic[First@o,
@@ -888,6 +904,28 @@ AtomsetMolTable[obj:ChemObjPattern]:=
 			b
 			]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*ZMatrix*)
+
+
+
+AtomsetZMatrix[obj:ChemObjPattern, ops:OptionsPattern[]]:=
+	ChemFormatsMolToZMatrix[AtomsetMolTable[obj], ops]
+
+
+(* ::Subsubsection::Closed:: *)
+(*FormatConvert*)
+
+
+
+AtomsetFormatConvert[obj:ChemObjPattern, fmt_, ops:OptionsPattern[]]:=
+	ChemFormatsConvert[
+		AtomsetMolTable[obj],
+		"MolTable"->fmt,
+		ops
+		]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -1730,6 +1768,11 @@ AtomsetAromaticQ[obj:ChemObjPattern,ob:ChemObjPattern..]:=
 
 
 
+(* ::Subsubsection::Closed:: *)
+(*MassPositions*)
+
+
+
 AtomsetMassPositions[obj:ChemObjPattern]:=
 	With[{a=ChemGet[obj,"Atoms"]},
 		Transpose@{
@@ -1742,10 +1785,20 @@ AtomsetMassPositions[obj:ChemObjPattern]:=
 		}];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Center*)
+
+
+
 AtomsetCenter[obj:ChemObjPattern]:=
 	Mean@ChemGet[
 		ChemGet[obj,"Atoms"],
 		"Position"];
+
+
+(* ::Subsubsection::Closed:: *)
+(*CenterOfMass*)
+
 
 
 AtomsetCenterOfMass[obj:ChemObjPattern]:=
@@ -1755,6 +1808,11 @@ AtomsetCenterOfMass[obj:ChemObjPattern]:=
 			ChemGet[a,"Mass"]
 			]//Mean
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Move*)
+
 
 
 AtomsetMove[
@@ -1784,6 +1842,11 @@ AtomsetMove[
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Rotate*)
+
+
+
 AtomsetRotate[obj:ChemObjPattern,
 	theta:_?NumericQ,
 	axis:{_,_,_}|"A"|"B"|"C":{0,0,1},
@@ -1811,6 +1874,11 @@ AtomsetRotate[obj:ChemObjPattern,
 			},
 		AtomRotate[ChemGet[obj,"Atoms"],theta,raxis,rpoint]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*RotationTransform*)
+
 
 
 AtomsetRotationTransform[
@@ -1843,6 +1911,11 @@ AtomsetRotationTransform[
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Transform*)
+
+
+
 AtomsetTransform[obj:ChemObjPattern,
 	mat:_List?MatrixQ|_TransformationFunction]:=
 	AtomTransform[
@@ -1851,6 +1924,11 @@ AtomsetTransform[obj:ChemObjPattern,
 			(Dot[mat,#])&,
 			mat]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*AxisAlign*)
+
 
 
 (* ::Text:: *)
@@ -1958,6 +2036,11 @@ AtomsetAxisAlign[
 		];
 
 
+(* ::Subsubsection::Closed:: *)
+(*Align*)
+
+
+
 pt=
 	ChemObjPattern?(ChemInstanceQ["Atom"])|
 	"Center"|"CenterOfMass"|
@@ -2039,9 +2122,19 @@ AtomsetAlign[
 
 
 
+(* ::Subsubsection::Closed:: *)
+(*IntertialTensor*)
+
+
+
 AtomsetInertialTensor[obj:ChemObjPattern]:=
 	ChemComputeInertialTensor@
 		AtomsetMassPositions[obj];
+
+
+(* ::Subsubsection::Closed:: *)
+(*InertialEigensystem*)
+
 
 
 AtomsetInertialEigensystem[obj:ChemObjPattern]:=
@@ -2049,9 +2142,19 @@ AtomsetInertialEigensystem[obj:ChemObjPattern]:=
 		AtomsetElementPositions[obj];
 
 
+(* ::Subsubsection::Closed:: *)
+(*InertialSystem*)
+
+
+
 AtomsetInertialSystem[obj:ChemObjPattern]:=
 	ChemComputeInertialSystem@
 		AtomsetInertialEigensystem[obj];
+
+
+(* ::Subsubsection::Closed:: *)
+(*PrincipalAxes*)
+
 
 
 AtomsetPrincipalAxes[obj:ChemObjPattern]:=

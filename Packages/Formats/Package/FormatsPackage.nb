@@ -29,6 +29,17 @@ Cell[BoxData[{
 Cell[BoxData[{
  RowBox[{
   RowBox[{
+   RowBox[{"$ChemOpenBabelReadFormats", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<The formats OpenBabel can read from\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$ChemOpenBabelWriteFormats", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<The formats OpenBabel can write to\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"27b98e09-54d5-4fc9-b84c-1ca526dbd4f7"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
    RowBox[{"ChemFormatsMolToZMatrix", "::", "usage"}], "=", "\n", "\t", 
    "\"\<Turns a list of atom-coordinate pairs into a ZMatrix\>\""}], 
   ";"}], "\n", 
@@ -77,7 +88,7 @@ Cell[BoxData[{
    "\"\<Conversion wrapper to import unsupported formats via OB\>\""}], 
   ";"}]}], "CodeInput",ExpressionUUID->"e064d3a8-b88a-4e24-89c7-b913d42fc913"]\
 
-}, Open  ]],
+}, Closed]],
 
 Cell[BoxData[
  RowBox[{
@@ -87,12 +98,153 @@ f2259f5534ce"],
 
 Cell[CellGroupData[{
 
-Cell["\[LeftCeiling]Conversion Utils\[RightFloor]", "CodeSubsection",
- Evaluatable->True,
- CellChangeTimes->{{3.692981000967031*^9, 3.692981004166932*^9}, {
-  3.6939299403882303`*^9, 3.6939299412016077`*^9}, {3.7152560236313953`*^9, 
-  3.7152560252555923`*^9}},ExpressionUUID->"dd68a3a9-ce0f-40db-bbea-\
-3e23471fe58a"],
+Cell["\[LeftCeiling]File Formats\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"bbe1b069-553b-4844-9f6a-7b22cca51d8c"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]OpenBabel\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"d6ef1b07-9f31-41a4-a72e-4a7919b94fea"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]$ChemOpenBabelWriteFormats\[RightFloor]", \
+"CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"24b78639-3f6d-46b2-ae22-51243c3ae81d"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$ChemOpenBabelWriteFormats", "=", "\n", "\t", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{
+    "\"\<ACESIN\>\"", ",", "\"\<ADF\>\"", ",", "\"\<ALC\>\"", ",", 
+     "\"\<ASCII\>\"", ",", "\"\<BGF\>\"", ",", "\n", "\t", "\t", 
+     "\"\<BOX\>\"", ",", "\"\<BS\>\"", ",", "\"\<C3D1\>\"", ",", 
+     "\"\<C3D2\>\"", ",", "\"\<CAC\>\"", ",", "\n", "\t", "\t", 
+     "\"\<CACCRT\>\"", ",", "\"\<CACHE\>\"", ",", "\"\<CACINT\>\"", ",", 
+     "\"\<CAN\>\"", ",", "\"\<CDJSON\>\"", ",", "\n", "\t", "\t", 
+     "\"\<CDXML\>\"", ",", "\"\<CHT\>\"", ",", "\"\<CIF\>\"", ",", 
+     "\"\<CK\>\"", ",", "\"\<CML\>\"", ",", "\n", "\t", "\t", "\"\<CMLR\>\"", 
+     ",", "\"\<COM\>\"", ",", "\"\<CONFABREPORT\>\"", ",", "\"\<CONFIG\>\"", 
+     ",", "\"\<CONTCAR\>\"", ",", "\n", "\t", "\t", "\"\<CONTFF\>\"", ",", 
+     "\"\<COPY\>\"", ",", "\"\<CRK2D\>\"", ",", "\"\<CRK3D\>\"", ",", 
+     "\"\<CSR\>\"", ",", "\n", "\t", "\t", "\"\<CSSR\>\"", ",", "\"\<CT\>\"", 
+     ",", "\"\<CUB\>\"", ",", "\"\<CUBE\>\"", ",", "\"\<DALMOL\>\"", ",", 
+     "\n", "\t", "\t", "\"\<DMOL\>\"", ",", "\"\<DX\>\"", ",", "\"\<ENT\>\"", 
+     ",", "\"\<EXYZ\>\"", ",", "\"\<FA\>\"", ",", "\n", "\t", "\t", 
+     "\"\<FASTA\>\"", ",", "\"\<FEAT\>\"", ",", "\"\<FH\>\"", ",", 
+     "\"\<FHIAIMS\>\"", ",", "\"\<FIX\>\"", ",", "\n", "\t", "\t", 
+     "\"\<FPS\>\"", ",", "\"\<FPT\>\"", ",", "\"\<FRACT\>\"", ",", 
+     "\"\<FS\>\"", ",", "\"\<FSA\>\"", ",", "\n", "\t", "\t", "\"\<GAMIN\>\"",
+      ",", "\"\<GAU\>\"", ",", "\"\<GJC\>\"", ",", "\"\<GJF\>\"", ",", 
+     "\"\<GPR\>\"", ",", "\n", "\t", "\t", "\"\<GR96\>\"", ",", "\"\<GRO\>\"",
+      ",", "\"\<GUKIN\>\"", ",", "\"\<GUKOUT\>\"", ",", "\"\<GZMAT\>\"", ",", 
+     "\n", "\t", "\t", "\"\<HIN\>\"", ",", "\"\<INCHI\>\"", ",", 
+     "\"\<INCHIKEY\>\"", ",", "\"\<INP\>\"", ",", "\"\<JIN\>\"", ",", "\n", 
+     "\t", "\t", "\"\<K\>\"", ",", "\"\<LMPDAT\>\"", ",", "\"\<LPMD\>\"", 
+     ",", "\"\<MCDL\>\"", ",", "\"\<MCIF\>\"", ",", "\n", "\t", "\t", 
+     "\"\<MDFF\>\"", ",", "\"\<MDL\>\"", ",", "\"\<ML2\>\"", ",", 
+     "\"\<MMCIF\>\"", ",", "\"\<MMD\>\"", ",", "\n", "\t", "\t", 
+     "\"\<MMOD\>\"", ",", "\"\<MNA\>\"", ",", "\"\<MOL\>\"", ",", 
+     "\"\<MOL2\>\"", ",", "\"\<MOLD\>\"", ",", "\n", "\t", "\t", 
+     "\"\<MOLDEN\>\"", ",", "\"\<MOLF\>\"", ",", "\"\<MOLREPORT\>\"", ",", 
+     "\"\<MOP\>\"", ",", "\"\<MOPCRT\>\"", ",", "\n", "\t", "\t", 
+     "\"\<MOPIN\>\"", ",", "\"\<MP\>\"", ",", "\"\<MPC\>\"", ",", 
+     "\"\<MPD\>\"", ",", "\"\<MPQCIN\>\"", ",", "\n", "\t", "\t", 
+     "\"\<MRV\>\"", ",", "\"\<MSMS\>\"", ",", "\"\<NUL\>\"", ",", 
+     "\"\<NW\>\"", ",", "\"\<ORCAINP\>\"", ",", "\n", "\t", "\t", 
+     "\"\<OUTMOL\>\"", ",", "\"\<PAINT\>\"", ",", "\"\<PCJSON\>\"", ",", 
+     "\"\<PCM\>\"", ",", "\"\<PDB\>\"", ",", "\n", "\t", "\t", 
+     "\"\<PDBQT\>\"", ",", "\"\<PNG\>\"", ",", "\"\<POINTCLOUD\>\"", ",", 
+     "\"\<POSCAR\>\"", ",", "\"\<POSFF\>\"", ",", "\n", "\t", "\t", 
+     "\"\<POV\>\"", ",", "\"\<PQR\>\"", ",", "\"\<PQS\>\"", ",", 
+     "\"\<QCIN\>\"", ",", "\"\<REPORT\>\"", ",", "\n", "\t", "\t", 
+     "\"\<RSMI\>\"", ",", "\"\<RXN\>\"", ",", "\"\<SD\>\"", ",", 
+     "\"\<SDF\>\"", ",", "\"\<SMI\>\"", ",", "\n", "\t", "\t", 
+     "\"\<SMILES\>\"", ",", "\"\<STL\>\"", ",", "\"\<SVG\>\"", ",", 
+     "\"\<SY2\>\"", ",", "\"\<TDD\>\"", ",", "\n", "\t", "\t", "\"\<TEXT\>\"",
+      ",", "\"\<THERM\>\"", ",", "\"\<TMOL\>\"", ",", "\"\<TXT\>\"", ",", 
+     "\"\<TXYZ\>\"", ",", "\n", "\t", "\t", "\"\<UNIXYZ\>\"", ",", 
+     "\"\<VASP\>\"", ",", "\"\<VMOL\>\"", ",", "\"\<XED\>\"", ",", 
+     "\"\<XYZ\>\"", ",", "\n", "\t", "\t", "\"\<YOB\>\"", ",", 
+     "\"\<ZIN\>\""}], "\n", "\t", "\t", "}"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"d6864d2c-9757-4b3b-8a63-9b0f84d07e20"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]$ChemOpenBabelReadFormats\[RightFloor]", \
+"CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"4dd1ea36-7a5f-4ff8-ba85-8956990c51ce"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$ChemOpenBabelReadFormats", "=", "\n", "\t", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{
+    "\"\<ABINIT\>\"", ",", "\"\<ACESOUT\>\"", ",", "\"\<ACR\>\"", ",", 
+     "\"\<ADFOUT\>\"", ",", "\"\<ALC\>\"", ",", "\n", "\t", "\t", 
+     "\"\<AOFORCE\>\"", ",", "\"\<ARC\>\"", ",", "\"\<AXSF\>\"", ",", 
+     "\"\<BGF\>\"", ",", "\"\<BOX\>\"", ",", "\n", "\t", "\t", "\"\<BS\>\"", 
+     ",", "\"\<C09OUT\>\"", ",", "\"\<C3D1\>\"", ",", "\"\<C3D2\>\"", ",", 
+     "\"\<CACCRT\>\"", ",", "\n", "\t", "\t", "\"\<CAN\>\"", ",", 
+     "\"\<CAR\>\"", ",", "\"\<CASTEP\>\"", ",", "\"\<CCC\>\"", ",", 
+     "\"\<CDJSON\>\"", ",", "\n", "\t", "\t", "\"\<CDX\>\"", ",", 
+     "\"\<CDXML\>\"", ",", "\"\<CIF\>\"", ",", "\"\<CK\>\"", ",", 
+     "\"\<CML\>\"", ",", "\n", "\t", "\t", "\"\<CMLR\>\"", ",", 
+     "\"\<CONFIG\>\"", ",", "\"\<CONTCAR\>\"", ",", "\"\<CONTFF\>\"", ",", 
+     "\"\<CRK2D\>\"", ",", "\n", "\t", "\t", "\"\<CRK3D\>\"", ",", 
+     "\"\<CT\>\"", ",", "\"\<CUB\>\"", ",", "\"\<CUBE\>\"", ",", 
+     "\"\<DALLOG\>\"", ",", "\n", "\t", "\t", "\"\<DALMOL\>\"", ",", 
+     "\"\<DAT\>\"", ",", "\"\<DMOL\>\"", ",", "\"\<DX\>\"", ",", 
+     "\"\<ENT\>\"", ",", "\n", "\t", "\t", "\"\<EXYZ\>\"", ",", "\"\<FA\>\"", 
+     ",", "\"\<FASTA\>\"", ",", "\"\<FCH\>\"", ",", "\"\<FCHK\>\"", ",", "\n",
+      "\t", "\t", "\"\<FCK\>\"", ",", "\"\<FEAT\>\"", ",", "\"\<FHIAIMS\>\"", 
+     ",", "\"\<FRACT\>\"", ",", "\"\<FS\>\"", ",", "\n", "\t", "\t", 
+     "\"\<FSA\>\"", ",", "\"\<G03\>\"", ",", "\"\<G09\>\"", ",", 
+     "\"\<G92\>\"", ",", "\"\<G94\>\"", ",", "\n", "\t", "\t", "\"\<G98\>\"", 
+     ",", "\"\<GAL\>\"", ",", "\"\<GAM\>\"", ",", "\"\<GAMESS\>\"", ",", 
+     "\"\<GAMIN\>\"", ",", "\n", "\t", "\t", "\"\<GAMOUT\>\"", ",", 
+     "\"\<GOT\>\"", ",", "\"\<GPR\>\"", ",", "\"\<GRO\>\"", ",", 
+     "\"\<GUKIN\>\"", ",", "\n", "\t", "\t", "\"\<GUKOUT\>\"", ",", 
+     "\"\<GZMAT\>\"", ",", "\"\<HIN\>\"", ",", "\"\<HISTORY\>\"", ",", 
+     "\"\<INCHI\>\"", ",", "\n", "\t", "\t", "\"\<INP\>\"", ",", 
+     "\"\<INS\>\"", ",", "\"\<JIN\>\"", ",", "\"\<JOUT\>\"", ",", 
+     "\"\<LOG\>\"", ",", "\n", "\t", "\t", "\"\<LPMD\>\"", ",", 
+     "\"\<MCDL\>\"", ",", "\"\<MCIF\>\"", ",", "\"\<MDFF\>\"", ",", 
+     "\"\<MDL\>\"", ",", "\n", "\t", "\t", "\"\<ML2\>\"", ",", 
+     "\"\<MMCIF\>\"", ",", "\"\<MMD\>\"", ",", "\"\<MMOD\>\"", ",", 
+     "\"\<MOL\>\"", ",", "\n", "\t", "\t", "\"\<MOL2\>\"", ",", 
+     "\"\<MOLD\>\"", ",", "\"\<MOLDEN\>\"", ",", "\"\<MOLF\>\"", ",", 
+     "\"\<MOO\>\"", ",", "\n", "\t", "\t", "\"\<MOP\>\"", ",", 
+     "\"\<MOPCRT\>\"", ",", "\"\<MOPIN\>\"", ",", "\"\<MOPOUT\>\"", ",", 
+     "\"\<MPC\>\"", ",", "\n", "\t", "\t", "\"\<MPO\>\"", ",", "\"\<MPQC\>\"",
+      ",", "\"\<MRV\>\"", ",", "\"\<MSI\>\"", ",", "\"\<NWO\>\"", ",", "\n", 
+     "\t", "\t", "\"\<ORCA\>\"", ",", "\"\<OUT\>\"", ",", "\"\<OUTMOL\>\"", 
+     ",", "\"\<OUTPUT\>\"", ",", "\"\<PC\>\"", ",", "\n", "\t", "\t", 
+     "\"\<PCJSON\>\"", ",", "\"\<PCM\>\"", ",", "\"\<PDB\>\"", ",", 
+     "\"\<PDBQT\>\"", ",", "\"\<PNG\>\"", ",", "\n", "\t", "\t", 
+     "\"\<POS\>\"", ",", "\"\<POSCAR\>\"", ",", "\"\<POSFF\>\"", ",", 
+     "\"\<PQR\>\"", ",", "\"\<PQS\>\"", ",", "\n", "\t", "\t", "\"\<PREP\>\"",
+      ",", "\"\<PWSCF\>\"", ",", "\"\<QCOUT\>\"", ",", "\"\<RES\>\"", ",", 
+     "\"\<RSMI\>\"", ",", "\n", "\t", "\t", "\"\<RXN\>\"", ",", "\"\<SD\>\"", 
+     ",", "\"\<SDF\>\"", ",", "\"\<SIESTA\>\"", ",", "\"\<SMI\>\"", ",", "\n",
+      "\t", "\t", "\"\<SMILES\>\"", ",", "\"\<SMY\>\"", ",", "\"\<SY2\>\"", 
+     ",", "\"\<T41\>\"", ",", "\"\<TDD\>\"", ",", "\n", "\t", "\t", 
+     "\"\<TEXT\>\"", ",", "\"\<THERM\>\"", ",", "\"\<TMOL\>\"", ",", 
+     "\"\<TXT\>\"", ",", "\"\<TXYZ\>\"", ",", "\n", "\t", "\t", 
+     "\"\<UNIXYZ\>\"", ",", "\"\<VASP\>\"", ",", "\"\<VMOL\>\"", ",", 
+     "\"\<XML\>\"", ",", "\"\<XSF\>\"", ",", "\n", "\t", "\t", "\"\<XYZ\>\"", 
+     ",", "\"\<YOB\>\""}], "\n", "\t", "\t", "}"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"9c924738-1340-4cc9-974d-8119f1cb08c1"]
+}, Closed]]
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Format Detection\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"2faa6160-91c0-4d0e-9e1b-904848ff1bd7"],
 
 Cell[CellGroupData[{
 
@@ -159,8 +311,12 @@ Cell[BoxData[
         RowBox[{
          RowBox[{"{", 
           RowBox[{"_String", ",", " ", "_Integer", ",", " ", 
-           RowBox[{"__", "?", "NumericQ"}]}], "}"}], "..."}]}], "\n", 
-       "\t\t\t\t", "}"}]}], ",", "\n", "\t\t", 
+           RowBox[{"__", "?", "NumericQ"}]}], "}"}], "..."}], ",", "\n", 
+        "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"_Integer", ",", "_Integer", ",", "___"}], "}"}], "..."}]}],
+        "\n", "\t\t\t\t", "}"}]}], ",", "\n", "\t\t", 
      RowBox[{"\"\<SDFRules\>\"", "->", "\n", "\t\t\t", 
       RowBox[{"{", "\n", "\t\t\t\t", 
        RowBox[{"Repeated", "[", 
@@ -177,9 +333,93 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
+Cell["\[LeftCeiling]chemFormatsSMIQ\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"fbda6b4e-70bb-47c7-a3e6-cfbc16aa90c8"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"chemFormatsSMIQ", "[", "s_", "]"}], ":=", "\n", "\t", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Length", "@", 
+     RowBox[{"StringCases", "[", 
+      RowBox[{"s", ",", "\"\<\\n\>\""}], "]"}]}], "===", "0"}], "&&", "\n", 
+   "\t\t", 
+   RowBox[{"StringMatchQ", "[", "\n", "\t\t\t", 
+    RowBox[{
+     RowBox[{"ToLowerCase", "@", "s"}], ",", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"Repeated", "[", "\n", "\t\t\t\t", 
+       RowBox[{"Alternatives", "@@", "\n", "\t\t\t\t\t", 
+        RowBox[{"Join", "[", "\n", "\t\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"Map", "[", "\n", "\t\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"\"\<[\>\"", "<>", "#", "<>", "\"\<]\>\""}], "&"}], ",", 
+            "\n", "\t", "\t\t\t\t\t\t", 
+            RowBox[{"ToLowerCase", "@", "\n", "\t", "\t\t\t\t\t\t\t", 
+             RowBox[{"Select", "[", 
+              RowBox[{
+               RowBox[{"Keys", "@", "$ChemElements"}], ",", " ", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"StringQ", "[", "#", "]"}], "&&", 
+                 RowBox[{
+                  RowBox[{"StringLength", "[", "#", "]"}], "<", "3"}]}], 
+                "&"}]}], "]"}]}]}], "\n", "\t\t\t\t\t\t\t", "]"}], ",", "\n", 
+          "\t\t\t\t\t\t", 
+          RowBox[{"{", 
+           RowBox[{"\"\<.\>\"", ",", " ", "\"\<=\>\""}], "}"}], ",", "\n", 
+          "\t\t\t\t\t\t", 
+          RowBox[{"ToLowerCase", "@", 
+           RowBox[{"{", 
+            RowBox[{
+            "\"\<B\>\"", ",", " ", "\"\<C\>\"", ",", " ", "\"\<N\>\"", ",", 
+             " ", "\"\<O\>\"", ",", " ", "\"\<P\>\"", ",", " ", "\"\<S\>\"", 
+             ",", " ", "\"\<F\>\"", ",", " ", "\"\<Cl\>\"", ",", " ", 
+             "\"\<Br\>\"", ",", " ", "\"\<I\>\""}], "}"}]}], ",", "\n", 
+          "\t\t\t\t\t\t", 
+          RowBox[{"Map", "[", "\n", "\t\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"\"\<[\>\"", "~~", "#", "~~", 
+              RowBox[{"(", 
+               RowBox[{"Repeated", "[", 
+                RowBox[{
+                "\"\<+\>\"", "|", "\"\<-\>\"", "|", "DigitCharacter"}], "]"}],
+                ")"}], "~~", "\"\<]\>\""}], "&"}], ",", "\n", "\t", 
+            "\t\t\t\t\t\t", 
+            RowBox[{"ToLowerCase", "@", "\n", "\t", "\t\t\t\t\t\t\t", 
+             RowBox[{"Select", "[", 
+              RowBox[{
+               RowBox[{"Keys", "@", "$ChemElements"}], ",", " ", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"StringQ", "[", "#", "]"}], "&&", 
+                 RowBox[{
+                  RowBox[{"StringLength", "[", "#", "]"}], "<", "3"}]}], 
+                "&"}]}], "]"}]}]}], "\n", "\t\t\t\t\t\t\t", "]"}]}], "\n", 
+         "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}], "~~", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"Whitespace", "~~", "__"}], ")"}], "|", "\"\<\>\""}], 
+       ")"}]}]}], "\n", "\t\t\t", 
+    "]"}]}]}]], \
+"CodeInput",ExpressionUUID->"4d82b9b2-cc0b-4cd5-a2e3-7fced832a716"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
 Cell["\[LeftCeiling]ChemFormatsDetectMolFormat\[RightFloor]", \
 "CodeSubsubsubsection",
  Evaluatable->True,ExpressionUUID->"b2a1f26f-9e11-4c5a-9120-2829c207b620"],
+
+Cell[BoxData[
+ RowBox[{"ChemFormatsDetectMolFormat", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"a1177550-34a5-4cba-9c7f-80887f619b20"],
 
 Cell[BoxData[
  RowBox[{
@@ -194,11 +434,6 @@ Cell[BoxData[
      RowBox[{
       RowBox[{"Length", "@", 
        RowBox[{"StringCases", "[", 
-        RowBox[{"s", ",", "\"\<\\n\>\""}], "]"}]}], "===", "0"}], ",", "\n", 
-     "\t\t\t", "\"\<SMILES\>\"", ",", "\n", "\t\t", 
-     RowBox[{
-      RowBox[{"Length", "@", 
-       RowBox[{"StringCases", "[", 
         RowBox[{"s", ",", " ", 
          RowBox[{
          "\"\<M  END\>\"", "~~", "Whitespace", "~~", "\"\<$$$$\>\""}]}], 
@@ -210,30 +445,34 @@ Cell[BoxData[
         RowBox[{"s", ",", " ", "\"\<M  END\>\""}], "]"}]}], "===", "1"}], ",",
       "\n", "\t\t\t", "\"\<MOL\>\"", ",", "\n", "\t\t", 
      RowBox[{"StringContainsQ", "[", "\n", "\t\t\t", 
-      RowBox[{"StartOfLine", "~~", 
-       RowBox[{"(", 
-        RowBox[{"Whitespace", "|", "\"\<\>\""}], ")"}], "~~", 
-       RowBox[{"(", 
-        RowBox[{"WordCharacter", ".."}], ")"}], "~~", "\n", "\t\t\t\t", 
-       RowBox[{"Repeated", "[", 
-        RowBox[{"Whitespace", "~~", 
-         RowBox[{"(", 
-          RowBox[{
-           RowBox[{"DigitCharacter", ".."}], "~~", "\"\<.\>\"", "~~", 
-           RowBox[{"DigitCharacter", ".."}]}], ")"}]}], "]"}]}], "\n", 
+      RowBox[{"s", ",", "\n", "\t\t\t", 
+       RowBox[{"StartOfLine", "~~", 
+        RowBox[{"(", 
+         RowBox[{"Whitespace", "|", "\"\<\>\""}], ")"}], "~~", 
+        RowBox[{"(", 
+         RowBox[{"WordCharacter", ".."}], ")"}], "~~", "\n", "\t\t\t\t", 
+        RowBox[{"Repeated", "[", 
+         RowBox[{"Whitespace", "~~", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"DigitCharacter", ".."}], "~~", "\"\<.\>\"", "~~", 
+            RowBox[{"DigitCharacter", ".."}]}], ")"}]}], "]"}]}]}], "\n", 
       "\t\t\t", "]"}], ",", "\n", "\t\t\t", "\"\<XYZ\>\"", ",", "\n", "\t\t", 
      
      RowBox[{"StringStartsQ", "[", 
       RowBox[{
        RowBox[{"StringTrim", "[", "s", "]"}], ",", " ", 
        RowBox[{
-        RowBox[{"LetterQ", ".."}], "~~", 
+        RowBox[{"LetterCharacter", ".."}], "~~", 
         RowBox[{"(", 
          RowBox[{"Whitespace", "|", "\"\<\>\""}], ")"}], "~~", 
         "\"\<\\n\>\""}]}], "]"}], ",", "\n", "\t\t\t", "\"\<ZMatrix\>\"", ",",
-      "\n", "\t\t", "True", ",", "\n", "\t\t\t", "$Failed"}], "\n", "\t\t", 
-    "]"}]}], ";"}]], \
-"CodeInput",ExpressionUUID->"b472eb65-70f4-4256-80d2-42567bb72930"],
+      "\n", "\t\t", 
+     RowBox[{"chemFormatsSMIQ", "[", 
+      RowBox[{"StringTrim", "@", "s"}], "]"}], ",", "\n", "\t\t\t", 
+     "\"\<SMILES\>\"", ",", "\n", "\t\t", "True", ",", "\n", "\t\t\t", 
+     "$Failed"}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"b472eb65-70f4-4256-80d2-42567bb72930"],
 
 Cell[BoxData[
  RowBox[{
@@ -251,16 +490,23 @@ Cell[BoxData[
      RowBox[{"_", "\[Rule]", "$Failed"}]}], 
     "]"}]}]}]], \
 "CodeInput",ExpressionUUID->"bf507c27-956d-4bbc-b3cd-edd941fca739"]
+}, Closed]]
 }, Open  ]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
-Cell["\[LeftCeiling]GenerateZMatrix\[RightFloor]", "CodeSubsubsection",
+Cell["\[LeftCeiling]Conversion Utils\[RightFloor]", "CodeSubsection",
  Evaluatable->True,
- CellChangeTimes->{{3.692983254666025*^9, 
-  3.6929832590805283`*^9}},ExpressionUUID->"121c3c7b-4888-429c-b824-\
-b9a9abcae7ad"],
+ CellChangeTimes->{{3.692981000967031*^9, 3.692981004166932*^9}, {
+  3.6939299403882303`*^9, 3.6939299412016077`*^9}, {3.7152560236313953`*^9, 
+  3.7152560252555923`*^9}},ExpressionUUID->"dd68a3a9-ce0f-40db-bbea-\
+3e23471fe58a"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]MolToZMatrix\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"121c3c7b-4888-429c-b824-b9a9abcae7ad"],
 
 Cell[BoxData[
  RowBox[{"$ZMatrixInRadians", "=", 
@@ -370,7 +616,7 @@ Cell[BoxData[
            RowBox[{"1", "/", "Degree"}], ",", " ", "1"}], "]"}]}]}]}], "\n", 
       "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
   ";"}]], "CodeInput",ExpressionUUID->"61dc0919-3c97-4b37-8ab3-6a41118de60a"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -654,7 +900,7 @@ Cell[BoxData[
         "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "}"}]}], "\n", "\t\t", 
     "]"}]}], ";"}]], \
 "CodeInput",ExpressionUUID->"769bdaaf-43c6-4dfe-8396-fb4d2d62c91b"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -705,35 +951,50 @@ Cell[BoxData[{
       RowBox[{
        RowBox[{"{", "\n", "\t\t\t\t", 
         RowBox[{
-         RowBox[{"ats", "=", "atoms"}], ",", "\n", "\t\t\t\t", 
-         RowBox[{"atomOrder", "=", 
-          RowBox[{"Range", "[", 
-           RowBox[{"Length", "@", "atoms"}], "]"}]}], ",", "\n", "\t\t\t\t", 
-         RowBox[{"which", "=", "\n", "\t\t\t\t\t", 
-          RowBox[{"Replace", "[", 
+         RowBox[{"bonds", "=", 
+          RowBox[{"Cases", "[", 
            RowBox[{
-            RowBox[{"OptionValue", "[", "\"\<ZMatrixOrder\>\"", "]"}], ",", 
-            "\n", "\t\t\t\t\t\t", 
-            RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
-             RowBox[{
-              RowBox[{
-               RowBox[{"w", ":", 
-                RowBox[{"{", 
-                 RowBox[{
-                  RowBox[{"{", "__Integer", "}"}], ".."}], "}"}]}], ":>", 
-               "\n", "\t\t\t\t\t\t\t\t", 
-               RowBox[{"SortBy", "[", 
-                RowBox[{"w", ",", " ", "Length"}], "]"}]}], ",", "\n", 
-              "\t\t\t\t\t\t\t", 
-              RowBox[{
-               RowBox[{"Except", "[", 
-                RowBox[{"{", "__Integer", "}"}], "]"}], ":>", "\n", 
-               "\t\t\t\t\t\t\t\t", 
-               RowBox[{"Range", "[", 
-                RowBox[{"Length", "@", "atoms"}], "]"}]}]}], "\n", 
-             "\t\t\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t\t\t", "]"}]}]}], "\n",
-         "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+            RowBox[{"Rest", "@", "atoms"}], ",", " ", 
+            RowBox[{"{", 
+             RowBox[{"_Integer", ",", " ", "_Integer", ",", " ", "___"}], 
+             "}"}]}], "]"}]}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"ats", "=", 
+          RowBox[{"N", "@", 
+           RowBox[{"Cases", "[", 
+            RowBox[{"atoms", ",", " ", 
+             RowBox[{"{", 
+              RowBox[{"_String", ",", " ", "_List", ",", " ", "___"}], 
+              "}"}]}], "]"}]}]}], ",", "\n", "\t\t\t\t", "atomOrder", ",", 
+         "\n", "\t\t\t\t", "atomReordering", ",", "\n", "\t\t\t\t", "which"}],
+         "\n", "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", 
        RowBox[{
+        RowBox[{"atomOrder", "=", "\n", "\t\t\t\t", 
+         RowBox[{"Range", "[", 
+          RowBox[{"Length", "@", "ats"}], "]"}]}], ";", "\n", "\t\t\t", 
+        RowBox[{"which", "=", "\n", "\t\t\t\t", 
+         RowBox[{"Replace", "[", 
+          RowBox[{
+           RowBox[{"OptionValue", "[", "\"\<ZMatrixOrder\>\"", "]"}], ",", 
+           "\n", "\t\t\t\t\t", 
+           RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"w", ":", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"{", "__Integer", "}"}], ".."}], "}"}]}], ":>", "\n",
+               "\t\t\t\t\t\t\t", 
+              RowBox[{"SortBy", "[", 
+               RowBox[{"w", ",", " ", "Length"}], "]"}]}], ",", "\n", 
+             "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"Except", "[", 
+               RowBox[{"{", "__Integer", "}"}], "]"}], ":>", "\n", 
+              "\t\t\t\t\t\t\t", 
+              RowBox[{"Range", "[", 
+               RowBox[{"Length", "@", "ats"}], "]"}]}]}], "\n", 
+            "\t\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t\t", "]"}]}], ";", "\n", 
+        "\t\t\t", 
         RowBox[{"Switch", "[", 
          RowBox[{
           RowBox[{"Length", "/@", 
@@ -774,11 +1035,8 @@ Cell[BoxData[{
                RowBox[{"\"\<MessageParameters\>\"", "\[Rule]", 
                 RowBox[{"{", "which", "}"}]}]}], "\n", "\t\t\t\t\t\t\t\t", 
               "]"}]}], "\n", "\t\t\t\t\t\t", "]"}], ";", "\n", "\t\t\t\t\t", 
-           RowBox[{"atomOrder", "=", "which"}], ";", "\n", "\t\t\t\t\t", 
-           RowBox[{"which", "=", 
-            RowBox[{"Range", "[", 
-             RowBox[{"Length", "@", "which"}], "]"}]}]}], ",", "\n", 
-          "\t\t\t\t", 
+           RowBox[{"atomOrder", "=", "which"}], ";"}], ",", "\n", "\t\t\t\t", 
+          
           RowBox[{"{", 
            RowBox[{"1", ",", " ", "4"}], "}"}], ",", "\n", "\t\t\t\t\t", 
           RowBox[{
@@ -838,36 +1096,65 @@ length 2\>\""}], "\n", "\t\t\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t\t",
         RowBox[{"ats", "=", 
          RowBox[{"ats", "[", 
           RowBox[{"[", "atomOrder", "]"}], "]"}]}], ";", "\n", "\t\t\t", 
-        RowBox[{"which", "=", 
-         RowBox[{"which", "/.", 
-          RowBox[{"Thread", "[", 
-           RowBox[{"atomOrder", "->", 
-            RowBox[{"Range", "[", 
-             RowBox[{"Length", "@", "ats"}], "]"}]}], "]"}]}]}], ";", "\n", 
+        RowBox[{"atomReordering", "=", 
+         RowBox[{"Thread", "[", 
+          RowBox[{"atomOrder", "->", 
+           RowBox[{"Range", "[", 
+            RowBox[{"Length", "@", "ats"}], "]"}]}], "]"}]}], ";", "\n", 
         "\t\t\t", 
-        RowBox[{"MapThread", "[", "\n", "\t\t\t\t", 
-         RowBox[{
+        RowBox[{"which", "=", 
+         RowBox[{"which", "/.", "atomReordering"}]}], ";", "\n", "\t\t\t", 
+        RowBox[{"bonds", "=", "\n", "\t\t\t\t", 
+         RowBox[{"SortBy", "[", "\n", "\t\t\t\t\t", 
           RowBox[{
-           RowBox[{"zmatrixEntry", "[", 
-            RowBox[{"#", ",", " ", "ats", ",", " ", "#2"}], "]"}], "&"}], ",",
-           "\n", "\t\t\t\t", 
-          RowBox[{"{", "\n", "\t\t\t\t\t", 
-           RowBox[{"ats", ",", "\n", "\t\t\t\t\t", "which"}], "\n", 
-           "\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t", "]"}]}]}], "\n", "\t\t\t",
-       "]"}]}], "\n", "\t\t", 
+           RowBox[{"Replace", "[", 
+            RowBox[{"bonds", ",", "\n", "\t", "\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"a_", ",", " ", "b_", ",", " ", "e___"}], "}"}], 
+              "\[RuleDelayed]", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"Join", "[", 
+               RowBox[{
+                RowBox[{"Sort", "[", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{"a", ",", " ", "b"}], "}"}], "/.", 
+                  "atomReordering"}], "]"}], ",", " ", 
+                RowBox[{"{", "e", "}"}]}], "]"}]}], ",", "\n", "\t\t\t\t\t\t",
+              "1"}], "\n", "\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"#", "[", 
+             RowBox[{"[", 
+              RowBox[{";;", "2"}], "]"}], "]"}], "&"}]}], "\n", "\t\t\t\t\t", 
+          "]"}]}], ";", "\n", "\t\t\t", 
+        RowBox[{"Join", "[", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"MapThread", "[", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"zmatrixEntry", "[", 
+              RowBox[{"#", ",", " ", "ats", ",", " ", "#2"}], "]"}], "&"}], 
+            ",", "\n", "\t", "\t\t\t\t", 
+            RowBox[{"{", "\n", "\t", "\t\t\t\t\t", 
+             RowBox[{"ats", ",", "\n", "\t", "\t\t\t\t\t", "which"}], "\n", 
+             "\t\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t\t", "]"}], ",", "\n", 
+          "\t\t\t\t", "bonds"}], "\n", "\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", 
+      "]"}]}], "\n", "\t\t", 
     "]"}]}]}]}], \
 "CodeInput",ExpressionUUID->"3c43ea6d-f2f7-4254-8d40-e0cce85f7480"]
-}, Open  ]]
+}, Closed]]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
 Cell["\[LeftCeiling]EnumerateZMatrixStrings\[RightFloor]", "CodeSubsubsection",
- Evaluatable->True,
- CellChangeTimes->{{3.7325549280633497`*^9, 3.732554937630343*^9}, {
-  3.732555137722355*^9, 3.732555142730391*^9}, {3.73263782432904*^9, 
-  3.732637824588646*^9}},ExpressionUUID->"3b7fbe4a-3d54-440f-ad93-\
-4c44d56e0863"],
+ Evaluatable->True,ExpressionUUID->"3b7fbe4a-3d54-440f-ad93-4c44d56e0863"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ChemZMatrixStringVarRules\[RightFloor]", \
+"CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"947f2fa5-59bf-416d-93de-0031cc439054"],
 
 Cell[BoxData[
  RowBox[{
@@ -923,7 +1210,14 @@ Cell[BoxData[
    3.732554848450019*^9}, 3.732555143672162*^9, {3.732555557205858*^9, 
    3.732555585897696*^9}, 3.732556514734704*^9, {3.7326378141561747`*^9, 
    3.732637820499824*^9}},ExpressionUUID->"2df36bf9-0941-44b9-8191-\
-3f877fa6ec2e"],
+3f877fa6ec2e"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ChemUtilsPreCleanZMatrixString\[RightFloor]", \
+"CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"4210fe17-b9af-459f-9dc7-9c40fccd19d3"],
 
 Cell[BoxData[
  RowBox[{
@@ -973,7 +1267,34 @@ Cell[BoxData[
  CellChangeTimes->{{3.73324699500677*^9, 3.733247055113962*^9}, {
   3.733247384628056*^9, 3.733247486868515*^9}, {3.733249406086732*^9, 
   3.733249407320353*^9}},ExpressionUUID->"01511203-2541-40b6-b688-\
-35a773591163"],
+35a773591163"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]chemFormatsEnumZMatValidVarString\[RightFloor]", \
+"CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"3574ce01-8465-4450-a721-b25f37bdef22"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"chemFormatsEnumZMatValidVarString", "[", "s_", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"StringTrim", "[", "s", "]"}], "\[Equal]", "\"\<\>\""}], "||", 
+   RowBox[{"StringStartsQ", "[", 
+    RowBox[{
+     RowBox[{"StringTrim", "@", "s"}], ",", " ", "LetterCharacter"}], 
+    "]"}]}]}]], \
+"CodeInput",ExpressionUUID->"8ace78f5-4f05-450c-8975-cf43a36d103b"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ChemFormatsEnumerateZMatrixStrings\[RightFloor]", \
+"CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"a870afe0-7376-4230-bf10-05d5a49665b1"],
 
 Cell[BoxData[
  RowBox[{
@@ -1016,16 +1337,30 @@ Cell[BoxData[
             RowBox[{
              RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
               RowBox[{
-               RowBox[{"{", "m_String", "}"}], ",", " ", 
-               RowBox[{"{", 
-                RowBox[{"vars___String", ",", " ", 
-                 RowBox[{"\"\<JoinMe!\>\"", "\[Rule]", "n_"}], ",", " ", 
-                 "bonds_String"}], "}"}]}], "\n", "\t\t\t\t\t\t\t", "}"}], 
-             "|", "\n", "\t\t\t\t\t\t", 
+               RowBox[{"{", "m_String", "}"}], ",", " ", "\n", 
+               "\t\t\t\t\t\t\t", 
+               RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{
+                 "vars___String", "?", "chemFormatsEnumZMatValidVarString"}], 
+                 ",", " ", "\n", "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"b1", ":", 
+                  RowBox[{"___String", "?", 
+                   RowBox[{"(", 
+                    RowBox[{
+                    "Not", "@*", "chemFormatsEnumZMatValidVarString"}], 
+                    ")"}]}]}], ",", "\n", "\t\t\t\t\t\t\t\t", 
+                 RowBox[{"\"\<JoinMe!\>\"", "\[Rule]", "n_"}], ",", " ", "\n",
+                  "\t\t\t\t\t\t\t\t", "b2_String"}], "\n", "\t\t\t\t\t\t\t\t",
+                 "}"}]}], "\n", "\t\t\t\t\t\t\t", "}"}], "|", "\n", 
+             "\t\t\t\t\t\t", 
              RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
               RowBox[{
-               RowBox[{"{", "m_String", "}"}], ",", " ", 
-               RowBox[{"{", "vars___String", "}"}], ",", 
+               RowBox[{"{", "m_String", "}"}], ",", " ", "\n", 
+               "\t\t\t\t\t\t\t", 
+               RowBox[{"{", 
+                RowBox[{"vars___", "?", "chemFormatsEnumZMatValidVarString"}],
+                 "}"}], ",", "\n", "\t\t\t\t\t\t\t", 
                RowBox[{"{", 
                 RowBox[{"b1___String", ",", " ", 
                  RowBox[{"\"\<JoinMe!\>\"", "\[Rule]", "n_"}], ",", " ", 
@@ -1038,10 +1373,27 @@ Cell[BoxData[
               RowBox[{"b1", "<>", "\"\<\\n\>\"", "<>", "n", "<>", "b2"}]}], 
              "\n", "\t\t\t\t\t\t\t\t\t", "}"}]}], ",", "\n", "\t\t\t\t\t\t", 
            RowBox[{
-            RowBox[{"{", 
+            RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
              RowBox[{
-              RowBox[{"{", "m_String", "}"}], ",", " ", 
-              RowBox[{"{", "vars__String", "}"}]}], "}"}], ":>", "\n", 
+              RowBox[{"{", "m_String", "}"}], ",", " ", "\n", 
+              "\t\t\t\t\t\t\t", 
+              RowBox[{"{", 
+               RowBox[{
+               "vars__String", "?", "chemFormatsEnumZMatValidVarString"}], 
+               "}"}]}], "\n", "\t\t\t\t\t\t\t", "}"}], ":>", "\n", 
+            "\t\t\t\t\t\t\t", 
+            RowBox[{"{", 
+             RowBox[{"m", ",", " ", "vars"}], "}"}]}], ",", "\n", 
+           "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{"{", "m_String", "}"}], ",", " ", "\n", 
+              "\t\t\t\t\t\t\t", 
+              RowBox[{"{", 
+               RowBox[{
+               "vars__String", "?", "chemFormatsEnumZMatValidVarString"}], 
+               "}"}]}], "\n", "\t\t\t\t\t\t\t", "}"}], ":>", "\n", 
             "\t\t\t\t\t\t\t", 
             RowBox[{"{", 
              RowBox[{"m", ",", " ", "vars"}], "}"}]}]}], "\n", "\t\t\t\t\t\t",
@@ -1101,6 +1453,7 @@ Cell[BoxData[
          "\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}]}]}]}], "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"9564ac1e-7860-4b78-bf70-8091788a61e5"]
+}, Open  ]]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -1123,7 +1476,7 @@ Cell[BoxData[
       RowBox[{"Cases", "[", 
        RowBox[{"mat", ",", " ", 
         RowBox[{"{", 
-         RowBox[{"_String", ",", " ", "__"}], "}"}]}], "]"}]}], ";", "\n", 
+         RowBox[{"_String", ",", " ", "___"}], "}"}]}], "]"}]}], ";", "\n", 
      "\t\t", 
      RowBox[{"zmVars", "=", 
       RowBox[{"Cases", "[", 
@@ -1189,11 +1542,7 @@ Cell[BoxData[
 Cell[CellGroupData[{
 
 Cell["\[LeftCeiling]GenerateMolTable\[RightFloor]", "CodeSubsubsection",
- Evaluatable->True,
- CellChangeTimes->{{3.692983264489459*^9, 3.6929832674720917`*^9}, {
-  3.734122461385068*^9, 
-  3.734122461591222*^9}},ExpressionUUID->"0c657f5b-e10a-4583-b7f2-\
-690dde9f6cf9"],
+ Evaluatable->True,ExpressionUUID->"0c657f5b-e10a-4583-b7f2-690dde9f6cf9"],
 
 Cell[BoxData[
  RowBox[{"Clear", "[", 
@@ -1203,6 +1552,18 @@ Cell[BoxData[
  CellChangeTimes->{{3.7326563319160337`*^9, 
   3.732656339323324*^9}},ExpressionUUID->"18755105-4692-4735-9636-\
 6d5e9f7ea167"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"$ZMatrixToMolOrigin", "=", 
+   RowBox[{"N", "@", 
+    RowBox[{"{", 
+     RowBox[{"0", ",", " ", "0", ",", " ", "0"}], "}"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"$ZMatrixToMolAxisSystem", "=", 
+   RowBox[{"N", "@", 
+    RowBox[{"IdentityMatrix", "[", "3", "]"}]}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"ece538ca-3f82-4893-b57d-6ee9de89ea6b"],
 
 Cell["\<\
 \[LeftCeiling]Should extend this to generate ZMatrices that aren\
@@ -1236,25 +1597,14 @@ Cell["\<\
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"molTableNormed", "[", 
-   RowBox[{"crd1_", ",", " ", "norm_"}], "]"}], ":=", "\n", "\t", 
-  RowBox[{"crd1", "+", 
-   RowBox[{"{", 
-    RowBox[{"norm", ",", " ", "0", ",", " ", "0"}], "}"}]}]}]], "CodeInput",
- CellChangeTimes->{{3.692982970778652*^9, 3.692983057977545*^9}, {
-   3.6929832807093687`*^9, 3.6929832830643663`*^9}, {3.6929833447499723`*^9, 
-   3.692983387652972*^9}, {3.692983428497636*^9, 3.692983466473929*^9}, {
-   3.692983509779687*^9, 3.692983510517797*^9}, {3.6929855231765003`*^9, 
-   3.6929855246614*^9}, {3.692985557190896*^9, 3.6929855574034986`*^9}, {
-   3.6929855978897467`*^9, 3.6929856932064342`*^9}, {3.7326558964569263`*^9, 
-   3.732655904020236*^9}, 3.7326559412968597`*^9, {3.732656018737996*^9, 
-   3.732656033839316*^9}, {3.732656070192313*^9, 3.7326560720082817`*^9}, {
-   3.732656121672142*^9, 3.732656122091096*^9}, 3.732656173142819*^9, {
-   3.7326563148772383`*^9, 3.732656324685299*^9}, {3.732656355750243*^9, 
-   3.7326563569020576`*^9}, {3.732656388589898*^9, 3.732656389188053*^9}, {
-   3.732656441876988*^9, 
-   3.732656447276147*^9}},ExpressionUUID->"0bc633d4-4084-4c4b-8192-\
-593913624184"]
+  RowBox[{
+   RowBox[{"molTableNormed", "[", 
+    RowBox[{"crd1_", ",", " ", "norm_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"crd1", "+", 
+    RowBox[{"norm", "*", 
+     RowBox[{"$ZMatrixToMolAxisSystem", "[", 
+      RowBox[{"[", "1", "]"}], "]"}]}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"0bc633d4-4084-4c4b-8192-593913624184"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -1298,9 +1648,9 @@ Cell[BoxData[
           RowBox[{"Cross", "[", 
            RowBox[{
             RowBox[{"crd2", "-", "crd1"}], ",", " ", 
-            RowBox[{"{", 
-             RowBox[{"1", ",", " ", "0", ",", " ", "0"}], "}"}]}], "]"}]}], 
-         "}"}], ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"$ZMatrixToMolAxisSystem", "[", 
+             RowBox[{"[", "1", "]"}], "]"}]}], "]"}]}], "}"}], ",", "\n", 
+        "\t\t\t\t\t", 
         RowBox[{"If", "[", 
          RowBox[{
           RowBox[{"c", "==", 
@@ -1310,9 +1660,9 @@ Cell[BoxData[
           RowBox[{"Cross", "[", 
            RowBox[{
             RowBox[{"crd2", "-", "crd1"}], ",", " ", 
-            RowBox[{"{", 
-             RowBox[{"0", ",", " ", "1", ",", " ", "0"}], "}"}]}], "]"}], ",",
-           "\n", "\t\t\t\t\t\t", "c"}], "\n", "\t\t\t\t\t\t", "]"}]}], "\n", 
+            RowBox[{"$ZMatrixToMolAxisSystem", "[", 
+             RowBox[{"[", "2", "]"}], "]"}]}], "]"}], ",", "\n", 
+          "\t\t\t\t\t\t", "c"}], "\n", "\t\t\t\t\t\t", "]"}]}], "\n", 
        "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}], ".", 
     RowBox[{"(", 
      RowBox[{"norm", "*", 
@@ -1320,7 +1670,7 @@ Cell[BoxData[
        RowBox[{"crd2", "-", "crd1"}], "]"}]}], 
      ")"}]}]}]}]], \
 "CodeInput",ExpressionUUID->"861ed5f0-b592-4da5-b2de-1e433b49381c"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -1398,9 +1748,9 @@ Cell[BoxData[
          RowBox[{"normalVec", "=", 
           RowBox[{"Cross", "[", 
            RowBox[{"ax21", ",", " ", 
-            RowBox[{"{", 
-             RowBox[{"0", ",", " ", "0", ",", " ", "1"}], "}"}]}], 
-           "]"}]}]}]}], "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
+            RowBox[{"$ZMatrixToMolAxisSystem", "[", 
+             RowBox[{"[", "3", "]"}], "]"}]}], "]"}]}]}]}], "\n", "\t\t\t", 
+       "]"}], ";", "\n", "\t\t", 
       RowBox[{"If", "[", 
        RowBox[{
         RowBox[{"normalVec", "==", 
@@ -1409,9 +1759,9 @@ Cell[BoxData[
         RowBox[{"normalVec", "=", 
          RowBox[{"Cross", "[", 
           RowBox[{"ax21", ",", " ", 
-           RowBox[{"{", 
-            RowBox[{"0", ",", " ", "1", ",", " ", "0"}], "}"}]}], "]"}]}]}], 
-       "]"}], ";", "\n", "\t\t", 
+           RowBox[{"$ZMatrixToMolAxisSystem", "[", 
+            RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}]}], "]"}], ";", "\n", 
+      "\t\t", 
       RowBox[{"baseVec", "=", "\n", "\t\t\t", 
        RowBox[{
         RowBox[{"RotationMatrix", "[", 
@@ -1473,8 +1823,8 @@ Cell[BoxData[
        RowBox[{"line", "[", 
         RowBox[{"[", "1", "]"}], "]"}], ",", " ", 
        RowBox[{"{", 
-        RowBox[{"0.", ",", "0.", ",", "0."}], "}"}]}], "}"}], ",", "\n", 
-     "\t\t", 
+        RowBox[{"0", ",", " ", "0", ",", " ", "0"}], "}"}]}], "}"}], ",", 
+     "\n", "\t\t", 
      RowBox[{
       RowBox[{"{", 
        RowBox[{
@@ -1669,7 +2019,11 @@ Cell[BoxData[{
    RowBox[{"Options", "[", "ChemFormatsZMatrixToMol", "]"}], "=", "\n", "\t", 
    
    RowBox[{"{", "\n", "\t\t", 
-    RowBox[{"\"\<UseRadians\>\"", "\[Rule]", "Automatic"}], "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"\"\<UseRadians\>\"", "\[Rule]", "Automatic"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"\"\<Origin\>\"", "\[Rule]", "Automatic"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<AxisSystem\>\"", "\[Rule]", "Automatic"}]}], "\n", "\t\t", 
     "}"}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{"ChemFormatsZMatrixToMol", "[", 
@@ -1686,32 +2040,71 @@ Cell[BoxData[{
    RowBox[{"Block", "[", "\n", "\t\t\t", 
     RowBox[{
      RowBox[{"{", "\n", "\t\t\t\t", 
-      RowBox[{"$ZMatrixInRadians", "=", "\n", "\t", "\t", "\t\t\t", 
-       RowBox[{"Replace", "[", 
-        RowBox[{
-         RowBox[{"OptionValue", "[", "\"\<UseRadians\>\"", "]"}], ",", " ", 
+      RowBox[{
+       RowBox[{"$ZMatrixInRadians", "=", "\n", "\t", "\t", "\t\t\t", 
+        RowBox[{"Replace", "[", 
          RowBox[{
-          RowBox[{"Except", "[", 
-           RowBox[{"True", "|", "False"}], "]"}], "->", 
-          "$ZMatrixInRadians"}]}], "]"}]}], "\n", "\t", "\t", "\t\t", "}"}], 
-     ",", "\n", "\t", "\t", "\t", 
-     RowBox[{"Fold", "[", "\n", "\t", "\t", "\t\t", 
+          RowBox[{"OptionValue", "[", "\"\<UseRadians\>\"", "]"}], ",", " ", 
+          RowBox[{
+           RowBox[{"Except", "[", 
+            RowBox[{"True", "|", "False"}], "]"}], "->", 
+           "$ZMatrixInRadians"}]}], "]"}]}], ",", "\n", "\t\t\t\t", 
+       RowBox[{"$ZMatrixToMolOrigin", "=", "\n", "\t\t\t\t\t", 
+        RowBox[{"Replace", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<Origin\>\"", "]"}], ",", " ", "\n",
+           "\t\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"Except", "[", 
+            RowBox[{"{", 
+             RowBox[{"Repeated", "[", 
+              RowBox[{
+               RowBox[{"_", "?", "NumericQ"}], ",", " ", 
+               RowBox[{"{", "3", "}"}]}], "]"}], "}"}], "]"}], "->", 
+           "$ZMatrixToMolOrigin"}]}], "]"}]}], ",", "\n", "\t\t\t\t", 
+       RowBox[{"$ZMatrixToMolAxisSystem", "=", "\n", "\t\t\t\t\t", 
+        RowBox[{"Replace", "[", "\n", "\t\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<AxisSystem\>\"", "]"}], ",", " ", 
+          "\n", "\t\t\t\t\t\t", 
+          RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"m", ":", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"_", ",", " ", "_", ",", " ", "_"}], "}"}], "?", 
+               "SquareMatrixQ"}]}], ":>", "\n", "\t\t\t\t\t\t\t\t", 
+             RowBox[{"Map", "[", 
+              RowBox[{"Normalize", ",", " ", "m"}], "]"}]}], ",", "\n", 
+            "\t\t\t\t\t\t\t", 
+            RowBox[{"_", "->", "$ZMatrixToMolAxisSystem"}]}], "\n", 
+           "\t\t\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t\t\t", "]"}]}]}], "\n", 
+      "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+     RowBox[{"Map", "[", "\n", "\t\t\t\t", 
       RowBox[{
        RowBox[{
-        RowBox[{"Append", "[", 
-         RowBox[{"#", ",", " ", 
-          RowBox[{"molTableEntry", "[", 
-           RowBox[{
-            RowBox[{"Take", "[", 
-             RowBox[{"#2", ",", " ", 
-              RowBox[{"UpTo", "[", "7", "]"}]}], "]"}], ",", " ", "#"}], 
-           "]"}]}], "]"}], "&"}], ",", "\n", "\t", "\t", "\t\t", 
-       RowBox[{"{", "}"}], ",", "\n", "\t", "\t", "\t ", "zmMatrix"}], "\n", 
-      "\t", "\t", "\t ", "]"}]}], "\n", "\t", "\t", "\t", 
+        RowBox[{"#", "+", 
+         RowBox[{"{", 
+          RowBox[{"0", ",", " ", "$ZMatrixToMolOrigin"}], "}"}]}], "&"}], ",",
+        "\n", "\t\t\t\t", 
+       RowBox[{"Fold", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Append", "[", 
+           RowBox[{"#", ",", " ", 
+            RowBox[{"molTableEntry", "[", 
+             RowBox[{
+              RowBox[{"Take", "[", 
+               RowBox[{"#2", ",", " ", 
+                RowBox[{"UpTo", "[", "7", "]"}]}], "]"}], ",", " ", "#"}], 
+             "]"}]}], "]"}], "&"}], ",", "\n", "\t", "\t", "\t", "\t\t", 
+         RowBox[{"{", "}"}], ",", "\n", "\t\t\t\t ", "zmMatrix"}], "\n", 
+        "\t\t\t\t ", "]"}]}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", 
     "]"}]}]}]}], \
 "CodeInput",ExpressionUUID->"12489c08-7848-43a9-ab91-6f8a0ca2fc95"]
 }, Open  ]]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1751,12 +2144,15 @@ Cell[BoxData[
      RowBox[{
       RowBox[{"{", "atoms", "}"}], "[", 
       RowBox[{"[", 
-       RowBox[{"All", ",", "1"}], "]"}], "]"}]}], ",", "\n", "\t\t", 
+       RowBox[{"All", ",", " ", "1"}], "]"}], "]"}]}], ",", "\n", "\t\t", 
     RowBox[{"\"\<VertexCoordinates\>\"", "\[Rule]", 
-     RowBox[{
-      RowBox[{"{", "atoms", "}"}], "[", 
-      RowBox[{"[", 
-       RowBox[{"All", ",", "2"}], "]"}], "]"}]}], ",", "\n", "\t\t", 
+     RowBox[{"(", 
+      RowBox[{"100", "*", 
+       RowBox[{
+        RowBox[{"{", "atoms", "}"}], "[", 
+        RowBox[{"[", 
+         RowBox[{"All", ",", " ", "2"}], "]"}], "]"}]}], ")"}]}], ",", "\n", 
+    "\t\t", 
     RowBox[{"\"\<EdgeRules\>\"", "->", "\n", "\t\t\t", 
      RowBox[{"Rule", "@@@", 
       RowBox[{
@@ -1828,15 +2224,16 @@ Cell[BoxData[
      "\"\<VertexTypes\>\"", ",", "\"\<VertexCoordinates\>\"", ",", "\n", 
       "\t\t\t", "\"\<EdgeTypes\>\"", ",", "\"\<EdgeRules\>\"", ",", 
       "\"\<FormalCharges\>\""}], "}"}], "\[Rule]", "\n", "\t\t", 
-    RowBox[{"Lookup", "[", "\n", "\t\t\t", 
-     RowBox[{
-      RowBox[{"ChemFormatsMolToRules", "/@", "molTables"}], ",", "\n", 
-      "\t\t\t", 
-      RowBox[{"{", 
-       RowBox[{
-       "\"\<VertexTypes\>\"", ",", "\"\<VertexCoordinates\>\"", ",", "\n", 
-        "\t\t\t\t", "\"\<EdgeTypes\>\"", ",", "\"\<EdgeRules\>\"", ",", 
-        "\"\<FormalCharges\>\""}], "}"}]}], "\n", "\t\t\t", "]"}]}], "\n", 
+    RowBox[{"Thread", "@", 
+     RowBox[{"Lookup", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"ChemFormatsMolToRules", "/@", "molTables"}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"{", 
+        RowBox[{
+        "\"\<VertexTypes\>\"", ",", "\"\<VertexCoordinates\>\"", ",", "\n", 
+         "\t\t\t\t", "\"\<EdgeTypes\>\"", ",", "\"\<EdgeRules\>\"", ",", 
+         "\"\<FormalCharges\>\""}], "}"}]}], "\n", "\t\t\t", "]"}]}]}], "\n", 
    "\t\t", "]"}]}]], \
 "CodeInput",ExpressionUUID->"226310e0-90bd-47f8-8de2-45d71ced0a26"],
 
@@ -1855,7 +2252,7 @@ Cell[BoxData[
    "ChemFormatsZMatrixToMol", "[", "zm", 
     "]"}]}]}]], \
 "CodeInput",ExpressionUUID->"9675206f-9bc6-4c54-83fe-6ec450f2ff01"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -1901,7 +2298,7 @@ Cell[BoxData[{
    RowBox[{"iChemFormatsMolToString", "[", 
     RowBox[{"molData_", ",", " ", "\"\<SDFRules\>\"", ",", " ", 
      RowBox[{"target_:", "\"\<SDF\>\""}]}], "]"}], ":=", "\n", "\t", 
-   RowBox[{"iChemFormatsMolRulesToString", "[", 
+   RowBox[{"ChemFormatsMolRulesToString", "[", 
     RowBox[{"molData", ",", " ", "target"}], "]"}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{
@@ -1913,7 +2310,7 @@ Cell[BoxData[{
      RowBox[{"ChemFormatsMolToRules", "@", "molData"}], ",", "\n", "\t\t", 
      "\"\<SDFRules\>\"", ",", "\n", "\t\t", "target"}], "\n", "\t\t", "]"}]}],
    ";"}]}], "CodeInput",ExpressionUUID->"68efaf7a-24eb-4722-a408-cd4f6ebb0b93"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -1948,8 +2345,10 @@ Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"ChemFormatsMolToStringWrapper", "[", 
-    RowBox[{"mainFmt_", ",", " ", "target_"}], "]"}], "[", "data_", "]"}], ":=",
-   "\n", "\t", 
+    RowBox[{"mainFmt_", ",", " ", "target_"}], "]"}], "[", 
+   RowBox[{"data_", ",", " ", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
   RowBox[{"iChemFormatsMolToString", "[", 
    RowBox[{"data", ",", " ", "mainFmt", ",", " ", "target"}], 
    "]"}]}]], \
@@ -1979,19 +2378,20 @@ Cell[BoxData[
        "\"\<VertexCoordinates\>\"", ",", "\n", "\t", "\t", "\t\t", 
        "\"\<EdgeRules\>\"", ",", "\n", "\t", "\t", "\t\t", 
        "\"\<EdgeTypes\>\"", ",", "\n", "\t", "\t", "\t\t", 
-       "\"\<FormalCharges\>\""}], "\n", "\t", "\t", "\t\t", "}"}]}], ",", 
-    "\n", "\t\t", 
-    RowBox[{"\"\<SDF\>\"", ":>", 
-     RowBox[{"$MolRulesExportKeys", "[", "\"\<MOL\>\"", "]"}]}], ",", "\n", 
+       "\"\<FormalCharges\>\""}], "\n", "\t\t\t\t", "}"}]}], ",", "\n", 
     "\t\t", 
+    RowBox[{"\"\<SDF\>\"", ":>", 
+     RowBox[{"$MolRulesExportPropertiesKeys", "[", "\"\<MOL\>\"", "]"}]}], 
+    ",", "\n", "\t\t", 
     RowBox[{"\"\<MOL2\>\"", ":>", "\n", "\t\t\t", 
-     RowBox[{"Join", "[", 
+     RowBox[{"Join", "[", "\n", "\t\t\t\t", 
       RowBox[{
-       RowBox[{"$MolRulesExportKeys", "[", "\"\<MOL\>\"", "]"}], ",", " ", 
+       RowBox[{"$MolRulesExportPropertiesKeys", "[", "\"\<MOL\>\"", "]"}], 
+       ",", " ", "\n", "\t\t\t\t", 
        RowBox[{"{", 
         RowBox[{
         "\"\<ResidueAtoms\>\"", ",", " ", "\"\<ResidueCoordinates\>\""}], 
-        "}"}]}], "]"}]}], ",", "\n", "\t\t", 
+        "}"}]}], "\n", "\t\t\t\t", "]"}]}], ",", "\n", "\t\t", 
     RowBox[{"\"\<XYZ\>\"", "->", "\n", "\t\t\t", 
      RowBox[{"{", "\n", "\t\t\t\t", 
       RowBox[{
@@ -2017,27 +2417,42 @@ Cell[BoxData[
   RowBox[{
    RowBox[{"ChemFormatsMolRulesToString", "[", 
     RowBox[{
-     RowBox[{"rules_", "?", "OptionQ"}], ",", " ", "\"\<MOL\>\""}], "]"}], ":=",
-    "\n", "\t", 
+     RowBox[{"rules_", "?", "OptionQ"}], ",", " ", 
+     RowBox[{"target", ":", "\"\<MOL\>\""}]}], "]"}], ":=", "\n", "\t", 
    RowBox[{
-    RowBox[{
-    "StringDelete", "[", "\n", "\t\t", 
-     "\"\<Created with the Wolfram Language : www.wolfram.com\>\"", "\n", 
-     "\t\t", "]"}], "@", "\n", "\t\t", 
+    RowBox[{"Replace", "[", "\n", "\t\t", 
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"s_String", ":>", "\n", "\t\t\t\t", 
+        RowBox[{"StringDelete", "[", 
+         RowBox[{
+         "s", ",", " ", 
+          "\"\<Created with the Wolfram Language : www.wolfram.com\>\""}], 
+         "]"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"_", ":>", "\n", "\t\t\t\t", 
+        RowBox[{"PackageRaiseException", "[", 
+         RowBox[{
+         "\"\<FormatConvert\>\"", ",", "\n", "\t\t\t\t\t", 
+          "\"\<Failed to export `` to format ``\>\"", ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"\"\<MessageParameters\>\"", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"rules", ",", " ", "target"}], "}"}]}]}], "\n", 
+         "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "}"}], "\n", "\t\t", "]"}], 
+    "@", "\n", "\t\t", 
     RowBox[{"ExportString", "[", "\n", "\t\t\t", 
      RowBox[{
       RowBox[{"Normal", "@", "\n", "\t\t\t\t", 
        RowBox[{"AssociationThread", "[", "\n", "\t\t\t\t\t", 
         RowBox[{
-         RowBox[{"$MolRulesExportPropertiesKeys", "[", "\"\<MOL\>\"", "]"}], 
-         ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"$MolRulesExportPropertiesKeys", "[", "target", "]"}], ",", 
+         "\n", "\t\t\t\t\t", 
          RowBox[{"Lookup", "[", "\n", "\t\t\t\t\t\t", 
           RowBox[{"rules", ",", "\n", "\t\t\t\t\t\t", 
-           RowBox[{"$MolRulesExportPropertiesKeys", "[", "\"\<MOL\>\"", "]"}],
-            ",", "\n", "\t", "\t", "\t", "\t\t\t", 
+           RowBox[{"$MolRulesExportPropertiesKeys", "[", "target", "]"}], ",",
+            "\n", "\t\t\t\t\t\t", 
            RowBox[{"{", "}"}]}], "\n", "\t", "\t", "\t\t\t\t", "]"}]}], "\n", 
-        "\t", "\t\t\t\t", "]"}]}], ",", "\n", "\t", "\t\t", "\"\<MOL\>\""}], 
-     "\n", "\t", "\t\t", "]"}]}]}], 
+        "\t", "\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t", "target"}], "\n", 
+     "\t\t\t", "]"}]}]}], 
   ";"}]], "CodeInput",ExpressionUUID->"f1707574-029c-4bf5-b726-de7d09020774"]
 }, Closed]],
 
@@ -2051,32 +2466,74 @@ Cell[BoxData[
   RowBox[{
    RowBox[{"ChemFormatsMolRulesToString", "[", 
     RowBox[{
-     RowBox[{"rules_", "?", "OptionQ"}], ",", " ", "\"\<SDF\>\""}], "]"}], ":=",
-    "\n", "\t", 
-   RowBox[{"ExportString", "[", "\n", "\t\t", 
-    RowBox[{
-     RowBox[{"Normal", "@", "\n", "\t\t\t", 
-      RowBox[{"AssociationThread", "[", "\n", "\t\t\t\t", 
-       RowBox[{"$MolTableRuleKeys", ",", "\n", "\t\t\t\t", 
-        RowBox[{"Replace", "[", "\n", "\t\t\t\t\t", 
+     RowBox[{"rules_", "?", "OptionQ"}], ",", " ", 
+     RowBox[{"target", ":", "\"\<SDF\>\""}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{
+    RowBox[{"Replace", "[", "\n", "\t\t", 
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"s_String", ":>", "\n", "\t\t\t\t", 
+        RowBox[{"StringDelete", "[", 
          RowBox[{
-          RowBox[{"Lookup", "[", "\n", "\t\t\t\t\t\t", 
-           RowBox[{
-           "rules", ",", "\n", "\t", "\t", "\t", "\t\t\t", 
-            "$MolTableRuleKeys", ",", "\n", "\t", "\t", "\t", "\t\t\t", 
-            RowBox[{"{", "}"}]}], "\n", "\t\t\t\t\t\t", "]"}], ",", "\n", 
-          "\t\t\t\t\t", 
-          RowBox[{
-           RowBox[{"l", ":", 
-            RowBox[{"Except", "[", 
+         "s", ",", " ", 
+          "\"\<Created with the Wolfram Language : www.wolfram.com\>\""}], 
+         "]"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"_", ":>", "\n", "\t\t\t\t", 
+        RowBox[{"PackageRaiseException", "[", 
+         RowBox[{
+         "\"\<FormatConvert\>\"", ",", "\n", "\t\t\t\t\t", 
+          "\"\<Failed to export `` to format ``\>\"", ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"\"\<MessageParameters\>\"", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"rules", ",", " ", "target"}], "}"}]}]}], "\n", 
+         "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "}"}], "\n", "\t\t", "]"}], 
+    "@", "\n", "\t\t", 
+    RowBox[{"ExportString", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"Normal", "@", "\n", "\t\t\t\t", 
+         RowBox[{"ReplacePart", "[", 
+          RowBox[{"#", ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"\"\<VertexCoordinates\>\"", ":>", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"Replace", "[", 
              RowBox[{
-              RowBox[{"{", "__List", "}"}], ",", " ", "_List"}], "]"}]}], 
-           "\[RuleDelayed]", 
-           RowBox[{"{", "l", "}"}]}], ",", "\n", "\t\t\t\t\t", "1"}], "\n", 
-         "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}]}], ",", "\n", "\t\t", 
-     "\"\<SDF\>\""}], "\n", "\t\t", "]"}]}], 
+              RowBox[{"#", "[", "\"\<VertexCoordinates\>\"", "]"}], ",", "\n",
+               "\t\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"l", ":", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{"__", "?", "NumericQ"}], "}"}], ".."}], "}"}]}], 
+               "\[RuleDelayed]", 
+               RowBox[{"{", "l", "}"}]}]}], "\n", "\t\t\t\t\t\t\t", "]"}]}]}],
+           "\n", "\t\t\t\t\t", "]"}]}], "&"}], "@", "\n", "\t\t\t\t\t", 
+       RowBox[{"AssociationThread", "[", "\n", "\t\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"$MolRulesExportPropertiesKeys", "[", "target", "]"}], ",", 
+         "\n", "\t", "\t", "\t\t\t\t", 
+         RowBox[{"Replace", "[", "\n", "\t", "\t", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"Lookup", "[", "\n", "\t", "\t\t\t\t\t\t\t", 
+            RowBox[{"rules", ",", "\n", "\t", "\t\t\t\t\t\t\t", 
+             RowBox[{"$MolRulesExportPropertiesKeys", "[", "target", "]"}], 
+             ",", "\n", "\t", "\t", "\t", "\t", "\t", "\t\t\t", 
+             RowBox[{"{", "}"}]}], "\n", "\t", "\t", "\t\t\t\t\t\t", "]"}], 
+           ",", "\n", "\t", "\t\t\t\t\t\t", 
+           RowBox[{"{", "\n", "\t", "\t\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"l", ":", 
+              RowBox[{"Except", "[", 
+               RowBox[{
+                RowBox[{"{", "__List", "}"}], ",", " ", "_List"}], "]"}]}], 
+             "\[RuleDelayed]", 
+             RowBox[{"{", "l", "}"}]}], "\n", "\t", "\t\t\t\t\t\t\t", "}"}], 
+           ",", "\n", "\t", "\t\t\t\t\t\t", "1"}], "\n", "\t\t\t\t\t\t\t", 
+          "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t", 
+      "target"}], "\n", "\t\t\t", "]"}]}]}], 
   ";"}]], "CodeInput",ExpressionUUID->"b2b1c5f0-76b3-4343-8d72-2eaec18e931e"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -2088,28 +2545,118 @@ Cell[BoxData[
   RowBox[{
    RowBox[{"ChemFormatsMolRulesToString", "[", 
     RowBox[{
-     RowBox[{"rules_", "?", "OptionQ"}], ",", " ", "\"\<MOL2\>\""}], "]"}], ":=",
-    "\n", "\t", 
+     RowBox[{"rules_", "?", "OptionQ"}], ",", " ", 
+     RowBox[{"target", ":", "\"\<MOL2\>\""}]}], "]"}], ":=", "\n", "\t", 
    RowBox[{
-    RowBox[{
-    "StringDelete", "[", "\n", "\t\t", 
-     "\"\<Created with the Wolfram Language : www.wolfram.com\>\"", "\n", 
-     "\t\t", "]"}], "@", "\n", "\t\t", 
+    RowBox[{"Replace", "[", "\n", "\t\t", 
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"s_String", ":>", "\n", "\t\t\t\t", 
+        RowBox[{"StringDelete", "[", 
+         RowBox[{
+         "s", ",", " ", 
+          "\"\<Created with the Wolfram Language : www.wolfram.com\>\""}], 
+         "]"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"_", ":>", "\n", "\t\t\t\t", 
+        RowBox[{"PackageRaiseException", "[", 
+         RowBox[{
+         "\"\<FormatConvert\>\"", ",", "\n", "\t\t\t\t\t", 
+          "\"\<Failed to export `` to format ``\>\"", ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"\"\<MessageParameters\>\"", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"rules", ",", " ", "target"}], "}"}]}]}], "\n", 
+         "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "}"}], "\n", "\t\t", "]"}], 
+    "@", "\n", "\t\t", 
     RowBox[{"ExportString", "[", "\n", "\t\t\t", 
      RowBox[{
       RowBox[{"Normal", "@", "\n", "\t\t\t\t", 
        RowBox[{"AssociationThread", "[", "\n", "\t\t\t\t\t", 
         RowBox[{
-         RowBox[{"$MolRulesExportPropertiesKeys", "[", "\"\<MOL2\>\"", "]"}], 
-         ",", "\n", "\t\t\t\t\t", 
-         RowBox[{"Lookup", "[", "\n", "\t\t\t\t\t\t", 
-          RowBox[{"rules", ",", "\n", "\t\t\t\t\t\t", 
-           RowBox[{
-           "$MolRulesExportPropertiesKeys", "[", "\"\<MOL2\>\"", "]"}], ",", 
-           "\n", "\t", "\t", "\t", "\t\t\t", 
-           RowBox[{"{", "}"}]}], "\n", "\t", "\t", "\t\t\t\t", "]"}]}], "\n", 
-        "\t", "\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t", "\"\<MOL2\>\""}], 
-     "\n", "\t\t\t", "]"}]}]}], 
+         RowBox[{"$MolRulesExportPropertiesKeys", "[", "target", "]"}], ",", 
+         "\n", "\t\t\t\t\t", 
+         RowBox[{"Replace", "[", "\n", "\t\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"Lookup", "[", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"Join", "[", "\n", "\t\t\t\t\t\t\t\t", 
+              RowBox[{"rules", ",", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{
+                 "\"\<ResidueAtoms\>\"", "->", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{"Replace", "[", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"Lookup", "[", 
+                    RowBox[{"rules", ",", " ", "\"\<VertexTypes\>\""}], "]"}],
+                     ",", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"l", ":", 
+                    RowBox[{"{", "__String", "}"}]}], "\[RuleDelayed]", 
+                    RowBox[{"{", 
+                    RowBox[{"{", "l", "}"}], "}"}]}], ",", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"l", ":", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"{", "__String", "}"}], ",", " ", 
+                    RowBox[{"{", "__String", "}"}]}], "}"}]}], 
+                    "\[RuleDelayed]", 
+                    RowBox[{"{", "l", "}"}]}]}], "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t", "}"}]}], "\n", 
+                   "\t\t\t\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", 
+                 "\t\t\t\t\t\t\t\t\t", 
+                 RowBox[{
+                 "\"\<ResidueCoordinates\>\"", "->", "\n", 
+                  "\t\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{"Replace", "[", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{
+                    RowBox[{"Lookup", "[", 
+                    RowBox[{"rules", ",", " ", "\"\<VertexCoordinates\>\""}], 
+                    "]"}], ",", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"l", ":", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"__", "?", "NumericQ"}], "}"}], ".."}], "}"}]}], 
+                    "\[RuleDelayed]", 
+                    RowBox[{"{", 
+                    RowBox[{"{", "l", "}"}], "}"}]}], ",", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"l", ":", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"__", "?", "NumericQ"}], "}"}], ".."}], "}"}], 
+                    ".."}], "}"}]}], "\[RuleDelayed]", 
+                    RowBox[{"{", "l", "}"}]}]}], "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t", "}"}]}], "\n", 
+                   "\t\t\t\t\t\t\t\t\t\t\t", "]"}]}]}], "\n", 
+                "\t\t\t\t\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t\t\t\t\t", 
+              "]"}], ",", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{"$MolRulesExportPropertiesKeys", "[", "target", "]"}], 
+             ",", "\n", "\t", "\t", "\t", "\t", "\t\t\t", 
+             RowBox[{"{", "}"}]}], "\n", "\t", "\t\t\t\t\t\t", "]"}], ",", 
+           "\n", "\t\t\t\t\t\t", 
+           RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"l", ":", 
+              RowBox[{"Except", "[", 
+               RowBox[{
+                RowBox[{"{", "__List", "}"}], ",", " ", "_List"}], "]"}]}], 
+             "\[RuleDelayed]", 
+             RowBox[{"{", "l", "}"}]}], "\n", "\t\t\t\t\t\t\t", "}"}], ",", 
+           "\n", "\t\t\t\t\t\t", "1"}], "\n", "\t\t\t\t\t\t", "]"}]}], "\n", 
+        "\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t", "target"}], "\n", 
+     "\t\t\t", "]"}]}]}], 
   ";"}]], "CodeInput",ExpressionUUID->"211943e7-6b14-475a-b004-1c51b0ef656a"]
 }, Closed]],
 
@@ -2167,10 +2714,13 @@ Cell[BoxData[{
      ",", " ", 
      RowBox[{"ops", ":", 
       RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
-   RowBox[{"OBFormatConvert", "[", 
-    RowBox[{
-    "data", ",", " ", "\n", "\t\t", "form", ",", " ", "\n", "\t\t", "ops"}], 
-    "\n", "\t\t", "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"PackageExceptionBlock", "[", "\"\<OpenBabelRun\>\"", "]"}], "@", 
+    "\n", "\t\t", 
+    RowBox[{"OBFormatConvert", "[", "\n", "\t\t\t", 
+     RowBox[{
+     "data", ",", " ", "\n", "\t\t\t", "form", ",", " ", "\n", "\t\t\t", 
+      "ops"}], "\n", "\t\t\t", "]"}]}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{
    RowBox[{
@@ -2187,7 +2737,7 @@ Cell[BoxData[{
     RowBox[{"data", ",", " ", "form", ",", " ", "ops"}], "]"}]}], 
   ";"}]}], "CodeInput",ExpressionUUID->"bf4645a7-1564-4a8e-985c-f620d593d9dd"]\
 
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -2203,13 +2753,16 @@ Cell[BoxData[{
      RowBox[{"form", ":", "_String"}], ",", " ", 
      RowBox[{"ops", ":", 
       RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
-   RowBox[{"ImportString", "[", "\n", "\t\t", 
-    RowBox[{
-     RowBox[{"ChemFormatsOBConvert", "[", 
-      RowBox[{"data", ",", " ", 
-       RowBox[{"form", "\[Rule]", "\"\<MOL\>\""}], ",", " ", "ops"}], "]"}], 
-     ",", "\n", "\t\t", "\"\<MolTable\>\""}], "\n", "\t\t", "]"}]}], 
-  ";"}], "\n", 
+   RowBox[{
+    RowBox[{"PackageExceptionBlock", "[", "\"\<OpenBabelRun\>\"", "]"}], "@", 
+    "\n", "\t\t", 
+    RowBox[{"ImportString", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"ChemFormatsOBConvert", "[", 
+       RowBox[{"data", ",", " ", 
+        RowBox[{"form", "\[Rule]", "\"\<MOL\>\""}], ",", " ", "ops"}], "]"}], 
+      ",", "\n", "\t", "\t\t", "\"\<MolTable\>\""}], "\n", "\t", "\t\t", 
+     "]"}]}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{
    RowBox[{
@@ -2222,7 +2775,7 @@ Cell[BoxData[{
     RowBox[{"data", ",", " ", "form", ",", " ", "ops"}], "]"}]}], 
   ";"}]}], "CodeInput",ExpressionUUID->"05926bba-2e88-4d5d-8055-0049153b6bd9"]\
 
-}, Open  ]]
+}, Closed]]
 }, Open  ]],
 
 Cell[BoxData[
@@ -2236,7 +2789,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"13717887-6a9a-4594-b2a0-\
 ffb2044d6fed"]
 },
 WindowSize->{787, 750},
-WindowMargins->{{Automatic, 6}, {Automatic, 0}},
+WindowMargins->{{Automatic, -17}, {-41, Automatic}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

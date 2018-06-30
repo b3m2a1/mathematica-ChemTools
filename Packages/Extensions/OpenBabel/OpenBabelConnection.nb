@@ -77,12 +77,20 @@ Cell[BoxData[{
   3.694980802246274*^9}},ExpressionUUID->"c5dc372b-20ba-4b56-a27f-\
 f7a828110187"],
 
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
   RowBox[{
    RowBox[{"$OBPythonInterpreter", "::", "usage"}], "=", 
-   "\"\<The interpreter for OpenBabel\>\""}], 
-  ";"}]], "CodeInput",ExpressionUUID->"899a3863-fa60-43e2-8471-ddcc30eda3cd"],
+   "\"\<The interpreter for OpenBabel\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$OBPyRunFileString", "::", "usage"}], "=", 
+   "\"\<The string fed as an input to OpenBabel\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$OBPyRunErrorMessage", "::", "usage"}], "=", 
+   "\"\<The error message returned from OpenBabel\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"899a3863-fa60-43e2-8471-ddcc30eda3cd"],
 
 Cell[BoxData[{
  RowBox[{
@@ -163,16 +171,10 @@ Cell["\[LeftCeiling]Build\[RightFloor]", "CodeSubsection",
   3.6949828737339363`*^9}},ExpressionUUID->"5cd8128f-8979-4b66-ba47-\
 a63c6e57131f"],
 
-Cell[BoxData[
- RowBox[{
-  RowBox[{
-  "$eigen3src", "=", 
-   "\"\<http://bitbucket.org/eigen/eigen/get/3.2.10.zip\>\""}], 
-  ";"}]], "CodeInput",
- CellChangeTimes->{{3.694982306778208*^9, 3.694982325444524*^9}, {
-  3.695007574726783*^9, 
-  3.695007579425181*^9}},ExpressionUUID->"979a93b3-de37-496d-a2ff-\
-8e43684cf825"],
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]openbabelsrc\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"928ba1fa-0a32-4d31-9117-0c52acec90d5"],
 
 Cell[BoxData[
  RowBox[{
@@ -184,83 +186,13 @@ source=files\>\""}], ";"}]], "CodeInput",
    3.694984302338727*^9, 3.6949843037134953`*^9}, {3.695127973932333*^9, 
    3.695127976303213*^9}, {3.695128292532958*^9, 3.6951282951766167`*^9}, 
    3.699312524483398*^9},ExpressionUUID->"0830cad5-d068-4861-9140-\
-d40dbe73afcf"],
+d40dbe73afcf"]
+}, Closed]],
 
-Cell[BoxData[
- RowBox[{
-  RowBox[{
-   RowBox[{"eigenDownload", "[", 
-    RowBox[{"dir_String", "?", "DirectoryQ"}], "]"}], ":=", "\n", "\t\t", 
-   RowBox[{"With", "[", 
-    RowBox[{
-     RowBox[{"{", "\n", "\t\t\t", 
-      RowBox[{"tmpDir", "=", "\n", "\t\t\t\t", 
-       RowBox[{"CreateDirectory", "@", "\n", "\t\t\t\t\t", 
-        RowBox[{"FileNameJoin", "@", 
-         RowBox[{"{", "\n", "\t\t\t\t\t\t", 
-          RowBox[{"$TemporaryDirectory", ",", "\n", "\t\t\t\t\t\t", 
-           RowBox[{"StringJoin", "@", 
-            RowBox[{"RandomSample", "[", 
-             RowBox[{
-              RowBox[{"Alphabet", "[", "]"}], ",", "10"}], "]"}]}]}], "\n", 
-          "\t\t\t\t\t\t", "}"}]}]}]}], "\n", "\t\t\t", "}"}], ",", "\n", 
-     "\t\t\t", 
-     RowBox[{"With", "[", 
-      RowBox[{
-       RowBox[{"{", "\n", "\t\t\t\t", 
-        RowBox[{
-         RowBox[{"f", "=", 
-          RowBox[{"URLDownload", "[", 
-           RowBox[{"$eigen3src", ",", 
-            RowBox[{"FileNameJoin", "@", 
-             RowBox[{"{", 
-              RowBox[{"tmpDir", ",", "\"\<eigen3_tmp.zip\>\""}], "}"}]}]}], 
-           "]"}]}], ",", "\n", "\t", "\t", "\t", "\t", 
-         RowBox[{"out", "=", 
-          RowBox[{"FileNameJoin", "@", 
-           RowBox[{"{", 
-            RowBox[{"dir", ",", "\"\<eigen3\>\""}], "}"}]}]}]}], "\n", 
-        "\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t", 
-       RowBox[{
-        RowBox[{"ExtractArchive", "[", 
-         RowBox[{"f", ",", "tmpDir"}], "]"}], ";", "\n", "\t", "\t", "\t", 
-        "\t", 
-        RowBox[{"DeleteFile", "[", "f", "]"}], ";", "\n", "\t\t\t\t", 
-        RowBox[{"If", "[", 
-         RowBox[{
-          RowBox[{"DirectoryQ", "@", "out"}], ",", 
-          RowBox[{"DeleteDirectory", "[", 
-           RowBox[{"out", ",", 
-            RowBox[{"DeleteContents", "\[Rule]", "True"}]}], "]"}]}], "]"}], 
-        ";", "\n", "\t\t\t\t", 
-        RowBox[{"CopyDirectory", "[", 
-         RowBox[{
-          RowBox[{"First", "@", 
-           RowBox[{"FileNames", "[", 
-            RowBox[{"\"\<*\>\"", ",", "tmpDir"}], "]"}]}], ",", "out"}], 
-         "]"}], ";", "\n", "\t", "\t", "\t", "\t", 
-        RowBox[{"Quiet", "@", 
-         RowBox[{"DeleteDirectory", "[", 
-          RowBox[{"tmpDir", ",", 
-           RowBox[{"DeleteContents", "\[Rule]", "True"}]}], "]"}]}], ";", 
-        "\n", "\t\t\t\t", 
-        RowBox[{"Replace", "[", "\n", "\t\t\t\t\t", 
-         RowBox[{"out", ",", "\n", "\t\t\t\t\t", 
-          RowBox[{
-           RowBox[{"Except", "[", 
-            RowBox[{"_String", "?", "FileExistsQ"}], "]"}], "\[Rule]", 
-           "$Failed"}]}], "\n", "\t", "\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", 
-      "]"}]}], "\n", "\t\t", "]"}]}], ";"}]], "CodeInput",
- CellChangeTimes->{{3.694982358495768*^9, 3.694982362882921*^9}, {
-  3.6949829400448236`*^9, 3.694983032510507*^9}, {3.694983132333139*^9, 
-  3.694983164833804*^9}, {3.694984443889489*^9, 3.694984517151153*^9}, {
-  3.6949846171671667`*^9, 3.694984636666973*^9}, {3.694988210632205*^9, 
-  3.694988212246827*^9}, {3.6949883201642227`*^9, 3.694988371810433*^9}, {
-  3.694988785096455*^9, 3.694988898501791*^9}, {3.694989079283738*^9, 
-  3.6949891205669117`*^9}, {3.6950075819233294`*^9, 3.6950075895553102`*^9}, {
-  3.69512859422399*^9, 3.695128596085822*^9}, {3.71525779793321*^9, 
-  3.71525780864688*^9}},ExpressionUUID->"42e56854-daf8-49ad-8094-\
-67ce3b5bcf79"],
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]obprefix\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"52e48b8a-43c6-4dfd-9f98-261cd07fefcc"],
 
 Cell[BoxData[
  RowBox[{
@@ -268,7 +200,13 @@ Cell[BoxData[
  CellChangeTimes->{{3.6950971800479116`*^9, 3.695097196979931*^9}, {
   3.69512836126399*^9, 
   3.695128361774405*^9}},ExpressionUUID->"5237d12a-314e-49f8-8138-\
-1b0f12dd2ef9"],
+1b0f12dd2ef9"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]openbabelDownload\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"bfdca2fb-2b2c-48c3-b6e6-a521f605938d"],
 
 Cell[BoxData[
  RowBox[{
@@ -289,65 +227,153 @@ Cell[BoxData[
               RowBox[{"Alphabet", "[", "]"}], ",", "10"}], "]"}]}]}], "\n", 
           "\t\t\t\t\t\t", "}"}]}]}]}], "\n", "\t\t\t", "}"}], ",", "\n", 
      "\t\t\t", 
-     RowBox[{"With", "[", 
+     RowBox[{"Monitor", "[", "\n", "\t\t\t\t", 
       RowBox[{
-       RowBox[{"{", "\n", "\t\t\t\t", 
+       RowBox[{"With", "[", "\n", "\t\t\t\t\t", 
         RowBox[{
-         RowBox[{"f", "=", 
-          RowBox[{"URLDownload", "[", 
-           RowBox[{"$openbabelsrc", ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"f", "=", 
+            RowBox[{"URLDownload", "[", 
+             RowBox[{"$openbabelsrc", ",", "\n", "\t", "\t", "\t\t\t\t\t", 
+              RowBox[{"FileNameJoin", "@", 
+               RowBox[{"{", 
+                RowBox[{"tmpDir", ",", "\"\<openbabel-src.tar.gz\>\""}], 
+                "}"}]}]}], "]"}]}], ",", "\n", "\t", "\t", "\t", "\t", "\t", 
+           "\t", 
+           RowBox[{"out", "=", 
             RowBox[{"FileNameJoin", "@", 
              RowBox[{"{", 
-              RowBox[{"tmpDir", ",", "\"\<openbabel-src.tar.gz\>\""}], 
-              "}"}]}]}], "]"}]}], ",", "\n", "\t", "\t", "\t", "\t", 
-         RowBox[{"out", "=", 
+              RowBox[{"dir", ",", "$obprefix"}], "}"}]}]}]}], "\n", "\t", 
+          "\t", "\t\t\t\t", "}"}], ",", "\n", "\t", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"ExtractArchive", "[", 
+           RowBox[{"f", ",", "tmpDir"}], "]"}], ";", "\n", "\t", "\t", "\t", 
+          "\t", "\t", 
+          RowBox[{"DeleteFile", "[", "f", "]"}], ";", "\n", "\t", "\t\t\t\t", 
+          
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"DirectoryQ", "@", "out"}], ",", 
+            RowBox[{"DeleteDirectory", "[", 
+             RowBox[{"out", ",", 
+              RowBox[{"DeleteContents", "\[Rule]", "True"}]}], "]"}]}], "]"}],
+           ";", "\n", "\t", "\t\t\t\t", 
+          RowBox[{"CopyDirectory", "[", 
+           RowBox[{
+            RowBox[{"First", "@", 
+             RowBox[{"FileNames", "[", 
+              RowBox[{"\"\<*\>\"", ",", "tmpDir"}], "]"}]}], ",", "out"}], 
+           "]"}], ";", "\n", "\t", "\t", "\t", "\t", "\t", 
+          RowBox[{"Quiet", "@", 
+           RowBox[{"DeleteDirectory", "[", 
+            RowBox[{"tmpDir", ",", 
+             RowBox[{"DeleteContents", "\[Rule]", "True"}]}], "]"}]}], ";", 
+          "\n", "\t", "\t\t\t\t", 
+          RowBox[{"Replace", "[", "\n", "\t", "\t\t\t\t\t", 
+           RowBox[{"out", ",", "\n", "\t", "\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"Except", "[", 
+              RowBox[{"_String", "?", "FileExistsQ"}], "]"}], ":>", "\n", 
+             "\t\t\t\t\t\t\t", 
+             RowBox[{"PackageRaiseException", "[", 
+              RowBox[{
+              "\"\<OpenBabelBuild\>\"", ",", "\n", "\t\t\t\t\t\t\t\t", 
+               "\"\<OpenBabel failed to download to ``\>\"", ",", "\n", 
+               "\t\t\t\t\t\t\t\t", 
+               RowBox[{"\"\<MessageParameters\>\"", "\[Rule]", 
+                RowBox[{"{", "out", "}"}]}]}], "\n", "\t\t\t\t\t\t\t\t", 
+              "]"}]}]}], "\n", "\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t", 
+        "]"}], ",", "\n", "\t\t\t\t", 
+       RowBox[{
+       "Internal`LoadingPanel", "[", "\"\<Downloading OpenBabel\>\"", "]"}]}],
+       "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"f6671e1b-1838-43a3-9cf4-b73a1098a0fe"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]obDownload\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"aaf46423-f61c-4af5-ac71-68dd2a701b2e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"obDownload", "[", "parentDir_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"If", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"!", 
+      RowBox[{"FileExistsQ", "@", 
+       RowBox[{"FileNameJoin", "@", 
+        RowBox[{"{", 
+         RowBox[{"parentDir", ",", "$obprefix"}], "}"}]}]}]}], "||", "\n", 
+     "\t\t", 
+     RowBox[{
+      RowBox[{"Length", "[", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"Select", "[", "DirectoryQ", "]"}], "@", "\n", "\t", "\t\t\t", 
+        RowBox[{"FileNames", "[", 
+         RowBox[{"\"\<*\>\"", ",", " ", 
           RowBox[{"FileNameJoin", "@", 
            RowBox[{"{", 
-            RowBox[{"dir", ",", "$obprefix"}], "}"}]}]}]}], "\n", "\t\t\t\t", 
-        "}"}], ",", "\n", "\t\t\t\t", 
-       RowBox[{
-        RowBox[{"ExtractArchive", "[", 
-         RowBox[{"f", ",", "tmpDir"}], "]"}], ";", "\n", "\t", "\t", "\t", 
-        "\t", 
-        RowBox[{"DeleteFile", "[", "f", "]"}], ";", "\n", "\t\t\t\t", 
-        RowBox[{"If", "[", 
-         RowBox[{
-          RowBox[{"DirectoryQ", "@", "out"}], ",", 
-          RowBox[{"DeleteDirectory", "[", 
-           RowBox[{"out", ",", 
-            RowBox[{"DeleteContents", "\[Rule]", "True"}]}], "]"}]}], "]"}], 
-        ";", "\n", "\t\t\t\t", 
-        RowBox[{"CopyDirectory", "[", 
-         RowBox[{
-          RowBox[{"First", "@", 
-           RowBox[{"FileNames", "[", 
-            RowBox[{"\"\<*\>\"", ",", "tmpDir"}], "]"}]}], ",", "out"}], 
-         "]"}], ";", "\n", "\t", "\t", "\t", "\t", 
-        RowBox[{"Quiet", "@", 
-         RowBox[{"DeleteDirectory", "[", 
-          RowBox[{"tmpDir", ",", 
-           RowBox[{"DeleteContents", "\[Rule]", "True"}]}], "]"}]}], ";", 
-        "\n", "\t\t\t\t", 
-        RowBox[{"Replace", "[", "\n", "\t\t\t\t\t", 
-         RowBox[{"out", ",", "\n", "\t\t\t\t\t", 
-          RowBox[{
-           RowBox[{"Except", "[", 
-            RowBox[{"_String", "?", "FileExistsQ"}], "]"}], "\[Rule]", 
-           "$Failed"}]}], "\n", "\t", "\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", 
-      "]"}]}], "\n", "\t\t", "]"}]}], ";"}]], "CodeInput",
- CellChangeTimes->{{3.694982347135829*^9, 3.694982357699122*^9}, {
-   3.694982681460403*^9, 3.694982682530718*^9}, {3.6949829427553177`*^9, 
-   3.694982943388858*^9}, {3.694983019198485*^9, 3.694983019293569*^9}, {
-   3.6949842211325006`*^9, 3.694984305538644*^9}, {3.694984374679738*^9, 
-   3.6949843822477207`*^9}, {3.694984588038228*^9, 3.694984610397956*^9}, {
-   3.694989059497484*^9, 3.6949890642551403`*^9}, {3.695097186015689*^9, 
-   3.6950972008466063`*^9}, {3.6951279603795433`*^9, 
-   3.6951279627735443`*^9}, {3.695128348682784*^9, 3.695128392735284*^9}, {
-   3.695128479515441*^9, 3.695128481343202*^9}, {3.695128520683161*^9, 
-   3.695128524654635*^9}, {3.6951286042137737`*^9, 3.695128611853114*^9}, {
-   3.715229769601172*^9, 3.715229789225185*^9}, 
-   3.715229934371161*^9},ExpressionUUID->"f6671e1b-1838-43a3-9cf4-\
-b73a1098a0fe"],
+            RowBox[{"parentDir", ",", "$obprefix"}], "}"}]}]}], "]"}]}], "\n",
+        "\t", "\t\t", "]"}], "===", "0"}]}], ",", "\n", "\t", "\t", 
+    RowBox[{"openbabelDownload", "@", "parentDir"}]}], "\n", "\t", "\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"2ef42bec-602c-482c-b8db-455e0baa4059"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]obNonEmptyDirQ\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"c5a28056-3b82-4699-8e1b-e463de8c5a3f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"obNonEmptyDirQ", "[", "parentDir_", "]"}], ":=", "\n", "\t", 
+  RowBox[{
+   RowBox[{"DirectoryQ", "@", 
+    RowBox[{"FileNameJoin", "@", 
+     RowBox[{"{", 
+      RowBox[{"parentDir", ",", "$obprefix"}], "}"}]}]}], "&&", "\n", "\t\t", 
+   
+   RowBox[{
+    RowBox[{"Length", "[", 
+     RowBox[{"FileNames", "[", 
+      RowBox[{"\"\<*\>\"", ",", 
+       RowBox[{"FileNameJoin", "@", 
+        RowBox[{"{", 
+         RowBox[{"parentDir", ",", "$obprefix"}], "}"}]}]}], "]"}], "]"}], 
+    ">", "0"}]}]}]], \
+"CodeInput",ExpressionUUID->"b7f83ea6-d27a-48af-a87b-75edfba5d4ec"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]obNoBinQ\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"7444e255-b6dc-4506-910a-4cae6ed5fced"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"obNoBinQ", "[", "parentDir_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"!", 
+   RowBox[{"DirectoryQ", "@", 
+    RowBox[{"FileNameJoin", "@", 
+     RowBox[{"{", 
+      RowBox[{"parentDir", ",", "$obprefix", ",", "\"\<bin\>\""}], 
+      "}"}]}]}]}]}]], \
+"CodeInput",ExpressionUUID->"9b65649d-da33-46b1-8ade-b7bc70e41164"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]obBuild\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"a65c25d8-5735-417a-a4ac-e4a9c614e8de"],
+
+Cell[BoxData[
+ RowBox[{"obBuild", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"e485a263-1d57-49aa-92b9-cc5905f9dcda"],
 
 Cell[BoxData[{
  RowBox[{
@@ -356,263 +382,195 @@ Cell[BoxData[{
    "\"\<Directory `` not found\>\""}], ";"}], "\n", 
  RowBox[{
   RowBox[{
-   RowBox[{"obBuild", "[", "\n", "\t", 
+   RowBox[{"obBuild", "[", 
+    RowBox[{"dir", ":", 
+     RowBox[{
+      RowBox[{"_String", "?", "DirectoryQ"}], "|", "Automatic"}]}], "]"}], ":=",
+    "\n", "\t", 
+   RowBox[{"Module", "[", "\n", "\t\t", 
     RowBox[{
-     RowBox[{"dir_", "?", "DirectoryQ"}], ",", "\n", "\t", 
-     RowBox[{"eigen", ":", 
-      RowBox[{
-       RowBox[{"_String", "?", "DirectoryQ"}], "|", "Automatic"}], ":", 
-      "Automatic"}]}], "]"}], ":=", "\n", "\t", 
-   RowBox[{"With", "[", 
-    RowBox[{
-     RowBox[{"{", 
+     RowBox[{"{", "\n", "\t\t\t", 
       RowBox[{"parentDir", "=", 
-       RowBox[{"ExpandFileName", "@", "dir"}]}], "}"}], ",", "\n", "\t", 
+       RowBox[{"ExpandFileName", "@", "dir"}]}], "\n", "\t\t\t", "}"}], ",", 
+     "\n", "\t\t", 
      RowBox[{"If", "[", 
       RowBox[{
+       RowBox[{"obNonEmptyDirQ", "[", "parentDir", "]"}], ",", "\n", "\t", 
+       "\t\t", 
        RowBox[{
-        RowBox[{"DirectoryQ", "@", 
-         RowBox[{"FileNameJoin", "@", 
-          RowBox[{"{", 
-           RowBox[{"parentDir", ",", "$obprefix"}], "}"}]}]}], "&&", "\n", 
-        "\t\t", 
         RowBox[{
-         RowBox[{"Length", "[", 
-          RowBox[{"FileNames", "[", 
-           RowBox[{"\"\<*\>\"", ",", 
-            RowBox[{"FileNameJoin", "@", 
-             RowBox[{"{", 
-              RowBox[{"parentDir", ",", "$obprefix"}], "}"}]}]}], "]"}], 
-          "]"}], ">", "0"}]}], ",", "\n", "\t\t", 
-       RowBox[{
-        RowBox[{"AbsoluteTiming", "[", 
-         RowBox[{"{", "\n", "\t\t", 
+         RowBox[{"Function", "[", 
+          RowBox[{"Null", ",", " ", 
+           RowBox[{"AbsoluteTiming", "[", "#", "]"}], ",", " ", "HoldFirst"}],
+           "]"}], "@", "\n", "\t\t\t\t", 
+         RowBox[{"{", "\t", "\n", "\t\t\t\t\t", 
           RowBox[{
            RowBox[{"If", "[", 
             RowBox[{
-             RowBox[{
-              RowBox[{"(", 
-               RowBox[{"!", 
-                RowBox[{"DirectoryQ", "@", 
-                 RowBox[{"FileNameJoin", "@", 
-                  RowBox[{"{", 
-                   RowBox[{
-                   "parentDir", ",", "$obprefix", ",", "\"\<bin\>\""}], 
-                   "}"}]}]}]}], ")"}], "&&", "\n", "\t\t\t\t", 
-              RowBox[{"cmakeCheck", "@", "parentDir"}]}], ",", "\n", "\t\t\t", 
-             RowBox[{"terminalRun", "[", 
+             RowBox[{"obNoBinQ", "[", "parentDir", "]"}], ",", "\n", 
+             "\t\t\t\t\t\t", 
+             RowBox[{"RunInTerminal", "[", "\n", "\t\t\t\t\t\t\t", 
               RowBox[{
-               RowBox[{"{", "\n", "\t\t\t\t", 
+               RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
                 RowBox[{
-                 RowBox[{"If", "[", 
-                  RowBox[{
-                   RowBox[{"FileExistsQ", "@", 
-                    RowBox[{"FileNameJoin", "@", 
-                    RowBox[{"{", 
-                    RowBox[{
-                    "parentDir", ",", "\"\<cmake\>\"", ",", "\"\<bin\>\"", 
-                    ",", "\"\<cmake\>\""}], "}"}]}]}], ",", "\n", 
-                   "\t\t\t\t\t", 
-                   RowBox[{"FileNameJoin", "@", 
-                    RowBox[{"{", 
-                    RowBox[{
-                    "parentDir", ",", "\"\<cmake\>\"", ",", "\"\<bin\>\"", 
-                    ",", "\"\<cmake\>\""}], "}"}]}], ",", "\n", "\t", "\t", 
-                   "\t\t\t", "\"\<cmake\>\""}], "\n", "\t\t\t\t\t", "]"}], 
-                 ",", "\n", "\t\t\t\t", 
+                 RowBox[{"CMakeBinary", "[", "]"}], ",", "\n", "\t", "\t", 
+                 "\t", "\t", "\t\t\t\t", 
                  RowBox[{"FileNameJoin", "@", 
                   RowBox[{"{", 
-                   RowBox[{"parentDir", ",", "$obprefix"}], "}"}]}], ",", 
-                 "\n", "\t\t\t\t", 
+                   RowBox[{"parentDir", ",", " ", "$obprefix"}], "}"}]}], ",",
+                  "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
                  RowBox[{
-                 "\"\<-DCMAKE_INSTALL_PREFIX=\>\"", "<>", "\n", "\t\t\t\t\t", 
-                  
+                 "\"\<-DCMAKE_INSTALL_PREFIX=\>\"", "<>", "\n", "\t", "\t", 
+                  "\t", "\t", "\t\t\t\t\t", 
                   RowBox[{"FileNameJoin", "@", 
                    RowBox[{"{", 
-                    RowBox[{"parentDir", ",", "$obprefix"}], "}"}]}]}], ",", 
-                 "\n", "\t\t\t\t", "\"\<-DRUN_SWIG=ON\>\"", ",", "\n", 
+                    RowBox[{"parentDir", ",", " ", "$obprefix"}], "}"}]}]}], 
+                 ",", "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
+                 "\"\<-DRUN_SWIG=ON\>\"", ",", "\n", "\t", "\t", "\t", "\t", 
                  "\t\t\t\t", 
                  RowBox[{"\"\<-DSWIG_EXECUTABLE=\>\"", "<>", 
-                  RowBox[{"FileNameJoin", "@", 
-                   RowBox[{"{", 
-                    RowBox[{
-                    "parentDir", ",", "\"\<swig\>\"", ",", "\"\<bin\>\"", 
-                    ",", "\"\<swig\>\""}], "}"}]}]}], ",", "\n", "\t\t\t\t", 
+                  RowBox[{"SwigBinary", "[", "]"}]}], ",", "\n", "\t", "\t", 
+                 "\t", "\t\t\t\t\t", 
                  RowBox[{"\"\<-DSWIG_DIR=\>\"", "<>", 
-                  RowBox[{"FileNameJoin", "@", 
-                   RowBox[{"{", 
-                    RowBox[{"parentDir", ",", "\"\<swig\>\""}], "}"}]}]}], 
-                 ",", "\n", "\t\t\t\t", "\"\<-DPYTHON_BINDINGS=ON\>\"", ",", 
-                 "\n", "\t\t\t\t", 
-                 RowBox[{
-                 "\"\<-DEIGEN3_INCLUDE_DIR=\>\"", "<>", "\n", "\t\t\t\t\t", 
-                  RowBox[{"Replace", "[", 
-                   RowBox[{"eigen", ",", "\n", "\t\t\t\t\t\t", 
-                    RowBox[{"Automatic", "\[RuleDelayed]", 
-                    RowBox[{"FileNameJoin", "@", 
-                    RowBox[{"{", 
-                    RowBox[{"parentDir", ",", "\"\<eigen3\>\""}], "}"}]}]}]}],
-                    "\n", "\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t", "}"}], 
-               ",", "\n", "\t\t\t\t", 
+                  RowBox[{"SwigBuild", "[", "]"}]}], ",", "\n", "\t", "\t", 
+                 "\t", "\t", "\t\t\t\t", "\"\<-DPYTHON_BINDINGS=ON\>\"", ",", 
+                 "\n", "\t", "\t", "\t", "\t", "\t\t\t\t", 
+                 RowBox[{"\"\<-DEIGEN3_INCLUDE_DIR=\>\"", "<>", 
+                  RowBox[{"EigenBuild", "[", "]"}]}]}], "\n", "\t", "\t", 
+                "\t", "\t\t\t\t\t", "}"}], ",", "\n", "\t", "\t", "\t", 
+               "\t\t\t\t", 
                RowBox[{"ProcessEnvironment", "\[Rule]", 
-                RowBox[{"<|", "\n", "\t", "\t", "\t\t\t", 
+                RowBox[{"<|", "\n", "\t", "\t", "\t", "\t", "\t", "\t\t\t", 
                  RowBox[{
-                 "\"\<PATH\>\"", "\[Rule]", "\n", "\t", "\t", "\t\t\t\t", 
+                 "\"\<PATH\>\"", "\[Rule]", "\n", "\t", "\t", "\t", "\t", 
+                  "\t", "\t\t\t\t", 
                   RowBox[{"StringJoin", "@", 
-                   RowBox[{"{", "\n", "\t", "\t", "\t\t\t\t\t", 
+                   RowBox[{
+                   "{", "\n", "\t", "\t", "\t", "\t", "\t", "\t\t\t\t\t", 
                     RowBox[{
                     RowBox[{"Environment", "[", "\"\<PATH\>\"", "]"}], ",", 
-                    "\n", "\t", "\t", "\t\t\t\t\t", "\"\<:\>\"", ",", "\n", 
-                    "\t", "\t", "\t\t\t\t\t", 
+                    "\n", "\t", "\t", "\t", "\t", "\t", "\t\t\t\t\t", 
+                    "\"\<:\>\"", ",", "\n", "\t", "\t", "\t", "\t", "\t", 
+                    "\t\t\t\t\t", 
                     RowBox[{"Riffle", "[", 
                     RowBox[{
-                    RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"{", "\n", "\t", "\t", "\t", "\t\t\t\t\t\t\t\t\t", 
                     RowBox[{
                     RowBox[{"FileNameJoin", "@", 
                     RowBox[{"{", 
                     RowBox[{
                     "parentDir", ",", "\"\<cmake\>\"", ",", "\"\<bin\>\""}], 
-                    "}"}]}], ",", "\n", "\t\t\t\t\t\t\t\t\t", 
+                    "}"}]}], ",", "\n", "\t", "\t", "\t", 
+                    "\t\t\t\t\t\t\t\t\t", 
                     RowBox[{"FileNameJoin", "@", 
                     RowBox[{"{", 
                     RowBox[{"parentDir", ",", "$obprefix"}], "}"}]}]}], "\n", 
-                    "\t\t\t\t\t\t\t\t\t", "}"}], ",", "\n", 
-                    "\t\t\t\t\t\t\t\t", "\"\<:\>\""}], "\n", 
-                    "\t\t\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t\t\t", 
-                    "}"}]}]}], "\n", "\t\t\t\t\t", "|>"}]}], ",", "\n", 
-               "\t\t\t\t", 
-               RowBox[{"ProcessDirectory", "\[Rule]", "\n", "\t\t\t\t\t", 
+                    "\t", "\t", "\t", "\t\t\t\t\t\t\t\t\t", "}"}], ",", "\n", 
+                    "\t", "\t", "\t", "\t\t\t\t\t\t\t\t", "\"\<:\>\""}], "\n",
+                     "\t", "\t", "\t", "\t\t\t\t\t\t\t\t", "]"}]}], "\n", 
+                    "\t", "\t", "\t", "\t\t\t\t\t\t\t", "}"}]}]}], "\n", "\t",
+                  "\t", "\t", "\t\t\t\t\t", "|>"}]}], ",", "\n", "\t", "\t", 
+               "\t", "\t\t\t\t", 
+               RowBox[{
+               "ProcessDirectory", "\[Rule]", "\n", "\t", "\t", "\t", 
+                "\t\t\t\t\t", 
                 RowBox[{"FileNameJoin", "@", 
                  RowBox[{"{", 
                   RowBox[{"parentDir", ",", "$obprefix"}], "}"}]}]}]}], "\n", 
-              "\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}], ",", "\n", "\t\t", 
+              "\t", "\t", "\t", "\t\t\t\t", "]"}]}], "\n", "\t", "\t", "\t", 
+            "\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t", "\t\t", 
            RowBox[{"If", "[", 
             RowBox[{
              RowBox[{"!", 
               RowBox[{"FileExistsQ", "@", 
                RowBox[{"FileNameJoin", "@", 
-                RowBox[{"{", "\n", "\t\t\t\t\t", 
+                RowBox[{"{", "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
                  RowBox[{
-                 "parentDir", ",", "\n", "\t\t\t\t\t", "$obprefix", ",", 
-                  "\"\<build\>\"", ",", "\"\<bin\>\"", ",", 
-                  "\"\<obabel\>\""}], "\n", "\t\t\t\t\t", "}"}]}]}]}], ",", 
-             "\n", "\t\t\t", 
-             RowBox[{"terminalRun", "[", 
+                 "parentDir", ",", "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
+                  "$obprefix", ",", "\"\<build\>\"", ",", "\"\<bin\>\"", ",", 
+                  "\"\<obabel\>\""}], "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
+                 "}"}]}]}]}], ",", "\n", "\t\t\t\t\t\t", 
+             RowBox[{"RunInTerminal", "[", 
               RowBox[{
                RowBox[{"{", 
                 RowBox[{"\"\<make\>\"", ",", "\"\<install\>\""}], "}"}], ",", 
-               "\n", "\t\t\t\t", 
-               RowBox[{"ProcessDirectory", "\[Rule]", "\n", "\t\t\t\t\t", 
+               "\n", "\t", "\t", "\t", "\t\t\t\t", 
+               RowBox[{
+               "ProcessDirectory", "\[Rule]", "\n", "\t", "\t", "\t", 
+                "\t\t\t\t\t", 
                 RowBox[{"ExpandFileName", "@", 
                  RowBox[{"FileNameJoin", "@", 
                   RowBox[{"{", 
                    RowBox[{"parentDir", ",", "$obprefix"}], "}"}]}]}]}]}], 
-              "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}], ",", "\n", 
-           "\t\t", 
+              "\n", "\t", "\t", "\t", "\t\t\t\t", "]"}]}], "\n", "\t", "\t", 
+            "\t", "\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t", "\t\t", 
            RowBox[{"If", "[", 
             RowBox[{
-             RowBox[{"FileExistsQ", "@", "\n", "\t\t\t\t", 
+             RowBox[{"FileExistsQ", "@", "\n", "\t", "\t", "\t", "\t\t\t\t", 
               RowBox[{"FileNameJoin", "@", 
                RowBox[{"{", 
                 RowBox[{
                 "parentDir", ",", "$obprefix", ",", "\"\<bin\>\"", ",", 
-                 "\"\<obabel\>\""}], "}"}]}]}], ",", "\n", "\t\t\t\t", 
+                 "\"\<obabel\>\""}], "}"}]}]}], ",", "\n", "\t", "\t", "\t", 
+             "\t\t\t\t", 
              RowBox[{"FileNameJoin", "@", 
               RowBox[{"{", 
                RowBox[{"parentDir", ",", "$obprefix"}], "}"}]}]}], "\n", 
-            "\t\t\t\t", "]"}]}], "\n", "\t\t", "}"}], "]"}], "//", 
+            "\t\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "}"}]}], "//", 
         RowBox[{
          RowBox[{"If", "[", 
           RowBox[{
            RowBox[{
             RowBox[{"Last", "@", 
-             RowBox[{"Last", "@", "#"}]}], "=!=", "Null"}], ",", "\n", 
-           "\t\t\t", 
+             RowBox[{"Last", "@", "#"}]}], "=!=", "Null"}], ",", "\n", "\t", 
+           "\t", "\t", "\t\t\t", 
            RowBox[{"TemplateApply", "[", 
             RowBox[{
-            "\"\<Built to `pkg`. Took `time`.\>\"", ",", "\n", "\t", 
-             "\t\t\t\t", 
-             RowBox[{"<|", "\n", "\t", "\t\t\t\t\t", 
+            "\"\<Built to `pkg`. Took `time`.\>\"", ",", "\n", "\t", "\t", 
+             "\t", "\t", "\t\t\t\t", 
+             RowBox[{"<|", "\n", "\t", "\t", "\t", "\t", "\t\t\t\t\t", 
               RowBox[{
                RowBox[{"\"\<time\>\"", "\[Rule]", 
-                RowBox[{"(", "\n", "\t\t\t\t\t\t\t", 
+                RowBox[{"(", "\n", "\t", "\t", "\t", "\t\t\t\t\t\t\t", 
                  RowBox[{
                   RowBox[{"$OBBuildLogs", "=", 
                    RowBox[{"Last", "@", "#"}]}], ";", "\n", "\t", "\t", "\t", 
-                  "\t\t\t\t", 
+                  "\t", "\t", "\t", "\t\t\t\t", 
                   RowBox[{"UnitConvert", "[", 
                    RowBox[{
                     RowBox[{"Quantity", "[", 
                     RowBox[{
                     RowBox[{"First", "@", "#"}], ",", "\"\<Seconds\>\""}], 
                     "]"}], ",", "\"\<Minutes\>\""}], "]"}]}], "\n", "\t", 
-                 "\t", "\t\t\t\t\t", ")"}]}], ",", "\n", "\t", "\t", 
-               "\t\t\t\t", 
+                 "\t", "\t", "\t", "\t", "\t\t\t\t\t", ")"}]}], ",", "\n", 
+               "\t", "\t", "\t", "\t", "\t", "\t\t\t\t", 
                RowBox[{"\"\<pkg\>\"", "\[Rule]", 
                 RowBox[{"Last", "@", 
-                 RowBox[{"Last", "@", "#"}]}]}]}], "\n", "\t\t\t\t\t\t", 
-              "|>"}]}], "\n", "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
-           "$Failed"}], "\n", "\t\t\t", "]"}], "&"}]}], ",", "\n", "\t\t", 
-       RowBox[{"Message", "[", 
+                 RowBox[{"Last", "@", "#"}]}]}]}], "\n", "\t", "\t", "\t", 
+              "\t\t\t\t\t\t", "|>"}]}], "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
+            "]"}], ",", "\n", "\t", "\t", "\t", "\t\t\t", 
+           RowBox[{
+           "PackageRaiseException", "[", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+            RowBox[{
+            "\"\<OpenBabelBuild\>\"", ",", "\n", "\t", "\t", "\t", 
+             "\t\t\t\t", "\"\<Failed to build OpenBabel to ``\>\"", ",", "\n",
+              "\t", "\t", "\t", "\t\t\t\t", 
+             RowBox[{"\"\<MessageParameters\>\"", "\[Rule]", 
+              RowBox[{"{", 
+               RowBox[{"FileNameJoin", "@", 
+                RowBox[{"{", 
+                 RowBox[{"parentDir", ",", "$obprefix"}], "}"}]}], "}"}]}]}], 
+            "\n", "\t", "\t", "\t", "\t\t\t\t", "]"}]}], "\n", "\t", "\t", 
+          "\t", "\t\t\t", "]"}], "&"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t", 
         RowBox[{
-         RowBox[{"OBBuild", "::", "nodir"}], ",", 
-         RowBox[{"FileNameJoin", "@", 
+        "\"\<OpenBabelBuild\>\"", ",", "\n", "\t\t\t\t", 
+         "\"\<Directory `` is the `` directory\>\"", ",", "\n", "\t\t\t\t", 
+         RowBox[{"\"\<MessageParameters\>\"", "\[Rule]", 
           RowBox[{"{", 
-           RowBox[{"parentDir", ",", "$obprefix"}], "}"}]}]}], "]"}]}], "\n", 
-      "\t\t", "]"}]}], "\n", "\t", "]"}]}], ";"}]}], "CodeInput",
- CellChangeTimes->{{3.692896520725121*^9, 3.692896634947732*^9}, {
-   3.6928968718398943`*^9, 3.692896897934002*^9}, {3.6928969349378653`*^9, 
-   3.692897020050025*^9}, {3.6928971020749407`*^9, 3.692897228969447*^9}, {
-   3.6928973982787933`*^9, 3.6928974154324007`*^9}, {3.692897483568335*^9, 
-   3.692897551240259*^9}, {3.692897849116054*^9, 3.6928979162383947`*^9}, {
-   3.692908717361258*^9, 3.692908723862463*^9}, {3.692908987105175*^9, 
-   3.692908995351866*^9}, {3.6929107632027597`*^9, 3.692910789795067*^9}, {
-   3.692910904280164*^9, 3.6929109599251328`*^9}, {3.6929110254156647`*^9, 
-   3.692911082661755*^9}, {3.692911127459642*^9, 3.692911218566203*^9}, {
-   3.6929112514060183`*^9, 3.692911270882622*^9}, {3.692911421105907*^9, 
-   3.692911515156341*^9}, 3.6929201814936943`*^9, {3.692921405650614*^9, 
-   3.692921422123727*^9}, 3.692922239764328*^9, {3.692922279317191*^9, 
-   3.692922298612756*^9}, {3.692922783307084*^9, 3.6929227860896997`*^9}, 
-   3.69292293993218*^9, {3.6929307981399603`*^9, 3.6929308947286386`*^9}, {
-   3.692931167496388*^9, 3.692931190380765*^9}, {3.692931250833403*^9, 
-   3.692931253952753*^9}, {3.692931300557234*^9, 3.6929313007392178`*^9}, {
-   3.6929313712753067`*^9, 3.692931390592421*^9}, {3.692934009564135*^9, 
-   3.692934011411881*^9}, {3.692934056253827*^9, 3.6929341647445803`*^9}, {
-   3.69293431694995*^9, 3.6929345660134563`*^9}, {3.692934613625997*^9, 
-   3.6929346963582287`*^9}, {3.692934751341402*^9, 3.692934753236054*^9}, {
-   3.692934784244837*^9, 3.6929348498003407`*^9}, {3.692934886483264*^9, 
-   3.6929349134629593`*^9}, {3.692935240227323*^9, 3.6929353025912848`*^9}, {
-   3.6929353936786537`*^9, 3.692935487567417*^9}, {3.692935584395323*^9, 
-   3.69293558789473*^9}, 3.693021215877173*^9, {3.693021248637437*^9, 
-   3.693021285563772*^9}, {3.693021316442216*^9, 3.693021321016335*^9}, {
-   3.693325557100728*^9, 3.6933255752841*^9}, {3.693328542500458*^9, 
-   3.69332858946415*^9}, {3.6933286214635763`*^9, 3.693328665375236*^9}, {
-   3.693328713789689*^9, 3.6933287226597033`*^9}, {3.693328942309185*^9, 
-   3.693328942475461*^9}, {3.693359968832116*^9, 3.693359970446392*^9}, 
-   3.6949838633604527`*^9, {3.694983904435194*^9, 3.6949842047767057`*^9}, {
-   3.6949889489505043`*^9, 3.6949889536153297`*^9}, {3.694989280432392*^9, 
-   3.694989280604321*^9}, {3.69499929242134*^9, 3.6949992970924664`*^9}, {
-   3.695001511373365*^9, 3.695001523578135*^9}, {3.695001578807073*^9, 
-   3.695001583860806*^9}, 3.6950018174777803`*^9, {3.6950018605955477`*^9, 
-   3.695001876232992*^9}, {3.69500193853811*^9, 3.695002033202467*^9}, {
-   3.695002081467781*^9, 3.695002083347488*^9}, 3.69500257664297*^9, {
-   3.6950071683910303`*^9, 3.6950071735726957`*^9}, {3.695007501309165*^9, 
-   3.695007504937935*^9}, {3.69508320758571*^9, 3.695083217968005*^9}, 
-   3.695083347107707*^9, {3.6950848667991447`*^9, 3.695084871707439*^9}, {
-   3.695095253306197*^9, 3.69509536037156*^9}, {3.695095391489934*^9, 
-   3.695095425023395*^9}, {3.695097208445038*^9, 3.695097226737907*^9}, {
-   3.695127502717923*^9, 3.6951275708383408`*^9}, {3.695128928618807*^9, 
-   3.6951289531358128`*^9}, 3.695130986182678*^9, {3.69513227637044*^9, 
-   3.695132314485896*^9}, {3.715229723048832*^9, 3.715229743572847*^9}, {
-   3.715229800055794*^9, 3.715229839563162*^9}, {3.7152573443845253`*^9, 
-   3.71525735978839*^9}, 3.715258566360752*^9, {3.715258835030037*^9, 
-   3.715258849725988*^9}, {3.715260253822957*^9, 3.715260265865234*^9}, {
-   3.7152608346949787`*^9, 3.7152608359016457`*^9}, {3.715264519755045*^9, 
-   3.715264520664871*^9}, 3.715264635191865*^9, {3.715265602197173*^9, 
-   3.715265649864215*^9}, {3.715265681827338*^9, 3.715265840633362*^9}, {
-   3.715266411339798*^9, 
-   3.715266417293624*^9}},ExpressionUUID->"e225b12c-787f-4642-8bff-\
-712b08b9c235"],
+           RowBox[{"parentDir", ",", " ", "$obprefix"}], "}"}]}]}], "\n", 
+        "\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"e225b12c-787f-4642-8bff-712b08b9c235"],
 
 Cell[BoxData[{
  RowBox[{
@@ -620,68 +578,28 @@ Cell[BoxData[{
    RowBox[{"OBBuild", "[", 
     RowBox[{"parentDir", ":", 
      RowBox[{"_", "?", "DirectoryQ"}]}], "]"}], ":=", "\n", "\t", 
-   RowBox[{"(", "\n", "\t\t", 
-    RowBox[{
-     RowBox[{"If", "[", 
-      RowBox[{
-       RowBox[{"!", 
-        RowBox[{"cmakeCheck", "@", "parentDir"}]}], ",", "\n", "\t", "\t\t", 
-       RowBox[{"cmakeBuild", "@", "parentDir"}]}], "\n", "\t", "\t\t", "]"}], 
-     ";", "\n", "\t", "\t", 
-     RowBox[{"If", "[", 
-      RowBox[{
-       RowBox[{"!", 
-        RowBox[{"FileExistsQ", "@", 
-         RowBox[{"FileNameJoin", "@", 
-          RowBox[{"{", 
-           RowBox[{"parentDir", ",", "\"\<eigen3\>\""}], "}"}]}]}]}], ",", 
-       "\n", "\t", "\t\t", 
-       RowBox[{"eigenDownload", "@", "parentDir"}]}], "\n", "\t", "\t\t", 
-      "]"}], ";", "\n", "\t\t", 
-     RowBox[{"SwigBuild", "[", "parentDir", "]"}], ";", "\n", "\t\t", 
-     RowBox[{"If", "[", 
-      RowBox[{
-       RowBox[{
-        RowBox[{"!", 
-         RowBox[{"FileExistsQ", "@", 
-          RowBox[{"FileNameJoin", "@", 
-           RowBox[{"{", 
-            RowBox[{"parentDir", ",", "$obprefix"}], "}"}]}]}]}], "||", "\n", 
-        "\t\t\t", 
-        RowBox[{
-         RowBox[{"Length", "[", "\n", "\t\t\t\t", 
-          RowBox[{
-           RowBox[{"Select", "[", "DirectoryQ", "]"}], "@", "\n", 
-           "\t\t\t\t\t", 
-           RowBox[{"FileNames", "[", 
-            RowBox[{"\"\<*\>\"", ",", 
-             RowBox[{"FileNameJoin", "@", 
-              RowBox[{"{", 
-               RowBox[{"parentDir", ",", "$obprefix"}], "}"}]}]}], "]"}]}], 
-          "\n", "\t\t\t\t", "]"}], "===", "0"}]}], ",", "\n", "\t", "\t\t", 
-       RowBox[{"openbabelDownload", "@", "parentDir"}]}], "\n", "\t", "\t\t", 
-      "]"}], ";", "\n", "\t", "\t", 
-     RowBox[{"obBuild", "@", "parentDir"}]}], "\n", "\t\t", ")"}]}], 
+   RowBox[{
+    RowBox[{"PackageExceptionBlock", "[", "\"\<OpenBabelBuild\>\"", "]"}], 
+    "@", "\n", "\t\t", 
+    RowBox[{"(", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"CMakeBuild", "[", "]"}], ";", "\n", "\t", "\t\t", 
+      RowBox[{"EigenBuild", "[", "]"}], ";", "\n", "\t", "\t\t", 
+      RowBox[{"SwigBuild", "[", "]"}], ";", "\n", "\t", "\t\t", 
+      RowBox[{"obDownload", "[", "parentDir", "]"}], ";", "\n", "\t", "\t\t", 
+      
+      RowBox[{"obBuild", "@", "parentDir"}]}], "\n", "\t", "\t\t", ")"}]}]}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"OBBuild", "[", 
    RowBox[{"Optional", "[", 
     RowBox[{"Automatic", ",", "Automatic"}], "]"}], "]"}], ":=", "\n", "\t", 
   RowBox[{"OBBuild", "[", 
-   RowBox[{"DirectoryName", "[", "$OBDir", "]"}], "]"}]}]}], "CodeInput",
- CellChangeTimes->{{3.692908997307103*^9, 3.692909105215914*^9}, 
-   3.6933255654518757`*^9, {3.694989287546013*^9, 3.694989303711356*^9}, {
-   3.694990240817115*^9, 3.6949902413815603`*^9}, {3.6950010455767317`*^9, 
-   3.695001061926441*^9}, {3.6950015435700197`*^9, 3.695001545244854*^9}, 
-   3.6950832949389677`*^9, 3.6950972279099207`*^9, {3.714673413680676*^9, 
-   3.714673458883113*^9}, {3.715229855515254*^9, 3.715229861671307*^9}, {
-   3.715257959467906*^9, 3.7152579663987923`*^9}, {3.715258576831193*^9, 
-   3.7152586930776987`*^9}, {3.715258815347197*^9, 3.715258818357375*^9}, {
-   3.715260672449198*^9, 3.7152607177737913`*^9}, 3.7152608008295794`*^9, {
-   3.7152636675216827`*^9, 
-   3.715263672749982*^9}},ExpressionUUID->"76198eba-a4cf-452b-be08-\
-fe31cae73ad3"]
-}, Closed]],
+   RowBox[{"DirectoryName", "[", "$OBDir", "]"}], 
+   "]"}]}]}], \
+"CodeInput",ExpressionUUID->"76198eba-a4cf-452b-be08-fe31cae73ad3"]
+}, Closed]]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -691,46 +609,155 @@ Cell["\[LeftCeiling]Defaults\[RightFloor]", "CodeSubsection",
   3.694982909447627*^9}},ExpressionUUID->"fb6c5701-ca14-42c5-b5e6-\
 955529df3204"],
 
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]FindOpenBabel\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"8d20c11b-8e2c-4fdb-a7c0-6e0da06d4a24"],
+
+Cell[BoxData[
+ RowBox[{"$OpenBabelPath", "=", "\n", "\t", 
+  RowBox[{"{", "\n", "\t\t", 
+   RowBox[{"$ChemExtensionsApp", ",", "\n", "\t\t", "$ChemExtensionsDev"}], 
+   "\n", "\t\t", 
+   "}"}]}]], \
+"CodeInput",ExpressionUUID->"d8eab123-290e-4a16-b229-481f85951642"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FindOpenBabel", "[", "]"}], ":=", "\n", "\t", 
+  RowBox[{"Replace", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"StringTrim", "@", "\n", "\t\t\t", 
+     RowBox[{"RunProcess", "[", "\t\t\t", "\n", "\t\t\t\t", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"$OperatingSystem", "\[Equal]", "\"\<Windows\>\""}], ",", 
+           "\"\<where\>\"", ",", " ", "\"\<which\>\""}], "]"}], ",", " ", 
+         "\"\<obabel\>\""}], "}"}], ",", "\n", "\t", "\t", "\t", "\t", 
+       "\"\<StandardOutput\>\""}], "\n", "\t\t\t\t", "]"}]}], ",", "\n", 
+    "\t\t", 
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ob_String", "?", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"StringLength", "[", "#", "]"}], ">", "0"}], "&&", 
+           RowBox[{"FileExistsQ", "[", "#", "]"}], "&&", 
+           RowBox[{"OBDirQ", "[", 
+            RowBox[{"DirectoryName", "@", "#"}], "]"}]}], "&"}], ")"}]}], ":>",
+        "\n", "\t\t\t\t", 
+       RowBox[{"DirectoryName", "@", "ob"}]}], ",", "\n", "\t\t\t", 
+      RowBox[{"_", ":>", "\n", "\t\t\t\t", 
+       RowBox[{"SelectFirst", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"FileNames", "[", 
+          RowBox[{
+          "\"\<*babel*\>\"", ",", "\n", "\t\t\t\t\t\t", "$OpenBabelPath"}], 
+          "\n", "\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t", "OBDirQ", ",",
+          "\n", "\t\t\t\t\t", 
+         RowBox[{"ChemExtensionDir", "[", "$obprefix", "]"}]}], "\n", 
+        "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "}"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"819a58ae-b5a2-4433-b8a3-87d677cd2cba"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]$OpenBabel\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"e63c816b-21d7-4e7e-885a-c677b15efbc9"],
+
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"$OBDir", "=", 
-   RowBox[{"ChemExtensionDir", "[", "$obprefix", "]"}]}], ";"}], "\n", 
+  RowBox[{"$OBDir", ":=", 
+   RowBox[{"$OBDir", "=", 
+    RowBox[{"FindOpenBabel", "[", "]"}]}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{"$OpenBabel", ":=", 
    RowBox[{"OpenBabel", "[", 
     RowBox[{"$OBDir", ",", " ", "\"\<obabel\>\""}], "]"}]}], 
-  ";"}]}], "CodeInput",ExpressionUUID->"23dbd338-c6ab-4720-aea4-22a59fa75f67"],
+  ";"}]}], "CodeInput",ExpressionUUID->"23dbd338-c6ab-4720-aea4-22a59fa75f67"]\
+
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]FindOBPythonInterpreter\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"7d6c6efc-da37-42e5-9c36-bbd73870a6b5"],
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"$OBPythonInterpreter", "=", "\"\<python2.7\>\""}], 
-  ";"}]], "CodeInput",
- CellChangeTimes->{{3.715290269008584*^9, 
-  3.715290307445875*^9}},ExpressionUUID->"d714a1c0-7e7b-41c1-b60b-\
-061ae9eeb5d0"],
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"OBDirQ", "[", "babelDir_", "]"}], ":=", "\n", "\t", 
-  RowBox[{"AllTrue", "[", 
+  RowBox[{"FindOBPythonInterpreter", "[", "dir_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"Replace", "[", "\n", "\t\t\t", 
    RowBox[{
-    RowBox[{"{", "\n", "\t\t", 
-     RowBox[{
-      RowBox[{"{", 
-       RowBox[{
-       "\"\<lib\>\"", ",", "$OBPythonInterpreter", ",", 
-        "\"\<site-packages\>\""}], "}"}], ",", "\n", "\t\t", 
-      RowBox[{"{", 
-       RowBox[{"\"\<lib\>\"", ",", "\"\<_openbabel.so\>\""}], "}"}]}], "\n", 
-     "\t\t", "}"}], ",", "\n", "\t\t", 
-    RowBox[{
-     RowBox[{"FileExistsQ", "@", 
+    RowBox[{"FileNames", "[", 
+     RowBox[{"\"\<python*\>\"", ",", " ", 
       RowBox[{"FileNameJoin", "@", 
-       RowBox[{"Flatten", "@", 
-        RowBox[{"{", 
-         RowBox[{"babelDir", ",", "#"}], "}"}]}]}]}], "&"}]}], "\n", "\t\t", 
+       RowBox[{"{", 
+        RowBox[{"dir", ",", " ", "\"\<lib\>\""}], "}"}]}]}], "]"}], ",", "\n",
+     "\t", "\t\t", 
+    RowBox[{"{", "\n", "\t", "\t\t\t", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"f_", ",", " ", "___"}], "}"}], "\[RuleDelayed]", "\n", "\t", 
+       "\t\t\t\t", 
+       RowBox[{"FileNameTake", "[", "f", "]"}]}], ",", "\n", "\t", "\t\t\t", 
+      RowBox[{"_", "->", "\"\<python2.7\>\""}]}], "\n", "\t", "\t\t\t", 
+     "}"}]}], "\n", "\t", "\t\t", 
    "]"}]}]], \
-"CodeInput",ExpressionUUID->"96e36be0-b86b-403c-b6d5-947aa7029d6f"],
+"CodeInput",ExpressionUUID->"3ed8df13-5411-43a3-9577-b0e22b0eab5c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$OBPythonInterpreter", ":=", "\n", "\t", 
+   RowBox[{"$OBPythonInterpreter", "=", 
+    RowBox[{"FindOBPythonInterpreter", "[", "$OBDir", "]"}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"d714a1c0-7e7b-41c1-b60b-061ae9eeb5d0"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]OBDirQ\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"82003baa-382b-4132-a594-c14a2c97db27"],
+
+Cell[BoxData[
+ RowBox[{"OBDirQ", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"6cc37ce4-616a-4c34-b67c-53fd7156de51"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"OBDirQ", "[", "babelDir_String", "]"}], ":=", "\n", "\t", 
+   RowBox[{"AllTrue", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"\"\<lib\>\"", ",", " ", 
+         RowBox[{"FindOBPythonInterpreter", "[", "babelDir", "]"}], ",", " ", 
+         "\"\<site-packages\>\""}], "}"}], ",", "\n", "\t", "\t\t", 
+       RowBox[{"{", 
+        RowBox[{"\"\<lib\>\"", ",", " ", "\"\<_openbabel.so\>\""}], "}"}]}], 
+      "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"FileExistsQ", "@", 
+       RowBox[{"FileNameJoin", "@", 
+        RowBox[{"Flatten", "@", 
+         RowBox[{"{", 
+          RowBox[{"babelDir", ",", " ", "#"}], "}"}]}]}]}], "&"}]}], "\n", 
+    "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"OBDirQ", "[", "_", "]"}], ":=", 
+  "False"}]}], \
+"CodeInput",ExpressionUUID->"96e36be0-b86b-403c-b6d5-947aa7029d6f"]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -841,6 +868,11 @@ Cell["\[LeftCeiling]Run\[RightFloor]", "CodeSubsection",
   3.6951318224459057`*^9}},ExpressionUUID->"99ca4dd4-16fd-44ab-a8ca-\
 1feef0921b35"],
 
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]obabWriteTmp\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"4e88d709-b62e-4702-9016-b852d4e8073f"],
+
 Cell[BoxData[
  RowBox[{
   RowBox[{
@@ -855,7 +887,8 @@ Cell[BoxData[
       RowBox[{"WriteString", "[", 
        RowBox[{"f", ",", "string"}], "]"}], ";", "\n", "\t\t", 
       RowBox[{"Close", "@", "f"}]}]}], "\n", "\t\t", "]"}]}], 
-  ";"}]], "CodeInput",ExpressionUUID->"33a6d316-b887-4671-b99d-b7b921fbf883"],
+  ";"}]], "CodeInput",ExpressionUUID->"33a6d316-b887-4671-b99d-b7b921fbf883"]
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1262,52 +1295,42 @@ Cell["\[LeftCeiling]pybelRunProcessRun\[RightFloor]", "CodeSubsubsubsection",
 Cell[BoxData[
  RowBox[{
   RowBox[{"pybelRunProcessRun", "[", "a_", "]"}], ":=", "\n", "\t", 
-  RowBox[{"Block", "[", 
+  RowBox[{"Block", "[", "\n", "\t\t", 
    RowBox[{
-    RowBox[{"{", "\n", "\t\t", 
+    RowBox[{"{", "\n", "\t\t\t", 
      RowBox[{
-      RowBox[{"babelDir", "=", "\n", "\t\t\t", 
+      RowBox[{"babelDir", "=", "\n", "\t\t\t\t", 
        RowBox[{"Replace", "[", 
         RowBox[{
          RowBox[{"Lookup", "[", 
           RowBox[{
           "a", ",", " ", "\"\<OpenBabel\>\"", ",", " ", "$OpenBabel"}], "]"}],
-          ",", "\n", "\t\t\t\t", 
+          ",", "\n", "\t", "\t\t\t\t", 
          RowBox[{
           RowBox[{"OpenBabel", "[", 
            RowBox[{"d_", ",", " ", "___"}], "]"}], "\[RuleDelayed]", "d"}]}], 
-        "\n", "\t\t\t\t", "]"}]}], ",", "\n", "\t\t", 
+        "\n", "\t", "\t\t\t\t", "]"}]}], ",", "\n", "\t", "\t\t", 
       RowBox[{"processDir", "=", 
-       RowBox[{"a", "[", "\"\<Directory\>\"", "]"}]}], ",", "\n", "\t\t", 
+       RowBox[{"a", "[", "\"\<Directory\>\"", "]"}]}], ",", "\n", "\t", 
+      "\t\t", 
       RowBox[{"inputFile", "=", 
-       RowBox[{"a", "[", "\"\<Input\>\"", "]"}]}], ",", "\n", "\t\t", 
+       RowBox[{"a", "[", "\"\<Input\>\"", "]"}]}], ",", "\n", "\t", "\t\t", 
       RowBox[{"outputSpecs", "=", 
-       RowBox[{"a", "[", "\"\<Output\>\"", "]"}]}]}], "\n", "\t\t", "}"}], 
+       RowBox[{"a", "[", "\"\<Output\>\"", "]"}]}]}], "\n", "\t\t\t", "}"}], 
     ",", "\n", "\t\t", 
     RowBox[{
      RowBox[{"If", "[", 
       RowBox[{
-       RowBox[{"!", "\n", "\t\t\t", 
-        RowBox[{"AllTrue", "[", 
-         RowBox[{
-          RowBox[{"{", "\n", "\t\t\t\t", 
-           RowBox[{
-            RowBox[{"{", 
-             RowBox[{
-             "\"\<lib\>\"", ",", "$OBPythonInterpreter", ",", 
-              "\"\<site-packages\>\""}], "}"}], ",", "\n", "\t\t\t\t", 
-            RowBox[{"{", 
-             RowBox[{"\"\<lib\>\"", ",", "\"\<_openbabel.so\>\""}], "}"}]}], 
-           "\n", "\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t", 
-          RowBox[{
-           RowBox[{"FileExistsQ", "@", 
-            RowBox[{"FileNameJoin", "@", 
-             RowBox[{"Flatten", "@", 
-              RowBox[{"{", 
-               RowBox[{"babelDir", ",", "#"}], "}"}]}]}]}], "&"}]}], "\n", 
-         "\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t", 
-       RowBox[{"Return", "[", "$Failed", "]"}]}], "\n", "\t\t\t", "]"}], ";", 
-     "\n", "\t\t", 
+       RowBox[{"!", 
+        RowBox[{"OBDirQ", "@", "babelDir"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+        "\"\<OpenBabelRun\>\"", ",", "\n", "\t\t\t\t", 
+         "\"\<Directory `` doesn't hold an OpenBabel installation\>\"", ",", 
+         "\n", "\t\t\t\t", 
+         RowBox[{"\"\<MessageParameters\>\"", "\[Rule]", 
+          RowBox[{"{", "babelDir", "}"}]}]}], "\n", "\t\t\t\t", "]"}]}], "\n",
+       "\t\t\t", "]"}], ";", "\n", "\t\t", 
      RowBox[{"processDir", "=", "\n", "\t\t\t", 
       RowBox[{"Replace", "[", 
        RowBox[{"processDir", ",", 
@@ -1381,23 +1404,29 @@ Cell[BoxData[
           "\t\t\t\t\t", 
           RowBox[{"\"\<PYTHONPATH\>\"", "->", "\n", "\t\t\t\t\t\t", 
            RowBox[{"StringJoin", "@", "\n", "\t\t\t\t\t\t\t", 
-            RowBox[{"Riffle", "[", 
+            RowBox[{"Riffle", "[", "\n", "\t\t\t\t\t\t\t\t", 
              RowBox[{
-              RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
+              RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t", 
                RowBox[{
+                RowBox[{"FileNameJoin", "@", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                 RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{
+                  "babelDir", ",", " ", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
+                   "\"\<lib\>\"", ",", " ", "\n", "\t", 
+                   "\t\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{"FindOBPythonInterpreter", "[", "babelDir", "]"}], 
+                   ",", "\n", "\t", "\t\t\t\t\t\t\t\t\t\t", 
+                   "\"\<site-packages\>\""}], "\n", "\t", 
+                  "\t\t\t\t\t\t\t\t\t\t", "}"}]}], ",", "\n", 
+                "\t\t\t\t\t\t\t\t\t", 
                 RowBox[{"FileNameJoin", "@", 
                  RowBox[{"{", 
                   RowBox[{
-                  "babelDir", ",", "\"\<lib\>\"", ",", "$OBPythonInterpreter",
-                    ",", "\"\<site-packages\>\""}], "}"}]}], ",", "\n", 
-                "\t\t\t\t\t\t\t\t", 
-                RowBox[{"FileNameJoin", "@", 
-                 RowBox[{"{", 
-                  RowBox[{
-                  "babelDir", ",", "\"\<scripts\>\"", ",", "\"\<python\>\""}],
-                   "}"}]}]}], "\n", "\t\t\t\t\t\t\t\t", "}"}], ",", 
-              "\"\<:\>\""}], "\n", "\t\t\t\t\t\t\t\t", "]"}]}]}]}], "\n", 
-         "\t\t\t\t\t", "|>"}]}]}], "\n", "\t\t\t\t", "]"}]}]}], "\n", "\t\t", 
+                  "babelDir", ",", " ", "\"\<scripts\>\"", ",", " ", 
+                   "\"\<python\>\""}], "}"}]}]}], "\n", "\t\t\t\t\t\t\t\t\t", 
+               "}"}], ",", "\n", "\t\t\t\t\t\t\t\t", "\"\<:\>\""}], "\n", 
+             "\t\t\t\t\t\t\t\t", "]"}]}]}]}], "\n", "\t\t\t\t\t", "|>"}]}]}], 
+      "\n", "\t\t\t\t", "]"}]}]}], "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"462cb460-fc0b-47b8-a2fc-324ef6f071c4"]
 }, Closed]],
@@ -1488,16 +1517,17 @@ Cell[BoxData[
     RowBox[{"{", "\n", "\t\t", 
      RowBox[{
       RowBox[{"babelDir", "=", "\n", "\t\t\t", 
-       RowBox[{"Replace", "[", 
-        RowBox[{
-         RowBox[{"Lookup", "[", 
-          RowBox[{
-          "a", ",", " ", "\"\<OpenBabel\>\"", ",", " ", "$OpenBabel"}], "]"}],
-          ",", "\n", "\t\t\t\t", 
+       RowBox[{"Echo", "@", 
+        RowBox[{"Replace", "[", 
          RowBox[{
-          RowBox[{"OpenBabel", "[", 
-           RowBox[{"d_", ",", " ", "___"}], "]"}], "\[RuleDelayed]", "d"}]}], 
-        "\n", "\t\t\t\t", "]"}]}], ",", "\n", "\t\t", 
+          RowBox[{"Lookup", "[", 
+           RowBox[{
+           "a", ",", " ", "\"\<OpenBabel\>\"", ",", " ", "$OpenBabel"}], 
+           "]"}], ",", "\n", "\t\t\t\t", 
+          RowBox[{
+           RowBox[{"OpenBabel", "[", 
+            RowBox[{"d_", ",", " ", "___"}], "]"}], "\[RuleDelayed]", "d"}]}],
+          "\n", "\t\t\t\t", "]"}]}]}], ",", "\n", "\t\t", 
       RowBox[{"processDir", "=", 
        RowBox[{"a", "[", "\"\<Directory\>\"", "]"}]}], ",", "\n", "\t\t", 
       RowBox[{"inputFile", "=", 
@@ -1508,27 +1538,16 @@ Cell[BoxData[
     RowBox[{
      RowBox[{"If", "[", 
       RowBox[{
-       RowBox[{"!", "\n", "\t\t\t", 
-        RowBox[{"AllTrue", "[", 
-         RowBox[{
-          RowBox[{"{", "\n", "\t\t\t\t", 
-           RowBox[{
-            RowBox[{"{", 
-             RowBox[{
-             "\"\<lib\>\"", ",", " ", "$OBPythonInterpreter", ",", " ", 
-              "\"\<site-packages\>\""}], "}"}], ",", "\n", "\t\t\t\t", 
-            RowBox[{"{", 
-             RowBox[{"\"\<lib\>\"", ",", " ", "\"\<_openbabel.so\>\""}], 
-             "}"}]}], "\n", "\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t", 
-          RowBox[{
-           RowBox[{"FileExistsQ", "@", 
-            RowBox[{"FileNameJoin", "@", 
-             RowBox[{"Flatten", "@", 
-              RowBox[{"{", 
-               RowBox[{"babelDir", ",", "#"}], "}"}]}]}]}], "&"}]}], "\n", 
-         "\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t", 
-       RowBox[{"Return", "[", "$Failed", "]"}]}], "\n", "\t\t\t", "]"}], ";", 
-     "\n", "\t\t", 
+       RowBox[{"!", 
+        RowBox[{"OBDirQ", "@", "babelDir"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+        "\"\<OpenBabelRun\>\"", ",", "\n", "\t\t\t\t", 
+         "\"\<Directory `` doesn't hold an OpenBabel installation\>\"", ",", 
+         "\n", "\t\t\t\t", 
+         RowBox[{"\"\<MessageParameters\>\"", "\[Rule]", 
+          RowBox[{"{", "babelDir", "}"}]}]}], "\n", "\t\t\t\t", "]"}]}], "\n",
+       "\t\t\t", "]"}], ";", "\n", "\t\t", 
      RowBox[{"processDir", "=", "\n", "\t\t\t", 
       RowBox[{"Replace", "[", 
        RowBox[{"processDir", ",", "\n", "\t\t\t\t", 
@@ -1610,7 +1629,7 @@ Cell[BoxData[
       "]"}]}]}], "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"9699cedb-f301-4964-a08a-58427378bb25"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1715,7 +1734,7 @@ Cell[BoxData[{
    "\n", "\t\t", 
    "]"}]}]}], \
 "CodeInput",ExpressionUUID->"ca4c31b0-d6a9-465a-856d-042f6136bd64"]
-}, Open  ]]
+}, Closed]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1833,26 +1852,29 @@ Cell[BoxData[{
        RowBox[{"Switch", "[", 
         RowBox[{
         "binary", ",", "\n", "\t\t\t", "\"\<Pybel\>\"", ",", "\n", "\t\t\t\t", 
-         RowBox[{"pybelRun", "@", 
-          RowBox[{"Merge", "[", 
+         RowBox[{"pybelRun", "@", "\n", "\t\t\t\t\t", 
+          RowBox[{"Merge", "[", "\n", "\t\t\t\t\t\t", 
            RowBox[{
-            RowBox[{"{", 
-             RowBox[{"a", ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{"a", ",", "\n", "\t", "\t\t\t\t\t\t", 
               RowBox[{"\"\<Directory\>\"", "\[Rule]", 
                RowBox[{"Replace", "[", 
                 RowBox[{"babelDir", ",", " ", 
                  RowBox[{"Automatic", "\[Rule]", "$OBDir"}]}], "]"}]}], ",", 
-              "\n", "\t\t\t\t\t", 
-              RowBox[{"\"\<Input\>\"", "->", "\n", "\t\t\t\t\t\t", 
+              "\n", "\t", "\t", "\t\t\t\t\t", 
+              RowBox[{"\"\<Input\>\"", "->", "\n", "\t", "\t", "\t\t\t\t\t\t", 
                RowBox[{"Replace", "[", 
                 RowBox[{
-                 RowBox[{"a", "[", "\"\<Input\>\"", "]"}], ",", "\n", 
-                 "\t\t\t\t\t\t\t", 
-                 RowBox[{"inp_Association", ":>", "\n", "\t\t\t\t\t\t\t\t", 
-                  RowBox[{"OBPyConfig", "@", "inp"}]}]}], "\n", 
-                "\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t", "}"}], ",", 
-            "\n", "\t\t\t\t\t", "Last"}], "]"}]}], ",", "\n", "\t\t\t", "_", 
-         ",", "\n", "\t\t\t\t", 
+                 RowBox[{"a", "[", "\"\<Input\>\"", "]"}], ",", "\n", "\t", 
+                 "\t", "\t\t\t\t\t\t\t", 
+                 RowBox[{
+                 "inp_Association", ":>", "\n", "\t", "\t", 
+                  "\t\t\t\t\t\t\t\t", 
+                  RowBox[{"OBPyConfig", "@", "inp"}]}]}], "\n", "\t", "\t", 
+                "\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t", "\t", "\t\t\t\t\t", 
+             "}"}], ",", "\n", "\t", "\t\t\t\t\t", "Last"}], "\n", 
+           "\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t", "_", ",", "\n", 
+         "\t\t\t\t", 
          RowBox[{"obabRun", "@", 
           RowBox[{"Merge", "[", 
            RowBox[{
@@ -1892,7 +1914,7 @@ Cell[BoxData[{
      "|>"}]}]}], 
   ";"}]}], "CodeInput",ExpressionUUID->"0bd7b3b2-19d3-4b20-8ad4-ff8dabfef2ed"]\
 
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -2008,8 +2030,9 @@ Cell[BoxData[{
     RowBox[{
      RowBox[{"{", 
       RowBox[{"fmt", "=", 
-       RowBox[{"ChemFormatsDetect", "[", "molspec", "]"}]}], "}"}], ",", "\n",
-      "\t\t", 
+       RowBox[{"ChemFormatsDetect", "[", 
+        RowBox[{"molspec", ",", " ", "True"}], "]"}]}], "}"}], ",", "\n", 
+     "\t\t", 
      RowBox[{"OBPyMoleculeString", "[", "\n", "\t\t\t", 
       RowBox[{
        RowBox[{"fmt", "\[Rule]", "molspec"}], ",", "\n", "\t\t\t", "name"}], 
@@ -2043,29 +2066,32 @@ Cell[BoxData[{
        RowBox[{"basecmd", "=", "\n", "\t\t\t", 
         RowBox[{"PyColumn", "@", 
          RowBox[{"Flatten", "@", 
-          RowBox[{"{", "\n", "\t", "\t", "\t\t", 
-           RowBox[{"$OBPyHeader", ",", "\n", "\t", "\t", "\t\t", 
-            RowBox[{"MapIndexed", "[", "\n", "\t", "\t", "\t\t\t", 
+          RowBox[{"{", "\n", "\t\t\t\t", 
+           RowBox[{"$OBPyHeader", ",", "\n", "\t\t\t\t", 
+            RowBox[{"If", "[", 
              RowBox[{
-              RowBox[{
-               RowBox[{"Replace", "[", 
-                RowBox[{"#", ",", "\n", "\t", "\t\t\t\t\t", 
-                 RowBox[{"{", "\n", "\t", "\t\t\t\t\t\t", 
-                  RowBox[{
-                   RowBox[{
+              RowBox[{"molecules", "=!=", "None"}], ",", "\n", "\t\t\t\t\t", 
+              RowBox[{"MapIndexed", "[", "\n", "\t\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Replace", "[", 
+                  RowBox[{"#", ",", "\n", "\t", "\t", "\t\t\t\t\t", 
+                   RowBox[{"{", "\n", "\t", "\t", "\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{
                     RowBox[{"(", 
                     RowBox[{"fmt_", "\[Rule]", 
                     RowBox[{"thing_", "\[Rule]", "name_String"}]}], ")"}], ":>",
-                     "\n", "\t", "\t", "\t", "\t\t\t\t\t", 
+                     "\n", "\t", "\t", "\t", "\t", "\t\t\t\t\t", 
                     RowBox[{
-                    "OBPyMoleculeString", "[", "\n", "\t", "\t", "\t", 
+                    "OBPyMoleculeString", "[", "\n", "\t", "\t", "\t", "\t", 
                     "\t\t\t\t\t\t", 
                     RowBox[{
                     RowBox[{"fmt", "\[Rule]", "thing"}], ",", "\n", "\t", 
-                    "\t", "\t", "\t\t\t\t\t\t", "name"}], "\n", "\t", "\t", 
-                    "\t", "\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t", "\t", 
-                   "\t", "\t\t\t\t", 
-                   RowBox[{
+                    "\t", "\t", "\t", "\t\t\t\t\t\t", "name"}], "\n", "\t", 
+                    "\t", "\t", "\t", "\t\t\t\t\t\t", "]"}]}], ",", "\n", 
+                    "\t", "\t", "\t", "\t", "\t\t\t\t", 
+                    RowBox[{
                     RowBox[{"(", 
                     RowBox[{"thing_", "\[Rule]", 
                     RowBox[{"name_String", "?", 
@@ -2074,16 +2100,16 @@ Cell[BoxData[{
                     RowBox[{
                     RowBox[{"(", 
                     RowBox[{"WordCharacter", "|", "\"\<_\>\""}], ")"}], 
-                    ".."}], "]"}], ")"}]}]}], ")"}], ":>", "\n", "\t", "\t", 
-                    "\t", "\t\t\t\t\t", 
+                    ".."}], "]"}], ")"}]}]}], ")"}], ":>", "\n", "\t", 
+                    "\t\t\t\t\t\t\t\t", 
                     RowBox[{
-                    "OBPyMoleculeString", "[", "\n", "\t", "\t", "\t", 
-                    "\t\t\t\t\t\t", 
+                    "OBPyMoleculeString", "[", "\n", "\t", 
+                    "\t\t\t\t\t\t\t\t\t", 
                     RowBox[{
-                    "thing", ",", "\n", "\t", "\t", "\t", "\t\t\t\t\t\t", 
-                    "name"}], "\n", "\t", "\t\t\t\t\t\t\t\t", "]"}]}], ",", 
-                   "\n", "\t", "\t\t\t\t\t\t", 
-                   RowBox[{
+                    "thing", ",", "\n", "\t", "\t\t\t\t\t\t\t\t\t", "name"}], 
+                    "\n", "\t", "\t\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", 
+                    "\t", "\t\t\t\t\t\t\t", 
+                    RowBox[{
                     RowBox[{"(", 
                     RowBox[{"fmt_String", "\[Rule]", 
                     RowBox[{"thing", ":", 
@@ -2095,11 +2121,12 @@ Cell[BoxData[{
                     RowBox[{"(", 
                     RowBox[{"WordCharacter", "|", "\"\<_\>\""}], ")"}], 
                     ".."}], "]"}], ")"}]}], "]"}]}]}], ")"}], ":>", "\n", 
-                    "\t", "\t\t\t\t\t\t\t", 
+                    "\t", "\t", "\t\t\t\t\t\t\t", 
                     RowBox[{
-                    "OBPyMoleculeString", "[", "\n", "\t", "\t\t\t\t\t\t\t\t", 
+                    "OBPyMoleculeString", "[", "\n", "\t", "\t", 
+                    "\t\t\t\t\t\t\t\t", 
                     RowBox[{
-                    RowBox[{"fmt", "->", "thing"}], ",", "\n", "\t", 
+                    RowBox[{"fmt", "->", "thing"}], ",", "\n", "\t", "\t", 
                     "\t\t\t\t\t\t\t\t", 
                     RowBox[{"\"\<pybelMol\>\"", "<>", 
                     RowBox[{"If", "[", 
@@ -2109,15 +2136,15 @@ Cell[BoxData[{
                     RowBox[{"[", "1", "]"}], "]"}], ">", "1"}], ",", 
                     RowBox[{"ToString", "@", 
                     RowBox[{"First", "@", "#2"}]}], ",", "\"\<\>\""}], 
-                    "]"}]}]}], "\n", "\t", "\t\t\t\t\t\t\t\t", "]"}]}], ",", 
-                   "\n", "\t", "\t\t\t\t\t\t", 
-                   RowBox[{"_", ":>", "\n", "\t", "\t\t\t\t\t\t\t", 
+                    "]"}]}]}], "\n", "\t", "\t", "\t\t\t\t\t\t\t\t", "]"}]}], 
+                    ",", "\n", "\t", "\t", "\t\t\t\t\t\t", 
+                    RowBox[{"_", ":>", "\n", "\t", "\t", "\t\t\t\t\t\t\t", 
                     RowBox[{
-                    "OBPyMoleculeString", "[", "\n", "\t", "\t", "\t", 
+                    "OBPyMoleculeString", "[", "\n", "\t", "\t", "\t", "\t", 
                     "\t\t\t\t\t\t", 
                     RowBox[{
-                    "#", ",", "\n", "\t", "\t", "\t", "\t", "\t", "\t\t\t\t", 
-                    
+                    "#", ",", "\n", "\t", "\t", "\t", "\t", "\t", "\t", 
+                    "\t\t\t\t", 
                     RowBox[{"\"\<pybelMol\>\"", "<>", 
                     RowBox[{"If", "[", 
                     RowBox[{
@@ -2126,22 +2153,25 @@ Cell[BoxData[{
                     RowBox[{"[", "1", "]"}], "]"}], ">", "1"}], ",", 
                     RowBox[{"ToString", "@", 
                     RowBox[{"First", "@", "#2"}]}], ",", "\"\<\>\""}], 
-                    "]"}]}]}], "\n", "\t", "\t", "\t\t\t\t\t\t\t", "]"}]}]}], 
-                  "\n", "\t", "\t", "\t\t\t\t\t", "}"}]}], "\n", "\t", "\t", 
-                "\t\t\t\t", "]"}], "&"}], ",", "\n", "\t", "\t\t\t\t", 
-              RowBox[{"If", "[", 
-               RowBox[{
-                RowBox[{
-                 RowBox[{"!", 
-                  RowBox[{"ListQ", "[", "molecules", "]"}]}], "||", 
+                    "]"}]}]}], "\n", "\t", "\t", "\t", "\t\t\t\t\t\t\t", 
+                    "]"}]}]}], "\n", "\t", "\t", "\t", "\t\t\t\t\t", "}"}]}], 
+                  "\n", "\t", "\t", "\t", "\t\t\t\t", "]"}], "&"}], ",", "\n",
+                 "\t", "\t\t\t\t\t", 
+                RowBox[{"If", "[", 
                  RowBox[{
-                  RowBox[{"ChemFormatsDetect", "[", "molecules", "]"}], 
-                  "===", "\"\<MolTable\>\""}]}], ",", "\n", "\t", 
-                "\t\t\t\t\t", 
-                RowBox[{"{", "molecules", "}"}], ",", "\n", "\t", "\t", 
-                "\t\t\t\t", "molecules"}], "\n", "\t", "\t", "\t\t\t\t", 
-               "]"}]}], "\n", "\t", "\t", "\t\t\t", "]"}], ",", "\n", 
-            "\t\t\t\t", 
+                  RowBox[{
+                   RowBox[{"!", 
+                    RowBox[{"ListQ", "[", "molecules", "]"}]}], "||", 
+                   RowBox[{
+                    RowBox[{"ChemFormatsDetect", "[", 
+                    RowBox[{"molecules", ",", " ", "False"}], "]"}], "===", 
+                    "\"\<MolTable\>\""}]}], ",", "\n", "\t", "\t", 
+                  "\t\t\t\t\t", 
+                  RowBox[{"{", "molecules", "}"}], ",", "\n", "\t", "\t", 
+                  "\t", "\t\t\t\t", "molecules"}], "\n", "\t\t\t\t\t\t\t", 
+                 "]"}]}], "\n", "\t\t\t\t\t\t", "]"}], ",", "\n", 
+              "\t\t\t\t\t", "Nothing"}], "\n", "\t\t\t\t\t", "]"}], ",", "\n",
+             "\t\t\t\t", 
             RowBox[{"If", "[", 
              RowBox[{
               RowBox[{
@@ -2176,7 +2206,7 @@ Cell[BoxData[{
  RowBox[{"OBPyCommand", "~", "SetAttributes", "~", 
   "HoldRest"}]}], \
 "CodeInput",ExpressionUUID->"e727cb1e-fa6e-463f-820a-7fb2661c3d1d"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -2223,8 +2253,9 @@ Cell[BoxData[{
   RowBox[{
    RowBox[{"OBPyRun", "[", "\n", "\t", 
     RowBox[{
-     RowBox[{"molecules_:", 
-      RowBox[{"{", "}"}]}], ",", "\n", "\t", 
+     RowBox[{"molecules", ":", 
+      RowBox[{"_List", "|", "_String", "|", "_Rule", "|", "None"}], ":", 
+      "None"}], ",", "\n", "\t", 
      RowBox[{"body", ":", 
       RowBox[{"Except", "[", 
        RowBox[{"_Rule", "|", "_RuleDelayed", "|", "_FilterRules", "|", 
@@ -2272,18 +2303,24 @@ Cell[BoxData[{
             RowBox[{"OBRun", "[", "\n", "\t", "\t", "\t\t\t\t", 
              RowBox[{"<|", "\n", "\t", "\t", "\t\t\t\t\t", 
               RowBox[{"ops", ",", "\n", "\t", "\t", "\t", "\t", "\t\t\t", 
-               RowBox[{"\"\<OpenBabel\>\"", "\[Rule]", 
+               RowBox[{
+               "\"\<OpenBabel\>\"", "\[Rule]", "\n", "\t\t\t\t\t\t\t\t", 
                 RowBox[{"Replace", "[", 
                  RowBox[{
-                  RowBox[{"OptionValue", "[", "\"\<OpenBabel\>\"", "]"}], ",", 
-                  RowBox[{"Automatic", ":>", "$OBDir"}]}], "]"}]}], ",", "\n",
-                "\t", "\t", "\t", "\t", "\t\t\t", 
+                  RowBox[{"OptionValue", "[", "\"\<OpenBabel\>\"", "]"}], ",",
+                   " ", 
+                  RowBox[{"Automatic", "\[RuleDelayed]", "$OpenBabel"}]}], 
+                 "]"}]}], ",", "\n", "\t\t\t\t\t\t\t", 
                RowBox[{"\"\<Mode\>\"", "\[Rule]", "\"\<Pybel\>\""}], ",", 
                "\n", "\t", "\t", "\t", "\t", "\t\t\t", 
                RowBox[{"\"\<Input\>\"", "\[Rule]", "f"}]}], "\n", "\t", "\t", 
               "\t\t\t\t\t", "|>"}], "\n", "\t", "\t", "\t\t\t\t", "]"}]}], 
-           "\n", "\t", "\t", "\t\t", "}"}], ",", "\n", "\t", "\t", "\t", 
+           "\n", "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", 
           RowBox[{
+           RowBox[{"$OBPyRunErrorMessage", "=", 
+            RowBox[{"StringTrim", "@", 
+             RowBox[{"runData", "[", "\"\<StandardError\>\"", "]"}]}]}], ";", 
+           "\n", "\t\t\t", 
            RowBox[{"If", "[", 
             RowBox[{
              RowBox[{"OptionValue", "[", "\"\<EmitMessages\>\"", "]"}], ",", 
@@ -2299,13 +2336,16 @@ Cell[BoxData[{
                 RowBox[{
                  RowBox[{
                   RowBox[{"StringLength", "[", "errdats", "]"}], ">", "0"}], 
-                 ",", "\n", "\t", "\t", "\t\t\t\t", 
-                 RowBox[{"Message", "[", 
+                 ",", "\n", "\t\t\t\t\t\t", 
+                 RowBox[{"PackageThrowMessage", "[", "\n", "\t\t\t\t\t\t\t", 
                   RowBox[{
-                   RowBox[{"OpenBabel", "::", "runerr"}], ",", "errdats"}], 
-                  "]"}]}], "\n", "\t", "\t", "\t\t\t\t", "]"}]}], "\n", "\t", 
-              "\t", "\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}], ";", "\n", 
-           "\t\t", 
+                  "\"\<OpenBabelError\>\"", ",", "\n", "\t\t\t\t\t\t\t", 
+                   "\"\<Error in OpenBabel run:\\n\\n``\>\"", ",", "\n", 
+                   "\t\t\t\t\t\t\t", 
+                   RowBox[{"\"\<MessageParameters\>\"", "\[Rule]", 
+                    RowBox[{"{", "errdats", "}"}]}]}], "\n", "\t\t\t\t\t\t\t",
+                   "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t",
+               "]"}]}], "\n", "\t\t\t\t", "]"}], ";", "\n", "\t\t", 
            RowBox[{
             RowBox[{
              RowBox[{
@@ -2314,14 +2354,19 @@ Cell[BoxData[{
                 RowBox[{"Replace", "[", "\n", "\t\t\t\t\t", 
                  RowBox[{
                   RowBox[{"Quiet", "@", "\n", "\t\t\t\t\t\t", 
-                   RowBox[{"ImportString", "[", "\n", "\t\t\t\t\t\t\t", 
+                   RowBox[{"Replace", "[", 
+                    RowBox[{
+                    RowBox[{"ImportString", "[", 
+                    RowBox[{"s", ",", " ", "\"\<RawJSON\>\""}], "]"}], ",", 
+                    " ", "\n", "\t\t\t\t\t\t\t", 
+                    RowBox[{"$Failed", ":>", 
+                    RowBox[{"ImportString", "[", 
                     RowBox[{
                     RowBox[{"StringReplace", "[", 
                     RowBox[{"s", ",", " ", 
                     RowBox[{"\"\<'\>\"", "\[Rule]", "\"\<\\\"\>\""}]}], "]"}],
-                     ",", "\n", "\t", "\t\t\t\t\t\t", "\"\<JSON\>\""}], "\n", 
-                    "\t", "\t\t\t\t\t\t", "]"}]}], ",", " ", "\n", 
-                  "\t\t\t\t\t", 
+                     ",", " ", "\"\<RawJSON\>\""}], "]"}]}]}], "\n", 
+                    "\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t", 
                   RowBox[{"$Failed", "\[Rule]", "s"}]}], "\n", "\t\t\t\t\t", 
                  "]"}]}], "\n", "\t\t\t", "]"}], "@", "\n", "\t\t\t", 
               RowBox[{"If", "[", 
@@ -2466,7 +2511,7 @@ Cell[BoxData[
         "]"}]}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"d90d0416-8154-444f-ac27-854d0cf9f0f6"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -2585,7 +2630,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"9967dd55-49d8-4076-9530-\
 2a33c66f8add"]
 },
 WindowSize->{808, 755},
-WindowMargins->{{Automatic, -46}, {Automatic, 0}},
+WindowMargins->{{Automatic, 28}, {Automatic, 0}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

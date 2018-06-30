@@ -495,6 +495,24 @@ c9423bf7198a"]
 
 Cell[CellGroupData[{
 
+Cell["\[LeftCeiling]Conversions\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"7c3f1e08-8f45-4f0b-a621-1b9252e98e41"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"AtomsetToString", "::", "usage"}], "=", 
+   "\"\<Converts an atomset to a MOL string\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"AtomsetToZMatrix", "::", "usage"}], "=", 
+   "\"\<Converts an atomset to a ZMatrix\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"46bb5a99-23c1-44b6-8232-633db508801d"]\
+
+}, Open  ]],
+
+Cell[CellGroupData[{
+
 Cell["\[LeftCeiling]Graphics\[RightFloor]", "CodeSubsubsection",
  Evaluatable->True,
  CellChangeTimes->{{3.69487065554629*^9, 
@@ -515,7 +533,7 @@ Cell[BoxData[{
   3.6924125703857727`*^9}},ExpressionUUID->"d3482a26-5f51-451b-8d47-\
 c668f22ab657"]
 }, Closed]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -574,8 +592,8 @@ Cell[BoxData[
    RowBox[{"$ChemObjectDefaults", "[", "\"\<Atomset\>\"", "]"}], "=."}], 
   "*)"}]], "CodeInput",
  CellChangeTimes->{{3.726973735927697*^9, 
-  3.726973736126667*^9}},ExpressionUUID->"6e73db30-fb09-4dc8-9386-\
-fd5af599a0d5"],
+  3.726973736126667*^9}},ExpressionUUID->"2423691a-9b18-4304-851c-\
+3d114a3d8e4d"],
 
 Cell[BoxData[
  RowBox[{
@@ -714,7 +732,16 @@ Cell[BoxData[
        "\t\t\t\t", 
        RowBox[{"\"\<OrbitalsPlot\>\"", "->", "\n", "\t\t\t\t\t", 
         RowBox[{"ChemMethod", "[", "AtomsetOrbitalsPlot", "]"}]}], ",", "\n", 
-       "\t\t\t\t\t", "\n", "\t\t\t\t", 
+       "\t\t\t\t", "\n", "\t\t\t\t", 
+       RowBox[{"\"\<MolTable\>\"", "->", "\n", "\t\t\t\t\t", 
+        RowBox[{"ChemMethod", "[", "AtomsetMolTable", "]"}]}], ",", "\n", 
+       "\t\t\t\t", 
+       RowBox[{"\"\<ZMatrix\>\"", "->", "\n", "\t\t\t\t\t", 
+        RowBox[{"ChemMethod", "[", "AtomsetZMatrix", "]"}]}], ",", "\n", 
+       "\t\t\t\t", 
+       RowBox[{"\"\<Convert\>\"", "->", "\n", "\t\t\t\t\t", 
+        RowBox[{"ChemMethod", "[", "AtomsetFormatConvert", "]"}]}], ",", "\n",
+        "\t\t\t\t", "\n", "\t\t\t\t", 
        RowBox[{"\"\<Graphic\>\"", "\[Rule]", 
         RowBox[{"ChemMethod", "[", "\n", "\t\t\t\t\t", 
          RowBox[{
@@ -2204,6 +2231,46 @@ Cell[BoxData[
    3.7000982646352873`*^9, 3.700098274562248*^9}, 
    3.718335482154026*^9},ExpressionUUID->"44ae71c9-d1c8-4474-aa19-\
 22601d5d0c84"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ZMatrix\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"16175ae8-acee-46a7-bd39-8566b13b632c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"AtomsetZMatrix", "[", 
+   RowBox[{
+    RowBox[{"obj", ":", "ChemObjPattern"}], ",", " ", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"ChemFormatsMolToZMatrix", "[", 
+   RowBox[{
+    RowBox[{"AtomsetMolTable", "[", "obj", "]"}], ",", " ", "ops"}], 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"ba245994-c6f6-4755-8ce9-778975fa400c"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]FormatConvert\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"c380512f-de8f-487e-97db-df241fa1e2af"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"AtomsetFormatConvert", "[", 
+   RowBox[{
+    RowBox[{"obj", ":", "ChemObjPattern"}], ",", " ", "fmt_", ",", " ", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"ChemFormatsConvert", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"AtomsetMolTable", "[", "obj", "]"}], ",", "\n", "\t\t", 
+    RowBox[{"\"\<MolTable\>\"", "\[Rule]", "fmt"}], ",", "\n", "\t\t", 
+    "ops"}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"ec3e0b8e-1d8f-4991-a0bd-dded56296748"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -4683,7 +4750,8 @@ c26a348098f7"],
 
 Cell[CellGroupData[{
 
-Cell["MassPositions", "CodeSubsubsection",
+Cell["\[LeftCeiling]MassPositions\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
  CellChangeTimes->{{3.692478111208769*^9, 3.692478145541024*^9}, {
   3.6924782391677933`*^9, 
   3.692478272712327*^9}},ExpressionUUID->"09af3949-ca28-4302-921e-\
@@ -4733,7 +4801,8 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
-Cell["Center", "CodeSubsubsection",
+Cell["\[LeftCeiling]Center\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
  CellChangeTimes->{{3.692492406713731*^9, 3.692492423799844*^9}, 
    3.694523887907827*^9},ExpressionUUID->"ff8e8983-ddae-4067-8a28-\
 58fb58dd7f5d"],
@@ -4758,7 +4827,8 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
-Cell["CenterOfMass", "CodeSubsubsection",
+Cell["\[LeftCeiling]CenterOfMass\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
  CellChangeTimes->{3.692478154413765*^9, 
   3.694523891274024*^9},ExpressionUUID->"24fd2f96-d862-4d13-895b-\
 2f0cf0e78087"],
@@ -4792,7 +4862,8 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
-Cell["Move", "CodeSubsubsection",
+Cell["\[LeftCeiling]Move\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
  CellChangeTimes->{{3.6924753926510878`*^9, 
   3.6924753930910883`*^9}},ExpressionUUID->"4f9412aa-eee0-4d94-9851-\
 fd43e5aac8b1"],
@@ -4880,7 +4951,8 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
-Cell["Rotate", "CodeSubsubsection",
+Cell["\[LeftCeiling]Rotate\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
  CellChangeTimes->{{3.692475394994801*^9, 
   3.6924753956670723`*^9}},ExpressionUUID->"406d960d-84af-47f2-abb7-\
 3f2f53f3c9e5"],
@@ -4985,7 +5057,8 @@ f6c9332cefe6"]
 
 Cell[CellGroupData[{
 
-Cell["RotationTransform", "CodeSubsubsection",
+Cell["\[LeftCeiling]RotationTransform\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
  CellChangeTimes->{{3.700147987634712*^9, 
   3.7001480043809643`*^9}},ExpressionUUID->"8a409590-9561-481f-8aaa-\
 077830e2008e"],
@@ -5078,7 +5151,8 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
-Cell["Transform", "CodeSubsubsection",
+Cell["\[LeftCeiling]Transform\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
  CellChangeTimes->{{3.699748968467469*^9, 
   3.699748972681919*^9}},ExpressionUUID->"ca0e1ebb-5361-48b3-a08c-\
 450d752d77e9"],
@@ -5119,7 +5193,8 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
-Cell["AxisAlign", "CodeSubsubsection",
+Cell["\[LeftCeiling]AxisAlign\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
  CellChangeTimes->{{3.699747779622987*^9, 
   3.699747783132722*^9}},ExpressionUUID->"dab58ad8-7277-4dd9-995a-\
 a1422a4d3251"],
@@ -5383,11 +5458,12 @@ Cell[BoxData[{
        RowBox[{"obj", ",", "transform"}], "]"}]}]}], "\n", "\t\t", "]"}]}], 
   ";"}]}], "CodeInput",ExpressionUUID->"dde5c7ee-56ad-47c4-868e-4b029fde91b3"]\
 
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
-Cell["Align", "CodeSubsubsection",
+Cell["\[LeftCeiling]Align\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
  CellChangeTimes->{{3.710197853518447*^9, 3.7101978559411983`*^9}, {
   3.710199744012143*^9, 
   3.71019974505051*^9}},ExpressionUUID->"d9a3d626-ff0a-46c0-ba87-\
@@ -5586,7 +5662,7 @@ Cell[BoxData[
    3.7183354826825027`*^9}},ExpressionUUID->"8aabb2e5-328c-4755-93c9-\
 bcbf48e80531"]
 }, Closed]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -5599,7 +5675,8 @@ Cell["\[LeftCeiling]Atomset Rotational Properties\[RightFloor]", \
 
 Cell[CellGroupData[{
 
-Cell["IntertialTensor", "CodeSubsubsection",
+Cell["\[LeftCeiling]IntertialTensor\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
  CellChangeTimes->{{3.692535474245647*^9, 3.6925354931170473`*^9}, {
   3.6925365377291193`*^9, 
   3.6925365388051853`*^9}},ExpressionUUID->"63d81059-b516-4fad-a154-\
@@ -5617,7 +5694,8 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
-Cell["InertialEigensystem", "CodeSubsubsection",
+Cell["\[LeftCeiling]InertialEigensystem\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
  CellChangeTimes->{{3.692536544084674*^9, 
   3.692536547820422*^9}},ExpressionUUID->"b03c3589-7d66-4581-b187-\
 6171df4a06c1"],
@@ -5634,7 +5712,8 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
-Cell["InertialSystem", "CodeSubsubsection",
+Cell["\[LeftCeiling]InertialSystem\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
  CellChangeTimes->{
   3.694035155213592*^9},ExpressionUUID->"9ee1b27c-7e81-4198-a687-\
 e5087b04d82c"],
@@ -5651,7 +5730,8 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
-Cell["PrincipalAxes", "CodeSubsubsection",
+Cell["\[LeftCeiling]PrincipalAxes\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
  CellChangeTimes->{{3.69256969216157*^9, 
   3.692569696745308*^9}},ExpressionUUID->"70b32af3-7cab-4972-88d2-\
 6bcbd4b11595"],
@@ -5684,7 +5764,7 @@ Cell[BoxData[
    3.718335482712977*^9},ExpressionUUID->"ef40ede0-2755-486f-a473-\
 59ac5f15a101"]
 }, Closed]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 

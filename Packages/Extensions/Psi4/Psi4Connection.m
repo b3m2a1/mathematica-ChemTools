@@ -123,7 +123,46 @@ Begin["`Private`"];
 PyToolsLoad[]
 
 
-$Psi4Dir=ChemExtensionDir["psi4"];
+(* ::Subsubsection::Closed:: *)
+(*FindPsi4*)
+
+
+
+$Psi4Path=
+	{
+		$ChemExtensionsApp,
+		$ChemExtensionsDev
+		}
+
+
+FindPsi4[]:=
+	Replace[
+		StringTrim@
+			RunProcess[			
+				{If[$OperatingSystem=="Windows", "where", "which"], "psi4"},
+				"StandardOutput"
+				],
+		{
+			psi4_String?(StringLength[#]>0&&FileExistsQ[#]&&psi4Q[Nest[DirectoryName, #, 2]]&):>
+				Nest[DirectoryName, psi4, 2],
+			_:>
+				SelectFirst[
+					FileNames["*psi*",
+						$Psi4Path
+						],
+					psi4Q,
+					ChemExtensionDir["psi4"]
+					]
+			}
+		]
+
+
+(* ::Subsubsection::Closed:: *)
+(*$Psi4Dir*)
+
+
+
+$Psi4Dir:=$Psi4Dir=FindPsi4[];
 $Psi4:=Psi4@$Psi4Dir;
 
 
@@ -138,11 +177,61 @@ $Psi4:=Psi4@$Psi4Dir;
 
 
 psi4Download[parentDir_?DirectoryQ]:=
-	terminalRun[{
+	RunInTerminal[{
 		"git","clone","--recursive",
 		"https://github.com/psi4/psi4.git",
 		ExpandFileName@FileNameJoin@{parentDir,"psi4"}
 		}];
+
+
+(* ::Subsubsection::Closed:: *)
+(*psi4DirInittedQ*)
+
+
+
+psi4DirInittedQ[parentDir_]:=
+	DirectoryQ@FileNameJoin@{parentDir, "psi4"}
+
+
+(* ::Subsubsection::Closed:: *)
+(*psi4NoBinQ*)
+
+
+
+psi4HasBinQ[parentDir_]:=
+	FileExistsQ@FileNameJoin@{parentDir, "psi4", "bin", "psi4"}
+
+
+(* ::Subsubsection::Closed:: *)
+(*psi4NoBuildDirQ*)
+
+
+
+psi4NoBuildDirQ[parentDir_]:=
+	!DirectoryQ@FileNameJoin@{parentDir, "psi4", "objdir"}
+
+
+(* ::Subsubsection::Closed:: *)
+(*psi4BuildObjDir*)
+
+
+
+psi4BuildObjDir[parentDir_]:=
+	ExpandFileName@FileNameJoin@{parentDir,"psi4","objdir"}
+
+
+(* ::Subsubsection::Closed:: *)
+(*psi4BuildUnstagedQ*)
+
+
+
+psi4BuildUnfinishedQ[parentDir_]:=
+	!DirectoryQ@
+			FileNameJoin@{
+				parentDir,
+				"psi4","objdir","stage",
+				FileNameTake[ExpandFileName@parentDir,1]
+				}
 
 
 (* ::Subsubsection::Closed:: *)
@@ -152,57 +241,48 @@ psi4Download[parentDir_?DirectoryQ]:=
 
 Psi4Build::nodir="Directory `` not found";
 psi4Build[parentDir_?DirectoryQ]:=
-	If[DirectoryQ@FileNameJoin@{parentDir, "psi4"},
-		If[FileExistsQ@FileNameJoin@{parentDir, "psi4", "bin", "psi4"},
+	If[psi4DirInittedQ@parentDir,
+		If[psi4HasBinQ@parentDir,
 			{0, {FileNameJoin@{parentDir, "psi4", "bin"}}},
-			AbsoluteTiming[
+			AbsoluteTiming@
 				{
-					If[(!DirectoryQ@FileNameJoin@{parentDir, "psi4", "objdir"})&&
-							CMakeCheck@parentDir,
-						terminalRun[
+					If[psi4NoBuildDirQ@parentDir,
+						RunInTerminal[
 							{
-								If[FileExistsQ@FileNameJoin@{parentDir,"cmake","bin","cmake"},
-									ExpandFileName@FileNameJoin@{parentDir,"cmake","bin","cmake"},
-									"cmake"
-									],
+								CMakeBinary[],
 								"-H.","-Bobjdir",
 								"-DCMAKE_INSTALL_PREFIX="<>
-									ExpandFileName@FileNameJoin@{parentDir,"psi4"}
+									ExpandFileName@FileNameJoin@{parentDir, "psi4"}
 								},
 							ProcessEnvironment-><|
 								"PATH"->
-									StringJoin@{
-										Environment["PATH"],
-										":",
-										Riffle[{
-												ExpandFileName@FileNameJoin@{parentDir,"cmake","bin"},
-												ExpandFileName@FileNameJoin@{parentDir,"psi4"}
-												},
-											":"
-											]
-										}
+									StringRiffle[
+										{
+											Environment["PATH"],
+											ExpandFileName@FileNameJoin@{parentDir, "psi4"}
+											},
+										":"
+										]
 								|>,
 							ProcessDirectory->ExpandFileName@FileNameJoin@{parentDir,"psi4"}
 							]
 						],
-					If[!DirectoryQ@
-							FileNameJoin@{
-								parentDir,
-								"psi4","objdir","stage",
-								FileNameTake[ExpandFileName@parentDir,1]},
-						terminalRun[{"make","-j`getconf _NPROCESSORS_ONLN`"},
-							ProcessDirectory->ExpandFileName@FileNameJoin@{parentDir,"psi4","objdir"}
+					If[psi4BuildUnfinishedQ[parentDir],
+						RunInTerminal[{"make","-j`getconf _NPROCESSORS_ONLN`"},
+							ProcessDirectory->psi4BuildObjDir[parentDir]
 							];
-						terminalRun[{"make","install"},
-							ProcessDirectory->ExpandFileName@FileNameJoin@{parentDir,"psi4","objdir"}
+						RunInTerminal[{"make","install"},
+							ProcessDirectory->psi4BuildObjDir[parentDir]
 							]
 						],
-					With[{psi4=
-						ExpandFileName@
-							FileNameJoin@{
-								parentDir, "psi4", "objdir", "stage",
-								ExpandFileName@parentDir, "psi4"
-								}
+					With[
+					{
+						psi4=
+							ExpandFileName@
+								FileNameJoin@{
+									parentDir, "psi4", "objdir", "stage",
+									ExpandFileName@parentDir, "psi4"
+									}
 							},
 						If[DirectoryQ@psi4,
 							If[!DirectoryQ@FileNameJoin@{parentDir, "psi4", "dist"},
@@ -215,18 +295,24 @@ psi4Build[parentDir_?DirectoryQ]:=
 							]
 						]
 					}
-				]
-			]//If[Last@Last@#=!=Null,
-			$Psi4BuildLogs=Last@#;
-			TemplateApply["Built to `pkg`. Took `time`.",
-					<|
-						"time"->
-							UnitConvert[Quantity[First@#,"Seconds"],"Minutes"],
-						"pkg"->Last@Last@#
-						|>],
-			$Failed
-			]&,
-		Message[Psi4Build::nodir,FileNameJoin@{parentDir,"psi4"}]
+			]//
+			If[Last@Last@#=!=Null,
+				$Psi4BuildLogs=Last@#;
+				TemplateApply["Built to `pkg`. Took `time`.",
+						<|
+							"time"->
+								UnitConvert[Quantity[First@#,"Seconds"],"Minutes"],
+							"pkg"->Last@Last@#
+							|>],
+				PackageRaiseException["Psi4Build",
+					"Failed to build Psi4 to ``",
+					"MessageParameters"->{FileNameJoin@{parentDir,"psi4"}}
+					]
+				]&,
+		PackageRaiseException["Psi4Build",
+			"Failed to download psi4 to ``",
+			"MessageParameters"->{FileNameJoin@{parentDir,"psi4"}}
+			]
 		];
 
 
@@ -236,16 +322,17 @@ psi4Build[parentDir_?DirectoryQ]:=
 
 
 Psi4Build[parentDir_?DirectoryQ]:=
-	(
-		If[!CMakeCheck@parentDir,
-			cmakeBuild@parentDir
+	PackageExceptionBlock["Psi4Build"]@
+		If[$OperatingSystem=="Windows",
+			PackageRaiseException["Psi4Build",
+				"psi4 is designed for Unix systems only"
+				],
+			If[!FileExistsQ@FileNameJoin@{parentDir, "psi4"},
+				psi4Download@parentDir
+				];
+			psi4Build@parentDir
 			];
-		If[!FileExistsQ@FileNameJoin@{parentDir, "psi4"},
-			psi4Download@parentDir
-			];
-		psi4Build@parentDir
-		);
-Psi4Build[Optional[Automatic,Automatic]]:=
+Psi4Build[Optional[Automatic, Automatic]]:=
 	Psi4Build[DirectoryName[$Psi4Dir]];
 
 
@@ -873,7 +960,7 @@ Psi4Input/:
 Psi4Call[psi4Binary_String?FileExistsQ,
 	file_String?FileExistsQ,
 	output:_String|_Alternatives|_StringExpression:"output.dat",
-	processFunction:RunProcess|terminalRun:RunProcess]:=
+	processFunction:RunProcess|RunInTerminal:RunProcess]:=
 	With[{d=
 		If[DirectoryQ@file,
 				ExpandFileName@file,

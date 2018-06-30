@@ -17,10 +17,8 @@ PyToolsLoad::usage=
 	"Ensures PyTools is loaded";
 
 
-terminalRead::usage=
-	"Little reader terminal";
-terminalRunNoBlocking::usage=
-	"Non-blocking reader";
+RunInTerminal::usage=
+	"Runs a bit of code in a terminal window";
 
 
 Begin["`Private`"];
@@ -125,6 +123,16 @@ PyToolsLoad[]:=
 
 
 (* ::Subsection:: *)
+(*RunInTerminal*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*terminal**)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
 (*terminalRead*)
 
 
@@ -144,6 +152,11 @@ terminalRead[p_,readVar_]:=
 		If[$terminalProcessKillFlag,KillProcess@p]
 		];
 terminalRead~SetAttributes~HoldRest;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*terminalRun*)
+
 
 
 terminalRun[cmd_,o___]:=
@@ -182,6 +195,11 @@ terminalRun[cmd_,o___]:=
 		];
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*terminalRunNoBlocking*)
+
+
+
 terminalRunNoBlocking[cmd_,o___]:=
 	With[{p=StartProcess[cmd,o],s=Unique@"$terminalDownloadStrings$"},
 		s={StringJoin@Riffle[cmd," "],"\n"};
@@ -204,6 +222,22 @@ terminalRunNoBlocking[cmd_,o___]:=
 			StringJoin@s
 			]
 		];
+
+
+(* ::Subsubsection::Closed:: *)
+(*RunInTerminal*)
+
+
+
+RunInTerminal[
+	block:"Blocking"|"NonBlocking":"Blocking",
+	cmd_,
+	o___
+	]:=
+	If[block==="Blocking",
+		terminalRun[cmd, o],
+		terminalRunNonBlocking[cmd, o]
+		]
 
 
 End[];

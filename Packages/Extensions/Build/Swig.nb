@@ -7,18 +7,91 @@ Cell["Extension Aids", "CodeSection",
   3.699311158690661*^9}},ExpressionUUID->"440812be-6e79-47ff-b092-\
 cf11b9f539b6"],
 
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
   RowBox[{
    RowBox[{"SwigBuild", "::", "usage"}], "=", 
-   "\"\<Gets and compiles the Swig system\>\""}], 
-  ";"}]], "CodeInput",ExpressionUUID->"b05a07c7-12de-41e2-83f0-1940309bee66"],
+   "\"\<Gets and compiles the Swig system\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SwigCheck", "::", "usage"}], "=", 
+   "\"\<Checks that Swig is installed\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"$SwigDirectory", "::", "usage"}], "=", 
+   "\"\<The directory Swig was built to\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"SwigBinary", "::", "usage"}], "=", 
+  "\"\<Returns the binary for the Swig system\>\""}]}], \
+"CodeInput",ExpressionUUID->"b05a07c7-12de-41e2-83f0-1940309bee66"],
+
+Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
   ";"}]], "InputSection",ExpressionUUID->"3c002dd9-2664-42ef-b588-\
 79df0d280349"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]FindSwig\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"8b92173c-7da6-42c9-9179-98392f9a250c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$SwigPath", "=", "\n", "\t", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{"$ChemExtensionsDev", ",", "\n", "\t\t", "$ChemExtensionsApp"}], 
+    "\n", "\t\t", "}"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"e2d4c82c-7e91-47df-ad13-286b6adfaa5a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FindSwig", "[", "]"}], ":=", "\n", "\t", 
+  RowBox[{"Replace", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"StringTrim", "@", "\n", "\t\t\t", 
+     RowBox[{"RunProcess", "[", "\t\t\t", "\n", "\t\t\t\t", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"$OperatingSystem", "\[Equal]", "\"\<Windows\>\""}], ",", 
+           "\"\<where\>\"", ",", " ", "\"\<which\>\""}], "]"}], ",", " ", 
+         "\"\<swig\>\""}], "}"}], ",", "\n", "\t", "\t", "\t", "\t", 
+       "\"\<StandardOutput\>\""}], "\n", "\t\t\t\t", "]"}]}], ",", "\n", 
+    "\t\t", 
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ob_String", "?", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"StringLength", "[", "#", "]"}], ">", "0"}], "&&", 
+           RowBox[{"FileExistsQ", "[", "#", "]"}], "&&", "\n", "\t\t\t\t", 
+           RowBox[{"swigDirQ", "[", 
+            RowBox[{"Nest", "[", 
+             RowBox[{"DirectoryName", ",", " ", "#", ",", " ", "2"}], "]"}], 
+            "]"}]}], "&"}], ")"}]}], ":>", "\n", "\t\t\t\t", 
+       RowBox[{"Nest", "[", 
+        RowBox[{"DirectoryName", ",", " ", "ob", ",", " ", "2"}], "]"}]}], 
+      ",", "\n", "\t\t\t", 
+      RowBox[{"_", ":>", "\n", "\t\t\t\t", 
+       RowBox[{"SelectFirst", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"FileNames", "[", 
+          RowBox[{"\"\<*swig*\>\"", ",", " ", "$SwigPath"}], "]"}], ",", "\n",
+          "\t\t\t\t\t", "swigDirQ", ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"ChemExtensionDir", "[", "\"\<swig\>\"", "]"}]}], "\n", 
+        "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "}"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"1b49ca03-dcfa-4755-a519-ed2aca89ddbd"]
+}, Closed]]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -170,7 +243,7 @@ Cell[BoxData[
          RowBox[{"dir", ",", "\"\<swig\>\""}], "}"}]}]}]}], "}"}], ",", "\n", 
     "\t\t", 
     RowBox[{
-     RowBox[{"terminalRun", "[", 
+     RowBox[{"RunInTerminal", "[", 
       RowBox[{
        RowBox[{"{", 
         RowBox[{"FileNameJoin", "@", 
@@ -179,14 +252,14 @@ Cell[BoxData[
         "}"}], ",", "\n", "\t\t\t", 
        RowBox[{"ProcessDirectory", "->", "swigdir"}]}], "\n", "\t\t\t", "]"}],
       ";", "\n", "\t\t", 
-     RowBox[{"terminalRun", "[", "\n", "\t\t\t", 
+     RowBox[{"RunInTerminal", "[", "\n", "\t\t\t", 
       RowBox[{
        RowBox[{"{", "\n", "\t\t\t\t", 
         RowBox[{
          RowBox[{"FileNameJoin", "@", 
           RowBox[{"{", 
-           RowBox[{"swigdir", ",", "\"\<configure\>\""}], "}"}]}], ",", "\n", 
-         "\t\t\t\t", 
+           RowBox[{"swigdir", ",", " ", "\"\<configure\>\""}], "}"}]}], ",", 
+         "\n", "\t\t\t\t", 
          RowBox[{"\"\<--prefix=\>\"", "<>", "\n", "\t\t\t\t\t", 
           RowBox[{"FileNameJoin", "@", "\n", "\t\t\t\t\t\t", 
            RowBox[{"Map", "[", "\n", "\t\t\t\t\t\t\t", 
@@ -203,12 +276,12 @@ Cell[BoxData[
         "\t\t\t", 
        RowBox[{"ProcessDirectory", "->", "swigdir"}]}], "\n", "\t\t\t", "]"}],
       ";", "\n", "\t\t", 
-     RowBox[{"terminalRun", "[", 
+     RowBox[{"RunInTerminal", "[", 
       RowBox[{
        RowBox[{"{", "\"\<make\>\"", "}"}], ",", "\n", "\t\t\t", 
        RowBox[{"ProcessDirectory", "->", "swigdir"}]}], "\n", "\t\t\t", "]"}],
       ";", "\n", "\t\t", 
-     RowBox[{"terminalRun", "[", 
+     RowBox[{"RunInTerminal", "[", 
       RowBox[{
        RowBox[{"{", 
         RowBox[{"\"\<make\>\"", ",", "\"\<install\>\""}], "}"}], ",", "\n", 
@@ -225,19 +298,36 @@ Cell[BoxData[
        RowBox[{"FileNameJoin", "@", 
         RowBox[{"{", 
          RowBox[{"swigdir", ",", "\"\<bin\>\"", ",", "\"\<swig\>\""}], 
-         "}"}]}], ",", "\n", "\t\t\t", "$Failed"}], "\n", "\t\t\t", "]"}]}]}],
-    "\n", "\t\t", "]"}]}]], "CodeInput",
- CellChangeTimes->{{3.715260401631646*^9, 3.715260406682596*^9}, {
-   3.7152604420512667`*^9, 3.715260505243791*^9}, {3.715260847645557*^9, 
-   3.715260853527103*^9}, {3.7152612730749273`*^9, 3.71526130758442*^9}, {
-   3.7152614482754107`*^9, 3.715261541337599*^9}, 3.7152615868420277`*^9, {
-   3.7152619336883497`*^9, 3.715262036460471*^9}, {3.715262164530981*^9, 
-   3.71526220132723*^9}, {3.715262279416976*^9, 3.715262302085423*^9}, 
-   3.7152625659413757`*^9, {3.715262603048472*^9, 3.715262686716878*^9}, {
-   3.7152632910063066`*^9, 3.7152633066495543`*^9}, {3.715263950808238*^9, 
-   3.715263955206994*^9}, {3.7152640531777687`*^9, 
-   3.715264061081992*^9}},ExpressionUUID->"19beeeb1-fb3f-487d-981c-\
-2e13d1733c6c"]
+         "}"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+        "\"\<SwigBuild\>\"", ",", "\n", "\t\t\t\t", 
+         "\"\<Failed to build swig to ``\>\"", ",", "\n", "\t\t\t\t", 
+         RowBox[{"\"\<MessageParameters\>\"", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{"FileNameJoin", "@", 
+            RowBox[{"{", 
+             RowBox[{"swigdir", ",", "\"\<bin\>\"", ",", "\"\<swig\>\""}], 
+             "}"}]}], "}"}]}]}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", 
+      "]"}]}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"19beeeb1-fb3f-487d-981c-2e13d1733c6c"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]swigDirQ\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"99b6d633-5a8b-47be-a27f-42222c4c625a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"swigDirQ", "[", "dir_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"FileExistsQ", "@", 
+   RowBox[{"FileNameJoin", "@", 
+    RowBox[{"{", 
+     RowBox[{"dir", ",", " ", "\"\<bin\>\"", ",", " ", "\"\<swig\>\""}], 
+     "}"}]}]}]}]], \
+"CodeInput",ExpressionUUID->"4db5427a-e4b1-45eb-8c07-08a5e0062c82"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -254,27 +344,54 @@ Cell[BoxData[
     RowBox[{"FileNameJoin", "@", 
      RowBox[{"{", 
       RowBox[{
-      "dir", ",", "\"\<swig\>\"", ",", "\"\<bin\>\"", ",", "\"\<swig\>\""}], 
-      "}"}]}]}]}], ";"}]], "CodeInput",
- CellChangeTimes->{{3.7152605170312634`*^9, 3.715260532838183*^9}, {
-  3.715263479140959*^9, 
-  3.715263490228347*^9}},ExpressionUUID->"f8384534-982c-4224-b78f-\
-428524e23f68"]
+      "dir", ",", " ", "\"\<swig\>\"", ",", " ", "\"\<bin\>\"", ",", " ", 
+       "\"\<swig\>\""}], "}"}]}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"f8384534-982c-4224-b78f-428524e23f68"]
 }, Closed]],
 
 Cell[CellGroupData[{
 
-Cell["\[LeftCeiling]$swigExt\[RightFloor]", "CodeSubsubsection",
+Cell["\[LeftCeiling]swigEnsureDownload\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"513e8ec1-62f0-4bdd-85d6-4e8459f50e62"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"swigEnsureDownload", "[", "d_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"!", 
+       RowBox[{"DirectoryQ", "@", 
+        RowBox[{"FileNameJoin", "@", 
+         RowBox[{"{", 
+          RowBox[{"d", ",", " ", "\"\<swig\>\""}], "}"}]}]}]}], "||", "\n", 
+      "\t\t", 
+      RowBox[{
+       RowBox[{"Length", "[", "\n", "\t\t\t", 
+        RowBox[{
+         RowBox[{"Select", "[", "DirectoryQ", "]"}], "@", "\n", "\t\t\t\t", 
+         RowBox[{"FileNames", "[", 
+          RowBox[{"\"\<*\>\"", ",", 
+           RowBox[{"FileNameJoin", "@", 
+            RowBox[{"{", 
+             RowBox[{"d", ",", " ", "\"\<swig\>\""}], "}"}]}]}], "]"}]}], 
+        "\n", "\t\t\t", "]"}], "===", "0"}]}], ",", "\n", "\t\t", 
+     RowBox[{"swigDownload", "[", "d", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"439418ba-ccdd-4e28-ab38-4eae4250dbd8"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]$SwigDirectory\[RightFloor]", "CodeSubsubsection",
  Evaluatable->True,ExpressionUUID->"f118e686-c115-4c12-9a52-f66aa44eb1f1"],
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"$swigExt", ":=", 
-   RowBox[{"ChemExtensionDir", "[", "\"\<swig\>\"", "]"}]}], 
-  ";"}]], "CodeInput",
- CellChangeTimes->{{3.715260551618499*^9, 
-  3.7152605878474083`*^9}},ExpressionUUID->"d3e4b0e4-ba6f-4b4f-9cbe-\
-88918492947e"]
+  RowBox[{"$SwigDirectory", ":=", "\n", "\t", 
+   RowBox[{"$SwigDirectory", "=", 
+    RowBox[{"FindSwig", "[", "]"}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"d3e4b0e4-ba6f-4b4f-9cbe-88918492947e"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -289,49 +406,76 @@ Cell[BoxData[
     RowBox[{
      RowBox[{"_String", "?", "DirectoryQ"}], "|", "Automatic"}], ":", 
     "Automatic"}], "]"}], ":=", "\n", "\t", 
-  RowBox[{"With", "[", 
-   RowBox[{
-    RowBox[{"{", 
-     RowBox[{"d", "=", 
+  RowBox[{
+   RowBox[{"PackageExceptionBlock", "[", "\"\<SwigBuild\>\"", "]"}], "@", 
+   "\n", "\t\t", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{"swigDirQ", "@", 
       RowBox[{"Replace", "[", 
-       RowBox[{"dir", ",", 
-        RowBox[{"Automatic", "\[RuleDelayed]", 
-         RowBox[{"DirectoryName", "@", "$swigExt"}]}]}], "]"}]}], "}"}], ",", 
-    "\n", "\t\t", 
-    RowBox[{"If", "[", 
-     RowBox[{
-      RowBox[{"!", 
-       RowBox[{"swigCheck", "[", "d", "]"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"dir", ",", " ", 
+        RowBox[{"Automatic", "\[RuleDelayed]", "$SwigDirectory"}]}], "]"}]}], 
+     ",", "\n", "\t\t\t", 
+     RowBox[{"Replace", "[", 
+      RowBox[{"dir", ",", " ", 
+       RowBox[{"Automatic", "\[RuleDelayed]", "$SwigDirectory"}]}], "]"}], 
+     ",", "\n", "\t\t\t", 
+     RowBox[{"With", "[", 
       RowBox[{
+       RowBox[{"{", 
+        RowBox[{"d", "=", 
+         RowBox[{"Replace", "[", 
+          RowBox[{"dir", ",", " ", 
+           RowBox[{"Automatic", "\[RuleDelayed]", 
+            RowBox[{"DirectoryName", "@", "$SwigDirectory"}]}]}], "]"}]}], 
+        "}"}], ",", "\n", "\t", "\t", "\t\t", 
        RowBox[{"If", "[", 
         RowBox[{
+         RowBox[{"!", 
+          RowBox[{"swigCheck", "[", "d", "]"}]}], ",", "\n", "\t\t\t\t\t", 
          RowBox[{
-          RowBox[{"!", 
-           RowBox[{"DirectoryQ", "@", 
-            RowBox[{"FileNameJoin", "@", 
-             RowBox[{"{", 
-              RowBox[{"d", ",", "\"\<swig\>\""}], "}"}]}]}]}], "||", "\n", 
-          "\t\t\t\t", 
-          RowBox[{
-           RowBox[{"Length", "[", "\n", "\t\t\t\t\t", 
+          RowBox[{"swigEnsureDownload", "[", "d", "]"}], ";", "\n", 
+          "\t\t\t\t\t", 
+          RowBox[{"swigBuild", "[", "d", "]"}]}], ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"Replace", "[", 
+          RowBox[{"dir", ",", " ", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
             RowBox[{
-             RowBox[{"Select", "[", "DirectoryQ", "]"}], "@", "\n", 
-             "\t\t\t\t\t\t", 
-             RowBox[{"FileNames", "[", 
-              RowBox[{"\"\<*\>\"", ",", 
-               RowBox[{"FileNameJoin", "@", 
-                RowBox[{"{", 
-                 RowBox[{"d", ",", "\"\<swig\>\""}], "}"}]}]}], "]"}]}], "\n",
-             "\t\t\t\t\t", "]"}], "===", "0"}]}], ",", "\n", "\t\t\t\t", 
-         RowBox[{"swigDownload", "[", "d", "]"}]}], "\n", "\t\t\t\t", "]"}], 
-       ";", "\n", "\t\t\t", 
-       RowBox[{"swigBuild", "[", "d", "]"}]}]}], "\n", "\t\t\t", "]"}]}], 
-   "\n", "\t\t", "]"}]}]], "CodeInput",
- CellChangeTimes->{{3.7152605337207537`*^9, 3.7152606483563747`*^9}, {
-  3.715261674196219*^9, 3.715261684625763*^9}, {3.715263619856732*^9, 
-  3.7152636389894457`*^9}},ExpressionUUID->"8cd417cd-9723-4d2f-9467-\
-bea1fd743cbc"]
-}, Open  ]]
+             RowBox[{"Automatic", "\[RuleDelayed]", "$SwigDirectory"}], ",", 
+             "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{"e_", "\[RuleDelayed]", 
+              RowBox[{"FileNameJoin", "@", 
+               RowBox[{"{", 
+                RowBox[{"e", ",", " ", "\"\<swig\>\""}], "}"}]}]}]}], "\n", 
+            "\t\t\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], "\n", 
+        "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", 
+    "]"}]}]}]], \
+"CodeInput",ExpressionUUID->"8cd417cd-9723-4d2f-9467-bea1fd743cbc"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]SwigBinary\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"95f8af1a-be64-45a7-8669-4d38e1bdb97a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"SwigBinary", "[", 
+   RowBox[{"dir", ":", 
+    RowBox[{
+     RowBox[{"_String", "?", "DirectoryQ"}], "|", "Automatic"}], ":", 
+    "Automatic"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{
+   RowBox[{"PackageExceptionBlock", "[", "\"\<SwigBuild\>\"", "]"}], "@", 
+   "\n", "\t\t", 
+   RowBox[{"FileNameJoin", "@", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"SwigBuild", "[", "]"}], ",", " ", "\"\<bin\>\"", ",", " ", 
+      "\"\<swig\>\""}], 
+     "}"}]}]}]}]], \
+"CodeInput",ExpressionUUID->"3a426495-a5be-4d1d-94cd-97c6681ecd70"]
+}, Closed]]
 }, Open  ]],
 
 Cell[BoxData[
@@ -345,7 +489,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"f1a47073-41ee-444e-a8c8-\
 d1cc3810b3c0"]
 },
 WindowSize->{808, 755},
-WindowMargins->{{80, Automatic}, {18, Automatic}},
+WindowMargins->{{Automatic, 65}, {Automatic, 46}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

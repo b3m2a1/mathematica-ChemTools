@@ -13,6 +13,12 @@ ChemFormatsDetectMolFormat::usage=
 	"Detects a molecule format";
 
 
+$ChemOpenBabelReadFormats::usage=
+	"The formats OpenBabel can read from";
+$ChemOpenBabelWriteFormats::usage=
+	"The formats OpenBabel can write to";
+
+
 ChemFormatsMolToZMatrix::usage=
 	"Turns a list of atom-coordinate pairs into a ZMatrix";
 ChemFormatsEnumerateZMatrixStrings::usage=
@@ -37,7 +43,93 @@ Begin["`Private`"];
 
 
 (* ::Subsection:: *)
-(*Conversion Utils*)
+(*File Formats*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*OpenBabel*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*$ChemOpenBabelWriteFormats*)
+
+
+
+$ChemOpenBabelWriteFormats=
+	{
+		"ACESIN","ADF","ALC","ASCII","BGF",
+		"BOX","BS","C3D1","C3D2","CAC",
+		"CACCRT","CACHE","CACINT","CAN","CDJSON",
+		"CDXML","CHT","CIF","CK","CML",
+		"CMLR","COM","CONFABREPORT","CONFIG","CONTCAR",
+		"CONTFF","COPY","CRK2D","CRK3D","CSR",
+		"CSSR","CT","CUB","CUBE","DALMOL",
+		"DMOL","DX","ENT","EXYZ","FA",
+		"FASTA","FEAT","FH","FHIAIMS","FIX",
+		"FPS","FPT","FRACT","FS","FSA",
+		"GAMIN","GAU","GJC","GJF","GPR",
+		"GR96","GRO","GUKIN","GUKOUT","GZMAT",
+		"HIN","INCHI","INCHIKEY","INP","JIN",
+		"K","LMPDAT","LPMD","MCDL","MCIF",
+		"MDFF","MDL","ML2","MMCIF","MMD",
+		"MMOD","MNA","MOL","MOL2","MOLD",
+		"MOLDEN","MOLF","MOLREPORT","MOP","MOPCRT",
+		"MOPIN","MP","MPC","MPD","MPQCIN",
+		"MRV","MSMS","NUL","NW","ORCAINP",
+		"OUTMOL","PAINT","PCJSON","PCM","PDB",
+		"PDBQT","PNG","POINTCLOUD","POSCAR","POSFF",
+		"POV","PQR","PQS","QCIN","REPORT",
+		"RSMI","RXN","SD","SDF","SMI",
+		"SMILES","STL","SVG","SY2","TDD",
+		"TEXT","THERM","TMOL","TXT","TXYZ",
+		"UNIXYZ","VASP","VMOL","XED","XYZ",
+		"YOB","ZIN"
+		};
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*$ChemOpenBabelReadFormats*)
+
+
+
+$ChemOpenBabelReadFormats=
+	{
+		"ABINIT","ACESOUT","ACR","ADFOUT","ALC",
+		"AOFORCE","ARC","AXSF","BGF","BOX",
+		"BS","C09OUT","C3D1","C3D2","CACCRT",
+		"CAN","CAR","CASTEP","CCC","CDJSON",
+		"CDX","CDXML","CIF","CK","CML",
+		"CMLR","CONFIG","CONTCAR","CONTFF","CRK2D",
+		"CRK3D","CT","CUB","CUBE","DALLOG",
+		"DALMOL","DAT","DMOL","DX","ENT",
+		"EXYZ","FA","FASTA","FCH","FCHK",
+		"FCK","FEAT","FHIAIMS","FRACT","FS",
+		"FSA","G03","G09","G92","G94",
+		"G98","GAL","GAM","GAMESS","GAMIN",
+		"GAMOUT","GOT","GPR","GRO","GUKIN",
+		"GUKOUT","GZMAT","HIN","HISTORY","INCHI",
+		"INP","INS","JIN","JOUT","LOG",
+		"LPMD","MCDL","MCIF","MDFF","MDL",
+		"ML2","MMCIF","MMD","MMOD","MOL",
+		"MOL2","MOLD","MOLDEN","MOLF","MOO",
+		"MOP","MOPCRT","MOPIN","MOPOUT","MPC",
+		"MPO","MPQC","MRV","MSI","NWO",
+		"ORCA","OUT","OUTMOL","OUTPUT","PC",
+		"PCJSON","PCM","PDB","PDBQT","PNG",
+		"POS","POSCAR","POSFF","PQR","PQS",
+		"PREP","PWSCF","QCOUT","RES","RSMI",
+		"RXN","SD","SDF","SIESTA","SMI",
+		"SMILES","SMY","SY2","T41","TDD",
+		"TEXT","THERM","TMOL","TXT","TXYZ",
+		"UNIXYZ","VASP","VMOL","XML","XSF",
+		"XYZ","YOB"
+		};
+
+
+(* ::Subsection:: *)
+(*Format Detection*)
 
 
 
@@ -70,7 +162,8 @@ $ChemFormatsMolFormatPatterns=
 		"ZMatrix"->
 			{
 				{_String},
-				{_String, _Integer, __?NumericQ}...
+				{_String, _Integer, __?NumericQ}...,
+				{_Integer,_Integer,___}...
 				},
 		"SDFRules"->
 			{
@@ -84,27 +177,60 @@ $ChemFormatsMolFormatPatterns=
 
 
 (* ::Subsubsubsection::Closed:: *)
+(*chemFormatsSMIQ*)
+
+
+
+chemFormatsSMIQ[s_]:=
+	Length@StringCases[s,"\n"]===0&&
+		StringMatchQ[
+			ToLowerCase@s,
+			Repeated[
+				Alternatives@@
+					Join[
+						Map[
+							"["<>#<>"]"&,
+							ToLowerCase@
+								Select[Keys@$ChemElements, StringQ[#]&&StringLength[#]<3&]
+							],
+						{".", "="},
+						ToLowerCase@{"B", "C", "N", "O", "P", "S", "F", "Cl", "Br", "I"},
+						Map[
+							"["~~#~~(Repeated["+"|"-"|DigitCharacter])~~"]"&,
+							ToLowerCase@
+								Select[Keys@$ChemElements, StringQ[#]&&StringLength[#]<3&]
+							]
+						]
+				]~~((Whitespace~~__)|"")
+			]
+
+
+(* ::Subsubsubsection::Closed:: *)
 (*ChemFormatsDetectMolFormat*)
 
+
+
+ChemFormatsDetectMolFormat//Clear
 
 
 ChemFormatsDetectMolFormat[s_String]:=
 	Which[
 		StringStartsQ[s, "InChI"],
 			"InChI",
-		Length@StringCases[s,"\n"]===0,
-			"SMILES",
 		Length@StringCases[s, "M  END"~~Whitespace~~"$$$$"]>0,
 			"SDF",
 		Length@StringCases[s, "M  END"]===1,
 			"MOL",
 		StringContainsQ[
+			s,
 			StartOfLine~~(Whitespace|"")~~(WordCharacter..)~~
 				Repeated[Whitespace~~(DigitCharacter..~~"."~~DigitCharacter..)]
 			],
 			"XYZ",
-		StringStartsQ[StringTrim[s], LetterQ..~~(Whitespace|"")~~"\n"],
+		StringStartsQ[StringTrim[s], LetterCharacter..~~(Whitespace|"")~~"\n"],
 			"ZMatrix",
+		chemFormatsSMIQ[StringTrim@s],
+			"SMILES",
 		True,
 			$Failed
 		];
@@ -115,8 +241,13 @@ ChemFormatsDetectMolFormat[l_List]:=
 		Append[KeyValueMap[Rule[#2, #]&, $ChemFormatsMolFormatPatterns], _->$Failed]
 
 
+(* ::Subsection:: *)
+(*Conversion Utils*)
+
+
+
 (* ::Subsubsection::Closed:: *)
-(*GenerateZMatrix*)
+(*MolToZMatrix*)
 
 
 
@@ -342,18 +473,23 @@ ChemFormatsMolToZMatrix[atoms_List, ops:OptionsPattern[]]:=
 				},
 		Module[
 			{
-				ats=atoms,
-				atomOrder=Range[Length@atoms],
-				which=
-					Replace[OptionValue["ZMatrixOrder"],
-						{
-							w:{{__Integer}..}:>
-								SortBy[w, Length],
-							Except[{__Integer}]:>
-								Range[Length@atoms]
-							}
-						]
+				bonds=Cases[Rest@atoms, {_Integer, _Integer, ___}],
+				ats=N@Cases[atoms, {_String, _List, ___}],
+				atomOrder,
+				atomReordering,
+				which
 				},
+			atomOrder=
+				Range[Length@ats];
+			which=
+				Replace[OptionValue["ZMatrixOrder"],
+					{
+						w:{{__Integer}..}:>
+							SortBy[w, Length],
+						Except[{__Integer}]:>
+							Range[Length@ats]
+						}
+					];
 			Switch[Length/@which[[{1, -1}]],
 				{0, 0},
 					If[Intersection[which, atomOrder]=!=atomOrder,
@@ -370,8 +506,7 @@ ChemFormatsMolToZMatrix[atoms_List, ops:OptionsPattern[]]:=
 								"MessageParameters"->{which}
 								]
 						];
-					atomOrder=which;
-					which=Range[Length@which],
+					atomOrder=which;,
 				{1, 4},
 					atomOrder=
 						which[[All, 1]];
@@ -394,13 +529,26 @@ ChemFormatsMolToZMatrix[atoms_List, ops:OptionsPattern[]]:=
 						];
 				];
 			ats=ats[[atomOrder]];
-			which=which/.Thread[atomOrder->Range[Length@ats]];
-			MapThread[
-				zmatrixEntry[#, ats, #2]&,
-				{
-					ats,
-					which
-					}
+			atomReordering=Thread[atomOrder->Range[Length@ats]];
+			which=which/.atomReordering;
+			bonds=
+				SortBy[
+					Replace[bonds,
+						{a_, b_, e___}:>
+							Join[Sort[{a, b}/.atomReordering], {e}],
+						1
+						],
+					#[[;;2]]&
+					];
+			Join[
+				MapThread[
+					zmatrixEntry[#, ats, #2]&,
+					{
+						ats,
+						which
+						}
+					],
+				bonds
 				]
 			]
 		]
@@ -408,6 +556,11 @@ ChemFormatsMolToZMatrix[atoms_List, ops:OptionsPattern[]]:=
 
 (* ::Subsubsection::Closed:: *)
 (*EnumerateZMatrixStrings*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemZMatrixStringVarRules*)
 
 
 
@@ -431,6 +584,11 @@ ChemZMatrixStringVarRules[s_String]:=
 		]
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*ChemUtilsPreCleanZMatrixString*)
+
+
+
 ChemUtilsPreCleanZMatrixString[s_String]:=
 	Fold[
 		#2[#]&,
@@ -444,6 +602,20 @@ ChemUtilsPreCleanZMatrixString[s_String]:=
 			StringReplace[Repeated["\n", {2, \[Infinity]}]->"\n\n"]
 			}
 		];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*chemFormatsEnumZMatValidVarString*)
+
+
+
+chemFormatsEnumZMatValidVarString[s_]:=
+	StringTrim[s]==""||StringStartsQ[StringTrim@s, LetterCharacter]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemFormatsEnumerateZMatrixStrings*)
+
 
 
 ChemFormatsEnumerateZMatrixStrings[s_String]:=
@@ -467,17 +639,33 @@ ChemFormatsEnumerateZMatrixStrings[s_String]:=
 						],
 					{
 						{
-							{m_String}, {vars___String, "JoinMe!"->n_, bonds_String}
+							{m_String}, 
+							{
+								vars___String?chemFormatsEnumZMatValidVarString, 
+								b1:___String?(Not@*chemFormatsEnumZMatValidVarString),
+								"JoinMe!"->n_, 
+								b2_String
+								}
 							}|
 						{
-							{m_String}, {vars___String},{b1___String, "JoinMe!"->n_, b2_String}
+							{m_String}, 
+							{vars___?chemFormatsEnumZMatValidVarString},
+							{b1___String, "JoinMe!"->n_, b2_String}
 							}:>
 								{
 									m,
 									vars,
 									b1<>"\n"<>n<>b2
 									},
-						{{m_String}, {vars__String}}:>
+						{
+							{m_String}, 
+							{vars__String?chemFormatsEnumZMatValidVarString}
+							}:>
+							{m, vars},
+						{
+							{m_String}, 
+							{vars__String?chemFormatsEnumZMatValidVarString}
+							}:>
 							{m, vars}
 						}
 					];
@@ -521,7 +709,7 @@ ChemFormatsZMatrixToString[mat_List]:=
 			zmVars,
 			zmBonds
 			},
-		zmValues=Cases[mat, {_String, __}];
+		zmValues=Cases[mat, {_String, ___}];
 		zmVars=Cases[mat, v:(_->{__}):>v];
 		zmBonds=Cases[mat, {_Integer, _Integer, ___}];
 		StringReplace[
@@ -553,6 +741,10 @@ ChemFormatsZMatrixToString[mat_List]:=
 Clear[molTableNormed, molTableVAngled, molTableDAngled]
 
 
+$ZMatrixToMolOrigin=N@{0, 0, 0};
+$ZMatrixToMolAxisSystem=N@IdentityMatrix[3];
+
+
 (* ::Text:: *)
 (*Should extend this to generate ZMatrices that aren\[CloseCurlyQuote]t centered at (0, 0, 0) but will do that another day*)
 
@@ -572,7 +764,7 @@ Clear[molTableNormed, molTableVAngled, molTableDAngled]
 
 
 molTableNormed[crd1_, norm_]:=
-	crd1+{norm, 0, 0}
+	crd1+norm*$ZMatrixToMolAxisSystem[[1]];
 
 
 (* ::Subsubsubsection::Closed:: *)
@@ -592,9 +784,9 @@ molTableVAngled[crd1_, crd2_, norm_, angle_]:=
 		crd1+
 			RotationMatrix[
 				angle*If[$ZMatrixInRadians, 1, Degree],
-				With[{c=Cross[crd2-crd1, {1, 0, 0}]},
+				With[{c=Cross[crd2-crd1, $ZMatrixToMolAxisSystem[[1]]]},
 					If[c=={0, 0, 0}, 
-						Cross[crd2-crd1, {0, 1, 0}],
+						Cross[crd2-crd1, $ZMatrixToMolAxisSystem[[2]]],
 						c
 						]
 					]
@@ -633,9 +825,9 @@ molTableDAngled[crd1_, crd2_, crd3_, norm_, ang_, dihed_]:=
 		normalVec=Cross[ax21, ax31];
 		If[normalVec=={0, 0, 0},
 			Message[ChemFormatsZMatrixToMol::colin, crd1, crd2, crd2];
-			normalVec=Cross[ax21, {0, 0, 1}]
+			normalVec=Cross[ax21, $ZMatrixToMolAxisSystem[[3]]]
 			];
-		If[normalVec=={0, 0, 0}, normalVec=Cross[ax21, {0, 1, 0}]];
+		If[normalVec=={0, 0, 0}, normalVec=Cross[ax21, $ZMatrixToMolAxisSystem[[2]]]];
 		baseVec=
 			RotationMatrix[angle, normalVec].(norm*Normalize[ax21]);
 		crd1+
@@ -653,7 +845,7 @@ molTableEntry[line_, previousAtoms_]:=
 		{{_String, _?NumericQ, _?NumericQ, _?NumericQ}, _},
 			{line[[1]], line[[2;;4]]},
 		{_, 0}|{{_String}, _},
-			{line[[1]], {0.,0.,0.}},
+			{line[[1]], {0, 0, 0}},
 		{{_String, 1, __}, 1}|
 			{{_String, _Integer, _?NumericQ}, _Integer?(#>=line[[2]]>0&)},
 			{
@@ -713,20 +905,37 @@ molTableEntry[line_, previousAtoms_]:=
 
 Options[ChemFormatsZMatrixToMol]=
 	{
-		"UseRadians"->Automatic
+		"UseRadians"->Automatic,
+		"Origin"->Automatic,
+		"AxisSystem"->Automatic
 		};
 ChemFormatsZMatrixToMol[zmMatrix:{{_String},___List}, ops:OptionsPattern[]]:=
 	PackageExceptionBlock["ZMatrixToMol"]@
 		Block[
 			{
 				$ZMatrixInRadians=
-					Replace[OptionValue["UseRadians"], Except[True|False]->$ZMatrixInRadians]
+					Replace[OptionValue["UseRadians"], Except[True|False]->$ZMatrixInRadians],
+				$ZMatrixToMolOrigin=
+					Replace[OptionValue["Origin"], 
+						Except[{Repeated[_?NumericQ, {3}]}]->$ZMatrixToMolOrigin],
+				$ZMatrixToMolAxisSystem=
+					Replace[
+						OptionValue["AxisSystem"], 
+						{
+							m:{_, _, _}?SquareMatrixQ:>
+								Map[Normalize, m],
+							_->$ZMatrixToMolAxisSystem
+							}
+						]
 				},
-			Fold[
-				Append[#, molTableEntry[Take[#2, UpTo[7]], #]]&,
-				{},
-			 zmMatrix
-			 ]
+			Map[
+				#+{0, $ZMatrixToMolOrigin}&,
+				Fold[
+					Append[#, molTableEntry[Take[#2, UpTo[7]], #]]&,
+					{},
+				 zmMatrix
+				 ]
+				]
 			]
 
 
@@ -743,8 +952,8 @@ ChemFormatsMolToRules[
 		}
 	]:=
 	{
-		"VertexTypes"->{atoms}[[All,1]],
-		"VertexCoordinates"->{atoms}[[All,2]],
+		"VertexTypes"->{atoms}[[All, 1]],
+		"VertexCoordinates"->(100*{atoms}[[All, 2]]),
 		"EdgeRules"->
 			Rule@@@{bonds}[[All,;;2]],
 		"EdgeTypes"->
@@ -775,7 +984,7 @@ ChemFormatsMolToRules[
 	Thread[
 		{"VertexTypes","VertexCoordinates",
 			"EdgeTypes","EdgeRules","FormalCharges"}->
-		Lookup[
+		Thread@Lookup[
 			ChemFormatsMolToRules/@molTables,
 			{"VertexTypes","VertexCoordinates",
 				"EdgeTypes","EdgeRules","FormalCharges"}
@@ -812,7 +1021,7 @@ iChemFormatsMolToString[molData_, "ZMatrix"|"MolTable", target_:"MOL"]:=
 		target
 		];
 iChemFormatsMolToString[molData_, "SDFRules", target_:"SDF"]:=
-	iChemFormatsMolRulesToString[molData, target];
+	ChemFormatsMolRulesToString[molData, target];
 iChemFormatsMolToString[molData_, "SDFTable", target_:"SDF"]:=
 	iChemFormatsMolToString[
 		ChemFormatsMolToRules@molData,
@@ -837,7 +1046,7 @@ ChemFormatsMolToString[molData_, format_:Automatic]:=
 
 
 
-ChemFormatsMolToStringWrapper[mainFmt_, target_][data_]:=
+ChemFormatsMolToStringWrapper[mainFmt_, target_][data_, ops:OptionsPattern[]]:=
 	iChemFormatsMolToString[data, mainFmt, target]
 
 
@@ -861,9 +1070,12 @@ $MolRulesExportPropertiesKeys=
 				"EdgeTypes",
 				"FormalCharges"
 				},
-		"SDF":>$MolRulesExportKeys["MOL"],
+		"SDF":>$MolRulesExportPropertiesKeys["MOL"],
 		"MOL2":>
-			Join[$MolRulesExportKeys["MOL"], {"ResidueAtoms", "ResidueCoordinates"}],
+			Join[
+				$MolRulesExportPropertiesKeys["MOL"], 
+				{"ResidueAtoms", "ResidueCoordinates"}
+				],
 		"XYZ"->
 			{
 				"VertexTypes",
@@ -882,21 +1094,29 @@ $MolRulesExportPropertiesKeys=
 
 
 
-ChemFormatsMolRulesToString[rules_?OptionQ, "MOL"]:=
-	StringDelete[
-		"Created with the Wolfram Language : www.wolfram.com"
+ChemFormatsMolRulesToString[rules_?OptionQ, target:"MOL"]:=
+	Replace[
+		{
+			s_String:>
+				StringDelete[s, "Created with the Wolfram Language : www.wolfram.com"],
+			_:>
+				PackageRaiseException["FormatConvert",
+					"Failed to export `` to format ``",
+					"MessageParameters"->{rules, target}
+					]
+			}
 		]@
 		ExportString[
 			Normal@
 				AssociationThread[
-					$MolRulesExportPropertiesKeys["MOL"],
+					$MolRulesExportPropertiesKeys[target],
 					Lookup[
 						rules,
-						$MolRulesExportPropertiesKeys["MOL"],
+						$MolRulesExportPropertiesKeys[target],
 						{}
 						]
 					],
-			"MOL"
+			target
 			];
 
 
@@ -905,23 +1125,42 @@ ChemFormatsMolRulesToString[rules_?OptionQ, "MOL"]:=
 
 
 
-ChemFormatsMolRulesToString[rules_?OptionQ, "SDF"]:=
-	ExportString[
-		Normal@
-			AssociationThread[
-				$MolTableRuleKeys,
-				Replace[
-					Lookup[
-						rules,
-						$MolTableRuleKeys,
-						{}
-						],
-					l:Except[{__List}, _List]:>{l},
-					1
+ChemFormatsMolRulesToString[rules_?OptionQ, target:"SDF"]:=
+	Replace[
+		{
+			s_String:>
+				StringDelete[s, "Created with the Wolfram Language : www.wolfram.com"],
+			_:>
+				PackageRaiseException["FormatConvert",
+					"Failed to export `` to format ``",
+					"MessageParameters"->{rules, target}
 					]
-				],
-		"SDF"
-		];
+			}
+		]@
+		ExportString[
+			Normal@
+				ReplacePart[#,
+					"VertexCoordinates":>
+						Replace[#["VertexCoordinates"],
+							l:{{__?NumericQ}..}:>{l}
+							]
+					]&@
+					AssociationThread[
+						$MolRulesExportPropertiesKeys[target],
+						Replace[
+							Lookup[
+								rules,
+								$MolRulesExportPropertiesKeys[target],
+								{}
+								],
+							{
+								l:Except[{__List}, _List]:>{l}
+								},
+							1
+							]
+						],
+			target
+			];
 
 
 (* ::Subsubsubsubsection::Closed:: *)
@@ -929,21 +1168,55 @@ ChemFormatsMolRulesToString[rules_?OptionQ, "SDF"]:=
 
 
 
-ChemFormatsMolRulesToString[rules_?OptionQ, "MOL2"]:=
-	StringDelete[
-		"Created with the Wolfram Language : www.wolfram.com"
+ChemFormatsMolRulesToString[rules_?OptionQ, target:"MOL2"]:=
+	Replace[
+		{
+			s_String:>
+				StringDelete[s, "Created with the Wolfram Language : www.wolfram.com"],
+			_:>
+				PackageRaiseException["FormatConvert",
+					"Failed to export `` to format ``",
+					"MessageParameters"->{rules, target}
+					]
+			}
 		]@
 		ExportString[
 			Normal@
 				AssociationThread[
-					$MolRulesExportPropertiesKeys["MOL2"],
-					Lookup[
-						rules,
-						$MolRulesExportPropertiesKeys["MOL2"],
-						{}
+					$MolRulesExportPropertiesKeys[target],
+					Replace[
+						Lookup[
+							Join[
+								rules,
+								{
+									"ResidueAtoms"->
+										Replace[
+											Lookup[rules, "VertexTypes"],
+											{
+												l:{__String}:>{{l}},
+												l:{{__String}, {__String}}:>{l}
+												}
+											],
+									"ResidueCoordinates"->
+										Replace[
+											Lookup[rules, "VertexCoordinates"],
+											{
+												l:{{__?NumericQ}..}:>{{l}},
+												l:{{{__?NumericQ}..}..}:>{l}
+												}
+											]
+									}
+								],
+							$MolRulesExportPropertiesKeys[target],
+							{}
+							],
+						{
+							l:Except[{__List}, _List]:>{l}
+							},
+						1
 						]
 					],
-			"MOL2"
+			target
 			];
 
 
@@ -977,10 +1250,12 @@ ChemFormatsMolRulesToString[rules_?OptionQ, "XYZ"]:=
 
 ChemFormatsOBConvert//Clear
 ChemFormatsOBConvert[data_, form:(_String->_String)|_String, ops:OptionsPattern[]]:=
-	OBFormatConvert[data, 
-		form, 
-		ops
-		];
+	PackageExceptionBlock["OpenBabelRun"]@
+		OBFormatConvert[
+			data, 
+			form, 
+			ops
+			];
 ChemFormatsOBConvert[form:(_String->_String)|_String][data_, ops:OptionsPattern[]]:=
 	ChemFormatsOBConvert[data, form, ops];
 
@@ -992,10 +1267,11 @@ ChemFormatsOBConvert[form:(_String->_String)|_String][data_, ops:OptionsPattern[
 
 ChemFormatsOBImport//Clear
 ChemFormatsOBImport[data_String, form:_String, ops:OptionsPattern[]]:=
-	ImportString[
-		ChemFormatsOBConvert[data, form->"MOL", ops],
-		"MolTable"
-		];
+	PackageExceptionBlock["OpenBabelRun"]@
+		ImportString[
+			ChemFormatsOBConvert[data, form->"MOL", ops],
+			"MolTable"
+			];
 ChemFormatsOBImport[form:_String][data_String, ops:OptionsPattern[]]:=
 	ChemFormatsOBImport[data, form, ops];
 

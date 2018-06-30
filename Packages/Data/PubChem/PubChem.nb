@@ -87,18 +87,13 @@ Cell[BoxData[{
   3.700272794534484*^9}},ExpressionUUID->"91dfd78b-c024-4f11-bb4e-\
 7757cdab72a8"],
 
+Cell[CellGroupData[{
+
 Cell[BoxData[
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
   ";"}]], "InputSection",ExpressionUUID->"14e1cef3-57eb-4cf5-a684-\
 c2b253242520"],
-
-Cell[CellGroupData[{
-
-Cell["PubChem", "CodeSubsection",
- CellChangeTimes->{{3.692467024875112*^9, 
-  3.6924670259003572`*^9}},ExpressionUUID->"53f4dfaf-0f81-4c70-8263-\
-737c47d5a5f7"],
 
 Cell[BoxData[{
  RowBox[{
@@ -131,12 +126,15 @@ Cell[BoxData[{
 
 Cell[CellGroupData[{
 
-Cell["CIDs", "CodeSubsubsubsection",
- CellChangeTimes->{{3.700276368878008*^9, 
-  3.700276369659925*^9}},ExpressionUUID->"3c7e84ac-9492-45fe-aca9-\
-e59668a9aea7"],
+Cell["\[LeftCeiling]PubChemID\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"3c7e84ac-9492-45fe-aca9-e59668a9aea7"],
 
-Cell[BoxData[{
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]pubChemSearchKeys\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"d445f47a-9076-40f8-9648-b6ad6d3526b9"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{"pubChemSearchKeys", "=", "\n", "\t", 
    RowBox[{"Alternatives", "@@", 
@@ -145,19 +143,29 @@ Cell[BoxData[{
      "\"\<CompoundID\>\"", ",", "\n", "\t", "\t", "\"\<SMILES\>\"", ",", "\n",
        "\t\t", "\"\<Name\>\"", ",", "\n", "\t", "\t", "\"\<InChI\>\"", ",", 
       "\n", "\t", "\t", "\"\<InChIKey\>\"", ",", "\n", "\t", "\t", 
-      "\"\<Formula\>\""}], "\n", "\t", "\t", "}"}]}]}], ";"}], "\n", 
+      "\"\<Formula\>\""}], "\n", "\t\t", "}"}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"a27c395c-c8d3-4b46-b9ba-14441c35a641"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]pubChemCIDPull\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"a66a48a7-1062-469b-b851-5299e26d64a2"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"pubChemCIDPull", "[", 
-    RowBox[{"id_", ",", "key_", ",", "ops___"}], "]"}], ":=", "\n", "\t", 
+    RowBox[{"id_", ",", " ", "key_", ",", " ", "ops___"}], "]"}], ":=", "\n", 
+   "\t", 
    RowBox[{"Replace", "[", "\n", "\t\t", 
     RowBox[{
      RowBox[{"Replace", "[", "\n", "\t\t\t", 
       RowBox[{
        RowBox[{"Normal", "@", 
         RowBox[{"$PubChem", "[", 
-         RowBox[{"\"\<CompoundCID\>\"", ",", 
-          RowBox[{"key", "\[Rule]", "id"}], ",", "ops"}], "]"}]}], ",", 
+         RowBox[{"\"\<CompoundCID\>\"", ",", " ", 
+          RowBox[{"key", "\[Rule]", "id"}], ",", " ", "ops"}], "]"}]}], ",", 
        RowBox[{"{", "\n", "\t\t\t\t", 
         RowBox[{
          RowBox[{"l_List", "\[RuleDelayed]", 
@@ -171,8 +179,11 @@ Cell[BoxData[{
            RowBox[{"a", "[", "\"\<CompoundID\>\"", "]"}]}]}], ",", "\n", "\t",
           "\t\t\t", 
          RowBox[{"_", "\[RuleDelayed]", 
-          RowBox[{"Missing", "[", "\"\<NotAvailable\>\"", "]"}]}]}], "\n", 
-        "\t\t\t", "}"}]}], "]"}], ",", 
+          RowBox[{"Missing", "[", 
+           RowBox[{"\"\<NotAvailable\>\"", ",", " ", 
+            RowBox[{"{", 
+             RowBox[{"\"\<CompoundID\>\"", ",", " ", "id", ",", " ", "key"}], 
+             "}"}]}], "]"}]}]}], "\n", "\t\t\t", "}"}]}], "]"}], ",", 
      RowBox[{"{", "\n", "\t\t", 
       RowBox[{
        RowBox[{
@@ -180,14 +191,18 @@ Cell[BoxData[{
        
        RowBox[{
         RowBox[{"{", "}"}], ":>", 
-        RowBox[{"Missing", "[", "\"\<NotAvailable\>\"", "]"}]}]}], "\n", "\t",
-       "}"}]}], "]"}]}], ";"}]}], "CodeInput",
- CellChangeTimes->{{3.700252189939971*^9, 3.700252217454082*^9}, {
-  3.700252429532839*^9, 3.700252477363627*^9}, {3.700252520318674*^9, 
-  3.700252524991756*^9}, {3.700256981814011*^9, 3.700256983668354*^9}, {
-  3.700276109383932*^9, 
-  3.700276118061131*^9}},ExpressionUUID->"a27c395c-c8d3-4b46-b9ba-\
-14441c35a641"],
+        RowBox[{"Missing", "[", 
+         RowBox[{"\"\<NotAvailable\>\"", ",", " ", 
+          RowBox[{"{", 
+           RowBox[{"\"\<CompoundID\>\"", ",", " ", "id", ",", " ", "key"}], 
+           "}"}]}], "]"}]}]}], "\n", "\t", "}"}]}], "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"3d7a3ecf-5c5a-4548-bd89-74eb925d312c"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]pubChemNamePattern\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"2283dc87-c42f-4fb5-b0c8-8b78c3fc9333"],
 
 Cell[BoxData[
  RowBox[{
@@ -206,34 +221,175 @@ Cell[BoxData[
          RowBox[{"DigitCharacter", ".."}], "]"}]}], ")"}]}], "}"}]}]}], 
   ";"}]], "CodeInput",
  CellChangeTimes->{{3.700254226358428*^9, 
-  3.70025423600112*^9}},ExpressionUUID->"ee41fd6f-9aad-4f54-8e0b-\
-24351fba41bb"],
+  3.70025423600112*^9}},ExpressionUUID->"90a99861-ccb2-4d66-8d2f-c7f6b21bb49c"]
+}, Closed]],
 
-Cell[BoxData[{
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]pubChemPullThreadMissingIDs\[RightFloor]", \
+"CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"09ed4e3a-5d00-4e55-b8d0-e67b5e116d7b"],
+
+Cell[BoxData[
  RowBox[{
-  RowBox[{
-   RowBox[{"PubChemID", "[", "\n", "\t", 
+  RowBox[{"pubChemPullThreadMissingIDs", "[", "pull1_", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"ReplacePart", "[", 
+   RowBox[{"pull1", ",", " ", "\n", "\t\t", 
     RowBox[{
-     RowBox[{"compound", ":", "pubChemNamePattern"}], ",", "\n", "\t", 
-     RowBox[{"Optional", "[", 
-      RowBox[{"\"\<Name\>\"", ",", "\"\<Name\>\""}], "]"}]}], "\n", "\t", 
-    "]"}], ":=", "\n", "\t", 
-   RowBox[{"pubChemCIDPull", "[", 
-    RowBox[{"compound", ",", "\"\<Name\>\""}], "]"}]}], ";"}], "\n", 
+     RowBox[{
+      RowBox[{"Thread", "[", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"Keys", "@", "#"}], "->", "\n", "\t\t\t\t", 
+        RowBox[{"pubChemCIDPull", "[", "\n", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"Replace", "[", 
+           RowBox[{
+            RowBox[{"Values", "@", "#"}], ",", " ", "\n", "\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"Missing", "[", 
+              RowBox[{"\"\<UnknownEntity\>\"", ",", " ", 
+               RowBox[{"{", 
+                RowBox[{"\"\<Chemical\>\"", ",", " ", "name_"}], "}"}]}], 
+              "]"}], "\[RuleDelayed]", "name"}], ",", "\n", "\t\t\t\t\t\t", 
+            "1"}], "\n", "\t\t\t\t\t\t", "]"}], ",", " ", "\n", "\t\t\t\t\t", 
+          "\"\<Name\>\""}], "\n", "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t", 
+       "]"}], "&"}], "@", 
+     RowBox[{"Cases", "[", 
+      RowBox[{"pull1", ",", " ", "_Rule"}], "]"}]}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"0143b8cb-d5b5-4428-8d27-39a7ac80779c"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PubChemID\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"6801fcdc-168c-4680-845a-2f6d8732cbb8"],
+
+Cell[BoxData[
+ RowBox[{"PubChemID", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"c0ecf831-a3fa-4693-889a-bedb93f2a04f"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Entity\[RightFloor]", "CodeSubsubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"3e9603d7-cd01-49c9-acb2-dfe3121431af"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"PubChemID", "[", "\n", "\t", 
     RowBox[{
      RowBox[{"compound", ":", 
-      RowBox[{"Entity", "[", 
-       RowBox[{"\"\<Chemical\>\"", ",", "_"}], "]"}]}], ",", "\n", "\t", 
+      RowBox[{
+       RowBox[{"Entity", "[", 
+        RowBox[{"\"\<Chemical\>\"", ",", " ", "_"}], "]"}], "|", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Entity", "[", 
+          RowBox[{"\"\<Chemical\>\"", ",", " ", "_"}], "]"}], ".."}], 
+        "}"}]}]}], ",", "\n", "\t", 
      RowBox[{"Optional", "[", 
-      RowBox[{"\"\<Name\>\"", ",", "\"\<Name\>\""}], "]"}]}], "\n", "\t", 
-    "]"}], ":=", "\n", "\t", 
-   RowBox[{"PubChemID", "[", 
+      RowBox[{"\"\<Name\>\"", ",", " ", "\"\<Name\>\""}], "]"}]}], "\n", "\t",
+     "]"}], ":=", "\n", "\t", 
+   RowBox[{"Replace", "[", "\n", "\t\t", 
     RowBox[{
-     RowBox[{"CommonName", "@", "compound"}], ",", "\"\<Name\>\""}], "]"}]}], 
-  ";"}], "\n", 
+     RowBox[{"EntityValue", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"Thread", "@", 
+        RowBox[{"Entity", "[", 
+         RowBox[{"\"\<Chemical\>\"", ",", " ", "compound"}], "]"}]}], ",", 
+       " ", "\n", "\t\t\t", 
+       RowBox[{"{", 
+        RowBox[{"\"\<CIDNumber\>\"", ",", " ", "\"\<Label\>\""}], "}"}]}], 
+      "\n", "\t\t\t", "]"}], ",", "\n", "\t\t", 
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"s_String", ",", " ", "_"}], "}"}], ":>", "\n", "\t\t\t\t", 
+        RowBox[{"Floor", "@", 
+         RowBox[{"Internal`StringToDouble", "@", 
+          RowBox[{"StringTrim", "[", 
+           RowBox[{"s", ",", " ", "\"\<CID\>\""}], "]"}]}]}]}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"_Missing", ",", " ", "s_String"}], "}"}], ":>", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"pubChemCIDPull", "[", 
+         RowBox[{"s", ",", " ", "\"\<Name\>\""}], "]"}]}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{
+        RowBox[{"{", "\n", "\t\t\t\t", 
+         RowBox[{"_Missing", ",", " ", "\n", "\t\t\t\t", 
+          RowBox[{"Missing", "[", 
+           RowBox[{"\"\<UnknownEntity\>\"", ",", " ", 
+            RowBox[{"{", 
+             RowBox[{"\"\<Chemical\>\"", ",", " ", 
+              RowBox[{"Entity", "[", 
+               RowBox[{"\"\<Chemical\>\"", ",", " ", "name_"}], "]"}]}], 
+             "}"}]}], "]"}]}], "\n", "\t\t\t\t", "}"}], ":>", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"pubChemCIDPull", "[", 
+         RowBox[{"name", ",", " ", "\"\<Name\>\""}], "]"}]}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{
+        RowBox[{"l", ":", 
+         RowBox[{"{", "__List", "}"}]}], ":>", "\n", "\t\t\t\t", 
+        RowBox[{"pubChemPullThreadMissingIDs", "@", "\n", "\t\t\t\t\t", 
+         RowBox[{"MapIndexed", "[", "\n", "\t\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"StringQ", "@", 
+               RowBox[{"First", "@", "#"}]}], ",", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"Floor", "@", 
+               RowBox[{"Internal`StringToDouble", "@", 
+                RowBox[{"StringTrim", "[", 
+                 RowBox[{"#", ",", " ", "\"\<CID\>\""}], "]"}]}]}], ",", "\n",
+               "\t", "\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"#2", "[", 
+                RowBox[{"[", "1", "]"}], "]"}], "\[Rule]", 
+               RowBox[{"Last", "@", "#"}]}]}], "\n", "\t\t\t\t\t\t\t", "]"}], 
+            "&"}], ",", "\n", "\t", "\t\t\t\t\t", "l"}], "\n", "\t", 
+          "\t\t\t\t\t", "]"}]}]}]}], "\n", "\t\t\t", "}"}]}], "\n", "\t\t", 
+    "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"2b3afc38-fbd5-4939-968a-12c7d04ac8dd"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Name\[RightFloor]", "CodeSubsubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"39ace419-8505-4bc9-9295-a47562acd134"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"PubChemID", "[", "\n", "\t", 
+   RowBox[{
+    RowBox[{"compound", ":", "pubChemNamePattern"}], ",", "\n", "\t", 
+    RowBox[{"Optional", "[", 
+     RowBox[{"\"\<Name\>\"", ",", " ", "\"\<Name\>\""}], "]"}]}], "\n", "\t", 
+   "]"}], ":=", "\n", "\t", 
+  RowBox[{"PubChemID", "[", 
+   RowBox[{
+    RowBox[{"Thread", "[", 
+     RowBox[{"Entity", "[", 
+      RowBox[{"\"\<Chemical\>\"", ",", " ", "compound"}], "]"}], "]"}], ",", 
+    " ", "\"\<Name\>\""}], 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"c6ac1726-6729-43bb-933a-6d05003e2416"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ID String\[RightFloor]", "CodeSubsubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"7793178e-3153-4bcd-bd43-46b1acb37ea8"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"PubChemID", "[", "\n", "\t", 
@@ -246,7 +402,16 @@ Cell[BoxData[{
       RowBox[{"\"\<Name\>\"", ",", "\"\<Name\>\""}], "]"}]}], "\n", "\t", 
     "]"}], ":=", "\n", "\t", 
    RowBox[{"PubChemID", "@", 
-    RowBox[{"ToExpression", "@", "id"}]}]}], ";"}], "\n", 
+    RowBox[{"ToExpression", "@", "id"}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"283f992e-fa62-47a5-98e3-c408f24f1ddb"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Integer\[RightFloor]", "CodeSubsubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"4319d5e2-c900-42ee-a9b0-c94602943925"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"PubChemID", "[", 
@@ -254,7 +419,10 @@ Cell[BoxData[{
      RowBox[{"id_Integer", "?", "Positive"}], ",", "\t", "\n", "\t", 
      RowBox[{"Optional", "[", 
       RowBox[{"\"\<Name\>\"", ",", "\"\<Name\>\""}], "]"}]}], "]"}], ":=", 
-   "\n", "\t", "id"}], ";"}], "\n", 
+   "\n", "\t", "id"}], 
+  ";"}]], "CodeInput",ExpressionUUID->"ee673cff-c93c-43ff-bb07-39213f3f28f9"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"PubChemID", "[", 
@@ -263,24 +431,13 @@ Cell[BoxData[{
       RowBox[{"\"\<Name\>\"", ",", "\"\<Name\>\""}], "]"}]}], "]"}], ":=", 
    "\n", "\t", 
    RowBox[{"Missing", "[", "\"\<NotAvailable\>\"", "]"}]}], 
-  ";"}]}], "CodeInput",
- CellChangeTimes->{{3.692467216279251*^9, 3.6924672554515333`*^9}, 
-   3.6924673225649*^9, {3.692467373914995*^9, 3.692467505382325*^9}, {
-   3.700187534237657*^9, 3.700187544683407*^9}, {3.7001876472266912`*^9, 
-   3.700187686280418*^9}, {3.700187739891675*^9, 3.700187768965087*^9}, {
-   3.700188496607759*^9, 3.700188577280849*^9}, {3.7001886732416477`*^9, 
-   3.700188709865777*^9}, {3.700188752281726*^9, 3.700188908080984*^9}, {
-   3.700188941664998*^9, 3.700188965148419*^9}, {3.700189006240889*^9, 
-   3.700189178859482*^9}, 3.70018920890658*^9, {3.7002513734528713`*^9, 
-   3.700251384336275*^9}, {3.700251988340307*^9, 3.700252015876563*^9}, {
-   3.700252165807261*^9, 3.7002521731975613`*^9}, {3.700252224329329*^9, 
-   3.700252300782194*^9}, {3.7002523330264587`*^9, 3.700252334549362*^9}, {
-   3.700252423804397*^9, 3.700252425715255*^9}, {3.7002524609666643`*^9, 
-   3.7002524746497602`*^9}, {3.7002542237973423`*^9, 3.700254240643263*^9}, {
-   3.7002608882158318`*^9, 3.700260895844722*^9}, {3.700276424536058*^9, 
-   3.700276427739893*^9}, {3.710103654776285*^9, 
-   3.710103681317111*^9}},ExpressionUUID->"2b3afc38-fbd5-4939-968a-\
-12c7d04ac8dd"],
+  ";"}]], "CodeInput",ExpressionUUID->"98a05346-f737-4c3d-bb13-d581933946e0"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Formula\[RightFloor]", "CodeSubsubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"d55a21c4-dbf1-4853-bf58-73477d619373"],
 
 Cell[BoxData[
  RowBox[{
@@ -296,13 +453,26 @@ Cell[BoxData[
   3.7002523993710938`*^9, 3.7002524124046*^9}, {3.7002525150194407`*^9, 
   3.70025254406223*^9}, {3.700260899349204*^9, 
   3.700260904629916*^9}},ExpressionUUID->"5382e9fd-a558-42ef-9d52-\
-becd18c061ec"],
+becd18c061ec"]
+}, Closed]]
+}, Open  ]]
+}, Open  ]],
 
-Cell[BoxData[{
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PubChemRelatedIDs\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"7bf600da-d376-4d18-9486-6b485ee82d43"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]pubChemCIDrelated\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"cc798f62-7841-4dc4-a3bd-f460612420c8"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"pubChemCIDrelated", "[", 
-    RowBox[{"id_", ",", "args__"}], "]"}], ":=", "\n", "\t", 
+    RowBox[{"id_", ",", " ", "args__"}], "]"}], ":=", "\n", "\t", 
    RowBox[{"Replace", "[", 
     RowBox[{
      RowBox[{"PubChemID", "@", "id"}], ",", 
@@ -338,7 +508,15 @@ Cell[BoxData[{
              RowBox[{"{", "}"}], "\[RuleDelayed]", 
              RowBox[{"Missing", "[", "\"\<NotFound\>\"", "]"}]}]}], "\n", 
            "\t\t\t\t", "}"}]}], "]"}]}]}], "\n", "\t\t", "}"}]}], "]"}]}], 
-  ";"}], "\n", 
+  ";"}]], "CodeInput",ExpressionUUID->"9fb325d0-2592-41bd-bad1-ae364cb12a7a"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]cidTypes\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"94f4cfed-0348-4aa2-a4f6-42b170e321a1"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{"cidTypes", "=", "\n", "\t", 
    RowBox[{"Alternatives", "@@", 
@@ -354,7 +532,16 @@ Cell[BoxData[{
       ",", "\n", "\t", "\t", "\"\<SameParentStereo\>\"", ",", "\n", "\t", 
       "\t", "\"\<SameParentIsotopes\>\"", ",", "\n", "\t", "\t", 
       "\"\<SameParentConnectivity\>\"", ",", "\n", "\t", "\t", 
-      "\"\<SameParentTautomer\>\""}], "\n", "\t\t", "}"}]}]}], ";"}], "\n", 
+      "\"\<SameParentTautomer\>\""}], "\n", "\t\t", "}"}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"526b420c-5cdf-45be-9b72-c74b68371464"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PubChemRelatedIDs\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"603decbf-b2d2-46a9-a9a1-db80f3743965"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"PubChemRelatedIDs", "[", 
@@ -363,41 +550,50 @@ Cell[BoxData[{
    RowBox[{"pubChemCIDrelated", "[", 
     RowBox[{"id", ",", "\n", "\t\t", 
      RowBox[{"\"\<CIDType\>\"", "\[Rule]", "cidType"}]}], "\n", "\t\t", 
-    "]"}]}], ";"}], "\n", 
- RowBox[{
-  RowBox[{
-   RowBox[{"PubChemParentIDs", "[", "id_", "]"}], ":=", "\n", "\t", 
-   RowBox[{"PubChemRelatedIDs", "[", 
-    RowBox[{"id", ",", "\"\<Parent\>\""}], "]"}]}], ";"}], "\n", 
- RowBox[{
-  RowBox[{
-   RowBox[{"PubChemComponentIDs", "[", "id_", "]"}], ":=", "\n", "\t", 
-   RowBox[{"PubChemRelatedIDs", "[", 
-    RowBox[{"id", ",", "\"\<Component\>\""}], "]"}]}], ";"}]}], "CodeInput",
- CellChangeTimes->{{3.692467216279251*^9, 3.6924672554515333`*^9}, 
-   3.6924673225649*^9, {3.692467373914995*^9, 3.692467505382325*^9}, {
-   3.700187534237657*^9, 3.700187544683407*^9}, {3.7001876472266912`*^9, 
-   3.700187686280418*^9}, {3.700187739891675*^9, 3.700187768965087*^9}, {
-   3.700188496607759*^9, 3.700188577280849*^9}, {3.7001886732416477`*^9, 
-   3.700188709865777*^9}, {3.700188752281726*^9, 3.700188908080984*^9}, {
-   3.700188941664998*^9, 3.700188965148419*^9}, {3.700189006240889*^9, 
-   3.700189178859482*^9}, 3.70018920890658*^9, {3.700189466709619*^9, 
-   3.7001894704532347`*^9}, {3.70018961652853*^9, 3.700189654155875*^9}, 
-   3.70025124336033*^9, {3.700272251505321*^9, 3.700272273410171*^9}, {
-   3.7002725734082623`*^9, 3.700272583069178*^9}, {3.700273004315207*^9, 
-   3.70027302047398*^9}, 3.7002764010881023`*^9, {3.700276445649612*^9, 
-   3.700276470841166*^9}},ExpressionUUID->"9fb325d0-2592-41bd-bad1-\
-ae364cb12a7a"]
+    "]"}]}], ";"}]], \
+"CodeInput",ExpressionUUID->"990cf351-1454-4e4f-8e73-1edca2d5204a"]
+}, Closed]]
 }, Closed]],
 
 Cell[CellGroupData[{
 
-Cell["Info", "CodeSubsubsubsection",
- CellChangeTimes->{{3.700276378205859*^9, 
-  3.700276379867024*^9}},ExpressionUUID->"a076b6c7-768f-4ec5-ae89-\
-c96cba2c516b"],
+Cell["\[LeftCeiling]PubChemParentIDs\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"7fca274f-4c9f-4c2d-8ba3-7d291b30115f"],
 
-Cell[BoxData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemParentIDs", "[", "id_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"PubChemRelatedIDs", "[", 
+    RowBox[{"id", ",", "\"\<Parent\>\""}], "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"eca990ee-e4ee-4b02-a1f2-2718490c7f0d"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PubChemComponentIDs\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"dd303393-d68e-47a3-87f6-755c63c8bcc2"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemComponentIDs", "[", "id_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"PubChemRelatedIDs", "[", 
+    RowBox[{"id", ",", "\"\<Component\>\""}], "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"ceb1c4c3-f6c8-4968-be85-5956a4684d5d"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PubChemInfo\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"a076b6c7-768f-4ec5-ae89-c96cba2c516b"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]pubChemInfoOps\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"a15263d1-b48f-4d5c-bc10-5f76e1bd2993"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{"pubChemInfoOps", "=", "\n", "\t", 
    RowBox[{"Alternatives", "@@", 
@@ -407,7 +603,16 @@ Cell[BoxData[{
       " ", "\n", "\t", "\t", "\"\<Name\>\"", ",", "\n", "\t", "\t", 
       "\"\<InChI\>\"", ",", "\n", "\t", "\t", "\"\<InChIKey\>\"", ",", "\n", 
       "\t", "\t", "\"\<Formula\>\"", ",", "\n", "\t", "\t", 
-      "\"\<RecordType\>\""}], "\n", "\t\t", "}"}]}]}], ";"}], "\n", 
+      "\"\<RecordType\>\""}], "\n", "\t\t", "}"}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"4bc41fcc-a832-4ea0-91c5-ff574fd84345"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]pubChemInfoPull\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"38501421-9d3b-418b-a4c7-cfb6d79f914f"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"pubChemInfoPull", "[", 
@@ -428,7 +633,16 @@ Cell[BoxData[{
        RowBox[{
         RowBox[{"{", "}"}], ":>", 
         RowBox[{"Missing", "[", "\"\<NotAvailable\>\"", "]"}]}]}], "\n", 
-      "\t\t", "}"}]}], "]"}]}], ";"}], "\n", 
+      "\t\t", "}"}]}], "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"9cf07961-6c21-49db-a4c0-0819136645ef"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PubChemInfo\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"ffa28957-34ae-4ce2-a3d3-e4a19efa6457"],
+
+Cell[BoxData[{
  RowBox[{
   RowBox[{
    RowBox[{"PubChemInfo", "[", "\n", "\t", 
@@ -469,32 +683,39 @@ Cell[BoxData[{
      RowBox[{"key", ":", "pubChemInfoOps"}], ",", "ops___"}], "]"}], ":=", 
    "\n", "\t", 
    RowBox[{"pubChemInfoPull", "[", 
-    RowBox[{"ids", ",", "key", ",", "ops"}], "]"}]}], ";"}]}], "CodeInput",
- CellChangeTimes->{{3.700254158647633*^9, 3.700254205170328*^9}, {
-   3.700254244115066*^9, 3.7002543962153807`*^9}, {3.7002545086940193`*^9, 
-   3.700254519122384*^9}, 3.700254724352034*^9, {3.700254780827668*^9, 
-   3.700254785728116*^9}, {3.700255960381753*^9, 3.7002560134949408`*^9}, {
-   3.700256288498317*^9, 3.700256322787106*^9}, {3.7002566914673767`*^9, 
-   3.700256711148694*^9}, {3.7002569743682613`*^9, 
-   3.7002569759508057`*^9}},ExpressionUUID->"4bc41fcc-a832-4ea0-91c5-\
-ff574fd84345"]
-}, Closed]],
+    RowBox[{"ids", ",", "key", ",", "ops"}], "]"}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"3a579e9f-2837-4010-851f-f3bdc473185d"]\
+
+}, Open  ]]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
-Cell["SIDs", "CodeSubsubsubsection",
- CellChangeTimes->{{3.700276407318166*^9, 
-  3.7002764082279167`*^9}},ExpressionUUID->"17fc885e-2286-4fdd-8ded-\
-19d114972d53"],
+Cell["\[LeftCeiling]PubChemSubstanceIDs\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"fe216bf6-6717-4c0c-81e8-ac34097c7132"],
 
-Cell[BoxData[{
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]sidTypes\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"92117dc4-8646-4b59-835b-7a4205748bbc"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{"sidTypes", "=", "\n", "\t", 
    RowBox[{"Alternatives", "@@", 
     RowBox[{"{", "\n", "\t\t", 
      RowBox[{
      "All", ",", "\n", "\t\t", "\"\<Standardized\>\"", ",", "\n", "\t", "\t", 
-      "\"\<Component\>\""}], "\n", "\t", "\t", "}"}]}]}], ";"}], "\n", 
+      "\"\<Component\>\""}], "\n", "\t\t", "}"}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"202bbcb7-38f9-4a5d-a6a2-90ff0ea444ec"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]pubChemSID\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"6f83d44a-a29f-4e4d-9882-ecc85ea1ab1e"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"pubChemSID", "[", 
@@ -528,7 +749,16 @@ Cell[BoxData[{
              RowBox[{"{", "}"}], "\[RuleDelayed]", 
              RowBox[{"Missing", "[", "\"\<NotFound\>\"", "]"}]}]}], "\n", 
            "\t\t\t\t", "}"}]}], "]"}]}]}], "\n", "\t\t", "}"}]}], "]"}]}], 
-  ";"}], "\n", 
+  ";"}]], "CodeInput",ExpressionUUID->"431eabe4-eb29-4e49-be26-659e32a8d825"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PubChemSubstanceIDs\[RightFloor]", "CodeSubsubsubsection",
+ 
+ Evaluatable->True,ExpressionUUID->"939a994c-ec5e-4c77-ae7b-8e728ea1ce20"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"PubChemSubstanceIDs", "[", 
@@ -537,27 +767,15 @@ Cell[BoxData[{
    
    RowBox[{"pubChemSID", "[", 
     RowBox[{"id", ",", 
-     RowBox[{"\"\<SIDType\>\"", "->", "sid"}]}], "]"}]}], ";"}]}], "CodeInput",
- CellChangeTimes->{{3.692467216279251*^9, 3.6924672554515333`*^9}, 
-   3.6924673225649*^9, {3.692467373914995*^9, 3.692467505382325*^9}, {
-   3.700187534237657*^9, 3.700187544683407*^9}, {3.7001876472266912`*^9, 
-   3.700187686280418*^9}, {3.700187739891675*^9, 3.700187768965087*^9}, {
-   3.700188496607759*^9, 3.700188577280849*^9}, {3.7001886732416477`*^9, 
-   3.700188709865777*^9}, {3.700188752281726*^9, 3.700188908080984*^9}, {
-   3.700188941664998*^9, 3.700188965148419*^9}, {3.700189006240889*^9, 
-   3.7001893186503572`*^9}, 3.700189462133254*^9, {3.700189582304023*^9, 
-   3.7001896076455584`*^9}, {3.700189660664624*^9, 3.700189667215473*^9}, {
-   3.7002514012677927`*^9, 
-   3.700251425318317*^9}},ExpressionUUID->"202bbcb7-38f9-4a5d-a6a2-\
-90ff0ea444ec"]
+     RowBox[{"\"\<SIDType\>\"", "->", "sid"}]}], "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"553a398c-85fc-4721-b363-8859063210a5"]
+}, Open  ]]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
-Cell["2D", "CodeSubsubsubsection",
- CellChangeTimes->{{3.700276480462545*^9, 
-  3.700276480886649*^9}},ExpressionUUID->"53bd1c9f-e83f-4093-b2c2-\
-1eaebcfca40e"],
+Cell["\[LeftCeiling]PubChemStructure\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"128cf062-ecfe-4c21-8c24-23f026532f01"],
 
 Cell[BoxData[{
  RowBox[{
@@ -625,10 +843,14 @@ de0285674659"]
 
 Cell[CellGroupData[{
 
-Cell["3D", "CodeSubsubsubsection",
- CellChangeTimes->{{3.700276492486102*^9, 
-  3.7002764928384047`*^9}},ExpressionUUID->"f17b1ec0-4f89-4912-9a19-\
-a08cd0380435"],
+Cell["\[LeftCeiling]PubChemSDF\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"c7d99fde-19c6-4f99-9bc9-79262ed5d5ee"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]pubChemStructureLoc\[RightFloor]", "CodeSubsubsubsection",
+ 
+ Evaluatable->True,ExpressionUUID->"1847418a-308b-41a0-9649-ceb527a889b8"],
 
 Cell[BoxData[
  RowBox[{
@@ -660,40 +882,13 @@ Cell[BoxData[
    3.70024830236382*^9, {3.700248510704659*^9, 3.700248511943933*^9}, 
    3.700260599940834*^9, 
    3.700267081018441*^9},ExpressionUUID->"a90b4383-2e73-4468-be06-\
-c0768a511a0d"],
+c0768a511a0d"]
+}, Closed]],
 
-Cell[BoxData[
- RowBox[{
-  RowBox[{
-   RowBox[{"PubChemSDF", "[", "\n", "\t", 
-    RowBox[{"cid", ":", 
-     RowBox[{"_Integer", "|", "\n", "\t\t", 
-      RowBox[{"(", 
-       RowBox[{"_String", "?", 
-        RowBox[{"(", 
-         RowBox[{"StringMatchQ", "[", 
-          RowBox[{"DigitCharacter", ".."}], "]"}], ")"}]}], ")"}]}]}], "\n", 
-    "\t\t", "]"}], ":=", "\n", "\t", 
-   RowBox[{"Replace", "[", 
-    RowBox[{
-     RowBox[{"Quiet", "@", 
-      RowBox[{"Import", "[", 
-       RowBox[{
-        RowBox[{"pubChemStructureLoc", "[", "cid", "]"}], ",", 
-        "\"\<Text\>\""}], "]"}]}], ",", "\n", "\t\t", 
-     RowBox[{"$Failed", ":>", "\n", "\t\t\t", 
-      RowBox[{"Missing", "[", "\"\<NotAvailable\>\"", "]"}]}]}], "\n", "\t\t",
-     "]"}]}], ";"}]], "CodeInput",
- CellChangeTimes->{{3.692580940067198*^9, 3.6925809548163233`*^9}, 
-   3.6925810002315903`*^9, {3.692581335914504*^9, 3.692581348808894*^9}, {
-   3.692581384319212*^9, 3.6925814830896273`*^9}, {3.700188352229184*^9, 
-   3.700188355688902*^9}, 3.700189438927491*^9, {3.7001898206374817`*^9, 
-   3.70018992584402*^9}, {3.700189975900996*^9, 3.700190197725258*^9}, {
-   3.700190478608886*^9, 3.700190478723258*^9}, 3.700248195560319*^9, {
-   3.700248397255348*^9, 3.700248430136684*^9}, 3.7002485173905563`*^9, {
-   3.7002653070048637`*^9, 3.7002653136696568`*^9}, 
-   3.700265389872939*^9},ExpressionUUID->"3a982efe-a2e9-4402-ac23-\
-e97532377b61"],
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]pubChemSDFPull\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"0ad70bb2-9760-4b27-a065-9aa5aff5b1fd"],
 
 Cell[BoxData[
  RowBox[{
@@ -731,7 +926,46 @@ Cell[BoxData[
    3.700190478608886*^9, 3.700190478723258*^9}, 3.700248195560319*^9, {
    3.700248254548623*^9, 
    3.700248284300516*^9}},ExpressionUUID->"0317c9aa-1e52-44e1-b176-\
-25b3fc73f989"],
+25b3fc73f989"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PubChemSDF\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"af9c8086-4482-4289-80b9-7c0de960ec44"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"PubChemSDF", "[", "\n", "\t", 
+    RowBox[{"cid", ":", 
+     RowBox[{"_Integer", "|", "\n", "\t\t", 
+      RowBox[{"(", 
+       RowBox[{"_String", "?", 
+        RowBox[{"(", 
+         RowBox[{"StringMatchQ", "[", 
+          RowBox[{"DigitCharacter", ".."}], "]"}], ")"}]}], ")"}]}]}], "\n", 
+    "\t\t", "]"}], ":=", "\n", "\t", 
+   RowBox[{"Replace", "[", 
+    RowBox[{
+     RowBox[{"Quiet", "@", 
+      RowBox[{"Import", "[", 
+       RowBox[{
+        RowBox[{"pubChemStructureLoc", "[", "cid", "]"}], ",", 
+        "\"\<Text\>\""}], "]"}]}], ",", "\n", "\t\t", 
+     RowBox[{"$Failed", ":>", "\n", "\t\t\t", 
+      RowBox[{"Missing", "[", "\"\<NotAvailable\>\"", "]"}]}]}], "\n", "\t\t",
+     "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.692580940067198*^9, 3.6925809548163233`*^9}, 
+   3.6925810002315903`*^9, {3.692581335914504*^9, 3.692581348808894*^9}, {
+   3.692581384319212*^9, 3.6925814830896273`*^9}, {3.700188352229184*^9, 
+   3.700188355688902*^9}, 3.700189438927491*^9, {3.7001898206374817`*^9, 
+   3.70018992584402*^9}, {3.700189975900996*^9, 3.700190197725258*^9}, {
+   3.700190478608886*^9, 3.700190478723258*^9}, 3.700248195560319*^9, {
+   3.700248397255348*^9, 3.700248430136684*^9}, 3.7002485173905563`*^9, {
+   3.7002653070048637`*^9, 3.7002653136696568`*^9}, 
+   3.700265389872939*^9},ExpressionUUID->"3a982efe-a2e9-4402-ac23-\
+e97532377b61"],
 
 Cell[BoxData[
  RowBox[{
@@ -763,9 +997,16 @@ Cell[BoxData[
    3.700248254548623*^9, 3.700248284300516*^9}, 3.700248520528453*^9, {
    3.7101043031141787`*^9, 
    3.7101043261898403`*^9}},ExpressionUUID->"551849e7-a9d6-43c6-acea-\
-2fbbe343139a"],
+2fbbe343139a"]
+}, Open  ]]
+}, Open  ]],
 
-Cell[BoxData[{
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PubChemParentSDF\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"9eec1def-3126-4de0-8762-0e0410619c8b"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"PubChemParentSDF", "[", 
@@ -774,7 +1015,15 @@ Cell[BoxData[{
    RowBox[{"pubChemSDFPull", "[", 
     RowBox[{
      RowBox[{"PubChemParentIDs", "@", "compound"}], ",", "take"}], "]"}]}], 
-  ";"}], "\n", 
+  ";"}]], "CodeInput",ExpressionUUID->"503d2253-bbfe-455a-9af9-09e223bab6b9"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PubChemComponentSDF\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"97677ffc-4d06-42d5-91a2-abec92d08e7c"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"PubChemComponentSDF", "[", 
@@ -783,7 +1032,16 @@ Cell[BoxData[{
    RowBox[{"pubChemSDFPull", "[", 
     RowBox[{
      RowBox[{"PubChemComponentIDs", "@", "compound"}], ",", "take"}], "]"}]}],
-   ";"}], "\n", 
+   ";"}]], "CodeInput",ExpressionUUID->"5abaf1d1-d0f4-46db-ad17-282e30a1cf7e"]\
+
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PubChemSubstanceSDF\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"f19be186-2899-4e27-9ff3-a42f13aa5328"],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"PubChemSubstanceSDF", "[", 
@@ -792,16 +1050,14 @@ Cell[BoxData[{
    RowBox[{"pubChemSDFPull", "[", 
     RowBox[{
      RowBox[{"PubChemSubstanceIDs", "@", "compound"}], ",", "take"}], "]"}]}],
-   ";"}], "\n"}], "CodeInput",
- CellChangeTimes->{{3.692580940067198*^9, 3.6925809548163233`*^9}, 
-   3.6925810002315903`*^9, {3.692581335914504*^9, 3.692581348808894*^9}, {
-   3.692581384319212*^9, 3.6925814830896273`*^9}, {3.700188352229184*^9, 
-   3.700188355688902*^9}, 3.700189438927491*^9, {3.7001898206374817`*^9, 
-   3.70018992584402*^9}, {3.700189975900996*^9, 3.700190197725258*^9}, {
-   3.700190478608886*^9, 3.700190478723258*^9}, 3.700248195560319*^9, {
-   3.700248254548623*^9, 3.70024827764217*^9}, {3.7002727418088493`*^9, 
-   3.700272764552825*^9}},ExpressionUUID->"503d2253-bbfe-455a-9af9-\
-09e223bab6b9"],
+   ";"}]], "CodeInput",ExpressionUUID->"94b4f68a-75e7-47a8-a75b-d9b804241182"]\
+
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PubChemHasQ\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"c8c425d0-328f-40c2-abcd-7f48d1688ecb"],
 
 Cell[BoxData[
  RowBox[{
@@ -822,8 +1078,8 @@ Cell[BoxData[
   3.70019266256714*^9, 3.700192664844187*^9}, {3.7101044090302687`*^9, 
   3.710104411610794*^9}},ExpressionUUID->"f7bfe9b3-8b80-4ff5-a3c5-\
 ad4925915192"]
-}, Open  ]]
-}, Closed]],
+}, Closed]]
+}, Open  ]],
 
 Cell[BoxData[
  RowBox[{

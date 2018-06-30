@@ -20,8 +20,11 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{
    RowBox[{"CMakeBuild", "::", "usage"}], "=", 
-   "\"\<Gets and compiles the CMake system\>\""}], 
-  ";"}]}], "CodeInput",ExpressionUUID->"ce706ba7-50f2-467b-ac4b-a9a81c553bbe"],
+   "\"\<Gets and compiles the CMake system\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"CMakeBinary", "::", "usage"}], "=", 
+  "\"\<Returns the binary for the CMake system\>\""}]}], \
+"CodeInput",ExpressionUUID->"ce706ba7-50f2-467b-ac4b-a9a81c553bbe"],
 
 Cell[CellGroupData[{
 
@@ -33,8 +36,90 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
+Cell["\[LeftCeiling]FindCMake\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"e49d91b4-c5c6-42bc-a014-3255bf0fccb1"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$CMakePath", "=", "\n", "\t", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{"$ChemExtensionsDev", ",", "\n", "\t\t", "$ChemExtensionsApp"}], 
+    "\n", "\t\t", "}"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"f6441cc4-55a3-4c44-9258-1854f61c2c33"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FindCMake", "[", "]"}], ":=", "\n", "\t", 
+  RowBox[{"Replace", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"StringTrim", "@", "\n", "\t\t\t", 
+     RowBox[{"RunProcess", "[", "\t\t\t", "\n", "\t\t\t\t", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"$OperatingSystem", "\[Equal]", "\"\<Windows\>\""}], ",", 
+           "\"\<where\>\"", ",", " ", "\"\<which\>\""}], "]"}], ",", " ", 
+         "\"\<cmake\>\""}], "}"}], ",", "\n", "\t", "\t", "\t", "\t", 
+       "\"\<StandardOutput\>\""}], "\n", "\t\t\t\t", "]"}]}], ",", "\n", 
+    "\t\t", 
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ob_String", "?", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"StringLength", "[", "#", "]"}], ">", "0"}], "&&", 
+           RowBox[{"FileExistsQ", "[", "#", "]"}], "&&", "\n", "\t\t\t\t", 
+           RowBox[{"cmakeDirQ", "[", 
+            RowBox[{"Nest", "[", 
+             RowBox[{"DirectoryName", ",", " ", "#", ",", " ", "2"}], "]"}], 
+            "]"}]}], "&"}], ")"}]}], ":>", "\n", "\t\t\t\t", 
+       RowBox[{"Nest", "[", 
+        RowBox[{"DirectoryName", ",", " ", "ob", ",", " ", "2"}], "]"}]}], 
+      ",", "\n", "\t\t\t", 
+      RowBox[{"_", ":>", "\n", "\t\t\t\t", 
+       RowBox[{"SelectFirst", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"FileNames", "[", 
+          RowBox[{"\"\<*cmake*\>\"", ",", " ", "$CMakePath"}], "]"}], ",", 
+         "\n", "\t\t\t\t\t", "cmakeDirQ", ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"ChemExtensionDir", "[", "\"\<cmake\>\"", "]"}]}], "\n", 
+        "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "}"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"806db965-e7d6-4b97-be59-614f8baf65f3"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]$CMakeDirectory\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"dd8e912e-995e-4316-b360-c18fb6274578"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$CMakeDirectory", ":=", "\n", "\t", 
+   RowBox[{"$CMakeDirectory", "=", 
+    RowBox[{"FindCMake", "[", "]"}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"2b7b6530-88e9-434d-bca9-8f0b1d5208af"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
 Cell["\[LeftCeiling]cmakeCheck\[RightFloor]", "CodeSubsubsection",
  Evaluatable->True,ExpressionUUID->"cd81a76f-da7d-470d-b501-9299e0596a57"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"cmakeDirQ", "[", "dir_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"FileExistsQ", "@", 
+   RowBox[{"FileNameJoin", "@", 
+    RowBox[{"{", 
+     RowBox[{"dir", ",", " ", "\"\<bin\>\"", ",", " ", "\"\<cmake\>\""}], 
+     "}"}]}]}]}]], \
+"CodeInput",ExpressionUUID->"e038f938-d079-4cf1-80f3-60b17b07be12"],
 
 Cell[BoxData[
  RowBox[{
@@ -46,21 +131,16 @@ Cell[BoxData[
       RowBox[{"Check", "[", 
        RowBox[{
         RowBox[{"RunProcess", "[", 
-         RowBox[{"{", "\"\<cmake\>\"", "}"}], "]"}], ",", "$Failed"}], 
-       "]"}]}], "=!=", "$Failed"}], "||", "\n", "\t", 
+         RowBox[{"{", "\"\<cmake\>\"", "}"}], "]"}], ",", " ", "$Failed"}], 
+       "]"}]}], "=!=", "$Failed"}], "||", "\n", "\t\t", 
     RowBox[{"FileExistsQ", "@", 
      RowBox[{"FileNameJoin", "@", 
       RowBox[{"{", 
        RowBox[{
        "dir", ",", "\"\<cmake\>\"", ",", "\"\<bin\>\"", ",", 
-        "\"\<cmake\>\""}], "}"}]}]}]}]}], ";"}]], "CodeInput",
- CellChangeTimes->{{3.692884232445972*^9, 3.6928842363402653`*^9}, 
-   3.6928842668685093`*^9, {3.69288440793675*^9, 3.692884427648945*^9}, {
-   3.6928868321136847`*^9, 3.692886972663887*^9}, 3.692887204833407*^9, {
-   3.6928872620816298`*^9, 3.692887288073141*^9}, {3.69288809134577*^9, 
-   3.692888129645708*^9}},ExpressionUUID->"53d4b887-23a3-4fc9-9968-\
-3a2806c78d95"]
-}, Open  ]],
+        "\"\<cmake\>\""}], "}"}]}]}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"53d4b887-23a3-4fc9-9968-3a2806c78d95"]
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -80,10 +160,10 @@ Cell[BoxData[
    RowBox[{"Replace", "[", 
     RowBox[{"dir", ",", " ", 
      RowBox[{"Automatic", "\[RuleDelayed]", 
-      RowBox[{"ParentDirectory", "@", "$CMakeDirectory"}]}]}], 
+      RowBox[{"DirectoryName", "@", "$CMakeDirectory"}]}]}], 
     "]"}]}]}]], \
 "CodeInput",ExpressionUUID->"2b008dff-5840-40ff-8943-5772fcef413c"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -263,8 +343,8 @@ that's right for you\n\>\""}], ";", "\n", "\t\t\t\t\t",
            RowBox[{
             RowBox[{"CurrentValue", "[", 
              RowBox[{
-              RowBox[{"EvaluationNotebook", "[", "]"}], ",", 
-              "WindowStatusArea"}], "]"}], "=", "\n", "\t", "\t\t\t\t", 
+              RowBox[{"EvaluationNotebook", "[", "]"}], ",", " ", 
+              "WindowStatusArea"}], "]"}], "=", "\n", "\t\t\t\t\t", 
             RowBox[{"\"\<Downloading from \>\"", "<>", 
              RowBox[{"URLBuild", "@", 
               RowBox[{"{", 
@@ -360,13 +440,12 @@ that's right for you\n\>\""}], ";", "\n", "\t\t\t\t\t",
            RowBox[{"If", "[", 
             RowBox[{
              RowBox[{"!", 
-              RowBox[{"cmakeCheck", "@", "dir"}]}], ",", "\n", "\t", 
-             "\t\t\t\t", 
-             RowBox[{"Monitor", "[", "\n", "\t", "\t\t\t\t\t", 
+              RowBox[{"cmakeCheck", "@", "dir"}]}], ",", "\n", "\t\t\t\t\t", 
+             RowBox[{"Monitor", "[", "\n", "\t\t\t\t\t\t", 
               RowBox[{
-               RowBox[{"terminalRun", "[", "\n", "\t", "\t\t\t\t\t\t", 
+               RowBox[{"RunInTerminal", "[", "\n", "\t\t\t\t\t\t\t", 
                 RowBox[{
-                 RowBox[{"{", "\n", "\t", "\t\t\t\t\t\t\t", 
+                 RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
                   RowBox[{
                   "\"\<./configure\>\"", ",", "\n", "\t", "\t\t\t\t\t\t\t", 
                    RowBox[{"\"\<--prefix=\\\"\>\"", "<>", 
@@ -381,19 +460,19 @@ that's right for you\n\>\""}], ";", "\n", "\t\t\t\t\t",
                RowBox[{
                "Internal`LoadingPanel", "@", "\"\<Configuring CMake\>\""}]}], 
               "\n", "\t", "\t\t\t\t\t", "]"}]}], "\n", "\t", "\t\t\t\t", 
-            "]"}], ";", "\n", "\t", "\t\t\t", 
-           RowBox[{"Monitor", "[", "\n", "\t", "\t\t\t\t", 
+            "]"}], ";", "\n", "\t\t\t\t", 
+           RowBox[{"Monitor", "[", "\n", "\t\t\t\t\t", 
             RowBox[{
              RowBox[{
-              RowBox[{"terminalRun", "[", 
+              RowBox[{"RunInTerminal", "[", 
                RowBox[{
                 RowBox[{"{", "\"\<make\>\"", "}"}], ",", "\n", "\t", 
                 "\t\t\t\t\t", 
                 RowBox[{
                 "ProcessDirectory", "\[Rule]", "\n", "\t", "\t\t\t\t\t\t", 
                  "cmakeDir"}]}], "\n", "\t", "\t\t\t\t\t", "]"}], ";", "\n", 
-              "\t", "\t\t\t\t", 
-              RowBox[{"terminalRun", "[", 
+              "\t\t\t\t\t", 
+              RowBox[{"RunInTerminal", "[", 
                RowBox[{
                 RowBox[{"{", 
                  RowBox[{"\"\<make\>\"", ",", "\"\<install\>\""}], "}"}], ",",
@@ -416,63 +495,20 @@ that's right for you\n\>\""}], ";", "\n", "\t\t\t\t\t",
                RowBox[{"{", 
                 RowBox[{
                 "cmakeDir", ",", "\"\<bin\>\"", ",", "\"\<cmake\>\""}], 
-                "}"}]}]}], ",", "\n", "\t", "\t\t\t\t", 
-             RowBox[{"FileNameJoin", "@", 
-              RowBox[{"{", 
-               RowBox[{"cmakeDir", ",", "\"\<bin\>\"", ",", "\"\<cmake\>\""}],
-                "}"}]}], ",", "\n", "\t\t\t\t\t", "$Failed"}], "\n", 
-            "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t", "]"}]}], ",", "\n", 
-       "\t\t\t", "$Failed"}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
-  ";"}]], "CodeInput",
- CellChangeTimes->{{3.692884429044406*^9, 3.6928844545114717`*^9}, {
-   3.692884529693088*^9, 3.692884530245563*^9}, {3.692884586464795*^9, 
-   3.692884646812669*^9}, {3.692884816980385*^9, 3.692884946752472*^9}, {
-   3.6928849848943453`*^9, 3.692885136136013*^9}, {3.692885220635709*^9, 
-   3.692885308928619*^9}, 3.692885358611764*^9, {3.692885444902891*^9, 
-   3.692885495085698*^9}, {3.692885856398981*^9, 3.692886131592086*^9}, {
-   3.692886176020203*^9, 3.692886284200251*^9}, {3.692886497668741*^9, 
-   3.6928866218131647`*^9}, {3.6928866928787394`*^9, 3.692886750760837*^9}, {
-   3.692887354683549*^9, 3.6928873550028133`*^9}, {3.6928874778743687`*^9, 
-   3.692887565335734*^9}, {3.692887598350081*^9, 3.692887742999659*^9}, {
-   3.6928877848541737`*^9, 3.6928878091033278`*^9}, {3.692887840591507*^9, 
-   3.692887895200135*^9}, {3.692887934156713*^9, 3.692888033816881*^9}, {
-   3.6928883093342867`*^9, 3.692888395126968*^9}, {3.6928916349708*^9, 
-   3.69289164745752*^9}, {3.6928916802739477`*^9, 3.692891757705521*^9}, {
-   3.692896676699966*^9, 3.6928967447462683`*^9}, {3.692930936009179*^9, 
-   3.692930975126691*^9}, {3.6929310787063932`*^9, 3.692931089662871*^9}, {
-   3.692935365899736*^9, 3.69293537567575*^9}, {3.692935524040188*^9, 
-   3.692935527160112*^9}, {3.693325799327854*^9, 3.6933258070454397`*^9}, {
-   3.693328876538342*^9, 3.6933289015484123`*^9}, {3.6933289944560204`*^9, 
-   3.693329116818796*^9}, {3.693329151855301*^9, 3.6933291735238132`*^9}, {
-   3.693355867741894*^9, 3.693355925786599*^9}, {3.6933559615996513`*^9, 
-   3.6933560505313673`*^9}, 3.6933560967366753`*^9, {3.693357234422464*^9, 
-   3.693357241437318*^9}, {3.6933575093487673`*^9, 3.693357540691596*^9}, {
-   3.693360057517549*^9, 3.693360092792625*^9}, {3.69336012840063*^9, 
-   3.693360132511932*^9}, {3.6933606373693447`*^9, 3.6933606386099787`*^9}, {
-   3.693360729742702*^9, 3.693360814348378*^9}, {3.693361160696381*^9, 
-   3.693361183045135*^9}, {3.693361224090173*^9, 3.6933612376257687`*^9}, {
-   3.694990277897801*^9, 3.694990281600078*^9}, {3.694990315232972*^9, 
-   3.694990333326047*^9}, 3.6949997261236677`*^9, {3.695000105324265*^9, 
-   3.695000124369858*^9}, {3.695442947663088*^9, 3.695442947830579*^9}, {
-   3.715202987742557*^9, 3.715203101660041*^9}, {3.715203201174243*^9, 
-   3.715203253743991*^9}, {3.715261338874961*^9, 3.71526136785067*^9}, {
-   3.715261408506605*^9, 3.715261411171393*^9}, {3.715262213284792*^9, 
-   3.715262272286063*^9}},ExpressionUUID->"b7a24019-8395-4784-83ae-\
-ab18f56a87bb"]
-}, Closed]],
-
-Cell[CellGroupData[{
-
-Cell["\[LeftCeiling]$CMakeDirectory\[RightFloor]", "CodeSubsubsection",
- Evaluatable->True,ExpressionUUID->"dd8e912e-995e-4316-b360-c18fb6274578"],
-
-Cell[BoxData[
- RowBox[{"$CMakeDirectory", ":=", "\n", "\t", 
-  RowBox[{"ChemExtensionDir", "[", "\"\<cmake\>\"", "]"}]}]], "CodeInput",
- CellChangeTimes->{{3.714673287179934*^9, 
-  3.7146733141027517`*^9}},ExpressionUUID->"2b7b6530-88e9-434d-bca9-\
-8f0b1d5208af"]
-}, Closed]],
+                "}"}]}]}], ",", "\n", "\t\t\t\t\t", "cmakeDir", ",", "\n", 
+             "\t\t\t\t\t", 
+             RowBox[{"PackageRaiseException", "[", 
+              RowBox[{
+              "\"\<CMakeBuild\>\"", ",", "\n", "\t\t\t\t\t\t", 
+               "\"\<No cmake installation found in `` after build\>\"", ",", 
+               "\n", "\t\t\t\t\t\t", 
+               RowBox[{"\"\<MessageParameters\>\"", "\[Rule]", 
+                RowBox[{"{", "cmakeDir", "}"}]}]}], "\n", "\t\t\t\t\t\t", 
+              "]"}]}], "\n", "\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t", 
+         "]"}]}], ",", "\n", "\t\t\t", "$Canceled"}], "\n", "\t\t\t", "]"}]}],
+     "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"b7a24019-8395-4784-83ae-ab18f56a87bb"]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -484,19 +520,69 @@ Cell[BoxData[
   RowBox[{
    RowBox[{"CMakeBuild", "[", 
     RowBox[{"d", ":", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"_String", "?", "DirectoryQ"}], "|", "Automatic"}], ")"}], ":",
+      "Automatic"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{
+    RowBox[{"PackageExceptionBlock", "[", "\"\<CMakeBuild\>\"", "]"}], "@", 
+    "\n", "\t\t", 
+    RowBox[{"Which", "[", "\n", "\t\t\t", 
      RowBox[{
-      RowBox[{"_String", "?", "DirectoryQ"}], "|", 
-      RowBox[{"Automatic", ":", "Automatic"}]}]}], "]"}], ":=", "\n", "\t", 
-   RowBox[{"cmakeBuild", "[", 
-    RowBox[{"Replace", "[", 
-     RowBox[{"d", ",", 
-      RowBox[{"Automatic", "\[RuleDelayed]", 
-       RowBox[{"DirectoryName", "@", "$CMakeDirectory"}]}]}], "]"}], "]"}]}], 
-  ";"}]], "CodeInput",
- CellChangeTimes->{{3.695442921197612*^9, 3.695442940611388*^9}, {
-  3.7146732986198072`*^9, 3.7146733191573963`*^9}, {3.7146734858082438`*^9, 
-  3.7146734881420507`*^9}},ExpressionUUID->"d65d841a-f13f-4303-81a2-\
-3336ca3dd229"]
+      RowBox[{"cmakeDirQ", "@", 
+       RowBox[{"Replace", "[", 
+        RowBox[{"d", ",", " ", 
+         RowBox[{"Automatic", "\[RuleDelayed]", "$CMakeDirectory"}]}], 
+        "]"}]}], ",", "\n", "\t\t\t\t", 
+      RowBox[{"Replace", "[", 
+       RowBox[{"d", ",", " ", 
+        RowBox[{"Automatic", ":>", "$CMakeDirectory"}]}], "]"}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"CMakeCheck", "@", "d"}], ",", "\n", "\t\t\t\t", 
+      RowBox[{"Replace", "[", 
+       RowBox[{"d", ",", " ", "\n", "\t\t\t\t\t", 
+        RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"Automatic", "\[RuleDelayed]", "$CMakeDirectory"}], ",", 
+          "\n", "\t\t\t\t\t\t", 
+          RowBox[{"e_", "\[RuleDelayed]", 
+           RowBox[{"FileNameJoin", "@", 
+            RowBox[{"{", 
+             RowBox[{"e", ",", " ", "\"\<cmake\>\""}], "}"}]}]}]}], "\n", 
+         "\t\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t\t", "]"}], ",", "\n", 
+      "\t\t\t", "True", ",", "\n", "\t\t\t\t", 
+      RowBox[{"cmakeBuild", "[", 
+       RowBox[{"Replace", "[", 
+        RowBox[{"d", ",", " ", 
+         RowBox[{"Automatic", "\[RuleDelayed]", 
+          RowBox[{"DirectoryName", "@", "$CMakeDirectory"}]}]}], "]"}], 
+       "]"}]}], "\n", "\t\t\t", "]"}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"d65d841a-f13f-4303-81a2-3336ca3dd229"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]CMakeBinary\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"ab150f7d-a322-4aa8-a1d9-c09980b38440"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"CMakeBinary", "[", 
+   RowBox[{"d", ":", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"_String", "?", "DirectoryQ"}], "|", "Automatic"}], ")"}], ":", 
+    "Automatic"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{
+   RowBox[{"PackageExceptionBlock", "[", "\"\<CMakeBuild\>\"", "]"}], "@", 
+   "\n", "\t\t", 
+   RowBox[{"FileNameJoin", "@", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"CMakeBuild", "[", "d", "]"}], ",", " ", "\"\<bin\>\"", ",", 
+      " ", "\"\<cmake\>\""}], 
+     "}"}]}]}]}]], \
+"CodeInput",ExpressionUUID->"b46719da-370f-4c3f-a2b1-3ce3ebeff720"]
 }, Open  ]]
 }, Open  ]],
 
@@ -511,7 +597,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"f1a47073-41ee-444e-a8c8-\
 d1cc3810b3c0"]
 },
 WindowSize->{808, 755},
-WindowMargins->{{80, Automatic}, {18, Automatic}},
+WindowMargins->{{Automatic, 0}, {0, Automatic}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

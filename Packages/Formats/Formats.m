@@ -50,10 +50,11 @@ ChemFormatsCanonicalFormat[
 
 
 
-ChemFormatsDetect[data_]:=
+ChemFormatsDetect//Clear
+ChemFormatsDetect[data_, throw:True|False:False]:=
 	PackageExceptionBlock["FormatConvert"]@
 		With[{dataForm=ChemFormatsDetectMolFormat[data]},
-			If[!StringQ@dataForm,
+			If[TrueQ@throw&&!StringQ@dataForm,
 				PackageRaiseException[
 					"FormatConvert",
 					"Format detection failed for data ``",
@@ -75,81 +76,10 @@ ChemFormatsDetect[data_]:=
 
 
 chemFormatConvertersOBBlock[form_]:=
-	<|
-		"ALC"->ChemFormatsOBConvert[form->"ALC"],
-		"BGF"->ChemFormatsOBConvert[form->"BGF"],
-		"BOX"->ChemFormatsOBConvert[form->"BOX"],
-		"BS"->ChemFormatsOBConvert[form->"BS"],
-		"C3D1"->ChemFormatsOBConvert[form->"C3D1"],
-		"C3D2"->ChemFormatsOBConvert[form->"C3D2"],
-		"CACCRT"->ChemFormatsOBConvert[form->"CACCRT"],
-		"CACHE"->ChemFormatsOBConvert[form->"CACHE"],
-		"CACINT"->ChemFormatsOBConvert[form->"CACINT"],
-		"CAN"->ChemFormatsOBConvert[form->"CAN"],
-		"CDXML"->ChemFormatsOBConvert[form->"CDXML"],
-		"CHT"->ChemFormatsOBConvert[form->"CHT"],
-		"CIF"->ChemFormatsOBConvert[form->"CIF"],
-		"CML"->ChemFormatsOBConvert[form->"CML"],
-		"CMLR"->ChemFormatsOBConvert[form->"CMLR"],
-		"COM"->ChemFormatsOBConvert[form->"COM"],
-		"CRK2D"->ChemFormatsOBConvert[form->"CRK2D"],
-		"CRK3D"->ChemFormatsOBConvert[form->"CRK3D"],
-		"CSR"->ChemFormatsOBConvert[form->"CSR"],
-		"CSSR"->ChemFormatsOBConvert[form->"CSSR"],
-		"CT"->ChemFormatsOBConvert[form->"CT"],
-		"DMOL"->ChemFormatsOBConvert[form->"DMOL"],
-		"ENT"->ChemFormatsOBConvert[form->"ENT"],
-		"FA"->ChemFormatsOBConvert[form->"FA"],
-		"FASTA"->ChemFormatsOBConvert[form->"FASTA"],
-		"FEAT"->ChemFormatsOBConvert[form->"FEAT"],
-		"FH"->ChemFormatsOBConvert[form->"FH"],
-		"FIX"->ChemFormatsOBConvert[form->"FIX"],
-		"FPT"->ChemFormatsOBConvert[form->"FPT"],
-		"FRACT"->ChemFormatsOBConvert[form->"FRACT"],
-		"FS"->ChemFormatsOBConvert[form->"FS"],
-		"FSA"->ChemFormatsOBConvert[form->"FSA"],
-		"GAMIN"->ChemFormatsOBConvert[form->"GAMIN"],
-		"GAU"->ChemFormatsOBConvert[form->"GAU"],
-		"GJC"->ChemFormatsOBConvert[form->"GJC"],
-		"GJF"->ChemFormatsOBConvert[form->"GJF"],
-		"GPR"->ChemFormatsOBConvert[form->"GPR"],
-		"GR96"->ChemFormatsOBConvert[form->"GR96"],
-		"HIN"->ChemFormatsOBConvert[form->"HIN"],
-		"InChI"->ChemFormatsOBConvert[form->"InChI"],
-		"INP"->ChemFormatsOBConvert[form->"INP"],
-		"JIN"->ChemFormatsOBConvert[form->"JIN"],
-		"MDL"->ChemFormatsOBConvert[form->"MDL"],
-		"MMD"->ChemFormatsOBConvert[form->"MMD"],
-		"MMOD"->ChemFormatsOBConvert[form->"MMOD"],
-		"MOLREPORT"->ChemFormatsOBConvert[form->"MOLREPORT"],
-		"MOP"->ChemFormatsOBConvert[form->"MOP"],
-		"MOPCRT"->ChemFormatsOBConvert[form->"MOPCRT"],
-		"MOPIN"->ChemFormatsOBConvert[form->"MOPIN"],
-		"MPC"->ChemFormatsOBConvert[form->"MPC"],
-		"MPD"->ChemFormatsOBConvert[form->"MPD"],
-		"MPQCIN"->ChemFormatsOBConvert[form->"MPQCIN"],
-		"NW"->ChemFormatsOBConvert[form->"NW"],
-		"PCM"->ChemFormatsOBConvert[form->"PCM"],
-		"PDB"->ChemFormatsOBConvert[form->"PDB"],
-		"POV"->ChemFormatsOBConvert[form->"POV"],
-		"PQS"->ChemFormatsOBConvert[form->"PQS"],
-		"QCIN"->ChemFormatsOBConvert[form->"QCIN"],
-		"REPORT"->ChemFormatsOBConvert[form->"REPORT"],
-		"RXN"->ChemFormatsOBConvert[form->"RXN"],
-		"SD"->ChemFormatsOBConvert[form->"SD"],
-		"SMI"->ChemFormatsOBConvert[form->"SMI"],
-		"SY2"->ChemFormatsOBConvert[form->"SY2"],
-		"TDD"->ChemFormatsOBConvert[form->"TDD"],
-		"TEST"->ChemFormatsOBConvert[form->"TEST"],
-		"THERM"->ChemFormatsOBConvert[form->"THERM"],
-		"TMOL"->ChemFormatsOBConvert[form->"TMOL"],
-		"TXYZ"->ChemFormatsOBConvert[form->"TXYZ"],
-		"UNIXYZ"->ChemFormatsOBConvert[form->"UNIXYZ"],
-		"VMOL"->ChemFormatsOBConvert[form->"VMOL"],
-		"XED"->ChemFormatsOBConvert[form->"XED"],
-		"YOB"->ChemFormatsOBConvert[form->"YOB"],
-		"ZIN"->ChemFormatsOBConvert[form->"ZIN"]
-		|>;
+	AssociationMap[
+		ChemFormatsOBConvert[form->#]&,
+		$ChemOpenBabelWriteFormats
+		];
 
 
 (* ::Subsubsubsection::Closed:: *)
@@ -171,81 +101,6 @@ chemFormatConvertersStringBlock[form_]:=
 
 
 (* ::Subsubsubsection::Closed:: *)
-(*$chemFormatOBImports*)
-
-
-
-$chemFormatOBImports=
-	<|
-			"ACR"-><|"MolTable"->ChemFormatsOBImport["ACR"]|>,
-			"ALC"-><|"MolTable"->ChemFormatsOBImport["ALC"]|>,
-			"ARC"-><|"MolTable"->ChemFormatsOBImport["ARC"]|>,
-			"BGF"-><|"MolTable"->ChemFormatsOBImport["BGF"]|>,
-			"BOX"-><|"MolTable"->ChemFormatsOBImport["BOX"]|>,
-			"BS"-><|"MolTable"->ChemFormatsOBImport["BS"]|>,
-			"C3D1"-><|"MolTable"->ChemFormatsOBImport["C3D1"]|>,
-			"C3D2"-><|"MolTable"->ChemFormatsOBImport["C3D2"]|>,
-			"CACCRT"-><|"MolTable"->ChemFormatsOBImport["CACCRT"]|>,
-			"CAN"-><|"MolTable"->ChemFormatsOBImport["CAN"]|>,
-			"CAR"-><|"MolTable"->ChemFormatsOBImport["CAR"]|>,
-			"CCC"-><|"MolTable"->ChemFormatsOBImport["CCC"]|>,
-			"CDX"-><|"MolTable"->ChemFormatsOBImport["CDX"]|>,
-			"CDXML"-><|"MolTable"->ChemFormatsOBImport["CDXML"]|>,
-			"CIF"-><|"MolTable"->ChemFormatsOBImport["CIF"]|>,
-			"CML"-><|"MolTable"->ChemFormatsOBImport["CML"]|>,
-			"CMLR"-><|"MolTable"->ChemFormatsOBImport["CMLR"]|>,
-			"CRK2D"-><|"MolTable"->ChemFormatsOBImport["CRK2D"]|>,
-			"CRK3D"-><|"MolTable"->ChemFormatsOBImport["CRK3D"]|>,
-			"CT"-><|"MolTable"->ChemFormatsOBImport["CT"]|>,
-			"DMOL"-><|"MolTable"->ChemFormatsOBImport["DMOL"]|>,
-			"ENT"-><|"MolTable"->ChemFormatsOBImport["ENT"]|>,
-			"FCH"-><|"MolTable"->ChemFormatsOBImport["FCH"]|>,
-			"FCHK"-><|"MolTable"->ChemFormatsOBImport["FCHK"]|>,
-			"FCK"-><|"MolTable"->ChemFormatsOBImport["FCK"]|>,
-			"FEAT"-><|"MolTable"->ChemFormatsOBImport["FEAT"]|>,
-			"FRACT"-><|"MolTable"->ChemFormatsOBImport["FRACT"]|>,
-			"FS"-><|"MolTable"->ChemFormatsOBImport["FS"]|>,
-			"G03"-><|"MolTable"->ChemFormatsOBImport["G03"]|>,
-			"G98"-><|"MolTable"->ChemFormatsOBImport["G98"]|>,
-			"GAM"-><|"MolTable"->ChemFormatsOBImport["GAM"]|>,
-			"GAMOUT"-><|"MolTable"->ChemFormatsOBImport["GAMOUT"]|>,
-			"GPR"-><|"MolTable"->ChemFormatsOBImport["GPR"]|>,
-			"HIN"-><|"MolTable"->ChemFormatsOBImport["HIN"]|>,
-			"INS"-><|"MolTable"->ChemFormatsOBImport["INS"]|>,
-			"JOUT"-><|"MolTable"->ChemFormatsOBImport["JOUT"]|>,
-			"MDL"-><|"MolTable"->ChemFormatsOBImport["MDL"]|>,
-			"MMD"-><|"MolTable"->ChemFormatsOBImport["MMD"]|>,
-			"MMOD"-><|"MolTable"->ChemFormatsOBImport["MMOD"]|>,
-			"MOO"-><|"MolTable"->ChemFormatsOBImport["MOO"]|>,
-			"MOP"-><|"MolTable"->ChemFormatsOBImport["MOP"]|>,
-			"MOPCRT"-><|"MolTable"->ChemFormatsOBImport["MOPCRT"]|>,
-			"MOPIN"-><|"MolTable"->ChemFormatsOBImport["MOPIN"]|>,
-			"MOPOUT"-><|"MolTable"->ChemFormatsOBImport["MOPOUT"]|>,
-			"MPC"-><|"MolTable"->ChemFormatsOBImport["MPC"]|>,
-			"MPQC"-><|"MolTable"->ChemFormatsOBImport["MPQC"]|>,
-			"NWO"-><|"MolTable"->ChemFormatsOBImport["NWO"]|>,
-			"PC"-><|"MolTable"->ChemFormatsOBImport["PC"]|>,
-			"PCM"-><|"MolTable"->ChemFormatsOBImport["PCM"]|>,
-			"PDB"-><|"MolTable"->ChemFormatsOBImport["PDB"]|>,
-			"PQS"-><|"MolTable"->ChemFormatsOBImport["PQS"]|>,
-			"PREP"-><|"MolTable"->ChemFormatsOBImport["PREP"]|>,
-			"QCOUT"-><|"MolTable"->ChemFormatsOBImport["QCOUT"]|>,
-			"RES"-><|"MolTable"->ChemFormatsOBImport["RES"]|>,
-			"RXN"-><|"MolTable"->ChemFormatsOBImport["RXN"]|>,
-			"SD"-><|"MolTable"->ChemFormatsOBImport["SD"]|>,
-			"SMI"-><|"MolTable"->ChemFormatsOBImport["SMI"]|>,
-			"SY2"-><|"MolTable"->ChemFormatsOBImport["SY2"]|>,
-			"TDD"-><|"MolTable"->ChemFormatsOBImport["TDD"]|>,
-			"THERM"-><|"MolTable"->ChemFormatsOBImport["THERM"]|>,
-			"TMOL"-><|"MolTable"->ChemFormatsOBImport["TMOL"]|>,
-			"UNIXYZ"-><|"MolTable"->ChemFormatsOBImport["UNIXYZ"]|>,
-			"VMOL"-><|"MolTable"->ChemFormatsOBImport["VMOL"]|>,
-			"XML"-><|"MolTable"->ChemFormatsOBImport["XML"]|>,
-			"YOB"-><|"MolTable"->ChemFormatsOBImport["YOB"]|>
-		|>
-
-
-(* ::Subsubsubsection::Closed:: *)
 (*$ChemFormatConverters*)
 
 
@@ -254,64 +109,92 @@ $chemFormatOBImports=
 		Join[
 			<|
 				"MolTable"->
-					Join[
-						<|
-							"ZMatrix"->
-								ChemFormatsMolToZMatrix,
-							"Rules"->
-								ChemFormatsMolToRules,
-							"String"->
-								ChemFormatsMolToString
-							|>,
-						chemFormatConvertersStringBlock["MolTable"],
-						chemFormatConvertersOBBlock["MolTable"]
+					Merge[
+						{
+							<|
+								"ZMatrix"->
+									ChemFormatsMolToZMatrix,
+								"Rules"->
+									ChemFormatsMolToRules,
+								"String"->
+									ChemFormatsMolToString
+								|>,
+							chemFormatConvertersStringBlock["MolTable"],
+							chemFormatConvertersOBBlock["MolTable"]
+							},
+						First
 						],
 				"ZMatrix"->
-					Join[
-						<|
-							"Table"->
-								ChemFormatsZMatrixToMol,
-							"Rules"->
-								ChemFormatsMolToRules,
-							"String"->
-								ChemFormatsMolToString
-							|>,
-						chemFormatConvertersStringBlock["MolTable"],
-						chemFormatConvertersOBBlock["MolTable"]
+					Merge[
+						{
+							<|
+								"Table"->
+									ChemFormatsZMatrixToMol,
+								"Rules"->
+									ChemFormatsMolToRules,
+								"String"->
+									ChemFormatsZMatrixToString
+								|>,
+							chemFormatConvertersStringBlock["ZMatrix"],
+							chemFormatConvertersOBBlock["ZMatrix"]
+							},
+						First
 						],
 				"MolRules"->
-					Join[
-						<|
-							"String"->
-								ChemFormatsMolRulesToString
-							|>,
-						chemFormatConvertersStringBlock["MolRules"],
-						chemFormatConvertersOBBlock["MolRules"]
+					Merge[
+						{
+							<|
+								"String"->
+									ChemFormatsMolRulesToString
+								|>,
+							chemFormatConvertersStringBlock["MolRules"],
+							chemFormatConvertersOBBlock["MolRules"]
+							},
+						First
 						],
 				"SDFTable"->
-					Join[
-						<|
-							"Rules"->
-								ChemFormatsMolToRules,
-							"String"->
-								ChemFormatsMolToString
-							|>,
-						chemFormatConvertersStringBlock["SDFTable"],
-						chemFormatConvertersOBBlock["SDFTable"]
+					Merge[
+						{
+							<|
+								"Rules"->
+									ChemFormatsMolToRules,
+								"String"->
+									ChemFormatsMolToString
+								|>,
+							chemFormatConvertersStringBlock["SDFTable"],
+							chemFormatConvertersOBBlock["SDFTable"]
+							},
+						First
 						],
 				"SDFRules"->
-					Join[
-						<|
-							"String"->
-								ChemFormatsMolRulesToString
-							|>,
-						chemFormatConvertersStringBlock["SDFRules"],
-						chemFormatConvertersOBBlock["SDFRules"]
+					Merge[
+						{
+							<|
+								"String"->
+									ChemFormatsMolRulesToString
+								|>,
+							chemFormatConvertersStringBlock["SDFRules"],
+							chemFormatConvertersOBBlock["SDFRules"]
+							},
+						First
 						]
 				|>,
-			MapIndexed[
-				Join[#, chemFormatConvertersOBBlock[#2[[1, 1]]]]&,
-				$chemFormatOBImports
+			AssociationMap[
+				Join[
+					<|
+						"MolTable"->
+							Switch[#, 
+								"MOL"|"SDF",
+									ChemImportMolTable, 
+								"XYZ",
+									ChemImportXYZ,
+								_,
+									ChemFormatsOBImport[#]
+								]
+							|>,
+					chemFormatConvertersOBBlock[#]
+					]&,
+				$ChemOpenBabelReadFormats
 				]
 			]
 
@@ -323,39 +206,37 @@ $chemFormatOBImports=
 
 ChemFormatsConvert//Clear
 ChemFormatsConvert[data_, format_String->target_String, ops:OptionsPattern[]]:=
-	Catch[
-		PackageExceptionBlock["FormatConvert"]@
-			Module[
-				{
-					converter=Quiet@$ChemFormatConverters[format, target],
-					res
-					},
-				If[Head[converter]===Missing,
-					PackageRaiseException[
-						"FormatConvert",
-						"Format conversion `` is currently unsupported",
-						"MessageParameters"->{format->target}
-						]
-					];
-				res=converter[data, ops];
-				If[Head[res]===converter,
-					PackageRaiseException[
-						"FormatConvert",
-						"Format conversion `` failed for data ``",
-						"MessageParameters"->{format->target, data}
-						]
-					];
+	PackageExceptionBlock["FormatConvert"]@
+		Module[
+			{
+				converter=Quiet@$ChemFormatConverters[format, target],
 				res
-				],
-		_
-		];
+				},
+			If[Head[converter]===Missing,
+				PackageRaiseException[
+					"FormatConvert",
+					"Format conversion `` is currently unsupported",
+					"MessageParameters"->{format->target}
+					]
+				];
+			res=converter[data, ops];
+			If[Head[res]===converter,
+				PackageRaiseException[
+					"FormatConvert",
+					"Format conversion `` failed for data ``",
+					"MessageParameters"->{format->target, data}
+					]
+				];
+			res
+			];
+ChemFormatsConvert[data_, {format_String, target_String}, ops:OptionsPattern[]]:=
+	ChemFormatsConvert[data, format->target, ops];
 ChemFormatsConvert[data_, target_String, ops:OptionsPattern[]]:=
-	Catch[
-		PackageExceptionBlock["FormatConvert"]@
-			ChemFormatsConvert[data, ChemFormatsDetect[data]->target, ops],
-		_
-		];
-ChemFormatsConvert[ctype:(_String->_String)|_String][data_, ops:OptionsPattern[]]:=
+	PackageExceptionBlock["FormatConvert"]@
+		ChemFormatsConvert[data, ChemFormatsDetect[data, True]->target, ops];
+ChemFormatsConvert[
+	ctype:{_String, _String}|(_String->_String)|_String
+	][data_, ops:OptionsPattern[]]:=
 	ChemFormatsConvert[data, ctype, ops]
 
 
@@ -363,7 +244,13 @@ PackageAddAutocompletions[
 	ChemFormatsConvert,
 	{
 		None,
-		Sort@DeleteDuplicates@Flatten@Map[Keys, Values@$ChemFormatConverters]
+		Join[
+			Sort@DeleteDuplicates@Flatten@Map[Keys, Values@$ChemFormatConverters](*,
+			If[#[[1]]\[NotEqual]#[[2]],
+				ToString[#, InputForm],
+				Nothing
+				]&/@Tuples[{$chemOBReadFormats, $chemOBWriteFormats}]*)
+			]
 		}
 	]
 
