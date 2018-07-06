@@ -369,7 +369,7 @@ ChemDVRClear[
 
 
 (* ::Subsection:: *)
-(*Base Methods*)
+(*Helper Methods*)
 
 
 
@@ -525,6 +525,11 @@ PackageAddAutocompletions[
 	]
 
 
+(* ::Subsection:: *)
+(*Run Methods*)
+
+
+
 (* ::Subsubsection::Closed:: *)
 (*Dimension*)
 
@@ -539,26 +544,26 @@ ChemDVRDimension[obj:dvrObjPattern]:=
 
 
 
-ChemDVRRun::baddom="\"Range\" `` isn't a valid DVR domain specification";
-ChemDVRRun::baddiv="\"Points\" `` isn't valid DVR division specification ";
-
-
 ChemDVRGrid[obj:dvrObjPattern, ops:OptionsPattern[]]:=
-	Block[{
-		RunRange=None,
-		RunPoints=None
-		},
+	Block[
+		{
+			RunRange=None,
+			RunPoints=None
+			},
 		RunRange=
 			Replace[dvrOpsLookup[ops, "Range", None],
-				l:{_?NumericQ,_?NumericQ}:>{l}
+				l:{Repeated[_?NumericQ|_DirectedInfinity, {2}]}:>{l}
 				];
-		If[MatchQ[RunRange,{{_?NumericQ,_?NumericQ}..}],
-			ChemDVRSet[obj,"Range",RunRange]
+		If[MatchQ[RunRange,{{Repeated[_?NumericQ|_DirectedInfinity, {2}]}..}],
+			ChemDVRSet[obj, "Range", RunRange]
 			];
 		RunRange=ChemDVRGet[obj, "Range"];
-		If[!MatchQ[RunRange,{{_?NumericQ,_?NumericQ}..}],
-			Message[ChemDVRRun::baddom, RunRange];
-			Throw[$Failed];
+		If[!MatchQ[RunRange, {{Repeated[_?NumericQ|_DirectedInfinity, {2}]}..}],
+			PackageRaiseException[
+				"DVRRun",
+				"\"Range\" `` isn't a valid DVR domain specification",
+				"MessageParameters"->{RunRange}
+				]
 			];
 		RunPoints=
 			Replace[dvrOpsLookup[ops, "Points", None],
@@ -569,8 +574,11 @@ ChemDVRGrid[obj:dvrObjPattern, ops:OptionsPattern[]]:=
 			];
 		RunPoints=ChemDVRGet[obj, "Points"];
 		If[!MatchQ[RunPoints, {__?IntegerQ}],
-			Message[ChemDVRRun::baddiv, RunPoints];
-			Throw[$Failed];
+			PackageRaiseException[
+				"DVRRun",
+				"\"Points\" `` isn't valid DVR division specification",
+				"MessageParameters"->{RunPoints}
+				]
 			];
 		ChemDVRGet[obj,"FormatGrid",(#&)][
 			ChemDVRGet[obj,$dvrgr][
@@ -982,9 +990,6 @@ ChemDVRNotebook[
 
 
 
-ChemDVRRun::badops="Options `` aren't valid for ChemDVRRun (OptionQ failed)"
-
-
 (* ::Subsubsection::Closed:: *)
 (*iChemDVRGetRuntimeOptions*)
 
@@ -1059,7 +1064,7 @@ iChemDVRRunHamiltonian[obj_]:=
 			{iChemDVRGetRuntimeOptions[$dvrwf]}, 
 			Options[ChemDVRDefaultPrepareHamiltonian]
 			]
-		];
+		][[1]];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -1306,15 +1311,18 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 		RunCheckPoint=None,
 		RunEndPoint,
 		RunGrid=None,
-		RunTransformation=None,
+		RunTransforms=None,
 		RunKineticEnergy=None,
 		RunPotentialEnergy=None,
 		RunWavefunctions=None,
 		RunPotentialOptimize=Automatic
 		},
-		If[!OptionQ[{RunRuntimeOptions}], 
-			Message[ChemDVRRun::badops, RunRuntimeOptions];
-			Throw[$Failed]
+		If[!OptionQ[{RunRuntimeOptions}],
+			PackageRaiseException[
+				Automatic,
+				"Options `` aren't valid for ChemDVRRun (OptionQ failed)",
+				{RunRuntimeOptions}
+				]
 			];
 		RunEndPoint=
 			dvrOpsLookup[RunRuntimeOptions, Return, "View"];
@@ -1333,8 +1341,15 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 				RunGrid=
 					ChemDVRDirectProductGrid@RunGrid
 			];
-		If[ListQ@RunGrid[[1]]&&SquareMatrixQ@RunGrid[[2]]&&!SquareMatrixQ[RunGrid[[1]]],
-			{RunGrid, RunTransformation}=RunGrid
+		Which[
+			VectorQ@RunGrid[[1]]&&(SquareMatrixQ@RunGrid[[2]]||RunGrid[[2]]===None),
+				{RunGrid, RunTransforms}=RunGrid,
+			MatchQ[RunGrid[[1]], {__List}]&&
+				AllTrue[RunGrid[[2]], #===None||SquareMatrixQ@#&],
+				{RunGrid, RunTransforms}=RunGrid
+			];
+		If[RunEndPoint==="Transform",
+			Return@RunTransforms
 			];
 		(*---------- Potential Optimization ---------*)
 		RunPotentialOptimize=
@@ -1385,24 +1400,18 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 				]
 			];
 		If[RunEndPoint==="PotentialOptimization", 
-			Return@
-				ChemDVRDefaultPotentialOptimize[
-					RunGrid,
-					FilterRules[
-						{
-							iChemDVRGetRuntimeOptions[
-								"PotentialOptimization",
-								$dvrke,
-								$dvrpe
-								]
-							},
-						Options@ChemDVRDefaultPotentialOptimize
-						]
-					]
+			Return@RunPotentialOptimize
 			];
 		(*---------- Grid Return ---------*)
 		If[RunEndPoint===$dvrgr, Return@RunGrid];
 		RunCheckPoint=$dvrgr;
+		If[Complement[Flatten@{RunEndPoint}, {$dvrgr, "Transform"}]=={}, 
+			Return@
+				Replace[Flatten@{RunEndPoint}, 
+					{$dvrgr:>RunGrid, "Transform":>RunTransform}, 
+					1
+					]
+			];
 		(*---------- Kinetic Energy ---------*)
 		If[!(
 				MatchQ[RunEndPoint, $dvrpe]||
@@ -1421,7 +1430,7 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 					RunKineticEnergy=
 						ChemDVRKineticEnergy[obj,
 							$dvrgr->RunGrid,
-							"TransformationMatrix"->RunTransformation,
+							"TransformationMatrix"->RunTransforms,
 							iChemDVRGetRuntimeOptions[$dvrke]
 							],
 				{__?SquareMatrixQ},
@@ -1479,15 +1488,22 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 			Return@iChemDVRRunEnergies[obj]
 			];
 		(*---------- Wavefunctions ---------*)
-		RunWavefunctions=
-			dvrOpsLookup[RunRuntimeOptions, $dvrwf, None];
-		If[RunWavefunctions===None,
-			RunWavefunctions=iChemDVRRunWavefunctions[obj];
+		If[
+			Length@
+				Complement[
+					Flatten@{RunEndPoint}, 
+					{"Hamiltonian", "KineticEnergy", "PotentialEnergy", "Grid"}
+					]>0,
+			RunWavefunctions=
+				dvrOpsLookup[RunRuntimeOptions, $dvrwf, None];
+			If[RunWavefunctions===None,
+				RunWavefunctions=iChemDVRRunWavefunctions[obj];
+				];
+			If[RunEndPoint===$dvrwf,
+				Return@RunWavefunctions
+				];
+			RunCheckPoint=$dvrwf
 			];
-		If[RunEndPoint===$dvrwf,
-			Return@RunWavefunctions
-			];
-		RunCheckPoint=$dvrwf;
 		(*---------- Rest -----------*)
 		Switch[RunEndPoint,
 			{
@@ -1619,7 +1635,8 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 
 
 ChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
-	Catch@With[{m=If[$Notebooks,dvrOpsLookup[ops,Monitor,False],False]},
+	PackageExceptionBlock["DVRRun"]@
+	With[{m=If[$Notebooks,dvrOpsLookup[ops,Monitor,False],False]},
 		Switch[m,
 			Automatic|True,	
 				With[{start=Now,clock=Unique@"clock$"},

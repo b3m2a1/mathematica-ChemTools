@@ -1,0 +1,284 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Shell DVR", \
+"CodeSection",ExpressionUUID->"fc4cedbb-1f6e-4454-94a4-fe827adb8e59"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDVRBegin", "[", "]"}], ";"}]], "InputSection",
+ CellChangeTimes->{3.699240055548855*^9, 
+  3.707066404725416*^9},ExpressionUUID->"fe0a6118-608c-495e-aa15-\
+8a73b87902ac"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ShellDVRK", "::", "usage"}], "=", 
+   "\"\<Returns the disk DVR kinetic energy matrix\>\""}], 
+  ";"}]], "CodeInput",ExpressionUUID->"8bb521bd-a059-472c-90cb-d64d19ca721a"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"6bded2bd-e5e2-4e4b-a9d1-\
+1d6575fab937"],
+
+Cell["\<\
+\[LeftCeiling]
+\tPulled straight from CM
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"84225c12-0e3c-46b6-b071-89e894fdd12f"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "ShellDVRK", "]"}], "=", "\n", "\t", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"\"\<HBar\>\"", "\[Rule]", "1"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<Mass\>\"", "\[Rule]", "1"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<MeshSpacing\>\"", "\[Rule]", "Automatic"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"\"\<ScalingFactor\>\"", "\[Rule]", "1"}], ",", "\n", "\t\t", 
+     RowBox[{"Precision", "\[Rule]", "MachinePrecision"}], ",", "\n", "\t\t", 
+     
+     RowBox[{
+     "\"\<KineticEnergyElementFunction\>\"", "\[Rule]", "Automatic"}]}], "\n",
+     "\t\t", "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ShellDVRK", "[", 
+   RowBox[{"grid_", ",", " ", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"qgrid", "=", 
+       RowBox[{"grid", "[", 
+        RowBox[{"[", 
+         RowBox[{"All", ",", " ", "1", ",", " ", "1"}], "]"}], "]"}]}], ",", 
+      "\n", "\t\t\t", 
+      RowBox[{"jgrid", "=", 
+       RowBox[{"grid", "[", 
+        RowBox[{"[", 
+         RowBox[{"1", ",", " ", "All", ",", " ", "2"}], "]"}], "]"}]}], ",", 
+      "\n", "\t\t\t", "qpoints", ",", "\n", "\t\t\t", "jpoints", ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"qops", "=", 
+       RowBox[{"Replace", "[", 
+        RowBox[{
+         RowBox[{"Flatten", "@", 
+          RowBox[{"{", "ops", "}"}]}], ",", " ", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"k_", "\[Rule]", 
+            RowBox[{"{", 
+             RowBox[{"q_", ",", " ", "___"}], "}"}]}], ")"}], 
+          "\[RuleDelayed]", 
+          RowBox[{"(", 
+           RowBox[{"k", "\[Rule]", "q"}], ")"}]}], ",", " ", "1"}], "]"}]}], 
+      ",", "\n", "\t\t\t", 
+      RowBox[{"jops", "=", 
+       RowBox[{"Replace", "[", 
+        RowBox[{
+         RowBox[{"Flatten", "@", 
+          RowBox[{"{", "ops", "}"}]}], ",", " ", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"k_", "\[Rule]", 
+            RowBox[{"{", 
+             RowBox[{"_", ",", " ", "j_", ",", " ", "___"}], "}"}]}], ")"}], 
+          "\[RuleDelayed]", 
+          RowBox[{"(", 
+           RowBox[{"k", "\[Rule]", "j"}], ")"}]}], ",", " ", "1"}], "]"}]}], 
+      ",", "\n", "\t\t\t", "qke", ",", "\n", "\t\t\t", "jke", ",", "\n", 
+      "\t\t\t", "ke", ",", "\n", "\t\t\t", 
+      RowBox[{"hb", "=", 
+       RowBox[{"Replace", "[", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "\"\<HBar\>\"", "]"}], ",", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"_", ",", " ", "_", ",", " ", "h_", ",", " ", "___"}], 
+             "}"}], "\[RuleDelayed]", "h"}], ",", " ", 
+           RowBox[{"l_List", "\[RuleDelayed]", 
+            RowBox[{"Mean", "[", "l", "]"}]}]}], "}"}]}], "]"}]}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"m", "=", 
+       RowBox[{"Replace", "[", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "\"\<Mass\>\"", "]"}], ",", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"_", ",", " ", "_", ",", " ", "h_", ",", " ", "___"}], 
+             "}"}], "\[RuleDelayed]", "h"}], ",", " ", 
+           RowBox[{"l_List", "\[RuleDelayed]", 
+            RowBox[{"Mean", "[", "l", "]"}]}]}], "}"}]}], "]"}]}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"sf", "=", 
+       RowBox[{"Replace", "[", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "\"\<ScalingFactor\>\"", "]"}], ",", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+             "_", ",", " ", "_", ",", " ", "_", ",", " ", "h_", ",", " ", 
+              "___"}], "}"}], "\[RuleDelayed]", "h"}], ",", " ", 
+           RowBox[{"l_List", "\[RuleDelayed]", 
+            RowBox[{"Mean", "[", "l", "]"}]}]}], "}"}]}], "]"}]}], ",", "\n", 
+      "\t\t\t", "eke", ",", "\n", "\t\t\t", "rg2", ",", "\n", "\t\t\t", 
+      "sj2"}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+    RowBox[{
+     RowBox[{"qke", "=", 
+      RowBox[{"ChemDVRDefaultKineticEnergy", "[", 
+       RowBox[{"qgrid", ",", " ", "qops"}], "]"}]}], ";", "\n", "\t", "\t\t", 
+     
+     RowBox[{"jke", "=", 
+      RowBox[{"ChemDVRDefaultKineticEnergy", "[", 
+       RowBox[{"jgrid", ",", " ", "qops"}], "]"}]}], ";", "\n", "\t\t\t", 
+     RowBox[{"qpoints", "=", 
+      RowBox[{"Length", "@", "qgrid"}]}], ";", "\n", "\t\t\t", 
+     RowBox[{"jpoints", "=", 
+      RowBox[{"Length", "@", "jgrid"}]}], ";", "\n", "\t\t\t", 
+     RowBox[{"sj2", "=", 
+      RowBox[{
+       RowBox[{"Sin", "[", "jgrid", "]"}], "^", "2"}]}], ";", "\n", "\t\t\t", 
+     
+     RowBox[{"jke", "=", "\n", "\t\t\t\t", 
+      RowBox[{"KroneckerProduct", "[", "\n", "\t\t\t\t\t", 
+       RowBox[{"jke", ",", "\n", "\t\t\t\t\t", 
+        RowBox[{"IdentityMatrix", "[", 
+         RowBox[{"qpoints", ",", " ", "SparseArray"}], "]"}]}], "\n", 
+       "\t\t\t\t\t", "]"}]}], ";", "\n", "\t\t\t", 
+     RowBox[{"qke", "=", "\n", "\t\t\t\t", 
+      RowBox[{"KroneckerProduct", "[", "\n", "\t\t\t\t\t", 
+       RowBox[{
+        RowBox[{"SparseArray", "[", 
+         RowBox[{
+          RowBox[{"Band", "[", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", " ", "1"}], "}"}], "]"}], "\[Rule]", 
+          RowBox[{"1", "/", "sj2"}]}], "]"}], ",", "\n", "\t\t\t\t\t", 
+        "qke"}], "\n", "\t\t\t\t\t", "]"}]}], ";", "\n", "\t\t\t", 
+     RowBox[{"eke", "=", "\n", "\t\t\t\t", 
+      RowBox[{"KroneckerProduct", "[", "\n", "\t\t\t\t\t", 
+       RowBox[{
+        RowBox[{"SparseArray", "[", "\n", "\t\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"Band", "[", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", " ", "1"}], "}"}], "]"}], "->", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"1", "+", "sj2"}], ")"}], "/", "sj2"}]}], "\n", 
+         "\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t", 
+        RowBox[{"IdentityMatrix", "[", 
+         RowBox[{"qpoints", ",", " ", "SparseArray"}], "]"}]}], "\n", 
+       "\t\t\t\t\t", "]"}]}], ";", "\n", "\t\t\t", 
+     RowBox[{"Plus", "[", "\n", "\t\t\t\t", 
+      RowBox[{
+      "qke", ",", "\n", "\t\t\t\t", "jke", ",", "\n", "\t\t\t\t", "eke"}], 
+      "\n", "\t\t\t\t", "]"}]}]}], "\n", "\t\t", 
+   "]"}]}]}], \
+"CodeInput",ExpressionUUID->"cd8d083d-d8da-4dfb-acef-f9de1f960327"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"29acdf48-4df9-4a36-8bd2-\
+d596484ad379"],
+
+Cell[BoxData[
+ RowBox[{"$ShellDVR", "=", "\n", "\t", 
+  RowBox[{"<|", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"\"\<Name\>\"", "\[Rule]", "\"\<Shell 2D\>\""}], ",", "\n", 
+    "\t\t", 
+    RowBox[{"\"\<Range\>\"", "\[Rule]", "\n", "\t\t\t", 
+     RowBox[{"N", "@", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", " ", 
+          RowBox[{"2", "\[Pi]"}]}], "}"}], ",", " ", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", " ", "\[Pi]"}], "}"}]}], "}"}]}]}], ",", "\n", 
+    "\t\t", 
+    RowBox[{"\"\<Points\>\"", "->", "\n", "\t\t\t", 
+     RowBox[{"{", 
+      RowBox[{"15", ",", " ", "15"}], "}"}]}], ",", "\n", "\t\t", 
+    RowBox[{"\"\<KineticEnergy\>\"", "->", "\n", "\t\t\t", "ShellDVRK"}], ",",
+     "\n", "\t\t", 
+    RowBox[{"\"\<Defaults\>\"", "->", "\n", "\t\t\t", 
+     RowBox[{"{", "\n", "\t\t\t\t", 
+      RowBox[{
+       RowBox[{"\"\<GridType\>\"", "->", "\n", "\t\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{
+         "\"\<AzimuthalSubdivision\>\"", ",", " ", 
+          "\"\<PolarSubdivision\>\""}], "}"}]}], ",", "\n", "\t\t\t\t", 
+       RowBox[{
+       "\"\<KineticEnergyElementFunction\>\"", "->", "\n", "\t\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{
+         "\"\<ColbertMillerAzimuthal\>\"", ",", " ", 
+          "\"\<ColbertMillerPolar\>\""}], "}"}]}], ",", "\n", "\t\t\t\t", 
+       RowBox[{"\"\<PotentialFunction\>\"", "\[Rule]", "\n", "\t\t\t\t\t", 
+        RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"\"\<HinderedRotor\>\"", ",", "   ", 
+            RowBox[{"\"\<WellNumber\>\"", "\[Rule]", "3"}]}], " ", "}"}], ",",
+           "\n", "\t\t\t\t\t\t", 
+          RowBox[{"{", 
+           RowBox[{"\"\<HinderedHalfRotor\>\"", ",", " ", 
+            RowBox[{"\"\<EquilibriumBondLength\>\"", "\[Rule]", "3"}]}], 
+           "}"}]}], "\n", "\t\t\t\t\t\t", "}"}]}], ",", "\n", "\t\t\t\t", 
+       RowBox[{"\"\<PlotMode\>\"", "\[Rule]", "\"\<Shell\>\""}]}], "\n", 
+      "\t\t\t\t", "}"}]}]}], "\n", "\t\t", 
+   "|>"}]}]], \
+"CodeInput",ExpressionUUID->"7c275231-ae55-49d8-8da5-ba36a018a3cb"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDVREnd", "[", "]"}], ";"}]], "InputSection",
+ CellChangeTimes->{{3.69923997837263*^9, 3.699240000757471*^9}, 
+   3.707066410893405*^9},ExpressionUUID->"247e4052-5d8d-4fda-bcce-\
+3be397b318c5"],
+
+Cell[BoxData["$ShellDVR"], \
+"CodeInput",ExpressionUUID->"062e096f-efca-46ac-b513-7188deb4cf23"]
+}, Open  ]]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"3bc90092-197f-4b10-9566-\
+9cd9c4936cec"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{63, Automatic}, {46, Automatic}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackagePlain.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

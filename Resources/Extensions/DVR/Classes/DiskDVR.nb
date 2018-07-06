@@ -17,32 +17,19 @@ Cell[BoxData[
   3.707066404725416*^9},ExpressionUUID->"fe0a6118-608c-495e-aa15-\
 8a73b87902ac"],
 
-Cell[BoxData[{
- RowBox[{
-  RowBox[{
-   RowBox[{"DiskDVRPoints", "::", "usage"}], "=", 
-   "\"\<Returns the radial DVR grid/array\>\""}], ";"}], "\n", 
+Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"DiskDVRK", "::", "usage"}], "=", 
-   "\"\<Returns the radial DVR kinetic energy matrix\>\""}], 
-  ";"}]}], "CodeInput",
- CellChangeTimes->{
-  3.699235814204474*^9, {3.6992370430571823`*^9, 3.6992370521161327`*^9}, {
-   3.731972688971364*^9, 3.7319727189346046`*^9}, {3.732009218019388*^9, 
-   3.7320092298279467`*^9}},ExpressionUUID->"8bb521bd-a059-472c-90cb-\
-d64d19ca721a"],
+   "\"\<Returns the disk DVR kinetic energy matrix\>\""}], 
+  ";"}]], "CodeInput",ExpressionUUID->"8bb521bd-a059-472c-90cb-d64d19ca721a"],
 
 Cell[BoxData[
  RowBox[{
   RowBox[{"ChemDVRNeeds", "/@", 
    RowBox[{"{", 
-    RowBox[{"\"\<RadialDVR\>\"", ",", " ", "\"\<AngularDVR\>\""}], "}"}]}], 
-  ";"}]], "CodeInput",
- CellChangeTimes->{{3.7320662031534863`*^9, 3.7320662144847927`*^9}, {
-  3.732066830689795*^9, 
-  3.732066834191299*^9}},ExpressionUUID->"494bec57-5dbb-4e6b-8968-\
-c2800d92a0d4"]
+    RowBox[{"\"\<RadialDVR\>\"", ",", " ", "\"\<RingDVR\>\""}], "}"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"494bec57-5dbb-4e6b-8968-c2800d92a0d4"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -50,185 +37,146 @@ Cell[CellGroupData[{
 Cell[BoxData[
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
-  ";"}]], "InputSection",ExpressionUUID->"5577ebba-1313-41d6-91be-\
-9f82c59a24b2"],
+  ";"}]], "InputSection",ExpressionUUID->"6bded2bd-e5e2-4e4b-a9d1-\
+1d6575fab937"],
 
 Cell["\<\
 \[LeftCeiling]
-\tGrid as direct product
+\tNeed a rep for d/dr...
 \[RightFloor]\
 \>", "Text",
- Evaluatable->True,
- CellChangeTimes->{{3.732387877680046*^9, 
-  3.732387896469944*^9}},ExpressionUUID->"32f3539e-fc0f-4fe4-aa8e-\
-b57186ee3ec5"],
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{
-   RowBox[{"Options", "[", "DiskDVRPoints", "]"}], "=", "\n", "\t", 
-   RowBox[{"Normal", "@", 
-    RowBox[{"Merge", "[", "\n", "\t\t", 
-     RowBox[{
-      RowBox[{"Options", "/@", 
-       RowBox[{"{", 
-        RowBox[{
-         RowBox[{"$RadialDVR", "[", "\"\<Grid\>\"", "]"}], ",", " ", 
-         RowBox[{"$AngularDVR", "[", "\"\<Grid\>\"", "]"}]}], "}"}]}], ",", 
-      "\n", "\t\t", "Last"}], "\n", "\t\t", "]"}]}]}], ";"}], "\n", 
- RowBox[{
-  RowBox[{"DiskDVRPoints", "[", "\n", "\t", 
-   RowBox[{
-    RowBox[{"pts", ":", 
-     RowBox[{"{", 
-      RowBox[{"_Integer", ",", " ", "_Integer"}], "}"}]}], ",", "\n", "\t", 
-    RowBox[{"region", ":", 
-     RowBox[{"{", 
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{
-         RowBox[{"_", "?", "NumericQ"}], ",", " ", 
-         RowBox[{"_", "?", "NumericQ"}]}], "}"}], ",", " ", 
-       RowBox[{"{", 
-        RowBox[{
-         RowBox[{"_", "?", "NumericQ"}], ",", " ", 
-         RowBox[{"_", "?", "NumericQ"}]}], "}"}]}], "}"}]}], ",", "\n", "\t", 
-    
-    RowBox[{"opts", ":", 
-     RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
-  "\t", 
-  RowBox[{"ChemDVRDirectProductGrid", "[", "\n", "\t\t", 
-   RowBox[{
-    RowBox[{"{", 
-     RowBox[{
-      RowBox[{"$RadialDVR", "[", "\"\<Grid\>\"", "]"}], ",", " ", 
-      RowBox[{"$AngularDVR", "[", "\"\<Grid\>\"", "]"}]}], "}"}], ",", "\n", 
-    "\t\t", "region", ",", "\n", "\t\t", "pts", ",", "\n", "\t\t", "opts"}], 
-   "\n", "\t\t", "]"}], " "}]}], "CodeInput",
- CellChangeTimes->{{3.732066338525298*^9, 3.732066345596293*^9}, {
-  3.732066552202579*^9, 3.73206655559838*^9}, {3.732066839622855*^9, 
-  3.7320668590203667`*^9}, {3.732296172942457*^9, 3.7322962139307537`*^9}, {
-  3.732301769595252*^9, 3.732301772884615*^9}, {3.7323021791096983`*^9, 
-  3.732302235084844*^9}},ExpressionUUID->"08836dd6-95b3-4ebd-b791-\
-cc1fd555b9ba"],
-
-Cell["\<\
-\[LeftCeiling]
-\tKinetic energy as direct product
-\[RightFloor]\
-\>", "Text",
- Evaluatable->True,
- CellChangeTimes->{{3.732387877680046*^9, 
-  3.732387901729513*^9}},ExpressionUUID->"69b6c3a0-ebe1-422a-9689-\
-c43dc8b0a86d"],
+ Evaluatable->True,ExpressionUUID->"84225c12-0e3c-46b6-b071-89e894fdd12f"],
 
 Cell[BoxData[{
  RowBox[{
   RowBox[{
    RowBox[{"Options", "[", "DiskDVRK", "]"}], "=", "\n", "\t", 
-   RowBox[{"Normal", "@", 
-    RowBox[{"Merge", "[", "\n", "\t\t", 
-     RowBox[{
-      RowBox[{"Options", "/@", 
-       RowBox[{"{", 
-        RowBox[{
-         RowBox[{"$RadialDVR", "[", "\"\<Grid\>\"", "]"}], ",", " ", 
-         RowBox[{"$AngularDVR", "[", "\"\<Grid\>\"", "]"}]}], "}"}]}], ",", 
-      "\n", "\t\t", "Last"}], "\n", "\t\t", "]"}]}]}], ";"}], "\n", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"\"\<HBar\>\"", "\[Rule]", "1"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<Mass\>\"", "\[Rule]", "1"}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<ScalingFactor\>\"", "\[Rule]", "1"}]}], "\n", "\t\t", 
+    "}"}]}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"DiskDVRPoints", "[", "\n", "\t", 
+  RowBox[{"DiskDVRK", "[", 
+   RowBox[{"grid_", ",", " ", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
    RowBox[{
-    RowBox[{"pts", ":", 
-     RowBox[{"{", 
-      RowBox[{"_Integer", ",", " ", "_Integer"}], "}"}]}], ",", "\n", "\t", 
-    RowBox[{"region", ":", 
-     RowBox[{"{", 
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{
-         RowBox[{"_", "?", "NumericQ"}], ",", " ", 
-         RowBox[{"_", "?", "NumericQ"}]}], "}"}], ",", " ", 
-       RowBox[{"{", 
-        RowBox[{
-         RowBox[{"_", "?", "NumericQ"}], ",", " ", 
-         RowBox[{"_", "?", "NumericQ"}]}], "}"}]}], "}"}]}], ",", "\n", "\t", 
-    
-    RowBox[{"opts", ":", 
-     RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
-  "\t", 
-  RowBox[{"ChemDVRDirectProductGrid", "[", "\n", "\t\t", 
-   RowBox[{
-    RowBox[{"{", 
+    RowBox[{"{", "\n", "\t\t\t", 
      RowBox[{
-      RowBox[{"$RadialDVR", "[", "\"\<Grid\>\"", "]"}], ",", " ", 
-      RowBox[{"$AngularDVR", "[", "\"\<Grid\>\"", "]"}]}], "}"}], ",", "\n", 
-    "\t\t", "region", ",", "\n", "\t\t", "pts", ",", "\n", "\t\t", "opts"}], 
-   "\n", "\t\t", "]"}], " "}]}], "CodeInput",
- CellChangeTimes->{{3.732066338525298*^9, 3.732066345596293*^9}, {
-   3.732066552202579*^9, 3.73206655559838*^9}, {3.732066839622855*^9, 
-   3.7320668590203667`*^9}, {3.732296172942457*^9, 3.7322962139307537`*^9}, {
-   3.732301769595252*^9, 3.732301772884615*^9}, {3.7323021791096983`*^9, 
-   3.732302235084844*^9}, 
-   3.732387874700611*^9},ExpressionUUID->"533ddc50-8505-4bc6-a357-\
-a91db4eb3de5"]
+      RowBox[{"rgrid", "=", 
+       RowBox[{"grid", "[", 
+        RowBox[{"[", 
+         RowBox[{"All", ",", " ", "1", ",", " ", "1"}], "]"}], "]"}]}], ",", 
+      "\n", "\t\t\t", 
+      RowBox[{"qgrid", "=", 
+       RowBox[{"grid", "[", 
+        RowBox[{"[", 
+         RowBox[{"1", ",", " ", "All", ",", " ", "2"}], "]"}], "]"}]}], ",", 
+      "\n", "\t\t\t", 
+      RowBox[{"rops", "=", 
+       RowBox[{"Replace", "[", 
+        RowBox[{
+         RowBox[{"Flatten", "@", 
+          RowBox[{"{", "ops", "}"}]}], ",", " ", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"k_", "\[Rule]", 
+            RowBox[{"{", 
+             RowBox[{"r_", ",", " ", "___"}], "}"}]}], ")"}], 
+          "\[RuleDelayed]", 
+          RowBox[{"(", 
+           RowBox[{"k", "\[Rule]", "r"}], ")"}]}], ",", " ", "1"}], "]"}]}], 
+      ",", "\n", "\t\t\t", 
+      RowBox[{"qops", "=", 
+       RowBox[{"Replace", "[", 
+        RowBox[{
+         RowBox[{"Flatten", "@", 
+          RowBox[{"{", "ops", "}"}]}], ",", " ", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"k_", "\[Rule]", 
+            RowBox[{"{", 
+             RowBox[{"_", ",", " ", "q_", ",", " ", "___"}], "}"}]}], ")"}], 
+          "\[RuleDelayed]", 
+          RowBox[{"(", 
+           RowBox[{"k", "\[Rule]", "q"}], ")"}]}], ",", " ", "1"}], "]"}]}], 
+      ",", "\n", "\t\t\t", "rke", ",", "\n", "\t\t\t", "qke", ",", "\n", 
+      "\t\t\t", "ke"}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"rke", "=", 
+      RowBox[{"ChemDVRDefaultKineticEnergy", "[", 
+       RowBox[{"rgrid", ",", " ", "rops"}], "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"qke", "=", 
+      RowBox[{"ChemDVRDefaultKineticEnergy", "[", 
+       RowBox[{"qgrid", ",", " ", "rops"}], "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"ke", "=", 
+      RowBox[{"KroneckerProduct", "[", 
+       RowBox[{"rke", ",", " ", 
+        RowBox[{"IdentityMatrix", "[", 
+         RowBox[{
+          RowBox[{"Length", "@", "qke"}], ",", " ", "SparseArray"}], "]"}]}], 
+       "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"ke", "+=", 
+      RowBox[{
+      "KroneckerProduct", "[", "\n", "\t\t", 
+       "]"}]}]}]}]}]}]}], \
+"CodeInput",ExpressionUUID->"cd8d083d-d8da-4dfb-acef-f9de1f960327"]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"End", "[", "]"}], ";"}]], "InputSection",
- CellChangeTimes->{{3.732066602080488*^9, 
-  3.732066605384226*^9}},ExpressionUUID->"84a54722-f124-4eb5-850e-\
-f322513db9f9"],
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"29acdf48-4df9-4a36-8bd2-\
+d596484ad379"],
 
 Cell[BoxData[
  RowBox[{"$DiskDVR", "=", "\n", "\t", 
   RowBox[{"<|", "\n", "\t\t", 
    RowBox[{
-    RowBox[{"\"\<Name\>\"", "\[Rule]", "\"\<Disk 2D\>\""}], ",", "\n", "\t", 
-    "\t", 
-    RowBox[{"\"\<Dimension\>\"", "\[Rule]", "2"}], ",", "\n", "\t\t", 
-    RowBox[{"\"\<PointLabels\>\"", "->", "\n", "\t\t\t", 
-     RowBox[{"Join", "[", 
-      RowBox[{
-       RowBox[{"$RadialDVR", "[", "\"\<PointLabels\>\"", "]"}], ",", " ", 
-       RowBox[{"$AngularDVR", "[", "\"\<PointLabels\>\"", "]"}]}], "]"}]}], 
-    ",", "\n", "\t\t", 
+    RowBox[{"\"\<Name\>\"", "\[Rule]", "\"\<Disk 2D\>\""}], ",", "\n", "\t\t", 
     RowBox[{"\"\<Range\>\"", "\[Rule]", "\n", "\t\t\t", 
-     RowBox[{"Join", "[", 
+     RowBox[{"{", 
       RowBox[{
-       RowBox[{"$RadialDVR", "[", "\"\<Range\>\"", "]"}], ",", " ", 
-       RowBox[{"$AngularDVR", "[", "\"\<Range\>\"", "]"}]}], "]"}]}], ",", 
-    "\n", "\t\t", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", " ", "10"}], "}"}], ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"0.", ",", " ", 
+         RowBox[{"2.", "\[Pi]"}]}], "}"}]}], "}"}]}], ",", "\n", "\t\t", 
     RowBox[{"\"\<Points\>\"", "->", "\n", "\t\t\t", 
-     RowBox[{"Join", "[", 
-      RowBox[{
-       RowBox[{"$RadialDVR", "[", "\"\<Points\>\"", "]"}], ",", " ", 
-       RowBox[{"$AngularDVR", "[", "\"\<Points\>\"", "]"}]}], "]"}]}], ",", 
-    "\n", "\t\t", 
-    RowBox[{"\"\<Grid\>\"", "->", "DiskDVRPoints"}], ",", "\n", "\t\t", 
-    RowBox[{"\"\<KineticEnergy\>\"", "\[Rule]", "DiskDVRK"}], ",", "\n", 
-    "\t\t", 
+     RowBox[{"{", 
+      RowBox[{"30", ",", " ", "30"}], "}"}]}], ",", "\n", "\t\t", 
     RowBox[{"\"\<Defaults\>\"", "->", "\n", "\t\t\t", 
      RowBox[{"{", "\n", "\t\t\t\t", 
       RowBox[{
-       RowBox[{"\"\<PotentialFunction\>\"", "\[Rule]", "\n", "\t\t\t\t\t", 
-        RowBox[{
-        "\"\<MorseOscillator\>\"", "\[Cross]", "\"\<HinderedRotor\>\""}]}], 
-       ",", "\n", "\t\t\t\t", 
-       RowBox[{"\"\<PlotMode\>\"", "\[Rule]", 
+       RowBox[{"\"\<GridType\>\"", "->", "\n", "\t\t\t\t\t", 
         RowBox[{"{", 
-         RowBox[{"\"\<Cartesian\>\"", ",", " ", "1"}], "}"}]}]}], "\n", 
-      "\t\t\t\t", "}"}]}]}], "\n", "\t\t", "|>"}]}]], "CodeInput",
- CellChangeTimes->{{3.699236923511825*^9, 3.6992369555077667`*^9}, {
-   3.699237949531838*^9, 3.699237954564919*^9}, 3.7310917258452806`*^9, {
-   3.731972724114958*^9, 3.731972751612996*^9}, {3.731989625498749*^9, 
-   3.731989650996195*^9}, {3.732066180844104*^9, 3.732066228762169*^9}, {
-   3.732066387612627*^9, 3.732066398764946*^9}, {3.732066436066725*^9, 
-   3.73206650903833*^9}, {3.732301783312249*^9, 
-   3.732301826209806*^9}},ExpressionUUID->"7c275231-ae55-49d8-8da5-\
-ba36a018a3cb"]
+         RowBox[{
+         "\"\<RegularSubdivision\>\"", ",", " ", 
+          "\"\<AzimuthalSubdivision\>\""}], "}"}]}], ",", "\n", "\t\t\t\t", 
+       RowBox[{
+       "\"\<KineticEnergyElementFunction\>\"", "->", "\n", "\t\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{
+         "\"\<ColbertMillerRadial\>\"", ",", " ", "\"\<MeyerAzimuthal\>\""}], 
+         "}"}]}], ",", "\n", "\t\t\t\t", 
+       RowBox[{"\"\<PotentialFunction\>\"", "\[Rule]", "\n", "\t\t\t\t\t", 
+        RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"\"\<MorseOscillator\>\"", ",", " ", 
+            RowBox[{"\"\<EquilibriumBondLength\>\"", "\[Rule]", "3"}]}], 
+           "}"}], ",", "\n", "\t\t\t\t\t\t", 
+          RowBox[{"Function", "[", "0", "]"}]}], "\n", "\t\t\t\t\t\t", 
+         "}"}]}], ",", "\n", "\t\t\t\t", 
+       RowBox[{"\"\<PlotMode\>\"", "\[Rule]", "\"\<Polar\>\""}]}], "\n", 
+      "\t\t\t\t", "}"}]}]}], "\n", "\t\t", 
+   "|>"}]}]], \
+"CodeInput",ExpressionUUID->"7c275231-ae55-49d8-8da5-ba36a018a3cb"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -240,9 +188,8 @@ Cell[BoxData[
    3.707066410893405*^9},ExpressionUUID->"247e4052-5d8d-4fda-bcce-\
 3be397b318c5"],
 
-Cell[BoxData["$RadialDVR"], "CodeInput",
- CellChangeTimes->{
-  3.699241967016337*^9},ExpressionUUID->"062e096f-efca-46ac-b513-7188deb4cf23"]
+Cell[BoxData["$DiskDVR"], \
+"CodeInput",ExpressionUUID->"062e096f-efca-46ac-b513-7188deb4cf23"]
 }, Open  ]]
 }, Open  ]],
 
@@ -250,7 +197,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"3bc90092-197f-4b10-9566-\
 9cd9c4936cec"]
 },
 WindowSize->{808, 755},
-WindowMargins->{{163, Automatic}, {Automatic, 39}},
+WindowMargins->{{Automatic, 175}, {0, Automatic}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackagePlain.nb", 
