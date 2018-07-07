@@ -4631,42 +4631,69 @@ Cell[BoxData[{
            RowBox[{"\"\<Name: \>\"", ",", 
             RowBox[{"ChemDVRGet", "[", 
              RowBox[{"obj", ",", "\"\<Name\>\""}], "]"}]}], "}"}], ",", 
-          "StandardForm"}], "]"}], ",", "\n", "\t", "\t", "\t\t\t", 
-        RowBox[{"BoxForm`MakeSummaryItem", "[", 
+          "StandardForm"}], "]"}], ",", "\n", "\t\t\t\t\t", 
+        RowBox[{"Replace", "[", 
+         RowBox[{
+          RowBox[{"ChemDVRGet", "[", 
+           RowBox[{"obj", ",", " ", "\"\<Description\>\""}], "]"}], ",", "\n",
+           "\t\t\t\t\t\t", 
+          RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"s_String", "?", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"StringLength", "[", "#", "]"}], ">", "0"}], "&"}], 
+               ")"}]}], ":>", "\n", "\t\t\t\t\t\t\t\t", 
+             RowBox[{"Pane", "[", "\n", "\t\t\t\t\t\t\t\t\t", 
+              RowBox[{"s", ",", "\n", "\t", "\t", "\t\t\t\t\t\t\t", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"Automatic", ",", " ", "250"}], "}"}], ",", " ", 
+                 "Automatic"}], "}"}]}], "\n", "\t\t\t\t\t\t\t\t\t", "]"}]}], 
+            ",", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{"_", "\[Rule]", "Nothing"}]}], "\n", "\t\t\t\t\t\t\t", 
+           "}"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t\t", 
+       "}"}], ",", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"Prepend", "[", "\n", "\t\t\t\t", 
+        RowBox[{"BoxForm`MakeSummaryItem", "[", "\n", "\t\t\t\t\t", 
          RowBox[{
           RowBox[{"{", 
            RowBox[{"\"\<UUID: \>\"", ",", 
             RowBox[{"ChemDVRGet", "[", 
-             RowBox[{"obj", ",", "\"\<UUID\>\""}], "]"}]}], "}"}], ",", 
-          "StandardForm"}], "]"}]}], "\n", "\t", "\t\t\t\t", "}"}], ",", "\n",
-       "\t\t\t", 
-      RowBox[{"Block", "[", 
-       RowBox[{
-        RowBox[{"{", 
-         RowBox[{"$ContextPath", "=", 
-          RowBox[{"{", "\"\<System`\>\"", "}"}]}], "}"}], ",", "\n", 
-        "\t\t\t\t", 
-        RowBox[{"Map", "[", "\n", "\t\t\t\t\t", 
-         RowBox[{
+             RowBox[{"obj", ",", "\"\<UUID\>\""}], "]"}]}], "}"}], ",", "\n", 
+          "\t\t\t\t\t", "StandardForm"}], "\n", "\t\t\t\t\t", "]"}], "\n", 
+        "\t\t\t\t", "]"}], "@", "\n", "\t\t\t", 
+       RowBox[{"Internal`WithLocalSettings", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"System`Private`NewContextPath", "@", 
+          RowBox[{"{", "\"\<System`\>\"", "}"}]}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"Map", "[", "\n", "\t\t\t\t\t", 
           RowBox[{
-           RowBox[{"BoxForm`MakeSummaryItem", "[", 
-            RowBox[{
-             RowBox[{"{", 
-              RowBox[{
-               RowBox[{"Row", "@", 
-                RowBox[{"{", 
-                 RowBox[{"#", ",", "\"\<: \>\""}], "}"}]}], ",", 
-               RowBox[{"ChemDVRGet", "[", 
-                RowBox[{"obj", ",", "#"}], "]"}]}], "}"}], ",", 
-             "StandardForm"}], "]"}], "&"}], ",", 
-          RowBox[{"{", "\n", "\t", "\t", "\t\t\t\t", 
            RowBox[{
-           "\"\<Range\>\"", ",", "\n", "\t", "\t\t\t\t\t", "\"\<Points\>\"", 
-            ",", "\n", "\t\t\t\t\t\t", "$dvrgr", ",", "\n", "\t\t\t\t\t\t", 
-            "$dvrke", ",", "\n", "\t\t\t\t\t\t", "$dvrpe", ",", "\n", 
-            "\t\t\t\t\t\t", "$dvrwf"}], "\n", "\t\t\t\t\t", "}"}]}], "]"}]}], 
-       "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", "StandardForm"}], "\n", 
-     "\t\t\t", "]"}]}]}], ";"}], "\n", 
+            RowBox[{"BoxForm`MakeSummaryItem", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"Row", "@", 
+                 RowBox[{"{", 
+                  RowBox[{"#", ",", "\"\<: \>\""}], "}"}]}], ",", 
+                RowBox[{"ChemDVRGet", "[", 
+                 RowBox[{"obj", ",", "#"}], "]"}]}], "}"}], ",", 
+              "StandardForm"}], "]"}], "&"}], ",", 
+           RowBox[{"{", "\n", "\t", "\t", "\t\t\t\t", 
+            RowBox[{
+            "\"\<Range\>\"", ",", "\n", "\t", "\t\t\t\t\t", "\"\<Points\>\"", 
+             ",", "\n", "\t\t\t\t\t\t", "$dvrgr", ",", "\n", "\t\t\t\t\t\t", 
+             "$dvrke", ",", "\n", "\t\t\t\t\t\t", "$dvrpe", ",", "\n", 
+             "\t\t\t\t\t\t", "$dvrwf"}], "\n", "\t\t\t\t\t", "}"}]}], "\n", 
+          "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"System`Private`RestoreContextPath", "[", "]"}]}], "\t", 
+        "\n", "\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t", "StandardForm"}], 
+     "\n", "\t\t\t", "]"}]}]}], ";"}], "\n", 
  RowBox[{"\t\t"}]}], \
 "CodeInput",ExpressionUUID->"bbe07467-5b8a-4157-ba3a-7a5978392431"]
 }, Open  ]]

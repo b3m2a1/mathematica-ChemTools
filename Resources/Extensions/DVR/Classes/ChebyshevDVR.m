@@ -5,11 +5,9 @@
 ChemDVRBegin[];
 
 
-$LegendreDVR=
+$Chebyshev1DDVR=
 	<|
-		"Name"->"Legendre 1D",
-		"Dimension"->1,
-		"PointLabels"->{("\[Theta]"|"theta"|"Theta"|"Azimuthal"|"azimuthal")},
+		"Name"->"Chebyshev 1D",
 		"Points"->{251},
 		"Range"->{{0,\[Pi]}},
 		"FormatGrid"->
@@ -32,7 +30,7 @@ $LegendreDVR=
 ChemDVREnd[];
 
 
-$LegendreDVR
+$Chebyshev1DDVR
 
 
 

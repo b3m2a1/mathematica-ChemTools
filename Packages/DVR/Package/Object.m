@@ -1790,9 +1790,25 @@ Format[obj:dvrObjPattern?chemDVRValidQ]:=
 			Replace[ChemDVRGet[obj,"Icon"], _Missing->$dvrimg],
 				{
 					BoxForm`MakeSummaryItem[{"Name: ",ChemDVRGet[obj,"Name"]},StandardForm],
-					BoxForm`MakeSummaryItem[{"UUID: ",ChemDVRGet[obj,"UUID"]},StandardForm]
-					},
-			Block[{$ContextPath={"System`"}},
+					Replace[ChemDVRGet[obj, "Description"],
+						{
+							s_String?(StringLength[#]>0&):>
+								Pane[
+									s,
+									{{Automatic, 250}, Automatic}
+									],
+							_->Nothing
+							}
+						]
+						},
+			Prepend[
+				BoxForm`MakeSummaryItem[
+					{"UUID: ",ChemDVRGet[obj,"UUID"]},
+					StandardForm
+					]
+				]@
+			Internal`WithLocalSettings[
+				System`Private`NewContextPath@{"System`"},
 				Map[
 					BoxForm`MakeSummaryItem[{Row@{#,": "},ChemDVRGet[obj,#]},StandardForm]&,{
 						"Range",
@@ -1801,7 +1817,9 @@ Format[obj:dvrObjPattern?chemDVRValidQ]:=
 						$dvrke,
 						$dvrpe,
 						$dvrwf
-					}]
+					}
+					],
+				System`Private`RestoreContextPath[]	
 				],
 			StandardForm
 			];

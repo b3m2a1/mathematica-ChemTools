@@ -289,7 +289,7 @@ ChemDVRDefaultWavefunctions[T_, V_, ops:OptionsPattern[]]:=
 								Automatic:>
 									If[Head@ham===SparseArray, 
 										"Arnoldi",
-										"FEAST"
+										Automatic
 										]
 								],
 						FilterRules[
