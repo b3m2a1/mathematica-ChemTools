@@ -1,0 +1,39 @@
+(* ::Package:: *)
+
+<|
+	"DVRHBarInAMUWavenumbers":>
+		UnitConvert[
+			Quantity["ReducedPlanckConstant"]/
+				Sqrt[Quantity["PlanckConstant"*"SpeedOfLight"]],
+			Sqrt["AtomicMassUnit"]*Sqrt["Centimeters"]
+			],
+	"DVRHBarInKgWavenumbers":>
+		UnitConvert[
+			Quantity["ReducedPlanckConstant"]/
+				Sqrt[Quantity["PlanckConstant"*"SpeedOfLight"]],
+			Sqrt["Kilograms"*"Centimeters"]
+			],
+	"DVRHBarInAMUHartrees":>
+		UnitConvert[
+			UnitConvert[
+				Quantity["ReducedPlanckConstant"],
+				"Hartrees"*"Seconds"
+				]^2,
+			Quantity["Hartrees"*("Kilograms"*("Centimeters")^2)]
+			],
+	"DVRHBarInKgHartrees":>
+		UnitConvert[
+			UnitConvert[
+				Quantity["ReducedPlanckConstant"],
+				"Hartrees"*"Seconds"
+				]^2,
+			Quantity["Hartrees"*("Kilograms"*("Centimeters")^2)]
+			],
+	"InertialConstantInAMUAngstromsMegahertz":>
+		UnitConvert[
+			Quantity[1/(8\[Pi]^2),
+				"PlanckConstant"/
+				("AtomicMassUnit"*"Angstroms"^2)],
+			"Megahertz"
+			]
+	|>

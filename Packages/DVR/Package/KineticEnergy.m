@@ -687,7 +687,7 @@ Expected to take (i, j), (i, j, N) or (i, j, N, x[i], x[j])",
 
 
 (* ::Subsubsection::Closed:: *)
-(*iChemDVRDefaultKineticEnergyElementFunction*)
+(*ChemDVRDefaultKineticEnergyElementFunction*)
 
 
 
@@ -819,7 +819,7 @@ iChemDVRDefaultKineticEnergyElementFunction[e_, ___]:=
 		];
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsubsection::Closed:: *)
 (*ChemDVRDefaultKineticEnergyElementFunction*)
 
 

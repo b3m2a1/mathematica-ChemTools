@@ -1,6 +1,6 @@
 Paclet[
   Name -> "ChemTools",
-  Version -> "1.2.8",
+  Version -> "1.2.9",
   Creator -> "b3m2a1@gmail.com",
   Description -> "A collection of tools for doing chemistry",
   Thumbnail -> "PacletIcon.png",
@@ -20,7 +20,95 @@ Paclet[
        			"Extensions",
        			"Icons",
        			"PaletteGenerators",
-       			"Templates"
+       			"Templates",
+       			{
+        				"ChemAtomColors",
+        				"Datasets/ChemAtomColors.wl"
+        			},
+       			{
+        				"ChemBondDistances",
+        				"Datasets/ChemBondDistances.wl"
+        			},
+       			{
+        				"ChemConstants",
+        				"Datasets/ChemConstants.wl"
+        			},
+       			{
+        				"ChemCustomAtoms",
+        				"Datasets/ChemCustomAtoms.wl"
+        			},
+       			{
+        				"ChemElements",
+        				"Datasets/ChemElements.wl"
+        			},
+       			{
+        				"ChemElementValences",
+        				"Datasets/ChemElementValences.wl"
+        			},
+       			{
+        				"ChemIsotopicMasses",
+        				"Datasets/ChemIsotopicMasses.wl"
+        			},
+       			{
+        				"ChemUnitConversions",
+        				"Datasets/ChemUnitConversions.wl"
+        			},
+       			{
+        				"DVRIcon",
+        				"Icons/DVRIcon.png"
+        			},
+       			{
+        				"OpenBabelIcon",
+        				"Icons/OpenBabelIcon.png"
+        			},
+       			{
+        				"PacletIconBig",
+        				"Icons/PacletIconBig.png"
+        			},
+       			{
+        				"Psi4Icon",
+        				"Icons/Psi4Icon.png"
+        			},
+       			{
+        				"Psi4RunIcon",
+        				"Icons/Psi4RunIcon.png"
+        			},
+       			{
+        				"DVRManagerGenerator",
+        				"PaletteGenerators/DVRManagerGenerator.nb"
+        			},
+       			{
+        				"DVRNotebook",
+        				"Templates/DVRNotebook.nb"
+        			},
+       			{
+        				"DVR",
+        				"Extensions/DVR"
+        			},
+       			{
+        				"Classes",
+        				"Extensions/DVR/Classes"
+        			},
+       			{
+        				"Instances",
+        				"Extensions/DVR/Instances"
+        			},
+       			{
+        				"KineticEnergy",
+        				"Extensions/DVR/KineticEnergy"
+        			},
+       			{
+        				"PotentialEnergy",
+        				"Extensions/DVR/PotentialEnergy"
+        			},
+       			{
+        				"Wavefunctions",
+        				"Extensions/DVR/Wavefunctions"
+        			},
+       			{
+        				"WSim",
+        				"Extensions/WSim"
+        			}
        		},
      		"SystemID" -> "*"
      	},
