@@ -1134,7 +1134,7 @@ Cell[BoxData[{
   3.735155137256124*^9}, {3.735227978126156*^9, 
   3.735227996091238*^9}},ExpressionUUID->"511a14bd-a59e-4f5d-8e02-\
 6542dd53df3e"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1143,6 +1143,18 @@ Cell["\[LeftCeiling]iChemDVRPotentialEnergy\[RightFloor]", "CodeSubsubsection",
  CellChangeTimes->{{3.7351492860815563`*^9, 
   3.735149315448614*^9}},ExpressionUUID->"1b8fa04c-503d-4868-baf2-\
 a87967ad698e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"iChemDVRPotentialValidate", "[", 
+   RowBox[{"vec_", ",", " ", "gpnum_"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Length", "@", "vec"}], "\[Equal]", "gpnum"}], "&&", "\n", "\t\t", 
+   RowBox[{"VectorQ", "[", 
+    RowBox[{"vec", ",", " ", "Internal`RealValuedNumericQ"}], 
+    "]"}]}]}]], \
+"CodeInput",ExpressionUUID->"176b0343-39ea-45ba-b9bc-ebe77dfeb51a"],
 
 Cell[BoxData[
  RowBox[{
@@ -1162,17 +1174,20 @@ Cell[BoxData[
           RowBox[{"_List", "?", 
            RowBox[{"(", 
             RowBox[{
-             RowBox[{
-              RowBox[{"Length", "[", "#", "]"}], "\[Equal]", 
-              RowBox[{"Length", "[", "gridpoints", "]"}]}], "&"}], ")"}]}], 
-          "]"}], ":>", 
+             RowBox[{"iChemDVRPotentialValidate", "[", 
+              RowBox[{"#", ",", " ", 
+               RowBox[{"Length", "[", "gridpoints", "]"}]}], "]"}], "&"}], 
+            ")"}]}], "]"}], ":>", "\n", "\t\t\t\t\t\t", 
          RowBox[{"Map", "[", 
-          RowBox[{"function", ",", " ", "gridpoints"}], "]"}]}]}], "]"}]}], 
-     "\n", "\t\t\t", "}"}], ",", "\n", "\t", "\t", 
+          RowBox[{"function", ",", " ", "gridpoints"}], "]"}]}]}], "\n", 
+       "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
     RowBox[{"If", "[", 
      RowBox[{
       RowBox[{"!", 
-       RowBox[{"VectorQ", "@", "gpVec"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"iChemDVRPotentialValidate", "[", 
+        RowBox[{"gpVec", ",", " ", 
+         RowBox[{"Length", "[", "gridpoints", "]"}]}], "]"}]}], ",", "\n", 
+      "\t\t\t", 
       RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t", 
        RowBox[{
        "\"\<DVRRun\>\"", ",", "\n", "\t\t\t\t", 
@@ -1273,7 +1288,7 @@ Cell[BoxData[{
    3.735228375158292*^9}},ExpressionUUID->"e8baee08-cf00-4f85-a457-\
 ac95fb6d1f87"]
 }, Open  ]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 

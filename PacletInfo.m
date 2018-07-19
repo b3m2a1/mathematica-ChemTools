@@ -1,6 +1,8 @@
+(* ::Package:: *)
+
 Paclet[
   Name -> "ChemTools",
-  Version -> "1.2.9",
+  Version -> "1.3.0",
   Creator -> "b3m2a1@gmail.com",
   Description -> "A collection of tools for doing chemistry",
   Thumbnail -> "PacletIcon.png",
