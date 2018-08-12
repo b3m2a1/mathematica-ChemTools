@@ -11,17 +11,17 @@ ChemImportFormat::usage="Imports a format with the help of OpenBabel";
 
 
 ChemImportPostProcessElementPositions::usage=
-	"Post processor to get elements and positions";
+  "Post processor to get elements and positions";
 ChemImportPostProcessBondLists::usage=
-	"Post processor to get the bond lists";
+  "Post processor to get the bond lists";
 ChemImportPostProcessElementsBonds::usage=
-	"Post processor to get the atoms and bonds";
+  "Post processor to get the atoms and bonds";
 ChemImportPostProcessSupplementaryInfo::usage=
-	"Post processor to get the supp info";
+  "Post processor to get the supp info";
 ChemImportPostProcessGraphics::usage=
-	"Post processor to get Graphics";
+  "Post processor to get Graphics";
 ChemImportPostProcessGraphics3D::usage=
-	"Post processor to get Graphics3D";
+  "Post processor to get Graphics3D";
 
 
 Begin["`Private`"];
@@ -33,60 +33,60 @@ Begin["`Private`"];
 
 
 ZMatrixStringPattern1=
-	((StartOfLine|Whitespace)~~LetterCharacter..~~(Whitespace|EndOfLine));
+  ((StartOfLine|Whitespace)~~LetterCharacter..~~(Whitespace|EndOfLine));
 ZMatrixStringPattern2=
-	((StartOfLine|Whitespace)~~LetterCharacter..~~Whitespace~~
-		(DigitCharacter..)~~Whitespace~~NumberString~~(Whitespace|EndOfLine));
+  ((StartOfLine|Whitespace)~~LetterCharacter..~~Whitespace~~
+    (DigitCharacter..)~~Whitespace~~NumberString~~(Whitespace|EndOfLine));
 ZMatrixStringPattern3=
-	((StartOfLine|Whitespace)~~LetterCharacter..~~Whitespace~~
-		(DigitCharacter..)~~Whitespace~~NumberString~~Whitespace~~
-		(DigitCharacter..)~~Whitespace~~NumberString~~(Whitespace|EndOfLine));
+  ((StartOfLine|Whitespace)~~LetterCharacter..~~Whitespace~~
+    (DigitCharacter..)~~Whitespace~~NumberString~~Whitespace~~
+    (DigitCharacter..)~~Whitespace~~NumberString~~(Whitespace|EndOfLine));
 ZMatrixStringPattern4=
-	((StartOfLine|Whitespace)~~LetterCharacter..~~Whitespace~~
-		(DigitCharacter..)~~Whitespace~~NumberString~~Whitespace~~
-		(DigitCharacter..)~~Whitespace~~NumberString~~Whitespace~~
-		(DigitCharacter..)~~Whitespace~~NumberString~~(Whitespace|EndOfLine));
+  ((StartOfLine|Whitespace)~~LetterCharacter..~~Whitespace~~
+    (DigitCharacter..)~~Whitespace~~NumberString~~Whitespace~~
+    (DigitCharacter..)~~Whitespace~~NumberString~~Whitespace~~
+    (DigitCharacter..)~~Whitespace~~NumberString~~(Whitespace|EndOfLine));
 
 
 ChemDataZMatrixStringPattern=
-	ZMatrixStringPattern1|
-	(ZMatrixStringPattern1~~ZMatrixStringPattern2)|
-	(ZMatrixStringPattern1~~ZMatrixStringPattern2~~ZMatrixStringPattern3)|
-	(ZMatrixStringPattern1~~ZMatrixStringPattern2~~
-		ZMatrixStringPattern3~~(ZMatrixStringPattern4..));
+  ZMatrixStringPattern1|
+  (ZMatrixStringPattern1~~ZMatrixStringPattern2)|
+  (ZMatrixStringPattern1~~ZMatrixStringPattern2~~ZMatrixStringPattern3)|
+  (ZMatrixStringPattern1~~ZMatrixStringPattern2~~
+    ZMatrixStringPattern3~~(ZMatrixStringPattern4..));
 
 
 MolTableLineStringPattern1=
-	(StartOfLine|Whitespace)~~LetterCharacter..~~
-		Whitespace~~NumberString~~
-		Whitespace~~NumberString~~
-		Whitespace~~NumberString;
+  (StartOfLine|Whitespace)~~LetterCharacter..~~
+    Whitespace~~NumberString~~
+    Whitespace~~NumberString~~
+    Whitespace~~NumberString;
 MolTableLineStringPattern2=
-	(
-		(StartOfLine|Whitespace)~~NumberString~~
-		Whitespace?(Not@*StringContainsQ["\n"])~~NumberString~~
-		Whitespace?(Not@*StringContainsQ["\n"])~~NumberString~~
-		Whitespace?(Not@*StringContainsQ["\n"])~~LetterCharacter..~~
-		Except["\n"]..
-		);
+  (
+    (StartOfLine|Whitespace)~~NumberString~~
+    Whitespace?(Not@*StringContainsQ["\n"])~~NumberString~~
+    Whitespace?(Not@*StringContainsQ["\n"])~~NumberString~~
+    Whitespace?(Not@*StringContainsQ["\n"])~~LetterCharacter..~~
+    Except["\n"]..
+    );
 
 
 ChemDataMolTableStringPattern=
-	(
-		((MolTableLineStringPattern1~~(Whitespace|"")~~EndOfLine)..)|
-		((MolTableLineStringPattern2~~(Whitespace|"")~~EndOfLine)..)
-		);
+  (
+    ((MolTableLineStringPattern1~~(Whitespace|"")~~EndOfLine)..)|
+    ((MolTableLineStringPattern2~~(Whitespace|"")~~EndOfLine)..)
+    );
 
 
 BondLineStringPattern=
-	(
-		(StartOfLine|Whitespace)~~DigitCharacter..~~
-			Whitespace~~DigitCharacter..~~(Except["\n"]...)
-		);
+  (
+    (StartOfLine|Whitespace)~~DigitCharacter..~~
+      Whitespace~~DigitCharacter..~~(Except["\n"]...)
+    );
 
 
 ChemDataBondBlockStringPattern=
-	(BondLineStringPattern~~EndOfLine)..;
+  (BondLineStringPattern~~EndOfLine)..;
 
 
 (* ::Subsection:: *)
@@ -95,29 +95,107 @@ ChemDataBondBlockStringPattern=
 
 
 (* ::Subsubsection::Closed:: *)
+(*xyzReadBlock*)
+
+
+
+xyzReadBlock//Clear
+xyzReadBlock[str_InputStream, numWidth:_Integer?Positive|Automatic:Automatic]:=
+Module[
+    {
+      n=ReadList[str, Number, 1],
+      comment,
+      tableWidth=numWidth,
+      block1,atom1,num1,numStr,
+      blocks
+      },
+    If[Length@n>0,
+      n=n[[1]];
+      comment=ReadList[str, String, 1][[1]];
+      If[tableWidth===Automatic,
+        block1=ReadList[str, String, 1][[1]];
+        {atom1, num1}=StringSplit[block1,Whitespace, 2];
+        numStr=StringToStream@num1;
+        num1=ReadList[numStr, Number];
+        numStr//Close;
+        tableWidth=Length@num1;
+        blocks=
+        ReadList[str, Prepend[ConstantArray[Number, tableWidth], Word], n-1];
+        blocks=Prepend[blocks,Prepend[num1, atom1]],
+        blocks=
+        ReadList[str, Prepend[ConstantArray[Number, tableWidth], Word], n];
+        ];
+      If[ListQ@blocks,
+        <|"BlockSize"->n, "Comment"->comment,"Atoms"->blocks|>,
+        EndOfFile
+        ],
+        EndOfFile
+        ]
+      ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*xyzRead*)
+
+
+
+xyzRead[str:_InputStream, numWidth:_Integer?Positive|Automatic:Automatic]:=
+  Module[{num=numWidth, res1},
+    If[num===Automatic,
+      res1=xyzReadBlock[str];
+      If[AssociationQ@res1,
+        Prepend[xyzRead[str, Length@res1[["Atoms",1]]-1], res1],
+        $Failed
+        ],
+      Most@
+        NestWhileList[
+          xyzReadBlock[str, numWidth]&,
+          xyzReadBlock[str, numWidth],
+          AssociationQ[#]&
+          ]
+      ]
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
 (*chemProcessXYZData*)
 
 
 
-chemProcessXYZData[{types_, coords_}]:=
-	With[{s=ChemDataLookup[types, "Symbol"]},
-		If[AllTrue[s, StringQ],
-			{Prepend[Thread[{s, coords/100}], {Length@coords, 0}]},
-			PackageRaiseException[
-				"XYZImport", 
-				"Bad XYZ atom labels ``",
-				"MessageParameters"->{types}
-				]
-			]
-		];
+chemProcessXYZData[{types_List, coords_}]:=
+  With[{s=ChemDataLookup[types, "Symbol"]},
+    If[AllTrue[s, StringQ],
+      {Prepend[Thread[{s, coords/100}], {Length@coords, 0}]},
+      PackageRaiseException[
+        "XYZImport", 
+        "Bad XYZ atom labels ``",
+        "MessageParameters"->{types}
+        ]
+      ]
+    ];
+chemProcessXYZData[d:{__Association?AssociationQ}]:=
+  If[Length@d==1,
+      First,
+      Identity
+      ]@
+    Map[
+      {
+        Prepend[
+          Thread[{#[["Atoms", All, 1]], #[["Atoms", All, 2;;4]]}],
+          {#["BlockSize"], 0}
+          ],
+        Normal@KeyDrop[#, "Atoms"]
+        }&,
+      d
+      ]
 
 
 chemProcessXYZData[data_]:=
-	PackageRaiseException[
-		"XYZImport",
-		"Malformatted XYZ import ``",
-		"MessageParameters"->data
-		]
+  PackageRaiseException[
+    "XYZImport",
+    "Malformatted XYZ import ``",
+    "MessageParameters"->data
+    ]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -125,15 +203,25 @@ chemProcessXYZData[data_]:=
 
 
 
-ChemImportXYZ[s:_String?FileExistsQ|_InputStream|_File|_URL, ops:OptionsPattern[]]:=
-	PackageExceptionBlock["XYZImport"]@
-	chemProcessXYZData@
-		Import[
-			s,
-			{"XYZ", {"VertexTypes", "VertexCoordinates"}}
-			];
+_String?FileExistsQ|_InputStream|_File|_URL
+
+
+ChemImportXYZ//Clear
+ChemImportXYZ[s:_InputStream, ops:OptionsPattern[]]:=
+  PackageExceptionBlock["XYZImport"]@
+    chemProcessXYZData@xyzRead[s];
+ChemImportXYZ[s:_String?FileExistsQ|_File, ops:OptionsPattern[]]:=
+  PackageExceptionBlock["XYZImport"]@
+    Module[
+      {str},
+      Internal`WithLocalSettings[
+        str=OpenRead[s],
+        ChemImportXYZ[Echo@str],
+        Close[str]
+        ]
+      ]
 ChemImportXYZ[s:_String, ops:OptionsPattern[]]:=
-	ChemImportXYZ[StringToStream@s];
+  ChemImportXYZ[StringToStream@s];
 
 
 (* ::Subsection:: *)
@@ -150,58 +238,58 @@ iChemImportZMatrix//Clear
 
 
 iChemImportZMatrix[table:{__List}]:=
-	Module[
-		{
-			chunks=
-				Join@@@
-					Partition[
-						SplitBy[table, MatchQ@{_String}],
-						2
-						],
-			lines,
-			a,
-			b,
-			inDeg
-			},
-		Table[
-			lines=
-				Cases[t, {_String, ___}];
-			inDeg=
-				MemberQ[
-					lines, 
-					{_, _Integer, _, _Integer, _?(TrueQ[#>2\[Pi]||#<-\[Pi]]&), ___}
-					]||
-					MemberQ[
-						lines, 
-						{_, _Integer, _, _Integer, _, _Integer, _?(TrueQ[#>2\[Pi]||#<-\[Pi]]&), ___}
-						];
-			a=
-				ChemFormatsZMatrixToMol@
-					If[inDeg,
-						Replace[
-							lines,
-							{
-								{s_, i_Integer, r_, j_Integer, ang_?NumericQ}:>
-									{s, i, r, j, ang*Degree},
-								{s_, i_Integer, r_, j_Integer, ang_, k_Integer, d_, ___}:>
-									{s, i, r, 
-										j, ang*Degree, 
-										k, d*Degree
-										}
-								},
-							1
-							],
-						lines
-						];
-				b=Cases[t,{_Integer,_Integer,_Integer}|{_Integer,_Integer}];
-				Join[
-					{{Length@a,Length@b}},
-					a,
-					b
-					],
-			{t,chunks}
-			]
-		];
+  Module[
+    {
+      chunks=
+        Join@@@
+          Partition[
+            SplitBy[table, MatchQ@{_String}],
+            2
+            ],
+      lines,
+      a,
+      b,
+      inDeg
+      },
+    Table[
+      lines=
+        Cases[t, {_String, ___}];
+      inDeg=
+        MemberQ[
+          lines, 
+          {_, _Integer, _, _Integer, _?(TrueQ[#>2\[Pi]||#<-\[Pi]]&), ___}
+          ]||
+          MemberQ[
+            lines, 
+            {_, _Integer, _, _Integer, _, _Integer, _?(TrueQ[#>2\[Pi]||#<-\[Pi]]&), ___}
+            ];
+      a=
+        ChemFormatsZMatrixToMol@
+          If[inDeg,
+            Replace[
+              lines,
+              {
+                {s_, i_Integer, r_, j_Integer, ang_?NumericQ}:>
+                  {s, i, r, j, ang*Degree},
+                {s_, i_Integer, r_, j_Integer, ang_, k_Integer, d_, ___}:>
+                  {s, i, r, 
+                    j, ang*Degree, 
+                    k, d*Degree
+                    }
+                },
+              1
+              ],
+            lines
+            ];
+        b=Cases[t,{_Integer,_Integer,_Integer}|{_Integer,_Integer}];
+        Join[
+          {{Length@a,Length@b}},
+          a,
+          b
+          ],
+      {t,chunks}
+      ]
+    ];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -210,17 +298,17 @@ iChemImportZMatrix[table:{__List}]:=
 
 
 ChemImportZMatrix[s_String?(Not@*FileExistsQ), ops:OptionsPattern[]]:=
-	With[{strings=If[Length[#]==1, #[[1]], #]&@ChemFormatsEnumerateZMatrixStrings@s},
-		If[StringQ@strings, 
-			iChemImportZMatrix@ImportString[strings, "Table"],
-			Flatten[Map[iChemImportZMatrix@ImportString[#, "Table"]&, strings], 1]
-			]
-		];
+  With[{strings=If[Length[#]==1, #[[1]], #]&@ChemFormatsEnumerateZMatrixStrings@s},
+    If[StringQ@strings, 
+      iChemImportZMatrix@ImportString[strings, "Table"],
+      Flatten[Map[iChemImportZMatrix@ImportString[#, "Table"]&, strings], 1]
+      ]
+    ];
 ChemImportZMatrix[
-	file:_String?FileExistsQ|_InputStream|_File|_URL,
-	ops:OptionsPattern[]
-	]:=
-	ChemImportZMatrix@ReadString[file];
+  file:_String?FileExistsQ|_InputStream|_File|_URL,
+  ops:OptionsPattern[]
+  ]:=
+  ChemImportZMatrix@ReadString[file];
 
 
 (* ::Subsection:: *)
@@ -234,28 +322,28 @@ ChemImportZMatrix[
 
 
 ChemImportMolTable[string_String?(Not@*FileExistsQ), ops:OptionsPattern[]]:=
-	ChemImportMolTableString/@
-		Replace[
-			Select[
-				StringSplit[
-					string,
-					"$$$$"
-					],
-				StringContainsQ["V2000"|"V3000"]
-				],
-			{
-				{}:>StringSplit[string, "$$$$"][[1]]
-				}
-			];
+  ChemImportMolTableString/@
+    Replace[
+      Select[
+        StringSplit[
+          string,
+          "$$$$"
+          ],
+        StringContainsQ["V2000"|"V3000"]
+        ],
+      {
+        {}:>StringSplit[string, "$$$$"][[1]]
+        }
+      ];
 ChemImportMolTable[stream_InputStream, ops:OptionsPattern[]]:=
-	ChemImportMolTable@ReadString[stream];
+  ChemImportMolTable@ReadString[stream];
 ChemImportMolTable[l_List]:=
-	ChemImportMolTableList/@
-		DeleteCases[{"$$$$"}]@
-			Split[
-				l,
-				MatchQ[{"$$$$"}]
-				];
+  ChemImportMolTableList/@
+    DeleteCases[{"$$$$"}]@
+      Split[
+        l,
+        MatchQ[{"$$$$"}]
+        ];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -264,22 +352,22 @@ ChemImportMolTable[l_List]:=
 
 
 chemMolImportAtoms[stringChunks:{__String}]:=
-	With[{chunks=
-		StringTake[stringChunks,{
-			{1,10},(*Positions*)
-			{11,20},
-			{21,30},
-			{31,34}(*Element*)(*
+  With[{chunks=
+    StringTake[stringChunks,{
+      {1,10},(*Positions*)
+      {11,20},
+      {21,30},
+      {31,34}(*Element*)(*
 			{34,-1}(*Rest*)*)
-			}]
-		},
-		{
-			StringTrim@#[[4]],
-			ToExpression@Take[#,3]
-			(*,
+      }]
+    },
+    {
+      StringTrim@#[[4]],
+      ToExpression@Take[#,3]
+      (*,
 			ImportString[#[[5]],"Table"]*)
-			}&/@chunks
-		];
+      }&/@chunks
+    ];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -288,16 +376,16 @@ chemMolImportAtoms[stringChunks:{__String}]:=
 
 
 chemMolImportBonds[stringChunks:{__String}]:=
-	With[{chunks=
-		StringTake[stringChunks,{
-			{1,3},
-			{4,6},
-			{7,9}(*,
+  With[{chunks=
+    StringTake[stringChunks,{
+      {1,3},
+      {4,6},
+      {7,9}(*,
 			{10,-1}*)
-			}]
-		},
-		ToExpression@chunks[[All,;;3]]
-		];
+      }]
+    },
+    ToExpression@chunks[[All,;;3]]
+    ];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -309,116 +397,116 @@ ChemImportMolTableString//Clear
 
 
 basicDigitPattern=
-	(
-		("  "~~DigitCharacter)|
-		(" "~~DigitCharacter)|
-		DigitCharacter
-		);
+  (
+    ("  "~~DigitCharacter)|
+    (" "~~DigitCharacter)|
+    DigitCharacter
+    );
 ChemImportMolTableString[s_String?(StringContainsQ["\n"])]:=
-	PackageExceptionBlock["ImportMolTable"]@
-		With[{blockChunks=
-			Join[
-				StringCases[
-					s,
-					{
-						StartOfString~~id:(Except["\n"]...)~~
-							"\n"~~name:(Except["\n"]...):>
-							Sequence@@{
-								If[StringLength@id>0, {"Props", "ID"->id}, Nothing],
-								If[StringLength@StringTrim@name>0, 
-									{"Props", "IDTag"->StringTrim@name}, 
-									Nothing
-									]
-								},
-						(StartOfLine~~nums:((basicDigitPattern)~~
-							(Except["\n"]..))~~
-								If[StringContainsQ[s, ("V2000"|"V3000")], 
-									("V2000"|"V3000"), 
-									""
-									]):>
-							{"Numbers", ToExpression@StringTake[nums,{{1,3},{4,6}}]},
-						(
-							"> <"~~prop:Except[">"]..~~">"~~val:Except["<"]..~~"\n\n":>	
-								RuleCondition[
-									{"Props",
-										StringJoin@
-											(
-												(
-													Switch[#,
-														(*
+  PackageExceptionBlock["ImportMolTable"]@
+    With[{blockChunks=
+      Join[
+        StringCases[
+          s,
+          {
+            StartOfString~~id:(Except["\n"]...)~~
+              "\n"~~name:(Except["\n"]...):>
+              Sequence@@{
+                If[StringLength@id>0, {"Props", "ID"->id}, Nothing],
+                If[StringLength@StringTrim@name>0, 
+                  {"Props", "IDTag"->StringTrim@name}, 
+                  Nothing
+                  ]
+                },
+            (StartOfLine~~nums:((basicDigitPattern)~~
+              (Except["\n"]..))~~
+                If[StringContainsQ[s, ("V2000"|"V3000")], 
+                  ("V2000"|"V3000"), 
+                  ""
+                  ]):>
+              {"Numbers", ToExpression@StringTake[nums,{{1,3},{4,6}}]},
+            (
+              "> <"~~prop:Except[">"]..~~">"~~val:Except["<"]..~~"\n\n":>  
+                RuleCondition[
+                  {"Props",
+                    StringJoin@
+                      (
+                        (
+                          Switch[#,
+                            (*
 												Replace isn't capturing the variable appropriately here for 
 												who knows what reason
 												*)
-														"pubchem",
-															Nothing,
-														"id",
-															"ID",
-														"rmsd",
-															"RMSD",
-														"cid",
-															"CID",
-														"mmff94",
-															"MMFF94",
-														"sid",
-															"SID",
-														_,
-															ToUpperCase[StringTake[#,1]]<>
-																StringTake[#,{2,-1}]
-														]
-													)&/@ToLowerCase@StringSplit[prop,"_"]
-												)->
-												Replace[
-													DeleteCases[{}]@ImportString[val,"Table"],{
-													{{i_}}:>i,
-													l:{{_}..}:>Flatten[l]
-													}]
-											},
-									True
-									]
-							)
-						}
-					],
-				StringCases[
-					StringSplit[s,
-						(StartOfLine~~((basicDigitPattern)~~
-							(Except["\n"]..))~~("V2000"|"V3000"))|
-						"M "
-						][[2]],{
-					l:(StartOfLine~~("  -"|"   ")~~Except["\n"]..~~"\n"):>
-						If[StringLength@l>=30,
-							{"Atoms",l},
-							l
-							],
-					l:(
-						StartOfLine~~(
-							("  "~~DigitCharacter)|
-							(" "~~DigitCharacter)|
-							DigitCharacter
-							)~~Except["\n"]..~~"\n"):>
-							If[StringLength@l>=9,
-								{"Bonds",l},
-								l
-								]
-					}]
-				]},
-				With[{data=KeySort@GroupBy[blockChunks,First->Last]},
-					If[Length@Lookup[data, "Atoms", {}]==0,
-						PackageRaiseException["ImportMolTable",
-							"MolTable requires at least one atom"
-							];
-						];
-					{
-						Join[
-							data["Numbers"],
-							chemMolImportAtoms[Lookup[data, "Atoms", {}]],
-							Replace[Lookup[data, "Bonds", {}],
-								l:{__}:>chemMolImportBonds[l]
-								]
-							],
-						Lookup[data, "Props", {}]
-						}
-					]
-			];(*
+                            "pubchem",
+                              Nothing,
+                            "id",
+                              "ID",
+                            "rmsd",
+                              "RMSD",
+                            "cid",
+                              "CID",
+                            "mmff94",
+                              "MMFF94",
+                            "sid",
+                              "SID",
+                            _,
+                              ToUpperCase[StringTake[#,1]]<>
+                                StringTake[#,{2,-1}]
+                            ]
+                          )&/@ToLowerCase@StringSplit[prop,"_"]
+                        )->
+                        Replace[
+                          DeleteCases[{}]@ImportString[val,"Table"],{
+                          {{i_}}:>i,
+                          l:{{_}..}:>Flatten[l]
+                          }]
+                      },
+                  True
+                  ]
+              )
+            }
+          ],
+        StringCases[
+          StringSplit[s,
+            (StartOfLine~~((basicDigitPattern)~~
+              (Except["\n"]..))~~("V2000"|"V3000"))|
+            "M "
+            ][[2]],{
+          l:(StartOfLine~~("  -"|"   ")~~Except["\n"]..~~"\n"):>
+            If[StringLength@l>=30,
+              {"Atoms",l},
+              l
+              ],
+          l:(
+            StartOfLine~~(
+              ("  "~~DigitCharacter)|
+              (" "~~DigitCharacter)|
+              DigitCharacter
+              )~~Except["\n"]..~~"\n"):>
+              If[StringLength@l>=9,
+                {"Bonds",l},
+                l
+                ]
+          }]
+        ]},
+        With[{data=KeySort@GroupBy[blockChunks,First->Last]},
+          If[Length@Lookup[data, "Atoms", {}]==0,
+            PackageRaiseException["ImportMolTable",
+              "MolTable requires at least one atom"
+              ];
+            ];
+          {
+            Join[
+              data["Numbers"],
+              chemMolImportAtoms[Lookup[data, "Atoms", {}]],
+              Replace[Lookup[data, "Bonds", {}],
+                l:{__}:>chemMolImportBonds[l]
+                ]
+              ],
+            Lookup[data, "Props", {}]
+            }
+          ]
+      ];(*
 ChemImportMolTableString[s_String?(
 		Not@FileExistsQ@#&&
 		Not@StringContainsQ[#,"\n"|$PathnameSeparator]
@@ -435,61 +523,61 @@ ChemImportMolTableString[s_String?(
 
 ChemImportMolTable::molst="Unable to find beginning of MolTable block";
 ChemImportMolTableList[table_List]:=
-	Block[{$atomBondCount={\[Infinity],\[Infinity]}},
-		Replace[
-			Reap[
-				Replace[table,{
-					{atomCount_,bondCount_,___,"V2000"|"V3000"}:>
-						With[{ab=
-							If[atomCount>999,
-								FromDigits/@
-									Partition[IntegerDigits@atomCount,UpTo[3]],
-								{atomCount,bondCount}
-								]
-							},
-							Sow@"START";
-							Sow@ab
-							],
-					{crd1_Real,crd2_Real,crd3_Real,elm_String,massDifference_,
-						charge_,hCount_,stereoFlag_,hCount2_,__,
-						aMap_,invRet_,exactChg_}:>
-						Sow@{elm,{crd1,crd2,crd3}},
-					{atom1_Integer,atom2_Integer,bondType_Integer,otherShit___}:>
-						Sow@
-							If[atom1>999,
-								Append[
-									With[{try1=
-										FromDigits/@
-											Partition[IntegerDigits@atom1,UpTo[3]]
-										},
-										If[AnyTrue[try1,#>First@$atomBondCount&],
-											FromDigits@*Reverse/@
-												Partition[Reverse@IntegerDigits@atom1,
-													UpTo[3]]
-											]
-										],
-									atom2
-									],
-								{atom1,atom2,bondType}
-								],
-					{"M","END"}:>
-						Sow@"END",
-					{">",s_String?(StringMatchQ["<*>"])}:>
-						Sow["PROP"->s],
-					e_:>Sow@e
-					},
-					1]
-				][[2]],
-				{
-					e:Except[{{___,"START",___}}]:>(
-						Print@e;
-						Message[ChemImportObject::molst];
-						$Failed
-						),
-					e_:>(parseMolTable@First@e)
-					}
-				]
-		];
+  Block[{$atomBondCount={\[Infinity],\[Infinity]}},
+    Replace[
+      Reap[
+        Replace[table,{
+          {atomCount_,bondCount_,___,"V2000"|"V3000"}:>
+            With[{ab=
+              If[atomCount>999,
+                FromDigits/@
+                  Partition[IntegerDigits@atomCount,UpTo[3]],
+                {atomCount,bondCount}
+                ]
+              },
+              Sow@"START";
+              Sow@ab
+              ],
+          {crd1_Real,crd2_Real,crd3_Real,elm_String,massDifference_,
+            charge_,hCount_,stereoFlag_,hCount2_,__,
+            aMap_,invRet_,exactChg_}:>
+            Sow@{elm,{crd1,crd2,crd3}},
+          {atom1_Integer,atom2_Integer,bondType_Integer,otherShit___}:>
+            Sow@
+              If[atom1>999,
+                Append[
+                  With[{try1=
+                    FromDigits/@
+                      Partition[IntegerDigits@atom1,UpTo[3]]
+                    },
+                    If[AnyTrue[try1,#>First@$atomBondCount&],
+                      FromDigits@*Reverse/@
+                        Partition[Reverse@IntegerDigits@atom1,
+                          UpTo[3]]
+                      ]
+                    ],
+                  atom2
+                  ],
+                {atom1,atom2,bondType}
+                ],
+          {"M","END"}:>
+            Sow@"END",
+          {">",s_String?(StringMatchQ["<*>"])}:>
+            Sow["PROP"->s],
+          e_:>Sow@e
+          },
+          1]
+        ][[2]],
+        {
+          e:Except[{{___,"START",___}}]:>(
+            Print@e;
+            Message[ChemImportObject::molst];
+            $Failed
+            ),
+          e_:>(parseMolTable@First@e)
+          }
+        ]
+    ];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -498,35 +586,35 @@ ChemImportMolTableList[table_List]:=
 
 
 parseMolTable[atomList:{___,"START",__}]:=
-	SequenceCases[atomList,
-		{
-			id_:None,
-			idTag_:None,
-			___,
-			"START",bits:Shortest@__,"END",p___}:>
-			{
-				{
-					bits
-					},
-				Join[
-					{
-						"ID"->id,
-						"IDTag"->idTag
-						},
-					Map[Last@First@#->Rest[#]]&/@
-						Block[{flag=True},
-							Split[{p},
-								Function[
-									If[MatchQ[#,"PROP"->_],
-										flag=Not@flag
-										];
-									flag
-									]
-								]
-							]
-					]
-				}	
-		];
+  SequenceCases[atomList,
+    {
+      id_:None,
+      idTag_:None,
+      ___,
+      "START",bits:Shortest@__,"END",p___}:>
+      {
+        {
+          bits
+          },
+        Join[
+          {
+            "ID"->id,
+            "IDTag"->idTag
+            },
+          Map[Last@First@#->Rest[#]]&/@
+            Block[{flag=True},
+              Split[{p},
+                Function[
+                  If[MatchQ[#,"PROP"->_],
+                    flag=Not@flag
+                    ];
+                  flag
+                  ]
+                ]
+              ]
+          ]
+        }  
+    ];
 
 
 (* ::Subsection:: *)
@@ -535,215 +623,215 @@ parseMolTable[atomList:{___,"START",__}]:=
 
 
 getElemColors[]:=
-	Replace[
-		$elemsByColor,
-		Except[_Association]:>
-			($elemsByColor=
-				DeleteCases[
-					AssociationMap[
-						ElementData[#, "IconColor"]&,
-						ChemTools`Private`$ChemElements//Keys
-						],
-					$Failed
-					]
-				)
-		];
+  Replace[
+    $elemsByColor,
+    Except[_Association]:>
+      ($elemsByColor=
+        DeleteCases[
+          AssociationMap[
+            ElementData[#, "IconColor"]&,
+            ChemTools`Private`$ChemElements//Keys
+            ],
+          $Failed
+          ]
+        )
+    ];
 elemByColor[c_]:=
-	With[{elems=getElemColors[]},
-		SelectFirst[
-			Keys@elems,
-			Replace[elems[#],{
-				ec_?ColorQ:>
-					(ColorDistance[ec,c]<.1),
-				_->False
-				}]||
-			Replace[ColorData["Atoms"][#],{
-				ec_?ColorQ:>
-					(ColorDistance[ec,c]<.1),
-				_->False
-				}]&,
-			"X"
-			]
-		];
+  With[{elems=getElemColors[]},
+    SelectFirst[
+      Keys@elems,
+      Replace[elems[#],{
+        ec_?ColorQ:>
+          (ColorDistance[ec,c]<.1),
+        _->False
+        }]||
+      Replace[ColorData["Atoms"][#],{
+        ec_?ColorQ:>
+          (ColorDistance[ec,c]<.1),
+        _->False
+        }]&,
+      "X"
+      ]
+    ];
 
 
 graphics3DGetAtoms[{color_,crds__}]:=
-	With[{e=elemByColor@color},
-		Map[{e,#}&,{crds}]
-		];
+  With[{e=elemByColor@color},
+    Map[{e,#}&,{crds}]
+    ];
 
 
 graphics3DGetBonds[{origCrds_,atomCrds_}]:=
-	With[{bondCrds=Replace[origCrds,(l_List->_):>l,1]},
-		With[{pairs=
-			DeleteDuplicatesBy[Sort]@*Join@@
-				Replace[bondCrds,{
-					{
-						a_?(Norm[First@Nearest[atomCrds,#]-#<.1]&),
-						b_?(Norm[First@Nearest[atomCrds,#]-#<.1]&)
-						}:>
-						With[{
-							a1=First@Nearest[atomCrds,a,1],
-							a2=First@Nearest[atomCrds,b,1]
-							},
-							If[a1==a2,
-								Nothing,
-								{{a1,a2}}
-								]
-							],
-					{a_,b_}:>
-						Join[
-							Cases[bondCrds,
-								{a,i:Except[b]}|{i:Except[b],a}:>{b,i}
-								],
-							Cases[bondCrds,
-								{i:Except[a],b}|{b,i:Except[a]}:>{a,i}
-								]
-							]
-						},
-					1]
-				},
-			(*Append[#,1]&/@*)
-				Select[
-					pairs,
-					AllTrue[#,MemberQ[atomCrds,#]&]&
-					]
-			]
-		];
+  With[{bondCrds=Replace[origCrds,(l_List->_):>l,1]},
+    With[{pairs=
+      DeleteDuplicatesBy[Sort]@*Join@@
+        Replace[bondCrds,{
+          {
+            a_?(Norm[First@Nearest[atomCrds,#]-#<.1]&),
+            b_?(Norm[First@Nearest[atomCrds,#]-#<.1]&)
+            }:>
+            With[{
+              a1=First@Nearest[atomCrds,a,1],
+              a2=First@Nearest[atomCrds,b,1]
+              },
+              If[a1==a2,
+                Nothing,
+                {{a1,a2}}
+                ]
+              ],
+          {a_,b_}:>
+            Join[
+              Cases[bondCrds,
+                {a,i:Except[b]}|{i:Except[b],a}:>{b,i}
+                ],
+              Cases[bondCrds,
+                {i:Except[a],b}|{b,i:Except[a]}:>{a,i}
+                ]
+              ]
+            },
+          1]
+        },
+      (*Append[#,1]&/@*)
+        Select[
+          pairs,
+          AllTrue[#,MemberQ[atomCrds,#]&]&
+          ]
+      ]
+    ];
 
 
 graphicsComplexImport[gc_]:=
-	With[{
-		coords=First@gc,
-		objs=Cases[gc[[2]],_RGBColor|_Sphere|_Ball|_Cylinder,\[Infinity]]},
-		With[{
-			balls=
-				SequenceCases[objs,
-					{_RGBColor,(_Sphere|_Ball)..},
-					\[Infinity]],
-			sticks=
-				SequenceCases[objs,
-					{_RGBColor,(_Cylinder)..},
-					\[Infinity]
-					]
-			},
-			With[{
-				atoms=
-					Join@@Map[
-							graphics3DGetAtoms@*
-								ReplaceAll[ (Sphere|Ball)[p_,___]:>p ],
-							balls
-							]},
-				{
-					atoms,
-					graphics3DGetBonds@{
-						Cases[sticks,
-							Cylinder[{i_Integer,j_Integer},___]:>
-								{i,j}
-							,\[Infinity]],
-						Last/@atoms
-						}
-					}/.i_Integer:>coords[[i]]
-				]
-			]
-		];
+  With[{
+    coords=First@gc,
+    objs=Cases[gc[[2]],_RGBColor|_Sphere|_Ball|_Cylinder,\[Infinity]]},
+    With[{
+      balls=
+        SequenceCases[objs,
+          {_RGBColor,(_Sphere|_Ball)..},
+          \[Infinity]],
+      sticks=
+        SequenceCases[objs,
+          {_RGBColor,(_Cylinder)..},
+          \[Infinity]
+          ]
+      },
+      With[{
+        atoms=
+          Join@@Map[
+              graphics3DGetAtoms@*
+                ReplaceAll[ (Sphere|Ball)[p_,___]:>p ],
+              balls
+              ]},
+        {
+          atoms,
+          graphics3DGetBonds@{
+            Cases[sticks,
+              Cylinder[{i_Integer,j_Integer},___]:>
+                {i,j}
+              ,\[Infinity]],
+            Last/@atoms
+            }
+          }/.i_Integer:>coords[[i]]
+        ]
+      ]
+    ];
 
 
 graphicsImportSpheresBallsAndCylinders[objs_]:=
-	With[{objSet=
-		Cases[objs,_RGBColor|_Sphere|_Ball|_Cylinder,\[Infinity]]
-		},
-		With[{
-			balls=
-				SequenceCases[objSet,
-					{_RGBColor,(_Sphere|_Ball)..},
-					\[Infinity]],
-			sticks=
-				Cases[
-					ReplaceAll[objSet,
-						l:{___,_Cylinder,___}:>
-							SplitBy[l,
-								MatchQ[_Cylinder]
-								]
-						],{
-					Except[_Cylinder]...,
-					c:__Cylinder|{__Cylinder},
-					Except[_Cylinder]...
-					}:>
-						Flatten@{c},\[Infinity]]
-			},
-			With[{
-					atoms=
-						Join@@Map[
-								graphics3DGetAtoms@*
-									ReplaceAll[ (Sphere|Ball)[p_,___]:>p ],
-								balls
-								]},
-					{
-						atoms,
-						graphics3DGetBonds@{
-							Map[
-								FirstCase[#,
-									p:{{__?NumericQ},{__?NumericQ}}:>
-										(p),
-									Nothing,
-									\[Infinity]
-									]&,
-								sticks
-								],
-							Last/@atoms
-							}
-						}
-					]
-				]
-			];
+  With[{objSet=
+    Cases[objs,_RGBColor|_Sphere|_Ball|_Cylinder,\[Infinity]]
+    },
+    With[{
+      balls=
+        SequenceCases[objSet,
+          {_RGBColor,(_Sphere|_Ball)..},
+          \[Infinity]],
+      sticks=
+        Cases[
+          ReplaceAll[objSet,
+            l:{___,_Cylinder,___}:>
+              SplitBy[l,
+                MatchQ[_Cylinder]
+                ]
+            ],{
+          Except[_Cylinder]...,
+          c:__Cylinder|{__Cylinder},
+          Except[_Cylinder]...
+          }:>
+            Flatten@{c},\[Infinity]]
+      },
+      With[{
+          atoms=
+            Join@@Map[
+                graphics3DGetAtoms@*
+                  ReplaceAll[ (Sphere|Ball)[p_,___]:>p ],
+                balls
+                ]},
+          {
+            atoms,
+            graphics3DGetBonds@{
+              Map[
+                FirstCase[#,
+                  p:{{__?NumericQ},{__?NumericQ}}:>
+                    (p),
+                  Nothing,
+                  \[Infinity]
+                  ]&,
+                sticks
+                ],
+              Last/@atoms
+              }
+            }
+          ]
+        ]
+      ];
 
 
 chemImportGraphics3D[data_Graphics3D]:=
-	With[{as=
-		Replace[FirstCase[data,_GraphicsComplex,None,\[Infinity]],{
-			None:>
-				graphicsImportSpheresBallsAndCylinders@data,
-			gc_:>
-				graphicsComplexImport@gc
-			}]
-		},
-		List@
-			Join[
-				With[{m=
-					Replace[
-						Replace[(Norm@*Subtract@@@Last@as),{
-							{}->0,
-							m:{__}:>Mean@m
-							}],
-						i_?(#>0&):>
-							Floor@Log10@i
-						]},
-						If[m>0,
-							Map[{First@#,Last@#/10^m}&,First@as],
-							First@as
-							]
-					],
-				With[{aps=Last/@First@as},
-					Sort@
-						Map[
-							First@First@Position[aps,#]&,
-							Last@as,
-							{2}]
-					]
-				]
-		];
+  With[{as=
+    Replace[FirstCase[data,_GraphicsComplex,None,\[Infinity]],{
+      None:>
+        graphicsImportSpheresBallsAndCylinders@data,
+      gc_:>
+        graphicsComplexImport@gc
+      }]
+    },
+    List@
+      Join[
+        With[{m=
+          Replace[
+            Replace[(Norm@*Subtract@@@Last@as),{
+              {}->0,
+              m:{__}:>Mean@m
+              }],
+            i_?(#>0&):>
+              Floor@Log10@i
+            ]},
+            If[m>0,
+              Map[{First@#,Last@#/10^m}&,First@as],
+              First@as
+              ]
+          ],
+        With[{aps=Last/@First@as},
+          Sort@
+            Map[
+              First@First@Position[aps,#]&,
+              Last@as,
+              {2}]
+          ]
+        ]
+    ];
 
 
 ChemImportGraphics::nosup=
-	"Import support for type `` is currently unavailable. \
+  "Import support for type `` is currently unavailable. \
 Only Graphics3D is currently supported.";
 
 
 ChemImportGraphics[data_Graphics3D]:=
-	chemImportGraphics3D[data];
+  chemImportGraphics3D[data];
 ChemImportGraphics[data_]/;(Message[ChemImportGraphics::nosup, Head[data]]):=
-	Null;
+  Null;
 
 
 (* ::Subsection:: *)
@@ -767,9 +855,9 @@ ChemImportGraphics[data_]/;(Message[ChemImportGraphics::nosup, Head[data]]):=
 
 
 gaussianImportObjectData[file:_String?FileExistsQ|_InputStream, "GaussianJob"]:=
-	List@ImportGaussianJob[file, "MolTable"];
+  List@ImportGaussianJob[file, "MolTable"];
 gaussianImportObjectData[file:_String?FileExistsQ|_InputStream, "FormattedCheckpoint"]:=
-	List@ImportFormattedCheckpointFile[file, "MolTable"];
+  List@ImportFormattedCheckpointFile[file, "MolTable"];
 
 
 (* ::Subsection:: *)
@@ -781,75 +869,75 @@ ChemImportEntity//Clear
 
 
 ChemImportEntity::no3D=
-	"No 3D structure found for identifier ``. Attempting to use a 2D structure instead";
+  "No 3D structure found for identifier ``. Attempting to use a 2D structure instead";
 ChemImportEntity::nostr=
-	"No structure found for identifier ``";
+  "No structure found for identifier ``";
 
 
 ChemImportEntity[
-	structure:(
-		_PubChemCompound|
-		_PubChemSubstance|
-		_Integer|
-		Entity["Chemical", _]|
-		_String?(
-		Function[	
-			Not@FileExistsQ@#&&
-			StringMatchQ[#, (WordCharacter|"-"|","|"("|")"|"+"|Whitespace)..]
-			]
-			)
-		),
-	postProcess:(Except[_?OptionQ]):ChemImportMolTableString,
-	ops:OptionsPattern[]
-	]:=
-	PackageExceptionBlock["ImportEntity"]@
-		Replace[
-			Replace[
-				Quiet[ChemDataLookup[structure, "SDFFiles"], ServiceExecute::serrormsg],
-				$Failed:>(
-					PackageThrowMessage[
-						"ImportEntity",
-						"No 3D structure found for entity ``. Attempting to use a 2D structure",
-						"MessageParameters"->{structure}
-						];
-					ChemDataLookup[structure,"2DStructures",
-						"Overwrite"->True]
-					)
-				],
-			{
-				mol_String:>
-					postProcess@mol,
-				mols:{__String}:>
-					Map[postProcess, mols],
-				_:>
-					PackageRaiseException["ImportEntity", 
-						"No structure found for entity ``",
-						"MessageParameters"->{structure}
-						]
-				}
-			];
+  structure:(
+    _PubChemCompound|
+    _PubChemSubstance|
+    _Integer|
+    Entity["Chemical", _]|
+    _String?(
+    Function[  
+      Not@FileExistsQ@#&&
+      StringMatchQ[#, (WordCharacter|"-"|","|"("|")"|"+"|Whitespace)..]
+      ]
+      )
+    ),
+  postProcess:(Except[_?OptionQ]):ChemImportMolTableString,
+  ops:OptionsPattern[]
+  ]:=
+  PackageExceptionBlock["ImportEntity"]@
+    Replace[
+      Replace[
+        Quiet[ChemDataLookup[structure, "SDFFiles"], ServiceExecute::serrormsg],
+        $Failed:>(
+          PackageThrowMessage[
+            "ImportEntity",
+            "No 3D structure found for entity ``. Attempting to use a 2D structure",
+            "MessageParameters"->{structure}
+            ];
+          ChemDataLookup[structure,"2DStructures",
+            "Overwrite"->True]
+          )
+        ],
+      {
+        mol_String:>
+          postProcess@mol,
+        mols:{__String}:>
+          Map[postProcess, mols],
+        _:>
+          PackageRaiseException["ImportEntity", 
+            "No structure found for entity ``",
+            "MessageParameters"->{structure}
+            ]
+        }
+      ];
 
 
 ChemImportEntity[
-	structure:_InputStream|(_String?FileExistsQ),
-	postProcess:Except[_?OptionQ]:ChemImportMolTableString,
-	ops:OptionsPattern[]
-	]:=
-	PackageExceptionBlock["ImportEntity"]@
-		ChemImportEntity[Import[structure, "Text"], postProcess];
+  structure:_InputStream|(_String?FileExistsQ),
+  postProcess:Except[_?OptionQ]:ChemImportMolTableString,
+  ops:OptionsPattern[]
+  ]:=
+  PackageExceptionBlock["ImportEntity"]@
+    ChemImportEntity[Import[structure, "Text"], postProcess];
 
 
 ChemImportEntity[
-	structure:Except[_InputStream|(_String?FileExistsQ)],
-	postProcess:Except[_?OptionQ]:ChemImportMolTableString,
-	ops:OptionsPattern[]
-	]:=
-	PackageExceptionBlock["ImportEntity"]@
-		PackageRaiseException[
-			"ImportEntity",
-			"Import of entity `` unsupported",
-			"MessageParameters"->{structure}
-			]
+  structure:Except[_InputStream|(_String?FileExistsQ)],
+  postProcess:Except[_?OptionQ]:ChemImportMolTableString,
+  ops:OptionsPattern[]
+  ]:=
+  PackageExceptionBlock["ImportEntity"]@
+    PackageRaiseException[
+      "ImportEntity",
+      "Import of entity `` unsupported",
+      "MessageParameters"->{structure}
+      ]
 
 
 (* ::Subsection:: *)
@@ -858,67 +946,67 @@ ChemImportEntity[
 
 
 ChemImportFormat[
-	data:_InputStream,
-	fmt_String,
-	ops:OptionsPattern[]
-	]:=
-	PackageExceptionBlock["OpenBabelRun"]@
-	PackageExceptionBlock["Import"]@
-		If[MemberQ[$ChemOpenBabelReadFormats, ToUpperCase@fmt],
-			ChemFormatsOBImport[
-				ReadString@data,
-				ToUpperCase@fmt,
-				ops
-				],
-			PackageRaiseException["Import",
-				"Format `` is unsupported for import",
-				"MessageParameters"->{ToUpperCase@fmt}
-				]
-			];
+  data:_InputStream,
+  fmt_String,
+  ops:OptionsPattern[]
+  ]:=
+  PackageExceptionBlock["OpenBabelRun"]@
+  PackageExceptionBlock["Import"]@
+    If[MemberQ[$ChemOpenBabelReadFormats, ToUpperCase@fmt],
+      ChemFormatsOBImport[
+        ReadString@data,
+        ToUpperCase@fmt,
+        ops
+        ],
+      PackageRaiseException["Import",
+        "Format `` is unsupported for import",
+        "MessageParameters"->{ToUpperCase@fmt}
+        ]
+      ];
 
 
 ChemImportFormat[
-	data:_InputStream,
-	fmt:Except[_String|_?OptionQ],
-	ops:OptionsPattern[]
-	]:=
-	PackageExceptionBlock["Import"]@
-		PackageRaiseException["Import",
-			"Format `` is unsupported for import",
-			"MessageParameters"->{fmt}
-			]
+  data:_InputStream,
+  fmt:Except[_String|_?OptionQ],
+  ops:OptionsPattern[]
+  ]:=
+  PackageExceptionBlock["Import"]@
+    PackageRaiseException["Import",
+      "Format `` is unsupported for import",
+      "MessageParameters"->{fmt}
+      ]
 
 
 ChemImportFormat[
-	data:_InputStream,
-	ops:OptionsPattern[]
-	]:=
-	ChemImportFormat[data, 
-		Lookup[{ops}, "Format", None],
-		FilterRules[{ops}, Options[OBPyRun]]
-		];
+  data:_InputStream,
+  ops:OptionsPattern[]
+  ]:=
+  ChemImportFormat[data, 
+    Lookup[{ops}, "Format", None],
+    FilterRules[{ops}, Options[OBPyRun]]
+    ];
 
 
 ChemImportFormat[s_String, args___]:=
-	PackageExceptionBlock["Import"]@
-		Internal`WithLocalSettings[
-			$$stream=
-				Replace[
-					If[FileExistsQ@s, 
-						Quiet@OpenRead@s,
-						StringToStream@s
-						],
-					{
-						$Failed:>
-							PackageRaiseException["Import",
-								"Couldn't import from ``",
-								"MessageParameters"->{s}
-								]
-						}
-					],
-			ChemImportFormat[$$stream, args],
-			Quiet@Close@$$stream
-			];
+  PackageExceptionBlock["Import"]@
+    Internal`WithLocalSettings[
+      $$stream=
+        Replace[
+          If[FileExistsQ@s, 
+            Quiet@OpenRead@s,
+            StringToStream@s
+            ],
+          {
+            $Failed:>
+              PackageRaiseException["Import",
+                "Couldn't import from ``",
+                "MessageParameters"->{s}
+                ]
+            }
+          ],
+      ChemImportFormat[$$stream, args],
+      Quiet@Close@$$stream
+      ];
 
 
 (* ::Subsection:: *)
@@ -933,19 +1021,19 @@ ChemImportFormat[s_String, args___]:=
 
 ChemImportPostProcessElementPositions//Clear
 iChemImportPostProcessElementPositions[mt_]:=
-	Replace[mt,
-		{
-			l:
-				{{{{__Integer}, ___}, ___}, ___}:>
-					Map[Cases[First@#, {_String, _List}]&, l],
-			l:{{{__Integer}, ___}, ___}:>
-				{Cases[First@l, {_String, _List}]}
-			}
-		];
+  Replace[mt,
+    {
+      l:
+        {{{{__Integer}, ___}, ___}, ___}:>
+          Map[Cases[First@#, {_String, _List}]&, l],
+      l:{{{__Integer}, ___}, ___}:>
+        {Cases[First@l, {_String, _List}]}
+      }
+    ];
 ChemImportPostProcessElementPositions[mt:Except[_Failure], ops:OptionsPattern[]]:=
-	iChemImportPostProcessElementPositions[mt]//Replace[{s_}:>s];
+  iChemImportPostProcessElementPositions[mt]//Replace[{s_}:>s];
 ChemImportPostProcessElementPositions[f_Failure, ops:OptionsPattern[]]:=
-	f
+  f
 
 
 (* ::Subsubsection::Closed:: *)
@@ -955,19 +1043,19 @@ ChemImportPostProcessElementPositions[f_Failure, ops:OptionsPattern[]]:=
 
 ChemImportPostProcessBondLists//Clear
 iChemImportPostProcessBondLists[mt_]:=
-	Replace[mt,
-		{
-			l:
-				{{{{__Integer}, ___}, ___}, ___}:>
-					Map[Cases[Rest@First@#, {_Integer, _Integer, ___}]&, l],
-			l:{{{__Integer}, ___}, ___}:>
-				{Cases[Rest@First@l, {_Integer, _Integer, ___}]}
-			}
-		];
+  Replace[mt,
+    {
+      l:
+        {{{{__Integer}, ___}, ___}, ___}:>
+          Map[Cases[Rest@First@#, {_Integer, _Integer, ___}]&, l],
+      l:{{{__Integer}, ___}, ___}:>
+        {Cases[Rest@First@l, {_Integer, _Integer, ___}]}
+      }
+    ];
 ChemImportPostProcessBondLists[mt:Except[_Failure], ops:OptionsPattern[]]:=
-	iChemImportPostProcessBondLists[mt]//Replace[{s_}:>s];
+  iChemImportPostProcessBondLists[mt]//Replace[{s_}:>s];
 ChemImportPostProcessBondLists[f_Failure, ops:OptionsPattern[]]:=
-	f
+  f
 
 
 (* ::Subsubsection::Closed:: *)
@@ -977,19 +1065,19 @@ ChemImportPostProcessBondLists[f_Failure, ops:OptionsPattern[]]:=
 
 ChemImportPostProcessElementsBonds//Clear
 iChemImportPostProcessElementsBonds[mt_]:=
-	Replace[mt,
-		{
-			l:
-				{{{{__Integer}, ___}, ___}, ___}:>
-					Rest@*First/@l,
-			l:{{{__Integer}, ___}, ___}:>
-				{Rest@First@l}
-			}
-		];
+  Replace[mt,
+    {
+      l:
+        {{{{__Integer}, ___}, ___}, ___}:>
+          Rest@*First/@l,
+      l:{{{__Integer}, ___}, ___}:>
+        {Rest@First@l}
+      }
+    ];
 ChemImportPostProcessElementsBonds[mt:Except[_Failure], ops:OptionsPattern[]]:=
-	iChemImportPostProcessElementsBonds[mt]//Replace[{s_}:>s];
+  iChemImportPostProcessElementsBonds[mt]//Replace[{s_}:>s];
 ChemImportPostProcessElementsBonds[f_Failure, ops:OptionsPattern[]]:=
-	f;
+  f;
 
 
 (* ::Subsubsection::Closed:: *)
@@ -999,19 +1087,19 @@ ChemImportPostProcessElementsBonds[f_Failure, ops:OptionsPattern[]]:=
 
 ChemImportPostProcessSupplementaryInfo//Clear
 iChemImportPostProcessSupplementaryInfo[mt_]:=
-	Replace[mt,
-		{
-			l:
-				{{{{__Integer}, ___}, ___}, ___}:>
-					Map[Last@#&, l],
-			l:{{{__Integer}, ___}, ___}:>
-				{Last@l}
-			}
-		];
+  Replace[mt,
+    {
+      l:
+        {{{{__Integer}, ___}, ___}, ___}:>
+          Map[Last@#&, l],
+      l:{{{__Integer}, ___}, ___}:>
+        {Last@l}
+      }
+    ];
 ChemImportPostProcessSupplementaryInfo[mt:Except[_Failure], ops:OptionsPattern[]]:=
-	iChemImportPostProcessSupplementaryInfo[mt]//Replace[{s_}:>s];
+  iChemImportPostProcessSupplementaryInfo[mt]//Replace[{s_}:>s];
 ChemImportPostProcessSupplementaryInfo[f_Failure, ops:OptionsPattern[]]:=
-	f
+  f
 
 
 (* ::Subsubsection::Closed:: *)
@@ -1021,10 +1109,10 @@ ChemImportPostProcessSupplementaryInfo[f_Failure, ops:OptionsPattern[]]:=
 
 ChemImportPostProcessGraphics//Clear
 ChemImportPostProcessGraphics[mt:Except[_Failure], ops:OptionsPattern[]]:=
-		ChemGraphics[#, ops]&/@
-			iChemImportPostProcessElementsBonds[mt]//Replace[{s_}:>s];
+    ChemGraphics[#, ops]&/@
+      iChemImportPostProcessElementsBonds[mt]//Replace[{s_}:>s];
 ChemImportPostProcessGraphics[f_Failure, ops:OptionsPattern[]]:=
-	f
+  f
 
 
 (* ::Subsubsection::Closed:: *)
@@ -1034,10 +1122,10 @@ ChemImportPostProcessGraphics[f_Failure, ops:OptionsPattern[]]:=
 
 ChemImportPostProcessGraphics3D//Clear
 ChemImportPostProcessGraphics3D[mt:Except[_Failure], ops:OptionsPattern[]]:=
-		ChemGraphics3D[#, ops]&/@
-			iChemImportPostProcessElementsBonds[mt]//Replace[{s_}:>s]
+    ChemGraphics3D[#, ops]&/@
+      iChemImportPostProcessElementsBonds[mt]//Replace[{s_}:>s]
 ChemImportPostProcessGraphics3D[f_Failure, ops:OptionsPattern[]]:=
-	f
+  f
 
 
 End[];

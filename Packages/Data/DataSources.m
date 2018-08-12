@@ -260,7 +260,7 @@ CDUnitConversion[q_]:=
     All,
       $ChemUnitConversions,
     _,
-      $ChemUnitConversions[Echo@q]
+      $ChemUnitConversions[q]
     ]
 
 

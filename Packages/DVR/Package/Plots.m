@@ -251,7 +251,7 @@ ChemDVRDefaultPlotGetShiftedScaledWavefunctions[
         shiftFactor=shiftFactor,
       VectorQ[shiftFactor, Internal`RealValuedNumericQ],
         shiftFactor=PadRight[shiftFactor, Length@rescalePsi, shiftFactor],
-      _,
+      True,
         shiftFactor=0
       ];
     shiftFactor+

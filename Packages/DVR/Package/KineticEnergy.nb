@@ -41,15 +41,13 @@ Cell["\[LeftCeiling]ChemDVRKroeneckerProductKineticEnergy\[RightFloor]", \
 929e58de9ef5"],
 
 Cell["\<\
-\[LeftCeiling]Many, many, many thanks to Henrik Schumacher for this wonderful \
+\[LeftCeiling]
+\tMany, many, many thanks to Henrik Schumacher for this wonderful \
 implementation:
-\thttps://mathematica.stackexchange.com/a/165953/38205\[RightFloor]\
+\t\thttps://mathematica.stackexchange.com/a/165953/38205
+\[RightFloor]\
 \>", "Text",
- Evaluatable->True,
- CellChangeTimes->{{3.727726588967136*^9, 3.727726626597754*^9}, 
-   3.72773166068155*^9, {3.72822823994071*^9, 
-   3.728228243339076*^9}},ExpressionUUID->"56e18733-d234-4beb-858d-\
-72556b5dda91"],
+ Evaluatable->True,ExpressionUUID->"56e18733-d234-4beb-858d-72556b5dda91"],
 
 Cell[CellGroupData[{
 
@@ -420,7 +418,7 @@ Cell[BoxData[
    3.728228459568502*^9}},ExpressionUUID->"9be4df07-5269-4cda-8116-\
 9440f055e8db"]
 }, Closed]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -431,27 +429,62 @@ Cell["\[LeftCeiling]ChemDVRDirectProductKineticEnergy\[RightFloor]", \
   3.732066746770686*^9},ExpressionUUID->"69513c6c-729d-44ad-ba69-\
 6a5afaff5a6e"],
 
+Cell["\<\
+\[LeftCeiling]
+\tTo avoid Compile overhead and compilation to C we\[CloseCurlyQuote]re gonna \
+just use the basic Kronecker sum.
+\tMight return to the Compiled one later if needed, though.
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"db7f841f-22df-48ec-8df2-896b37efd03e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"kroneckerSum", "[", 
+   RowBox[{"m1_", ",", " ", "m2_"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{
+   RowBox[{"KroneckerProduct", "[", 
+    RowBox[{
+     RowBox[{"IdentityMatrix", "[", 
+      RowBox[{
+       RowBox[{"Length", "@", "m2"}], ",", " ", "SparseArray"}], "]"}], ",", 
+     " ", "m1"}], "]"}], "+", "\n", "\t\t", 
+   RowBox[{"KroneckerProduct", "[", 
+    RowBox[{"m2", ",", " ", 
+     RowBox[{"IdentityMatrix", "[", 
+      RowBox[{
+       RowBox[{"Length", "@", "m1"}], ",", " ", "SparseArray"}], "]"}]}], 
+    "]"}]}]}]], \
+"CodeInput",ExpressionUUID->"df245979-8d89-49db-82cd-fedef58fe0ab"],
+
 Cell[BoxData[
  RowBox[{
   RowBox[{"ChemDVRKroeneckerProductKineticEnergy", "[", 
    RowBox[{"keMats", ":", 
     RowBox[{"{", "__List", "}"}]}], "]"}], ":=", "\n", "\t", 
-  RowBox[{"dvrKToSparseArray", "[", "\n", "\t\t", 
-   RowBox[{"Fold", "[", 
-    RowBox[{"dvrKIteration", ",", " ", "\n", "\t\t\t", 
-     RowBox[{"dvrKToSparseArrayData", "[", 
-      RowBox[{"keMats", "[", 
-       RowBox[{"[", "1", "]"}], "]"}], "]"}], ",", " ", "\n", "\t\t\t", 
-     RowBox[{"Rest", "[", "keMats", "]"}]}], "\n", "\t\t\t", "]"}], "\n", 
-   "\t\t", "]"}]}]], "CodeInput",
- CellChangeTimes->{{3.727726528860077*^9, 3.727726580792251*^9}, {
-   3.727731180934949*^9, 3.727731193490567*^9}, {3.727731242914007*^9, 
-   3.727731247097042*^9}, {3.7282284061759768`*^9, 3.728228441391821*^9}, {
-   3.732066733883779*^9, 3.7320667415678673`*^9}, 
-   3.732302371640963*^9},ExpressionUUID->"f151fe7b-7de6-4719-9ec8-\
-306b20c49e85"]
+  RowBox[{"Fold", "[", 
+   RowBox[{"kroneckerSum", ",", " ", "keMats"}], 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"f151fe7b-7de6-4719-9ec8-306b20c49e85"],
+
+Cell[BoxData[
+ RowBox[{"(*", "\n", 
+  RowBox[{
+   RowBox[{"ChemDVRKroeneckerProductKineticEnergy", "[", 
+    RowBox[{"keMats", ":", 
+     RowBox[{"{", "__List", "}"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"dvrKToSparseArray", "[", "\n", "\t\t", 
+    RowBox[{"Fold", "[", 
+     RowBox[{"dvrKIteration", ",", " ", "\n", "\t\t\t", 
+      RowBox[{"dvrKToSparseArrayData", "[", 
+       RowBox[{"keMats", "[", 
+        RowBox[{"[", "1", "]"}], "]"}], "]"}], ",", " ", "\n", "\t\t\t", 
+      RowBox[{"Rest", "[", "keMats", "]"}]}], "\n", "\t\t\t", "]"}], "\n", 
+    "\t\t", "]"}]}], "\n", 
+  "*)"}]], "CodeInput",ExpressionUUID->"13ce7421-6d4e-449d-8436-c1517707448e"]\
+
 }, Open  ]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 

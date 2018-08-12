@@ -140,6 +140,15 @@ Cell[BoxData[{
 \>\""}], ";"}], "\n", 
  RowBox[{
   RowBox[{
+   RowBox[{"ChemDVRPotentialOptimization", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Returns potential optimized DVR parameters\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRGuessWavefunctions", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Returns guess wavefunctions from uncoupled representation\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
    RowBox[{"ChemDVRWavefunctions", "::", "usage"}], "=", "\n", "\t", 
    "\"\<Returns the wavefunctions computed in ChemDVR calculations\>\""}], 
   ";"}], "\n", 
@@ -167,6 +176,11 @@ states->function specs\>\""}], ";"}], "\n",
    RowBox[{"ChemDVROperatorMatrixElements", "::", "usage"}], "=", "\n", "\t", 
    "\"\<Returns specific elements of the expectation matrix for \
 states->function specs\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRExtendWavefunctions", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Extends the set of wavefunctions based on previous set\>\""}], 
+  ";"}], "\n", 
  RowBox[{
   RowBox[{
    RowBox[{"ChemDVRView", "::", "usage"}], "=", 
@@ -214,11 +228,8 @@ eecec2bffabb"],
 
 Cell[CellGroupData[{
 
-Cell["\[LeftCeiling]KeyWords\[RightFloor]", "CodeSubsubsection",
- Evaluatable->True,
- CellChangeTimes->{{3.724796415784959*^9, 
-  3.72479641790486*^9}},ExpressionUUID->"5f6b3324-8946-4264-9466-\
-62f3809160f9"],
+Cell["\[LeftCeiling]Key Symbols\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"5f6b3324-8946-4264-9466-62f3809160f9"],
 
 Cell[BoxData[{
  RowBox[{
@@ -234,7 +245,17 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"$dvrgp", "=", "\"\<GridPotentialEnergy\>\""}], ";"}], "\n", 
  RowBox[{
+  RowBox[{"$dvrpo", "=", "\"\<PotentialOptimization\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"$dvrham", "=", "\"\<Hamiltonian\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"$dvreng", "=", "\"\<Energies\>\""}], ";"}], "\n", 
+ RowBox[{
   RowBox[{"$dvrwf", "=", "\"\<Wavefunctions\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"$dvrguwf", "=", "\"\<GuessWavefunctions\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"$dvrexwf", "=", "\"\<ExtendWavefunctions\>\""}], ";"}], "\n", 
  RowBox[{
   RowBox[{"$dvrgr", "=", "\"\<Grid\>\""}], ";"}], "\n", 
  RowBox[{
@@ -247,17 +268,14 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"$dvrexm", "=", "\"\<OperatorMatrix\>\""}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$dvrvw", "=", "\"\<View\>\""}], ";"}]}], "CodeInput",
- CellChangeTimes->{{3.699197490356634*^9, 3.699197536260509*^9}, {
-   3.699197711919973*^9, 3.69919771286185*^9}, {3.699309092725204*^9, 
-   3.699309093225613*^9}, {3.7211651317303457`*^9, 3.7211651421811333`*^9}, {
-   3.729252663493005*^9, 3.729252680850198*^9}, {3.729252760038621*^9, 
-   3.729252765182849*^9}, {3.731785768570859*^9, 3.7317857865419283`*^9}, {
-   3.731786090560952*^9, 3.731786163426529*^9}, 3.731787187218285*^9, 
-   3.731791501320939*^9, {3.7348974348740597`*^9, 
-   3.734897443732863*^9}},ExpressionUUID->"4a289317-6ac5-443c-a723-\
-e6a37f57ef9b"]
-}, Open  ]],
+  RowBox[{"$dvrexmel", "=", "\"\<OperatorMatrixElements\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"$dvrfmgr", "=", "\"\<FormatGrid\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"$dvrvw", "=", "\"\<View\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"4a289317-6ac5-443c-a723-e6a37f57ef9b"]\
+
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -692,7 +710,17 @@ Cell[BoxData[
            RowBox[{"$dvrgp", ",", " ", "ChemDVRDefaultGridPotentialEnergy"}], 
            "}"}], ",", "\n", "\t\t\t\t", 
           RowBox[{"{", 
+           RowBox[{"$dvrpo", ",", " ", "ChemDVRDefaultPotentialOptimize"}], 
+           "}"}], ",", "\n", "\t\t\t\t", 
+          RowBox[{"{", 
+           RowBox[{"$dvrguwf", ",", " ", "ChemDVRDefaultGuessWavefunctions"}],
+            "}"}], ",", "\n", "\t\t\t\t", 
+          RowBox[{"{", 
            RowBox[{"$dvrwf", ",", " ", "ChemDVRDefaultWavefunctions"}], "}"}],
+           ",", "\n", "\t\t\t\t", 
+          RowBox[{"{", 
+           RowBox[{
+           "$dvrexwf", ",", " ", "ChemDVRDefaultExtendWavefunctions"}], "}"}],
            ",", "\n", "\t\t\t\t", 
           RowBox[{"{", 
            RowBox[{"$dvrvw", ",", " ", "ChemDVRDefaultPlot"}], "}"}], ",", 
@@ -713,12 +741,10 @@ Cell[BoxData[
            "}"}], ",", "\n", "\t\t\t\t", 
           RowBox[{"{", 
            RowBox[{
-           "\"\<OperatorMatrixElements\>\"", ",", " ", 
-            "ChemDVRDefaultOperatorMatrixElements"}], "}"}], ",", "\n", 
-          "\t\t\t\t", 
+           "$dvrexmel", ",", " ", "ChemDVRDefaultOperatorMatrixElements"}], 
+           "}"}], ",", "\n", "\t\t\t\t", 
           RowBox[{"{", 
-           RowBox[{
-           "\"\<FormatGrid\>\"", ",", " ", "ChemDVRDefaultFormatGrid"}], 
+           RowBox[{"$dvrfmgr", ",", " ", "ChemDVRDefaultFormatGrid"}], 
            "}"}]}], "\n", "\t\t\t\t", "}"}]}], "\n", "\t\t\t", "]"}], ";", 
       "\n", "\t\t", 
       RowBox[{
@@ -995,22 +1021,24 @@ Cell[BoxData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"dvrOpsLookup", "[", 
-   RowBox[{"ops___", ",", "key_", ",", "default_"}], "]"}], ":=", "\n", "\t", 
-  
-  RowBox[{"Lookup", "[", 
-   RowBox[{
-    RowBox[{"Flatten", "@", 
-     RowBox[{"Normal", "@", 
-      RowBox[{"{", "ops", "}"}]}]}], ",", "key", ",", "default"}], 
-   "]"}]}], "\n", 
+  RowBox[{
+   RowBox[{"dvrOpsLookup", "[", 
+    RowBox[{"ops___", ",", "key_", ",", "default_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Lookup", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"Flatten", "@", 
+      RowBox[{"Replace", "[", 
+       RowBox[{
+        RowBox[{"{", "ops", "}"}], ",", " ", 
+        RowBox[{
+         RowBox[{"a_Association", "?", "AssociationQ"}], "\[RuleDelayed]", 
+         RowBox[{"Normal", "[", "a", "]"}]}], ",", " ", "1"}], "]"}]}], ",", 
+     "\n", "\t\t", "key", ",", "\n", "\t\t", "default"}], "\n", "\t\t", 
+    "]"}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{"dvrOpsLookup", "~", "SetAttributes", "~", "HoldAll"}], 
-  ";"}]}], "CodeInput",
- CellChangeTimes->{{3.699204419926141*^9, 3.699204483651804*^9}, {
-  3.709508471785342*^9, 
-  3.7095084779424257`*^9}},ExpressionUUID->"5836edc7-b8f8-4a36-8f2f-\
-d4ab75b4bf4f"]
+  ";"}]}], "CodeInput",ExpressionUUID->"5836edc7-b8f8-4a36-8f2f-d4ab75b4bf4f"]\
+
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -1355,7 +1383,7 @@ Cell[BoxData[
   3.729252781481769*^9}},ExpressionUUID->"843d70d0-891b-459a-9ab0-\
 272d1aca4944"]
 }, Closed]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -1510,7 +1538,7 @@ Cell[BoxData[
        "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
       RowBox[{
        RowBox[{"ChemDVRGet", "[", 
-        RowBox[{"obj", ",", "\"\<FormatGrid\>\"", ",", 
+        RowBox[{"obj", ",", " ", "$dvrfmgr", ",", 
          RowBox[{"(", 
           RowBox[{"#", "&"}], ")"}]}], "]"}], "[", "\n", "\t\t\t", 
        RowBox[{
@@ -1941,6 +1969,88 @@ Cell[BoxData[
    3.731785972027854*^9}},ExpressionUUID->"c85108af-993b-429f-9b75-\
 8f70823bc7e7"]
 }, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]PotentialOptimization\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"ef5055a1-ae41-4dca-9f03-742ecbc2b108"],
+
+Cell[BoxData[
+ RowBox[{"ChemDVRPotentialOptimization", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"6151793b-1612-40c2-bac6-c3710c4da1fc"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDVRPotentialOptimization", "[", "\n", "\t", 
+   RowBox[{
+    RowBox[{"obj", ":", "dvrObjPattern"}], ",", "\n", "\t", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"With", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{"po", "=", "\n", "\t\t\t\t", 
+      RowBox[{"ChemDVRGet", "[", 
+       RowBox[{"obj", ",", "  ", "$dvrpo"}], "]"}]}], "\n", "\t\t\t", "}"}], 
+    ",", "\n", "\t\t", 
+    RowBox[{"po", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"dvrOpsLookup", "[", 
+       RowBox[{"ops", ",", " ", "$dvrgr", ",", " ", 
+        RowBox[{"ChemDVRGrid", "[", 
+         RowBox[{"obj", ",", " ", "ops"}], "]"}]}], "]"}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"FilterRules", "[", 
+       RowBox[{
+        RowBox[{"{", "ops", "}"}], ",", " ", 
+        RowBox[{"Options", "@", "po"}]}], "]"}]}], "\n", "\t\t\t", "]"}]}], 
+   "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"518f5b2b-dc69-42b3-bed5-4e908c2d639d"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GuessWavefunctions\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"9d34679d-36bb-460f-b8e5-457ebd81cc7c"],
+
+Cell[BoxData[
+ RowBox[{"ChemDVRGuessWavefunctions", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"4d8eb2ac-47dd-4507-ac83-d8072a701113"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDVRGuessWavefunctions", "[", "\n", "\t", 
+   RowBox[{
+    RowBox[{"obj", ":", "dvrObjPattern"}], ",", "\n", "\t", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"With", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{"wf", "=", "\n", "\t\t\t\t", 
+      RowBox[{"ChemDVRGet", "[", 
+       RowBox[{"obj", ",", "  ", "$dvrguwf"}], "]"}]}], "\n", "\t\t\t", "}"}],
+     ",", "\n", "\t\t", 
+    RowBox[{"wf", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"dvrOpsLookup", "[", 
+       RowBox[{"ops", ",", " ", "$dvrgr", ",", " ", 
+        RowBox[{"ChemDVRGrid", "[", 
+         RowBox[{"obj", ",", " ", "ops"}], "]"}]}], "]"}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"FilterRules", "[", 
+       RowBox[{
+        RowBox[{"{", "ops", "}"}], ",", " ", 
+        RowBox[{"Options", "@", "wf"}]}], "]"}]}], "\n", "\t\t\t", "]"}]}], 
+   "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"e0e056bc-1f13-4b16-9570-eab65e45db4a"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -2415,28 +2525,9 @@ Cell[BoxData[
        RowBox[{
         RowBox[{"{", "ops", "}"}], ",", "\n", "\t\t\t\t", 
         RowBox[{"Options", "@", "exFun"}]}], "\n", "\t\t\t\t", "]"}]}], "\n", 
-     "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}]], "CodeInput",
- CellChangeTimes->{{3.6992016425558777`*^9, 3.699201644570715*^9}, {
-   3.6992016783069277`*^9, 3.699201679600355*^9}, {3.6992018688339987`*^9, 
-   3.699201913954846*^9}, {3.699202239679612*^9, 3.699202346223328*^9}, {
-   3.6992023824239264`*^9, 3.699202397348524*^9}, {3.699202517979288*^9, 
-   3.699202527369062*^9}, {3.699212715680834*^9, 3.699212726081011*^9}, {
-   3.699212878567347*^9, 3.6992129075868673`*^9}, {3.699213117596525*^9, 
-   3.69921314602836*^9}, 3.699214572571432*^9, {3.6992146792146807`*^9, 
-   3.699214686415449*^9}, {3.699215121079707*^9, 3.699215149573737*^9}, {
-   3.699301661091034*^9, 3.699301669933214*^9}, {3.7000047244214973`*^9, 
-   3.700004724443285*^9}, {3.709508471667099*^9, 3.7095084929644012`*^9}, {
-   3.71604468765968*^9, 3.7160446982425623`*^9}, {3.716044745052003*^9, 
-   3.716044833176176*^9}, {3.716045574207285*^9, 3.716045588259344*^9}, {
-   3.71604564960534*^9, 3.71604571667426*^9}, 3.7160459774466867`*^9, {
-   3.718048971834189*^9, 3.718048980566161*^9}, {3.718052700316998*^9, 
-   3.7180527280336647`*^9}, {3.731433382329239*^9, 3.731433478656146*^9}, {
-   3.731702515443252*^9, 3.731702572399046*^9}, {3.731702621760159*^9, 
-   3.731702630681596*^9}, {3.731782974758243*^9, 3.731782980919476*^9}, {
-   3.7317860293571043`*^9, 3.731786044328086*^9}, {3.7317872017689457`*^9, 
-   3.7317872151804657`*^9}, 3.7317914497142477`*^9, {3.735193302631324*^9, 
-   3.735193303297453*^9}},ExpressionUUID->"2572244a-ae7d-412e-9907-\
-36aebd21cb01"]
+     "\t\t\t", "]"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"2572244a-ae7d-412e-9907-36aebd21cb01"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -2491,8 +2582,8 @@ Cell[BoxData[
     RowBox[{"{", 
      RowBox[{"exFun", "=", 
       RowBox[{"ChemDVRGet", "[", 
-       RowBox[{"obj", ",", " ", "\"\<OperatorMatrixElements\>\""}], "]"}]}], 
-     "}"}], ",", "\n", "\t\t", 
+       RowBox[{"obj", ",", "  ", "$dvrexmel"}], "]"}]}], "}"}], ",", "\n", 
+    "\t\t", 
     RowBox[{"exFun", "[", "\n", "\t\t\t", 
      RowBox[{
       RowBox[{"dvrOpsLookup", "[", 
@@ -2518,6 +2609,79 @@ Cell[BoxData[
      "\t\t\t", "]"}]}], "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"5da9dddc-2991-47ac-bde0-eed7e3348166"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ExtendWavefunctions\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"7b248628-51c2-466b-8b2e-ab1f99386303"],
+
+Cell[BoxData[
+ RowBox[{"ChemDVRExtendWavefunctions", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"f116e08b-146a-475a-851c-32ddc4a52d5e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDVRExtendWavefunctions", "[", "\n", "\t", 
+   RowBox[{
+    RowBox[{"obj", ":", "dvrObjPattern"}], ",", "\n", "\t", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"With", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"exFun", "=", "\n", "\t\t\t\t", 
+       RowBox[{"ChemDVRGet", "[", 
+        RowBox[{"obj", ",", "  ", "$dvrexwf"}], "]"}]}], ",", "\n", "\t\t\t", 
+      
+      RowBox[{"wf", "=", "\n", "\t\t\t\t", 
+       RowBox[{"dvrOpsLookup", "[", 
+        RowBox[{"ops", ",", " ", "$dvrwf", ",", " ", "None"}], "]"}]}]}], 
+     "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"If", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"!", 
+        RowBox[{"MatchQ", "[", 
+         RowBox[{"wf", ",", " ", "\n", "\t\t\t\t", 
+          RowBox[{"_Hold", "|", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"_List", "?", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"VectorQ", "[", 
+                 RowBox[{"#", ",", " ", "Internal`RealValuedNumberQ"}], "]"}],
+                 "&"}], ")"}]}], ",", " ", 
+             RowBox[{"_List", "?", "MatrixQ"}]}], "}"}]}]}], "\n", "\t\t\t\t",
+          "]"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+        "Automatic", ",", "\n", "\t\t\t\t", 
+         "\"\<\\\"ExtendWavefunctions\\\" requires an initial set of \
+wavefunctions\>\""}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}], ";", 
+     "\n", "\t\t", 
+     RowBox[{"exFun", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"dvrOpsLookup", "[", 
+        RowBox[{"ops", ",", " ", "$dvrke", ",", " ", 
+         RowBox[{"ChemDVRKineticEnergy", "[", 
+          RowBox[{"obj", ",", "ops"}], "]"}]}], "]"}], ",", "\n", "\t\t\t", 
+       RowBox[{"dvrOpsLookup", "[", 
+        RowBox[{"ops", ",", " ", "$dvrpe", ",", " ", 
+         RowBox[{"ChemDVRPotentialEnergy", "[", 
+          RowBox[{"obj", ",", "ops"}], "]"}]}], "]"}], ",", "\n", "\t\t\t", 
+       "wf", ",", "\n", "\t\t\t", 
+       RowBox[{"FilterRules", "[", 
+        RowBox[{
+         RowBox[{"{", "ops", "}"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"Options", "@", "exFun"}]}], "\n", "\t\t\t\t", "]"}]}], "\n",
+       "\t\t\t", "]"}]}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"28dfcee9-92ff-481c-b980-4e724965b7f4"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -2693,86 +2857,288 @@ Cell[BoxData[
         RowBox[{"Apply", "[", "Sequence", "]"}], "@*", "Echo", "@*", "List"}],
         ",", " ", 
        RowBox[{"##", "&"}]}], "]"}], "@"}], "*)"}], "\n", "\t", 
-   RowBox[{"With", "[", "\n", "\t\t", 
-    RowBox[{
-     RowBox[{"{", "\n", "\t\t\t", 
-      RowBox[{"passedOpts", "=", "\n", "\t", "\t\t\t", 
-       RowBox[{"dvrOpsLookup", "[", "\n", "\t\t\t\t\t", 
-        RowBox[{
-         RowBox[{"{", "RunRuntimeOptions", "}"}], ",", " ", "\n", 
-         "\t\t\t\t\t", "\"\<PassedOptions\>\"", ",", "\n", "\t", "\t", "\t", 
-         "\t\t", 
-         RowBox[{"{", "}"}]}], "\n", "\t", "\t\t\t\t", "]"}]}], "\n", "\t", 
-      "\t\t", "}"}], ",", "\n", "\t", "\t", 
-     RowBox[{"Sequence", "@@", 
-      RowBox[{"Normal", "@", "\n", "\t\t\t", 
-       RowBox[{"Merge", "[", "\n", "\t\t\t\t", 
-        RowBox[{
-         RowBox[{"{", "\n", "\t\t\t\t\t", 
+   RowBox[{
+    RowBox[{"With", "[", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"{", "\n", "\t\t\t", 
+       RowBox[{"baseOpts", "=", 
+        RowBox[{"{", "RunRuntimeOptions", "}"}]}], "\n", "\t\t\t", "}"}], ",",
+       "\n", "\t\t", 
+      RowBox[{"With", "[", "\n", "\t", "\t\t", 
+       RowBox[{
+        RowBox[{"{", "\n", "\t", "\t\t\t", 
+         RowBox[{"passedOpts", "=", "\n", "\t\t\t\t\t", 
+          RowBox[{"dvrOpsLookup", "[", "\n", "\t\t\t\t\t\t", 
+           RowBox[{
+           "baseOpts", ",", " ", "\n", "\t\t\t\t\t\t", 
+            "\"\<PassedOptions\>\"", ",", "\n", "\t", "\t", "\t", "\t", 
+            "\t\t", 
+            RowBox[{"{", "}"}]}], "\n", "\t", "\t", "\t\t\t\t", "]"}]}], "\n",
+          "\t", "\t", "\t\t", "}"}], ",", "\n", "\t\t\t", 
+        RowBox[{"Normal", "@", "\n", "\t\t\t\t", 
+         RowBox[{"Merge", "[", "\n", "\t\t\t\t\t", 
           RowBox[{
-           RowBox[{"Fold", "[", "\n", "\t", "\t\t\t\t\t", 
+           RowBox[{"{", "\n", "\t", "\t\t\t\t\t", 
             RowBox[{
-             RowBox[{
-              RowBox[{"KeyDrop", "[", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+             RowBox[{"Fold", "[", "\n", "\t", "\t", "\t\t\t\t\t", 
+              RowBox[{
                RowBox[{
                 RowBox[{
-                "Merge", "[", "\n", "\t", "\t", "\t", "\t", "\t\t\t\t", 
+                "KeyDrop", "[", "\n", "\t", "\t", "\t", "\t", "\t\t\t\t", 
                  RowBox[{
-                  RowBox[{"{", "\n", "\t", "\t", "\t", "\t", "\t\t\t\t\t", 
+                  RowBox[{
+                  "Merge", "[", "\n", "\t", "\t", "\t", "\t", "\t", 
+                   "\t\t\t\t", 
                    RowBox[{
                     RowBox[{
-                    "dvrOpsLookup", "[", "\n", "\t", "\t", "\t", 
+                    "{", "\n", "\t", "\t", "\t", "\t", "\t", "\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{
+                    "dvrOpsLookup", "[", "\n", "\t", "\t", "\t", "\t", 
                     "\t\t\t\t\t\t\t", 
                     RowBox[{
                     RowBox[{"{", "#", "}"}], ",", " ", "\n", "\t", "\t", "\t",
-                     "\t\t\t\t\t\t\t", 
+                     "\t", "\t\t\t\t\t\t\t", 
                     RowBox[{"#2", "<>", "\"\<Options\>\""}], ",", "\n", "\t", 
-                    "\t", "\t", "\t", "\t", "\t", "\t", "\t\t\t", 
+                    "\t", "\t", "\t", "\t", "\t", "\t", "\t", "\t\t\t", 
                     RowBox[{"{", "}"}]}], "\n", "\t", "\t", "\t", "\t", "\t", 
-                    "\t", "\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t", 
-                    "\t\t\t\t\t\t", "#"}], "\n", "\t", "\t", "\t", 
-                   "\t\t\t\t\t\t", "}"}], ",", "\n", "\t", "\t", "\t", 
-                  "\t\t\t\t\t", "First"}], "\n", "\t", "\t", "\t", "\t", 
-                 "\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t", "\t\t\t\t", 
-                RowBox[{"#2", "<>", "\"\<Options\>\""}]}], "\n", "\t", "\t", 
-               "\t", "\t\t\t\t", "]"}], "&"}], ",", "\n", "\t", "\t\t\t\t\t", 
-             "passedOpts", ",", "\n", "\t", "\t\t\t\t\t", 
-             RowBox[{"Reverse", "@", 
-              RowBox[{"{", "keys", "}"}]}]}], "\n", "\t", "\t\t\t\t\t", "]"}],
-            ",", "\n", "\t", "\t\t\t\t", 
-           RowBox[{"Fold", "[", "\n", "\t", "\t\t\t\t\t", 
-            RowBox[{
-             RowBox[{
-              RowBox[{"KeyDrop", "[", "\n", "\t", "\t", "\t", "\t\t\t\t", 
+                    "\t", "\t", "\t\t\t\t", "]"}], ",", "\n", "\t", "\t", 
+                    "\t", "\t", "\t\t\t\t\t\t", "#"}], "\n", "\t", "\t", "\t",
+                     "\t", "\t\t\t\t\t\t", "}"}], ",", "\n", "\t", "\t", "\t",
+                     "\t", "\t\t\t\t\t", "First"}], "\n", "\t", "\t", "\t", 
+                   "\t", "\t", "\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t",
+                   "\t", "\t\t\t\t", 
+                  RowBox[{"#2", "<>", "\"\<Options\>\""}]}], "\n", "\t", "\t",
+                  "\t", "\t", "\t\t\t\t", "]"}], "&"}], ",", "\n", "\t", "\t",
+                "\t\t\t\t\t", "passedOpts", ",", "\n", "\t", "\t", 
+               "\t\t\t\t\t", 
+               RowBox[{"Reverse", "@", 
+                RowBox[{"{", "keys", "}"}]}]}], "\n", "\t", "\t", 
+              "\t\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t\t\t\t", 
+             RowBox[{"Fold", "[", "\n", "\t", "\t", "\t\t\t\t\t", 
+              RowBox[{
                RowBox[{
                 RowBox[{
-                "Merge", "[", "\n", "\t", "\t", "\t", "\t", "\t\t\t\t", 
+                "KeyDrop", "[", "\n", "\t", "\t", "\t", "\t", "\t\t\t\t", 
                  RowBox[{
-                  RowBox[{"{", "\n", "\t", "\t", "\t", "\t", "\t\t\t\t\t", 
+                  RowBox[{
+                  "Merge", "[", "\n", "\t", "\t", "\t", "\t", "\t", 
+                   "\t\t\t\t", 
                    RowBox[{
                     RowBox[{
-                    "dvrOpsLookup", "[", "\n", "\t", "\t", "\t", 
+                    "{", "\n", "\t", "\t", "\t", "\t", "\t", "\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{
+                    "dvrOpsLookup", "[", "\n", "\t", "\t", "\t", "\t", 
                     "\t\t\t\t\t\t\t", 
                     RowBox[{
                     RowBox[{"{", "#", "}"}], ",", " ", "\n", "\t", "\t", "\t",
-                     "\t\t\t\t\t\t\t", 
+                     "\t", "\t\t\t\t\t\t\t", 
                     RowBox[{"#2", "<>", "\"\<Options\>\""}], ",", "\n", "\t", 
-                    "\t", "\t", "\t", "\t", "\t", "\t", "\t\t\t", 
+                    "\t", "\t", "\t", "\t", "\t", "\t", "\t", "\t\t\t", 
                     RowBox[{"{", "}"}]}], "\n", "\t", "\t", "\t", "\t", "\t", 
-                    "\t", "\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t", 
-                    "\t\t\t\t\t\t", "#"}], "\n", "\t", "\t", "\t", 
-                   "\t\t\t\t\t\t", "}"}], ",", "\n", "\t", "\t", "\t", 
-                  "\t\t\t\t\t", "First"}], "\n", "\t", "\t", "\t", "\t", 
-                 "\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t", "\t\t\t\t", 
-                RowBox[{"#2", "<>", "\"\<Options\>\""}]}], "\n", "\t", "\t", 
-               "\t", "\t\t\t\t", "]"}], "&"}], ",", "\n", "\t\t\t\t\t\t", 
-             RowBox[{"{", "RunRuntimeOptions", "}"}], ",", "\n", 
-             "\t\t\t\t\t\t", 
-             RowBox[{"Reverse", "@", 
-              RowBox[{"{", "keys", "}"}]}]}], "\n", "\t\t\t\t\t\t", "]"}]}], 
-          "\n", "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", "First"}], "\n", 
-        "\t\t\t", "]"}]}]}]}], "\n", "\t\t", "]"}]}], 
+                    "\t", "\t", "\t\t\t\t", "]"}], ",", "\n", "\t", "\t", 
+                    "\t", "\t", "\t\t\t\t\t\t", "#"}], "\n", "\t", "\t", "\t",
+                     "\t", "\t\t\t\t\t\t", "}"}], ",", "\n", "\t", "\t", "\t",
+                     "\t", "\t\t\t\t\t", "First"}], "\n", "\t", "\t", "\t", 
+                   "\t", "\t", "\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t",
+                   "\t", "\t\t\t\t", 
+                  RowBox[{"#2", "<>", "\"\<Options\>\""}]}], "\n", "\t", "\t",
+                  "\t", "\t", "\t\t\t\t", "]"}], "&"}], ",", "\n", 
+               "\t\t\t\t\t\t\t", "baseOpts", ",", "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{"Reverse", "@", 
+                RowBox[{"{", "keys", "}"}]}]}], "\n", "\t", "\t\t\t\t\t\t", 
+              "]"}]}], "\n", "\t", "\t\t\t\t", "}"}], ",", "\n", "\t", 
+           "\t\t\t", "First"}], "\n", "\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", 
+       "]"}]}], "\n", "\t\t", "]"}], "//", 
+    RowBox[{"Apply", "[", "Sequence", "]"}]}]}], 
   ";"}]], "CodeInput",ExpressionUUID->"2a7fc280-6e69-4015-bf64-f3bad471dd16"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]iChemDVRRunCalculateKEQ\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"eabe51a7-368c-4ce6-a7ec-ff1d6a035866"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"iChemDVRRunCalculateKEQ", "[", "]"}], ":=", "\n", "\t", 
+  RowBox[{"!", 
+   RowBox[{"(", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"MatchQ", "[", 
+      RowBox[{"RunEndPoint", ",", " ", "$dvrpe"}], "]"}], "||", "\n", 
+     "\t\t\t", 
+     RowBox[{"(", "\n", "\t\t\t\t", 
+      RowBox[{
+       RowBox[{"MatchQ", "[", 
+        RowBox[{"RunEndPoint", ",", " ", "\n", "\t\t\t\t\t", 
+         RowBox[{
+         "$dvrwf", "|", "$dvrgrwf", "|", "$dvrintwf", "|", "$dvrev", "|", 
+          "$dvrexm", "|", "$dvrexmel", "|", "$dvrvw"}]}], "\n", "\t\t\t\t\t", 
+        "]"}], "&&", "\n", "\t\t\t\t\t", 
+       RowBox[{"MatchQ", "[", "\n", "\t\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"RunWavefunctions", "===", "None"}], ",", "\n", 
+           "\t\t\t\t\t\t\t", 
+           RowBox[{"RunWavefunctions", "=", "\n", "\t\t\t\t\t\t\t\t", 
+            RowBox[{"dvrOpsLookup", "[", 
+             RowBox[{
+             "RunRuntimeOptions", ",", " ", "$dvrwf", ",", " ", 
+              "RunWavefunctions"}], "]"}]}], ",", "\n", "\t\t\t\t\t\t\t", 
+           "RunWavefunctions"}], "\n", "\t\t\t\t\t\t\t", "]"}], ",", "\n", 
+         "\t\t\t\t\t\t", 
+         RowBox[{"_List", "|", "_Hold"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], 
+      "\n", "\t\t\t\t", ")"}]}], "\n", "\t\t\t", 
+    ")"}]}]}]], \
+"CodeInput",ExpressionUUID->"eeeba5d8-a151-4a61-8874-785f2a800df2"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]iChemDVRRunKineticEnergy\[RightFloor]", \
+"CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"e9ad0811-8b07-449b-b450-e241a4399a4f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"iChemDVRRunKineticEnergy", "[", "obj_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"Switch", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"RunKineticEnergy", "=", "\n", "\t\t\t", 
+     RowBox[{"dvrOpsLookup", "[", 
+      RowBox[{
+      "RunRuntimeOptions", ",", " ", "$dvrke", ",", " ", "RunKineticEnergy"}],
+       "]"}]}], ",", "\n", "\t\t", "None", ",", "\n", "\t\t\t", 
+    RowBox[{"ChemDVRKineticEnergy", "[", "\n", "\t\t\t\t", 
+     RowBox[{"obj", ",", "\n", "\t\t\t\t", 
+      RowBox[{"$dvrgr", "\[Rule]", "RunGrid"}], ",", "\n", "\t\t\t\t", 
+      RowBox[{"\"\<TransformationMatrix\>\"", "->", "RunTransforms"}], ",", 
+      "\n", "\t\t\t\t", 
+      RowBox[{"iChemDVRGetRuntimeOptions", "[", "$dvrke", "]"}]}], "\n", 
+     "\t\t\t\t", "]"}], ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"_", "?", "SquareMatrixQ"}], "|", 
+     RowBox[{"Hold", "[", 
+      RowBox[{"_", "?", "SquareMatrixQ"}], "]"}]}], ",", "\n", "\t\t\t", 
+    "RunKineticEnergy", ",", "\n", "\t\t", 
+    RowBox[{"{", 
+     RowBox[{"__", "?", "SquareMatrixQ"}], "}"}], ",", "\n", "\t\t\t", 
+    RowBox[{
+    "ChemDVRKroeneckerProductKineticEnergy", "@", "RunKineticEnergy"}], ",", 
+    "\n", "\t\t", 
+    RowBox[{"Hold", "[", 
+     RowBox[{"_", "?", 
+      RowBox[{"(", 
+       RowBox[{"MatchQ", "[", 
+        RowBox[{"{", 
+         RowBox[{"__", "?", "SquareMatrixQ"}], "}"}], "]"}], ")"}]}], "]"}], 
+    ",", "\n", "\t\t\t", 
+    RowBox[{"Hold", "[", 
+     RowBox[{"Evaluate", "@", 
+      RowBox[{
+      "ChemDVRKroeneckerProductKineticEnergy", "@", "RunKineticEnergy"}]}], 
+     "]"}], ",", "\n", "\t\t", "True", ",", "\n", "\t\t\t", 
+    RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t", 
+     RowBox[{
+     "Automatic", ",", "\n", "\t\t\t\t", 
+      "\"\<Kinetic energy isn't in valid format\>\""}], "\n", "\t\t\t\t", 
+     "]"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"3135f1cf-e677-4d74-bac5-07a059b65e13"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]iChemDVRRunCalculatePEQ\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"d21a131e-b310-49dd-aada-f219585d0a17"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"iChemDVRRunCalculatePEQ", "[", "]"}], ":=", "\n", "\t", 
+  RowBox[{"!", 
+   RowBox[{"(", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"MatchQ", "[", 
+      RowBox[{"RunEndPoint", ",", " ", "\n", "\t\t\t", 
+       RowBox[{
+       "$dvrwf", "|", "$dvrgrwf", "|", "$dvrintwf", "|", "$dvrev", "|", 
+        "$dvrexm", "|", " ", "$dvrexmel"}]}], "\n", "\t", "\t\t", "]"}], "&&",
+      "\n", "\t\t", 
+     RowBox[{"MatchQ", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"RunWavefunctions", "===", "None"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"RunWavefunctions", "=", "\n", "\t\t\t\t\t", 
+          RowBox[{"dvrOpsLookup", "[", 
+           RowBox[{
+           "RunRuntimeOptions", ",", " ", "$dvrwf", ",", " ", 
+            "RunWavefunctions"}], "]"}]}], ",", "\n", "\t\t\t\t", 
+         "RunWavefunctions"}], "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
+       RowBox[{"_List", "|", "_Hold"}]}], "\n", "\t", "\t\t", "]"}]}], "\n", 
+    "\t", "\t", 
+    ")"}]}]}]], \
+"CodeInput",ExpressionUUID->"8eb68d5c-2bad-402e-8613-068e632249ae"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]iChemDVRRunPotentialEnergy\[RightFloor]", \
+"CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"8323fc42-e187-436c-b6c2-3cb89ac0e283"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"iChemDVRRunPotentialEnergy", "[", "obj_", "]"}], ":=", "\n", "\t", 
+  
+  RowBox[{"Switch", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"RunPotentialEnergy", "=", "\n", "\t\t\t", 
+     RowBox[{"dvrOpsLookup", "[", 
+      RowBox[{
+      "RunRuntimeOptions", ",", " ", "$dvrpe", ",", " ", 
+       "RunPotentialEnergy"}], "]"}]}], ",", "\n", "\t\t", "None", ",", "\n", 
+    "\t\t\t", 
+    RowBox[{"ChemDVRPotentialEnergy", "[", "\n", "\t\t\t\t", 
+     RowBox[{"obj", ",", "\n", "\t\t\t\t", 
+      RowBox[{"$dvrgr", "\[Rule]", "RunGrid"}], ",", "\n", "\t\t\t\t", 
+      RowBox[{"\"\<TransformationMatrix\>\"", "->", "RunTransformation"}], 
+      ",", "\n", "\t\t\t\t", 
+      RowBox[{"iChemDVRGetRuntimeOptions", "[", "$dvrpe", "]"}]}], "\n", 
+     "\t\t\t\t", "]"}], ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"_", "?", "SquareMatrixQ"}], "|", 
+     RowBox[{"Hold", "[", 
+      RowBox[{"_", "?", "SquareMatrixQ"}], "]"}]}], ",", "\n", "\t\t\t", 
+    "RunPotentialEnergy", ",", "\n", "\t\t", 
+    RowBox[{"{", 
+     RowBox[{"__", "?", "SquareMatrixQ"}], "}"}], ",", "\n", "\t\t\t\t", 
+    RowBox[{
+    "ChemDVRDefaultDirectProductPotentialEnergy", "@", "RunPotentialEnergy"}],
+     ",", "\n", "\t\t", 
+    RowBox[{"Hold", "[", 
+     RowBox[{"_", "?", 
+      RowBox[{"(", 
+       RowBox[{"MatchQ", "[", 
+        RowBox[{"{", 
+         RowBox[{"__", "?", "SquareMatrixQ"}], "}"}], "]"}], ")"}]}], "]"}], 
+    ",", "\n", "\t\t\t", 
+    RowBox[{"Hold", "[", "\n", "\t\t\t\t", 
+     RowBox[{"Evaluate", "@", "\n", "\t\t\t\t\t", 
+      RowBox[{
+      "ChemDVRDefaultDirectProductPotentialEnergy", "@", "\n", "\t\t\t\t\t\t",
+        "RunPotentialEnergy"}]}], "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t", 
+    "True", ",", "\n", "\t\t\t", 
+    RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t", 
+     RowBox[{
+     "Automatic", ",", "\n", "\t\t\t\t", 
+      "\"\<Potential energy isn't in valid format\>\""}], "\n", "\t\t\t\t", 
+     "]"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"92fbc2d0-84e5-4c54-adee-da38cee4de17"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -2803,6 +3169,28 @@ Cell[BoxData[
        "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}], "[", 
     RowBox[{"[", "1", "]"}], "]"}]}], 
   ";"}]], "CodeInput",ExpressionUUID->"4767ae2a-2777-4d0d-9acf-297f34356609"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]iChemDVRRunCalculateWFQ\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"29c4efac-442b-46cf-97f9-02296eaf1170"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"iChemDVRRunCalculateWFQ", "[", "]"}], ":=", "\n", "\t", 
+   RowBox[{
+    RowBox[{"Length", "@", "\n", "\t\t", 
+     RowBox[{"Complement", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"Flatten", "@", 
+        RowBox[{"{", "RunEndPoint", "}"}]}], ",", " ", "\n", "\t\t\t", 
+       RowBox[{"{", 
+        RowBox[{
+        "$dvrham", ",", " ", "$dvrke", ",", " ", "$dvrpe", ",", " ", 
+         "$dvrgr"}], "}"}]}], "\n", "\t\t\t", "]"}]}], ">", "0"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"5eeb24da-35df-45a1-b90b-c2e09e99dd9c"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -2886,6 +3274,211 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
+Cell["\[LeftCeiling]iChemDVRRunPOQ\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"d57d98da-67e0-48e9-bf73-bd240b7231b4"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"iChemDVRRunPOQ", "[", "]"}], ":=", "\n", "\t", 
+  RowBox[{
+   RowBox[{"RunEndPoint", "===", "$dvrpo"}], "||", "\n", "\t\t", 
+   RowBox[{"(", "\n", "\t\t\t", 
+    RowBox[{
+     RowBox[{"RunWavefunctions", "===", "None"}], "&&", "\n", "\t\t\t\t", 
+     RowBox[{"Replace", "[", "\n", "\t\t\t\t\t", 
+      RowBox[{
+       RowBox[{"dvrOpsLookup", "[", 
+        RowBox[{
+        "RunRuntimeOptions", ",", " ", "\"\<PotentialOptimize\>\"", ",", " ", 
+         "Automatic"}], "]"}], ",", "\n", "\t", "\t", "\t\t\t", 
+       RowBox[{"{", "\n", "\t", "\t", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+         "Automatic", "\[RuleDelayed]", "\n", "\t", "\t", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"Length", "@", "\n", "\t", "\t", "\t\t\t\t\t\t", 
+            RowBox[{"dvrOpsLookup", "[", 
+             RowBox[{
+             "RunRuntimeOptions", ",", " ", "\n", "\t", "\t", 
+              "\t\t\t\t\t\t\t", "\"\<PotentialOptimizationOptions\>\"", ",", 
+              " ", "None"}], "]"}]}], ">", "0"}]}], ",", "\n", "\t", "\t", 
+         "\t\t\t\t", 
+         RowBox[{
+          RowBox[{"Except", "[", 
+           RowBox[{"True", "|", "False"}], "]"}], "\[Rule]", "False"}]}], 
+        "\n", "\t", "\t\t\t\t\t", "}"}]}], "\n", "\t", "\t\t\t\t", "]"}]}], 
+    "\n", "\t\t\t", 
+    ")"}]}]}]], \
+"CodeInput",ExpressionUUID->"ec7ad00c-3912-4e83-9417-b8df23ae372a"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]iChemDVRRunPotentialOptimization\[RightFloor]", \
+"CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"89e1ce39-9f02-42d9-a066-16b72e2377c9"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"iChemDVRRunPotentialOptimization", "[", "obj_", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"po", ",", " ", "gr", ",", " ", "ke"}], "}"}], ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"po", "=", "\n", "\t\t\t", 
+      RowBox[{"ChemDVRPotentialOptimization", "[", "\n", "\t\t\t\t", 
+       RowBox[{"obj", ",", "\n", "\t\t\t\t", 
+        RowBox[{"$dvrgr", "->", "\n", "\t\t\t\t\t", "RunGrid"}], ",", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"\"\<OptimizedComponents\>\"", "\[Rule]", 
+             RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"$dvrgr", ",", " ", "\n", "\t\t\t\t\t\t\t", "$dvrke"}], 
+              "\n", "\t\t\t\t\t\t\t", "}"}]}], ",", "\n", "\t\t\t\t\t\t", 
+            RowBox[{
+            "iChemDVRGetRuntimeOptions", "[", "\n", "\t\t\t\t\t\t\t", 
+             RowBox[{
+             "$dvrpo", ",", "\n", "\t\t\t\t\t\t\t", "$dvrke", ",", "\n", 
+              "\t\t\t\t\t\t\t", "$dvrpe"}], "\n", "\t\t\t\t\t\t\t", "]"}]}], 
+           "\n", "\t\t\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"Options", "@", "ChemDVRDefaultPotentialOptimize"}]}], "\n",
+          "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"gr", "=", "\n", "\t\t\t", 
+      RowBox[{"With", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"l", "=", 
+          RowBox[{"po", "[", "$dvrgr", "]"}]}], "}"}], ",", "\n", "\t\t\t\t", 
+        
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Length", "@", "l"}], ">", "1"}], ",", "\n", "\t\t\t\t\t", 
+          
+          RowBox[{"ChemDVRDirectProductGrid", "@", "l"}], ",", "\n", 
+          "\t\t\t\t\t", 
+          RowBox[{"l", "[", 
+           RowBox[{"[", "1", "]"}], "]"}]}], "\n", "\t\t\t\t\t", "]"}]}], 
+       "\n", "\t\t\t\t", "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"ke", "=", "\n", "\t\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"RunEndPoint", "=!=", "$dvrgr"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"With", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"l", "=", 
+            RowBox[{"po", "[", "$dvrke", "]"}]}], "}"}], ",", "\n", 
+          "\t\t\t\t\t", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Length", "@", "l"}], ">", "1"}], ",", "\n", 
+            "\t\t\t\t\t\t", 
+            RowBox[{"ChemDVRKroeneckerProductKineticEnergy", "@", "l"}], ",", 
+            "\n", "\t\t\t\t\t\t", 
+            RowBox[{"l", "[", 
+             RowBox[{"[", "1", "]"}], "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], 
+         "\n", "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", "None"}], "\n", 
+       "\t\t\t\t", "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"{", 
+      RowBox[{"po", ",", " ", "gr", ",", " ", "ke"}], "}"}]}]}], "\n", "\t\t",
+    "]"}]}]], \
+"CodeInput",ExpressionUUID->"d7056ee2-2a84-4ee0-b8ca-c67ba699a11e"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]iChemDVRRunGWQ\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"1050ae22-c51c-4cce-9565-5385de0d84f0"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"iChemDVRRunGWQ", "[", "]"}], ":=", "\n", "\t", 
+  RowBox[{
+   RowBox[{"RunEndPoint", "===", "$dvrguwf"}], "||", "\n", "\t\t", 
+   RowBox[{"Replace", "[", "\n", "\t\t\t", 
+    RowBox[{
+     RowBox[{"dvrOpsLookup", "[", 
+      RowBox[{
+      "RunRuntimeOptions", ",", " ", "\"\<UseGuessWavefunctions\>\"", ",", 
+       " ", "False"}], "]"}], ",", "\n", "\t\t\t", 
+     RowBox[{"{", "\n", "\t\t\t\t", 
+      RowBox[{
+       RowBox[{"Automatic", "\[RuleDelayed]", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"Length", "@", "\n", "\t\t\t\t\t\t", 
+          RowBox[{"dvrOpsLookup", "[", "\n", "\t\t\t\t\t\t\t", 
+           RowBox[{
+           "RunRuntimeOptions", ",", " ", "\n", "\t\t\t\t\t\t\t", 
+            "\"\<GuessWavefunctionsOptions\>\"", ",", " ", "\n", 
+            "\t\t\t\t\t\t\t", "None"}], "\n", "\t\t\t\t\t\t\t", "]"}]}], ">", 
+         "0"}]}], ",", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"Except", "[", 
+         RowBox[{"True", "|", "False"}], "]"}], "\[Rule]", "False"}]}], "\n", 
+      "\t\t\t\t", "}"}]}], "\n", "\t\t\t", 
+    "]"}]}]}]], \
+"CodeInput",ExpressionUUID->"e5c98cc7-7a8a-48cc-b6d0-e955cb3d4aad"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]iChemDVRRunGuessWavefunctions\[RightFloor]", \
+"CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"cfd0ed5a-279a-475d-9240-b241884472cb"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"iChemDVRRunGuessWavefunctions", "[", "obj_", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"ChemDVRGuessWavefunctions", "[", "\n", "\t\t", 
+   RowBox[{"obj", ",", "\n", "\t\t", 
+    RowBox[{"$dvrgr", "->", "\n", "\t\t\t", "RunGrid"}], ",", "\n", "\t\t", 
+    RowBox[{"Switch", "[", 
+     RowBox[{
+     "RunEndPoint", ",", "\n", "\t\t\t", "$dvreng", ",", "\n", "\t\t\t\t", 
+      RowBox[{
+      "\"\<GuessWavefunctionsComponents\>\"", "->", "\n", "\t\t\t\t\t", 
+       RowBox[{
+       "{", "\n", "\t\t\t\t\t\t", "\"\<Energies\>\"", "\n", "\t\t\t\t\t\t", 
+        "}"}]}], ",", "\n", "\t\t\t", 
+      RowBox[{"$dvrwf", "|", "$dvrgrwf", "|", "$dvrintwf"}], ",", "\n", 
+      "\t\t\t\t", 
+      RowBox[{
+      "\"\<GuessWavefunctionsComponents\>\"", "->", "\n", "\t\t\t\t\t", 
+       RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+        RowBox[{
+        "\"\<Grid\>\"", ",", "\n", "\t", "\t\t\t\t\t", 
+         "\"\<Wavefunctions\>\""}], "\n", "\t\t\t\t\t\t", "}"}]}], ",", "\n", 
+      "\t\t\t", "$dvrguwf", ",", "\n", "\t\t\t\t", 
+      RowBox[{"Sequence", "@@", 
+       RowBox[{"{", "}"}]}], ",", "\n", "\t\t\t", "_", ",", "\n", "\t\t\t\t", 
+      
+      RowBox[{
+      "\"\<GuessWavefunctionsComponents\>\"", "\[Rule]", "\n", "\t\t\t\t\t", 
+       RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+        RowBox[{
+        "\"\<Grid\>\"", ",", "\n", "\t", "\t\t\t\t\t", 
+         "\"\<Wavefunctions\>\"", ",", "\n", "\t", "\t\t\t\t\t", 
+         "\"\<KineticEnergy\>\"", ",", "\n", "\t", "\t\t\t\t\t", 
+         "\"\<PotentialEnergy\>\""}], "\n", "\t", "\t\t\t\t\t", "}"}]}]}], 
+     "\n", "\t\t\t", "]"}], ",", "\n", "\t\t", 
+    RowBox[{"iChemDVRGetRuntimeOptions", "[", "\n", "\t\t\t", 
+     RowBox[{
+     "$dvrguwf", ",", "\n", "\t\t\t", "$dvrke", ",", "\n", "\t\t\t", 
+      "$dvrpe"}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"56f2b85d-6ad8-4622-82be-db17d7804892"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
 Cell["\[LeftCeiling]iChemDVRRunWavefunctions\[RightFloor]", \
 "CodeSubsubsection",
  Evaluatable->True,
@@ -2938,26 +3531,23 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
-Cell["\[LeftCeiling]iChemDVRRunEnergies\[RightFloor]", "CodeSubsubsection",
- Evaluatable->True,
- CellChangeTimes->{
-  3.7324208626033487`*^9, {3.735159731362295*^9, 3.735159733144512*^9}, {
-   3.735160103804511*^9, 3.735160105530314*^9}, {3.735160161915647*^9, 
-   3.735160162873788*^9}},ExpressionUUID->"4b12901a-da2f-4bfb-8d0a-\
-13bfcbeb2666"],
+Cell["\[LeftCeiling]iChemDVRRunExtendWavefunctions\[RightFloor]", \
+"CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"9f17f4ab-eac6-4f99-9c88-58a6bbfdacbc"],
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"iChemDVRRunEnergies", "[", "obj_", "]"}], ":=", "\n", "\t", 
-  RowBox[{"ChemDVRWavefunctions", "[", 
+  RowBox[{"iChemDVRRunExtendWavefunctions", "[", "obj_", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"ChemDVRExtendWavefunctions", "[", 
    RowBox[{"obj", ",", "\n", "\t\t", 
     RowBox[{"$dvrke", "\[Rule]", "\n", "\t\t\t", 
      RowBox[{"If", "[", 
       RowBox[{
        RowBox[{
         RowBox[{"ChemDVRGet", "[", 
-         RowBox[{"obj", ",", " ", "\"\<Wavefunctions\>\""}], "]"}], "===", 
-        "ChemDVRDefaultWavefunctions"}], ",", " ", "\n", "\t\t\t\t", 
+         RowBox[{"obj", ",", "  ", "$dvrexwf"}], "]"}], "===", 
+        "ChemDVRDefaultExtendWavefunctions"}], ",", " ", "\n", "\t\t\t\t", 
        RowBox[{"If", "[", 
         RowBox[{
          RowBox[{
@@ -2971,8 +3561,8 @@ Cell[BoxData[
       RowBox[{
        RowBox[{
         RowBox[{"ChemDVRGet", "[", 
-         RowBox[{"obj", ",", " ", "\"\<Wavefunctions\>\""}], "]"}], "===", 
-        "ChemDVRDefaultWavefunctions"}], ",", " ", "\n", "\t\t\t\t", 
+         RowBox[{"obj", ",", "  ", "$dvrexwf"}], "]"}], "===", 
+        "ChemDVRDefaultExtendWavefunctions"}], ",", " ", "\n", "\t\t\t\t", 
        RowBox[{"If", "[", 
         RowBox[{
          RowBox[{
@@ -2982,10 +3572,97 @@ Cell[BoxData[
          RowBox[{"Hold", "[", "RunPotentialEnergy", "]"}]}], "\n", 
         "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", "RunPotentialEnergy"}], 
       "\n", "\t\t\t\t", "]"}]}], ",", "\n", "\t\t", 
-    RowBox[{"\"\<WavefunctionEigensolver\>\"", "\[Rule]", "Eigenvalues"}], 
-    ",", "\n", "\t\t", 
-    RowBox[{"iChemDVRGetRuntimeOptions", "[", "$dvrwf", "]"}]}], "\n", "\t\t",
-    "]"}]}]], \
+    RowBox[{"$dvrwf", "->", "\n", "\t\t\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"ChemDVRGet", "[", 
+         RowBox[{"obj", ",", "  ", "$dvrexwf"}], "]"}], "===", 
+        "ChemDVRDefaultExtendWavefunctions"}], ",", " ", "\n", "\t\t\t\t", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Head", "[", "RunWavefunctions", "]"}], "===", "Hold"}], 
+         ",", "\n", "\t\t\t\t\t", "RunWavefunctions", ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"Hold", "[", "RunWavefunctions", "]"}]}], "\n", "\t\t\t\t\t",
+         "]"}], ",", "\n", "\t\t\t\t", "RunWavefunctions"}], "\n", "\t\t\t\t",
+       "]"}]}], ",", "\n", "\t\t", 
+    RowBox[{"iChemDVRGetRuntimeOptions", "[", " ", "$dvrexwf", "]"}]}], "\n", 
+   "\t\t", "]"}]}]], \
+"CodeInput",ExpressionUUID->"a9f84289-725d-45c7-b8a5-c2b36ec5352f"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]iChemDVRRunEnergies\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"4b12901a-da2f-4bfb-8d0a-13bfcbeb2666"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"iChemDVRRunEnergies", "[", "obj_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"If", "[", 
+   RowBox[{
+    RowBox[{"!", 
+     RowBox[{"ListQ", "[", "RunEnergies", "]"}]}], ",", "\n", "\t\t", 
+    RowBox[{"If", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"MatchQ", "[", 
+       RowBox[{"RunWavefunctions", ",", " ", "\n", "\t", "\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"_List", "?", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"VectorQ", "[", 
+              RowBox[{"#", ",", " ", "Internal`RealValuedNumericQ"}], "]"}], 
+             "&"}], ")"}]}], ",", " ", "_"}], "}"}]}], "\n", "\t", "\t\t\t", 
+       "]"}], ",", "\n", "\t", "\t\t", 
+      RowBox[{"RunWavefunctions", "[", 
+       RowBox[{"[", "1", "]"}], "]"}], ",", "\n", "\t", "\t\t", 
+      RowBox[{"ChemDVRWavefunctions", "[", 
+       RowBox[{"obj", ",", "\n", "\t", "\t", "\t\t", 
+        RowBox[{"$dvrke", "\[Rule]", "\n", "\t", "\t", "\t\t\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"ChemDVRGet", "[", 
+             RowBox[{"obj", ",", " ", "\"\<Wavefunctions\>\""}], "]"}], "===",
+             "ChemDVRDefaultWavefunctions"}], ",", " ", "\n", "\t", "\t", 
+           "\t\t\t\t", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Head", "[", "RunKineticEnergy", "]"}], "===", "Hold"}],
+              ",", "\n", "\t", "\t", "\t\t\t\t\t", "RunKineticEnergy", ",", 
+             "\n", "\t", "\t", "\t\t\t\t\t", 
+             RowBox[{"Hold", "[", "RunKineticEnergy", "]"}]}], "\n", "\t", 
+            "\t", "\t\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t\t\t\t", 
+           "RunKineticEnergy"}], "\n", "\t", "\t", "\t\t\t\t", "]"}]}], ",", 
+        "\n", "\t", "\t", "\t\t", 
+        RowBox[{"$dvrpe", "\[Rule]", "\n", "\t", "\t", "\t\t\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"ChemDVRGet", "[", 
+             RowBox[{"obj", ",", " ", "\"\<Wavefunctions\>\""}], "]"}], "===",
+             "ChemDVRDefaultWavefunctions"}], ",", " ", "\n", "\t", "\t", 
+           "\t\t\t\t", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Head", "[", "RunPotentialEnergy", "]"}], "===", 
+              "Hold"}], ",", "\n", "\t", "\t", "\t\t\t\t\t", 
+             "RunPotentialEnergy", ",", "\n", "\t", "\t", "\t\t\t\t\t", 
+             RowBox[{"Hold", "[", "RunPotentialEnergy", "]"}]}], "\n", "\t", 
+            "\t", "\t\t\t\t\t", "]"}], ",", "\n", "\t", "\t", "\t\t\t\t", 
+           "RunPotentialEnergy"}], "\n", "\t", "\t", "\t\t\t\t", "]"}]}], ",",
+         "\n", "\t", "\t", "\t\t", 
+        RowBox[{"\"\<WavefunctionEigensolver\>\"", "\[Rule]", "Eigenvalues"}],
+         ",", "\n", "\t", "\t", "\t\t", 
+        RowBox[{"iChemDVRGetRuntimeOptions", "[", "$dvrwf", "]"}]}], "\n", 
+       "\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}], ",", "\n", "\t\t", 
+    "RunEnergies"}], "\n", "\t\t", 
+   "]"}]}]], \
 "CodeInput",ExpressionUUID->"15a77167-f5ab-4f32-b73b-981e7b826f63"]
 }, Closed]],
 
@@ -3226,10 +3903,9 @@ Cell[BoxData[
          RowBox[{"Hold", "[", "RunPotentialEnergy", "]"}]}], "\n", 
         "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", "RunPotentialEnergy"}], 
       "\n", "\t\t\t\t", "]"}]}], ",", "\n", "\t\t", 
-    RowBox[{"iChemDVRGetRuntimeOptions", "[", "\n", "\t\t\t", 
-     RowBox[{
-     "\"\<OperatorMatrix\>\"", ",", "\n", "\t\t\t", 
-      "\"\<ExpectationValues\>\""}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+    RowBox[{"iChemDVRGetRuntimeOptions", "[", "\n", "\t\t\t ", 
+     RowBox[{"$dvrexm", ",", "\n", "\t\t\t ", "$dvrexv"}], "\n", "\t\t\t", 
+     "]"}]}], "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"7fdf74ea-54fb-4e0a-abd2-a50b7621f9a0"]
 }, Closed]],
@@ -3264,9 +3940,9 @@ Cell[BoxData[
       RowBox[{
        RowBox[{
         RowBox[{"ChemDVRGet", "[", 
-         RowBox[{"obj", ",", " ", "\"\<OperatorMatrixElements\>\""}], "]"}], 
-        "===", "\n", "\t\t\t\t\t", "ChemDVRDefaultOperatorMatrixElements"}], 
-       ",", " ", "\n", "\t\t\t\t", 
+         RowBox[{"obj", ",", "  ", "$dvrexmel"}], "]"}], "===", "\n", 
+        "\t\t\t\t\t", "ChemDVRDefaultOperatorMatrixElements"}], ",", " ", 
+       "\n", "\t\t\t\t", 
        RowBox[{"If", "[", 
         RowBox[{
          RowBox[{
@@ -3281,9 +3957,9 @@ Cell[BoxData[
       RowBox[{
        RowBox[{
         RowBox[{"ChemDVRGet", "[", 
-         RowBox[{"obj", ",", " ", "\"\<OperatorMatrixElements\>\""}], "]"}], "===",
-         "\n", "\t\t\t\t\t", "ChemDVRDefaultOperatorMatrixElements"}], ",", 
-       " ", "\n", "\t\t\t\t", 
+         RowBox[{"obj", ",", "  ", "$dvrexmel"}], "]"}], "===", "\n", 
+        "\t\t\t\t\t", "ChemDVRDefaultOperatorMatrixElements"}], ",", " ", 
+       "\n", "\t\t\t\t", 
        RowBox[{"If", "[", 
         RowBox[{
          RowBox[{
@@ -3293,14 +3969,13 @@ Cell[BoxData[
          RowBox[{"Hold", "[", "RunPotentialEnergy", "]"}]}], "\n", 
         "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", "RunPotentialEnergy"}], 
       "\n", "\t\t\t\t", "]"}]}], ",", "\n", "\t\t", 
-    RowBox[{"iChemDVRGetRuntimeOptions", "[", "\n", "\t\t\t", 
+    RowBox[{"iChemDVRGetRuntimeOptions", "[", "\n", "\t\t\t ", 
      RowBox[{
-     "\"\<OperatorMatrixElements\>\"", ",", "\n", "\t\t\t", 
-      "\"\<OperatorMatrix\>\"", ",", "\n", "\t\t\t", 
-      "\"\<ExpectationValues\>\""}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+     "$dvrexmel", ",", "\n", "\t\t\t ", "$dvrexm", ",", "\n", "\t\t\t ", 
+      "$dvrexv"}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"43b1673d-97a3-4974-bc58-154f4c0c6499"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -3348,8 +4023,12 @@ Cell[BoxData[
        RowBox[{"RunTransforms", "=", "None"}], ",", "\n", "\t\t", 
        RowBox[{"RunKineticEnergy", "=", "None"}], ",", "\n", "\t\t", 
        RowBox[{"RunPotentialEnergy", "=", "None"}], ",", "\n", "\t\t", 
+       RowBox[{"RunEnergies", "=", "None"}], ",", "\n", "\t\t", 
        RowBox[{"RunWavefunctions", "=", "None"}], ",", "\n", "\t\t", 
-       RowBox[{"RunPotentialOptimize", "=", "Automatic"}]}], "\n", "\t\t", 
+       RowBox[{"RunPotentialOptimize", "=", "Automatic"}], ",", "\n", "\t\t", 
+       
+       RowBox[{"RunGuessWavefunctions", "=", "Automatic"}], ",", "\n", "\t\t", 
+       RowBox[{"RunUseGuessWavefunctions", "=", "False"}]}], "\n", "\t\t", 
       "}"}], ",", "\n", "\t\t", 
      RowBox[{
       RowBox[{"If", "[", 
@@ -3379,21 +4058,104 @@ Cell[BoxData[
         RowBox[{"ChemDVRSave", "@", "obj"}]}], "\n", "\t\t\t", "]"}], ";", 
       "\n", "\t\t", 
       RowBox[{"(*", 
-       RowBox[{
+       RowBox[{"*", " ", 
         RowBox[{"--", 
          RowBox[{"--", 
           RowBox[{"--", 
            RowBox[{"--", 
-            RowBox[{"--", " ", 
-             RowBox[{
-              RowBox[{
-               RowBox[{
-                RowBox[{"Grid", " ", "--"}], "--"}], "--"}], "--"}]}]}]}]}]}],
-         "-"}], "*)"}], "\n", "\t\t", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"-", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", " ", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"DEFAULTS", " ", "--"}], "--"}], 
+                    "--"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"-", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"-", 
+                    RowBox[{"--", 
+                    RowBox[{"--", "-"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], " ", 
+       "**)"}], "\n", "\t\t", 
       RowBox[{"RunGrid", "=", 
        RowBox[{"dvrOpsLookup", "[", 
-        RowBox[{"RunRuntimeOptions", ",", " ", "$dvrgr", ",", " ", "None"}], 
+        RowBox[{
+        "RunRuntimeOptions", ",", " ", "$dvrgr", ",", " ", "RunGrid"}], 
         "]"}]}], ";", "\n", "\t\t", 
+      RowBox[{"RunWavefunctions", "=", 
+       RowBox[{"dvrOpsLookup", "[", 
+        RowBox[{
+        "RunRuntimeOptions", ",", " ", "$dvrwf", ",", " ", 
+         "RunWavefunctions"}], "]"}]}], ";", "\n", "\t\t", 
+      RowBox[{"RunKineticEnergy", "=", 
+       RowBox[{"dvrOpsLookup", "[", 
+        RowBox[{
+        "RunRuntimeOptions", ",", " ", "$dvrke", ",", " ", 
+         "RunKineticEnergy"}], "]"}]}], ";", "\n", "\t\t", 
+      RowBox[{"RunPotentialEnergy", "=", 
+       RowBox[{"dvrOpsLookup", "[", 
+        RowBox[{
+        "RunRuntimeOptions", ",", " ", "$dvrpe", ",", " ", 
+         "RunPotentialEnergy"}], "]"}]}], ";", "\n", "\t\t", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"*", " ", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"-", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", " ", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"GRID", " ", "--"}], "--"}], 
+                    "--"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], "-", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"-", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"-", 
+                    RowBox[{"--", 
+                    RowBox[{"--", "-"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], " ", 
+       "**)"}], "\n", "\t\t", 
       RowBox[{"Switch", "[", 
        RowBox[{
        "RunGrid", ",", "\n", "\t\t\t", "None", ",", "\n", "\t\t\t\t", 
@@ -3445,136 +4207,214 @@ Cell[BoxData[
          RowBox[{"{", 
           RowBox[{"RunGrid", ",", " ", "RunTransforms"}], "}"}], "=", 
          "RunGrid"}]}], "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
-      RowBox[{"If", "[", 
-       RowBox[{
-        RowBox[{"RunEndPoint", "===", "\"\<Transform\>\""}], ",", "\n", 
-        "\t\t\t", 
-        RowBox[{"Return", "@", "RunTransforms"}]}], "\n", "\t\t\t", "]"}], 
-      ";", "\n", "\t\t", 
       RowBox[{"(*", 
-       RowBox[{
-        RowBox[{
+       RowBox[{"*", " ", 
+        RowBox[{"--", 
          RowBox[{"--", 
           RowBox[{"--", 
            RowBox[{"--", 
             RowBox[{"--", 
-             RowBox[{"--", " ", "Potential"}]}]}]}]}], " ", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"-", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"-", " ", 
+                    RowBox[{
+                    RowBox[{"TRANSFORM", " ", "--"}], 
+                    "--"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"-", 
+              RowBox[{"--", 
+               RowBox[{"-", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"-", 
+                    RowBox[{"--", 
+                    RowBox[{"--", "-"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], " ", 
+       "**)"}], "\n", "\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"RunEndPoint", "===", "\"\<Transform\>\""}], ",", " ", 
+        RowBox[{"Return", "@", "RunTransforms"}]}], "]"}], ";", "\n", "\t\t", 
+      
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"*", " ", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"-", 
+                    RowBox[{"--", 
+                    RowBox[{"--", " ", "GUESS"}]}]}]}]}]}]}]}]}]}]}]}]}]}], 
+         " ", 
          RowBox[{
           RowBox[{
            RowBox[{
-            RowBox[{"Optimization", " ", "--"}], "--"}], "--"}], "--"}]}], 
-        "-"}], "*)"}], "\n", "\t\t", 
-      RowBox[{"RunPotentialOptimize", "=", "\n", "\t\t\t", 
+            RowBox[{"WAVEFUNCTIONS", " ", "--"}], "--"}], "--"}], "--"}]}], 
+        "-", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"-", 
+                RowBox[{"--", "-"}]}]}]}]}]}]}]}]}]}], " ", "**)"}], "\n", 
+      "\t\t", 
+      RowBox[{"If", "[", 
        RowBox[{
-        RowBox[{"RunEndPoint", "=!=", "\"\<PotentialOptimization\>\""}], "&&",
-         "\n", "\t\t\t\t", 
-        RowBox[{"Replace", "[", 
-         RowBox[{
+        RowBox[{"iChemDVRRunGWQ", "[", "]"}], ",", "\n", "\t\t\t", 
+        RowBox[{
+         RowBox[{"RunGuessWavefunctions", "=", 
+          RowBox[{"iChemDVRRunGuessWavefunctions", "[", "obj", "]"}]}], ";", 
+         "\n", "\t\t\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"RunEndPoint", "===", "$dvrguwf"}], ",", " ", "\n", 
+           "\t\t\t\t", 
+           RowBox[{"Return", "@", "RunGuessWavefunctions"}]}], "\n", 
+          "\t\t\t\t", "]"}], ";", "\n", "\t\t\t", 
+         RowBox[{"RunUseGuessWavefunctions", "=", "\n", "\t\t\t\t", 
           RowBox[{"dvrOpsLookup", "[", 
            RowBox[{
-           "RunRuntimeOptions", ",", " ", "\"\<PotentialOptimize\>\"", ",", 
-            " ", "Automatic"}], "]"}], ",", "\n", "\t\t\t\t\t", 
-          RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+           "RunRuntimeOptions", ",", " ", "\"\<UseGuessWavefunctions\>\"", 
+            ",", " ", "False"}], "]"}]}], ";", "\n", "\t\t\t", 
+         RowBox[{"If", "[", 
+          RowBox[{"RunUseGuessWavefunctions", ",", "\n", "\t\t\t\t", 
            RowBox[{
-            RowBox[{"Automatic", "\[RuleDelayed]", "\n", "\t\t\t\t\t\t\t", 
-             RowBox[{
-              RowBox[{"Length", "@", "\n", "\t\t\t\t\t\t\t\t", 
-               RowBox[{"dvrOpsLookup", "[", 
-                RowBox[{
-                "RunRuntimeOptions", ",", " ", "\n", "\t\t\t\t\t\t\t\t\t", 
-                 "\"\<PotentialOptimizationOptions\>\"", ",", " ", "None"}], 
-                "]"}]}], ">", "0"}]}], ",", "\n", "\t\t\t\t\t\t", 
-            RowBox[{
-             RowBox[{"Except", "[", 
-              RowBox[{"True", "|", "False"}], "]"}], "\[Rule]", "False"}]}], 
-           "\n", "\t\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t\t", "]"}]}]}], ";", 
-      "\n", "\t\t", 
+            RowBox[{"RunEnergies", "=", "\n", "\t\t\t\t\t", 
+             RowBox[{"Lookup", "[", 
+              RowBox[{
+              "RunGuessWavefunctions", ",", " ", "\"\<Energies\>\"", ",", " ",
+                "RunEnergies"}], "]"}]}], ";", "\n", "\t\t\t\t", 
+            RowBox[{"RunWavefunctions", "=", "\n", "\t\t\t\t\t", 
+             RowBox[{"Lookup", "[", 
+              RowBox[{
+              "RunGuessWavefunctions", ",", " ", "\"\<Wavefunctions\>\"", ",",
+                " ", "RunWavefunctions"}], "]"}]}], ";", "\n", "\t\t\t\t", 
+            RowBox[{"RunGrid", "=", "\n", "\t\t\t\t\t", 
+             RowBox[{"Lookup", "[", 
+              RowBox[{
+              "RunGuessWavefunctions", ",", " ", "\"\<Grid\>\"", ",", " ", 
+               "RunGrid"}], "]"}]}], ";", "\n", "\t\t\t\t", 
+            RowBox[{"RunPotentialEnergy", "=", "\n", "\t\t\t\t\t", 
+             RowBox[{"Lookup", "[", 
+              RowBox[{
+              "RunGuessWavefunctions", ",", " ", "\"\<PotentialEnergy\>\"", 
+               ",", " ", "RunPotentialEnergy"}], "]"}]}], ";", "\n", 
+            "\t\t\t\t", 
+            RowBox[{"RunKineticEnergy", "=", "\n", "\t\t\t\t\t", 
+             RowBox[{"Lookup", "[", 
+              RowBox[{
+              "RunGuessWavefunctions", ",", " ", "\"\<KineticEnergy\>\"", ",",
+                " ", "RunKineticEnergy"}], "]"}]}]}]}], "\n", "\t\t\t\t", 
+          "]"}]}]}], "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"*", " ", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"-", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{
+                    "--", " ", "POTENTIAL"}]}]}]}]}]}]}]}]}]}]}]}]}]}], " ", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"OPTIMIZATION", " ", "--"}], "--"}], "--"}], "--"}]}], 
+        "-", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", "-"}]}]}]}]}]}]}]}]}], " ", "**)"}], "\n", 
+      "\t\t", 
+      RowBox[{"RunPotentialOptimize", "=", 
+       RowBox[{"iChemDVRRunPOQ", "[", "]"}]}], ";", "\n", "\t\t", 
       RowBox[{"If", "[", 
        RowBox[{"RunPotentialOptimize", ",", "\n", "\t\t\t", 
         RowBox[{
-         RowBox[{"RunPotentialOptimize", "=", "\n", "\t\t\t\t", 
+         RowBox[{"{", "\n", "\t\t\t\t", 
           RowBox[{
-          "ChemDVRDefaultPotentialOptimize", "[", "\n", "\t\t\t\t\t", 
-           RowBox[{"RunGrid", ",", "\n", "\t\t\t\t\t", 
-            RowBox[{"FilterRules", "[", "\n", "\t\t\t\t\t\t", 
-             RowBox[{
-              RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
-               RowBox[{
-                RowBox[{"\"\<OptimizedComponents\>\"", "\[Rule]", 
-                 RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t", 
-                  RowBox[{
-                  "\"\<Grid\>\"", ",", " ", "\n", "\t\t\t\t\t\t\t\t", 
-                   "\"\<KineticEnergy\>\""}], "\n", "\t\t\t\t\t\t\t\t", 
-                  "}"}]}], ",", "\n", "\t\t\t\t\t\t\t", 
-                RowBox[{
-                "iChemDVRGetRuntimeOptions", "[", "\n", "\t\t\t\t\t\t\t\t", 
-                 RowBox[{
-                 "\"\<PotentialOptimization\>\"", ",", "\n", "\t", "\t", 
-                  "\t\t\t\t\t\t", "$dvrke", ",", "\n", "\t", "\t\t\t\t\t\t\t",
-                   "$dvrpe"}], "\n", "\t", "\t\t\t\t\t\t\t", "]"}]}], "\n", 
-               "\t\t\t\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t\t\t", 
-              RowBox[{"Options", "@", "ChemDVRDefaultPotentialOptimize"}]}], 
-             "\n", "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "]"}]}], ";", 
-         "\n", "\t\t\t", 
-         RowBox[{"RunGrid", "=", "\n", "\t\t\t\t", 
-          RowBox[{"With", "[", 
-           RowBox[{
-            RowBox[{"{", 
-             RowBox[{"l", "=", 
-              RowBox[{"RunPotentialOptimize", "[", "\"\<Grid\>\"", "]"}]}], 
-             "}"}], ",", "\n", "\t\t\t\t\t", 
-            RowBox[{"If", "[", 
-             RowBox[{
-              RowBox[{
-               RowBox[{"Length", "@", "l"}], ">", "1"}], ",", "\n", 
-              "\t\t\t\t\t\t", 
-              RowBox[{"ChemDVRDirectProductGrid", "@", "l"}], ",", "\n", 
-              "\t\t\t\t\t\t", 
-              RowBox[{"l", "[", 
-               RowBox[{"[", "1", "]"}], "]"}]}], "\n", "\t\t\t\t\t\t", 
-             "]"}]}], "\n", "\t\t\t\t\t", "]"}]}], ";", "\n", "\t\t\t", 
-         RowBox[{"If", "[", 
-          RowBox[{
-           RowBox[{"RunEndPoint", "=!=", "\"\<Grid\>\""}], ",", "\n", 
-           "\t\t\t\t", 
-           RowBox[{"RunKineticEnergy", "=", "\n", "\t\t\t\t\t", 
-            RowBox[{"With", "[", 
-             RowBox[{
-              RowBox[{"{", 
-               RowBox[{"l", "=", 
-                RowBox[{
-                "RunPotentialOptimize", "[", "\"\<KineticEnergy\>\"", "]"}]}],
-                "}"}], ",", "\n", "\t", "\t\t\t\t\t", 
-              RowBox[{"If", "[", 
-               RowBox[{
-                RowBox[{
-                 RowBox[{"Length", "@", "l"}], ">", "1"}], ",", "\n", "\t", 
-                "\t\t\t\t\t\t", 
-                RowBox[{"ChemDVRKroeneckerProductKineticEnergy", "@", "l"}], 
-                ",", "\n", "\t", "\t\t\t\t\t\t", 
-                RowBox[{"l", "[", 
-                 RowBox[{"[", "1", "]"}], "]"}]}], "\n", "\t\t\t\t\t\t\t", 
-               "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t", 
-          "]"}]}]}], "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
+          "RunPotentialOptimize", ",", "\n", "\t\t\t\t", "RunGrid", ",", "\n",
+            "\t\t\t\t", "RunKineticEnergy"}], "\n", "\t\t\t\t", "}"}], "=", 
+         RowBox[{"iChemDVRRunPotentialOptimization", "[", "obj", "]"}]}]}], 
+       "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
       RowBox[{"If", "[", 
        RowBox[{
-        RowBox[{"RunEndPoint", "===", "\"\<PotentialOptimization\>\""}], ",", 
-        " ", "\n", "\t\t\t", 
+        RowBox[{"RunEndPoint", "===", "$dvrpo"}], ",", " ", "\n", "\t\t\t", 
         RowBox[{"Return", "@", "RunPotentialOptimize"}]}], "\n", "\t\t\t", 
        "]"}], ";", "\n", "\t\t", 
       RowBox[{"(*", 
-       RowBox[{
-        RowBox[{
+       RowBox[{"*", " ", 
+        RowBox[{"--", 
          RowBox[{"--", 
           RowBox[{"--", 
            RowBox[{"--", 
             RowBox[{"--", 
-             RowBox[{"--", " ", "Grid"}]}]}]}]}], " ", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"-", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{
+                    "--", " ", "RETURN"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], " ", 
+        
+        RowBox[{
          RowBox[{
           RowBox[{
-           RowBox[{
-            RowBox[{"Return", " ", "--"}], "--"}], "--"}], "--"}]}], "-"}], 
-       "*)"}], "\n", "\t\t", 
+           RowBox[{"GRID", " ", "--"}], "--"}], "--"}], "--"}], 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", "--"}]}]}]}]}]}]}]}]}]}]}]}], " ", "**)"}], 
+      "\n", "\t\t", 
       RowBox[{"If", "[", 
        RowBox[{
         RowBox[{"RunEndPoint", "===", "$dvrgr"}], ",", " ", 
@@ -3595,7 +4435,7 @@ Cell[BoxData[
          RowBox[{"Replace", "[", 
           RowBox[{
            RowBox[{"Flatten", "@", 
-            RowBox[{"{", "RunEndPoint", "}"}]}], ",", " ", "\n", "\t\t\t\t\t", 
+            RowBox[{"{", "RunEndPoint", "}"}]}], ",", "\n", "\t\t\t\t\t", 
            RowBox[{"{", 
             RowBox[{
              RowBox[{"$dvrgr", "\[RuleDelayed]", "RunGrid"}], ",", " ", 
@@ -3604,84 +4444,47 @@ Cell[BoxData[
             ",", " ", "\n", "\t\t\t\t\t", "1"}], "\n", "\t\t\t\t\t", 
           "]"}]}]}], "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
       RowBox[{"(*", 
-       RowBox[{
-        RowBox[{
+       RowBox[{"*", " ", 
+        RowBox[{"--", 
          RowBox[{"--", 
           RowBox[{"--", 
            RowBox[{"--", 
             RowBox[{"--", 
-             RowBox[{"--", " ", "Kinetic"}]}]}]}]}], " ", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"-", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"-", 
+                    RowBox[{
+                    "--", " ", "KINETIC"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], " ", 
+        RowBox[{
          RowBox[{
           RowBox[{
-           RowBox[{
-            RowBox[{"Energy", " ", "--"}], "--"}], "--"}], "--"}]}], "-"}], 
-       "*)"}], "\n", "\t\t", 
+           RowBox[{"ENERGY", " ", "--"}], "--"}], "--"}], "--"}], 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", "-"}]}]}]}]}]}]}]}]}]}]}]}], " ", "**)"}], 
+      "\n", "\t\t", 
       RowBox[{"If", "[", 
        RowBox[{
-        RowBox[{"!", 
-         RowBox[{"(", "\n", "\t\t\t\t", 
-          RowBox[{
-           RowBox[{"MatchQ", "[", 
-            RowBox[{"RunEndPoint", ",", " ", "$dvrpe"}], "]"}], "||", "\n", 
-           "\t\t\t\t", 
-           RowBox[{"(", "\n", "\t\t\t\t\t", 
-            RowBox[{
-             RowBox[{"MatchQ", "[", 
-              RowBox[{"RunEndPoint", ",", " ", "\n", "\t\t\t\t\t\t", 
-               RowBox[{
-               "$dvrwf", "|", "$dvrgrwf", "|", "$dvrintwf", "|", "$dvrev", 
-                "|", "$dvrexm", "|", "\"\<OperatorMatrixElements\>\""}]}], 
-              "]"}], "&&", "\n", "\t\t\t\t\t\t", 
-             RowBox[{"MatchQ", "[", "\n", "\t\t\t\t\t\t\t", 
-              RowBox[{
-               RowBox[{"RunWavefunctions", "=", 
-                RowBox[{"dvrOpsLookup", "[", 
-                 RowBox[{
-                 "RunRuntimeOptions", ",", " ", "$dvrwf", ",", " ", "None"}], 
-                 "]"}]}], ",", "\n", "\t\t\t\t\t\t\t", 
-               RowBox[{"_List", "|", "_Hold"}]}], "\n", "\t\t\t\t\t\t\t", 
-              "]"}]}], "\n", "\t\t\t\t\t", ")"}]}], "\n", "\t\t\t\t", ")"}]}],
-         ",", "\n", "\t\t\t", 
+        RowBox[{"iChemDVRRunCalculateKEQ", "[", "]"}], ",", "\n", "\t\t\t", 
         RowBox[{
          RowBox[{"RunKineticEnergy", "=", "\n", "\t\t\t\t", 
-          RowBox[{"dvrOpsLookup", "[", 
-           RowBox[{
-           "RunRuntimeOptions", ",", " ", "$dvrke", ",", " ", 
-            "RunKineticEnergy"}], "]"}]}], ";", "\n", "\t\t\t", 
-         RowBox[{"Switch", "[", 
-          RowBox[{
-          "RunKineticEnergy", ",", "\n", "\t\t\t\t", "None", ",", "\n", 
-           "\t\t\t\t\t", 
-           RowBox[{"RunKineticEnergy", "=", "\n", "\t\t\t\t\t\t", 
-            RowBox[{"ChemDVRKineticEnergy", "[", 
-             RowBox[{"obj", ",", "\n", "\t\t\t\t\t\t\t", 
-              RowBox[{"$dvrgr", "\[Rule]", "RunGrid"}], ",", "\n", 
-              "\t\t\t\t\t\t\t", 
-              RowBox[{"\"\<TransformationMatrix\>\"", "->", "RunTransforms"}],
-               ",", "\n", "\t\t\t\t\t\t\t", 
-              RowBox[{"iChemDVRGetRuntimeOptions", "[", "$dvrke", "]"}]}], 
-             "\n", "\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t", 
-           RowBox[{"{", 
-            RowBox[{"__", "?", "SquareMatrixQ"}], "}"}], ",", "\n", 
-           "\t\t\t\t\t", 
-           RowBox[{"RunKineticEnergy", "=", "\n", "\t\t\t\t\t\t", 
-            RowBox[{
-            "ChemDVRKroeneckerProductKineticEnergy", "@", 
-             "RunKineticEnergy"}]}], ",", "\n", "\t\t\t\t", 
-           RowBox[{"Hold", "[", 
-            RowBox[{"_", "?", 
-             RowBox[{"(", 
-              RowBox[{"MatchQ", "[", 
-               RowBox[{"{", 
-                RowBox[{"__", "?", "SquareMatrixQ"}], "}"}], "]"}], ")"}]}], 
-            "]"}], ",", "\n", "\t\t\t\t\t", 
-           RowBox[{"RunKineticEnergy", "=", "\n", "\t\t\t\t\t\t", 
-            RowBox[{"Hold", "[", 
-             RowBox[{"Evaluate", "@", 
-              RowBox[{
-              "ChemDVRKroeneckerProductKineticEnergy", "@", 
-               "RunKineticEnergy"}]}], "]"}]}]}], "\n", "\t\t\t\t", "]"}], 
-         ";"}]}], "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
+          RowBox[{"iChemDVRRunKineticEnergy", "[", "obj", "]"}]}], ";"}]}], 
+       "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
       RowBox[{"If", "[", 
        RowBox[{
         RowBox[{"RunEndPoint", "===", "$dvrke"}], ",", " ", 
@@ -3690,17 +4493,37 @@ Cell[BoxData[
       RowBox[{"RunCheckPoint", "=", "$dvrke"}], ";", "\n", "\t\t", 
       RowBox[{"(*", 
        RowBox[{
-        RowBox[{
+        RowBox[{"*", " ", 
          RowBox[{"--", 
           RowBox[{"--", 
            RowBox[{"--", 
             RowBox[{"--", 
-             RowBox[{"--", " ", "Grid"}]}]}]}]}], " ", "Kinetic", " ", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"-", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"-", " ", "GRID"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], 
+         " ", "KINETIC", " ", 
          RowBox[{
           RowBox[{
            RowBox[{
-            RowBox[{"Energy", " ", "--"}], "--"}], "--"}], "--"}]}], "-"}], 
-       "*)"}], "\n", "\t\t", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"ENERGY", " ", "--"}], "--"}], "--"}], "--"}], "--"}], 
+          "--"}]}], "-", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", "-"}]}]}]}]}]}]}]}], " ", "**)"}], "\n", "\t\t", 
       RowBox[{"If", "[", 
        RowBox[{
         RowBox[{"RunEndPoint", "===", "\"\<GridKineticEnergy\>\""}], ",", " ",
@@ -3709,80 +4532,45 @@ Cell[BoxData[
          RowBox[{"iChemDVRRunGridKineticEnergy", "[", "obj", "]"}]}]}], "]"}],
        ";", "\n", "\t\t", 
       RowBox[{"(*", 
-       RowBox[{
-        RowBox[{
+       RowBox[{"*", " ", 
+        RowBox[{"--", 
          RowBox[{"--", 
           RowBox[{"--", 
            RowBox[{"--", 
             RowBox[{"--", 
-             RowBox[{"--", " ", "Potential"}]}]}]}]}], " ", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"-", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"-", 
+                    RowBox[{
+                    "--", " ", "POTENTIAL"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], " ", 
+        RowBox[{
          RowBox[{
           RowBox[{
-           RowBox[{
-            RowBox[{"Energy", " ", "--"}], "--"}], "--"}], "--"}]}], "-"}], 
-       "*)"}], "\n", "\t\t", 
+           RowBox[{"ENERGY", " ", "--"}], "--"}], "--"}], "--"}], 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"-", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", "-"}]}]}]}]}]}]}]}]}]}]}]}], " ", "**)"}], 
+      "\n", "\t\t", 
       RowBox[{"If", "[", 
        RowBox[{
-        RowBox[{"!", 
-         RowBox[{"(", 
-          RowBox[{
-           RowBox[{"MatchQ", "[", 
-            RowBox[{"RunEndPoint", ",", " ", "\n", "\t\t\t\t\t\t", 
-             RowBox[{
-             "$dvrwf", "|", "$dvrgrwf", "|", "$dvrintwf", "|", "$dvrev", "|", 
-              "$dvrexm", "|", "\"\<OperatorMatrixElements\>\""}]}], "]"}], "&&",
-            "\n", "\t\t\t\t\t", 
-           RowBox[{"MatchQ", "[", "\n", "\t\t\t\t\t\t", 
-            RowBox[{
-             RowBox[{"RunWavefunctions", "=", 
-              RowBox[{"dvrOpsLookup", "[", 
-               RowBox[{
-               "RunRuntimeOptions", ",", " ", "$dvrwf", ",", " ", "None"}], 
-               "]"}]}], ",", "\n", "\t\t\t\t\t\t", 
-             RowBox[{"_List", "|", "_Hold"}]}], "\n", "\t\t\t\t\t\t", "]"}]}],
-           ")"}]}], ",", "\n", "\t\t\t", 
-        RowBox[{
-         RowBox[{"RunPotentialEnergy", "=", "\n", "\t\t\t\t", 
-          RowBox[{"dvrOpsLookup", "[", 
-           RowBox[{
-           "RunRuntimeOptions", ",", " ", "$dvrpe", ",", " ", 
-            "RunPotentialEnergy"}], "]"}]}], ";", "\n", "\t\t\t", 
-         RowBox[{"Switch", "[", 
-          RowBox[{
-          "RunPotentialEnergy", ",", "\n", "\t\t\t\t", "None", ",", "\n", 
-           "\t\t\t\t\t", 
-           RowBox[{"RunPotentialEnergy", "=", "\n", "\t\t\t\t\t\t", 
-            RowBox[{"ChemDVRPotentialEnergy", "[", 
-             RowBox[{"obj", ",", "\n", "\t\t\t\t\t\t\t", 
-              RowBox[{"$dvrgr", "\[Rule]", "RunGrid"}], ",", "\n", 
-              "\t\t\t\t\t\t\t", 
-              RowBox[{
-              "\"\<TransformationMatrix\>\"", "->", "RunTransformation"}], 
-              ",", "\n", "\t", "\t", "\t\t\t\t\t", 
-              RowBox[{"iChemDVRGetRuntimeOptions", "[", "$dvrpe", "]"}]}], 
-             "\n", "\t", "\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t", "\t\t\t\t", 
-           RowBox[{"{", 
-            RowBox[{"__", "?", "SquareMatrixQ"}], "}"}], ",", "\n", 
-           "\t\t\t\t\t\t", 
-           RowBox[{"RunPotentialEnergy", "=", "\n", "\t\t\t\t\t\t\t", 
-            RowBox[{
-            "ChemDVRDefaultDirectProductPotentialEnergy", "@", 
-             "RunPotentialEnergy"}]}], ",", "\n", "\t\t\t\t\t", 
-           RowBox[{"Hold", "[", 
-            RowBox[{"_", "?", 
-             RowBox[{"(", 
-              RowBox[{"MatchQ", "[", 
-               RowBox[{"{", 
-                RowBox[{"__", "?", "SquareMatrixQ"}], "}"}], "]"}], ")"}]}], 
-            "]"}], ",", "\n", "\t\t\t\t\t\t", 
-           RowBox[{"RunPotentialEnergy", "=", "\n", "\t\t\t\t\t\t\t", 
-            RowBox[{"Hold", "[", "\n", "\t", "\t\t\t\t\t\t\t", 
-             RowBox[{"Evaluate", "@", "\n", "\t\t\t\t\t\t\t\t\t", 
-              RowBox[{
-              "ChemDVRDefaultDirectProductPotentialEnergy", "@", "\n", 
-               "\t\t\t\t\t\t\t\t\t\t", "RunPotentialEnergy"}]}], "\n", 
-             "\t\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t", "]"}]}]}], 
-       "\n", "\t\t\t\t", "]"}], ";", "\n", "\t\t", 
+        RowBox[{"iChemDVRRunCalculatePEQ", "[", "]"}], ",", "\n", "\t\t\t", 
+        RowBox[{"RunPotentialEnergy", "=", "\n", "\t\t\t\t", 
+         RowBox[{"iChemDVRRunPotentialEnergy", "[", "obj", "]"}]}]}], "\n", 
+       "\t\t\t", "]"}], ";", "\n", "\t\t", 
       RowBox[{"If", "[", 
        RowBox[{
         RowBox[{"RunEndPoint", "===", "$dvrpe"}], ",", " ", 
@@ -3791,94 +4579,209 @@ Cell[BoxData[
       RowBox[{"RunCheckPoint", "=", "$dvrpe"}], ";", "\n", "\t\t", 
       RowBox[{"(*", 
        RowBox[{
-        RowBox[{
+        RowBox[{"*", " ", 
          RowBox[{"--", 
           RowBox[{"--", 
            RowBox[{"--", 
             RowBox[{"--", 
-             RowBox[{"--", " ", "Grid"}]}]}]}]}], " ", "Potential", " ", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", " ", "GRID"}]}]}]}]}]}]}]}]}]}]}]}]}], " ", 
+         "POTENTIAL", " ", 
          RowBox[{
           RowBox[{
-           RowBox[{
-            RowBox[{"Energy", " ", "--"}], "--"}], "--"}], "--"}]}], "-"}], 
-       "*)"}], "\n", "\t\t", 
+           RowBox[{"ENERGY", " ", "--"}], "--"}], "--"}]}], "-", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"-", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", "-"}]}]}]}]}]}]}]}]}]}]}], " ", "**)"}], "\n", 
+      "\t\t", 
       RowBox[{"If", "[", 
        RowBox[{
         RowBox[{"RunEndPoint", "===", "$dvrgp"}], ",", " ", "\n", "\t\t\t", 
         RowBox[{"Return", "@", 
          RowBox[{"iChemDVRRunGridPotentialEnergy", "[", "obj", "]"}]}]}], 
        "]"}], ";", "\n", "\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"RunEndPoint", "===", " ", "$dvrexwf"}], ",", "\n", "\t\t\t", 
+        
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"RunWavefunctions", "===", "None"}], ",", "\n", "\t\t\t\t", 
+           RowBox[{"RunWavefunctions", "=", "\n", "\t\t\t\t\t", 
+            RowBox[{"dvrOpsLookup", "[", 
+             RowBox[{
+             "RunRuntimeOptions", ",", " ", "$dvrwf", ",", " ", 
+              "RunWavefunctions"}], "]"}]}]}], "\n", "\t\t\t\t", "]"}], ";", 
+         "\n", "\t\t\t", 
+         RowBox[{"Return", "@", 
+          RowBox[{"iChemDVRRunExtendWavefunctions", "[", "obj", "]"}]}]}]}], 
+       "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
       RowBox[{"(*", 
        RowBox[{
-        RowBox[{"--", 
+        RowBox[{"*", " ", 
          RowBox[{"--", 
           RowBox[{"--", 
            RowBox[{"--", 
-            RowBox[{"--", " ", 
-             RowBox[{
-              RowBox[{
-               RowBox[{
-                RowBox[{"Hamiltonian", " ", "--"}], "--"}], "--"}], 
-              "--"}]}]}]}]}]}], "-", "--"}], "*)"}], "\n", "\t\t", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"-", " ", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"HAMILTONIAN", " ", "--"}], "--"}], "--"}], 
+                    "--"}], "--"}], "--"}], "--"}], 
+                    "--"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], "-", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"-", 
+           RowBox[{"--", 
+            RowBox[{"-", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", "-"}]}]}]}]}]}]}]}]}], " ", "**)"}], "\n", 
+      "\t\t", 
       RowBox[{"If", "[", 
        RowBox[{
-        RowBox[{"RunEndPoint", "===", "\"\<Hamiltonian\>\""}], ",", " ", "\n",
-         "\t\t\t", 
+        RowBox[{"RunEndPoint", "===", "$dvrham"}], ",", " ", "\n", "\t\t\t", 
         RowBox[{"Return", "[", 
          RowBox[{"iChemDVRRunHamiltonian", "[", "obj", "]"}], "]"}]}], "\n", 
        "\t\t\t", "]"}], ";", "\n", "\t\t", 
       RowBox[{"(*", 
        RowBox[{
-        RowBox[{"--", 
+        RowBox[{"*", " ", 
          RowBox[{"--", 
           RowBox[{"--", 
            RowBox[{"--", 
-            RowBox[{"--", " ", 
-             RowBox[{
-              RowBox[{
-               RowBox[{
-                RowBox[{"Energies", " ", "--"}], "--"}], "--"}], 
-              "--"}]}]}]}]}]}], "-", "--"}], "*)"}], "\n", "\t\t", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"-", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"-", " ", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"ENERGIES", " ", "--"}], "--"}], "--"}], "--"}], 
+                    "--"}], "--"}], "--"}], 
+                    "--"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], "-", 
+        RowBox[{"-", 
+         RowBox[{"-", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"-", 
+             RowBox[{"--", 
+              RowBox[{"-", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", "-"}]}]}]}]}]}]}]}]}]}]}], " ", "**)"}], "\n", 
+      "\t\t", 
       RowBox[{"If", "[", 
        RowBox[{
-        RowBox[{"RunEndPoint", "===", "\"\<Energies\>\""}], ",", " ", "\n", 
-        "\t\t\t", 
-        RowBox[{"Return", "@", 
-         RowBox[{"iChemDVRRunEnergies", "[", "obj", "]"}]}]}], "\n", "\t\t\t",
-        "]"}], ";", "\n", "\t\t", 
+        RowBox[{"RunEndPoint", "===", "$dvreng"}], ",", " ", "\n", "\t\t\t", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"RunWavefunctions", "===", "None"}], ",", "\n", "\t\t\t\t", 
+           RowBox[{"RunWavefunctions", "=", "\n", "\t\t\t\t\t", 
+            RowBox[{"dvrOpsLookup", "[", 
+             RowBox[{
+             "RunRuntimeOptions", ",", " ", "$dvrwf", ",", " ", 
+              "RunWavefunctions"}], "]"}]}]}], "\n", "\t\t\t\t", "]"}], ";", 
+         "\n", "\t\t\t", 
+         RowBox[{"Return", "@", 
+          RowBox[{"iChemDVRRunEnergies", "[", "obj", "]"}]}]}]}], "\n", 
+       "\t\t\t", "]"}], ";", "\n", "\t\t", 
       RowBox[{"(*", 
        RowBox[{
-        RowBox[{"--", 
+        RowBox[{"*", " ", 
          RowBox[{"--", 
           RowBox[{"--", 
            RowBox[{"--", 
-            RowBox[{"--", " ", 
-             RowBox[{
-              RowBox[{
-               RowBox[{
-                RowBox[{"Wavefunctions", " ", "--"}], "--"}], "--"}], 
-              "--"}]}]}]}]}]}], "-"}], "*)"}], "\n", "\t\t", 
-      RowBox[{"If", "[", "\n", "\t\t\t", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"-", " ", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"WAVEFUNCTIONS", " ", "--"}], "--"}], "--"}], 
+                    "--"}], "--"}], "--"}], 
+                    "--"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], "-", 
+        RowBox[{"-", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"-", 
+            RowBox[{"--", 
+             RowBox[{"-", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", "-"}]}]}]}]}]}]}]}]}]}], " ", "**)"}], "\n", 
+      "\t\t", 
+      RowBox[{"If", "[", 
        RowBox[{
+        RowBox[{"iChemDVRRunCalculateWFQ", "[", "]"}], ",", "\n", "\t\t\t", 
         RowBox[{
-         RowBox[{"Length", "@", "\n", "\t\t\t\t", 
-          RowBox[{"Complement", "[", "\n", "\t\t\t\t\t", 
-           RowBox[{
-            RowBox[{"Flatten", "@", 
-             RowBox[{"{", "RunEndPoint", "}"}]}], ",", " ", "\n", 
-            "\t\t\t\t\t", 
-            RowBox[{"{", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"RunWavefunctions", "===", "None"}], ",", "\n", "\t\t\t\t", 
+           RowBox[{"RunWavefunctions", "=", "\n", "\t\t\t\t\t", 
+            RowBox[{"dvrOpsLookup", "[", 
              RowBox[{
-             "\"\<Hamiltonian\>\"", ",", " ", "\"\<KineticEnergy\>\"", ",", 
-              " ", "\"\<PotentialEnergy\>\"", ",", " ", "\"\<Grid\>\""}], 
-             "}"}]}], "\n", "\t\t\t\t\t", "]"}]}], ">", "0"}], ",", "\n", 
-        "\t\t\t", 
-        RowBox[{
-         RowBox[{"RunWavefunctions", "=", "\n", "\t\t\t\t", 
-          RowBox[{"dvrOpsLookup", "[", 
-           RowBox[{
-           "RunRuntimeOptions", ",", " ", "$dvrwf", ",", " ", "None"}], 
-           "]"}]}], ";", "\n", "\t\t\t", 
+             "RunRuntimeOptions", ",", " ", "$dvrwf", ",", " ", 
+              "RunWavefunctions"}], "]"}]}]}], "\n", "\t\t\t\t", "]"}], ";", 
+         "\n", "\t\t\t", 
          RowBox[{"If", "[", 
           RowBox[{
            RowBox[{"RunWavefunctions", "===", "None"}], ",", "\n", "\t\t\t\t", 
@@ -3895,34 +4798,90 @@ Cell[BoxData[
       ";", "\n", "\t\t", 
       RowBox[{"(*", 
        RowBox[{
-        RowBox[{"--", 
+        RowBox[{"*", " ", 
          RowBox[{"--", 
           RowBox[{"--", 
            RowBox[{"--", 
-            RowBox[{"--", " ", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"-", " ", "RUN"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], 
+         " ", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"ENDPOINTS", " ", "--"}], "--"}], "--"}], "--"}], 
+           "--"}], "--"}]}], "-", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"-", 
+            RowBox[{"--", 
+             RowBox[{"-", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", "-"}]}]}]}]}]}]}]}]}]}], " ", "**)"}], "\n", 
+      "\t\t", 
+      RowBox[{"Switch", "[", 
+       RowBox[{"RunEndPoint", ",", "\n", "\t\t\t", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"*", " ", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"-", " ", "MULTIPLE"}]}]}]}]}]}]}]}]}]}]}]}]}]}], 
+           " ", 
+           RowBox[{
+            RowBox[{
              RowBox[{
               RowBox[{
                RowBox[{
-                RowBox[{"Rest", " ", "--"}], "--"}], "--"}], "--"}]}]}]}]}]}],
-         "-", "--"}], "*)"}], "\n", "\t\t", 
-      RowBox[{"Switch", "[", 
-       RowBox[{"RunEndPoint", ",", "\n", "\t\t\t", 
+                RowBox[{"RETURN", " ", "--"}], "--"}], "--"}], "--"}], "--"}],
+             "--"}]}], "-", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", "-"}]}]}]}]}]}]}]}], " ", "**)"}], "\n", 
+        "\t\t\t", 
         RowBox[{"{", "\n", "\t\t\t\t", 
          RowBox[{
           RowBox[{"(", "\n", "\t\t\t\t\t", 
            RowBox[{
            "$dvrgr", "|", "$dvrke", "|", "$dvrpe", "|", "$dvrwf", "|", 
-            "\"\<Hamiltonian\>\"", "|", "\"\<Energies\>\"", "|", "\n", 
-            "\t\t\t\t\t\t", "$dvrgrwf", "|", "$dvrintwf", "|", "\n", 
-            "\t\t\t\t\t\t", 
+            "$dvrham", "|", "$dvreng", "|", "\n", "\t\t\t\t\t\t", "$dvrgrwf", 
+            "|", "$dvrintwf", "|", "\n", "\t\t\t\t\t\t", 
             RowBox[{"{", 
              RowBox[{"$dvrexv", ",", " ", "__"}], "}"}], "|", 
             RowBox[{"{", 
              RowBox[{"$dvrexm", ",", " ", "__"}], "}"}], "|", 
-            RowBox[{"{", 
-             RowBox[{"\"\<OperatorMatrixElements\>\"", ",", " ", "__"}], 
-             "}"}]}], "\n", "\t\t\t\t\t", ")"}], ".."}], "\n", "\t\t\t\t", 
-         "}"}], ",", "\n", "\t\t\t\t", 
+            RowBox[{"{", " ", 
+             RowBox[{"$dvrexmel", ",", " ", "__"}], "}"}]}], "\n", 
+           "\t\t\t\t\t", ")"}], ".."}], "\n", "\t\t\t\t", "}"}], ",", "\n", 
+        "\t\t\t\t", 
         RowBox[{"Replace", "[", "\n", "\t\t\t\t\t", 
          RowBox[{
           RowBox[{"Replace", "[", "\n", "\t\t\t\t\t\t", 
@@ -3977,28 +4936,28 @@ Cell[BoxData[
                   RowBox[{"$dvrwf", "->", "RunWavefunctions"}], ")"}]}], "\n",
                  "\t\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t\t\t", 
               RowBox[{
-               RowBox[{"k", ":", "\"\<Hamiltonian\>\""}], ":>", "\n", 
-               "\t\t\t\t\t\t\t\t", 
+               RowBox[{"k", ":", "$dvrham"}], ":>", "\n", "\t\t\t\t\t\t\t\t", 
+               
                RowBox[{"Block", "[", 
                 RowBox[{
                  RowBox[{"{", 
                   RowBox[{"RunEndPoint", "=", "k"}], "}"}], ",", "\n", 
                  "\t\t\t\t\t\t\t\t\t", 
                  RowBox[{"(", 
-                  RowBox[{"\"\<Hamiltonian\>\"", "->", 
+                  RowBox[{"$dvrham", "->", 
                    RowBox[{"RunPotentialEnergy", "+", "RunKineticEnergy"}]}], 
                   ")"}]}], "\n", "\t\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", 
               "\t\t\t\t\t\t\t", 
               RowBox[{
-               RowBox[{"k", ":", "\"\<Energies\>\""}], ":>", "\n", 
-               "\t\t\t\t\t\t\t\t", 
+               RowBox[{"k", ":", "$dvreng"}], ":>", "\n", "\t\t\t\t\t\t\t\t", 
+               
                RowBox[{"Block", "[", 
                 RowBox[{
                  RowBox[{"{", 
                   RowBox[{"RunEndPoint", "=", "k"}], "}"}], ",", "\n", 
                  "\t\t\t\t\t\t\t\t\t", 
                  RowBox[{"(", 
-                  RowBox[{"\"\<Energies\>\"", "->", 
+                  RowBox[{"$dvreng", "->", 
                    RowBox[{"RunWavefunctions", "[", 
                     RowBox[{"[", "1", "]"}], "]"}]}], ")"}]}], "\n", 
                 "\t\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t\t\t", 
@@ -4063,16 +5022,16 @@ Cell[BoxData[
               "\t\t\t\t\t\t\t", 
               RowBox[{
                RowBox[{"k", ":", 
-                RowBox[{"{", 
-                 RowBox[{"\"\<OperatorMatrixElements\>\"", ",", " ", "__"}], 
-                 "}"}]}], ":>", "\n", "\t\t\t\t\t\t\t\t", 
+                RowBox[{"{", " ", 
+                 RowBox[{"$dvrexmel", ",", " ", "__"}], "}"}]}], ":>", "\n", 
+               "\t\t\t\t\t\t\t\t", 
                RowBox[{"Block", "[", 
                 RowBox[{
                  RowBox[{"{", 
                   RowBox[{"RunEndPoint", "=", "k"}], "}"}], ",", "\n", 
                  "\t\t\t\t\t\t\t\t\t", 
-                 RowBox[{"(", 
-                  RowBox[{"\"\<OperatorMatrixElements\>\"", "->", 
+                 RowBox[{"(", " ", 
+                  RowBox[{"$dvrexmel", "->", 
                    RowBox[{
                    "iChemDVRRunOperatorMatrixElements", "[", "obj", "]"}]}], 
                   ")"}]}], "\n", "\t", "\t\t\t\t\t\t\t\t", "]"}]}]}], "\n", 
@@ -4087,93 +5046,210 @@ Cell[BoxData[
               RowBox[{
                RowBox[{"{", "v_", "}"}], "\[RuleDelayed]", "v"}], "]"}]}], 
             "]"}]}]}], "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
-        "$dvrgrwf", ",", "\n", "\t\t\t\t", 
         RowBox[{"(*", 
-         RowBox[{
-          RowBox[{
-           RowBox[{"--", 
-            RowBox[{"--", 
-             RowBox[{"--", 
-              RowBox[{"--", 
-               RowBox[{"--", "  ", "Wavefunction"}]}]}]}]}], " ", 
-           RowBox[{
-            RowBox[{
-             RowBox[{
-              RowBox[{"Grid", " ", "--"}], "--"}], "--"}], "--"}]}], "-"}], 
-         "*)"}], "\n", "\t\t\t\t", 
-        RowBox[{"iChemDVRRunGridWavefunctions", "[", "obj", "]"}], ",", "\n", 
-        "\t\t\t", "$dvrintwf", ",", "\n", "\t\t\t\t", 
-        RowBox[{"(*", 
-         RowBox[{
+         RowBox[{"*", " ", 
           RowBox[{"--", 
            RowBox[{"--", 
             RowBox[{"--", 
              RowBox[{"--", 
-              RowBox[{"--", "  ", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"-", " ", "GRID"}]}]}]}]}]}]}]}]}]}]}]}]}]}], " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"WAVEFUNCTIONS", " ", "--"}], "--"}], "--"}], "--"}], 
+             "--"}], "--"}], "--"}], 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", "--"}]}]}]}]}]}], " ", "**)"}], "\n", "\t\t\t", 
+        "$dvrgrwf", ",", "\n", "\t\t\t\t", 
+        RowBox[{"iChemDVRRunGridWavefunctions", "[", "obj", "]"}], ",", "\n", 
+        "\t\t\t", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"*", " ", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", " ", "INTERPOLATING"}]}]}]}]}]}]}]}]}]}]}], 
+           " ", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{
                RowBox[{
                 RowBox[{
                  RowBox[{
-                  RowBox[{"InterpolatingWavefunctions", " ", "--"}], "--"}], 
-                 "--"}], "--"}]}]}]}]}]}], "-"}], "*)"}], "\n", "\t\t\t\t", 
+                  RowBox[{"WAVEFUNCTIONS", " ", "--"}], "--"}], "--"}], 
+                "--"}], "--"}], "--"}], "--"}], "--"}]}], "-", 
+          RowBox[{"--", "--"}]}], " ", "**)"}], "\n", "\t\t\t", "$dvrintwf", 
+        ",", "\n", "\t\t\t\t", 
         RowBox[{"iChemDVRRunInterpolatingWavefunctions", "[", "obj", "]"}], 
         ",", "\n", "\t\t\t", 
-        RowBox[{"{", 
-         RowBox[{"$dvrexv", ",", " ", "__"}], "}"}], ",", "\n", "\t\t\t\t", 
         RowBox[{"(*", 
          RowBox[{
+          RowBox[{"*", " ", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"-", 
+                    RowBox[{
+                    "--", " ", "EXPECTATION"}]}]}]}]}]}]}]}]}]}]}]}]}]}], " ", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"VALUES", " ", "--"}], "--"}], "--"}], "--"}], "--"}],
+             "--"}]}], "-", 
           RowBox[{"--", 
            RowBox[{"--", 
             RowBox[{"--", 
              RowBox[{"--", 
-              RowBox[{"--", "  ", 
-               RowBox[{
-                RowBox[{
-                 RowBox[{
-                  RowBox[{"ExpectationValues", " ", "--"}], "--"}], "--"}], 
-                "--"}]}]}]}]}]}], "-"}], "*)"}], "\n", "\t\t\t\t", 
+              RowBox[{"-", 
+               RowBox[{"--", "--"}]}]}]}]}]}]}], " ", "**)"}], "\n", "\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"$dvrexv", ",", " ", "__"}], "}"}], ",", "\n", "\t\t\t\t", 
         RowBox[{"iChemDVRRunExpectationValues", "[", "obj", "]"}], ",", "\n", 
         "\t\t\t", 
+        RowBox[{"(*", 
+         RowBox[{"*", " ", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"-", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{
+                    "-", " ", "OPERATOR"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"MATRIX", " ", "--"}], "--"}], "--"}], "--"}], "--"}],
+             "--"}], "--"}], 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", "--"}]}]}]}]}]}]}], " ", "**)"}], "\n", "\t\t\t", 
         RowBox[{"{", 
          RowBox[{"$dvrexm", ",", " ", "__"}], "}"}], ",", "\n", "\t\t\t\t", 
-        RowBox[{"(*", 
-         RowBox[{
-          RowBox[{
-           RowBox[{"--", 
-            RowBox[{"--", 
-             RowBox[{"--", 
-              RowBox[{"--", 
-               RowBox[{"--", "  ", "Operator"}]}]}]}]}], " ", 
-           RowBox[{
-            RowBox[{
-             RowBox[{
-              RowBox[{"Matrix", " ", "--"}], "--"}], "--"}], "--"}]}], "-"}], 
-         "*)"}], "\n", "\t\t\t\t", 
         RowBox[{"iChemDVRRunOperatorMatrix", "[", "obj", "]"}], ",", "\n", 
         "\t\t\t", 
-        RowBox[{"{", 
-         RowBox[{"\"\<OperatorMatrixElements\>\"", ",", " ", "__"}], "}"}], 
-        ",", "\n", "\t\t\t\t", 
         RowBox[{"(*", 
          RowBox[{
-          RowBox[{
+          RowBox[{"*", " ", 
            RowBox[{"--", 
             RowBox[{"--", 
              RowBox[{"--", 
               RowBox[{"--", 
-               RowBox[{"--", "  ", "Operator"}]}]}]}]}], " ", "Matrix", " ", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", " ", "OPERATOR"}]}]}]}]}]}]}]}]}]}]}]}], 
+           " ", "MATRIX", " ", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"ELEMENTS", " ", "--"}], "--"}], "--"}]}], "-", 
+          RowBox[{"-", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", "--"}]}]}]}]}]}]}]}], " ", "**)"}], "\n", 
+        "\t\t\t", 
+        RowBox[{"{", " ", 
+         RowBox[{"$dvrexmel", ",", " ", "__"}], "}"}], ",", "\n", "\t\t\t\t", 
+        
+        RowBox[{"iChemDVRRunOperatorMatrixElements", "[", "obj", "]"}], ",", 
+        "\n", "\t\t\t", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"*", " ", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"-", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", " ", "FULL"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}],
+            " ", 
            RowBox[{
             RowBox[{
              RowBox[{
-              RowBox[{"Elements", " ", "--"}], "--"}], "--"}], "--"}]}], 
-          "-"}], "*)"}], "\n", "\t\t\t\t", 
-        RowBox[{"iChemDVRRunOperatorMatrixElements", "[", "obj", "]"}], ",", 
-        "\n", "\t\t\t", "\"\<FullResults\>\"", ",", "\n", "\t\t\t\t", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"RESULTS", " ", "--"}], "--"}], "--"}], "--"}], 
+             "--"}], "--"}]}], "-", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", "--"}]}]}]}]}]}]}]}], " ", "**)"}], "\n", 
+        "\t\t\t", "\"\<FullResults\>\"", ",", "\n", "\t\t\t\t", 
         RowBox[{"If", "[", 
          RowBox[{
           RowBox[{"ListQ", "@", "RunWavefunctions"}], ",", "\n", "\t\t\t\t\t", 
           RowBox[{"<|", "\n", "\t\t\t\t\t\t", 
            RowBox[{
-            RowBox[{"\"\<Grid\>\"", "->", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{"$dvrgr", "->", "\n", "\t\t\t\t\t\t\t", 
              RowBox[{"If", "[", 
               RowBox[{
                RowBox[{"ListQ", "@", "RunGrid"}], ",", " ", "\n", 
@@ -4182,7 +5258,7 @@ Cell[BoxData[
                 RowBox[{"\"\<Real64\>\"", ",", " ", "RunGrid"}], "]"}], ",", 
                "\n", "\t\t\t\t\t\t\t\t", "RunGrid"}], "\n", 
               "\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t\t", 
-            RowBox[{"\"\<PotentialEnergy\>\"", "->", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{"$dvrpe", "->", "\n", "\t\t\t\t\t\t\t", 
              RowBox[{"If", "[", 
               RowBox[{
                RowBox[{"ListQ", "@", "RunPotentialEnergy"}], ",", " ", "\n", 
@@ -4191,7 +5267,7 @@ Cell[BoxData[
                 RowBox[{"\"\<Real64\>\"", ",", " ", "RunPotentialEnergy"}], 
                 "]"}], ",", "\n", "\t\t\t\t\t\t\t\t", "RunPotentialEnergy"}], 
               "\n", "\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t\t", 
-            RowBox[{"\"\<KineticEnergy\>\"", "->", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{"$dvrke", "->", "\n", "\t\t\t\t\t\t\t", 
              RowBox[{"If", "[", 
               RowBox[{
                RowBox[{"ListQ", "@", "RunKineticEnergy"}], ",", " ", "\n", 
@@ -4200,7 +5276,7 @@ Cell[BoxData[
                 RowBox[{"\"\<Real64\>\"", ",", " ", "RunKineticEnergy"}], 
                 "]"}], ",", "\n", "\t\t\t\t\t\t\t\t", "RunKineticEnergy"}], 
               "\n", "\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t\t", 
-            RowBox[{"\"\<Energies\>\"", "->", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{"$dvreng", "->", "\n", "\t\t\t\t\t\t\t", 
              RowBox[{"If", "[", 
               RowBox[{
                RowBox[{"ListQ", "@", "RunWavefunctions"}], ",", " ", "\n", 
@@ -4213,7 +5289,7 @@ Cell[BoxData[
                RowBox[{"RunWavefunctions", "[", 
                 RowBox[{"[", "1", "]"}], "]"}]}], "\n", "\t\t\t\t\t\t\t\t", 
               "]"}]}], ",", "\n", "\t\t\t\t\t\t", 
-            RowBox[{"\"\<Wavefunctions\>\"", "->", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{"$dvrwf", "->", "\n", "\t\t\t\t\t\t\t", 
              RowBox[{"If", "[", 
               RowBox[{
                RowBox[{"ListQ", "@", "RunWavefunctions"}], ",", " ", "\n", 
@@ -4226,19 +5302,45 @@ Cell[BoxData[
                RowBox[{"RunWavefunctions", "[", 
                 RowBox[{"[", "2", "]"}], "]"}]}], "\n", "\t\t\t\t\t\t\t\t", 
               "]"}]}]}], "\n", "\t\t\t\t\t\t", "|>"}]}], "\n", "\t\t\t\t\t", 
-         "]"}], ",", "\n", "\t\t\t", "_", ",", "\n", "\t\t\t\t", 
+         "]"}], ",", "\n", "\t\t\t", 
         RowBox[{"(*", 
          RowBox[{
+          RowBox[{"*", " ", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"-", 
+                    RowBox[{"--", " ", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"PLOT", " ", "--"}], "--"}], "--"}], "--"}], 
+                    "--"}], "--"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], "-", 
           RowBox[{"--", 
            RowBox[{"--", 
             RowBox[{"--", 
              RowBox[{"--", 
-              RowBox[{"--", " ", 
-               RowBox[{
-                RowBox[{
-                 RowBox[{
-                  RowBox[{"View", " ", "--"}], "--"}], "--"}], 
-                "--"}]}]}]}]}]}], "-"}], "*)"}], "\n", "\t\t\t\t", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", "--"}]}]}]}]}]}]}]}]}]}], " ", "**)"}], "\n", 
+        "\t\t\t", "_", ",", "\n", "\t\t\t\t", 
         RowBox[{"ChemDVRView", "[", 
          RowBox[{"obj", ",", "\n", "\t\t\t\t\t", 
           RowBox[{"$dvrwf", "\[Rule]", "\n", "\t\t\t\t\t\t", 
@@ -4441,7 +5543,7 @@ Cell["\[LeftCeiling]OOP Interface\[RightFloor]", "CodeSubsection",
 
 Cell[CellGroupData[{
 
-Cell["\[LeftCeiling]Call\[RightFloor]", "CodeSubsubsubsection",
+Cell["\[LeftCeiling]Call\[RightFloor]", "CodeSubsubsection",
  Evaluatable->True,
  CellChangeTimes->{{3.73178728951991*^9, 
   3.731787289902672*^9}},ExpressionUUID->"6e5b44d8-ea0b-43b6-bc08-\
@@ -4452,10 +5554,9 @@ Cell[BoxData[
   RowBox[{"$dvrBasicKeys", "=", "\n", "\t", 
    RowBox[{
    "$dvrgr", "|", "$dvrpe", "|", "$dvrke", "|", "$dvrgp", "|", "\n", "\t\t", 
-    "$dvrwf", "|", "$dvrgrwf", "|", "$dvrintwf", "|", "\n", "\t\t", 
-    "\"\<Hamiltonian\>\"", "|", "\"\<Energies\>\"", "|", 
-    "\"\<FullResults\>\"", "|", "\n", "\t\t", 
-    "\"\<PotentialOptimization\>\""}]}], 
+    "$dvrwf", "|", "$dvrgrwf", "|", "$dvrintwf", "|", "\n", "\t\t", "$dvrham",
+     "|", "$dvreng", "|", "\"\<FullResults\>\"", "|", "\n", "\t\t", "$dvrpo", 
+    "|", "$dvrexwf", "|", "$dvrguwf"}]}], 
   ";"}]], "CodeInput",ExpressionUUID->"4f13f9a1-6387-451c-abd2-2143208b843e"],
 
 Cell[BoxData[{
@@ -4491,9 +5592,8 @@ Cell[BoxData[{
     "\t\t", 
     RowBox[{
      RowBox[{"k", ":", 
-      RowBox[{
-      "$dvrexv", "|", "$dvrexm", "|", "\"\<OperatorMatrixElements\>\""}]}], 
-     ",", " ", "\n", "\t\t", 
+      RowBox[{"$dvrexv", "|", "$dvrexm", "|", " ", "$dvrexmel"}]}], ",", " ", 
+     "\n", "\t\t", 
      RowBox[{"efuns", ":", 
       RowBox[{"Except", "[", 
        RowBox[{"_", "?", "OptionQ"}], "]"}]}], ",", " ", 
@@ -4561,11 +5661,11 @@ Cell[BoxData[{
     RowBox[{"obj", ",", " ", "k"}], "]"}]}], 
   ";"}]}], "CodeInput",ExpressionUUID->"ce6292b3-9e8c-492e-a319-e7edc3dd1dd2"]\
 
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
-Cell["\[LeftCeiling]Mutate\[RightFloor]", "CodeSubsubsubsection",
+Cell["\[LeftCeiling]Mutate\[RightFloor]", "CodeSubsubsection",
  Evaluatable->True,
  CellChangeTimes->{{3.731787281343988*^9, 
   3.731787283718527*^9}},ExpressionUUID->"e0f0ad4a-4252-46ce-bc09-\
@@ -4853,7 +5953,7 @@ Cell[BoxData[{
      "\n", "\t\t\t", "]"}]}]}], ";"}], "\n", 
  RowBox[{"\t\t"}]}], \
 "CodeInput",ExpressionUUID->"bbe07467-5b8a-4157-ba3a-7a5978392431"]
-}, Open  ]]
+}, Closed]]
 }, Open  ]],
 
 Cell[BoxData[
@@ -4867,7 +5967,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"9009c70d-1aad-415c-9701-\
 edff1eaf5262"]
 },
 WindowSize->{788, 764},
-WindowMargins->{{Automatic, 0}, {Automatic, 14}},
+WindowMargins->{{Automatic, 175}, {Automatic, 6}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

@@ -1,8 +1,6 @@
-(* ::Package:: *)
-
 Paclet[
   Name -> "ChemTools",
-  Version -> "1.3.0",
+  Version -> "1.3.1",
   Creator -> "b3m2a1@gmail.com",
   Description -> "A collection of tools for doing chemistry",
   Thumbnail -> "PacletIcon.png",
@@ -54,6 +52,14 @@ Paclet[
        			{
         				"ChemUnitConversions",
         				"Datasets/ChemUnitConversions.wl"
+        			},
+       			{
+        				"ContinuousSpectrumIcon",
+        				"Icons/ContinuousSpectrumIcon.png"
+        			},
+       			{
+        				"DiscreteSpectrumIcon",
+        				"Icons/DiscreteSpectrumIcon.png"
         			},
        			{
         				"DVRIcon",

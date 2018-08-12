@@ -4,6 +4,7 @@
 
 ChemDVRDefaultPrepareHamiltonian::usage=
 ChemDVRDefaultWavefunctions::usage="";
+ChemDVRDefaultExtendWavefunctions::usage="";
 ChemDVRDefaultGridWavefunctions::usage="";
 ChemDVRDefaultInterpolatingWavefunctions::usage="";
 ChemDVRDefaultExpectationValues::usage="";
@@ -64,6 +65,12 @@ ChemDVRDefaultWavefunctionSelection[wfs_,
                   {e_}:>e
                   }
                 ]
+              ],
+          e:Except[_Span|All|{__Integer}]:>
+            PackageRaiseException[
+              Automatic,
+              "Wavefunction selection spec `` couldn't be processed",
+              e
               ]
           }
         ]
@@ -102,14 +109,14 @@ ChemDVRDefaultPrepareHamiltonian[T_, V_, ops:OptionsPattern[]]:=
       hermCut
       },
     If[!SquareMatrixQ[keMat]||
-      (validate&&!MatrixQ[keMat, NumericQ]),
+      (validate&&!MatrixQ[keMat, Internal`RealValuedNumericQ]),
       PackageRaiseException[
         Automatic,
         "The kinetic energy is not a square numerical matrix"
         ]
       ];
     If[!SquareMatrixQ[peMat]||
-      (validate&&!MatrixQ[peMat, NumericQ]),
+      (validate&&!MatrixQ[peMat, Internal`RealValuedNumericQ]),
       PackageRaiseException[
         Automatic,
         "The potential energy is not a square numerical matrix"
@@ -118,7 +125,7 @@ ChemDVRDefaultPrepareHamiltonian[T_, V_, ops:OptionsPattern[]]:=
     ham=keMat+peMat;
     fullLen=Length@ham;
     If[!SquareMatrixQ[ham]||
-      (validate&&!MatrixQ[ham, NumericQ]),
+      (validate&&!MatrixQ[ham, Internal`RealValuedNumericQ]),
       PackageRaiseException[
         Automatic,
         "The Hamiltonian is not a square numerical matrix"
@@ -174,6 +181,11 @@ Try passing \"HamiltonianRounding\"->``.",
 
 
 
+(* ::Subsubsection::Closed:: *)
+(*ChemDVRDefaultWavefunctions*)
+
+
+
 Options[ChemDVRDefaultWavefunctions]=
   Join[
     Options@Eigensystem,
@@ -182,7 +194,12 @@ Options[ChemDVRDefaultWavefunctions]=
       "CorrectPhase"->True,
       "SortEnergies"->True,
       "WavefunctionEigensolver"->Eigensystem,
-      "PreadjustHamiltonian"->True
+      "PreadjustHamiltonian"->True,
+      "ArnoldiIterations"->Automatic,
+      "ArnoldiBasisSize"->Automatic,
+      "ArnoldiTolerance"->Automatic,
+      "ArnoldiGuessWavefunction"->Automatic,
+      "TargetEigenvalue"->Automatic
       },
     Options[ChemDVRDefaultPrepareHamiltonian]
     ];
@@ -193,6 +210,7 @@ ChemDVRDefaultWavefunctions[T_, V_, ops:OptionsPattern[]]:=
       ham,
       wfnSel,
       hamAdj,
+      shift,
       hamDiag,
       hamDiagMax,
       rowSums,
@@ -212,20 +230,23 @@ ChemDVRDefaultWavefunctions[T_, V_, ops:OptionsPattern[]]:=
       origLen,
       prunePos,
       prunePosOrder,
-      hamPruned
+      hamPruned,
+      arnops
       },
     Internal`WithLocalSettings[
       useFlags=
-        Fold[
-          Lookup,
-          SystemOptions["LinearAlgebraOptions"->"UseMatrixPropertyFlags"],
-          {"LinearAlgebraOptions", "UseMatrixPropertyFlags"}
-          ];
-      SetSystemOptions["LinearAlgebraOptions"->"UseMatrixPropertyFlags"->True],
+        Quiet@
+          Fold[
+            Lookup,
+            SystemOptions["LinearAlgebraOptions"->"UseMatrixPropertyFlags"],
+            {"LinearAlgebraOptions", "UseMatrixPropertyFlags"}
+            ];
+      Quiet@SetSystemOptions["LinearAlgebraOptions"->"UseMatrixPropertyFlags"->True],
       {ham, {prunePos, origLen}}=
         ChemDVRDefaultPrepareHamiltonian[T, V, 
           FilterRules[{ops}, Options[ChemDVRDefaultPrepareHamiltonian]]
           ];
+      shift=Replace[OptionValue["TargetEigenvalue"], Except[_?NumericQ]->Automatic];
       hamPruned=Length@prunePos>0;
       If[hamPruned,
         (*
@@ -254,7 +275,7 @@ ChemDVRDefaultWavefunctions[T_, V_, ops:OptionsPattern[]]:=
             }
           ];
       hamAdj=Length@{wfnSel}>0&&TrueQ@OptionValue["PreadjustHamiltonian"];
-      If[hamAdj, wfnSel=-wfnSel];
+      If[hamAdj&&shift===Automatic, wfnSel=-wfnSel];
       If[hamAdj||hamPruned,
         (*
 				If things are pruned I want the maximum possible eigenvalue to return by Gerschgorin--
@@ -262,22 +283,28 @@ ChemDVRDefaultWavefunctions[T_, V_, ops:OptionsPattern[]]:=
 				*)
         hamDiag=Diagonal[ham];
         hamDiagMax=Max[hamDiag];
+        rowSums=Total@*Abs/@ham;
         rowBounds=2*Abs[hamDiag]-rowSums;
         hamEigMax=Max@hamDiag+Max@Abs@rowBounds;
         ];
       If[hamAdj,
         (*
-				I force all eigenvalues to be negative then pick the largest ones. This is faster with the 
+				If there is no shift, I force all eigenvalues to be negative then pick the largest ones. This is faster with the 
 				Arnoldi algorithm.
 				
 				By Gerschgorin's theorm this means I need to push the diagonal large enough
 					such that all of the eigenvalue disks are wholly negative
+				
+				If there is a shift, I shift so that the minimum abs. value eigenvalue may be expected to be around there 
 				*)
-        hamDiag-=hamDiagMax;
-        rowSums=Total@*Abs/@ham; (* Compute row sums*)
-        rowBounds=2*Abs[hamDiag]-rowSums; (* Compute diagonal - disk radius *)
-        rowMin=Min@rowBounds; (* Pick largest displacement in negative sense *)
-        rowShift=-(2*Abs[rowMin]+hamDiagMax); (* Shift by twice this to force no intersections with zero*)
+        If[shift===Automatic,
+          hamDiag-=hamDiagMax;
+          (* row sums computed previously *)
+          rowBounds=2*Abs[hamDiag]-rowSums; (* Compute diagonal - disk radius *)
+          rowMin=Min@rowBounds; (* Pick largest displacement in negative sense *)
+          rowShift=-(2*Abs[rowMin]+hamDiagMax); (* Shift by twice this to wholly avoid zero*),
+          rowShift=-(shift+Min[hamDiag])
+          ];
         ham=ham+SparseArray[Band[{1,1}]->rowShift, {Length@ham, Length@ham}]
         ];
       wfns=
@@ -289,7 +316,48 @@ ChemDVRDefaultWavefunctions[T_, V_, ops:OptionsPattern[]]:=
               Replace[OptionValue[Method], 
                 Automatic:>
                   If[Head@ham===SparseArray, 
-                    "Arnoldi",
+                    arnops=
+                      KeyValueMap[
+                        Switch[#,
+                          "MaxIterations",
+                            If[IntegerQ@#2&&Positive[#2],
+                              #->#2,
+                              Nothing
+                              ],
+                          "BasisSize",
+                            If[IntegerQ@#2&&Positive[#2],
+                              #->#2,
+                              Nothing
+                              ],
+                          "Tolerance",
+                            If[NumericQ@#2&&Positive[#2],
+                              #->#2,
+                              Nothing
+                              ],
+                          "StartingVector",
+                            If[VectorQ[#2, Internal`RealValuedNumericQ],
+                              #->#2,
+                              Nothing
+                              ]
+                          ]&, 
+                        AssociationThread[
+                          {
+                            "MaxIterations",
+                            "BasisSize",
+                            "Tolerance",
+                            "StartingVector"
+                            },
+                          OptionValue[
+                            {
+                              "ArnoldiIterations", 
+                              "ArnoldiBasisSize", 
+                              "ArnoldiTolerance",
+                              "ArnoldiGuessWavefunction"
+                              }
+                            ]
+                          ]
+                        ];
+                    Flatten@{"Arnoldi", arnops},
                     Automatic
                     ]
                 ],
@@ -351,12 +419,174 @@ ChemDVRDefaultWavefunctions[T_, V_, ops:OptionsPattern[]]:=
         True,
           wfns
         ],
-      SetSystemOptions["LinearAlgebraOptions"->"UseMatrixPropertyFlags"->useFlags]
+      Quiet@SetSystemOptions["LinearAlgebraOptions"->"UseMatrixPropertyFlags"->useFlags]
       ]
     ];
 
 
 (* ::Subsection:: *)
+(*ChemDVRDefaultExtendWavefunctions*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*iChemDVRDefaultExtendWavefunctions*)
+
+
+
+(* ::Text:: *)
+(*
+	Attempt to figure out where the new eigenvalues should be built from.
+	
+	A future version should try to apply some clever \[OpenCurlyQuote]chunking\[CloseCurlyQuote] or something.
+		Basically if no new eigenvalues would be generated (or too few) apply the process iteratively.
+*)
+
+
+
+Options[iChemDVRDefaultExtendWavefunctions]=
+  Options[ChemDVRDefaultWavefunctions];
+iChemDVRDefaultExtendWavefunctions[
+  T_,
+  V_, 
+  wfns_,
+  n_,
+  ops:OptionsPattern[]
+  ]:=
+  Module[
+    {
+      eigNum=n,
+      engs=wfns[[1]],
+      mengPos, meng,
+      engLen, lastN, 
+      targetEstimator,
+      targetE=OptionValue["TargetEigenvalue"], guessWf,
+      newEngs, newWfs,
+      new, orderNew
+      },
+    mengPos=Ordering[engs, 1][[1]];
+    meng=engs[[mengPos]];
+    If[!NumericQ@targetE,
+      engLen=Min@{Length[engs], Max@{n, 5}};
+      lastN=engs[[-engLen;;]];
+      Which[engLen>3,
+        targetEstimator=
+          Table[
+            LinearModelFit[lastN, \[FormalN]^Range[m], \[FormalN]],
+            {m, 3}
+            ];
+        targetEstimator=
+          MaximalBy[targetEstimator, #["RSquared"]&][[1]]["Function"],
+        engLen>1,
+          targetEstimator=
+            Evaluate[Fit[lastN, {1, #}, #]]&,
+        True,
+          eigNum++;
+          targetEstimator=meng&;
+        ];
+      targetE=targetEstimator[engLen+1]
+      ];
+    guessWf=wfns[[2, mengPos]];
+    new=
+      ChemDVRDefaultWavefunctions[
+        T, V, 
+        "NumberOfWavefunctions"->n,
+        "PreadjustHamiltonian"->True,
+        "ArnoldiGuessWavefunction"->guessWf,
+        "TargetEigenvalue"->targetE,
+        ops
+        ];
+    If[MatchQ[new, 
+          {_List?(VectorQ[#, Internal`RealValuedNumberQ]&), _List?MatrixQ}
+          ],
+      {newEngs, newWfs}=newWfs,
+      PackageRaiseException[
+        Automatic,
+        "Failed to generate wavefunctions"
+        ];
+      ];
+    new=Select[newEngs, Not@*MatchQ[Alternatives@@engs]];
+    If[Length@new===0,
+      PackageRaiseException[
+        Automatic,
+        "Failed to find any new wavefunctions with eigenvalue shift ``. \
+Try supplying a different \"TargetEigenvalue\" directly",
+        targetE
+        ]
+      ];
+    new={new, Pick[newWfs, Not@*MatchQ[Alternatives@@engs]/@newEngs]};
+    new=
+      MapThread[
+        Join,
+        {
+          new,
+          wfns
+          }
+        ];
+    orderNew=Ordering[new[[1]]];
+    #[[orderNew]]&/@new
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultExtendWavefunctions*)
+
+
+
+ChemDVRDefaultExtendWavefunctions//Clear
+
+
+Options[ChemDVRDefaultExtendWavefunctions]=
+  Options[iChemDVRDefaultExtendWavefunctions];
+ChemDVRDefaultExtendWavefunctions[
+  T_,
+  V_, 
+  wfns_,
+  ops:OptionsPattern[]
+  ]:=
+  iChemDVRDefaultExtendWavefunctions[
+    T, V, ReleaseHold[wfns],
+    Replace[
+      OptionValue["NumberOfWavefunctions"],
+      Except[_Integer?IntegerQ]->5
+      ],
+    ops
+    ]
+
+
+(* ::Subsection:: *)
+(*ChemDVRDefaultGridWavefunctions*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*iChemDVRDefaultThreadGridWavefunctions*)
+
+
+
+iChemDVRDefaultThreadGridWavefunctions[gps_, wfns_, retE_]:=
+  Module[
+    {
+      grid=gps
+      },
+      If[!ListQ@First@grid,
+      grid=List/@grid
+      ];
+    grid=Developer`ToPackedArray@grid;
+    If[retE, 
+      MapThread[
+        #->Join[gps, List/@#2, 2]&,
+        wfns
+        ],
+      Map[
+        Join[gps, List/@#, 2]&, 
+        wfns[[2]]
+        ]
+      ]
+    ];
+
+
+(* ::Subsubsection::Closed:: *)
 (*ChemDVRDefaultGridWavefunctions*)
 
 
@@ -393,12 +623,10 @@ ChemDVRDefaultGridWavefunctions[
           ],
       retE=TrueQ@OptionValue["ReturnEnergies"]
       },
-    If[retE, 
-      MapThread[
-        #->Thread[{coreGridPoints,#2}]&,
-        wfns
-        ],
-      Map[Thread[{coreGridPoints,#}]&, wfns[[2]]]
+    iChemDVRDefaultThreadGridWavefunctions[
+      coreGridPoints,
+      wfns,
+      retE
       ]
     ];
 
@@ -417,30 +645,12 @@ ChemDVRDefaultInterpolatingWavefunctions[
   ops:OptionsPattern[]
   ]:=
   With[
-    {
-      coreGridPoints=
-        ChemDVRDefaultPruneGridPoints[
-          ChemDVRDefaultGridPointList[grid, 
-            FilterRules[{ops}, Options@ChemDVRDefaultGridPointList]
-            ],
-          V,
-          OptionValue["PruningEnergy"]
-          ],
-      wfns=
-        ChemDVRDefaultWavefunctionSelection[
-          ReleaseHold@wfs,
-          FilterRules[{ops}, Options[ChemDVRDefaultWavefunctionSelection]]
-          ],
-      retE=TrueQ@OptionValue["ReturnEnergies"]
-      },
-    If[retE, 
-      MapThread[
-        #->Interpolation@MapThread[Flatten@*List,{coreGridPoints,#2}]&,
-        wfns
-        ],
-      Map[Interpolation@MapThread[Flatten@*List,{coreGridPoints, #}]&, wfns[[2]]]
-      ]
-    ];
+    {wf=ChemDVRDefaultGridWavefunctions[grid, wfs, V, ops]},
+    If[MatchQ[wf[[1]], _Rule],
+      #[[1]]->Interpolation[#[[2]]]&,
+      Interpolation
+      ]/@wf
+    ]
 
 
 (* ::Subsection:: *)
@@ -463,19 +673,30 @@ chemDVRCalcExpectationValueVec[func_, grid_]:=
     Except[_List?(Length[#]==Length@grid&)]:>Map[func, grid]
     ];
 chemDVRCalcExpectationValueVec[func_, grid_, wf_]:=
-  Replace[func[grid, wf], 
+  Replace[func[grid, wf],
     Except[_List?(Length[#]==Length@grid&)]:>
       MapThread[func, {grid, wf}]
     ];
 chemDVRCalcExpectationValue[func_Function, grid_, wfL_, wfR_]:=
   wfL.
-    If[MemberQ[func, Slot[2], \[Infinity]],
+    If[MemberQ[func, Slot[2], \[Infinity]]||MatchQ[func, Verbatim[Function][{_, _}, ___]],
       chemDVRCalcExpectationValueVec[func, grid, wfR],
-      wfR*chemDVRCalcExpectationValueVec[func, grid]
+      Check[
+        wfR*chemDVRCalcExpectationValueVec[func, grid],
+        Throw@
+          {
+            Dimensions[wfR], 
+            func,
+            Dimensions@grid,
+            Dimensions@chemDVRCalcExpectationValueVec[func, grid]
+            };
+        ]
       ];
 chemDVRCalcExpectationValue[func:Except[_Function], grid_, wfL_, wfR_]:=
   wfL.Replace[chemDVRCalcExpectationValueVec[func, grid, wfR],
-    {__func}:>wfR*chemDVRCalcExpectationValueVec[func, grid]
+    {
+      {__func}:>wfR*chemDVRCalcExpectationValueVec[func, grid]
+      }
     ]
 
 

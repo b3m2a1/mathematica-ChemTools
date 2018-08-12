@@ -1,0 +1,237 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Spectrum Import", \
+"CodeSection",ExpressionUUID->"94f0d441-d035-414d-91d6-ddfa26b58e71"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Imports\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.692619268454095*^9, 
+  3.692619269863488*^9}},ExpressionUUID->"f8a200a0-7b18-4f1f-878e-\
+301de58c9eea"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpectrumImport", "::", "usage"}], "=", 
+   "\"\<Imports a spectrum\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpectrumImportString", "::", "usage"}], "=", 
+   "\"\<Imports a string as a spectrum\>\""}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.692537080038538*^9, 3.692537121933693*^9}, 
+   3.692537194696789*^9, {3.6925415533591957`*^9, 3.692541580641577*^9}, 
+   3.692541894010786*^9, 3.692559357479487*^9, 3.692619260944475*^9, {
+   3.69410671360998*^9, 
+   3.694106723228216*^9}},ExpressionUUID->"fbea16a3-917e-4619-8ad7-\
+48d820526def"]
+}, Closed]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"feb5ca9c-1c12-4ed7-a0ff-\
+7cac3736862a"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Import\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{{3.692542654878862*^9, 
+  3.692542657053543*^9}},ExpressionUUID->"347602dd-c8ce-4757-8095-\
+dd6ced16c678"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]OVR\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"9846a670-e836-4cf1-887c-38563936cbea"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"chemImportOVR", "[", "file_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"Replace", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"Cases", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"Import", "[", 
+        RowBox[{"file", ",", "\"\<XML\>\""}], "]"}], ",", "\n", "\t", "\t\t", 
+       
+       RowBox[{
+        RowBox[{"XMLElement", "[", 
+         RowBox[{"\"\<ExperimentalPlot\>\"", ",", " ", "h_", ",", " ", 
+          RowBox[{"{", "d_", "}"}]}], "]"}], "\[RuleDelayed]", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"h", ",", 
+          RowBox[{"ChemSpectrum", "@", 
+           RowBox[{"Partition", "[", 
+            RowBox[{
+             RowBox[{"Join", "@@", 
+              RowBox[{"ImportString", "[", 
+               RowBox[{"d", ",", "\"\<Table\>\""}], "]"}]}], ",", "2"}], 
+            "]"}]}]}], "}"}]}], ",", "\n", "\t\t\t", "\[Infinity]"}], "]"}], 
+     ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"{", "d_", "}"}], "\[RuleDelayed]", "d"}]}], "\n", "\t\t", 
+    "]"}]}], ";"}]], \
+"CodeInput",ExpressionUUID->"f9ac85df-cb8a-4ead-a2f2-c6903c7c9e44"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ChemSpectrumImport\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"434eb1ec-5aee-4695-8cff-b9f0177d41ed"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpectrumImport", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"file", ":", 
+      RowBox[{
+       RowBox[{"_String", "?", "FileExistsQ"}], "|", "_InputStream"}]}], ",", 
+     "\n", "\t", "dType_"}], "\n", "\t", "]"}], ":=", "\n", "\t", 
+   RowBox[{"Switch", "[", 
+    RowBox[{
+     RowBox[{"ToLowerCase", "@", "dType"}], ",", "\n", "\t\t", "\"\<ovr\>\"", 
+     ",", "\n", "\t\t\t", 
+     RowBox[{"chemImportOVR", "@", "file"}], ",", "\n", "\t\t", "\"\<lin\>\"",
+      ",", "\n", "\t\t\t", 
+     RowBox[{"$SPCAT", ";", "\n", "\t\t\t", 
+      RowBox[{"ChemSpectrum", "@", 
+       RowBox[{"spimportLIN", "@", "file"}]}]}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<par\>\"", "|", "\"\<var\>\""}], ",", "\n", "\t\t\t", 
+     RowBox[{"$SPCAT", ";", "\n", "\t\t\t", 
+      RowBox[{"spimportPAR", "@", "file"}]}], ",", "\n", "\t\t", 
+     "\"\<int\>\"", ",", "\n", "\t\t\t", 
+     RowBox[{"$SPCAT", ";", "\n", "\t\t\t", 
+      RowBox[{"spimportINT", "@", "file"}]}], ",", "\n", "\t\t", 
+     "\"\<cat\>\"", ",", "\n", "\t\t\t", 
+     RowBox[{"$SPCAT", ";", "\n", "\t\t\t", 
+      RowBox[{"ChemSpectrum", "@", 
+       RowBox[{"spimportCAT", "@", "file"}]}]}], ",", "\n", "\t\t", 
+     "\"\<egy\>\"", ",", "\n", "\t\t\t", 
+     RowBox[{"$SPCAT", ";", "\n", "\t\t\t", 
+      RowBox[{"spimportEGY", "@", "file"}]}], ",", "\n", "\t\t", "_", ",", 
+     "\n", "\t\t\t", 
+     RowBox[{"Import", "[", 
+      RowBox[{"file", ",", "\"\<Text\>\""}], "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",
+ CellChangeTimes->{{3.6925408063373327`*^9, 3.692540841535244*^9}, {
+  3.692540944248845*^9, 3.6925409980370626`*^9}, {3.692541171568932*^9, 
+  3.692541321079747*^9}, {3.692541589150288*^9, 3.6925415912894382`*^9}, {
+  3.692708056649782*^9, 3.692708063741857*^9}, {3.692708163755435*^9, 
+  3.692708215015236*^9}, {3.693185255464967*^9, 3.693185279355867*^9}, {
+  3.694106636106422*^9, 3.6941066508497763`*^9}, {3.694109166861*^9, 
+  3.694109224645315*^9}, {3.694111638828883*^9, 3.694111640260105*^9}, {
+  3.694114000903145*^9, 3.694114003619855*^9}, {3.694118394675457*^9, 
+  3.69411839582419*^9}, {3.707847788792284*^9, 
+  3.707847812892477*^9}},ExpressionUUID->"8ee61611-a74d-41e7-8d6c-\
+9b17174b3554"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpectrumImport", "[", 
+    RowBox[{"file_String", "?", "FileExistsQ"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemSpectrumImport", "[", 
+    RowBox[{"file", ",", 
+     RowBox[{"FileExtension", "@", "file"}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpectrumImport", "[", 
+    RowBox[{"file_", "?", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"!", 
+         RowBox[{"StringMatchQ", "[", 
+          RowBox[{"#", ",", 
+           RowBox[{"\"\</*\>\"", "|", "\"\<~/*\>\""}]}], "]"}]}], "&&", 
+        RowBox[{
+         RowBox[{"Length", "@", 
+          RowBox[{
+           RowBox[{"URLParse", "[", "#", "]"}], "[", "\"\<Path\>\"", "]"}]}], 
+         ">", "0"}]}], "&"}], ")"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"tempf", "=", "\n", "\t\t", 
+       RowBox[{"First", "@", 
+        RowBox[{"URLDownload", "[", 
+         RowBox[{"file", ",", "\n", "\t\t\t", 
+          RowBox[{"FileNameJoin", "@", 
+           RowBox[{"{", "\n", "\t\t\t\t", 
+            RowBox[{"$TemporaryDirectory", ",", "\n", "\t\t\t\t", 
+             RowBox[{"FileNameTake", "[", "file", "]"}]}], "\n", "\t\t\t\t", 
+            "}"}]}]}], "\n", "\t\t\t", "]"}]}]}], "}"}], ",", "\n", "\t\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"d", "=", 
+         RowBox[{"ChemSpectrumImport", "@", "tempf"}]}], "}"}], ",", 
+       RowBox[{
+        RowBox[{"DeleteFile", "@", "tempf"}], ";", "d"}]}], "]"}]}], "\n", 
+    "\t\t", "]"}]}], ";"}]}], "CodeInput",
+ CellChangeTimes->{{3.6925408063373327`*^9, 3.692540841535244*^9}, {
+  3.692540944248845*^9, 3.6925409980370626`*^9}, {3.692541171568932*^9, 
+  3.692541337388781*^9}, {3.6925415953823957`*^9, 3.6925415983638563`*^9}, {
+  3.6927315634567757`*^9, 3.692731634875861*^9}, {3.714671351663356*^9, 
+  3.714671409260067*^9}},ExpressionUUID->"cc5d975a-68c0-4575-90b3-\
+1c6301829e88"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSpectrumImportString", "[", 
+    RowBox[{"string_String", ",", "type_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"StringLength", "@", "string"}], "==", "0"}], ",", "\n", "\t\t",
+      "$Failed", ",", "\n", "\t\t", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"s", "=", 
+         RowBox[{"StringToStream", "@", "string"}]}], "}"}], ",", "\n", "\t", 
+       "\t\t", 
+       RowBox[{"With", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"c", "=", 
+           RowBox[{"ChemSpectrumImport", "[", 
+            RowBox[{"s", ",", "type"}], "]"}]}], "}"}], ",", "\n", "\t", 
+         "\t\t\t", 
+         RowBox[{
+          RowBox[{"Close", "@", "s"}], ";", "\n", "\t", "\t\t\t", "c"}]}], 
+        "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+    "]"}]}], ";"}]], "CodeInput",
+ CellChangeTimes->{{3.694106614450252*^9, 3.694106621867515*^9}, {
+  3.694106675377838*^9, 3.69410670199762*^9}, {3.694118365506649*^9, 
+  3.694118388887827*^9}},ExpressionUUID->"4c38738d-ad13-492f-9d80-\
+2be72806cd90"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"9dac5ffd-3497-409e-be10-\
+a60ab050c12b"]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"7caa748b-78fc-4082-aded-\
+e57495d40106"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{28, Automatic}, {36, Automatic}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

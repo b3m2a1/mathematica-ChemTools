@@ -1092,6 +1092,11 @@ GaussianLogRead[log_InputStream, "HartreeFockEnergies"]:=
 
 
 
+(* ::Subsubsubsubsection::Closed:: *)
+(*Parse*)
+
+
+
 gaussianLogReadParseMP2Energies//Clear
 
 
@@ -1099,6 +1104,11 @@ gaussianLogReadParseMP2Energies[s_]:=
   Internal`StringToDouble@
     StringReplacePart[#, "E", {-4, -4}]&/@
     StringTrim[s]
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
 
 
 GaussianLogRead[log_InputStream, "MP2Energies"]:=
@@ -1332,6 +1342,8 @@ $GaussianLogAllKeywords=
 $GaussianLogExtraKeywords=
   {
     "ScanQuantityArray",
+    "HartreeFockEnergyQuantityArray",
+    "MP2EnergyQuantityArray",
     "ScanCoordinateQuantityArray",
     "CartesianCoordinateQuantityArray",
     "ZMatrixCoordinateQuantityArray",
@@ -1468,6 +1480,44 @@ ImportGaussianLog[
   QuantityArray[
     ImportGaussianLog[file, "ZMatrixCoordinates"],
     {"Angstroms", "AngularDegrees", "AngularDegrees"}
+    ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*HartreeFockEnergyQuantityArray*)
+
+
+
+ImportGaussianLog[
+  file:_String?FileExistsQ|_InputStream,
+  "HartreeFockEnergyQuantityArray"
+  ]:=
+  QuantityArray[
+    UnitConvert[
+      Quantity[1, "Hartrees"], 
+      "Wavenumbers"*"PlanckConstant"*"SpeedOfLight"
+      ]*Developer`ToPackedArray[ImportGaussianLog[file, "HartreeFockEnergies"]],
+    "Wavenumbers"
+    ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*MP2EnergyQuantityArray*)
+
+
+
+ImportGaussianLog[
+  file:_String?FileExistsQ|_InputStream,
+  "MP2EnergyQuantityArray"
+  ]:=
+  QuantityArray[
+    QuantityMagnitude[
+      UnitConvert[
+        Quantity[1, "Hartrees"], 
+        "Wavenumbers"*"PlanckConstant"*"SpeedOfLight"
+        ]
+      ]*Developer`ToPackedArray[ImportGaussianLog[file, "MP2Energies"]],
+    "Wavenumbers"
     ];
 
 

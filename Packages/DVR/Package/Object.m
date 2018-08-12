@@ -46,6 +46,10 @@ ChemDVRPotentialEnergy::usage=
   "Returns the potential energy used in ChemDVR calculations";
 ChemDVRGridPotentialEnergy::usage=
     "Returns the potential energy used in ChemDVR calculations on the grid";
+ChemDVRPotentialOptimization::usage=
+  "Returns potential optimized DVR parameters";
+ChemDVRGuessWavefunctions::usage=
+  "Returns guess wavefunctions from uncoupled representation";
 ChemDVRWavefunctions::usage=
   "Returns the wavefunctions computed in ChemDVR calculations";
 ChemDVRGridWavefunctions::usage=
@@ -58,6 +62,8 @@ ChemDVROperatorMatrix::usage=
   "Returns the cross-state expectation matrix of a set of states->function specs";
 ChemDVROperatorMatrixElements::usage=
   "Returns specific elements of the expectation matrix for states->function specs";
+ChemDVRExtendWavefunctions::usage=
+  "Extends the set of wavefunctions based on previous set";
 ChemDVRView::usage="Displays the wavefunctions from a ChemDVR run";
 
 
@@ -79,7 +85,7 @@ Begin["`Private`"];
 
 
 (* ::Subsubsection::Closed:: *)
-(*KeyWords*)
+(*Key Symbols*)
 
 
 
@@ -89,12 +95,19 @@ $dvrinst="Instances";
 $dvrke="KineticEnergy";
 $dvrpe="PotentialEnergy";
 $dvrgp="GridPotentialEnergy";
+$dvrpo="PotentialOptimization";
+$dvrham="Hamiltonian";
+$dvreng="Energies";
 $dvrwf="Wavefunctions";
+$dvrguwf="GuessWavefunctions";
+$dvrexwf="ExtendWavefunctions";
 $dvrgr="Grid";
 $dvrgrwf="GridWavefunctions";
 $dvrintwf="InterpolatingWavefunctions";
 $dvrexv="ExpectationValues";
 $dvrexm="OperatorMatrix";
+$dvrexmel="OperatorMatrixElements";
+$dvrfmgr="FormatGrid";
 $dvrvw="View";
 
 
@@ -257,14 +270,17 @@ ChemDVRCreate[a_Association]:=
         {$dvrke, ChemDVRDefaultKineticEnergy},
         {$dvrpe, ChemDVRDefaultPotentialEnergy},
         {$dvrgp, ChemDVRDefaultGridPotentialEnergy},
+        {$dvrpo, ChemDVRDefaultPotentialOptimize},
+        {$dvrguwf, ChemDVRDefaultGuessWavefunctions},
         {$dvrwf, ChemDVRDefaultWavefunctions},
+        {$dvrexwf, ChemDVRDefaultExtendWavefunctions},
         {$dvrvw, ChemDVRDefaultPlot},
         {$dvrgrwf, ChemDVRDefaultGridWavefunctions},
         {$dvrintwf, ChemDVRDefaultInterpolatingWavefunctions},
         {$dvrexv, ChemDVRDefaultExpectationValues},
         {$dvrexm, ChemDVRDefaultOperatorMatrix},
-        {"OperatorMatrixElements", ChemDVRDefaultOperatorMatrixElements},
-        {"FormatGrid", ChemDVRDefaultFormatGrid}
+        {$dvrexmel, ChemDVRDefaultOperatorMatrixElements},
+        {$dvrfmgr, ChemDVRDefaultFormatGrid}
         }
       ];
     $ChemDVRManager["Objects",dvrAssoc["UUID"]]=
@@ -390,7 +406,11 @@ dvrObjPattern=ChemDVRObject[uuid_?chemDVRValidQ]
 
 
 dvrOpsLookup[ops___,key_,default_]:=
-  Lookup[Flatten@Normal@{ops},key,default]
+  Lookup[
+    Flatten@Replace[{ops}, a_Association?AssociationQ:>Normal[a], 1],
+    key,
+    default
+    ];
 dvrOpsLookup~SetAttributes~HoldAll;
 
 
@@ -583,7 +603,7 @@ ChemDVRGrid[obj:dvrObjPattern, ops:OptionsPattern[]]:=
         "MessageParameters"->{RunPoints}
         ]
       ];
-    ChemDVRGet[obj,"FormatGrid",(#&)][
+    ChemDVRGet[obj, $dvrfmgr,(#&)][
       ChemDVRGet[obj,$dvrgr][
         RunPoints,
         RunRange,
@@ -729,6 +749,54 @@ ChemDVRPotentialEnergy[obj:dvrObjPattern,ops:OptionsPattern[]]:=
         ]
       ]
     ];
+
+
+(* ::Subsubsection::Closed:: *)
+(*PotentialOptimization*)
+
+
+
+ChemDVRPotentialOptimization//Clear
+
+
+ChemDVRPotentialOptimization[
+  obj:dvrObjPattern,
+  ops:OptionsPattern[]
+  ]:=
+  With[
+    {
+      po=
+        ChemDVRGet[obj,  $dvrpo]
+      },
+    po[
+      dvrOpsLookup[ops, $dvrgr, ChemDVRGrid[obj, ops]],
+      FilterRules[{ops}, Options@po]
+      ]
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*GuessWavefunctions*)
+
+
+
+ChemDVRGuessWavefunctions//Clear
+
+
+ChemDVRGuessWavefunctions[
+  obj:dvrObjPattern,
+  ops:OptionsPattern[]
+  ]:=
+  With[
+    {
+      wf=
+        ChemDVRGet[obj,  $dvrguwf]
+      },
+    wf[
+      dvrOpsLookup[ops, $dvrgr, ChemDVRGrid[obj, ops]],
+      FilterRules[{ops}, Options@wf]
+      ]
+    ]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -935,7 +1003,7 @@ ChemDVROperatorMatrixElements[
     {(({{_, _}...}|{_, _})->_)..}), 
   ops:OptionsPattern[]
   ]:=
-  With[{exFun=ChemDVRGet[obj, "OperatorMatrixElements"]},
+  With[{exFun=ChemDVRGet[obj,  $dvrexmel]},
     exFun[
       dvrOpsLookup[ops, $dvrgr, ChemDVRGrid[obj,ops]],
       dvrOpsLookup[ops,
@@ -947,6 +1015,45 @@ ChemDVROperatorMatrixElements[
         $dvrpe,
         ChemDVRPotentialEnergy[obj,ops]
         ],
+      FilterRules[{ops},
+        Options@exFun
+        ]
+      ]
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*ExtendWavefunctions*)
+
+
+
+ChemDVRExtendWavefunctions//Clear
+
+
+ChemDVRExtendWavefunctions[
+  obj:dvrObjPattern,
+  ops:OptionsPattern[]
+  ]:=
+  With[
+    {
+      exFun=
+        ChemDVRGet[obj,  $dvrexwf],
+      wf=
+        dvrOpsLookup[ops, $dvrwf, None]
+      },
+    If[
+      !MatchQ[wf, 
+        _Hold|{_List?(VectorQ[#, Internal`RealValuedNumberQ]&), _List?MatrixQ}
+        ],
+      PackageRaiseException[
+        Automatic,
+        "\"ExtendWavefunctions\" requires an initial set of wavefunctions"
+        ]
+      ];
+    exFun[
+      dvrOpsLookup[ops, $dvrke, ChemDVRKineticEnergy[obj,ops]],
+      dvrOpsLookup[ops, $dvrpe, ChemDVRPotentialEnergy[obj,ops]],
+      wf,
       FilterRules[{ops},
         Options@exFun
         ]
@@ -1037,56 +1144,170 @@ iChemDVRGetRuntimeOptions[keys__String]:=
 (*If[{keys}==={"View"}, Apply[Sequence]@*Echo@*List, ##&]@*)
   With[
     {
-      passedOpts=
-        dvrOpsLookup[
-          {RunRuntimeOptions}, 
-          "PassedOptions",
-          {}
-          ]
+      baseOpts={RunRuntimeOptions}
       },
-    Sequence@@Normal@
-      Merge[
-        {
-          Fold[
-            KeyDrop[
-              Merge[
-                {
-                  dvrOpsLookup[
-                    {#}, 
-                    #2<>"Options",
-                    {}
-                    ],
-                  #
-                  },
-                First
-                ],
-              #2<>"Options"
-              ]&,
-            passedOpts,
-            Reverse@{keys}
-            ],
-          Fold[
-            KeyDrop[
-              Merge[
-                {
-                  dvrOpsLookup[
-                    {#}, 
-                    #2<>"Options",
-                    {}
-                    ],
-                  #
-                  },
-                First
-                ],
-              #2<>"Options"
-              ]&,
-            {RunRuntimeOptions},
-            Reverse@{keys}
+    With[
+      {
+        passedOpts=
+          dvrOpsLookup[
+            baseOpts, 
+            "PassedOptions",
+            {}
             ]
         },
-      First
+      Normal@
+        Merge[
+          {
+            Fold[
+              KeyDrop[
+                Merge[
+                  {
+                    dvrOpsLookup[
+                      {#}, 
+                      #2<>"Options",
+                      {}
+                      ],
+                    #
+                    },
+                  First
+                  ],
+                #2<>"Options"
+                ]&,
+              passedOpts,
+              Reverse@{keys}
+              ],
+            Fold[
+              KeyDrop[
+                Merge[
+                  {
+                    dvrOpsLookup[
+                      {#}, 
+                      #2<>"Options",
+                      {}
+                      ],
+                    #
+                    },
+                  First
+                  ],
+                #2<>"Options"
+                ]&,
+              baseOpts,
+              Reverse@{keys}
+              ]
+          },
+        First
+        ]
       ]
-    ];
+    ]//Apply[Sequence];
+
+
+(* ::Subsubsection::Closed:: *)
+(*iChemDVRRunCalculateKEQ*)
+
+
+
+iChemDVRRunCalculateKEQ[]:=
+  !(
+    MatchQ[RunEndPoint, $dvrpe]||
+      (
+        MatchQ[RunEndPoint, 
+          $dvrwf|$dvrgrwf|$dvrintwf|$dvrev|$dvrexm|$dvrexmel|$dvrvw
+          ]&&
+          MatchQ[
+            If[RunWavefunctions===None,
+              RunWavefunctions=
+                dvrOpsLookup[RunRuntimeOptions, $dvrwf, RunWavefunctions],
+              RunWavefunctions
+              ],
+            _List|_Hold
+            ]
+        )
+      )
+
+
+(* ::Subsubsection::Closed:: *)
+(*iChemDVRRunKineticEnergy*)
+
+
+
+iChemDVRRunKineticEnergy[obj_]:=
+  Switch[
+    RunKineticEnergy=
+      dvrOpsLookup[RunRuntimeOptions, $dvrke, RunKineticEnergy],
+    None,
+      ChemDVRKineticEnergy[
+        obj,
+        $dvrgr->RunGrid,
+        "TransformationMatrix"->RunTransforms,
+        iChemDVRGetRuntimeOptions[$dvrke]
+        ],
+    _?SquareMatrixQ|Hold[_?SquareMatrixQ],
+      RunKineticEnergy,
+    {__?SquareMatrixQ},
+      ChemDVRKroeneckerProductKineticEnergy@RunKineticEnergy,
+    Hold[_?(MatchQ[{__?SquareMatrixQ}])],
+      Hold[Evaluate@ChemDVRKroeneckerProductKineticEnergy@RunKineticEnergy],
+    True,
+      PackageRaiseException[
+        Automatic,
+        "Kinetic energy isn't in valid format"
+        ]
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*iChemDVRRunCalculatePEQ*)
+
+
+
+iChemDVRRunCalculatePEQ[]:=
+  !(
+    MatchQ[RunEndPoint, 
+      $dvrwf|$dvrgrwf|$dvrintwf|$dvrev|$dvrexm| $dvrexmel
+      ]&&
+    MatchQ[
+      If[RunWavefunctions===None,
+        RunWavefunctions=
+          dvrOpsLookup[RunRuntimeOptions, $dvrwf, RunWavefunctions],
+        RunWavefunctions
+        ],
+      _List|_Hold
+      ]
+    )
+
+
+(* ::Subsubsection::Closed:: *)
+(*iChemDVRRunPotentialEnergy*)
+
+
+
+iChemDVRRunPotentialEnergy[obj_]:=
+  Switch[
+    RunPotentialEnergy=
+      dvrOpsLookup[RunRuntimeOptions, $dvrpe, RunPotentialEnergy],
+    None,
+      ChemDVRPotentialEnergy[
+        obj,
+        $dvrgr->RunGrid,
+        "TransformationMatrix"->RunTransformation,
+        iChemDVRGetRuntimeOptions[$dvrpe]
+        ],
+    _?SquareMatrixQ|Hold[_?SquareMatrixQ],
+      RunPotentialEnergy,
+    {__?SquareMatrixQ},
+        ChemDVRDefaultDirectProductPotentialEnergy@RunPotentialEnergy,
+    Hold[_?(MatchQ[{__?SquareMatrixQ}])],
+      Hold[
+        Evaluate@
+          ChemDVRDefaultDirectProductPotentialEnergy@
+            RunPotentialEnergy
+        ],
+    True,
+      PackageRaiseException[
+        Automatic,
+        "Potential energy isn't in valid format"
+        ]
+    ]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -1103,6 +1324,19 @@ iChemDVRRunHamiltonian[obj_]:=
       Options[ChemDVRDefaultPrepareHamiltonian]
       ]
     ][[1]];
+
+
+(* ::Subsubsection::Closed:: *)
+(*iChemDVRRunCalculateWFQ*)
+
+
+
+iChemDVRRunCalculateWFQ[]:=
+  Length@
+    Complement[
+      Flatten@{RunEndPoint}, 
+      {$dvrham, $dvrke, $dvrpe, $dvrgr}
+      ]>0;
 
 
 (* ::Subsubsection::Closed:: *)
@@ -1146,6 +1380,139 @@ iChemDVRRunGridKineticEnergy[obj_]:=
 
 
 (* ::Subsubsection::Closed:: *)
+(*iChemDVRRunPOQ*)
+
+
+
+iChemDVRRunPOQ[]:=
+  RunEndPoint===$dvrpo||
+    (
+      RunWavefunctions===None&&
+        Replace[
+          dvrOpsLookup[RunRuntimeOptions, "PotentialOptimize", Automatic],
+          {
+            Automatic:>
+              Length@
+                dvrOpsLookup[RunRuntimeOptions, 
+                  "PotentialOptimizationOptions", None]>0,
+            Except[True|False]->False
+            }
+          ]
+      )
+
+
+(* ::Subsubsection::Closed:: *)
+(*iChemDVRRunPotentialOptimization*)
+
+
+
+iChemDVRRunPotentialOptimization[obj_]:=
+  Module[{po, gr, ke},
+    po=
+      ChemDVRPotentialOptimization[
+        obj,
+        $dvrgr->
+          RunGrid,
+        FilterRules[
+          {
+            "OptimizedComponents"->{
+              $dvrgr, 
+              $dvrke
+              },
+            iChemDVRGetRuntimeOptions[
+              $dvrpo,
+              $dvrke,
+              $dvrpe
+              ]
+            },
+          Options@ChemDVRDefaultPotentialOptimize
+          ]
+        ];
+    gr=
+      With[{l=po[$dvrgr]},
+        If[Length@l>1,
+          ChemDVRDirectProductGrid@l,
+          l[[1]]
+          ]
+        ];
+    ke=
+      If[RunEndPoint=!=$dvrgr,
+        With[{l=po[$dvrke]},
+          If[Length@l>1,
+            ChemDVRKroeneckerProductKineticEnergy@l,
+            l[[1]]
+            ]
+          ],
+        None
+        ];
+    {po, gr, ke}
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*iChemDVRRunGWQ*)
+
+
+
+iChemDVRRunGWQ[]:=
+  RunEndPoint===$dvrguwf||
+    Replace[
+      dvrOpsLookup[RunRuntimeOptions, "UseGuessWavefunctions", False],
+      {
+        Automatic:>
+          Length@
+            dvrOpsLookup[
+              RunRuntimeOptions, 
+              "GuessWavefunctionsOptions", 
+              None
+              ]>0,
+        Except[True|False]->False
+        }
+      ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*iChemDVRRunGuessWavefunctions*)
+
+
+
+iChemDVRRunGuessWavefunctions[obj_]:=
+  ChemDVRGuessWavefunctions[
+    obj,
+    $dvrgr->
+      RunGrid,
+    Switch[RunEndPoint,
+      $dvreng,
+        "GuessWavefunctionsComponents"->
+          {
+            "Energies"
+            },
+      $dvrwf|$dvrgrwf|$dvrintwf,
+        "GuessWavefunctionsComponents"->
+          {
+            "Grid",
+            "Wavefunctions"
+            },
+      $dvrguwf,
+        Sequence@@{},
+      _,
+        "GuessWavefunctionsComponents"->
+          {
+            "Grid",
+            "Wavefunctions",
+            "KineticEnergy",
+            "PotentialEnergy"
+            }
+      ],
+    iChemDVRGetRuntimeOptions[
+      $dvrguwf,
+      $dvrke,
+      $dvrpe
+      ]
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
 (*iChemDVRRunWavefunctions*)
 
 
@@ -1173,14 +1540,14 @@ iChemDVRRunWavefunctions[obj_]:=
 
 
 (* ::Subsubsection::Closed:: *)
-(*iChemDVRRunEnergies*)
+(*iChemDVRRunExtendWavefunctions*)
 
 
 
-iChemDVRRunEnergies[obj_]:=
-  ChemDVRWavefunctions[obj,
+iChemDVRRunExtendWavefunctions[obj_]:=
+  ChemDVRExtendWavefunctions[obj,
     $dvrke->
-      If[ChemDVRGet[obj, "Wavefunctions"]===ChemDVRDefaultWavefunctions, 
+      If[ChemDVRGet[obj,  $dvrexwf]===ChemDVRDefaultExtendWavefunctions, 
         If[Head[RunKineticEnergy]===Hold,
           RunKineticEnergy,
           Hold[RunKineticEnergy]
@@ -1188,15 +1555,59 @@ iChemDVRRunEnergies[obj_]:=
         RunKineticEnergy
         ],
     $dvrpe->
-      If[ChemDVRGet[obj, "Wavefunctions"]===ChemDVRDefaultWavefunctions, 
+      If[ChemDVRGet[obj,  $dvrexwf]===ChemDVRDefaultExtendWavefunctions, 
         If[Head[RunPotentialEnergy]===Hold,
           RunPotentialEnergy,
           Hold[RunPotentialEnergy]
           ],
         RunPotentialEnergy
         ],
-    "WavefunctionEigensolver"->Eigenvalues,
-    iChemDVRGetRuntimeOptions[$dvrwf]
+    $dvrwf->
+      If[ChemDVRGet[obj,  $dvrexwf]===ChemDVRDefaultExtendWavefunctions, 
+        If[Head[RunWavefunctions]===Hold,
+          RunWavefunctions,
+          Hold[RunWavefunctions]
+          ],
+        RunWavefunctions
+        ],
+    iChemDVRGetRuntimeOptions[ $dvrexwf]
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*iChemDVRRunEnergies*)
+
+
+
+iChemDVRRunEnergies[obj_]:=
+  If[!ListQ[RunEnergies],
+    If[
+      MatchQ[RunWavefunctions, 
+        {_List?(VectorQ[#, Internal`RealValuedNumericQ]&), _}
+        ],
+      RunWavefunctions[[1]],
+      ChemDVRWavefunctions[obj,
+        $dvrke->
+          If[ChemDVRGet[obj, "Wavefunctions"]===ChemDVRDefaultWavefunctions, 
+            If[Head[RunKineticEnergy]===Hold,
+              RunKineticEnergy,
+              Hold[RunKineticEnergy]
+              ],
+            RunKineticEnergy
+            ],
+        $dvrpe->
+          If[ChemDVRGet[obj, "Wavefunctions"]===ChemDVRDefaultWavefunctions, 
+            If[Head[RunPotentialEnergy]===Hold,
+              RunPotentialEnergy,
+              Hold[RunPotentialEnergy]
+              ],
+            RunPotentialEnergy
+            ],
+        "WavefunctionEigensolver"->Eigenvalues,
+        iChemDVRGetRuntimeOptions[$dvrwf]
+        ]
+      ],
+    RunEnergies
     ]
 
 
@@ -1323,8 +1734,8 @@ iChemDVRRunOperatorMatrix[obj_]:=
         RunPotentialEnergy
         ],
     iChemDVRGetRuntimeOptions[
-      "OperatorMatrix",
-      "ExpectationValues"
+       $dvrexm,
+       $dvrexv
       ]
     ]
 
@@ -1344,7 +1755,7 @@ iChemDVRRunOperatorMatrixElements[obj_]:=
         }
       ],
     $dvrwf->
-      If[ChemDVRGet[obj, "OperatorMatrixElements"]===
+      If[ChemDVRGet[obj,  $dvrexmel]===
           ChemDVRDefaultOperatorMatrixElements, 
         If[Head[RunWavefunctions]===Hold,
           RunWavefunctions,
@@ -1354,7 +1765,7 @@ iChemDVRRunOperatorMatrixElements[obj_]:=
         ],
     $dvrgr->RunGrid,
     $dvrpe->
-      If[ChemDVRGet[obj, "OperatorMatrixElements"]===
+      If[ChemDVRGet[obj,  $dvrexmel]===
           ChemDVRDefaultOperatorMatrixElements, 
         If[Head[RunPotentialEnergy]===Hold,
           RunPotentialEnergy,
@@ -1363,9 +1774,9 @@ iChemDVRRunOperatorMatrixElements[obj_]:=
         RunPotentialEnergy
         ],
     iChemDVRGetRuntimeOptions[
-      "OperatorMatrixElements",
-      "OperatorMatrix",
-      "ExpectationValues"
+       $dvrexmel,
+       $dvrexm,
+       $dvrexv
       ]
     ]
 
@@ -1396,8 +1807,11 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
     RunTransforms=None,
     RunKineticEnergy=None,
     RunPotentialEnergy=None,
+    RunEnergies=None,
     RunWavefunctions=None,
-    RunPotentialOptimize=Automatic
+    RunPotentialOptimize=Automatic,
+    RunGuessWavefunctions=Automatic,
+    RunUseGuessWavefunctions=False
     },
     If[!OptionQ[{RunRuntimeOptions}],
       PackageRaiseException[
@@ -1411,8 +1825,12 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
     If[dvrOpsLookup[RunRuntimeOptions, "Save", False],
       ChemDVRSave@obj
       ];
-    (*---------- Grid ---------*)
-    RunGrid=dvrOpsLookup[RunRuntimeOptions, $dvrgr, None];
+    (** --------------------------------- DEFAULTS --------------------------------- **)
+    RunGrid=dvrOpsLookup[RunRuntimeOptions, $dvrgr, RunGrid];
+    RunWavefunctions=dvrOpsLookup[RunRuntimeOptions, $dvrwf, RunWavefunctions];
+    RunKineticEnergy=dvrOpsLookup[RunRuntimeOptions, $dvrke, RunKineticEnergy];
+    RunPotentialEnergy=dvrOpsLookup[RunRuntimeOptions, $dvrpe, RunPotentialEnergy];
+    (** ----------------------------------- GRID ------------------------------------ **)
     Switch[RunGrid,
       None,
         RunGrid=
@@ -1430,156 +1848,96 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
         AllTrue[RunGrid[[2]], #===None||SquareMatrixQ@#&],
         {RunGrid, RunTransforms}=RunGrid
       ];
-    If[RunEndPoint==="Transform",
-      Return@RunTransforms
-      ];
-    (*---------- Potential Optimization ---------*)
-    RunPotentialOptimize=
-      RunEndPoint=!="PotentialOptimization"&&
-        Replace[dvrOpsLookup[RunRuntimeOptions, "PotentialOptimize", Automatic],
-          {
-            Automatic:>
-              Length@
-                dvrOpsLookup[RunRuntimeOptions, 
-                  "PotentialOptimizationOptions", None]>0,
-            Except[True|False]->False
-            }
-          ];
-    If[RunPotentialOptimize,
-      RunPotentialOptimize=
-        ChemDVRDefaultPotentialOptimize[
-          RunGrid,
-          FilterRules[
-            {
-              "OptimizedComponents"->{
-                "Grid", 
-                "KineticEnergy"
-                },
-              iChemDVRGetRuntimeOptions[
-                "PotentialOptimization",
-                $dvrke,
-                $dvrpe
-                ]
-              },
-            Options@ChemDVRDefaultPotentialOptimize
-            ]
-          ];
-      RunGrid=
-        With[{l=RunPotentialOptimize["Grid"]},
-          If[Length@l>1,
-            ChemDVRDirectProductGrid@l,
-            l[[1]]
-            ]
-          ];
-      If[RunEndPoint=!="Grid",
+    (** -------------------------------- TRANSFORM -------------------------------- **)
+    If[RunEndPoint==="Transform", Return@RunTransforms];
+    (** --------------------------- GUESS WAVEFUNCTIONS --------------------------- **)
+    If[iChemDVRRunGWQ[],
+      RunGuessWavefunctions=iChemDVRRunGuessWavefunctions[obj];
+      If[RunEndPoint===$dvrguwf, 
+        Return@RunGuessWavefunctions
+        ];
+      RunUseGuessWavefunctions=
+        dvrOpsLookup[RunRuntimeOptions, "UseGuessWavefunctions", False];
+      If[RunUseGuessWavefunctions,
+        RunEnergies=
+          Lookup[RunGuessWavefunctions, "Energies", RunEnergies];
+        RunWavefunctions=
+          Lookup[RunGuessWavefunctions, "Wavefunctions", RunWavefunctions];
+        RunGrid=
+          Lookup[RunGuessWavefunctions, "Grid", RunGrid];
+        RunPotentialEnergy=
+          Lookup[RunGuessWavefunctions, "PotentialEnergy", RunPotentialEnergy];
         RunKineticEnergy=
-          With[{l=RunPotentialOptimize["KineticEnergy"]},
-            If[Length@l>1,
-              ChemDVRKroeneckerProductKineticEnergy@l,
-              l[[1]]
-              ]
-            ]
+          Lookup[RunGuessWavefunctions, "KineticEnergy", RunKineticEnergy]
         ]
       ];
-    If[RunEndPoint==="PotentialOptimization", 
+    (** --------------------------- POTENTIAL OPTIMIZATION -------------------------- **)
+    RunPotentialOptimize=iChemDVRRunPOQ[];
+    If[RunPotentialOptimize,
+      {
+        RunPotentialOptimize,
+        RunGrid,
+        RunKineticEnergy
+        }=iChemDVRRunPotentialOptimization[obj]
+      ];
+    If[RunEndPoint===$dvrpo, 
       Return@RunPotentialOptimize
       ];
-    (*---------- Grid Return ---------*)
+    (** ------------------------------- RETURN GRID -------------------------------- **)
     If[RunEndPoint===$dvrgr, Return@RunGrid];
     RunCheckPoint=$dvrgr;
     If[Complement[Flatten@{RunEndPoint}, {$dvrgr, "Transform"}]=={}, 
       Return@
-        Replace[Flatten@{RunEndPoint}, 
+        Replace[Flatten@{RunEndPoint},
           {$dvrgr:>RunGrid, "Transform":>RunTransform}, 
           1
           ]
       ];
-    (*---------- Kinetic Energy ---------*)
-    If[!(
-        MatchQ[RunEndPoint, $dvrpe]||
-        (
-          MatchQ[RunEndPoint, 
-            $dvrwf|$dvrgrwf|$dvrintwf|$dvrev|$dvrexm|"OperatorMatrixElements"]&&
-            MatchQ[
-              RunWavefunctions=dvrOpsLookup[RunRuntimeOptions, $dvrwf, None],
-              _List|_Hold
-              ]
-          )
-        ),
+    (** ------------------------------ KINETIC ENERGY ------------------------------- **)
+    If[iChemDVRRunCalculateKEQ[],
       RunKineticEnergy=
-        dvrOpsLookup[RunRuntimeOptions, $dvrke, RunKineticEnergy];
-      Switch[RunKineticEnergy,
-        None,
-          RunKineticEnergy=
-            ChemDVRKineticEnergy[obj,
-              $dvrgr->RunGrid,
-              "TransformationMatrix"->RunTransforms,
-              iChemDVRGetRuntimeOptions[$dvrke]
-              ],
-        {__?SquareMatrixQ},
-          RunKineticEnergy=
-            ChemDVRKroeneckerProductKineticEnergy@RunKineticEnergy,
-        Hold[_?(MatchQ[{__?SquareMatrixQ}])],
-          RunKineticEnergy=
-            Hold[Evaluate@ChemDVRKroeneckerProductKineticEnergy@RunKineticEnergy]
-        ];
+        iChemDVRRunKineticEnergy[obj];
       ];
     If[RunEndPoint===$dvrke, Return@RunKineticEnergy];
     RunCheckPoint=$dvrke;
-    (*---------- Grid Kinetic Energy ---------*)
+    (** ---------------------------- GRID KINETIC ENERGY ---------------------------- **)
     If[RunEndPoint==="GridKineticEnergy", 
       Return@iChemDVRRunGridKineticEnergy[obj]];
-    (*---------- Potential Energy ---------*)
-    If[!(MatchQ[RunEndPoint, 
-            $dvrwf|$dvrgrwf|$dvrintwf|$dvrev|$dvrexm|"OperatorMatrixElements"]&&
-          MatchQ[
-            RunWavefunctions=dvrOpsLookup[RunRuntimeOptions, $dvrwf, None],
-            _List|_Hold
-            ]),
+    (** ---------------------------- POTENTIAL ENERGY ------------------------------ **)
+    If[iChemDVRRunCalculatePEQ[],
       RunPotentialEnergy=
-        dvrOpsLookup[RunRuntimeOptions, $dvrpe, RunPotentialEnergy];
-      Switch[RunPotentialEnergy,
-        None,
-          RunPotentialEnergy=
-            ChemDVRPotentialEnergy[obj,
-              $dvrgr->RunGrid,
-              "TransformationMatrix"->RunTransformation,
-              iChemDVRGetRuntimeOptions[$dvrpe]
-              ],
-          {__?SquareMatrixQ},
-            RunPotentialEnergy=
-              ChemDVRDefaultDirectProductPotentialEnergy@RunPotentialEnergy,
-          Hold[_?(MatchQ[{__?SquareMatrixQ}])],
-            RunPotentialEnergy=
-              Hold[
-                Evaluate@
-                  ChemDVRDefaultDirectProductPotentialEnergy@
-                    RunPotentialEnergy
-                ]
-          ]
-        ];
+        iChemDVRRunPotentialEnergy[obj]
+      ];
     If[RunEndPoint===$dvrpe, Return@RunPotentialEnergy];
     RunCheckPoint=$dvrpe;
-    (*---------- Grid Potential Energy ---------*)
+    (** -------------------------- GRID POTENTIAL ENERGY --------------------------- **)
     If[RunEndPoint===$dvrgp, 
       Return@iChemDVRRunGridPotentialEnergy[obj]];
-    (*---------- Hamiltonian -----------*)
-    If[RunEndPoint==="Hamiltonian", 
+    If[RunEndPoint=== $dvrexwf,
+      If[RunWavefunctions===None,
+        RunWavefunctions=
+          dvrOpsLookup[RunRuntimeOptions, $dvrwf, RunWavefunctions]
+        ];
+      Return@iChemDVRRunExtendWavefunctions[obj]
+      ];
+    (** ------------------------------- HAMILTONIAN -------------------------------- **)
+    If[RunEndPoint===$dvrham, 
       Return[iChemDVRRunHamiltonian[obj]]
       ];
-    (*---------- Energies -----------*)
-    If[RunEndPoint==="Energies", 
+    (** -------------------------------- ENERGIES ---------------------------------- **)
+    If[RunEndPoint===$dvreng, 
+      If[RunWavefunctions===None,
+        RunWavefunctions=
+          dvrOpsLookup[RunRuntimeOptions, $dvrwf, RunWavefunctions]
+        ];
       Return@iChemDVRRunEnergies[obj]
       ];
-    (*---------- Wavefunctions ---------*)
-    If[
-      Length@
-        Complement[
-          Flatten@{RunEndPoint}, 
-          {"Hamiltonian", "KineticEnergy", "PotentialEnergy", "Grid"}
-          ]>0,
-      RunWavefunctions=
-        dvrOpsLookup[RunRuntimeOptions, $dvrwf, None];
+    (** ----------------------------- WAVEFUNCTIONS ------------------------------- **)
+    If[iChemDVRRunCalculateWFQ[],
+      If[RunWavefunctions===None,
+        RunWavefunctions=
+          dvrOpsLookup[RunRuntimeOptions, $dvrwf, RunWavefunctions]
+        ];
       If[RunWavefunctions===None,
         RunWavefunctions=iChemDVRRunWavefunctions[obj];
         ];
@@ -1588,13 +1946,14 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
         ];
       RunCheckPoint=$dvrwf
       ];
-    (*---------- Rest -----------*)
+    (** ----------------------------- RUN ENDPOINTS ------------------------------ **)
     Switch[RunEndPoint,
+      (** --------------------------- MULTIPLE RETURN ---------------------------- **)
       {
         (
-          $dvrgr|$dvrke|$dvrpe|$dvrwf|"Hamiltonian"|"Energies"|
+          $dvrgr|$dvrke|$dvrpe|$dvrwf|$dvrham|$dvreng|
             $dvrgrwf|$dvrintwf|
-            {$dvrexv, __}|{$dvrexm, __}|{"OperatorMatrixElements", __}
+            {$dvrexv, __}|{$dvrexm, __}|{ $dvrexmel, __}
           )..
         },
         Replace[
@@ -1617,13 +1976,13 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
                 Block[{RunEndPoint=k},
                   ($dvrwf->RunWavefunctions)
                   ],
-              k:"Hamiltonian":>
+              k:$dvrham:>
                 Block[{RunEndPoint=k},
-                  ("Hamiltonian"->RunPotentialEnergy+RunKineticEnergy)
+                  ($dvrham->RunPotentialEnergy+RunKineticEnergy)
                   ],
-              k:"Energies":>
+              k:$dvreng:>
                 Block[{RunEndPoint=k},
-                  ("Energies"->RunWavefunctions[[1]])
+                  ($dvreng->RunWavefunctions[[1]])
                   ],
               k:$dvrgrwf:>
                 Block[{RunEndPoint=k},
@@ -1641,62 +2000,63 @@ iChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
                 Block[{RunEndPoint=k},
                   ($dvrexm->iChemDVRRunOperatorMatrix[obj])
                   ],
-              k:{"OperatorMatrixElements", __}:>
+              k:{ $dvrexmel, __}:>
                 Block[{RunEndPoint=k},
-                  ("OperatorMatrixElements"->iChemDVRRunOperatorMatrixElements[obj])
+                  ( $dvrexmel->iChemDVRRunOperatorMatrixElements[obj])
                   ]
               },
             1
             ],
         o:{__Rule}:>Merge[o, Replace[{v_}:>v]]
         ],
+      (** --------------------------- GRID WAVEFUNCTIONS -------------------------- **)
       $dvrgrwf,
-        (*----------  Wavefunction Grid ---------*)
         iChemDVRRunGridWavefunctions[obj],
+      (** ---------------------- INTERPOLATING WAVEFUNCTIONS --------------------- **)
       $dvrintwf,
-        (*----------  InterpolatingWavefunctions ---------*)
         iChemDVRRunInterpolatingWavefunctions[obj],
+      (** --------------------------- EXPECTATION VALUES -------------------------- **)
       {$dvrexv, __},
-        (*----------  ExpectationValues ---------*)
         iChemDVRRunExpectationValues[obj],
+      (** ---------------------------- OPERATOR MATRIX ---------------------------- **)
       {$dvrexm, __},
-        (*----------  Operator Matrix ---------*)
         iChemDVRRunOperatorMatrix[obj],
-      {"OperatorMatrixElements", __},
-        (*----------  Operator Matrix Elements ---------*)
+      (** ------------------------ OPERATOR MATRIX ELEMENTS ---------------------- **)
+      { $dvrexmel, __},
         iChemDVRRunOperatorMatrixElements[obj],
+      (** ------------------------------- FULL RESULTS ----------------------------- **)
       "FullResults",
         If[ListQ@RunWavefunctions,
           <|
-            "Grid"->
+            $dvrgr->
               If[ListQ@RunGrid, 
                 RawArray["Real64", RunGrid],
                 RunGrid
                 ],
-            "PotentialEnergy"->
+            $dvrpe->
               If[ListQ@RunPotentialEnergy, 
                 RawArray["Real64", RunPotentialEnergy],
                 RunPotentialEnergy
                 ],
-            "KineticEnergy"->
+            $dvrke->
               If[ListQ@RunKineticEnergy, 
                 RawArray["Real64", RunKineticEnergy],
                 RunKineticEnergy
                 ],
-            "Energies"->
+            $dvreng->
               If[ListQ@RunWavefunctions, 
                 RawArray["Real64", RunWavefunctions[[1]]],
                 RunWavefunctions[[1]]
                 ],
-            "Wavefunctions"->
+            $dvrwf->
               If[ListQ@RunWavefunctions, 
                 RawArray["Real64", RunWavefunctions[[2]]],
                 RunWavefunctions[[2]]
                 ]
             |>
           ],
+      (** ----------------------------------- PLOT --------------------------------- **)
       _,
-        (*---------- View ---------*)
         ChemDVRView[obj,
           $dvrwf->
             If[ChemDVRGet[obj, "View"]===ChemDVRDefaultPlot, 
@@ -1773,7 +2133,7 @@ ChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 
 
 
-(* ::Subsubsubsection::Closed:: *)
+(* ::Subsubsection::Closed:: *)
 (*Call*)
 
 
@@ -1781,8 +2141,8 @@ ChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 $dvrBasicKeys=
   $dvrgr|$dvrpe|$dvrke|$dvrgp|
     $dvrwf|$dvrgrwf|$dvrintwf|
-    "Hamiltonian"|"Energies"|"FullResults"|
-    "PotentialOptimization";
+    $dvrham|$dvreng|"FullResults"|
+    $dvrpo|$dvrexwf|$dvrguwf;
 
 
 ChemDVRObject[uuid_?chemDVRValidQ][a___?OptionQ]:=
@@ -1790,7 +2150,7 @@ ChemDVRObject[uuid_?chemDVRValidQ][a___?OptionQ]:=
 (obj:_ChemDVRObject?chemDVRValidQ)[k:$dvrBasicKeys, args___?OptionQ]:=
   ChemDVRRun[obj, Return->k, args];
 (obj:_ChemDVRObject?chemDVRValidQ)[
-    k:$dvrexv|$dvrexm|"OperatorMatrixElements", 
+    k:$dvrexv|$dvrexm| $dvrexmel, 
     efuns:Except[_?OptionQ], args___?OptionQ]:=
   ChemDVRRun[obj, Return->{k, efuns}, args];
 (obj:_ChemDVRObject?chemDVRValidQ)["Properties"]:=
@@ -1806,7 +2166,7 @@ ChemDVRObject/:
     ChemDVRGet[obj, k];
 
 
-(* ::Subsubsubsection::Closed:: *)
+(* ::Subsubsection::Closed:: *)
 (*Mutate*)
 
 
