@@ -2432,33 +2432,32 @@ iChemDVRRun2[obj:dvrObjPattern,ops:OptionsPattern[]]:=
       res,
       object=obj,
       options=
-        Sequence@@
-          Normal@
-            Merge[
-              {
-                "PassedOptions"->{ops},
-                ChemDVRGet[obj, "RuntimeOptions", {}],
-                ChemDVRGet[obj, "Defaults", {}],
-                ops
-                },
-              First
-              ],
+        Normal@
+          Merge[
+            {
+              "PassedOptions"->{ops},
+              ChemDVRGet[obj, "RuntimeOptions", {}],
+              ChemDVRGet[obj, "Defaults", {}],
+              ops
+              },
+            First
+            ],
       RunCheckPoint=None
       },
-    If[!OptionQ[{RunRuntimeOptions}],
+    If[!OptionQ[options],
       PackageRaiseException[
         Automatic,
         "Options `` aren't valid for ChemDVRRun (OptionQ failed)",
-        {RunRuntimeOptions}
+        options
         ]
       ];
     res=NewDVRResultsObject@<|
       "Object"->object,
-      "Options"-><|options|>,
+      "Options"->Association@options,
       "Extensions"-><||>
       |>;
     res["Options", "EndPoint"]=
-      dvrOpsLookup[options, Return, "View"];
+      Lookup[options, Return, "View"];
     If[res["Options", "Save"], ChemDVRSave@obj];
     (** --------------------------------- DEFAULTS --------------------------------- **)
     res["Grid"]=
