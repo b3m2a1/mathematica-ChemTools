@@ -425,6 +425,14 @@ than in the system (``)",
       ];
     (** ------------------------ COUPLED POTENTIAL ENERGY------------------------- **)
     cuppot=
+    If[OptionValue["PotentialFunction"]===None,
+      ConstantArray[0., 
+        Length@
+          Flatten@
+            Outer[Plus, 
+              Sequence@@Map[Normal@*Diagonal, pots]
+              ]
+        ],
       Normal@Diagonal@
         ChemDVRDefaultPotentialEnergy[
           newgrid,
@@ -432,12 +440,12 @@ than in the system (``)",
             {ops},
             Options[ChemDVRDefaultPotentialEnergy]
             ]
-          ];
-    cuppot-=
-      Flatten@
-        Outer[Plus, 
-          Sequence@@Map[Normal@*Diagonal, pots]
-          ];
+          ]-
+          Flatten@
+            Outer[Plus, 
+              Sequence@@Map[Normal@*Diagonal, pots]
+              ]
+      ];
     (** ------------------------------ EIGENSYSTEMS ------------------------------ **)
     potEigs=Sort@cuppot;
     numEigs=

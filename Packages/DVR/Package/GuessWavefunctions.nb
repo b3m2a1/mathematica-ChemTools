@@ -322,7 +322,7 @@ Cell["\<\
 \t\thttps://cs.stackexchange.com/a/46945
 \[RightFloor]\
 \>", "Text",
- Evaluatable->True,ExpressionUUID->"1e04f496-5c15-4827-a7b8-4fb3c04a79f7"],
+ Evaluatable->True,ExpressionUUID->"00000000-0000-0000-0000-000000000000"],
 
 Cell[BoxData[
  RowBox[{
@@ -630,7 +630,7 @@ Cell[BoxData[
             RowBox[{"++", "solns"}], "]"}], "]"}], "=", "pop"}], ";", "\n", 
          "\t", "\t", "\t\t", "tups"}]}], "\n", "\t", "\t", "\t\t", "]"}]}], 
      "\n", "\t", "\t", "\t", "]"}]}]}], 
-  ";"}]], "CodeInput",ExpressionUUID->"51dd54b7-148c-4d9a-9090-3d1bc6debc7c"],
+  ";"}]], "CodeInput",ExpressionUUID->"00000000-0000-0000-0000-000000000000"],
 
 Cell[BoxData[
  RowBox[{
@@ -1155,26 +1155,45 @@ guessing\>\""}]}], "\n", "\t\t\t", "]"}], ";", "\n", "\t\t",
          RowBox[{"--", 
           RowBox[{"--", 
            RowBox[{"--", "-"}]}]}]}]}]}], " ", "**)"}], "\n", "\t\t", 
-     RowBox[{"cuppot", "=", "\n", "\t\t\t", 
-      RowBox[{"Normal", "@", 
-       RowBox[{"Diagonal", "@", "\n", "\t\t\t\t", 
-        RowBox[{"ChemDVRDefaultPotentialEnergy", "[", "\n", "\t\t\t\t\t", 
-         RowBox[{"newgrid", ",", "\n", "\t\t\t\t\t", 
-          RowBox[{"FilterRules", "[", "\n", "\t", "\t\t\t\t\t", 
-           RowBox[{
-            RowBox[{"{", "ops", "}"}], ",", "\n", "\t", "\t\t\t\t\t", 
-            RowBox[{"Options", "[", "ChemDVRDefaultPotentialEnergy", "]"}]}], 
-           "\n", "\t", "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "]"}]}]}]}],
-      ";", "\n", "\t\t", 
-     RowBox[{"cuppot", "-=", "\n", "\t\t\t", 
-      RowBox[{"Flatten", "@", "\n", "\t\t\t\t", 
-       RowBox[{"Outer", "[", 
-        RowBox[{"Plus", ",", " ", "\n", "\t\t\t\t\t", 
-         RowBox[{"Sequence", "@@", 
-          RowBox[{"Map", "[", 
-           RowBox[{
-            RowBox[{"Normal", "@*", "Diagonal"}], ",", " ", "pots"}], 
-           "]"}]}]}], "\n", "\t\t\t\t\t", "]"}]}]}], ";", "\n", "\t\t", 
+     RowBox[{"cuppot", "=", "\n", "\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"OptionValue", "[", "\"\<PotentialFunction\>\"", "]"}], "===",
+          "None"}], ",", "\n", "\t\t\t", 
+        RowBox[{"ConstantArray", "[", 
+         RowBox[{"0.", ",", " ", "\n", "\t\t\t\t", 
+          RowBox[{"Length", "@", "\n", "\t\t\t\t\t", 
+           RowBox[{"Flatten", "@", "\n", "\t\t\t\t\t\t", 
+            RowBox[{"Outer", "[", 
+             RowBox[{"Plus", ",", " ", "\n", "\t", "\t", "\t\t\t\t\t", 
+              RowBox[{"Sequence", "@@", 
+               RowBox[{"Map", "[", 
+                RowBox[{
+                 RowBox[{"Normal", "@*", "Diagonal"}], ",", " ", "pots"}], 
+                "]"}]}]}], "\n", "\t\t\t\t\t\t\t", "]"}]}]}]}], "\n", 
+         "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
+        RowBox[{
+         RowBox[{"Normal", "@", 
+          RowBox[{"Diagonal", "@", "\n", "\t\t\t\t", 
+           RowBox[{"ChemDVRDefaultPotentialEnergy", "[", "\n", "\t\t\t\t\t", 
+            RowBox[{"newgrid", ",", "\n", "\t\t\t\t\t", 
+             RowBox[{"FilterRules", "[", "\n", "\t", "\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"{", "ops", "}"}], ",", "\n", "\t", "\t\t\t\t\t", 
+               RowBox[{
+               "Options", "[", "ChemDVRDefaultPotentialEnergy", "]"}]}], "\n",
+               "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "]"}]}]}], "-", 
+         "\n", "\t\t\t\t\t", 
+         RowBox[{"Flatten", "@", "\n", "\t\t\t\t\t\t", 
+          RowBox[{"Outer", "[", 
+           RowBox[{"Plus", ",", " ", "\n", "\t", "\t", "\t\t\t\t\t", 
+            RowBox[{"Sequence", "@@", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{"Normal", "@*", "Diagonal"}], ",", " ", "pots"}], 
+              "]"}]}]}], "\n", "\t", "\t", "\t\t\t\t\t", "]"}]}]}]}], "\n", 
+       "\t\t\t", "]"}]}], ";", "\n", "\t\t", 
      RowBox[{"(*", 
       RowBox[{"*", " ", 
        RowBox[{"--", 
@@ -1728,7 +1747,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"9009c70d-1aad-415c-9701-\
 edff1eaf5262"]
 },
 WindowSize->{789, 764},
-WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+WindowMargins->{{206, Automatic}, {0, Automatic}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

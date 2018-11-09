@@ -8,6 +8,8 @@ ImportFormattedCheckpointFile::usage=
   "Imports results from an FChk file";
 ImportGaussianLog::usage=
   "Imports data from a log file";
+ImportNWChemOut::usage=
+  "Imports data from a log file";
 
 
 Begin["`Private`"];
@@ -275,22 +277,25 @@ ImportGaussianJob[file:_String|_InputStream, "Graphics3D", ops:OptionsPattern[]]
 
 
 (* ::Subsection:: *)
-(*GaussianLog*)
+(*ELStructLogRead*)
 
 
 
 (* ::Subsubsection::Closed:: *)
-(*iGaussianLogRead*)
+(*iELStructLogRead*)
 
 
 
-$GaussianLogReadNumberOfRecords=All;
+$ElStructLogReadListRecords=All;
 
 
-iGaussianLogRead[
+iELStructLogRead//ClearAll
+
+
+iELStructLogRead[
   log_InputStream, recSeps_, postProcess_,
   mode:Read:Read
-  ]/;!TrueQ[$GaussianLogReadEOF]:=
+  ]/;!TrueQ[$ELStructLogReadEOF]:=
   With[
     {
       sp=
@@ -301,41 +306,75 @@ iGaussianLogRead[
           ]
       },
     If[res===EndOfFile,
-      $GaussianLogReadEOF=
+      $ELStructLogReadEOF=
         Quiet@Check[SetStreamPosition[log, sp], True];
       Missing["NotFound"],
       postProcess@res
       ]
     ];
-iGaussianLogRead[
+iELStructLogRead[
   log_InputStream, recSeps_, postProcess_,
   mode:ReadList
-  ]/;!TrueQ[$GaussianLogReadEOF]:=
+  ]/;!TrueQ[$ELStructLogReadEOF]:=
   With[
     {
       sp=
         Quiet@StreamPosition@log,
       res=
         ReadList[log, Record, 
-          Replace[$GaussianLogReadListRecords,
+          Replace[$ElStructLogReadListRecords,
             Except[_Integer?Positive]:>Sequence@@{}
             ],
           RecordSeparators->recSeps
           ]
       },
-    $GaussianLogReadEOF=
+    $ELStructLogReadEOF=
       Quiet@Check[SetStreamPosition[log, sp], True];
     postProcess@
-      If[IntegerQ@#&&#<0&@$GaussianLogReadListRecords,
-        res[[$GaussianLogReadListRecords;;]],
+      If[IntegerQ@#&&#<0&@$ElStructLogReadListRecords,
+        res[[$ElStructLogReadListRecords;;]],
         res
         ]
     ];
-iGaussianLogRead[
+iELStructLogRead[
   log_InputStream, recSeps_, postProcess_, 
   ___
-  ]/;TrueQ[$GaussianLogReadEOF]=
+  ]/;TrueQ[$ELStructLogReadEOF]=
   Missing["EndOfFile"]
+
+
+(* ::Subsubsection::Closed:: *)
+(*ElStructLogRead*)
+
+
+
+ElStructLogRead[logFile:_String?FileExistsQ, key_, fallback_]:=
+  With[{or=OpenRead[logFile]},
+    Replace[$Failed:>(Close[or];$Failed)]@
+      CheckAbort[
+        With[{res=fallback[or, key]},
+          Close[or];
+          res
+          ],
+        $Failed
+        ]
+    ];
+ElStructLogRead[logString_String, key_, fallback_]:=
+  With[{or=StringToStream[logString]},
+    Replace[$Failed:>(Close[or];$Failed)]@
+      CheckAbort[
+        With[{res=fallback[or, key]},
+          Close[or];
+          res
+          ],
+        $Failed
+        ]
+    ];
+
+
+(* ::Subsection:: *)
+(*GaussianLog*)
+
 
 
 (* ::Subsubsection::Closed:: *)
@@ -352,27 +391,9 @@ GaussianLogRead//Clear
 
 
 GaussianLogRead[logFile:_String?FileExistsQ, key_]:=
-  With[{or=OpenRead[logFile]},
-    Replace[$Failed:>(Close[or];$Failed)]@
-      CheckAbort[
-        With[{res=GaussianLogRead[or, key]},
-          Close[or];
-          res
-          ],
-        $Failed
-        ]
-    ];
+  ElStructLogRead[logFile, key, GaussianLogRead];
 GaussianLogRead[logString_String, key_]:=
-  With[{or=StringToStream[logString]},
-    Replace[$Failed:>(Close[or];$Failed)]@
-      CheckAbort[
-        With[{res=GaussianLogRead[or, key]},
-          Close[or];
-          res
-          ],
-        $Failed
-        ]
-    ];
+  ElStructLogRead[logString, key, GaussianLogRead];
 
 
 (* ::Subsubsubsection::Closed:: *)
@@ -433,7 +454,7 @@ gaussianLogReadZMatrixBlock[zmat_]:=
 
 
 GaussianLogRead[log_InputStream, "InputZMatrix"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {{"Z-matrix:"}, {"NAtoms="}},
     gaussianLogReadZMatrixBlock
@@ -492,7 +513,7 @@ $glrCartCoordEndTag=
 
 
 GaussianLogRead[log_InputStream, "AtomPositions"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {
       {$glrCartCoordStartTag},
@@ -542,7 +563,7 @@ gaussianLogReadParseRawCartesianCoordinates[{}]:=
 
 
 GaussianLogRead[log_InputStream, "CartesianCoordinates"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {
       {$glrCartCoordStartTag},
@@ -575,7 +596,7 @@ gaussianLogReadParseRawCartesianCoordinateVectors[{}]:=
 
 
 GaussianLogRead[log_InputStream, "CartesianCoordinateVectors"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {
       {$glrCartCoordStartTag},
@@ -661,7 +682,7 @@ $glrZMatrixEndTag=
 
 
 GaussianLogRead[log_InputStream, "ZMatrices"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {
       {$glrZMatrixStartTag}, 
@@ -723,7 +744,7 @@ gaussianLogReadParseZMatrixCoordinates[{}]:=
 
 
 GaussianLogRead[log_InputStream, "ZMatrixCoordinates"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {
       {$glrZMatrixStartTag}, 
@@ -756,7 +777,7 @@ gaussianLogReadParseZMatrixCoordinates[{}]:=
 
 
 GaussianLogRead[log_InputStream, "ZMatrixCoordinateVectors"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {
       {$glrZMatrixStartTag}, 
@@ -793,7 +814,7 @@ gaussianLogReadParseMullikenCharges[{}]:=
 
 
 GaussianLogRead[log_InputStream, "MullikenCharges"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {
       {"Mulliken charges:"}, 
@@ -898,7 +919,7 @@ $glrMultMomEndTag=" N-N=";
 
 
 GaussianLogRead[log_InputStream, "MultipoleMoments"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {
       {$glrMultMomStartTag}, 
@@ -937,7 +958,7 @@ $glrDipMomEndTag="Quadrupole moment (";
 
 
 GaussianLogRead[log_InputStream, "DipoleMoments"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {
       {$glrMultMomStartTag}, 
@@ -977,7 +998,7 @@ $glrQuadMomEndTag="Traceless Quadrupole moment (";
 
 
 GaussianLogRead[log_InputStream, "QuadrupoleMoments"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {
       {$glrDipMomEndTag}, 
@@ -1018,7 +1039,7 @@ $glrOctMomEndTag="Hexadecapole moment (";
 
 
 GaussianLogRead[log_InputStream, "OctapoleMoments"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {
       {$glrOctMomStartTag}, 
@@ -1055,7 +1076,7 @@ gaussianLogReadParseHexadecapoleMoments[s_]:=
 
 
 GaussianLogRead[log_InputStream, "HexadecapoleMoments"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {
       {$glrOctMomEndTag}, 
@@ -1079,7 +1100,7 @@ gaussianLogReadParseHFEnergies[s_]:=
 
 
 GaussianLogRead[log_InputStream, "HartreeFockEnergies"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {{"SCF Done:  E(RHF) ="}, {"A.U."}},
     gaussianLogReadParseHFEnergies,
@@ -1112,7 +1133,7 @@ gaussianLogReadParseMP2Energies[s_]:=
 
 
 GaussianLogRead[log_InputStream, "MP2Energies"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {{"EUMP2 ="}, {"\n"}},
     gaussianLogReadParseMP2Energies,
@@ -1174,7 +1195,7 @@ $glrScanBlockEnd="\n  \n";
 
 
 GaussianLogRead[log_InputStream, "ScanTable"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {{$glrScanBlockStart}, {$glrScanBlockEnd}},
     gaussianLogReadScanBlock
@@ -1209,7 +1230,7 @@ gaussianLogReadOptScanBlock[scan_]:=
 
 
 GaussianLogRead[log_InputStream, "OptimizationScan"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {{"Summary of Optimized Potential Surface Scan"}, {"-----------------"}},
     gaussianLogReadOptScanBlock
@@ -1237,7 +1258,7 @@ gaussianLogReadTimeElapsedBlock[elapsed_]:=
 
 
 GaussianLogRead[log_InputStream, "ComputerTimeElapsed"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {{"cpu time:"}, {"\n"}},
     gaussianLogReadTimeElapsedBlock
@@ -1250,7 +1271,7 @@ GaussianLogRead[log_InputStream, "ComputerTimeElapsed"]:=
 
 
 GaussianLogRead[log_InputStream, "Blurb"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {{"\n\n\n"}, {"\n Job "}},
     StringTrim
@@ -1276,7 +1297,7 @@ gaussianLogReadParseStartDateTime[s_String]:=
 
 
 GaussianLogRead[log_InputStream, "StartDateTime"]:=
-  iGaussianLogRead[log,
+  iELStructLogRead[log,
     {{"Leave Link"}, {"\n (Enter"}},
     gaussianLogReadParseStartDateTime
     ]
@@ -1293,7 +1314,7 @@ gaussianLogReadParseEndDateTime[s_String]:=
 
 
 GaussianLogRead[log_InputStream, "EndDateTime"]:=
-  iGaussianLogRead[
+  iELStructLogRead[
     log,
     {{"Normal termination of Gaussian"}, {"\n"}},
     gaussianLogReadParseEndDateTime
@@ -1302,6 +1323,11 @@ GaussianLogRead[log_InputStream, "EndDateTime"]:=
 
 (* ::Subsubsection::Closed:: *)
 (*ImportGaussianLog*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Keywords*)
 
 
 
@@ -1364,15 +1390,15 @@ ImportGaussianLog//Clear
 
 Options[ImportGaussianLog]=
   {
-    "ImportedElements"->All,
-    "NumberOfRecords"->All
+    "ImportedElements"->Automatic,
+    "NumberOfRecords"->Automatic
     };
 ImportGaussianLog[
   file:_String?FileExistsQ|_InputStream,
   k_String,
   n_:All
   ]:=
-  Block[{$GaussianLogReadEOF, $GaussianLogReadNumberOfRecords=n},
+  Block[{$ElStructLogReadEOF, $ElStructLogReadListRecords=n},
     Replace[
       GaussianLogRead[file, k],
       _GaussianLogRead->Missing["UnknownKey", k]
@@ -1383,7 +1409,7 @@ ImportGaussianLog[
   k:{__String},
   n_:All
   ]:=
-  Block[{$GaussianLogReadEOF, $GaussianLogReadNumberOfRecords=n},
+  Block[{$ElStructLogReadEOF, $ElStructLogReadListRecords=n},
     AssociationMap[
       Replace[
         ImportGaussianLog[file, #],
@@ -1403,7 +1429,16 @@ ImportGaussianLog[
     file, 
     Replace[
       OptionValue["ImportedElements"],
-      All->$GaussianLogAllKeywords
+      {
+        Automatic->$GaussianLogAllKeywords,
+        All->$GaussianLogKeywords
+        }
+      ],
+    Replace[
+      OptionValue["NumberOfRecords"],
+      {
+        Automatic->$ElStructLogReadListRecords
+        }
       ]
     ]
 
@@ -1701,6 +1736,1369 @@ ImportGaussianLog[
   "OptimizationScanZMatrices"
   ]:=
   With[{bits=ImportGaussianLog[file, {"InputZMatrix", "OptimizationScan"}]},
+    If[MissingQ@bits[[2]],
+      bits[[2]],
+      With[{
+        keys=Keys@First@bits[[2]], 
+        vals=Values@bits[[2]], 
+        zm=bits[[1, 1]],
+        uc=
+          QuantityMagnitude@
+            UnitConvert[
+              Quantity[1, "Hartrees"], 
+              "Wavenumbers"*"PlanckConstant"*"SpeedOfLight"
+              ]
+        },
+        With[
+          {
+            types=
+              Map[
+                Switch[FirstPosition[zm, #], 
+                  {_, 3, ___}, "Angstroms",
+                  _, "AngularDegrees"
+                  ]&,
+                Most@keys
+                ]
+            },
+        ReplaceAll[zm/.q_Quantity:>QuantityMagnitude[q],
+          Thread[keys->#]&/@
+            QuantityMagnitude@
+              QuantityArray[
+                MapAt[uc*#&, vals, {All, -1}], 
+                Append[types, "Wavenumbers"]
+                ]
+            ]
+          ]
+        ]
+      ]
+    ]
+
+
+(* ::Subsection:: *)
+(*NWChemLog*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*NWChemLogRead*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[logFile:_String?FileExistsQ, key_]:=
+  ElStructLogRead[logFile, key, NWChemLogRead];
+NWChemLogRead[logString_String, key_]:=
+  ElStructLogRead[logString, key, NWChemLogRead];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*InputZMatrix*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Parse*)
+
+
+
+nwLogReadZMatrixBlock[zmat_]:=
+  With[{
+    bits=
+      StringSplit[
+        StringSplit[StringTrim@zmat, "\n", 2][[2]],
+        "Variables:"
+        ]
+    },
+    Prepend[
+      #[[1]]->Rest[#]&/@
+        ImportString[
+          StringSplit[StringTrim@bits[[2]], "\n"~~(Whitespace|"")~~"\n"][[1]], 
+          "Table"
+          ],
+      Map[
+        Which[
+          Length@#>5,
+            MapAt[
+              Quantity[#, "Angstroms"]&, 
+              MapAt[Quantity[#, "AngularDegrees"]&, #, {{5}, {7}}],
+              {3}
+              ],
+          Length@#>3,
+            MapAt[
+              Quantity[#, "Angstroms"]&, 
+              MapAt[Quantity[#, "AngularDegrees"]&, #, {5}], 
+              {3}
+              ],
+          Length@#>1,
+              MapAt[Quantity[#, "Angstroms"]&, #, {3}],
+          True,
+            #
+          ]&,
+        ImportString[
+          StringTrim@First@bits,
+          "Table"
+          ]
+        ]
+      ]
+    ];
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "InputZMatrix"]:=
+  iELStructLogRead[
+    log,
+    {{"Z-matrix:"}, {"NAtoms="}},
+    nwLogReadZMatrixBlock
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrix*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Parse*)
+
+
+
+nwLogReadZMatsBlock//Clear
+
+
+nwLogReadZMatsBlock[dipz_, 
+  bits:_:{"Names", "Indices", "Values"}, 
+  moo:_:{"Stretches", "Bends", "Torsions"}
+  ]:=
+  Module[
+    {
+      stretches={},
+      bends={},
+      torsions={},
+      zmats,
+      inds,
+      fns,
+      modes=moo
+      },
+    If[MemberQ[modes, "Stretches"],
+      stretches=
+        StringCases[dipz,
+          {
+            "Stretch    "~~name:Repeated[_, {8}]~~"  "~~
+              I:Repeated[_, {5}]~~" "~~
+              J:Repeated[_, {5}]~~" "~~
+              Repeated[_, {17}]~~" "~~
+              v:Repeated[_, {10}]:>
+                {name, {I, J}, v}
+                }
+            ]
+      ];
+    If[MemberQ[modes, "Bends"],
+      bends=
+        StringCases[dipz,
+          {
+            "Bend       "~~name:Repeated[_, {8}]~~"  "~~
+              I:Repeated[_, {5}]~~" "~~
+              J:Repeated[_, {5}]~~" "~~
+              K:Repeated[_, {5}]~~" "~~
+              Repeated[_, {11}]~~" "~~
+              v:Repeated[_, {10}]:>
+                {name, {I, J, K}, v}
+            }
+          ]
+      ];
+    If[MemberQ[modes, "Torsions"],
+     torsions=
+        StringCases[dipz,
+          {
+            "Torsion    "~~name:Repeated[_, {8}]~~"  "~~
+              I:Repeated[_, {5}]~~" "~~
+              J:Repeated[_, {5}]~~" "~~
+              K:Repeated[_, {5}]~~" "~~
+              L:Repeated[_, {5}]~~" "~~
+              Repeated[_, {5}]~~" "~~
+              v:Repeated[_, {10}]:>
+                {name, {I, J, K, L}, v}
+            }
+          ]
+      ];
+    MapThread[
+        If[Length@Flatten@#===0, 
+          modes=DeleteCases[modes, #2];
+          Replace[#3, Hold[s_]:>Set[s, Nothing]], 
+          #
+          ]&,
+        {
+          {stretches, bends, torsions},
+          {"Stretches", "Bends", "Torsions"},
+          Thread@Hold@{stretches, bends, torsions}
+          }
+        ];
+    inds=Replace[bits, {"Names"->1, "Indices"->2, "Values"->3}, 1];
+    fns={
+      Map[If[#=="        ", None, StringTrim@#]&],
+      Floor@*Map[Map[Internal`StringToDouble]],
+      Map[Internal`StringToDouble]
+      };
+    zmats=Map[Transpose, 
+      Thread[{stretches, bends, torsions}[[All, All, All, inds]]], 
+      {2}];
+    zmats=
+      Fold[
+        Developer`ToPackedArray@
+          MapAt[#2[[1]], #, Thread[{Range[Length@modes], #2[[2]]}]]&,
+        #,
+        Thread[
+          {
+            fns[[inds]],
+            Range[Length@inds]
+            }
+          ]
+        ]&/@zmats;
+    Which[
+      Length@bits==1&&Length@modes==1,
+        zmats[[All, 1, 1]],
+      Length@bits==1,
+        zmats[[All, All, 1]],
+      Length@modes==1,
+        zmats[[All, 1]],
+      True,
+        zmats
+        ]
+    ];
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Tags*)
+
+
+
+$nwzmatstart="Type          Name      I     J     K     L     M      Value
+      ----------- --------  ----- ----- ----- ----- ----- ----------";
+
+
+$nwzmatend=" 
+ 
+";
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "ZMatrices"]:=
+  iELStructLogRead[
+    log,
+    {{$nwzmatstart}, {$nwzmatend}},
+    nwLogReadZMatsBlock,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrixNames*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "ZMatrixNames"]:=
+  iELStructLogRead[
+    log,
+    {{$nwzmatstart}, {$nwzmatend}},
+    nwLogReadZMatsBlock[#, {"Names"}, {"Stretches", "Bends", "Torsions"}]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrixIndices*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "ZMatrixIndices"]:=
+  iELStructLogRead[
+    log,
+    {{$nwzmatstart}, {$nwzmatend}},
+    nwLogReadZMatsBlock[#, {"Indices"}, {"Stretches", "Bends", "Torsions"}]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrixValues*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "ZMatrixValues"]:=
+  iELStructLogRead[
+    log,
+    {{$nwzmatstart}, {$nwzmatend}},
+    nwLogReadZMatsBlock[#, {"Values"}, {"Stretches", "Bends", "Torsions"}]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrixStretches*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "ZMatrixStretches"]:=
+  iELStructLogRead[
+    log,
+    {{$nwzmatstart}, {$nwzmatend}},
+    nwLogReadZMatsBlock[#, {"Names", "Indices", "Values"}, {"Stretches"}]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrixBends*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "ZMatrixBends"]:=
+  iELStructLogRead[
+    log,
+    {{$nwzmatstart}, {$nwzmatend}},
+    nwLogReadZMatsBlock[#, {"Names", "Indices", "Values"}, {"Bends"}]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrixTorsions*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "ZMatrixTorsions"]:=
+  iELStructLogRead[
+    log,
+    {{$nwzmatstart}, {$nwzmatend}},
+    nwLogReadZMatsBlock[#, {"Names", "Indices", "Values"}, {"Torsions"}]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrixStretchNames*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "ZMatrixStretchNames"]:=
+  iELStructLogRead[
+    log,
+    {{$nwzmatstart}, {$nwzmatend}},
+    nwLogReadZMatsBlock[#, {"Names"}, {"Stretches"}]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrixBendNames*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "ZMatrixBendNames"]:=
+  iELStructLogRead[
+    log,
+    {{$nwzmatstart}, {$nwzmatend}},
+    nwLogReadZMatsBlock[#, {"Names"}, {"Bends"}]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrixTorsionNames*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "ZMatrixTorsionNames"]:=
+  iELStructLogRead[
+    log,
+    {{$nwzmatstart}, {$nwzmatend}},
+    nwLogReadZMatsBlock[#, {"Names"}, {"Torsions"}]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrixStretchIndices*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "ZMatrixStretchIndices"]:=
+  iELStructLogRead[
+    log,
+    {{$nwzmatstart}, {$nwzmatend}},
+    nwLogReadZMatsBlock[#, {"Indices"}, {"Stretches"}]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrixBendIndices*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "ZMatrixBendIndices"]:=
+  iELStructLogRead[
+    log,
+    {{$nwzmatstart}, {$nwzmatend}},
+    nwLogReadZMatsBlock[#, {"Indices"}, {"Bends"}]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrixTorsionIndices*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "ZMatrixTorsionIndices"]:=
+  iELStructLogRead[
+    log,
+    {{$nwzmatstart}, {$nwzmatend}},
+    nwLogReadZMatsBlock[#, {"Indices"}, {"Torsions"}]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrixStretchValues*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "ZMatrixStretchValues"]:=
+  iELStructLogRead[
+    log,
+    {{$nwzmatstart}, {$nwzmatend}},
+    nwLogReadZMatsBlock[#, {"Values"}, {"Stretches"}]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrixBendValues*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "ZMatrixBendValues"]:=
+  iELStructLogRead[
+    log,
+    {{$nwzmatstart}, {$nwzmatend}},
+    nwLogReadZMatsBlock[#, {"Values"}, {"Bends"}]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrixTorsionValues*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "ZMatrixTorsionValues"]:=
+  iELStructLogRead[
+    log,
+    {{$nwzmatstart}, {$nwzmatend}},
+    nwLogReadZMatsBlock[#, {"Values"}, {"Torsions"}]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*XYZTables*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Parse*)
+
+
+
+nwLogReadCartBlock[dipz_, bits_:{"Elements", "Coordinates"}]:=
+  Module[
+    {
+      dats,
+      els,
+      coords
+      },
+    dats=
+      StringCases[dipz,
+        {
+          StartOfLine~~" "~~el:(LetterCharacter|DigitCharacter)..~~Whitespace~~
+            x:Repeated[_, {11}]~~"    "~~
+            y:Repeated[_, {11}]~~"    "~~
+            z:Repeated[_, {11}]:>
+              {el, Internal`StringToDouble/@{x, y, z}}
+          }
+        ];
+    bits;
+    Which[
+      AllTrue[{"Elements", "Coordinates"}, MemberQ[bits, #]&],
+        dats,
+      MemberQ[bits, "Elements"],
+        dats[[All, All, 1]],
+      True,
+        Developer`ToPackedArray@dats[[All, All, 2]]
+      ]
+    ];
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Tags*)
+
+
+
+$nwcartkeystart=
+  "XYZ format geometry
+            -------------------";
+
+
+$nwcartkeyend=
+  "
+ 
+ ==============================================================================";
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "XYZTables"]:=
+  iELStructLogRead[
+    log,
+    {{$nwcartkeystart}, {$nwcartkeyend}},
+    nwLogReadCartBlock,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*CartesianCoordinates*)
+
+
+
+NWChemLogRead[log_InputStream, "CartesianCoordinates"]:=
+  iELStructLogRead[
+    log,
+    {{$nwcartkeystart}, {$nwcartkeyend}},
+    nwLogReadCartBlock[#, {"Coordinates"}]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*SCFBlock*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Parse*)
+
+
+
+$nwenergyNameMap=<|
+  "SCF energy"->"SCFEnergy",
+  "MP2 energy"->"MP2Energy",
+  "DFT energy"->"DFTEnergy",
+  "One electron energy"->"OneElectronEnergy",
+  "Coulomb energy"->"CoulombEnergy",
+  "Exchange-Corr. energy"->"ExchangeCorrelationEnergy",
+  "Nuclear repulsion energy"->"NuclearRepusionEnergy",
+  "Dispersion correction"->"DispersionCorrection",
+  "Numeric. integr. density"->"IntegratedDensity"
+  |>;
+
+
+nwLogReadSCFBlock[blahkz_, 
+  spat_:Automatic
+  ]:=
+  Module[
+    {
+      bitz,
+      pat=Replace[spat, Automatic:>Alternatives@@Keys[$nwenergyNameMap]]
+      },
+    Association/@
+      StringCases[blahkz,
+        p:pat~~" ="~~Whitespace~~v:NumberString:>
+          (Lookup[$nwenergyNameMap, p, p]->Internal`StringToDouble[v])
+        ]
+    ];
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Tags*)
+
+
+
+$nwscfblockstart=
+  "convergence    iter        energy";
+
+
+$nwscfblockend=
+  "Total iterative time =";
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "SCFBlock"]:=
+  iELStructLogRead[
+    log,
+    {{$nwscfblockstart}, {$nwscfblockend}},
+    nwLogReadSCFBlock,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Energies*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "Energies"]:=
+  iELStructLogRead[
+    log,
+    {{$nwscfblockstart}, {$nwscfblockend}},
+    nwLogReadSCFBlock[#, Alternatives@@Keys@$nwenergyNameMap[[;;3]]]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*DFTEnergy*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "DFTEnergy"]:=
+  iELStructLogRead[
+    log,
+    {{$nwscfblockstart}, {$nwscfblockend}},
+    nwLogReadSCFBlock[#, 
+      Alternatives@@Keys@Select[$nwenergyNameMap, #=="DFTEnergy"&]
+      ]~Lookup~"DFTEnergy"&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*MP2Energy*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "MP2Energy"]:=
+  iELStructLogRead[
+    log,
+    {{$nwscfblockstart}, {$nwscfblockend}},
+    nwLogReadSCFBlock[#, 
+      Alternatives@@Keys@Select[$nwenergyNameMap, #=="MP2Energy"&]
+      ]~Lookup~"MP2Energy"&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*SCFEnergy*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "SCFEnergy"]:=
+  iELStructLogRead[
+    log,
+    {{$nwscfblockstart}, {$nwscfblockend}},
+    nwLogReadSCFBlock[#, 
+      Alternatives@@Keys@Select[$nwenergyNameMap, #=="SCFEnergy"&]
+      ]~Lookup~"SCFEnergy"&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Elements*)
+
+
+
+NWChemLogRead[log_InputStream, "ElementTables"]:=
+  iELStructLogRead[
+    log,
+    {{$nwcartkeystart}, {$nwcartkeyend}},
+    nwLogReadCartBlock[#, {"Elements"}]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*DipoleMoment*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Parse*)
+
+
+
+(*"   Dipole moment        "" Debye(s)
+             DMX       "" DMXEFC        ""
+             DMY       "" DMYEFC        ""
+             DMZ       "" DMZEFC        ""*)
+
+
+nwLogReadDipoleBlock[dipz_, parts_:{"Centers", "DipoleVectors", "EFCVectors"}]:=
+  Module[
+    {
+      centers,
+      dipoles,
+      total
+      },
+    centers=
+      First/@StringCases[dipz,
+        {
+          "X =      "~~x:Repeated[_, {10}]~~
+            " Y =      "~~y:Repeated[_, {10}]~~
+            " Z =      "~~z:Repeated[_, {10}]:>
+              {x, y, z}
+          },
+        1
+        ];
+    dipoles=
+      First/@StringCases[dipz,
+        "Dipole moment       "~~n:Repeated[_, {13}]~~" Debye(s)
+             DMX       "~~x:Repeated[_, {13}]~~
+             " DMXEFC       "~~xef:Repeated[_, {13}]~~"
+             DMY       "~~y:Repeated[_, {13}]~~
+             " DMYEFC       "~~yef:Repeated[_, {13}]~~"
+             DMZ       "~~z:Repeated[_, {13}]~~
+             " DMZEFC       "~~zef:Repeated[_, {13}]:>
+             {
+               {x, y, z},
+               {xef, yef, zef}
+               },
+      1
+      ];
+    Developer`ToPackedArray@{
+      If[parts~MemberQ~"Centers",
+        Map[Internal`StringToDouble, #]&/@centers,
+        Nothing
+        ],
+      If[parts~MemberQ~"DipoleVectors",
+        Map[Internal`StringToDouble, #[[1]]]&/@dipoles,
+        Nothing
+        ],
+      If[parts~MemberQ~"EFCVectors",
+        Map[Internal`StringToDouble, #[[2]]]&/@dipoles,
+        Nothing
+        ]
+      }
+    ];
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Tags*)
+
+
+
+$nwdipolekeystart=
+  "-------------
+          Dipole Moment
+          -------------";
+
+
+$nwdipolekeyend=
+  "1 a.u. =";
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "DipoleMoments"]:=
+  iELStructLogRead[
+    log,
+    {{$nwdipolekeystart}, {$nwdipolekeyend}},
+    nwLogReadDipoleBlock,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*DipoleCenters*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "DipoleCenters"]:=
+  iELStructLogRead[
+    log,
+    {{$nwdipolekeystart}, {$nwdipolekeyend}},
+    nwLogReadDipoleBlock[#, {"Centers"}][[1]]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*DipoleCenters*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "DipoleVectors"]:=
+  iELStructLogRead[
+    log,
+    {{$nwdipolekeystart}, {$nwdipolekeyend}},
+    nwLogReadDipoleBlock[#, {"DipoleVectors"}][[1]]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*DipoleEFCs*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "DipoleEFCs"]:=
+  iELStructLogRead[
+    log,
+    {{$nwdipolekeystart}, {$nwdipolekeyend}},
+    nwLogReadDipoleBlock[#, {"EFCVectors"}][[1]]&,
+    ReadList
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*ImportNWChemOut*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Keywords*)
+
+
+
+$NWChemLogKeywords=
+  {
+    "StartDateTime",
+    "AtomPositions",
+    "CartesianCoordinates",
+    "CartesianCoordinateVectors",
+    "MullikenCharges",
+    "MultipoleMoments",
+    "DipoleMoments",
+    "QuadrupoleMoments",
+    "OctapoleMoments",
+    "HexadecapoleMoments",
+    "HartreeFockEnergies",
+    "MP2Energies",
+    "InputZMatrix",
+    "InputZMatrixVariables",
+    "ZMatrices",
+    "ZMatrixCoordinates",
+    "ZMatrixCoordinateVectors",
+    "ScanTable",
+    "OptimizationScan",
+    "Blurb",
+    "ComputerTimeElapsed",
+    "EndDateTime"
+    };
+$NWChemLogAllKeywords=
+  {
+    "StartDateTime",
+    "InputZMatrix",
+    "ScanTable",
+    "Blurb",
+    "ComputerTimeElapsed",
+    "EndDateTime"
+    };
+$NWChemLogExtraKeywords=
+  {
+    "ScanQuantityArray",
+    "HartreeFockEnergyQuantityArray",
+    "MP2EnergyQuantityArray",
+    "ScanCoordinateQuantityArray",
+    "CartesianCoordinateQuantityArray",
+    "ZMatrixCoordinateQuantityArray",
+    "MultipoleQuantityArray",
+    "DipoleQuantityArray",
+    "OptimizationScanQuantityArray",
+    "OptimizationScanZMatrices"
+    };
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+ImportNWChemOut//Clear
+
+
+Options[ImportNWChemOut]=
+  {
+    "ImportedElements"->All,
+    "NumberOfRecords"->All
+    };
+ImportNWChemOut[
+  file:_String?FileExistsQ|_InputStream,
+  k_String,
+  n_:All
+  ]:=
+  Block[{$ElStructLogReadEOF, $ElStructLogReadListRecords=n},
+    Replace[
+      NWChemLogRead[file, k],
+      _NWChemLogRead->Missing["UnknownKey", k]
+      ]
+    ];
+ImportNWChemOut[
+  file:_String?FileExistsQ|_InputStream,
+  k:{__String},
+  n_:All
+  ]:=
+  Block[{$ElStructLogReadEOF, $ElStructLogReadListRecords=n},
+    AssociationMap[
+      Replace[
+        ImportNWChemOut[file, #],
+        _NWChemLogRead->Missing["UnknownKey", #]
+        ]&,
+      SortBy[
+        k, 
+        Position[$NWChemLogKeywords, #]&
+        ]
+      ]
+    ];
+ImportNWChemOut[
+  file:_String?FileExistsQ|_InputStream,
+  ops:OptionsPattern[]
+  ]:=
+  ImportNWChemOut[
+    file, 
+    Replace[
+      OptionValue["ImportedElements"],
+      {
+        Automatic->$NWChemLogAllKeywords,
+        All->$NWChemLogKeywords
+        }
+      ],
+    Replace[
+      OptionValue["NumberOfRecords"],
+      {
+        Automatic->$ElStructLogReadListRecords
+        }
+      ]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ScanQuantityArray*)
+
+
+
+ImportNWChemOut[
+  file:_String?FileExistsQ|_InputStream,
+  "ScanQuantityArray"
+  ]:=
+  With[{bits=ImportNWChemOut[file, {"InputZMatrix", "ScanTable"}]},
+    If[MissingQ@bits["ScanTable"],
+      bits["ScanTable"],
+      With[{
+        keys=First@bits["ScanTable"], 
+        vals=Last@bits["ScanTable"], 
+        zm=bits[["InputZMatrix", 1]],
+        uc=
+          QuantityMagnitude@
+            UnitConvert[
+              Quantity[1, "Hartrees"], 
+              "Wavenumbers"*"PlanckConstant"*"SpeedOfLight"
+              ]
+        },
+        With[
+          {
+            types=
+              Map[
+                Switch[FirstPosition[zm, #], 
+                  {_, 3, ___}, "Angstroms",
+                  _, "AngularDegrees"
+                  ]&,
+                Most@keys
+                ]
+            },
+        Map[QuantityVariable, keys]->
+          QuantityArray[
+            MapAt[uc*#&, vals, {All, -1}], 
+            Append[types, "Wavenumbers"]
+            ]
+          ]
+        ]
+      ]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*CartesianCoordinateQuantityArray*)
+
+
+
+ImportNWChemOut[
+  file:_String?FileExistsQ|_InputStream,
+  "CartesianCoordinateQuantityArray"
+  ]:=
+  QuantityArray[
+    ImportNWChemOut[file, "CartesianCoordinates"],
+    ConstantArray["Angstroms", 3]
+    ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ZMatrixCoordinateQuantityArray*)
+
+
+
+ImportNWChemOut[
+  file:_String?FileExistsQ|_InputStream,
+  "ZMatrixCoordinateQuantityArray"
+  ]:=
+  QuantityArray[
+    ImportNWChemOut[file, "ZMatrixCoordinates"],
+    {"Angstroms", "AngularDegrees", "AngularDegrees"}
+    ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*HartreeFockEnergyQuantityArray*)
+
+
+
+ImportNWChemOut[
+  file:_String?FileExistsQ|_InputStream,
+  "HartreeFockEnergyQuantityArray"
+  ]:=
+  QuantityArray[
+    UnitConvert[
+      Quantity[1, "Hartrees"], 
+      "Wavenumbers"*"PlanckConstant"*"SpeedOfLight"
+      ]*Developer`ToPackedArray[ImportNWChemOut[file, "HartreeFockEnergies"]],
+    "Wavenumbers"
+    ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*MP2EnergyQuantityArray*)
+
+
+
+ImportNWChemOut[
+  file:_String?FileExistsQ|_InputStream,
+  "MP2EnergyQuantityArray"
+  ]:=
+  QuantityArray[
+    QuantityMagnitude[
+      UnitConvert[
+        Quantity[1, "Hartrees"], 
+        "Wavenumbers"*"PlanckConstant"*"SpeedOfLight"
+        ]
+      ]*Developer`ToPackedArray[ImportNWChemOut[file, "MP2Energies"]],
+    "Wavenumbers"
+    ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*MutipoleQuantityArray*)
+
+
+
+ImportNWChemOut[
+  file:_String?FileExistsQ|_InputStream,
+  "MutipoleQuantityArray"
+  ]:=
+  MapIndexed[
+    QuantityArray[
+      #,
+      ConstantArray[
+        Switch[#2[[1, 1]],
+          "Dipole",
+            "Debyes",
+          _?(StringContainsQ["Quadrupole"]),
+            "Debyes"*"Angstroms",
+          "Octapole",
+            "Debyes"*"Angstroms"*"Angstroms",
+          "Hexadecapole",
+            "Debyes"*"Angstroms"*"Angstroms"*"Angstroms"
+          ],
+        3
+        ]
+      ]&,
+    ImportNWChemOut[file, "MutipoleMoments"]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*DipoleQuantityArray*)
+
+
+
+ImportNWChemOut[
+  file:_String?FileExistsQ|_InputStream,
+  "DipoleQuantityArray"
+  ]:=
+  QuantityArray[
+    ImportNWChemOut[file, "DipoleMoments"],
+    ConstantArray["Debyes", 3]
+    ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ScanDipoleSurface*)
+
+
+
+ImportNWChemOut[
+  file:_String?FileExistsQ|_InputStream,
+  "ScanDipoleSurface"
+  ]:=
+  Module[
+    {
+      bits=
+        ImportNWChemOut[file, 
+          {"DipoleMoments", "InputZMatrix", "ScanTable"}
+          ],
+      keys,
+      coords,
+      zm,
+      dips,
+      types
+      },
+    If[MissingQ@bits["ScanTable"],
+      bits["ScanTable"],
+      keys=First@bits["ScanTable"];
+      coords=Last@bits["ScanTable"];
+      dips=bits["DipoleMoments"];
+      zm=bits[["InputZMatrix", 1]];
+      types=
+        Map[
+          Switch[FirstPosition[zm, #], 
+            {_, 3, ___}, "Angstroms",
+            _, "AngularDegrees"
+            ]&,
+          Most@keys
+          ];
+      Map[QuantityVariable, Join[keys, {"\[Mu]x", "\[Mu]y", "\[Mu]z"}]]->
+        QuantityArray[
+          MapThread[
+            Join[#[[;;-2]], #2]&,
+            {
+              coords,
+              dips
+              }
+            ],
+          Join[types, ConstantArray["Debyes", 3]]
+          ]
+      ]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*QuadrupoleQuantityArray*)
+
+
+
+ImportNWChemOut[
+  file:_String?FileExistsQ|_InputStream,
+  "QuadrupoleQuantityArray"
+  ]:=
+  QuantityArray[
+    ImportNWChemOut[file, "QuadrupoleMoments"],
+    ConstantArray["Debyes"*"Angstroms", 3]
+    ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*OctapoleQuantityArray*)
+
+
+
+ImportNWChemOut[
+  file:_String?FileExistsQ|_InputStream,
+  "OctapoleQuantityArray"
+  ]:=
+  QuantityArray[
+    ImportNWChemOut[file, "OctapoleQuantityArray"],
+    ConstantArray["Debyes"*"Angstroms"*"Angstroms", 3]
+    ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*OptimizationScanQuantityArray*)
+
+
+
+ImportNWChemOut[
+  file:_String?FileExistsQ|_InputStream,
+  "OptimizationScanQuantityArray"
+  ]:=
+  With[{bits=ImportNWChemOut[file, {"InputZMatrix", "OptimizationScan"}]},
+    If[MissingQ@bits[[2]],
+      bits[[2]],
+      With[{
+        keys=Keys@First@bits[[2]], 
+        vals=Values@bits[[2]], 
+        zm=bits[[1, 1]],
+        uc=
+          QuantityMagnitude@
+            UnitConvert[
+              Quantity[1, "Hartrees"], 
+              "Wavenumbers"*"PlanckConstant"*"SpeedOfLight"
+              ]
+        },
+        With[
+          {
+            types=
+              Map[
+                Switch[FirstPosition[zm, #], 
+                  {_, 3, ___}, "Angstroms",
+                  _, "AngularDegrees"
+                  ]&,
+                Most@keys
+                ]
+            },
+        Map[QuantityVariable, keys]->
+          QuantityArray[
+            MapAt[uc*#&, vals, {All, -1}], 
+            Append[types, "Wavenumbers"]
+            ]
+          ]
+        ]
+      ]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*OptimizationScanZMatrices*)
+
+
+
+ImportNWChemOut[
+  file:_String?FileExistsQ|_InputStream,
+  "OptimizationScanZMatrices"
+  ]:=
+  With[{bits=ImportNWChemOut[file, {"InputZMatrix", "OptimizationScan"}]},
     If[MissingQ@bits[[2]],
       bits[[2]],
       With[{

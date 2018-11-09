@@ -1,0 +1,1303 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["\[LeftCeiling]Wavefunction Tools\[RightFloor]", "CodeSection",
+ Evaluatable->True,ExpressionUUID->"c53a16d2-e338-4337-96a0-1a1051ce7185"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Parts\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"b6db1bdf-2c83-4bb4-a8d4-6a670d4fde30"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemWavefunctionsPart", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Applies part to a wavefunction\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemWavefunctionsKeyPart", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Applies key lookup to a wavefunction\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"0683456a-e69c-4b41-9668-ec499b04160b"]\
+
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Creation\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"39dd86f3-fe30-4dc5-8b41-0c2fcc428c4b"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemSeparableWavefunctions", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Function for doing 1D SCF averaging of a potential with a DVR\>\""}], 
+  ";"}]], "CodeInput",ExpressionUUID->"21bad048-59a2-4577-a1b5-b2bce712e387"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Combination\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"05e35bc7-978c-4a75-9ba1-821e3d52e2d4"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemProductWavefunctions", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Creates product wavefunctions out of 1D wavefunctions\>\""}], 
+  ";"}]], "CodeInput",ExpressionUUID->"3b7eda12-4ee4-43ca-b151-49bfa268f3e9"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ExpectationValues\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"fad35e4a-51a3-4019-91bf-5417f63718d5"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemExpectationValues", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Expectation values over a normalized, discretized set of \
+wavefunctions\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemWavefunctionsOperatorMatrix", "::", "usage"}], "=", "\n", 
+   "\t", "\"\<Operator matrix over a normalized, discretized set of \
+wavefunctions\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemWavefunctionsOperatorMatrixElements", "::", "usage"}], "=", 
+   "\n", "\t", 
+   "\"\<Operator matrix elements over a normalized, discretized set of \
+wavefunctions\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"62923166-5333-4e5f-91b3-613ea84f0575"]\
+
+}, Closed]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"eb1d7e10-f3ca-44af-a40a-\
+46e42b1adc0b"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Wavefunction Parts\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"07308ff2-cdf4-46b7-bbac-f7e6c2e4b613"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ChemWavefunctionsPart\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"26a36364-bff1-44b1-9d43-f6e3a105a9a2"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ChemWavefunctionsPart", "[", 
+   RowBox[{"c_ChemWavefunctionsObject", ",", " ", "sel_"}], "]"}], ":=", "\n",
+   "\t", 
+  RowBox[{"ChemWavefunctionsObject", "@", "\n", "\t\t", 
+   RowBox[{"MapAt", "[", "\n", "\t\t\t", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Part", "[", 
+       RowBox[{"#", ",", " ", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"IntegerQ", "@", "sel"}], ",", " ", 
+          RowBox[{"{", "sel", "}"}], ",", " ", "sel"}], "]"}]}], "]"}], "&"}],
+      ",", "\n", "\t\t\t", 
+     RowBox[{"Normal", "@", "c"}], ",", "\n", "\t\t\t", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Energies\>\"", ",", " ", "\"\<Wavefunctions\>\""}], 
+      "}"}]}], "\n", "\t\t\t", "]"}]}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemWavefunctionsPart", "[", 
+    RowBox[{"c_ChemWavefunctionsObject", ",", " ", "All", ",", " ", "p__"}], 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemWavefunctionsObject", "@", "\n", "\t\t", 
+    RowBox[{"MapAt", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Part", "[", 
+        RowBox[{"#", ",", " ", "All", ",", " ", "p"}], "]"}], "&"}], ",", 
+      "\n", "\t\t\t", 
+      RowBox[{"MapAt", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Part", "[", 
+          RowBox[{"#", ",", " ", "p"}], "]"}], "&"}], ",", " ", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"Normal", "@", "c"}], ",", "\n", "\t\t\t\t", 
+        "\"\<GridPoints\>\""}], "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
+      "\"\<Wavefunctions\>\""}], "\n", "\t\t\t", "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemWavefunctionsPart", "[", 
+    RowBox[{"c_ChemWavefunctionsObject", ",", " ", "sel_", ",", " ", "p__"}], 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"ChemWavefunctionsObject", "@", "\n", "\t\t", 
+    RowBox[{"MapAt", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Part", "[", 
+        RowBox[{"#", ",", " ", "\n", "\t\t\t\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"IntegerQ", "@", "sel"}], ",", " ", 
+           RowBox[{"{", "sel", "}"}], ",", " ", "sel"}], "]"}], ",", " ", 
+         "\n", "\t\t\t\t", "p"}], "\n", "\t\t\t\t", "]"}], "&"}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"MapAt", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Part", "[", 
+          RowBox[{"#", ",", " ", "p"}], "]"}], "&"}], ",", " ", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"MapAt", "[", "\n", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Part", "[", 
+            RowBox[{"#", ",", " ", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"IntegerQ", "@", "sel"}], ",", " ", 
+               RowBox[{"{", "sel", "}"}], ",", " ", "sel"}], "]"}]}], "]"}], 
+           "&"}], ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"Normal", "@", "c"}], ",", "\n", "\t\t\t\t\t", 
+          "\"\<Energies\>\""}], "\n", "\t\t\t\t\t", "]"}], ",", "\n", 
+        "\t\t\t\t", "\"\<GridPoints\>\""}], "\n", "\t\t\t\t", "]"}], ",", 
+      "\n", "\t\t\t", "\"\<Wavefunctions\>\""}], "\n", "\t\t\t", "]"}]}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"41c964cf-4378-4ee1-9450-fb34b9f5753b"]\
+
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ChemWavefunctionsKeyPart\[RightFloor]", \
+"CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"7e48b41f-8a60-49c0-9d7f-9545580d8fc6"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemWavefunctionsKeyPart", "[", 
+   RowBox[{
+    RowBox[{"c", ":", 
+     RowBox[{"ChemWavefunctionsObject", "[", "a_", "]"}]}], ",", " ", 
+    "sel__"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{
+  "a", "[", "sel", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"fb743073-23b9-4c81-a3b3-23ba1713ad56"]
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WavefunctionNormalize\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"d9f2c565-9ead-44fc-b994-c80399146fb1"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"WavefunctionNormalize", "[", "wfs_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"wfs", "/", 
+    RowBox[{"Map", "[", 
+     RowBox[{"Norm", ",", " ", "wfs"}], "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+   "ChemWavefunctionsNormalize", "[", "c_ChemWavefunctionsObject", "]"}], ":=",
+    "\n", "\t", 
+   RowBox[{"MapAt", "[", 
+    RowBox[{
+    "WavefunctionNormalize", ",", " ", "c", ",", " ", 
+     "\"\<Wavefunctions\>\""}], "]"}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"cfa53a02-96e9-4e10-9895-65cf9f6503a8"]\
+
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]NormalizedQ\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"0c79370d-3705-4561-9c17-cf010b3207f6"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+   "ChemWavefunctionsNormalizedQ", "[", "c_ChemWavefunctionsObject", "]"}], ":=",
+    "\n", "\t", 
+   RowBox[{"AllTrue", "[", 
+    RowBox[{
+     RowBox[{"Norm", "/@", 
+      RowBox[{"c", "[", "\"\<Wavefunctions\>\"", "]"}]}], ",", " ", 
+     RowBox[{
+      RowBox[{"#", "\[Equal]", "1"}], "&"}]}], "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"b0f38d94-cea8-4e7d-82b7-bc12529b4f7f"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]WavefunctionsProduct\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"0189d5f7-97c5-4bc6-a8ac-2a1372e7b7ba"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemWavefunctionsProduct", "[", "\n", "\t", 
+   RowBox[{
+   "wfns1_ChemWavefunctionsObject", ",", "\n", "\t", 
+    "wfnsother__ChemWavefunctionsObject", ",", "\n", "\t", 
+    RowBox[{"n", ":", 
+     RowBox[{
+      RowBox[{"_Integer", "?", "Positive"}], "|", "All", "|", "Automatic"}], 
+     ":", "Automatic"}]}], "\n", "\t", "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{"numCombo", ",", "\n", "\t\t\t", 
+      RowBox[{"normals", "=", 
+       RowBox[{"Normal", "/@", 
+        RowBox[{"{", 
+         RowBox[{"wfns1", ",", " ", "wfnsother"}], "}"}]}]}], ",", "\n", 
+      "\t\t\t", "grids", ",", "\n", "\t\t\t", "energies", ",", "\n", "\t\t\t",
+       "wavefunctions", ",", "\n", "\t\t\t", "indices", ",", "\n", "\t\t\t", 
+      "grid"}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"grids", "=", 
+      RowBox[{"normals", "[", 
+       RowBox[{"[", 
+        RowBox[{"All", ",", " ", "\"\<GridPoints\>\""}], "]"}], "]"}]}], ";", 
+     "\n", "\t\t", 
+     RowBox[{"energies", "=", 
+      RowBox[{"normals", "[", 
+       RowBox[{"[", 
+        RowBox[{"All", ",", " ", "\"\<Energies\>\""}], "]"}], "]"}]}], ";", 
+     "\n", "\t\t", 
+     RowBox[{"numCombo", "=", "\n", "\t\t\t", 
+      RowBox[{"Replace", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"OptionValue", "[", "\"\<NumberOfCombinations\>\"", "]"}], 
+        ",", " ", "\n", "\t\t\t\t", 
+        RowBox[{"{", "\n", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"All", ":>", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"Apply", "[", 
+            RowBox[{"Times", ",", " ", 
+             RowBox[{"Length", "/@", "energies"}]}], "]"}]}], ",", "\n", 
+          "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"i_Integer", "?", "Positive"}], ":>", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"Min", "@", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", " ", 
+              RowBox[{"Apply", "[", 
+               RowBox[{"Times", ",", " ", 
+                RowBox[{"Length", "/@", "energies"}]}], "]"}]}], "}"}]}]}], 
+          ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"Automatic", ":>", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"Min", "@", 
+            RowBox[{"{", 
+             RowBox[{"50", ",", " ", 
+              RowBox[{"Apply", "[", 
+               RowBox[{"Times", ",", " ", 
+                RowBox[{"Length", "/@", "energies"}]}], "]"}]}], "}"}]}]}]}], 
+         "\n", "\t\t\t\t\t", "}"}]}], "\n", "\t\t\t\t", "]"}]}], ";", "\n", 
+     "\t\t", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"indices", ",", " ", "energies"}], "}"}], "=", 
+      RowBox[{"ChemUtilsProductEnergies", "[", 
+       RowBox[{"energies", ",", " ", "numCombo"}], "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"wavefunctions", "=", "\n", "\t\t\t", 
+      RowBox[{"Map", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Join", "@@", "\n", "\t\t\t\t\t", 
+          RowBox[{"KroneckerProduct", "[", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"Sequence", "@@", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{"MapThread", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"#", "[", 
+                RowBox[{"[", 
+                 RowBox[{"\"\<Wavefunctions\>\"", ",", " ", "#2"}], "]"}], 
+                "]"}], "&"}], ",", "\n", "\t\t\t\t\t\t\t\t", 
+              RowBox[{"{", 
+               RowBox[{"normals", ",", " ", "#"}], "}"}]}], "\n", 
+             "\t\t\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], 
+         "&"}], ",", " ", "\n", "\t\t\t\t", "indices"}], "\n", "\t\t\t\t", 
+       "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"grid", "=", 
+      RowBox[{"Flatten", "[", 
+       RowBox[{
+        RowBox[{"Outer", "[", 
+         RowBox[{
+          RowBox[{"Flatten", "@*", "List"}], ",", " ", 
+          RowBox[{"Sequence", "@@", "grids"}]}], "]"}], ",", " ", 
+        RowBox[{
+         RowBox[{"Length", "@", "grids"}], "-", "1"}]}], "]"}]}], ";", "\n", 
+     "\t\t", 
+     RowBox[{"ChemWavefunctionsObject", "@", "\n", "\t\t\t", 
+      RowBox[{"Merge", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"{", "\n", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"KeyDrop", "[", 
+             RowBox[{"#", ",", " ", 
+              RowBox[{"{", 
+               RowBox[{
+               "\"\<Grid\>\"", ",", " ", "\"\<Energies\>\"", ",", " ", 
+                "\"\<Wavefunctions\>\""}], "}"}]}], "]"}], "&"}], "/@", "\n", 
+           "\t\t\t\t\t\t", "normals"}], ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"\"\<Grid\>\"", "\[Rule]", "grid"}], ",", "\n", 
+          "\t\t\t\t\t", 
+          RowBox[{"\"\<Energies\>\"", "\[Rule]", "energies"}], ",", "\n", 
+          "\t\t\t\t\t", 
+          RowBox[{"\"\<Wavefunctions\>\"", "\[Rule]", "wavefunctions"}]}], 
+         "\n", "\t\t\t\t\t", "}"}], ",", "\n", "\t\t\t\t", "Last"}], "\n", 
+       "\t\t\t\t", "]"}]}]}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"ca29e743-f5f3-48ff-918d-39c51a888013"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ChemDVRDefaultGridWavefunctions\[RightFloor]", \
+"CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{
+  3.724795308679735*^9},ExpressionUUID->"b39e0278-5ddd-4779-b1be-\
+c95b49a2de99"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]iChemDVRDefaultThreadGridWavefunctions\[RightFloor]", \
+"CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"fe931f93-b1ad-4d25-8108-2398f7a0f2c9"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"iChemDVRDefaultThreadGridWavefunctions", "[", 
+    RowBox[{"gps_", ",", " ", "wfns_", ",", " ", "retE_"}], "]"}], ":=", "\n",
+    "\t", 
+   RowBox[{"Module", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{"grid", "=", "gps"}], "\n", "\t\t\t", "}"}], ",", "\n", 
+     "\t\t\t", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"!", 
+         RowBox[{"ListQ", "@", 
+          RowBox[{"First", "@", "grid"}]}]}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"grid", "=", 
+         RowBox[{"List", "/@", "grid"}]}]}], "\n", "\t", "\t\t\t", "]"}], ";",
+       "\n", "\t\t", 
+      RowBox[{"grid", "=", 
+       RowBox[{"Developer`ToPackedArray", "@", "grid"}]}], ";", "\n", "\t\t", 
+      
+      RowBox[{"If", "[", 
+       RowBox[{"retE", ",", " ", "\n", "\t\t\t", 
+        RowBox[{"MapThread", "[", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"#", "->", 
+            RowBox[{"Join", "[", 
+             RowBox[{"grid", ",", " ", 
+              RowBox[{"List", "/@", "#2"}], ",", " ", "2"}], "]"}]}], "&"}], 
+          ",", "\n", "\t", "\t\t\t", "wfns"}], "\n", "\t", "\t\t\t", "]"}], 
+        ",", "\n", "\t\t\t", 
+        RowBox[{"Map", "[", "\n", "\t\t\t\t", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Join", "[", 
+            RowBox[{"grid", ",", " ", 
+             RowBox[{"List", "/@", "#"}], ",", " ", "2"}], "]"}], "&"}], ",", 
+          " ", "\n", "\t\t\t\t", 
+          RowBox[{"wfns", "[", 
+           RowBox[{"[", "2", "]"}], "]"}]}], "\n", "\t\t\t\t", "]"}]}], "\n", 
+       "\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"cc8fe620-5d2e-46c2-908a-22aacefa8495"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ChemDVRDefaultGridWavefunctions\[RightFloor]", \
+"CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"fdad6e0d-f83b-46a6-9fd7-881c3f95e829"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "ChemDVRDefaultGridWavefunctions", "]"}], "=", 
+   "\n", "\t", 
+   RowBox[{"Join", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"\"\<ReturnEnergies\>\"", "\[Rule]", "False"}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"\"\<PruningEnergy\>\"", "\[Rule]", "None"}]}], "\n", "\t\t\t",
+       "}"}], ",", "\n", "\t\t", 
+     RowBox[{"Options", "[", "ChemDVRDefaultWavefunctionSelection", "]"}], 
+     ",", "\n", "\t\t", 
+     RowBox[{"Options", "[", "ChemDVRDefaultGridPointList", "]"}]}], "\n", 
+    "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRDefaultGridWavefunctions", "[", "\n", "\t", 
+    RowBox[{
+    "grid_", ",", " ", "\n", "\t", "wfs_", ",", "\n", "\t", "V_", ",", "\n", 
+     "\t", 
+     RowBox[{"o", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n",
+    "\t", 
+   RowBox[{"With", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"coreGridPoints", "=", "\n", "\t\t\t\t", 
+        RowBox[{"ChemDVRDefaultPruneGridPoints", "[", "\n", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"ChemDVRDefaultGridPointList", "[", 
+           RowBox[{"grid", ",", " ", "\n", "\t", "\t", "\t\t\t\t", 
+            RowBox[{"FilterRules", "[", 
+             RowBox[{
+              RowBox[{"{", "o", "}"}], ",", " ", 
+              RowBox[{"Options", "@", "ChemDVRDefaultGridPointList"}]}], 
+             "]"}]}], "\n", "\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t", 
+          "V", ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"OptionValue", "[", "\"\<PruningEnergy\>\"", "]"}]}], "\n", 
+         "\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"wfns", "=", "\n", "\t\t\t\t", 
+        RowBox[{
+        "ChemDVRDefaultWavefunctionSelection", "[", "\n", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"ReleaseHold", "@", "wfs"}], ",", "\n", "\t\t\t\t\t", 
+          RowBox[{"FilterRules", "[", 
+           RowBox[{
+            RowBox[{"{", "o", "}"}], ",", " ", 
+            RowBox[{
+            "Options", "[", "ChemDVRDefaultWavefunctionSelection", "]"}]}], 
+           "]"}]}], "\n", "\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"retE", "=", 
+        RowBox[{"TrueQ", "@", 
+         RowBox[{"OptionValue", "[", "\"\<ReturnEnergies\>\"", "]"}]}]}]}], 
+      "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+     RowBox[{"iChemDVRDefaultThreadGridWavefunctions", "[", "\n", "\t\t\t", 
+      RowBox[{
+      "coreGridPoints", ",", "\n", "\t\t\t", "wfns", ",", "\n", "\t\t\t", 
+       "retE"}], "\n", "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"563c6799-83c6-495c-ac37-04461420566b"]\
+
+}, Closed]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ChemDVRDefaultInterpolatingWavefunctions\[RightFloor]", \
+"CodeSubsection",
+ Evaluatable->True,
+ CellChangeTimes->{
+  3.724795314403144*^9},ExpressionUUID->"c1c43192-5228-48c1-a154-\
+5550a8659a1b"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "ChemDVRDefaultInterpolatingWavefunctions", "]"}], 
+   "=", "\n", "\t", 
+   RowBox[{"Options", "@", "ChemDVRDefaultGridWavefunctions"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ChemDVRDefaultInterpolatingWavefunctions", "[", "\n", "\t", 
+   RowBox[{
+   "grid_", ",", "\n", "\t", "wfs_", ",", "\n", "\t", "V_", ",", "\n", "\t", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"With", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"wf", "=", 
+      RowBox[{"ChemDVRDefaultGridWavefunctions", "[", 
+       RowBox[{"grid", ",", " ", "wfs", ",", " ", "V", ",", " ", "ops"}], 
+       "]"}]}], "}"}], ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"MatchQ", "[", 
+        RowBox[{
+         RowBox[{"wf", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], ",", " ", "_Rule"}], "]"}], ",", 
+       "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"#", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], "\[Rule]", 
+         RowBox[{"Interpolation", "[", 
+          RowBox[{"#", "[", 
+           RowBox[{"[", "2", "]"}], "]"}], "]"}]}], "&"}], ",", "\n", 
+       "\t\t\t", "Interpolation"}], "\n", "\t\t\t", "]"}], "/@", "wf"}]}], 
+   "\n", "\t\t", 
+   "]"}]}]}], \
+"CodeInput",ExpressionUUID->"f5bdd442-8804-4fca-aaf8-e1b9a10ccdd1"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ExpectationValues\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"efc01f11-cf5f-4c21-8d04-a8606d7de107"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]expectationValue\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"9ed572d6-d637-4c49-899f-855dbd039641"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"expectationValueVec", "[", 
+    RowBox[{"func_", ",", " ", "grid_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Replace", "[", 
+    RowBox[{
+     RowBox[{"func", "@", "grid"}], ",", " ", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"Except", "[", 
+       RowBox[{"_List", "?", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Length", "[", "#", "]"}], "\[Equal]", 
+           RowBox[{"Length", "@", "grid"}]}], "&"}], ")"}]}], "]"}], ":>", 
+      RowBox[{"Map", "[", 
+       RowBox[{"func", ",", " ", "grid"}], "]"}]}]}], "\n", "\t\t", "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"expectationValueVec", "[", 
+    RowBox[{"func_", ",", " ", "grid_", ",", " ", "wf_"}], "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{"Replace", "[", 
+    RowBox[{
+     RowBox[{"func", "[", 
+      RowBox[{"grid", ",", " ", "wf"}], "]"}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"Except", "[", 
+       RowBox[{"_List", "?", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Length", "[", "#", "]"}], "\[Equal]", 
+           RowBox[{"Length", "@", "grid"}]}], "&"}], ")"}]}], "]"}], ":>", 
+      "\n", "\t\t\t", 
+      RowBox[{"MapThread", "[", 
+       RowBox[{"func", ",", " ", 
+        RowBox[{"{", 
+         RowBox[{"grid", ",", " ", "wf"}], "}"}]}], "]"}]}]}], "\n", "\t\t", 
+    "]"}]}], ";"}]}], \
+"CodeInput",ExpressionUUID->"2665326d-472f-419b-9357-edce2395aca5"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"multiplicativeOperatorQ", "[", "func_Function", "]"}], ":=", "\n",
+    "\t", 
+   RowBox[{"!", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"MemberQ", "[", 
+       RowBox[{"func", ",", " ", 
+        RowBox[{"Slot", "[", "2", "]"}], ",", " ", "\[Infinity]"}], "]"}], "||",
+       "\n", "\t\t\t", 
+      RowBox[{"MatchQ", "[", 
+       RowBox[{"func", ",", " ", 
+        RowBox[{
+         RowBox[{"Verbatim", "[", "Function", "]"}], "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"_", ",", " ", "_"}], "}"}], ",", " ", "___"}], "]"}]}], 
+       "]"}]}], ")"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"multiplicativeOperatorQ", "[", "e_", "]"}], ":=", "\n", "\t", 
+   "False"}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"bbb4c4cc-52da-472e-9d6f-c468e1784357"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"expectationValue", "[", "\n", "\t", 
+    RowBox[{
+    "func_Function", ",", " ", "grid_", ",", " ", "wfL_", ",", " ", "wfR_", 
+     ",", "\n", "\t", "multiplicative_"}], "\n", "\t", "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{"wfL", ".", "\n", "\t\t", 
+    RowBox[{"With", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"{", "\n", "\t\t\t\t", 
+       RowBox[{"mult", "=", "\n", "\t\t\t\t\t", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"multiplicative", "===", "Automatic"}], ",", "\n", 
+          "\t\t\t\t\t\t", 
+          RowBox[{"multiplicativeOperatorQ", "[", "func", "]"}], ",", "\n", 
+          "\t\t\t\t\t\t", 
+          RowBox[{"TrueQ", "@", "multiplicative"}]}], "\n", "\t\t\t\t\t\t", 
+         "]"}]}], "\n", "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"!", "mult"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"expectationValue", "[", 
+         RowBox[{"func", ",", " ", "grid", ",", " ", "wfR"}], "]"}], ",", 
+        "\n", "\t\t\t\t", 
+        RowBox[{"wfR", "*", 
+         RowBox[{"expectationValue", "[", 
+          RowBox[{"func", ",", " ", "grid"}], "]"}]}]}], "\n", "\t\t\t\t", 
+       "]"}]}], "\n", "\t\t", "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"expectationValue", "[", 
+   RowBox[{
+    RowBox[{"func", ":", 
+     RowBox[{"Except", "[", "_Function", "]"}]}], ",", " ", "grid_", ",", " ",
+     "wfL_", ",", " ", "wfR_", ",", "\n", "\t", "multiplicative_"}], "\n", 
+   "\t", "]"}], ":=", "\n", "\t", 
+  RowBox[{"wfL", ".", 
+   RowBox[{"Replace", "[", 
+    RowBox[{
+     RowBox[{"expectationValueVec", "[", 
+      RowBox[{"func", ",", " ", "grid", ",", " ", "wfR"}], "]"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"_func", ",", " ", "__"}], "}"}], "\[RuleDelayed]", "\n", 
+       "\t\t\t\t", 
+       RowBox[{"Replace", "[", 
+        RowBox[{
+         RowBox[{"expectationValueVec", "[", 
+          RowBox[{"func", ",", " ", "grid"}], "]"}], ",", "\n", "\t\t\t\t\t", 
+         
+         RowBox[{"{", "\n", "\t\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"_func", ",", " ", "__"}], "}"}], ":>", "\n", 
+            "\t\t\t\t\t\t\t", 
+            RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t\t\t\t\t", 
+             RowBox[{
+             "Automatic", ",", "\n", "\t\t\t\t\t\t\t\t", 
+              "\"\<Operator `` in matrix element calculation didn't \
+evaluate\>\"", ",", "\n", "\t\t\t\t\t\t\t\t", "func"}], "\n", 
+             "\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"l_", "\[RuleDelayed]", 
+            RowBox[{"wfR", "*", "l"}]}]}], "\n", "\t\t\t\t\t\t", "}"}]}], 
+        "\n", "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t", "}"}]}], "\n", "\t\t", 
+    "]"}]}]}]}], \
+"CodeInput",ExpressionUUID->"5103540e-7ba2-422e-89db-a70ab3aa17d5"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]operatorMatrix\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"7deff7a3-bcf2-4b4c-8c91-6aa95b0b89ea"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"operatorMatrix", "[", 
+   RowBox[{
+   "exf_", ",", " ", "grid_", ",", " ", "wfnsL_", ",", " ", "wfnsR_", ",", 
+    " ", "assumeRealSym_", ",", " ", "assumeHerm_", ",", " ", "mult_"}], 
+   "]"}], ":=", "\n", "\t", 
+  RowBox[{"Block", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"mat", "=", 
+       RowBox[{"ConstantArray", "[", 
+        RowBox[{"0.", ",", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Length", "@", "wfnsL"}], ",", " ", 
+           RowBox[{"Length", "@", "wfnsR"}]}], "}"}]}], "]"}]}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"asrs", "=", 
+       RowBox[{"TrueQ", "@", "assumeRealSym"}]}], ",", "\n", "\t\t\t", 
+      RowBox[{"ash", "=", 
+       RowBox[{"TrueQ", "@", "assumeHerm"}]}], ",", "\n", "\t\t\t", 
+      RowBox[{"mo", "=", "mult"}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t", 
+    RowBox[{"Which", "[", "\n", "\t\t", 
+     RowBox[{"asrs", ",", "\n", "\t\t\t", 
+      RowBox[{"Do", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"i", ">", "j"}], ",", " ", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"mat", "[", 
+            RowBox[{"[", 
+             RowBox[{"i", ",", " ", "j"}], "]"}], "]"}], "=", 
+           RowBox[{"mat", "[", 
+            RowBox[{"[", 
+             RowBox[{"j", ",", " ", "i"}], "]"}], "]"}]}], ",", "\n", 
+          "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"mat", "[", 
+            RowBox[{"[", 
+             RowBox[{"i", ",", " ", "j"}], "]"}], "]"}], "=", "\n", 
+           "\t\t\t\t\t\t", 
+           RowBox[{"expectationValue", "[", 
+            RowBox[{"exf", ",", " ", "grid", ",", " ", 
+             RowBox[{"wfnsL", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], ",", " ", 
+             RowBox[{"wfnsR", "[", 
+              RowBox[{"[", "j", "]"}], "]"}], ",", " ", "mo"}], "]"}]}]}], 
+         "\n", "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", " ", 
+          RowBox[{"Length", "@", "wfnsL"}]}], "}"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"j", ",", " ", 
+          RowBox[{"Length", "@", "wfnsR"}]}], "}"}]}], "\n", "\t\t\t\t", 
+       "]"}], ",", "\n", "\t\t", "ash", ",", "\n", "\t\t\t", 
+      RowBox[{"Do", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"i", ">", "j"}], ",", " ", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"mat", "[", 
+            RowBox[{"[", 
+             RowBox[{"i", ",", " ", "j"}], "]"}], "]"}], "=", 
+           RowBox[{"Conjugate", "@", 
+            RowBox[{"mat", "[", 
+             RowBox[{"[", 
+              RowBox[{"j", ",", " ", "i"}], "]"}], "]"}]}]}], ",", "\n", 
+          "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"mat", "[", 
+            RowBox[{"[", 
+             RowBox[{"i", ",", " ", "j"}], "]"}], "]"}], "=", "\n", 
+           "\t\t\t\t\t\t", 
+           RowBox[{"expectationValue", "[", 
+            RowBox[{"exf", ",", " ", "grid", ",", " ", 
+             RowBox[{"wfnsL", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], ",", " ", 
+             RowBox[{"wfnsR", "[", 
+              RowBox[{"[", "j", "]"}], "]"}], ",", " ", "mo"}], "]"}]}]}], 
+         "\n", "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", " ", 
+          RowBox[{"Length", "@", "wfnsL"}]}], "}"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"j", ",", " ", 
+          RowBox[{"Length", "@", "wfnsR"}]}], "}"}]}], "\n", "\t\t\t\t", 
+       "]"}], ",", "\n", "\t\t", "True", ",", "\n", "\t\t\t", 
+      RowBox[{"Do", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"mat", "[", 
+          RowBox[{"[", 
+           RowBox[{"i", ",", " ", "j"}], "]"}], "]"}], "=", "\n", 
+         "\t\t\t\t\t", 
+         RowBox[{"expectationValue", "[", 
+          RowBox[{"exf", ",", " ", "grid", ",", " ", 
+           RowBox[{"wfnsL", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], ",", " ", 
+           RowBox[{"wfnsR", "[", 
+            RowBox[{"[", "j", "]"}], "]"}], ",", " ", "mo"}], "]"}]}], ",", 
+        "\n", "\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", " ", 
+          RowBox[{"Length", "@", "wfnsL"}]}], "}"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"j", ",", " ", 
+          RowBox[{"Length", "@", "wfnsR"}]}], "}"}]}], "\n", "\t\t\t\t", 
+       "]"}]}], "\n", "\t\t", "]"}]}], "\n", "\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"21d0a3f2-2e28-4423-b96a-a57d61de6b7c"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ExpectationValues\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"585d38b7-35dd-4775-9f57-e8dc283a0919"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "ChemWavefunctionsExpectationValues", "]"}], "=", 
+   "\n", "\t", 
+   RowBox[{"{", "\n", "\t\t", 
+    RowBox[{"\"\<MultiplicativeOperator\>\"", "\[Rule]", "Automatic"}], "\n", 
+    "\t\t", "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemWavefunctionsExpectationValues", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"grid_", ",", " ", "wfns_"}], "}"}], ",", "\n", "\t", "evs_", 
+     ",", "\n", "\t", 
+     RowBox[{"ops", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n",
+    "\t", 
+   RowBox[{"With", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"exfns", "=", 
+        RowBox[{"Flatten", "@", 
+         RowBox[{"List", "@", "evs"}]}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"mul", "=", 
+        RowBox[{
+        "OptionValue", "[", "\"\<MultiplicativeOperator\>\"", "]"}]}]}], "\n",
+       "\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"Not", "@", 
+         RowBox[{"ListQ", "@", "evs"}]}], ",", " ", 
+        RowBox[{"Map", "[", "First", "]"}], ",", " ", "Identity"}], "]"}], 
+      "@", "\n", "\t\t\t\t", 
+      RowBox[{"Table", "[", "\n", "\t\t\t\t\t", 
+       RowBox[{
+        RowBox[{"Map", "[", "\n", "\t\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"expectationValue", "[", 
+            RowBox[{
+            "#", ",", " ", "grid", ",", " ", "wf", ",", " ", "wf", ",", " ", 
+             "mul"}], "]"}], "&"}], ",", "\n", "\t\t\t\t\t\t", "exfns"}], 
+         "\n", "\t\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"wf", ",", " ", "wfns"}], "}"}]}], "\n", "\t\t\t\t\t", 
+       "]"}]}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemWavefunctionsOperatorMatrix", "[", "\n", "\t", 
+    RowBox[{
+    "c_ChemWavefunctionsObject", ",", "\n", "\t", "evs_", ",", "\n", "\t", 
+     RowBox[{"ops", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n",
+    "\t", 
+   RowBox[{"ChemWavefunctionsOperatorMatrix", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"c", "[", "\"\<Grid\>\"", "]"}], ",", " ", 
+       RowBox[{"c", "[", "\"\<Wavefunctions\>\"", "]"}]}], "}"}], ",", "\n", 
+     "\t\t", "evs", ",", "\n", "\t\t", "ops"}], "\n", "\t\t", "]"}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"6197b861-13a3-47a9-9458-83610d77158f"]\
+
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]OperatorMatrix\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"94fb205f-85c2-4b69-9b56-98dd420bd472"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "ChemWavefunctionsOperatorMatrix", "]"}], "=", 
+   "\n", "\t", 
+   RowBox[{"Join", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"Options", "@", "ChemWavefunctionsExpectationValues"}], ",", 
+     "\n", "\t\t", 
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"\"\<AssumeSymmetric\>\"", "\[Rule]", "True"}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"\"\<AssumeHermitian\>\"", "\[Rule]", "False"}]}], "\n", 
+      "\t\t\t", "}"}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemWavefunctionsOperatorMatrix", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"grid_", ",", " ", "wfns_"}], "}"}], ",", "\n", "\t", "evs_", 
+     ",", "\n", "\t", 
+     RowBox[{"ops", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n",
+    "\t", 
+   RowBox[{"Module", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"exfns", "=", 
+        RowBox[{"Flatten", "@", 
+         RowBox[{"List", "@", "evs"}]}]}], ",", "\n", "\t\t\t", "els", ",", 
+       "\n", "\t\t\t", "sels", ",", "\n", "\t\t\t", "mat", ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"asrs", "=", 
+        RowBox[{"TrueQ", "@", 
+         RowBox[{"OptionValue", "[", "\"\<AssumeSymmetric\>\"", "]"}]}]}], 
+       ",", "\n", "\t\t\t", 
+       RowBox[{"ash", "=", 
+        RowBox[{"TrueQ", "@", 
+         RowBox[{"OptionValue", "[", "\"\<AssumeHermitian\>\"", "]"}]}]}], 
+       ",", "\n", "\t\t\t", 
+       RowBox[{"mul", "=", 
+        RowBox[{"OptionValue", "[", "\"\<MultiplicativeOperator\>\"", "]"}]}],
+        ",", "\n", "\t\t\t", "exf", ",", "\n", "\t\t\t", "mo"}], "\n", 
+      "\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"!", 
+         RowBox[{"ListQ", "@", "mul"}]}], ",", " ", 
+        RowBox[{"mul", "=", 
+         RowBox[{"ConstantArray", "[", 
+          RowBox[{"mul", ",", " ", 
+           RowBox[{"Length", "@", "exfns"}]}], "]"}]}]}], "]"}], ";", "\n", 
+      "\t\t\t", 
+      RowBox[{"Table", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"exf", "=", 
+          RowBox[{"exfns", "[", 
+           RowBox[{"[", "n", "]"}], "]"}]}], ";", "\n", "\t\t\t\t", 
+         RowBox[{"mo", "=", 
+          RowBox[{"mul", "[", 
+           RowBox[{"[", "n", "]"}], "]"}]}], ";", "\n", "\t\t\t\t", 
+         RowBox[{"mat", "=", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"0.", ",", " ", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Length", "@", "wfns"}], ",", " ", 
+              RowBox[{"Length", "@", "wfns"}]}], "}"}]}], "]"}]}], ";", "\n", 
+         "\t\t\t\t", 
+         RowBox[{"operatorMatrix", "[", 
+          RowBox[{
+          "exf", ",", " ", "grid", ",", " ", "wfns", ",", " ", "wfns", ",", 
+           " ", "asrs", ",", " ", "ash", ",", " ", "mo"}], "]"}]}], ",", "\n",
+         "\t\t\t\t", 
+        RowBox[{"{", 
+         RowBox[{"n", ",", " ", 
+          RowBox[{"Length", "@", "exfns"}]}], "}"}]}], "\n", "\t\t\t\t", 
+       "]"}]}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ChemWavefunctionsOperatorMatrix", "[", "\n", "\t", 
+   RowBox[{
+   "c_ChemWavefunctionsObject", ",", "\n", "\t", "evs_", ",", "\n", "\t", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"ChemWavefunctionsOperatorMatrix", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"c", "[", "\"\<Grid\>\"", "]"}], ",", " ", 
+      RowBox[{"c", "[", "\"\<Wavefunctions\>\"", "]"}]}], "}"}], ",", "\n", 
+    "\t\t", "evs", ",", "\n", "\t\t", "ops"}], "\n", "\t\t", 
+   "]"}]}]}], \
+"CodeInput",ExpressionUUID->"614bc8b0-b43b-47b5-90f7-4963fc7d26bb"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ChemWavefunctionsOperatorMatrixElements\[RightFloor]", \
+"CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"0046c796-c1ff-4266-b61a-93826fef15f5"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "ChemWavefunctionsOperatorMatrixElements", "]"}], 
+   "=", "\n", "\t", 
+   RowBox[{"Options", "@", "ChemWavefunctionsOperatorMatrix"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemWavefunctionsOperatorMatrixElements", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"grid_", ",", " ", "wfns_"}], "}"}], ",", "\n", "\t", 
+     RowBox[{"evs", ":", "\n", "\t\t", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"_", ",", " ", "_"}], "}"}], "->", "_"}], ")"}], "|", "\n",
+         "\t\t", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"_", ",", " ", "_"}], "}"}], "..."}], "}"}], "->", "_"}],
+          ")"}], "|", "\n", "\t\t", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"_", ",", " ", "_"}], "}"}], "..."}], "}"}], "|", 
+              RowBox[{"{", 
+               RowBox[{"_", ",", " ", "_"}], "}"}]}], ")"}], "->", "_"}], 
+           ")"}], ".."}], "}"}]}], ")"}]}], ",", "\n", "\t", 
+     RowBox[{"ops", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n",
+    "\t", 
+   RowBox[{"Module", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"exfns", "=", 
+        RowBox[{"Flatten", "@", 
+         RowBox[{"List", "@", "evs"}]}]}], ",", "\n", "\t\t\t", "els", ",", 
+       "\n", "\t\t\t", "sels", ",", "\n", "\t\t\t", "mat", ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"asrs", "=", 
+        RowBox[{"TrueQ", "@", 
+         RowBox[{"OptionValue", "[", "\"\<AssumeSymmetric\>\"", "]"}]}]}], 
+       ",", "\n", "\t\t\t", 
+       RowBox[{"ash", "=", 
+        RowBox[{"TrueQ", "@", 
+         RowBox[{"OptionValue", "[", "\"\<AssumeHermitian\>\"", "]"}]}]}], 
+       ",", "\n", "\t\t\t", 
+       RowBox[{"mul", "=", 
+        RowBox[{"OptionValue", "[", "\"\<MultiplicativeOperator\>\"", "]"}]}],
+        ",", "\n", "\t\t\t", "exf", ",", "\n", "\t\t\t", "mo", ",", "\n", 
+       "\t\t\t", "wfL", ",", "\n", "\t\t\t", "wfR", ",", "\n", "\t\t\t", 
+       "res"}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"sels", ",", " ", "exfns"}], "}"}], "=", 
+       RowBox[{"Transpose", "[", 
+        RowBox[{"List", "@@@", "exfns"}], "]"}]}], ";", "\n", "\t\t", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "get", " ", "a", " ", "list", " ", "of", " ", "LHS", " ", 
+        "wavefunctions", " ", "and", " ", "RHS", " ", "wavefunctions", " ", 
+        "for", " ", "each", " ", "set", " ", "of", " ", "expectation", " ", 
+        "value", " ", "functions"}], " ", "*)"}], "\n", "\t\t", 
+      RowBox[{"wfL", "=", "\n", "\t\t\t", 
+       RowBox[{"Map", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Map", "[", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Part", "[", 
+              RowBox[{"wfns", ",", " ", "#"}], "]"}], "&"}], ",", "\n", 
+            "\t\t\t\t\t", 
+            RowBox[{"Replace", "[", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Replace", "[", 
+                RowBox[{"#", ",", " ", 
+                 RowBox[{
+                  RowBox[{"k", ":", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Except", "[", "_List", "]"}], ",", " ", "_"}], 
+                    "}"}]}], "\[RuleDelayed]", 
+                  RowBox[{"{", "k", "}"}]}]}], "]"}], "[", 
+               RowBox[{"[", 
+                RowBox[{"All", ",", " ", "1"}], "]"}], "]"}], ",", " ", "\n", 
+              "\t\t\t\t\t\t", 
+              RowBox[{"i_Integer", "\[RuleDelayed]", 
+               RowBox[{"{", "i", "}"}]}], ",", "\n", "\t\t\t\t\t\t", "1"}], 
+             "\n", "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "]"}], "&"}], 
+         ",", "\n", "\t\t\t\t", "sels"}], "\n", "\t\t\t\t", "]"}]}], ";", 
+      "\n", "\t\t", 
+      RowBox[{"wfR", "=", "\n", "\t\t\t", 
+       RowBox[{"Map", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Map", "[", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Part", "[", 
+              RowBox[{"wfns", ",", " ", "#"}], "]"}], "&"}], ",", "\n", 
+            "\t\t\t\t\t", 
+            RowBox[{"Replace", "[", "\n", "\t\t\t\t\t\t", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Replace", "[", 
+                RowBox[{"#", ",", " ", 
+                 RowBox[{
+                  RowBox[{"k", ":", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Except", "[", "_List", "]"}], ",", " ", "_"}], 
+                    "}"}]}], "\[RuleDelayed]", 
+                  RowBox[{"{", "k", "}"}]}]}], "]"}], "[", 
+               RowBox[{"[", 
+                RowBox[{"All", ",", " ", "2"}], "]"}], "]"}], ",", " ", "\n", 
+              "\t\t\t\t\t\t", 
+              RowBox[{"i_Integer", "\[RuleDelayed]", 
+               RowBox[{"{", "i", "}"}]}], ",", "\n", "\t\t\t\t\t\t", "1"}], 
+             "\n", "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "]"}], "&"}], 
+         ",", "\n", "\t\t\t\t", "sels"}], "\n", "\t\t\t\t", "]"}]}], ";", 
+      "\n", "\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"!", 
+         RowBox[{"ListQ", "@", "mul"}]}], ",", " ", 
+        RowBox[{"mul", "=", 
+         RowBox[{"ConstantArray", "[", 
+          RowBox[{"mul", ",", " ", 
+           RowBox[{"Length", "@", "exfns"}]}], "]"}]}]}], "]"}], ";", "\n", 
+      "\t\t", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{
+        "Thread", " ", "over", " ", "the", " ", "right", " ", "and", " ", 
+         "left", " ", "wavefunctions"}], ",", " ", 
+        RowBox[{"the", " ", "operators"}], ",", " ", 
+        RowBox[{"and", " ", "the", " ", "multiplicativity"}]}], " ", "*)"}], 
+      "\n", "\t\t", 
+      RowBox[{"res", "=", "\n", "\t\t\t", 
+       RowBox[{"MapThread", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"With", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"l", "=", "#"}], ",", " ", 
+              RowBox[{"r", "=", "#2"}], ",", " ", 
+              RowBox[{"m", "=", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"ListQ", "@", "#3"}], "&&", 
+                  RowBox[{"!", 
+                   RowBox[{"ListQ", "@", "#4"}]}]}], ",", " ", 
+                 RowBox[{"ConstantArray", "[", 
+                  RowBox[{"#4", ",", " ", 
+                   RowBox[{"Length", "@", "#3"}]}], "]"}], ",", " ", "#4"}], 
+                "]"}]}]}], "}"}], ",", "\n", "\t", "\t\t\t\t", 
+            RowBox[{"(*", " ", 
+             RowBox[{
+             "Thread", " ", "over", " ", "the", " ", "operators", " ", "and", 
+              " ", "multiplicativity"}], " ", "*)"}], "\n", "\t", "\t\t\t\t", 
+            
+            RowBox[{
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Length", "@", "#3"}], "\[Equal]", "1"}], ",", " ", 
+               "First", ",", " ", "Identity"}], "]"}], "@", "\n", "\t", 
+             "\t\t\t\t\t", 
+             RowBox[{"MapThread", "[", "\n", "\t", "\t\t\t\t\t\t", 
+              RowBox[{
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Length", "@", "wfL"}], ">", "1"}], "||", 
+                  RowBox[{
+                   RowBox[{"Length", "@", "wfR"}], ">", "1"}]}], ",", "\n", 
+                 "\t", "\t", "\t\t\t\t\t\t", 
+                 RowBox[{"operatorMatrix", "[", 
+                  RowBox[{
+                  "exf", ",", " ", "grid", ",", " ", "wfL", ",", " ", "wfR", 
+                   ",", " ", "asrs", ",", " ", "ash", ",", " ", "mo"}], "]"}],
+                  ",", "\n", "\t", "\t", "\t\t\t\t\t\t", 
+                 RowBox[{"expectationValue", "[", 
+                  RowBox[{"exf", ",", " ", "grid", ",", " ", 
+                   RowBox[{"wfL", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", " ", 
+                   RowBox[{"wfR", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", " ", "mo"}], "]"}]}],
+                 "\n", "\t", "\t", "\t\t\t\t\t\t", "]"}], ",", "\n", "\t", 
+               "\t", "\t\t\t\t\t", 
+               RowBox[{"{", "\n", "\t", "\t", "\t\t\t\t\t\t", 
+                RowBox[{"#3", ",", "\n", "\t", "\t", "\t\t\t\t\t\t", "m"}], 
+                "\n", "\t", "\t", "\t\t\t\t\t\t", "}"}]}], "\n", "\t", "\t", 
+              "\t\t\t\t\t", "]"}]}]}], "\n", "\t", "\t\t\t\t", "]"}], "&"}], 
+         ",", "\n", "\t", "\t\t\t", 
+         RowBox[{"{", "\n", "\t", "\t\t\t\t", 
+          RowBox[{
+          "wfL", ",", "\n", "\t", "\t\t\t\t", "wfR", ",", "\n", "\t", 
+           "\t\t\t\t", "exfns", ",", "\n", "\t", "\t\t\t\t", "mul"}], "\n", 
+          "\t", "\t\t\t\t", "}"}]}], "\n", "\t", "\t\t\t", "]"}]}], ";", "\n",
+       "\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "@", "wfL"}], "\[Equal]", "1"}], ",", " ", 
+        RowBox[{"res", "[", 
+         RowBox[{"[", "1", "]"}], "]"}], ",", " ", "res"}], "]"}]}]}], "\n", 
+    "\t\t", "]"}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"6478be6f-2874-4f9d-b30e-4e064a7cff95"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemWavefunctionsOperatorMatrixElements", "[", "\n", "\t", 
+   RowBox[{"c_ChemWavefunctionsObject", ",", "\n", "\t", 
+    RowBox[{"evs", ":", "\n", "\t\t", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"_", ",", " ", "_"}], "}"}], "->", "_"}], ")"}], "|", "\n", 
+       "\t\t", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"_", ",", " ", "_"}], "}"}], "..."}], "}"}], "->", "_"}], 
+        ")"}], "|", "\n", "\t\t", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"_", ",", " ", "_"}], "}"}], "..."}], "}"}], "|", 
+             RowBox[{"{", 
+              RowBox[{"_", ",", " ", "_"}], "}"}]}], ")"}], "->", "_"}], 
+          ")"}], ".."}], "}"}]}], ")"}]}], ",", "\n", "\t", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"ChemWavefunctionsOperatorMatrixElements", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"c", "[", "\"\<Grid\>\"", "]"}], ",", " ", 
+      RowBox[{"c", "[", "\"\<Wavefunctions\>\"", "]"}]}], "}"}], ",", "\n", 
+    "\t\t", "evs", ",", "\n", "\t\t", "ops"}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"be733652-5ad6-4d4a-9401-ec7b8fb3e447"]
+}, Closed]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"07b32dc5-8759-49c0-8fd1-\
+21dac08e936a"]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"9b890501-c575-45aa-bf6b-\
+4a602a09f246"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{60, Automatic}, {44, Automatic}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

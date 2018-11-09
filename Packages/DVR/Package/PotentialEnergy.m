@@ -413,32 +413,40 @@ iChemDVRDefaultPotentialFunction[e_, ___]:=
 
 Options[ChemDVRDefaultPotentialEnergyElementFunction]=
   {
-    "PotentialFunction"->Automatic,
-    Function->Automatic
+    "PotentialFunction"->Automatic(*,
+		Function\[Rule]Automatic*)
     };
 ChemDVRDefaultPotentialEnergyElementFunction[ops:OptionsPattern[]]:=
-  Replace[
-    iChemDVRDefaultPotentialFunction[
+  iChemDVRDefaultPotentialFunction[
       Lookup[Flatten@{ops}, "PotentialFunction", 
         Lookup[
           Options[ChemDVRDefaultPotentialEnergyElementFunction], 
           "PotentialFunction"
           ]
         ]
-      ],
-    Except[
-      _Function|_InterpolatingFunction|
-      _CompiledFunction|_Symbol?(Length[DownValues[#]>0]&)
-      ]:>
-      iChemDVRDefaultPotentialFunction[
-        Lookup[Flatten@{ops}, Function, 
-          Lookup[
-            Options[ChemDVRDefaultPotentialEnergyElementFunction], 
-            Function
-            ]
-          ]
-        ]
-    ]
+      ]
+      (*Replace[
+		iChemDVRDefaultPotentialFunction[
+			Lookup[Flatten@{ops}, "PotentialFunction", 
+				Lookup[
+					Options[ChemDVRDefaultPotentialEnergyElementFunction], 
+					"PotentialFunction"
+					]
+				]
+			],
+		Except[
+			_Function|_InterpolatingFunction|
+			_CompiledFunction|_Symbol?(Length[DownValues[#]>0]&)
+			]:>
+			iChemDVRDefaultPotentialFunction[
+				Lookup[Flatten@{ops}, Function, 
+					Lookup[
+						Options[ChemDVRDefaultPotentialEnergyElementFunction], 
+						Function
+						]
+					]
+				]
+		]*)
 
 
 (* ::Subsubsection::Closed:: *)

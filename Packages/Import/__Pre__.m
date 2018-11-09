@@ -346,4 +346,83 @@ If[!TrueQ[`Private`$ImportRegistered["GaussianLog"]],
   ];
 
 
+(* ::Subsubsection::Closed:: *)
+(*NWChemOut*)
+
+
+
+`Private`$NWOKS=
+  Join[
+    {
+      "StartDateTime",
+      "AtomPositions",
+      "CartesianCoordinates",
+      "CartesianCoordinateVectors",
+      "MullikenCharges",
+      "MultipoleMoments",
+      "DipoleMoments",
+      "QuadrupoleMoments",
+      "OctapoleMoments",
+      "HexadecapoleMoments",
+      "HartreeFockEnergies",
+      "MP2Energies",
+      "InputZMatrix",
+      "InputZMatrixVariables",
+      "ZMatrices",
+      "ZMatrixCoordinates",
+      "ZMatrixCoordinateVectors",
+      "ScanTable",
+      "OptimizationScan",
+      "Blurb",
+      "ComputerTimeElapsed",
+      "EndDateTime"
+      },
+    {
+      "ScanQuantityArray",
+      "HartreeFockEnergyQuantityArray",
+      "MP2EnergyQuantityArray",
+      "ScanCoordinateQuantityArray",
+      "CartesianCoordinateQuantityArray",
+      "ZMatrixCoordinateQuantityArray",
+      "MultipoleQuantityArray",
+      "DipoleQuantityArray",
+      "OptimizationScanQuantityArray",
+      "OptimizationScanZMatrices"
+      }
+    ]
+
+
+If[!TrueQ[`Private`$ImportRegistered["NWChemOutput"]],
+  Map[
+    ImportExport`RegisterImport[
+      #,
+      Join[
+        Map[
+          Function[
+            With[{`Private`elname=#},
+              `Private`elname:>
+                Function[{`Private`elname->ImportNWChemOut[#, `Private`elname]}]
+              ]
+            ],
+            `Private`$GLKS
+          ],
+        {
+          "Elements":>
+            Function[
+              {
+                "Elements"->
+                  `Private`$GLKS
+                }
+              ],
+          ImportNWChemOut
+          }
+        ],
+      "FunctionChannels"->{"Streams"}
+      ]&,
+    {"NWChemOutput"}
+    ];
+  `Private`$ImportRegistered["NWChemOutput"]=True
+  ];
+
+
 

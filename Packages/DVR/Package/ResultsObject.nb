@@ -1,0 +1,181 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["\[LeftCeiling]DVR Results Object\[RightFloor]", "CodeSection",
+ Evaluatable->True,ExpressionUUID->"c53a16d2-e338-4337-96a0-1a1051ce7185"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRResultsObjectQ", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChemDVRResultsModify", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"NewDVRResultsObject", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"a4215cbd-0dde-4ba0-9b70-35eb155fe6ce"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"eb1d7e10-f3ca-44af-a40a-\
+46e42b1adc0b"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Registration\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"d1d9943f-a8f8-4e40-a62b-0894fe9af65a"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]keyTypeMap\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"503226dc-0b8d-4c1b-9345-f1ee356ab5f0"],
+
+Cell[BoxData[
+ RowBox[{"packedSquareMatrixQ", "=", "\n", "\t", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Developer`PackedArrayQ", "[", "#", "]"}], "&&", "\n", "\t\t", 
+    "SquareMatrixQ", "&&", "\n", "\t\t", 
+    RowBox[{"MatrixQ", "[", 
+     RowBox[{"#", ",", " ", "Internal`RealValuedNumericQ"}], "]"}]}], 
+   "&"}]}]], \
+"CodeInput",ExpressionUUID->"dcb945d1-0aab-416e-8294-1a4830741861"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$keyTypeMap", "=", "\n", "\t", 
+   RowBox[{"<|", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"\"\<Object\>\"", "\[Rule]", "_ChemDVRObject"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"\"\<Grid\>\"", "\[Rule]", 
+      RowBox[{"_List", "?", "Developer`PackedArrayQ"}]}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<Transformation\>\"", "->", 
+      RowBox[{"_List", "?", "packedSquareMatrixQ"}]}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<KineticEnergy\>\"", "\[Rule]", 
+      RowBox[{"_List", "?", "packedSquareMatrixQ"}]}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<PotentialEnergy\>\"", "->", 
+      RowBox[{"_List", "?", "packedSquareMatrixQ"}]}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<Wavefunctions\>\"", "\[Rule]", 
+      RowBox[{"_ChemWavefunctionsObject", "?", "ChemWavefunctionsObjectQ"}]}],
+      ",", "\n", "\t\t", 
+     RowBox[{"\"\<Extensions\>\"", "\[Rule]", 
+      RowBox[{"_Association", "?", "AssociationQ"}]}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<Options\>\"", "\[Rule]", 
+      RowBox[{"_Association", "?", "AssociationQ"}]}]}], "\n", "\t\t", 
+    "|>"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"c334fa09-5d97-41d7-a2f9-ba135d55f408"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]validateResults\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"c90aad33-3a54-458e-b8ba-80c71b6161c9"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"validateDVRResults", "[", "a_Association", "]"}], ":=", "\n", "\t", 
+  RowBox[{"AllTrue", "[", 
+   RowBox[{
+    RowBox[{"Keys", "@", "$keyTypeMap"}], ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"MatchQ", "[", 
+      RowBox[{
+       RowBox[{"a", "[", "#", "]"}], ",", " ", 
+       RowBox[{"None", "|", 
+        RowBox[{"$keyTypeMap", "[", "#", "]"}]}]}], "]"}], "&"}]}], "\n", 
+   "\t\t", "]"}]}]], \
+"CodeInput",ExpressionUUID->"94240285-1ea5-479d-b339-11a665096cc1"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]NewDVRResultsObject\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"7fb1dd2f-dc31-406e-8d67-460a3dcd19bc"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"NewDVRResultsObject", "[", 
+    RowBox[{"a", ":", "_Association", ":", 
+     RowBox[{"<|", "|>"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Join", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"AssociationMap", "[", 
+      RowBox[{"None", ",", " ", 
+       RowBox[{"Keys", "@", "$keyTypeMap"}]}], "]"}], ",", "\n", "\t\t", 
+     "a"}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"42090999-3fc4-43be-97c4-ec11a2b100b8"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ConstructDVRResults\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"0af182a3-74d4-4b3a-8491-b7e5fcfbcae2"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+   "ConstructDVRResults", "[", "\n", "\t", "cache_Association", "\n", "\t", 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{"validateDVRResults", "[", "cache", "]"}], ",", "\n", "\t\t", 
+     "cache", ",", "\n", "\t\t", 
+     RowBox[{"<|", 
+      RowBox[{"$Failed", "\[Rule]", "True"}], "|>"}]}], " ", 
+    RowBox[{"(*", " ", 
+     RowBox[{
+     "requires", " ", "Association", " ", "return", " ", "to", " ", "throw", 
+      " ", "the", " ", "error"}], " ", "*)"}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"afff2841-224c-40ae-a75d-28dd471377f2"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ChemDVRResultsObject\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"182763fe-b0e0-4761-a91f-047d343cf515"],
+
+Cell[BoxData[
+ RowBox[{"RegisterInterface", "[", "\n", "\t", 
+  RowBox[{"ChemDVRResultsObject", ",", "\n", "\t", 
+   RowBox[{"Keys", "@", "$keyTypeMap"}], ",", "\n", "\t", 
+   RowBox[{
+   "\"\<Validator\>\"", "\[Rule]", "\n", "\t\t", "ChemDVRResultsObjectQ"}], 
+   ",", "\n", "\t", 
+   RowBox[{
+   "\"\<Constructor\>\"", "\[Rule]", "\n", "\t\t", "ConstructDVRResults"}], 
+   ",", "\n", "\t", 
+   RowBox[{"\"\<AccessorFunctions\>\"", "\[Rule]", "Automatic"}], ",", "\n", 
+   "\t", 
+   RowBox[{"\"\<MutationFunctions\>\"", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"\"\<Keys\>\"", ",", " ", "\"\<Parts\>\""}], "}"}]}]}], "\n", 
+  "\t", "]"}]], \
+"CodeInput",ExpressionUUID->"6262eacb-740f-4d2c-a360-4ea2bb9e7c17"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"07b32dc5-8759-49c0-8fd1-\
+21dac08e936a"]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"9b890501-c575-45aa-bf6b-\
+4a602a09f246"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

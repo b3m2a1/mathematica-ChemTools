@@ -1067,61 +1067,73 @@ Cell[BoxData[{
    "Options", "[", "ChemDVRDefaultPotentialEnergyElementFunction", "]"}], "=",
     "\n", "\t", 
    RowBox[{"{", "\n", "\t\t", 
-    RowBox[{
-     RowBox[{"\"\<PotentialFunction\>\"", "\[Rule]", "Automatic"}], ",", "\n",
-      "\t\t", 
-     RowBox[{"Function", "\[Rule]", "Automatic"}]}], "\n", "\t\t", "}"}]}], 
-  ";"}], "\n", 
+    RowBox[{"\"\<PotentialFunction\>\"", "\[Rule]", "Automatic"}], 
+    RowBox[{"(*", 
+     RowBox[{",", "\n", "\t\t", 
+      RowBox[{"Function", "\[Rule]", "Automatic"}]}], "*)"}], "\n", "\t\t", 
+    "}"}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{"ChemDVRDefaultPotentialEnergyElementFunction", "[", 
    RowBox[{"ops", ":", 
     RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", "\n", "\t", 
-  RowBox[{"Replace", "[", "\n", "\t\t", 
-   RowBox[{
-    RowBox[{"iChemDVRDefaultPotentialFunction", "[", "\n", "\t", "\t\t", 
-     RowBox[{"Lookup", "[", 
-      RowBox[{
-       RowBox[{"Flatten", "@", 
-        RowBox[{"{", "ops", "}"}]}], ",", " ", "\"\<PotentialFunction\>\"", 
-       ",", " ", "\n", "\t\t\t\t", 
-       RowBox[{"Lookup", "[", "\n", "\t\t\t\t\t", 
-        RowBox[{
-         RowBox[{
-         "Options", "[", "ChemDVRDefaultPotentialEnergyElementFunction", 
-          "]"}], ",", " ", "\n", "\t\t\t\t\t", "\"\<PotentialFunction\>\""}], 
-        "\n", "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}], "\n", "\t\t\t", 
-     "]"}], ",", "\n", "\t", "\t", 
+  RowBox[{"iChemDVRDefaultPotentialFunction", "[", "\n", "\t\t\t", 
+   RowBox[{"Lookup", "[", 
     RowBox[{
-     RowBox[{"Except", "[", "\n", "\t", "\t\t", 
+     RowBox[{"Flatten", "@", 
+      RowBox[{"{", "ops", "}"}]}], ",", " ", "\"\<PotentialFunction\>\"", ",",
+      " ", "\n", "\t\t\t\t", 
+     RowBox[{"Lookup", "[", "\n", "\t\t\t\t\t", 
       RowBox[{
-      "_Function", "|", "_InterpolatingFunction", "|", "\n", "\t", "\t\t", 
-       "_CompiledFunction", "|", 
-       RowBox[{"_Symbol", "?", 
-        RowBox[{"(", 
-         RowBox[{
-          RowBox[{"Length", "[", 
-           RowBox[{
-            RowBox[{"DownValues", "[", "#", "]"}], ">", "0"}], "]"}], "&"}], 
-         ")"}]}]}], "\n", "\t", "\t\t", "]"}], ":>", "\n", "\t", "\t\t", 
-     RowBox[{"iChemDVRDefaultPotentialFunction", "[", "\n", "\t", "\t\t\t", 
+       RowBox[{
+       "Options", "[", "ChemDVRDefaultPotentialEnergyElementFunction", "]"}], 
+       ",", " ", "\n", "\t\t\t\t\t", "\"\<PotentialFunction\>\""}], "\n", 
+      "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}], "\n", "\t\t\t", 
+   "]"}]}], "\n", 
+ RowBox[{"\t\t\t", 
+  RowBox[{"(*", 
+   RowBox[{"Replace", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"iChemDVRDefaultPotentialFunction", "[", "\n", "\t", "\t\t", 
       RowBox[{"Lookup", "[", 
        RowBox[{
         RowBox[{"Flatten", "@", 
-         RowBox[{"{", "ops", "}"}]}], ",", " ", "Function", ",", " ", "\n", 
-        "\t\t\t\t\t", 
-        RowBox[{"Lookup", "[", "\n", "\t\t\t\t\t\t", 
+         RowBox[{"{", "ops", "}"}]}], ",", " ", "\"\<PotentialFunction\>\"", 
+        ",", " ", "\n", "\t\t\t\t", 
+        RowBox[{"Lookup", "[", "\n", "\t\t\t\t\t", 
          RowBox[{
           RowBox[{
           "Options", "[", "ChemDVRDefaultPotentialEnergyElementFunction", 
-           "]"}], ",", " ", "\n", "\t\t\t\t\t\t", "Function"}], "\n", 
-         "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "]"}], "\n", "\t\t\t\t",
-       "]"}]}]}], "\n", "\t\t", "]"}]}]}], "CodeInput",
- CellChangeTimes->{{3.734908317238635*^9, 3.734908361515026*^9}, {
-  3.734908435402933*^9, 3.7349084542005167`*^9}, {3.73515513149615*^9, 
-  3.735155137256124*^9}, {3.735227978126156*^9, 
-  3.735227996091238*^9}},ExpressionUUID->"511a14bd-a59e-4f5d-8e02-\
-6542dd53df3e"]
-}, Closed]],
+           "]"}], ",", " ", "\n", "\t\t\t\t\t", "\"\<PotentialFunction\>\""}],
+          "\n", "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}], "\n", 
+      "\t\t\t", "]"}], ",", "\n", "\t", "\t", 
+     RowBox[{
+      RowBox[{"Except", "[", "\n", "\t", "\t\t", 
+       RowBox[{
+       "_Function", "|", "_InterpolatingFunction", "|", "\n", "\t", "\t\t", 
+        "_CompiledFunction", "|", 
+        RowBox[{"_Symbol", "?", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"Length", "[", 
+            RowBox[{
+             RowBox[{"DownValues", "[", "#", "]"}], ">", "0"}], "]"}], "&"}], 
+          ")"}]}]}], "\n", "\t", "\t\t", "]"}], ":>", "\n", "\t", "\t\t", 
+      RowBox[{"iChemDVRDefaultPotentialFunction", "[", "\n", "\t", "\t\t\t", 
+       RowBox[{"Lookup", "[", 
+        RowBox[{
+         RowBox[{"Flatten", "@", 
+          RowBox[{"{", "ops", "}"}]}], ",", " ", "Function", ",", " ", "\n", 
+         "\t\t\t\t\t", 
+         RowBox[{"Lookup", "[", "\n", "\t\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{
+           "Options", "[", "ChemDVRDefaultPotentialEnergyElementFunction", 
+            "]"}], ",", " ", "\n", "\t\t\t\t\t\t", "Function"}], "\n", 
+          "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", "]"}], "\n", 
+       "\t\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}], 
+   "*)"}]}]}], \
+"CodeInput",ExpressionUUID->"511a14bd-a59e-4f5d-8e02-6542dd53df3e"]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -1191,7 +1203,7 @@ gridpoints\>\"", ",", "\n", "\t\t\t\t",
        "]"}]}], "\n", "\t", "\t\t", "]"}]}], "\n", "\t", "\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"6a62e11a-598c-4ddb-8df0-f0fad297a992"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1463,8 +1475,8 @@ b05a35acf80d"]
 Cell[BoxData[
  RowBox[{
   RowBox[{"End", "[", "]"}], 
-  ";"}]], "InputSection",ExpressionUUID->"fdeebcf6-8c06-4eff-91a0-\
-04c994bffda0"]
+  ";"}]], \
+"InputSection",ExpressionUUID->"fdeebcf6-8c06-4eff-91a0-04c994bffda0"]
 }, Open  ]],
 
 Cell["", "SectionSeparator",ExpressionUUID->"9009c70d-1aad-415c-9701-\
