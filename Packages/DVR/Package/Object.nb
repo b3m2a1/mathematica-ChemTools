@@ -1493,7 +1493,7 @@ Cell[BoxData[
     RowBox[{
      RowBox[{"obj", "[", "\"\<Object\>\"", "]"}], ",", " ", "ops"}], "]"}]}], 
   ";"}]], "CodeInput",ExpressionUUID->"4b2c6748-1f42-4e50-9909-f355c60f20cc"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -1680,7 +1680,7 @@ Cell[BoxData[
      RowBox[{"obj", "[", "\"\<Grid\>\"", "]"}], ",", "\n", "\t\t", "ops"}], 
     "\n", "\t\t", "]"}]}], 
   ";"}]], "CodeInput",ExpressionUUID->"f9fa7966-377c-4b9d-a5c5-c4985d268c10"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -2142,23 +2142,19 @@ Cell["\[LeftCeiling]New Version\[RightFloor]", "CodeSubsubsubsection",
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{
-  "ChemDVRPotentialOptimization", "[", "\n", "\t", "obj_ChemDVRResultsObject",
-    "\n", "\t", "]"}], ":=", "\n", "\t", 
+  RowBox[{"ChemDVRPotentialOptimization", "[", "\n", "\t", 
+   RowBox[{"obj_ChemDVRResultsObject", ",", "\n", "\t", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
+  "\t", 
   RowBox[{"With", "[", "\n", "\t\t", 
    RowBox[{
     RowBox[{"{", "\n", "\t\t\t", 
-     RowBox[{
-      RowBox[{"po", "=", 
-       RowBox[{"ChemDVRGet", "[", 
-        RowBox[{
-         RowBox[{"obj", "[", "\"\<Object\>\"", "]"}], ",", "  ", "$dvrpo"}], 
-        "]"}]}], ",", "\n", "\t\t\t", 
-      RowBox[{"ops", "=", 
-       RowBox[{"Sequence", "@@", 
-        RowBox[{"Normal", "@", 
-         RowBox[{"obj", "[", "\"\<RuntimeOptions\>\"", "]"}]}]}]}]}], "\n", 
-     "\t\t\t", "}"}], ",", "\n", "\t\t", 
+     RowBox[{"po", "=", 
+      RowBox[{"ChemDVRGet", "[", 
+       RowBox[{
+        RowBox[{"obj", "[", "\"\<Object\>\"", "]"}], ",", "  ", "$dvrpo"}], 
+       "]"}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
     RowBox[{"po", "[", 
      RowBox[{
       RowBox[{"obj", "[", "\"\<Grid\>\"", "]"}], ",", " ", 
@@ -2217,6 +2213,43 @@ Cell[BoxData[
   "Clear"}]], \
 "CodeInput",ExpressionUUID->"4d8eb2ac-47dd-4507-ac83-d8072a701113"],
 
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]V2\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"54436346-cdc9-4cf7-bf33-1b0a6248c309"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDVRGuessWavefunctions", "[", "\n", "\t", 
+   RowBox[{
+    RowBox[{"res", ":", "_ChemDVRResultsObject"}], ",", "\n", "\t", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"With", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"wf", "=", 
+      RowBox[{"ChemDVRGet", "[", 
+       RowBox[{
+        RowBox[{"res", "[", "\"\<Object\>\"", "]"}], ",", "  ", "$dvrguwf"}], 
+       "]"}]}], "}"}], ",", "\n", "\t\t", 
+    RowBox[{"wf", "[", 
+     RowBox[{
+      RowBox[{"res", "[", "\"\<Grid\>\"", "]"}], ",", " ", 
+      RowBox[{"FilterRules", "[", 
+       RowBox[{
+        RowBox[{"{", "ops", "}"}], ",", " ", 
+        RowBox[{"Options", "@", "wf"}]}], "]"}]}], "]"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"b7b58d42-d30e-4f20-a226-c8717796c1c2"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]V1\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"5d37b5b6-88a5-4ae5-8902-557764b1c93d"],
+
 Cell[BoxData[
  RowBox[{
   RowBox[{"ChemDVRGuessWavefunctions", "[", "\n", "\t", 
@@ -2246,7 +2279,8 @@ Cell[BoxData[
    "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"e0e056bc-1f13-4b16-9570-eab65e45db4a"]
-}, Closed]],
+}, Closed]]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -2258,6 +2292,44 @@ Cell["\[LeftCeiling]GridPotentialEnergy\[RightFloor]", "CodeSubsubsection",
   3.734897576857779*^9, 3.734897578149321*^9}, {3.734897627418446*^9, 
   3.734897627746806*^9}},ExpressionUUID->"c913f137-db91-4fc8-8152-\
 92eb06eb27d9"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]V2\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"93072f73-11c1-4caa-a7f1-b45867385024"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDVRGridPotentialEnergy", "[", "\n", "\t", 
+   RowBox[{
+    RowBox[{"res", ":", "_ChemDVRResultsObject"}], ",", "\n", "\t", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"gp", "=", 
+      RowBox[{"ChemDVRGet", "[", 
+       RowBox[{"obj", ",", " ", "$dvrgp"}], "]"}]}], "}"}], ",", "\n", "\t\t", 
+    RowBox[{"gp", "[", 
+     RowBox[{
+      RowBox[{"res", "[", "\"\<Grid\>\"", "]"}], ",", " ", 
+      RowBox[{"res", "[", "\"\<PotentialEnergy\>\"", "]"}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"FilterRules", "[", 
+       RowBox[{
+        RowBox[{"{", "ops", "}"}], ",", " ", 
+        RowBox[{"Options", "@", "gp"}]}], "]"}]}], "\n", "\t\t\t", "]"}]}], 
+   "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"d0262949-4aaa-4023-b580-b30d66b528be"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]V1\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"a8e8396b-5f48-47b9-89fd-bea8d2e9ef85"],
 
 Cell[BoxData[
  RowBox[{
@@ -2311,7 +2383,8 @@ Cell[BoxData[
    3.734897624621635*^9}, 3.735137584731188*^9, {3.735138296174987*^9, 
    3.7351382972429733`*^9}},ExpressionUUID->"3a7fb0b9-091b-4f38-b180-\
 2b41986353a3"]
-}, Closed]],
+}, Closed]]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -2320,6 +2393,43 @@ Cell["\[LeftCeiling]Wavefunctions\[RightFloor]", "CodeSubsubsection",
  CellChangeTimes->{{3.6992016390438643`*^9, 
   3.699201641474523*^9}},ExpressionUUID->"5a53e8b3-32a8-4855-a3a7-\
 79924f81f362"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]V2\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"93d2b5af-042e-4f17-80e0-3557c93c457e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDVRWavefunctions", "[", 
+   RowBox[{"res_ChemDVRResultsObject", ",", " ", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"With", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"ke", "=", 
+       RowBox[{"res", "[", "\"\<KineticEnergy\>\"", "]"}]}], ",", "\n", "\t", 
+      "\t\t", 
+      RowBox[{"pe", "=", 
+       RowBox[{"res", "[", "\"\<PotentialEnergy\>\"", "]"}]}], ",", "\n", 
+      "\t", "\t\t", 
+      RowBox[{"wf", "=", 
+       RowBox[{"ChemDVRGet", "[", 
+        RowBox[{
+         RowBox[{"res", "[", "\"\<Object\>\"", "]"}], ",", " ", "$dvrwf"}], 
+        "]"}]}]}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+    RowBox[{"wf", "[", 
+     RowBox[{"ke", ",", " ", "pe", ",", " ", "ops"}], "]"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"049fcb2b-5e98-4eab-9ce4-fda2cabbd131"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]V1\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"f670a95d-befa-4c15-acfe-a5a6a1cf7ba0"],
 
 Cell[BoxData[
  RowBox[{
@@ -2460,7 +2570,8 @@ Cell[BoxData[
    3.72443590889896*^9, {3.7317862799776487`*^9, 
    3.7317862878036222`*^9}},ExpressionUUID->"57a776b8-2551-470f-b838-\
 ee4d541c9402"]
-}, Closed]],
+}, Closed]]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -2470,6 +2581,43 @@ Cell["\[LeftCeiling]GridWavefunctions\[RightFloor]", "CodeSubsubsection",
    3.716044651921208*^9, 3.716044652615678*^9}, 
    3.718049011651156*^9},ExpressionUUID->"aea49a8f-aa11-4fde-b7c1-\
 5dba5ec136e6"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]V2\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"0d19ce27-f7c8-4654-8ce4-89225fef643e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDVRGridWavefunctions", "[", 
+   RowBox[{"res_ChemDVRResultsObject", ",", " ", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"gridwf", "=", 
+      RowBox[{"ChemDVRGet", "[", 
+       RowBox[{
+        RowBox[{"res", "[", "\"\<Object\>\"", "]"}], ",", " ", "$dvrgrwf"}], 
+       "]"}]}], "}"}], ",", "\n", "\t\t", 
+    RowBox[{"gridwf", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"res", "[", "\"\<Grid\>\"", "]"}], ",", "\n", "\t\t\t", 
+      RowBox[{"res", "[", "\"\<Wavefunctions\>\"", "]"}], ",", "\n", "\t\t\t", 
+      RowBox[{"FilterRules", "[", 
+       RowBox[{
+        RowBox[{"{", "ops", "}"}], ",", " ", 
+        RowBox[{"Options", "@", "gridwf"}]}], "]"}]}], "\n", "\t\t\t", 
+     "]"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"1317ba93-5007-49a4-b632-3c1e2b6f2562"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]V1\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"add3a64a-85dd-46f7-b8ec-07c5b88331ed"],
 
 Cell[BoxData[
  RowBox[{
@@ -2525,7 +2673,8 @@ Cell[BoxData[
    3.735193262581439*^9, 
    3.7351932756729918`*^9}},ExpressionUUID->"4e815964-e0f2-4a23-82bc-\
 db588bc73ddc"]
-}, Closed]],
+}, Closed]]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -2536,6 +2685,44 @@ Cell["\[LeftCeiling]InterpolatingWavefunctions\[RightFloor]", \
   3.716044651921208*^9, 3.716044652615678*^9}, {3.718049011698127*^9, 
   3.7180490349269447`*^9}},ExpressionUUID->"47099584-f7cd-4e62-b9ac-\
 a412ed83617e"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]V2\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"09d2fec7-c7a1-4802-9f96-0b216a4d0308"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ChemDVRInterpolatingWavefunctions", "[", 
+   RowBox[{"res_ChemDVRResultsObject", ",", " ", 
+    RowBox[{"ops", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"interpf", "=", 
+      RowBox[{"ChemDVRGet", "[", 
+       RowBox[{
+        RowBox[{"res", "[", "\"\<Object\>\"", "]"}], ",", " ", "$dvrintwf"}], 
+       "]"}]}], "}"}], ",", "\n", "\t\t", 
+    RowBox[{"interpf", "[", 
+     RowBox[{
+      RowBox[{"res", "[", "\"\<Grid\>\"", "]"}], ",", " ", 
+      RowBox[{"res", "[", "\"\<Wavefunctions\>\"", "]"}], ",", " ", "\n", 
+      "\t\t\t", 
+      RowBox[{"FilterRules", "[", 
+       RowBox[{
+        RowBox[{"{", "ops", "}"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"Options", "@", "interpf"}]}], "\n", "\t\t\t\t", "]"}]}], 
+     "\n", "\t\t\t", "]"}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"39abb636-7129-4dcf-9230-845bb6f1efa9"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]V1\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"346389ca-4554-4260-9ce9-f26d938da7dc"],
 
 Cell[BoxData[
  RowBox[{
@@ -2593,7 +2780,8 @@ Cell[BoxData[
    3.731786179555431*^9}, {3.735193282920216*^9, 
    3.735193284333146*^9}},ExpressionUUID->"a31c0ade-159d-4ebe-9fe3-\
 1a1e82112f84"]
-}, Closed]],
+}, Closed]]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -2604,6 +2792,14 @@ Cell["\[LeftCeiling]ExpectationValues\[RightFloor]", "CodeSubsubsection",
   3.7180490349269447`*^9}, {3.7314333747697363`*^9, 
   3.7314333785914497`*^9}},ExpressionUUID->"4d53a8d5-a156-4483-8b9d-\
 b69cc418159f"],
+
+Cell["\[LeftCeiling]V2\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"f15075f0-60e2-4e8f-b156-88de6d00a70f"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]V1\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"e38d3a57-1711-419d-9984-48dcb28953dd"],
 
 Cell[BoxData[
  RowBox[{
@@ -2666,7 +2862,8 @@ Cell[BoxData[
    3.7317860293571043`*^9, 3.731786044328086*^9}, {3.735193293718824*^9, 
    3.7351932975676527`*^9}},ExpressionUUID->"8fff59da-f124-431c-8055-\
 7f0aaac83398"]
-}, Closed]],
+}, Open  ]]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -3125,7 +3322,16 @@ Cell[BoxData[
         "First"}], "\n", "\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "]"}]}], 
   ";"}]], "CodeInput",ExpressionUUID->"4612d177-c296-4073-bd31-326854372a07"],
 
-Cell[BoxData[
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"iChemDVRGetRuntimeOptions", "[", 
+    RowBox[{"res_ChemDVRResultsObject", ",", " ", "keys__"}], "]"}], ":=", 
+   "\n", "\t", 
+   RowBox[{"iChemDVRGetRuntimeOptions", "[", 
+    RowBox[{
+     RowBox[{"res", "[", "\"\<Options\>\"", "]"}], ",", " ", "keys"}], 
+    "]"}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{
    RowBox[{"iChemDVRGetRuntimeOptions", "[", "keys__String", "]"}], ":=", 
@@ -3151,8 +3357,9 @@ Cell[BoxData[
       RowBox[{"iChemDVRGetRuntimeOptions", "[", 
        RowBox[{"baseOpts", ",", " ", "keys"}], "]"}]}], "\n", "\t\t", "]"}], "//", 
     RowBox[{"Apply", "[", "Sequence", "]"}]}]}], 
-  ";"}]], "CodeInput",ExpressionUUID->"2a7fc280-6e69-4015-bf64-f3bad471dd16"]
-}, Closed]],
+  ";"}]}], "CodeInput",ExpressionUUID->"2a7fc280-6e69-4015-bf64-f3bad471dd16"]\
+
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -7353,15 +7560,21 @@ Cell["\[LeftCeiling]Call\[RightFloor]", "CodeSubsubsection",
   3.731787289902672*^9}},ExpressionUUID->"6e5b44d8-ea0b-43b6-bc08-\
 ea2bc254b869"],
 
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
   RowBox[{"$dvrBasicKeys", "=", "\n", "\t", 
+   RowBox[{"$dvrgr", "|", "$dvrpe", "|", "$dvrke", "|", "$dvrwf"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"$dvrSimpleKeys", "=", "\n", "\t", 
    RowBox[{
-   "$dvrgr", "|", "$dvrpe", "|", "$dvrke", "|", "$dvrgp", "|", "\n", "\t\t", 
-    "$dvrwf", "|", "$dvrgrwf", "|", "$dvrintwf", "|", "\n", "\t\t", "$dvrham",
-     "|", "$dvreng", "|", "\"\<FullResults\>\"", "|", "\n", "\t\t", "$dvrpo", 
-    "|", "$dvrexwf", "|", "$dvrguwf"}]}], 
-  ";"}]], "CodeInput",ExpressionUUID->"4f13f9a1-6387-451c-abd2-2143208b843e"],
+   "$dvrgp", "|", "$dvrgrwf", "|", "$dvrintwf", "|", "\n", "\t\t", "$dvrham", 
+    "|", "$dvreng", "|", "$dvrpo", "|", "\n", "\t\t", "$dvrexwf", "|", 
+    "$dvrguwf", "|", "\"\<FullResults\>\""}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"$dvrExVKeys", "=", "\n", "\t", 
+   RowBox[{"$dvrexv", "|", "$dvrexm", "|", "$dvrexmel"}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"3c27a477-ffa8-4c78-9900-861f412349c7"],
 
 Cell[BoxData[{
  RowBox[{
@@ -7383,10 +7596,31 @@ Cell[BoxData[{
     RowBox[{
      RowBox[{"k", ":", "$dvrBasicKeys"}], ",", " ", 
      RowBox[{"args___", "?", "OptionQ"}]}], "]"}], ":=", "\n", "\t", 
-   RowBox[{"ChemDVRRun", "[", 
-    RowBox[{"obj", ",", " ", 
-     RowBox[{"Return", "\[Rule]", "k"}], ",", " ", "args"}], "]"}]}], 
-  ";"}], "\n", 
+   RowBox[{"Replace", "[", 
+    RowBox[{
+     RowBox[{"ChemDVRRun", "[", 
+      RowBox[{"obj", ",", " ", 
+       RowBox[{"Return", "\[Rule]", "k"}], ",", " ", "args"}], "]"}], ",", 
+     "\n", "\t\t", 
+     RowBox[{"c_ChemDVRResultsObject", "\[RuleDelayed]", 
+      RowBox[{"c", "[", "k", "]"}]}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"obj", ":", 
+      RowBox[{"_ChemDVRObject", "?", "chemDVRValidQ"}]}], ")"}], "[", 
+    RowBox[{
+     RowBox[{"k", ":", "$dvrSimpleKeys"}], ",", " ", 
+     RowBox[{"args___", "?", "OptionQ"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Replace", "[", 
+    RowBox[{
+     RowBox[{"ChemDVRRun", "[", 
+      RowBox[{"obj", ",", " ", 
+       RowBox[{"Return", "\[Rule]", "k"}], ",", " ", "args"}], "]"}], ",", 
+     "\n", "\t\t", 
+     RowBox[{"c_ChemDVRResultsObject", "\[RuleDelayed]", 
+      RowBox[{"c", "[", "k", "]"}]}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{
    RowBox[{
@@ -7395,9 +7629,7 @@ Cell[BoxData[{
       RowBox[{"_ChemDVRObject", "?", "chemDVRValidQ"}]}], ")"}], "[", "\n", 
     "\t\t", 
     RowBox[{
-     RowBox[{"k", ":", 
-      RowBox[{"$dvrexv", "|", "$dvrexm", "|", " ", "$dvrexmel"}]}], ",", " ", 
-     "\n", "\t\t", 
+     RowBox[{"k", ":", "$dvrExVKeys"}], ",", " ", "\n", "\t\t", 
      RowBox[{"efuns", ":", 
       RowBox[{"Except", "[", 
        RowBox[{"_", "?", "OptionQ"}], "]"}]}], ",", " ", 
@@ -7465,7 +7697,7 @@ Cell[BoxData[{
     RowBox[{"obj", ",", " ", "k"}], "]"}]}], 
   ";"}]}], "CodeInput",ExpressionUUID->"ce6292b3-9e8c-492e-a319-e7edc3dd1dd2"]\
 
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 

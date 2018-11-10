@@ -62,9 +62,12 @@ Cell[BoxData[
       RowBox[{"_List", "?", "packedSquareMatrixQ"}]}], ",", "\n", "\t\t", 
      RowBox[{"\"\<Wavefunctions\>\"", "\[Rule]", 
       RowBox[{"_ChemWavefunctionsObject", "?", "ChemWavefunctionsObjectQ"}]}],
-      ",", "\n", "\t\t", 
-     RowBox[{"\"\<Extensions\>\"", "\[Rule]", 
-      RowBox[{"_Association", "?", "AssociationQ"}]}], ",", "\n", "\t\t", 
+      ",", 
+     RowBox[{"(*", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"\"\<Extensions\>\"", "\[Rule]", 
+        RowBox[{"_Association", "?", "AssociationQ"}]}], ","}], "*)"}], "\n", 
+     "\t\t", 
      RowBox[{"\"\<Options\>\"", "\[Rule]", 
       RowBox[{"_Association", "?", "AssociationQ"}]}]}], "\n", "\t\t", 
     "|>"}]}], 
@@ -103,12 +106,14 @@ Cell[BoxData[
    RowBox[{"NewDVRResultsObject", "[", 
     RowBox[{"a", ":", "_Association", ":", 
      RowBox[{"<|", "|>"}]}], "]"}], ":=", "\n", "\t", 
-   RowBox[{"Join", "[", "\n", "\t\t", 
-    RowBox[{
-     RowBox[{"AssociationMap", "[", 
-      RowBox[{"None", ",", " ", 
-       RowBox[{"Keys", "@", "$keyTypeMap"}]}], "]"}], ",", "\n", "\t\t", 
-     "a"}], "\n", "\t\t", "]"}]}], 
+   RowBox[{"ChemDVRResultsObject", "@", 
+    RowBox[{"Join", "[", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"AssociationMap", "[", 
+       RowBox[{
+        RowBox[{"None", "&"}], ",", " ", 
+        RowBox[{"Keys", "@", "$keyTypeMap"}]}], "]"}], ",", "\n", "\t\t", 
+      "a"}], "\n", "\t\t", "]"}]}]}], 
   ";"}]], "CodeInput",ExpressionUUID->"42090999-3fc4-43be-97c4-ec11a2b100b8"]
 }, Open  ]],
 
@@ -172,7 +177,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"9b890501-c575-45aa-bf6b-\
 4a602a09f246"]
 },
 WindowSize->{808, 755},
-WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+WindowMargins->{{Automatic, 217}, {Automatic, 0}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

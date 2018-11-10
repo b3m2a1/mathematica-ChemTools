@@ -876,12 +876,12 @@ ChemDVRPotentialOptimization//Clear
 
 
 ChemDVRPotentialOptimization[
-  obj_ChemDVRResultsObject
+  obj_ChemDVRResultsObject,
+  ops:OptionsPattern[]
   ]:=
   With[
     {
-      po=ChemDVRGet[obj["Object"],  $dvrpo],
-      ops=Sequence@@Normal@obj["RuntimeOptions"]
+      po=ChemDVRGet[obj["Object"],  $dvrpo]
       },
     po[obj["Grid"], FilterRules[{ops}, Options@po]]
     ]
@@ -916,6 +916,26 @@ ChemDVRPotentialOptimization[
 ChemDVRGuessWavefunctions//Clear
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*V2*)
+
+
+
+ChemDVRGuessWavefunctions[
+  res:_ChemDVRResultsObject,
+  ops:OptionsPattern[]
+  ]:=
+  With[
+    {wf=ChemDVRGet[res["Object"],  $dvrguwf]},
+    wf[res["Grid"], FilterRules[{ops}, Options@wf]]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*V1*)
+
+
+
 ChemDVRGuessWavefunctions[
   obj:dvrObjPattern,
   ops:OptionsPattern[]
@@ -934,6 +954,27 @@ ChemDVRGuessWavefunctions[
 
 (* ::Subsubsection::Closed:: *)
 (*GridPotentialEnergy*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*V2*)
+
+
+
+ChemDVRGridPotentialEnergy[
+  res:_ChemDVRResultsObject,
+  ops:OptionsPattern[]
+  ]:=
+  With[{gp=ChemDVRGet[obj, $dvrgp]},
+    gp[res["Grid"], res["PotentialEnergy"],
+      FilterRules[{ops}, Options@gp]
+      ]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*V1*)
 
 
 
@@ -957,6 +998,27 @@ ChemDVRGridPotentialEnergy[
 
 (* ::Subsubsection::Closed:: *)
 (*Wavefunctions*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*V2*)
+
+
+
+ChemDVRWavefunctions[res_ChemDVRResultsObject, ops:OptionsPattern[]]:=
+  With[
+    {
+      ke=res["KineticEnergy"],
+      pe=res["PotentialEnergy"],
+      wf=ChemDVRGet[res["Object"], $dvrwf]
+      },
+    wf[ke, pe, ops]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*V1*)
 
 
 
@@ -1019,6 +1081,26 @@ ChemDVRWavefunctions[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*V2*)
+
+
+
+ChemDVRGridWavefunctions[res_ChemDVRResultsObject, ops:OptionsPattern[]]:=
+  With[{gridwf=ChemDVRGet[res["Object"], $dvrgrwf]},
+    gridwf[
+      res["Grid"],
+      res["Wavefunctions"],
+      FilterRules[{ops}, Options@gridwf]
+      ]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*V1*)
+
+
+
 ChemDVRGridWavefunctions[obj:dvrObjPattern,ops:OptionsPattern[]]:=
   With[{gridwf=ChemDVRGet[obj,$dvrgrwf]},
     gridwf[
@@ -1043,6 +1125,26 @@ ChemDVRGridWavefunctions[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*V2*)
+
+
+
+ChemDVRInterpolatingWavefunctions[res_ChemDVRResultsObject, ops:OptionsPattern[]]:=
+  With[{interpf=ChemDVRGet[res["Object"], $dvrintwf]},
+    interpf[res["Grid"], res["Wavefunctions"], 
+      FilterRules[{ops},
+        Options@interpf
+        ]
+      ]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*V1*)
+
+
+
 ChemDVRInterpolatingWavefunctions[obj:dvrObjPattern,ops:OptionsPattern[]]:=
   With[{interpf=ChemDVRGet[obj, $dvrintwf]},
     interpf[
@@ -1064,6 +1166,16 @@ ChemDVRInterpolatingWavefunctions[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 
 (* ::Subsubsection::Closed:: *)
 (*ExpectationValues*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*V2*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*V1*)
 
 
 
@@ -1328,6 +1440,8 @@ iChemDVRGetRuntimeOptions[baseOpts_?OptionQ, keys__String]:=
       ];
 
 
+iChemDVRGetRuntimeOptions[res_ChemDVRResultsObject, keys__]:=
+  iChemDVRGetRuntimeOptions[res["Options"], keys];
 iChemDVRGetRuntimeOptions[keys__String]:=
 (*If[{keys}==={"View"}, Apply[Sequence]@*Echo@*List, ##&]@*)
   With[
@@ -2943,18 +3057,27 @@ ChemDVRRun[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 
 
 $dvrBasicKeys=
-  $dvrgr|$dvrpe|$dvrke|$dvrgp|
-    $dvrwf|$dvrgrwf|$dvrintwf|
-    $dvrham|$dvreng|"FullResults"|
-    $dvrpo|$dvrexwf|$dvrguwf;
+  $dvrgr|$dvrpe|$dvrke|$dvrwf;
+$dvrSimpleKeys=
+  $dvrgp|$dvrgrwf|$dvrintwf|
+    $dvrham|$dvreng|$dvrpo|
+    $dvrexwf|$dvrguwf|"FullResults";
+$dvrExVKeys=
+  $dvrexv|$dvrexm|$dvrexmel;
 
 
 ChemDVRObject[uuid_?chemDVRValidQ][a___?OptionQ]:=
   ChemDVRRun[ChemDVRObject[uuid],a];
 (obj:_ChemDVRObject?chemDVRValidQ)[k:$dvrBasicKeys, args___?OptionQ]:=
-  ChemDVRRun[obj, Return->k, args];
+  Replace[ChemDVRRun[obj, Return->k, args],
+    c_ChemDVRResultsObject:>c[k]
+    ];
+(obj:_ChemDVRObject?chemDVRValidQ)[k:$dvrSimpleKeys, args___?OptionQ]:=
+  Replace[ChemDVRRun[obj, Return->k, args],
+    c_ChemDVRResultsObject:>c[k]
+    ];
 (obj:_ChemDVRObject?chemDVRValidQ)[
-    k:$dvrexv|$dvrexm| $dvrexmel, 
+    k:$dvrExVKeys, 
     efuns:Except[_?OptionQ], args___?OptionQ]:=
   ChemDVRRun[obj, Return->{k, efuns}, args];
 (obj:_ChemDVRObject?chemDVRValidQ)["Properties"]:=

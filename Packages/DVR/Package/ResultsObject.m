@@ -38,8 +38,8 @@ $keyTypeMap=
     "Transformation"->_List?packedSquareMatrixQ,
     "KineticEnergy"->_List?packedSquareMatrixQ,
     "PotentialEnergy"->_List?packedSquareMatrixQ,
-    "Wavefunctions"->_ChemWavefunctionsObject?ChemWavefunctionsObjectQ,
-    "Extensions"->_Association?AssociationQ,
+    "Wavefunctions"->_ChemWavefunctionsObject?ChemWavefunctionsObjectQ,(*
+		"Extensions"\[Rule]_Association?AssociationQ,*)
     "Options"->_Association?AssociationQ
     |>;
 
@@ -61,8 +61,8 @@ validateDVRResults[a_Association]:=
 
 
 NewDVRResultsObject[a:_Association:<||>]:=
-  Join[
-    AssociationMap[None, Keys@$keyTypeMap],
+  ChemDVRResultsObject@Join[
+    AssociationMap[None&, Keys@$keyTypeMap],
     a
     ];
 
