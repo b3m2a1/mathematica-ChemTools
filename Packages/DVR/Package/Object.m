@@ -1174,6 +1174,23 @@ ChemDVRInterpolatingWavefunctions[obj:dvrObjPattern,ops:OptionsPattern[]]:=
 
 
 
+ChemDVRExpectationValues[
+  res_ChemDVRResultsObject, 
+  efuns:Except[_?OptionQ], 
+  ops:OptionsPattern[]
+  ]:=
+  With[{exFun=ChemDVRGet[res["Object"], $dvrexv]},
+    exFun[
+      res["Grid"], 
+      res["Wavefunctions"], 
+      efuns,
+      FilterRules[{ops},
+        Options@exFun
+        ]
+      ]
+    ]
+
+
 (* ::Subsubsubsection::Closed:: *)
 (*V1*)
 
@@ -1208,6 +1225,33 @@ ChemDVRExpectationValues[
 
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*V2*)
+
+
+
+ChemDVROperatorMatrix[
+  res_ChemDVRResultsObject, 
+  efuns:Except[_?OptionQ], 
+  ops:OptionsPattern[]
+  ]:=
+  With[{exFun=ChemDVRGet[res["Object"], $dvrexm]},
+    exFun[
+      res["Grid"],
+      res["Wavefunctions"], 
+      efuns,
+      FilterRules[{ops},
+        Options@exFun
+        ]
+      ]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*V1*)
+
+
+
 ChemDVROperatorMatrix[
   obj:dvrObjPattern, 
   efuns:Except[_?OptionQ], 
@@ -1234,6 +1278,36 @@ ChemDVROperatorMatrix[
 
 (* ::Subsubsection::Closed:: *)
 (*OperatorMatrixElements*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*V2*)
+
+
+
+ChemDVROperatorMatrixElements[
+  res_ChemDVRResultsObject, 
+  efuns:
+    (({_, _}->_)|
+    ({{_, _}...}->_)|
+    {(({{_, _}...}|{_, _})->_)..}), 
+  ops:OptionsPattern[]
+  ]:=
+  With[{exFun=ChemDVRGet[res["Object"], $dvrexmel]},
+    exFun[
+      res["Grid"],
+      res["Wavefunctions"], 
+      efuns,
+      FilterRules[{ops},
+        Options@exFun
+        ]
+      ]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*V1*)
 
 
 
@@ -1269,6 +1343,23 @@ ChemDVROperatorMatrixElements[
 
 (* ::Subsubsection::Closed:: *)
 (*ExtendWavefunctions*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*V2*)
+
+
+
+(* ::Text:: *)
+(*
+	Not implemented yet...
+*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*V1*)
 
 
 
@@ -1308,6 +1399,25 @@ ChemDVRExtendWavefunctions[
 
 (* ::Subsubsection::Closed:: *)
 (*View*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*V2*)
+
+
+
+ChemDVRView[res_ChemDVRResultsObject, ops:OptionsPattern[]]:=
+  ChemDVRGet[res["Object"], "View"][
+    res["Wavefunctions"],
+    res["Grid"],
+    res["PotentialEnergy"],
+    {ops}
+    ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*V1*)
 
 
 
@@ -3167,7 +3277,11 @@ Format[obj:dvrObjPattern?chemDVRValidQ]:=
   RawBoxes@
     BoxForm`ArrangeSummaryBox[
       "ChemDVRObject",
-      obj,
+      With[{a=ChemDVRAssociation[obj]},
+        Unevaluated[
+          If[TrueQ[chemDVRValidQ], obj, ChemDVRObject@a]
+          ]
+        ],
       Replace[ChemDVRGet[obj,"Icon"], _Missing->$dvrimg],
         {
           BoxForm`MakeSummaryItem[{"Name: ",ChemDVRGet[obj,"Name"]},StandardForm],
