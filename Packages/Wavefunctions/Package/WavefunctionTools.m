@@ -13,6 +13,7 @@
 
 
 ConstructWavefunctions::usage="";
+WavefunctionsObjectQ::usage="";
 
 
 (* ::Subsubsection::Closed:: *)
@@ -89,7 +90,8 @@ validateWavefunctionData[{energies_, wfns_}]:=
     If[!AllTrue[wfns, GridFunctionObjectQ],
       PackageRaiseException[Automatic,
         "Some wavefunctions could not be turned into GridFunctionObjects"
-        ]
+        ],
+      True
       ]
 
 
@@ -235,7 +237,7 @@ WFProduct[
   Module[
     {
       numCombo,
-      energies=#["Energies"]&/@{wfns1, wfnsother},
+      energies=#["Energies"]&/@{wfns1,  wfnsother},
       wfns=#["Wavefunctions"]&/@{wfns1, wfnsother},
       wavefunctions,
       indices
@@ -254,7 +256,10 @@ WFProduct[
         ];
     {indices, energies}=ChemUtilsProductEnergies[energies, numCombo];
     wavefunctions=
-      GFKroneckerProduct@@Map[Extract[wfns, #]&, Echo@indices];
+      Map[
+        GFKroneckerProduct@@Extract[wfns, MapIndexed[{#2[[1]], #}&, #]]&, 
+        indices
+        ];
     WavefunctionsObject@
       <|
         "Energies"->energies,

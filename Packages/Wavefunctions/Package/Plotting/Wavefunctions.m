@@ -65,7 +65,7 @@ WFPlotManipulate[
     Replace[
       Show[
         {
-          If[engs[[i]]=!=None,
+          If[engs=!=None&&engs[[i]]=!=None,
             engs[[i]],
             Nothing
             ],
@@ -102,7 +102,7 @@ WFPlotList[
   Table[
     Show[
       {
-        If[engs[[i]]=!=None,
+        If[engs=!=None&&engs[[i]]=!=None,
           engs[[i]],
           Nothing
           ],
@@ -149,6 +149,7 @@ iWFPlot[{energies_, gfs_}, pot_, ops:OptionsPattern[]]:=
       eS=WFPlotOptionValue["EnergyStyle", {ops}, WFPlot, Automatic],
       pm=WFPlotOptionValue["PlotDisplayMode", {ops}, WFPlot, Automatic],
       grid=gfs[[1]]["Grid"],
+      gridFuncs=gfs,
       efuncs,
       pfunc,
       eplots,
@@ -171,16 +172,39 @@ iWFPlot[{energies_, gfs_}, pot_, ops:OptionsPattern[]]:=
             pm
             ]
         ];
-    basePlots=GFPlot[gfs, "PlotDisplayMode"->"List", ops];
     If[TrueQ@showE,
+      gridFuncs=
+        MapThread[
+          GFShift,
+          {
+            gridFuncs,
+            energies
+            }
+          ];
       efuncs=
-        GridFunctionObject[grid, ConstantArray[#, Dimensions[grid]]&/@energies];
-      eplots=GFPlot[eplots, PlotStyle->eS, "PlotDisplayMode"->"List"],
-      eplots=ConstantArray[None, Length@basePlots];
+        GridFunctionObject[grid, 
+          ConstantArray[#, Dimensions[grid]]
+          ]&/@energies;
+      eS=Replace[eS,
+        Automatic->Directive[Dashed, Pink]
+        ];
+      eplots=GFPlot[efuncs, PlotStyle->eS, "PlotDisplayMode"->"List"],
+      eplots=ConstantArray[None, Length@gridFuncs];
       ];
+    basePlots=GFPlot[gridFuncs, "PlotDisplayMode"->"List", ops];
     If[TrueQ@showP&&pot=!=None,
-      pfunc=GridFunctionObject[grid, Flatten@pot];
-      potPlot=WFPlot[pfunc, PlotStyle->potS, "PlotDisplayMode"->"Show"],
+      pfunc=
+        If[!GridFunctionObjectQ@pot,
+          GridFunctionObject[grid, 
+            If[!VectorQ@pot, Normal@Diagonal@pot, Flatten@pot]
+            ],
+          pot
+          ];
+      potS=
+        Replace[potS,
+          Automatic->Directive[Dashed, Gray]
+          ];
+      potPlot=GFPlot[pfunc, PlotStyle->potS, "PlotDisplayMode"->"Show"],
       potPlot=None;
       ];
     pm[
@@ -205,10 +229,12 @@ Options[WFPlot]=
     ];
 WFPlot[
   wfns_WavefunctionsObject, 
-  potential:(_List?(
-    VectorQ[#, Internal`RealValuedNumberQ]||
-    MatrixQ[#, Internal`RealValuedNumberQ]&
-    )|None):None,
+  potential:(
+    _SparseArray|
+    _List?(
+      VectorQ[#, Internal`RealValuedNumberQ]||
+      MatrixQ[#, Internal`RealValuedNumberQ]&
+      )|_GridFunctionObject?GridFunctionObjectQ|None):None,
   ops:OptionsPattern[]
   ]:=
   iWFPlot[{wfns["Energies"], wfns["Wavefunctions"]}, potential, ops];

@@ -496,9 +496,15 @@ ChemDVRDefaultPotentialEnergy[grid_, ops___?OptionQ]:=
         Replace[Function[{e__}]:>Function[Plus[e]]]@
           ChemDVRDefaultPotentialEnergyElementFunction[ops],
       gp=
-        ChemDVRDefaultGridPointList[grid, 
-          FilterRules[{ops},
-            Options@ChemDVRDefaultGridPointList
+        If[CoordinateGridObjectQ@grid,
+          If[grid["Dimension"]===1, 
+            Flatten@grid["Points"],
+            grid["Points"]
+            ],
+          ChemDVRDefaultGridPointList[grid, 
+            FilterRules[{ops},
+              Options@ChemDVRDefaultGridPointList
+              ]
             ]
           ]
         },

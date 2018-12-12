@@ -13,7 +13,7 @@ RegisterInterface[
   WavefunctionsObject,
   {"Wavefunctions", "Energies"},
   "Validator"->
-    WavefunctionObjectQ,
+    WavefunctionsObjectQ,
   "Constructor"->
     ConstructWavefunctions,
   "AccessorFunctions"->

@@ -45,13 +45,42 @@ Cell[BoxData[
  RowBox[{"packedSquareMatrixQ", "=", "\n", "\t", 
   RowBox[{
    RowBox[{
-    RowBox[{"(", 
+    RowBox[{"If", "[", 
      RowBox[{
-      RowBox[{"Developer`PackedArrayQ", "[", "#", "]"}], "||", 
-      RowBox[{"sparseArrayQ", "[", "#", "]"}]}], ")"}], "&&", "\n", "\t\t", 
-    "SquareMatrixQ", "&&", "\n", "\t\t", 
-    RowBox[{"MatrixQ", "[", 
-     RowBox[{"#", ",", " ", "Internal`RealValuedNumericQ"}], "]"}]}], 
+      RowBox[{"!", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"Developer`PackedArrayQ", "[", "#", "]"}], "||", 
+         RowBox[{"sparseArrayQ", "[", "#", "]"}]}], ")"}]}], ",", "\n", 
+      "\t\t", 
+      RowBox[{"PackageRaiseException", "[", 
+       RowBox[{
+       "Automatic", ",", "\n", "\t\t\t", "\"\<Matrix `` isn't packed\>\"", 
+        ",", "\n", "\t\t\t", "#"}], "\n", "\t\t\t", "]"}], ",", "\n", "\t\t", 
+      "True"}], "\n", "\t\t", "]"}], "&&", "\n", "\t\t", 
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"!", 
+       RowBox[{"(", 
+        RowBox[{"SquareMatrixQ", "[", "#", "]"}], ")"}]}], ",", "\n", 
+      "\t\t\t", 
+      RowBox[{"PackageRaiseException", "[", 
+       RowBox[{
+       "Automatic", ",", "\n", "\t\t\t\t", "\"\<Matrix isn't square\>\""}], 
+       "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", "True"}], "\n", "\t\t\t",
+      "]"}], "&&", "\n", "\t\t", 
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"!", 
+       RowBox[{"(", 
+        RowBox[{"MatrixQ", "[", 
+         RowBox[{"#", ",", " ", "Internal`RealValuedNumericQ"}], "]"}], 
+        ")"}]}], ",", "\n", "\t\t\t", 
+      RowBox[{"PackageRaiseException", "[", 
+       RowBox[{
+       "Automatic", ",", "\n", "\t\t\t\t", "\"\<Matrix is non-real\>\""}], 
+       "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", "True"}], "\n", "\t\t\t",
+      "]"}]}], 
    "&"}]}]], \
 "CodeInput",ExpressionUUID->"dcb945d1-0aab-416e-8294-1a4830741861"],
 
@@ -63,21 +92,22 @@ Cell[BoxData[
      RowBox[{"\"\<Object\>\"", "\[Rule]", "_ChemDVRObject"}], ",", "\n", 
      "\t\t", 
      RowBox[{"\"\<Grid\>\"", "\[Rule]", 
-      RowBox[{"_CoordinateGridObject", "?", "CoordinateGridObject"}]}], ",", 
+      RowBox[{"_CoordinateGridObject", "?", "CoordinateGridObjectQ"}]}], ",", 
      "\n", "\t\t", 
-     RowBox[{"\"\<Transformation\>\"", "->", 
-      RowBox[{"_List", "?", "packedSquareMatrixQ"}]}], ",", "\n", "\t\t", 
+     RowBox[{"\"\<Transformation\>\"", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"None", "|", 
+          RowBox[{"_List", "?", "packedSquareMatrixQ"}]}], ")"}], ".."}], 
+       "}"}]}], ",", "\n", "\t\t", 
      RowBox[{"\"\<KineticEnergy\>\"", "\[Rule]", 
-      RowBox[{"_List", "?", "packedSquareMatrixQ"}]}], ",", "\n", "\t\t", 
+      RowBox[{"_", "?", "packedSquareMatrixQ"}]}], ",", "\n", "\t\t", 
      RowBox[{"\"\<PotentialEnergy\>\"", "->", 
-      RowBox[{"_List", "?", "packedSquareMatrixQ"}]}], ",", "\n", "\t\t", 
+      RowBox[{"_", "?", "packedSquareMatrixQ"}]}], ",", "\n", "\t\t", 
      RowBox[{"\"\<Wavefunctions\>\"", "\[Rule]", 
       RowBox[{"_WavefunctionsObject", "?", "WavefunctionsObjectQ"}]}], ",", 
-     RowBox[{"(*", "\n", "\t\t", 
-      RowBox[{
-       RowBox[{"\"\<Extensions\>\"", "\[Rule]", 
-        RowBox[{"_Association", "?", "AssociationQ"}]}], ","}], "*)"}], "\n", 
-     "\t\t", 
+     "\n", "\t\t", 
      RowBox[{"\"\<Options\>\"", "\[Rule]", 
       RowBox[{"_Association", "?", "AssociationQ"}]}]}], "\n", "\t\t", 
     "|>"}]}], 
@@ -144,6 +174,37 @@ Cell[CellGroupData[{
 
 Cell["\[LeftCeiling]ConstructDVRResults\[RightFloor]", "CodeSubsubsection",
  Evaluatable->True,ExpressionUUID->"0af182a3-74d4-4b3a-8491-b7e5fcfbcae2"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"constructDVRResults", "[", "bleh_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"mute", "=", "bleh"}], ",", " ", "grid"}], "}"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"ListQ", "@", 
+         RowBox[{"mute", "[", "\"\<Grid\>\"", "]"}]}], ",", "\n", "\t\t ", 
+        RowBox[{
+         RowBox[{"grid", "=", 
+          RowBox[{"CoordinateGridObject", "[", 
+           RowBox[{"Evaluate", "@", 
+            RowBox[{"mute", "[", "\"\<Grid\>\"", "]"}]}], "]"}]}], ";", "\n", 
+         "\t\t ", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"!", 
+            RowBox[{"CoordinateGridObjectQ", "@", "grid"}]}], ",", " ", 
+           RowBox[{"Throw", "@", "grid"}]}], "]"}], ";", "\n", "\t\t ", 
+         RowBox[{
+          RowBox[{"mute", "[", "\"\<Grid\>\"", "]"}], "=", "grid"}]}]}], "\n",
+        "\t\t ", "]"}], ";", "\n", "\t\t", "mute"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"a99f8192-d5f5-4c77-9f3d-fc34a73de4fd"],
 
 Cell[BoxData[{
  RowBox[{
@@ -213,7 +274,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"9b890501-c575-45aa-bf6b-\
 4a602a09f246"]
 },
 WindowSize->{808, 755},
-WindowMargins->{{Automatic, 217}, {Automatic, 0}},
+WindowMargins->{{188, Automatic}, {Automatic, 0}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

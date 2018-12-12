@@ -253,9 +253,9 @@ createMutationHandlers[
         HoldPattern[head[a_]?headQ],
         args___
         ]:=
-        Block[{core=a},
+        Module[{core=a},
           h[core["Value"], args];
-          head@core
+          With[{co=core}, head@co]
           ];
       selfDispatch[h_]:=
         Function[Null, selfMutate[h, ##], HoldAllComplete];
@@ -268,9 +268,9 @@ createMutationHandlers[
         {k__},
         args___
         ]:=
-        Block[{core=a},
+        Module[{core=a},
           h[core[k], args];
-          head@core
+          With[{co=core}, head@co]
           ];
       keyDispatch[h_]:=
         Function[Null, keyMutate[h, ##], HoldAllComplete];
@@ -283,9 +283,9 @@ createMutationHandlers[
         {p__},
         args___
         ]:=
-        Block[{core=a},
+        Module[{core=a},
           h[core[[p]], args];
-          head@core
+          With[{co=core}, head@co]
           ];
       partDispatch[h_]:=
         Function[Null, partMutate[h, ##], HoldAllComplete];
@@ -293,7 +293,6 @@ createMutationHandlers[
       ];
     res
     ]
-      
 
 
 (* ::Subsubsection::Closed:: *)

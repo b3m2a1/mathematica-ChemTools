@@ -71,6 +71,9 @@ InterfaceMethod[GridFunctionObject]@
 InterfaceMethod[GridFunctionObject]@
   f_GridFunctionObject["Plot"][ops___]:=
     GFPlot[f, ops];
+InterfaceMethod[GridFunctionObject]@
+  f_GridFunctionObject["Compile"][spec___]:=
+    GFCompile[f, spec];
 
 
 (* ::Subsubsection::Closed:: *)

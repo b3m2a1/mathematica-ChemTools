@@ -69,7 +69,7 @@ GFPlotCartesian2D[
 Options[GFPlotCartesian3D]=
   Join[
     $GFPlotOptions,
-    Options[ContourPlot3D]
+    Options[ListContourPlot3D]
     ];
 GFPlotCartesian3D[
   gfs_,
@@ -77,7 +77,7 @@ GFPlotCartesian3D[
   ]:=
   GFPlotBasic[
     gfs,
-    GFPlotCartesian3D, ContourPlot3D,
+    GFPlotCartesian3D, ListContourPlot3D,
     ops
     ]
 

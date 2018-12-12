@@ -9,11 +9,16 @@ Cell[CellGroupData[{
 Cell["\[LeftCeiling]Constructor\[RightFloor]", "CodeSubsubsection",
  Evaluatable->True,ExpressionUUID->"ac6738b2-7353-45aa-9e98-140fd52fc242"],
 
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
   RowBox[{
    RowBox[{"ConstructWavefunctions", "::", "usage"}], "=", "\"\<\>\""}], 
-  ";"}]], "CodeInput",ExpressionUUID->"bdd548cc-3f68-49e9-887a-9f9028f93867"]
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"WavefunctionsObjectQ", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"bdd548cc-3f68-49e9-887a-9f9028f93867"]\
+
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -142,8 +147,8 @@ Cell[BoxData[
       RowBox[{
       "Automatic", ",", "\n", "\t\t\t\t", 
        "\"\<Some wavefunctions could not be turned into GridFunctionObjects\>\
-\""}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", 
-    "]"}]}]}]], \
+\""}], "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", "True"}], "\n", "\t\t\t",
+     "]"}]}]}]], \
 "CodeInput",ExpressionUUID->"94240285-1ea5-479d-b339-11a665096cc1"]
 }, Open  ]],
 
@@ -180,7 +185,7 @@ Cell[BoxData[
      "}"}]}], "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"05f0d9a7-33b0-4be6-ab2f-8d5221c24289"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -227,8 +232,8 @@ Cell[BoxData[{
   RowBox[{
    RowBox[{"ConstructWavefunctions", "[", "a_Association", "]"}], ":=", "\n", 
    "\t", "a"}], 
-  ";"}]}], \
-"CodeInput",ExpressionUUID->"afff2841-224c-40ae-a75d-28dd471377f2"]
+  ";"}]}], "CodeInput",ExpressionUUID->"afff2841-224c-40ae-a75d-28dd471377f2"]\
+
 }, Open  ]]
 }, Open  ]],
 
@@ -375,7 +380,7 @@ Cell[BoxData[
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"fb743073-23b9-4c81-a3b3-23ba1713ad56"]
 }, Closed]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -444,7 +449,7 @@ Cell[BoxData[
         RowBox[{
          RowBox[{"#", "[", "\"\<Energies\>\"", "]"}], "&"}], "/@", 
         RowBox[{"{", 
-         RowBox[{"wfns1", ",", " ", "wfnsother"}], "}"}]}]}], ",", "\n", 
+         RowBox[{"wfns1", ",", "  ", "wfnsother"}], "}"}]}]}], ",", "\n", 
       "\t\t\t", 
       RowBox[{"wfns", "=", 
        RowBox[{
@@ -489,13 +494,22 @@ Cell[BoxData[
       RowBox[{"ChemUtilsProductEnergies", "[", 
        RowBox[{"energies", ",", " ", "numCombo"}], "]"}]}], ";", "\n", "\t\t", 
      RowBox[{"wavefunctions", "=", "\n", "\t\t\t", 
-      RowBox[{"GFKroneckerProduct", "@@", 
-       RowBox[{"Map", "[", 
+      RowBox[{"Map", "[", "\n", "\t\t\t\t", 
+       RowBox[{
         RowBox[{
-         RowBox[{
+         RowBox[{"GFKroneckerProduct", "@@", 
           RowBox[{"Extract", "[", 
-           RowBox[{"wfns", ",", " ", "#"}], "]"}], "&"}], ",", " ", 
-         RowBox[{"Echo", "@", "indices"}]}], "]"}]}]}], ";", "\n", "\t\t", 
+           RowBox[{"wfns", ",", " ", 
+            RowBox[{"MapIndexed", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"#2", "[", 
+                  RowBox[{"[", "1", "]"}], "]"}], ",", " ", "#"}], "}"}], 
+               "&"}], ",", " ", "#"}], "]"}]}], "]"}]}], "&"}], ",", " ", 
+        "\n", "\t\t\t\t", "indices"}], "\n", "\t\t\t\t", "]"}]}], ";", "\n", 
+     "\t\t", 
      RowBox[{"WavefunctionsObject", "@", "\n", "\t\t\t", 
       RowBox[{"<|", "\n", "\t\t\t\t", 
        RowBox[{
@@ -505,7 +519,7 @@ Cell[BoxData[
         "\t\t\t\t", "|>"}]}]}]}], "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"ca29e743-f5f3-48ff-918d-39c51a888013"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -1414,7 +1428,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"9b890501-c575-45aa-bf6b-\
 4a602a09f246"]
 },
 WindowSize->{808, 755},
-WindowMargins->{{264, Automatic}, {30, Automatic}},
+WindowMargins->{{Automatic, 262}, {Automatic, 12}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

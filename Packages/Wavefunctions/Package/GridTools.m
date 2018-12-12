@@ -136,9 +136,11 @@ validateGridData[grid_]:=
 
 
 
-cleanGridData[g_]:=
+cleanGridData//Clear
+cleanGridData[g_List]:=
   With[{base=Developer`ToPackedArray@N@g},
     If[!Developer`PackedArrayQ[base],
+      base;
       PackageRaiseException[
         Automatic,
         "Grid data cannot be packed"
@@ -148,7 +150,7 @@ cleanGridData[g_]:=
       Transpose@{base},
       base
       ]
-    ]
+    ];
 
 
 (* ::Subsubsubsection::Closed:: *)
@@ -156,13 +158,16 @@ cleanGridData[g_]:=
 
 
 
-ConstructCoordinateGrid[grid_]:=
+ConstructCoordinateGrid//Clear
+ConstructCoordinateGrid[grid_List]:=
   With[{g=cleanGridData@grid},
     If[validateGridData[g],
       <|"Grid"->g|>,
       <|$Failed->True|> (* requires Association return to throw the error *)
       ]
     ];
+ConstructCoordinateGrid[CoordinateGridObject[a_]?CoordinateGridObjectQ]:=
+  a;
 ConstructCoordinateGrid[a_Association]:=
   a;
 

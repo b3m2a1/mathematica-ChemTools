@@ -210,37 +210,40 @@ Cell[CellGroupData[{
 Cell["\[LeftCeiling]cleanGridData\[RightFloor]", "CodeSubsubsubsection",
  Evaluatable->True,ExpressionUUID->"7aa3ffb4-c934-404c-95b1-548f5ea2c378"],
 
-Cell[BoxData[
+Cell[BoxData[{
+ RowBox[{"cleanGridData", "//", "Clear"}], "\n", 
  RowBox[{
-  RowBox[{"cleanGridData", "[", "g_", "]"}], ":=", "\n", "\t", 
-  RowBox[{"With", "[", 
-   RowBox[{
-    RowBox[{"{", 
-     RowBox[{"base", "=", 
-      RowBox[{"Developer`ToPackedArray", "@", 
-       RowBox[{"N", "@", "g"}]}]}], "}"}], ",", "\n", "\t\t", 
+  RowBox[{
+   RowBox[{"cleanGridData", "[", "g_List", "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
     RowBox[{
-     RowBox[{"If", "[", 
-      RowBox[{
-       RowBox[{"!", 
-        RowBox[{"Developer`PackedArrayQ", "[", "base", "]"}]}], ",", "\n", 
-       "\t\t\t", 
-       RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t", 
-        RowBox[{
-        "Automatic", ",", "\n", "\t\t\t\t", 
-         "\"\<Grid data cannot be packed\>\""}], "\n", "\t\t\t\t", "]"}]}], 
-      "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
-     RowBox[{"If", "[", 
-      RowBox[{
+     RowBox[{"{", 
+      RowBox[{"base", "=", 
+       RowBox[{"Developer`ToPackedArray", "@", 
+        RowBox[{"N", "@", "g"}]}]}], "}"}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"If", "[", 
        RowBox[{
-        RowBox[{"Depth", "@", "base"}], "\[Equal]", "2"}], ",", "\n", 
-       "\t\t\t", 
-       RowBox[{"Transpose", "@", 
-        RowBox[{"{", "base", "}"}]}], ",", "\n", "\t\t\t", "base"}], "\n", 
-      "\t\t\t", "]"}]}]}], "\n", "\t\t", 
-   "]"}]}]], \
-"CodeInput",ExpressionUUID->"fa794344-d66b-4650-ba92-aa142e391584"]
-}, Closed]],
+        RowBox[{"!", 
+         RowBox[{"Developer`PackedArrayQ", "[", "base", "]"}]}], ",", "\n", 
+        "\t\t\t", 
+        RowBox[{"base", ";", "\n", "\t\t\t", 
+         RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t", 
+          RowBox[{
+          "Automatic", ",", "\n", "\t\t\t\t", 
+           "\"\<Grid data cannot be packed\>\""}], "\n", "\t\t\t\t", 
+          "]"}]}]}], "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Depth", "@", "base"}], "\[Equal]", "2"}], ",", "\n", 
+        "\t\t\t", 
+        RowBox[{"Transpose", "@", 
+         RowBox[{"{", "base", "}"}]}], ",", "\n", "\t\t\t", "base"}], "\n", 
+       "\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"fa794344-d66b-4650-ba92-aa142e391584"]\
+
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -249,9 +252,11 @@ Cell["\[LeftCeiling]ConstructCoordinateGrid\[RightFloor]", \
  Evaluatable->True,ExpressionUUID->"74f00e8c-a504-41d2-b77f-ffcbf8b05efb"],
 
 Cell[BoxData[{
+ RowBox[{"ConstructCoordinateGrid", "//", "Clear"}], "\n", 
  RowBox[{
   RowBox[{
-   RowBox[{"ConstructCoordinateGrid", "[", "grid_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"ConstructCoordinateGrid", "[", "grid_List", "]"}], ":=", "\n", 
+   "\t", 
    RowBox[{"With", "[", 
     RowBox[{
      RowBox[{"{", 
@@ -271,11 +276,17 @@ Cell[BoxData[{
     "\n", "\t\t", "]"}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{
+   RowBox[{"ConstructCoordinateGrid", "[", 
+    RowBox[{
+     RowBox[{"CoordinateGridObject", "[", "a_", "]"}], "?", 
+     "CoordinateGridObjectQ"}], "]"}], ":=", "\n", "\t", "a"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
    RowBox[{"ConstructCoordinateGrid", "[", "a_Association", "]"}], ":=", "\n",
     "\t", "a"}], 
   ";"}]}], "CodeInput",ExpressionUUID->"afff2841-224c-40ae-a75d-28dd471377f2"]\
 
-}, Closed]]
+}, Open  ]]
 }, Open  ]]
 }, Open  ]],
 
@@ -443,8 +454,8 @@ Cell[BoxData[{
    RowBox[{"GridDimensions", "[", "grid_", "]"}], ":=", "\n", "\t", 
    RowBox[{"GridDimensions", "@", 
     RowBox[{"grid", "[", "\"\<Grid\>\"", "]"}]}]}], 
-  ";"}]}], "CodeInput",ExpressionUUID->"b867dd36-a037-4e8c-bc83-cbc9707832c7"]\
-
+  ";"}]}], \
+"CodeInput",ExpressionUUID->"b867dd36-a037-4e8c-bc83-cbc9707832c7"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -584,7 +595,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"9b890501-c575-45aa-bf6b-\
 4a602a09f246"]
 },
 WindowSize->{808, 755},
-WindowMargins->{{212, Automatic}, {9, Automatic}},
+WindowMargins->{{70, Automatic}, {30, Automatic}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

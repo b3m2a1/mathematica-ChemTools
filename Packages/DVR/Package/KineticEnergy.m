@@ -232,8 +232,11 @@ ChemDVRDirectProductKineticEnergy[
         Map[
           DeleteDuplicates, 
           Transpose@
-            ChemDVRDefaultGridpointList[grid, 
-              FilterRules[{opts}, Options[ChemDVRDefaultGridpointList]]
+            If[CoordinateGridObjectQ@grid,
+              grid["Points"],
+              ChemDVRDefaultGridPointList[grid, 
+                FilterRules[{opts}, Options[ChemDVRDefaultGridpointList]]
+                ]
               ]
           ],
       masses=
@@ -576,7 +579,7 @@ Options[iChemDVRDefaultKineticEnergy1D]=
     };
 iChemDVRDefaultKineticEnergy1D[
   elementFunction_,
-  gridpoints:{__?NumericQ},
+  gridpoints_List?(VectorQ[#, Internal`RealValuedNumericQ]&),
   ops:OptionsPattern[]
   ]:=
   Module[
@@ -705,6 +708,16 @@ Expected to take (i, j), (i, j, N) or (i, j, N, x[i], x[j])",
       N[ke, prec]
       ]
     ];
+iChemDVRDefaultKineticEnergy1D[
+  elementFunction_,
+  gridpoints_List,
+  ops:OptionsPattern[]
+  ]:=
+  iChemDVRDefaultKineticEnergy1D[
+    elementFunction,
+    Flatten@gridpoints,
+    ops
+    ]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -914,10 +927,16 @@ ChemDVRDefaultKineticEnergyLists[
         Replace[gridpoints,
           Except[{{Repeated[_?NumericQ, {3, Infinity}]}..}]:>
             Replace[
-              ChemDVRDefaultGridPointList[
-                gridpoints, 
-                FilterRules[{ops}, Options[ChemDVRDefaultGridPointList]]
-                ],
+              If[CoordinateGridObjectQ@gridpoints,
+               If[gridpoints["Dimension"]===1, 
+                  Flatten@gridpoints["Points"],
+                  gridpoints["Points"]
+                  ],
+               ChemDVRDefaultGridPointList[
+                  gridpoints, 
+                  FilterRules[{ops}, Options[ChemDVRDefaultGridPointList]]
+                  ]
+               ],
               {
                 l:{__List}:>
                   Map[
@@ -1024,13 +1043,25 @@ ChemDVRDefaultKineticEnergy[
       keel:{"BasisSet", ___}:>
         iChemDVRDefaultKineticEnergy1D[
           keel, 
-          gridpoints, 
+          If[CoordinateGridObjectQ@gridpoints,
+             If[gridpoints["Dimension"]===1, 
+                  Flatten@gridpoints["Points"],
+                  gridpoints["Points"]
+                  ],
+             gridpoints
+             ],
           FilterRules[{ops}, Options[iChemDVRDefaultKineticEnergy1D]]
           ],
       keels_List:>
         ChemDVRKroeneckerProductKineticEnergy@
           ChemDVRDefaultKineticEnergyLists[
-            gridpoints,
+            If[CoordinateGridObjectQ@gridpoints,
+             If[gridpoints["Dimension"]===1, 
+                Flatten@gridpoints["Points"],
+                gridpoints["Points"]
+                ],
+             gridpoints
+             ],
             keels, 
            FilterRules[{ops},
              Options@ChemDVRDefaultKineticEnergyLists
@@ -1039,7 +1070,13 @@ ChemDVRDefaultKineticEnergy[
       keel_:>
         iChemDVRDefaultKineticEnergy1D[
           keel, 
-          gridpoints, 
+          If[CoordinateGridObjectQ@gridpoints,
+             If[gridpoints["Dimension"]===1, 
+                Flatten@gridpoints["Points"],
+                gridpoints["Points"]
+                ],
+             gridpoints
+             ], 
           FilterRules[{ops}, Options[iChemDVRDefaultKineticEnergy1D]]
           ]
       }

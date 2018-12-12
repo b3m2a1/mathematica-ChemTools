@@ -74,6 +74,10 @@ GFKroneckerProduct::usage=
   "Kronecker product over grid functions";
 
 
+GFCompile::usage=
+  "Clever-ish compilation";
+
+
 (* ::Subsubsection::Closed:: *)
 (*Mindless*)
 
@@ -82,6 +86,8 @@ GFKroneckerProduct::usage=
 GFInterpolation::usage=
   "";
 GFMinMax::usage=
+  "";
+GFDimension::usage=
   "";
 
 
@@ -420,6 +426,8 @@ GFInterpolation[f_, a___]:=
   Interpolation[GFPoints[f], a];
 GFMinMax[f_, a___]:=
   MinMax[f["Values"], a];
+GFDimension[f_]:=
+  GridDimension[f["Grid"]];
 
 
 (* ::Subsection:: *)
@@ -432,12 +440,13 @@ GFMinMax[f_, a___]:=
 
 
 
-GFKroneckerProduct[g__GridFunctionObject]:=
+GFKroneckerProduct//Clear
+GFKroneckerProduct[g_GridFunctionObject, g2__GridFunctionObject]:=
   Module[
     {dimensions, targetDimension, points, grid, vals, kp, op},
-    dimensions=#["Dimensions"]&/@{g};
+    dimensions=#["Dimensions"]&/@{g, g2};
     targetDimension=Join@@dimensions;
-    points=GFPoints/@{g};
+    points=GFPoints/@{g, g2};
     grid=points[[All, All, ;;-2]];
     vals=points[[All, All, -1]];
     kp=KroneckerProduct@@vals;
@@ -445,6 +454,228 @@ GFKroneckerProduct[g__GridFunctionObject]:=
     grid=ArrayReshape[op, Append[targetDimension, Length@targetDimension]];
     vals=ArrayReshape[kp, targetDimension];
     GridFunctionObject[grid, vals]
+    ]
+
+
+(* ::Subsection:: *)
+(*Compiled SA Potential*)
+
+
+
+compiledSAPot[potInterp_]:=
+  With[{dom=potInterp[[1]]},
+    Compile[{{sa,_Real,1}},
+      With[
+        {
+          R1=1/Sqrt[2](sa[[2]]+sa[[1]]),
+          R2=1/Sqrt[2](sa[[2]]-sa[[1]])
+          },
+        If[dom[[1,1]]<=R2<=dom[[1,2]]&&
+          dom[[2,1]]<=R1<=dom[[2,2]],
+          potInterp[R1, R2],
+          10^9
+          ]
+        ],
+      RuntimeOptions->{
+        "EvaluateSymbolically"->False,
+        "WarningMessages"->False
+        }
+      ]
+    ];
+
+
+CompiledSAPot=compiledSAPot
+
+
+(* ::Subsubsection::Closed:: *)
+(*GFCompile*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Pointwise*)
+
+
+
+iGFPointwiseInterpCut[
+  interp_,
+  coords:{(Automatic|_?NumericQ)..},
+  preProcessor_,
+  def_, 
+  min_
+  ]:=
+  Module[{potInterp=interp, dom=interp[[1]], preCoords, i=1, getPot},
+    preCoords=preProcessor@coords;
+    getPot[a_]:=Apply[potInterp, a];
+    If[Length@preCoords=!=Length@dom,
+      PackageRaiseException[
+        Automatic,
+        "Interpolation dimensions (``) and passed coordinate dimensions (``) don't match",
+        Length@dom,
+        Length@coords
+        ]
+      ];
+    Block[{crds},
+      Compile@@
+        With[
+          {
+            test=
+              With[{tests=MapThread[#[[1]]<=#2<=#[[2]]&, {dom, preCoords}]},
+                If[MemberQ[tests, False&],
+                  False,
+                  And@@DeleteCases[tests, True]
+                  ]
+                ],
+            crdSpec=
+              Quiet@
+                preProcessor@
+                  Map[
+                    If[#===Automatic, crds[[i++]], #]&,
+                    crds
+                    ]
+            },
+          Hold[
+            {{crds, _Real}},
+            Module[{default=def, mininmum=min},
+              If[test,
+                getPot[crdSpec]-mininmum,
+                default
+                ]
+              ],
+            {{getPot[_], _Real, 1}},
+            RuntimeOptions->{
+              "EvaluateSymbolically"->False,
+              "WarningMessages"->False
+              },
+            RuntimeAttributes->{Listable}
+            ]
+          ]
+        ]
+      ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Vectorized*)
+
+
+
+iGFVectorizedInterpCut[interp_, coords_, preProcessor_, def_, min_]:=
+  Module[{potInterp=interp, dom=interp[[1]], j=1},
+    Block[{crds, pt, gps},
+        Module[
+          {
+            getPot,
+            varBlock,
+            varBlock2,
+            preCoords
+            },
+          getPot[a_]:=Apply[potInterp, a];
+          preCoords=
+            Quiet@
+                Map[
+                  If[#===Automatic, 
+                    Compile`GetElement[crds, j++], 
+                    #
+                    ]&,
+                  preProcessor@coords
+                  ];
+          (* bounds checking for test *)
+          With[
+            {
+              test=
+                With[{tests=MapThread[#[[1]]<=#2<=#[[2]]&, {dom, preCoords}]},
+                  If[MemberQ[tests, False&],
+                    False,
+                    And@@DeleteCases[tests, True]
+                    ]
+                  ],
+            crdSpec=Echo@preCoords,
+            fn=Function
+            },
+            Compile@@
+              Hold[(* True Compile body but with Hold for code injection *)
+                {{gps, _Real, 2}},
+                Module[
+                  {
+                    pts=
+                      fn[
+                        crds,
+                        crdSpec
+                        ]/@gps,
+                    ongrid=Table[0, {i, Length@gps}],
+                    intres,
+                    midpt=Mean/@dom,
+                    interpvals,
+                    interpcounter,
+                    interppts,
+                    i=1,
+                    barrier=def,
+                    minimum=min
+                    },
+                  interppts=Table[midpt, {i, Length@pts}];
+                  (* Find points in domain *)
+                  interpcounter=0;
+                  Do[
+                    If[test,
+                      ongrid[[i]]=1;
+                      interppts[[++interpcounter]]=pts[[i]]
+                      ];
+                    i++,
+                    {pt, pts}
+                    ];
+                  (* Apply InterpolatingFunction only once (one MainEval call) *)
+                  If[interpcounter>0,
+                    intres=interppts[[;;interpcounter]];
+                    interpvals=getPot[Transpose@intres]-minimum;
+                    (* Pick points that are in domain *)
+                    interpcounter=0;
+                    Map[
+                      If[#==1, interpvals[[++interpcounter]], barrier]&,
+                      ongrid
+                      ],
+                    Table[barrier, {i, Length@gps}]
+                    ]
+                  ],
+                {{getPot[_], _Real, 1}},
+                RuntimeOptions->{
+                  "EvaluateSymbolically"->False,
+                  "WarningMessages"->False
+                  }
+              ]
+            ]
+          ]
+        ]
+      ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*GFCompile*)
+
+
+
+Options[GFCompile]=
+  {
+    "CoordinateTransformation"->Identity,
+    "Minimum"->0.,
+    "Default"->0.,
+    "Mode"->"Vector"
+    };
+GFCompile[
+  gf_, 
+  coordSpec:{(Automatic|_?NumericQ)..}|Automatic:Automatic,
+  ops:OptionsPattern[]
+  ]:=
+  If[OptionValue["Mode"]==="Vector",
+    iGFVectorizedInterpCut[
+      GFInterpolation[gf],
+      Replace[
+        coordSpec, 
+        Automatic:>ConstantArray[Automatic, GFDimension[gf]]
+        ],
+      OptionValue["CoordinateTransformation"],
+      OptionValue["Default"],
+      OptionValue["Minimum"]
+      ]
     ]
 
 

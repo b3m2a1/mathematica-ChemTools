@@ -30,20 +30,35 @@ sparseArrayQ=
 
 
 packedSquareMatrixQ=
-  (Developer`PackedArrayQ[#]||sparseArrayQ[#])&&
-    SquareMatrixQ&&
-    MatrixQ[#, Internal`RealValuedNumericQ]&
+  If[!(Developer`PackedArrayQ[#]||sparseArrayQ[#]),
+    PackageRaiseException[Automatic,
+      "Matrix `` isn't packed",
+      #
+      ],
+    True
+    ]&&
+    If[!(SquareMatrixQ[#]),
+      PackageRaiseException[Automatic,
+        "Matrix isn't square"
+        ],
+      True
+      ]&&
+    If[!(MatrixQ[#, Internal`RealValuedNumericQ]),
+      PackageRaiseException[Automatic,
+        "Matrix is non-real"
+        ],
+      True
+      ]&
 
 
 $keyTypeMap=
   <|
     "Object"->_ChemDVRObject,
-    "Grid"->_CoordinateGridObject?CoordinateGridObject,
-    "Transformation"->_List?packedSquareMatrixQ,
-    "KineticEnergy"->_List?packedSquareMatrixQ,
-    "PotentialEnergy"->_List?packedSquareMatrixQ,
-    "Wavefunctions"->_WavefunctionsObject?WavefunctionsObjectQ,(*
-		"Extensions"\[Rule]_Association?AssociationQ,*)
+    "Grid"->_CoordinateGridObject?CoordinateGridObjectQ,
+    "Transformation"->{(None|_List?packedSquareMatrixQ)..},
+    "KineticEnergy"->_?packedSquareMatrixQ,
+    "PotentialEnergy"->_?packedSquareMatrixQ,
+    "Wavefunctions"->_WavefunctionsObject?WavefunctionsObjectQ,
     "Options"->_Association?AssociationQ
     |>;
 
@@ -82,6 +97,17 @@ NewDVRResultsObject[a:_Association:<||>]:=
 (* ::Subsubsection::Closed:: *)
 (*ConstructDVRResults*)
 
+
+
+constructDVRResults[bleh_]:=
+  Module[{mute=bleh, grid},
+    If[ListQ@mute["Grid"],
+     grid=CoordinateGridObject[Evaluate@mute["Grid"]];
+     If[!CoordinateGridObjectQ@grid, Throw@grid];
+     mute["Grid"]=grid
+     ];
+    mute
+    ];
 
 
 ConstructDVRResults[
