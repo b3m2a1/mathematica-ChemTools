@@ -8,13 +8,21 @@
 
 
 (* ::Subsubsection::Closed:: *)
+(*Constructor*)
+
+
+
+ConstructWavefunctions::usage="";
+
+
+(* ::Subsubsection::Closed:: *)
 (*Parts*)
 
 
 
-ChemWavefunctionsPart::usage=
+WFPart::usage=
   "Applies part to a wavefunction";
-ChemWavefunctionsKeyPart::usage=
+WFKeyPart::usage=
   "Applies key lookup to a wavefunction";
 
 
@@ -32,7 +40,7 @@ ChemSeparableWavefunctions::usage=
 
 
 
-ChemProductWavefunctions::usage=
+WFProduct::usage=
   "Creates product wavefunctions out of 1D wavefunctions";
 
 
@@ -41,15 +49,105 @@ ChemProductWavefunctions::usage=
 
 
 
-ChemExpectationValues::usage=
+WFExpectationValues::usage=
   "Expectation values over a normalized, discretized set of wavefunctions";
-ChemWavefunctionsOperatorMatrix::usage=
+WFOperatorMatrix::usage=
   "Operator matrix over a normalized, discretized set of wavefunctions";
-ChemWavefunctionsOperatorMatrixElements::usage=
+WFOperatorMatrixElements::usage=
   "Operator matrix elements over a normalized, discretized set of wavefunctions";
 
 
+(* ::Subsubsection::Closed:: *)
+(*Interface*)
+
+
+
+WFNormal::usage="";
+
+
 Begin["`Private`"];
+
+
+(* ::Subsection:: *)
+(*Constructor*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*validateWavefunctionData*)
+
+
+
+validateWavefunctionData[{energies_, wfns_}]:=
+  If[!Developer`PackedArrayQ@energies,
+    PackageRaiseException[Automatic,
+      "Failed to pack wavefunction energies ``",
+      energies
+      ],
+    True
+    ]&&
+    If[!AllTrue[wfns, GridFunctionObjectQ],
+      PackageRaiseException[Automatic,
+        "Some wavefunctions could not be turned into GridFunctionObjects"
+        ]
+      ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*constructWavefunctionData*)
+
+
+
+constructWavefunctionData[erg_, wf_, grid_]:=
+  Module[
+    {
+      engs=Developer`ToPackedArray@N[erg],
+      wfns=Developer`ToPackedArray@N[wf],
+      gr=CoordinateGridObject[grid]
+      },
+    {engs, GridFunctionObject[gr, #]&/@wfns}
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*ConstructWavefunctions*)
+
+
+
+ConstructWavefunctions[
+  {
+    energies_,
+    wfns_
+    },
+  grid_
+  ]:=
+  With[
+    {
+      data=constructWavefunctionData[energies, wfns, grid]
+      },
+    If[validateWavefunctionData[data],
+      <|
+        "Wavefunctions"->data[[2]],
+        "Energies"->data[[1]]
+        |>,
+      <|$Failed->True|> (* requires Association return to throw the error *)
+      ]
+    ];
+ConstructWavefunctions[a_Association]:=
+  a;
+
+
+(* ::Subsection:: *)
+(*WFNormal*)
+
+
+
+WFNormal[wfns_]:=
+  {
+    wfns["Energies"],
+    Flatten@#["Values"]&/@wfns["Wavefunctions"]//Developer`ToPackedArray,
+    wfns["Wavefunctions"][[1]]["Grid"]//Normal
+    }
 
 
 (* ::Subsection:: *)
@@ -58,54 +156,49 @@ Begin["`Private`"];
 
 
 (* ::Subsubsection::Closed:: *)
-(*ChemWavefunctionsPart*)
+(*WFPart*)
 
 
 
-ChemWavefunctionsPart[c_ChemWavefunctionsObject, sel_]:=
-  ChemWavefunctionsObject@
+WFPart[WavefunctionsObject[c_], sel_]:=
+  If[IntegerQ@sel, 
+    Lookup[#, {"Energies", "Wavefunctions"}]&,
+    WavefunctionsObject
+    ]@
     MapAt[
-      Part[#, If[IntegerQ@sel, {sel}, sel]]&,
-      Normal@c,
-      {"Energies", "Wavefunctions"}
+      Part[#, sel]&,
+      c,
+      {{"Energies"}, {"Wavefunctions"}}
       ]
-ChemWavefunctionsPart[c_ChemWavefunctionsObject, All, p__]:=
-  ChemWavefunctionsObject@
+WFPart[WavefunctionsObject[c_], All, p__]:=
+  WavefunctionsObject@
     MapAt[
-      Part[#, All, p]&,
-      MapAt[
-        Part[#, p]&, 
-        Normal@c,
-        "GridPoints"
-        ],
+      Map[#[[p]]&],
+      c,
       "Wavefunctions"
       ];
-ChemWavefunctionsPart[c_ChemWavefunctionsObject, sel_, p__]:=
-  ChemWavefunctionsObject@
+WFPart[WavefunctionsObject[c_], sel_, p__]:=
+  If[IntegerQ@sel, 
+    Lookup[
+      MapAt[#[[p]]&, #, "Wavefunctions"], 
+      {"Energies", "Wavefunctions"}
+      ]&,
+    WavefunctionsObject@
+      MapAt[Map[#[[p]]&], #, "Wavefunctions"]&
+    ]@
     MapAt[
-      Part[#, 
-        If[IntegerQ@sel, {sel}, sel], 
-        p
-        ]&,
-      MapAt[
-        Part[#, p]&, 
-        MapAt[
-          Part[#, If[IntegerQ@sel, {sel}, sel]]&,
-          Normal@c,
-          "Energies"
-          ],
-        "GridPoints"
-        ],
-      "Wavefunctions"
-      ];
+      Part[#, sel]&,
+      c,
+      {{"Energies"}, {"Wavefunctions"}}
+      ]
 
 
 (* ::Subsubsection::Closed:: *)
-(*ChemWavefunctionsKeyPart*)
+(*WFKeyPart*)
 
 
 
-ChemWavefunctionsKeyPart[c:ChemWavefunctionsObject[a_], sel__]:=
+WFKeyPart[c:WavefunctionsObject[a_], sel__]:=
   a[sel]
 
 
@@ -116,7 +209,7 @@ ChemWavefunctionsKeyPart[c:ChemWavefunctionsObject[a_], sel__]:=
 
 WavefunctionNormalize[wfs_]:=
   wfs/Map[Norm, wfs];
-ChemWavefunctionsNormalize[c_ChemWavefunctionsObject]:=
+WFNormalize[c_WavefunctionsObject]:=
   MapAt[WavefunctionNormalize, c, "Wavefunctions"];
 
 
@@ -125,7 +218,7 @@ ChemWavefunctionsNormalize[c_ChemWavefunctionsObject]:=
 
 
 
-ChemWavefunctionsNormalizedQ[c_ChemWavefunctionsObject]:=
+WFNormalizedQ[c_WavefunctionsObject]:=
   AllTrue[Norm/@c["Wavefunctions"], #==1&];
 
 
@@ -134,26 +227,22 @@ ChemWavefunctionsNormalizedQ[c_ChemWavefunctionsObject]:=
 
 
 
-ChemWavefunctionsProduct[
-  wfns1_ChemWavefunctionsObject,
-  wfnsother__ChemWavefunctionsObject,
+WFProduct[
+  wfns1_WavefunctionsObject,
+  wfnsother__WavefunctionsObject,
   n:_Integer?Positive|All|Automatic:Automatic
   ]:=
   Module[
     {
       numCombo,
-      normals=Normal/@{wfns1, wfnsother},
-      grids,
-      energies,
+      energies=#["Energies"]&/@{wfns1, wfnsother},
+      wfns=#["Wavefunctions"]&/@{wfns1, wfnsother},
       wavefunctions,
-      indices,
-      grid
+      indices
       },
-    grids=normals[[All, "GridPoints"]];
-    energies=normals[[All, "Energies"]];
     numCombo=
       Replace[
-        OptionValue["NumberOfCombinations"], 
+        n, 
         {
           All:>
             Apply[Times, Length/@energies],
@@ -165,33 +254,17 @@ ChemWavefunctionsProduct[
         ];
     {indices, energies}=ChemUtilsProductEnergies[energies, numCombo];
     wavefunctions=
-      Map[
-        Join@@
-          KroneckerProduct[
-            Sequence@@
-              MapThread[#[["Wavefunctions", #2]]&,
-                {normals, #}
-                ]
-            ]&, 
-        indices
-        ];
-    grid=Flatten[Outer[Flatten@*List, Sequence@@grids], Length@grids-1];
-    ChemWavefunctionsObject@
-      Merge[
-        {
-          KeyDrop[#, {"Grid", "Energies", "Wavefunctions"}]&/@
-            normals,
-          "Grid"->grid,
-          "Energies"->energies,
-          "Wavefunctions"->wavefunctions
-          },
-        Last
-        ]
+      GFKroneckerProduct@@Map[Extract[wfns, #]&, Echo@indices];
+    WavefunctionsObject@
+      <|
+        "Energies"->energies,
+        "Wavefunctions"->wavefunctions
+        |>
     ]
 
 
 (* ::Subsection:: *)
-(*ChemDVRDefaultGridWavefunctions*)
+(*GridWavefunctions*)
 
 
 
@@ -331,8 +404,8 @@ expectationValue[
             ]
         },
       If[!mult,
-        expectationValue[func, grid, wfR],
-        wfR*expectationValue[func, grid]
+        expectationValueVec[func, grid, wfR],
+        wfR*expectationValueVec[func, grid]
         ]
     ];
 expectationValue[func:Except[_Function], grid_, wfL_, wfR_,
@@ -406,19 +479,19 @@ operatorMatrix[exf_, grid_, wfnsL_, wfnsR_, assumeRealSym_, assumeHerm_, mult_]:
 
 
 
-Options[ChemWavefunctionsExpectationValues]=
+Options[WFExpectationValues]=
   {
     "MultiplicativeOperator"->Automatic
     };
-ChemWavefunctionsExpectationValues[
+iWFExpectationValues[
   {grid_, wfns_},
   evs_,
+  mul_,
   ops:OptionsPattern[]
   ]:=
   With[
     {
-      exfns=Flatten@List@evs,
-      mul=OptionValue["MultiplicativeOperator"]
+      exfns=Flatten@List@evs
       },
       If[Not@ListQ@evs, Map[First], Identity]@
         Table[
@@ -429,14 +502,15 @@ ChemWavefunctionsExpectationValues[
           {wf, wfns}
           ]
     ];
-ChemWavefunctionsOperatorMatrix[
-  c_ChemWavefunctionsObject,
+WFExpectationValues[
+  c_WavefunctionsObject,
   evs_,
   ops:OptionsPattern[]
   ]:=
-  ChemWavefunctionsOperatorMatrix[
-    {c["Grid"], c["Wavefunctions"]},
+  iWFExpectationValues[
+    {c["Grid"]["Points"], Flatten@#["Values"]&/@c["Wavefunctions"]},
     evs,
+    OptionValue["MultiplicativeOperator"],
     ops
     ];
 
@@ -446,17 +520,20 @@ ChemWavefunctionsOperatorMatrix[
 
 
 
-Options[ChemWavefunctionsOperatorMatrix]=
+Options[WFOperatorMatrix]=
   Join[
-    Options@ChemWavefunctionsExpectationValues,
+    Options@WFExpectationValues,
     {
       "AssumeSymmetric"->True,
       "AssumeHermitian"->False
       }
     ];
-ChemWavefunctionsOperatorMatrix[
+iWFOperatorMatrix[
   {grid_, wfns_},
   evs_,
+  asrs_,
+  ash_,
+  mul_,
   ops:OptionsPattern[]
   ]:=
   Module[
@@ -465,9 +542,6 @@ ChemWavefunctionsOperatorMatrix[
       els,
       sels,
       mat,
-      asrs=TrueQ@OptionValue["AssumeSymmetric"],
-      ash=TrueQ@OptionValue["AssumeHermitian"],
-      mul=OptionValue["MultiplicativeOperator"],
       exf,
       mo
       },
@@ -480,31 +554,34 @@ ChemWavefunctionsOperatorMatrix[
         {n, Length@exfns}
         ]
     ];
-ChemWavefunctionsOperatorMatrix[
-  c_ChemWavefunctionsObject,
+WFOperatorMatrix[
+  c_WavefunctionsObject,
   evs_,
   ops:OptionsPattern[]
   ]:=
-  ChemWavefunctionsOperatorMatrix[
-    {c["Grid"], c["Wavefunctions"]},
+  iWFOperatorMatrix[
+    {c["Grid"]["Points"], Flatten@#["Values"]&/@c["Wavefunctions"]},
     evs,
+    TrueQ@OptionValue["AssumeSymmetric"],
+    TrueQ@OptionValue["AssumeHermitian"],
+    OptionValue["MultiplicativeOperator"],
     ops
-    ]
+    ];
 
 
 (* ::Subsubsection::Closed:: *)
-(*ChemWavefunctionsOperatorMatrixElements*)
+(*OperatorMatrixElements*)
 
 
 
-Options[ChemWavefunctionsOperatorMatrixElements]=
-  Options@ChemWavefunctionsOperatorMatrix;
-ChemWavefunctionsOperatorMatrixElements[
+Options[WFOperatorMatrixElements]=
+  Options@WFOperatorMatrix;
+iWFOperatorMatrixElements[
   {grid_, wfns_},
-  evs:
-    (({_, _}->_)|
-    ({{_, _}...}->_)|
-    {(({{_, _}...}|{_, _})->_)..}),
+  evs_,
+  ash_,
+  asrs_,
+  mul_,
   ops:OptionsPattern[]
   ]:=
   Module[
@@ -513,9 +590,6 @@ ChemWavefunctionsOperatorMatrixElements[
       els,
       sels,
       mat,
-      asrs=TrueQ@OptionValue["AssumeSymmetric"],
-      ash=TrueQ@OptionValue["AssumeHermitian"],
-      mul=OptionValue["MultiplicativeOperator"],
       exf,
       mo,
       wfL,
@@ -577,19 +651,22 @@ ChemWavefunctionsOperatorMatrixElements[
     ];
 
 
-ChemWavefunctionsOperatorMatrixElements[
-  c_ChemWavefunctionsObject,
+WFOperatorMatrixElements[
+  c_WavefunctionsObject,
   evs:
     (({_, _}->_)|
     ({{_, _}...}->_)|
     {(({{_, _}...}|{_, _})->_)..}),
   ops:OptionsPattern[]
   ]:=
-  ChemWavefunctionsOperatorMatrixElements[
-    {c["Grid"], c["Wavefunctions"]},
+  iWFOperatorMatrixElements[
+    {c["Grid"]["Points"], Flatten@#["Values"]&/@c["Wavefunctions"]},
     evs,
+    TrueQ@OptionValue["AssumeSymmetric"],
+    TrueQ@OptionValue["AssumeHermitian"],
+    OptionValue["MultiplicativeOperator"],
     ops
-    ]
+    ];
 
 
 End[];

@@ -35,10 +35,20 @@ Cell["\[LeftCeiling]keyTypeMap\[RightFloor]", "CodeSubsubsection",
  Evaluatable->True,ExpressionUUID->"503226dc-0b8d-4c1b-9345-f1ee356ab5f0"],
 
 Cell[BoxData[
+ RowBox[{"sparseArrayQ", "=", "\n", "\t", 
+  RowBox[{"MatchQ", "[", 
+   RowBox[{"_SparseArray", "?", "System`Private`NoEntryQ"}], 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"4161a127-400a-411b-80d3-e8c533126245"],
+
+Cell[BoxData[
  RowBox[{"packedSquareMatrixQ", "=", "\n", "\t", 
   RowBox[{
    RowBox[{
-    RowBox[{"Developer`PackedArrayQ", "[", "#", "]"}], "&&", "\n", "\t\t", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"Developer`PackedArrayQ", "[", "#", "]"}], "||", 
+      RowBox[{"sparseArrayQ", "[", "#", "]"}]}], ")"}], "&&", "\n", "\t\t", 
     "SquareMatrixQ", "&&", "\n", "\t\t", 
     RowBox[{"MatrixQ", "[", 
      RowBox[{"#", ",", " ", "Internal`RealValuedNumericQ"}], "]"}]}], 
@@ -53,7 +63,8 @@ Cell[BoxData[
      RowBox[{"\"\<Object\>\"", "\[Rule]", "_ChemDVRObject"}], ",", "\n", 
      "\t\t", 
      RowBox[{"\"\<Grid\>\"", "\[Rule]", 
-      RowBox[{"_List", "?", "Developer`PackedArrayQ"}]}], ",", "\n", "\t\t", 
+      RowBox[{"_CoordinateGridObject", "?", "CoordinateGridObject"}]}], ",", 
+     "\n", "\t\t", 
      RowBox[{"\"\<Transformation\>\"", "->", 
       RowBox[{"_List", "?", "packedSquareMatrixQ"}]}], ",", "\n", "\t\t", 
      RowBox[{"\"\<KineticEnergy\>\"", "\[Rule]", 
@@ -61,8 +72,7 @@ Cell[BoxData[
      RowBox[{"\"\<PotentialEnergy\>\"", "->", 
       RowBox[{"_List", "?", "packedSquareMatrixQ"}]}], ",", "\n", "\t\t", 
      RowBox[{"\"\<Wavefunctions\>\"", "\[Rule]", 
-      RowBox[{"_ChemWavefunctionsObject", "?", "ChemWavefunctionsObjectQ"}]}],
-      ",", 
+      RowBox[{"_WavefunctionsObject", "?", "WavefunctionsObjectQ"}]}], ",", 
      RowBox[{"(*", "\n", "\t\t", 
       RowBox[{
        RowBox[{"\"\<Extensions\>\"", "\[Rule]", 
@@ -86,11 +96,24 @@ Cell[BoxData[
    RowBox[{
     RowBox[{"Keys", "@", "$keyTypeMap"}], ",", "\n", "\t\t", 
     RowBox[{
-     RowBox[{"MatchQ", "[", 
+     RowBox[{"If", "[", 
       RowBox[{
-       RowBox[{"a", "[", "#", "]"}], ",", " ", 
-       RowBox[{"None", "|", 
-        RowBox[{"$keyTypeMap", "[", "#", "]"}]}]}], "]"}], "&"}]}], "\n", 
+       RowBox[{"!", 
+        RowBox[{"MatchQ", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "#", "]"}], ",", " ", 
+          RowBox[{"None", "|", 
+           RowBox[{"$keyTypeMap", "[", "#", "]"}]}]}], "]"}]}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"PackageRaiseException", "[", 
+        RowBox[{
+        "Automatic", ",", "\n", "\t\t\t\t", 
+         "\"\<DVR result `` for \\\"``\\\" is not None and doesn't match \
+pattern ``\>\"", ",", "\n", "\t\t\t\t", 
+         RowBox[{"a", "[", "#", "]"}], ",", "\n", "\t\t\t\t", "#", ",", "\n", 
+         "\t\t\t\t", 
+         RowBox[{"$keyTypeMap", "[", "#", "]"}]}], "\n", "\t\t\t\t", "]"}], 
+       ",", "\n", "\t\t\t", "True"}], "\n", "\t\t\t", "]"}], "&"}]}], "\n", 
    "\t\t", "]"}]}]], \
 "CodeInput",ExpressionUUID->"94240285-1ea5-479d-b339-11a665096cc1"]
 }, Open  ]],
@@ -122,23 +145,36 @@ Cell[CellGroupData[{
 Cell["\[LeftCeiling]ConstructDVRResults\[RightFloor]", "CodeSubsubsection",
  Evaluatable->True,ExpressionUUID->"0af182a3-74d4-4b3a-8491-b7e5fcfbcae2"],
 
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
   RowBox[{
    RowBox[{
    "ConstructDVRResults", "[", "\n", "\t", "cache_Association", "\n", "\t", 
     "]"}], ":=", "\n", "\t", 
-   RowBox[{"If", "[", 
+   RowBox[{"Module", "[", 
     RowBox[{
-     RowBox[{"validateDVRResults", "[", "cache", "]"}], ",", "\n", "\t\t", 
-     "cache", ",", "\n", "\t\t", 
-     RowBox[{"<|", 
-      RowBox[{"$Failed", "\[Rule]", "True"}], "|>"}]}], " ", 
-    RowBox[{"(*", " ", 
-     RowBox[{
-     "requires", " ", "Association", " ", "return", " ", "to", " ", "throw", 
-      " ", "the", " ", "error"}], " ", "*)"}], "\n", "\t\t", "]"}]}], 
-  ";"}]], "CodeInput",ExpressionUUID->"afff2841-224c-40ae-a75d-28dd471377f2"]
+     RowBox[{"{", 
+      RowBox[{"new", "=", 
+       RowBox[{"constructDVRResults", "[", "cache", "]"}]}], "}"}], ",", "\n",
+      "\t\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"validateDVRResults", "[", "new", "]"}], ",", "\n", "\t", 
+       "\t\t", "new", ",", "\n", "\t", "\t\t", 
+       RowBox[{"<|", 
+        RowBox[{"$Failed", "\[Rule]", "True"}], "|>"}]}], " ", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "requires", " ", "Association", " ", "return", " ", "to", " ", "throw",
+         " ", "the", " ", "error"}], " ", "*)"}], "\n", "\t\t\t", "]"}]}], 
+    "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ConstructDVRResults", "[", "\n", "\t", "e_", "\n", "\t", "]"}], ":=",
+   "\n", "\t", 
+  RowBox[{"ConstructDVRResults", "[", 
+   RowBox[{"Association", "@", "e"}], 
+   "]"}]}]}], \
+"CodeInput",ExpressionUUID->"afff2841-224c-40ae-a75d-28dd471377f2"]
 }, Open  ]],
 
 Cell[CellGroupData[{

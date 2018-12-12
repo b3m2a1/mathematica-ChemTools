@@ -25,8 +25,12 @@ Begin["`Private`"];
 
 
 
+sparseArrayQ=
+  MatchQ[_SparseArray?System`Private`NoEntryQ]
+
+
 packedSquareMatrixQ=
-  Developer`PackedArrayQ[#]&&
+  (Developer`PackedArrayQ[#]||sparseArrayQ[#])&&
     SquareMatrixQ&&
     MatrixQ[#, Internal`RealValuedNumericQ]&
 
@@ -34,11 +38,11 @@ packedSquareMatrixQ=
 $keyTypeMap=
   <|
     "Object"->_ChemDVRObject,
-    "Grid"->_List?Developer`PackedArrayQ,
+    "Grid"->_CoordinateGridObject?CoordinateGridObject,
     "Transformation"->_List?packedSquareMatrixQ,
     "KineticEnergy"->_List?packedSquareMatrixQ,
     "PotentialEnergy"->_List?packedSquareMatrixQ,
-    "Wavefunctions"->_ChemWavefunctionsObject?ChemWavefunctionsObjectQ,(*
+    "Wavefunctions"->_WavefunctionsObject?WavefunctionsObjectQ,(*
 		"Extensions"\[Rule]_Association?AssociationQ,*)
     "Options"->_Association?AssociationQ
     |>;
@@ -51,7 +55,15 @@ $keyTypeMap=
 
 validateDVRResults[a_Association]:=
   AllTrue[Keys@$keyTypeMap,
-    MatchQ[a[#], None|$keyTypeMap[#]]&
+    If[!MatchQ[a[#], None|$keyTypeMap[#]],
+      PackageRaiseException[Automatic,
+        "DVR result `` for \"``\" is not None and doesn't match pattern ``",
+        a[#],
+        #,
+        $keyTypeMap[#]
+        ],
+      True
+      ]&
     ]
 
 
@@ -75,10 +87,16 @@ NewDVRResultsObject[a:_Association:<||>]:=
 ConstructDVRResults[
   cache_Association
   ]:=
-  If[validateDVRResults[cache],
-    cache,
-    <|$Failed->True|> (* requires Association return to throw the error *)
+  Module[{new=constructDVRResults[cache]},
+    If[validateDVRResults[new],
+      new,
+      <|$Failed->True|> (* requires Association return to throw the error *)
+      ]
     ];
+ConstructDVRResults[
+  e_
+  ]:=
+  ConstructDVRResults[Association@e]
 
 
 (* ::Subsubsection::Closed:: *)

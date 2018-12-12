@@ -2628,6 +2628,99 @@ NWChemLogRead[log_InputStream, "DipoleMoments"]:=
 
 
 (* ::Subsubsubsection::Closed:: *)
+(*CSSDDipoleMoment*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Parse*)
+
+
+
+(*"   Dipole moment        "" Debye(s)
+             DMX       "" DMXEFC        ""
+             DMY       "" DMYEFC        ""
+             DMZ       "" DMZEFC        ""*)
+
+
+nwLogReadDipoleBlock[dipz_, parts_:{"Centers", "DipoleVectors", "EFCVectors"}]:=
+  Module[
+    {
+      centers,
+      dipoles,
+      total
+      },
+    centers=
+      First/@StringCases[dipz,
+        {
+          "X =      "~~x:Repeated[_, {10}]~~
+            " Y =      "~~y:Repeated[_, {10}]~~
+            " Z =      "~~z:Repeated[_, {10}]:>
+              {x, y, z}
+          },
+        1
+        ];
+    dipoles=
+      First/@StringCases[dipz,
+        "Dipole moment       "~~n:Repeated[_, {13}]~~" Debye(s)
+             DMX       "~~x:Repeated[_, {13}]~~
+             " DMXEFC       "~~xef:Repeated[_, {13}]~~"
+             DMY       "~~y:Repeated[_, {13}]~~
+             " DMYEFC       "~~yef:Repeated[_, {13}]~~"
+             DMZ       "~~z:Repeated[_, {13}]~~
+             " DMZEFC       "~~zef:Repeated[_, {13}]:>
+             {
+               {x, y, z},
+               {xef, yef, zef}
+               },
+      1
+      ];
+    Developer`ToPackedArray@{
+      If[parts~MemberQ~"Centers",
+        Map[Internal`StringToDouble, #]&/@centers,
+        Nothing
+        ],
+      If[parts~MemberQ~"DipoleVectors",
+        Map[Internal`StringToDouble, #[[1]]]&/@dipoles,
+        Nothing
+        ],
+      If[parts~MemberQ~"EFCVectors",
+        Map[Internal`StringToDouble, #[[2]]]&/@dipoles,
+        Nothing
+        ]
+      }
+    ];
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Tags*)
+
+
+
+$nwccsddipolekeystart=
+  " CCSD dipole moments / hartree & Debye
+ ------------------------------------";
+
+
+$nwccsddipolekeyend=
+  "Total";
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*Main*)
+
+
+
+NWChemLogRead[log_InputStream, "CCSDDipoleMoments"]:=
+  iELStructLogRead[
+    log,
+    {{$nwccsddipolekeystart}, {$nwccsddipolekeyend}},
+    nwLogReadDipoleBlock,
+    ReadList
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
 (*DipoleCenters*)
 
 
@@ -2647,7 +2740,7 @@ NWChemLogRead[log_InputStream, "DipoleCenters"]:=
 
 
 (* ::Subsubsubsection::Closed:: *)
-(*DipoleCenters*)
+(*DipoleVectors*)
 
 
 

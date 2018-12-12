@@ -1,0 +1,1025 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["\[LeftCeiling]Grid Function Tools\[RightFloor]", "CodeSection",
+ Evaluatable->True,ExpressionUUID->"c53a16d2-e338-4337-96a0-1a1051ce7185"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Constructors\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"000a2dc2-c1fd-4610-8caf-43de47a7078d"],
+
+Cell[BoxData[{
+ RowBox[{"ConstructGridFunction", ";"}], "\n", 
+ RowBox[{"GridFunctionObjectQ", 
+  ";"}]}], "CodeInput",ExpressionUUID->"4c80ec38-2181-4b47-b39e-85fbc6557548"]\
+
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Parts\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"b6db1bdf-2c83-4bb4-a8d4-6a670d4fde30"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFPart", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Applies part to a grid function\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFKeyPart", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Applies key lookup to a grid function\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"0683456a-e69c-4b41-9668-ec499b04160b"]\
+
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Structural\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"35c26e29-ca06-4961-9791-7098d1b8fc12"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFPoints", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Flattens down to the coordinate points\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFArray", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Creates the normal array\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFMap", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Applies a transformation to the coordinates points, maintaining \
+ordering\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFSort", "::", "usage"}], "=", "\n", "\t", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFTranspose", "::", "usage"}], "=", "\n", "\t", "\"\<\>\""}], 
+  ";"}], "\n"}], \
+"CodeInput",ExpressionUUID->"d4b2a3d5-b679-424e-a459-eb9b78142f8c"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Manipulation\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"ba432d42-51ae-4540-85d8-7bbb1fa23818"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFScale", "::", "usage"}], "=", "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFShift", "::", "usage"}], "=", "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFRescale", "::", "usage"}], "=", "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFClip", "::", "usage"}], "=", "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFChop", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"c11e51ee-9c80-4d57-8056-dd7859121ad3"]\
+
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Higher-Level\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"ccc0d89e-0b00-499b-b791-a9d5c8d906df"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFDerivative", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Finite difference derivatives\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFIntegrate", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Dot-based integration\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GFInterpolate", "::", "usage"}], "=", "\n", "\t", 
+     "\"\<Distinct from GFInterpolation in that it does the interpolation by \
+hand\>\""}], ";"}], 
+   "*)"}]}]}], \
+"CodeInput",ExpressionUUID->"5ca56890-f721-4f5c-ae65-073eaebf2ae8"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFKroneckerProduct", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Kronecker product over grid functions\>\""}], 
+  ";"}]], "CodeInput",ExpressionUUID->"6256be92-7e52-4822-9618-9d29ca9c019f"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Mindless\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"c848bc19-cf7c-4a32-885c-6a484e383907"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFInterpolation", "::", "usage"}], "=", "\n", "\t", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFMinMax", "::", "usage"}], "=", "\n", "\t", "\"\<\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"2366f3a8-e8a3-407a-a76f-d18077c7b912"]\
+
+}, Closed]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"eb1d7e10-f3ca-44af-a40a-\
+46e42b1adc0b"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Constructor\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"745511c6-69cb-4ae5-a94d-157222a8031a"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ConstructGridFunction\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"777243d6-a881-491f-b267-394a50f6565f"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]validateGFData\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"0ae295c3-6c37-4359-b070-093ba0673342"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"validateGFData", "[", 
+   RowBox[{"{", 
+    RowBox[{"grid_", ",", " ", "values_"}], "}"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", "dn", "\n", "\t\t\t", "}"}], ",", "\n", 
+    "\t\t", 
+    RowBox[{
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"!", 
+        RowBox[{"Developer`PackedArrayQ", "@", "values"}]}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+        "Automatic", ",", "\n", "\t\t\t\t", 
+         "\"\<grid function values cannot be packed\>\""}], "\n", "\t\t\t\t", 
+        "]"}]}], "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"Dimensions", "[", "values", "]"}], "===", 
+      RowBox[{"GridDimensions", "[", "grid", "]"}]}]}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"94240285-1ea5-479d-b339-11a665096cc1"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]cleanGFData\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"7aa3ffb4-c934-404c-95b1-548f5ea2c378"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"cleanGFData", "[", 
+   RowBox[{"g_", ",", " ", "vals_"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"base", "=", 
+       RowBox[{"N", "@", 
+        RowBox[{"Developer`ToPackedArray", "@", "vals"}]}]}], ",", "\n", 
+      "\t\t\t", "grid", ",", "\n", "\t\t\t", "gplen"}], "\n", "\t\t\t", "}"}],
+     ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"!", 
+        RowBox[{"Developer`PackedArrayQ", "[", "base", "]"}]}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+        "Automatic", ",", "\n", "\t\t\t\t", 
+         "\"\<Function data cannot be packed\>\""}], "\n", "\t\t\t\t", 
+        "]"}]}], "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
+     RowBox[{"grid", "=", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"!", 
+         RowBox[{"CoordinateGridObjectQ", "@", "g"}]}], ",", " ", 
+        RowBox[{"CoordinateGridObject", "[", "g", "]"}], ",", " ", "g"}], 
+       "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"!", 
+        RowBox[{"CoordinateGridObjectQ", "@", "grid"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+        "Automatic", ",", "\n", "\t\t\t\t", 
+         "\"\<grid function coordinate grid improperly defined\>\""}], "\n", 
+        "\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"GridPointNumber", "[", "grid", "]"}], "=!=", 
+        RowBox[{"Times", "@@", 
+         RowBox[{"Dimensions", "[", "base", "]"}]}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+        "Automatic", ",", "\n", "\t\t\t\t", 
+         "\"\<number of grid points (``) and function values (``) disagaree\>\
+\"", ",", "\n", "\t\t\t\t", 
+         RowBox[{"GridPointNumber", "[", "grid", "]"}], ",", "\n", "\t\t\t\t", 
+         RowBox[{"GridPointNumber", "[", "base", "]"}]}], "\n", "\t\t\t\t", 
+        "]"}]}], "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"GridDimensions", "[", "grid", "]"}], "=!=", 
+        RowBox[{"Dimensions", "[", "base", "]"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Depth", "@", "base"}], "\[Equal]", "2"}], ",", "\n", 
+         "\t\t\t\t", 
+         RowBox[{"base", "=", 
+          RowBox[{"ArrayReshape", "[", 
+           RowBox[{"base", ",", " ", 
+            RowBox[{"Dimensions", "[", "grid", "]"}]}], "]"}]}], ",", "\n", 
+         "\t\t\t\t", 
+         RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t\t", 
+          RowBox[{
+          "Automatic", ",", "\n", "\t\t\t\t\t", 
+           "\"\<Grid dimensions (``) and function dimensions (``) disagaree\>\
+\"", ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"Dimensions", "[", "grid", "]"}], ",", "\n", "\t\t\t\t\t", 
+           
+           RowBox[{"Dimensions", "[", "base", "]"}]}], "\n", "\t", "\t\t\t\t",
+           "]"}]}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}], ";", 
+     "\n", "\t\t", 
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{"grid", ",", "\n", "\t\t\t", "base"}], 
+      RowBox[{"(*", 
+       RowBox[{"Map", "[", 
+        RowBox[{"List", ",", " ", "base", ",", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Depth", "[", "base", "]"}], "-", "1"}], "}"}]}], "]"}], 
+       "*)"}], "\n", "\t\t\t", "}"}]}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"fa794344-d66b-4650-ba92-aa142e391584"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]ConstructCoordinateGrid\[RightFloor]", \
+"CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"74f00e8c-a504-41d2-b77f-ffcbf8b05efb"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ConstructGridFunction", "[", 
+    RowBox[{"grid_", ",", " ", "vals_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"g", "=", 
+       RowBox[{"cleanGFData", "[", 
+        RowBox[{"grid", ",", " ", "vals"}], "]"}]}], "}"}], ",", "\n", "\t\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"validateGFData", "[", "g", "]"}], ",", "\n", "\t\t\t", 
+       RowBox[{"<|", 
+        RowBox[{
+         RowBox[{"\"\<Grid\>\"", "\[Rule]", 
+          RowBox[{"g", "[", 
+           RowBox[{"[", "1", "]"}], "]"}]}], ",", " ", 
+         RowBox[{"\"\<Values\>\"", "\[Rule]", 
+          RowBox[{"g", "[", 
+           RowBox[{"[", "2", "]"}], "]"}]}]}], "|>"}], ",", "\n", "\t\t\t", 
+       RowBox[{"<|", 
+        RowBox[{"$Failed", "\[Rule]", "True"}], "|>"}]}], " ", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "requires", " ", "Association", " ", "return", " ", "to", " ", "throw",
+         " ", "the", " ", "error"}], " ", "*)"}], "\n", "\t\t\t", "]"}]}], 
+    "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ConstructGridFunction", "[", "a_Association", "]"}], ":=", "\n", 
+    "\t", "a"}], ";"}], " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "should", " ", "probably", " ", "just", " ", "do", " ", "a", " ", "quick",
+      " ", "validation"}], "..."}], " ", 
+   "*)"}]}]}], \
+"CodeInput",ExpressionUUID->"afff2841-224c-40ae-a75d-28dd471377f2"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GridFunction Parts\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"07308ff2-cdf4-46b7-bbac-f7e6c2e4b613"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFPart\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"26a36364-bff1-44b1-9d43-f6e3a105a9a2"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFPart", "[", 
+    RowBox[{
+     RowBox[{"c", ":", 
+      RowBox[{"GridFunctionObject", "[", "a_", "]"}]}], ",", " ", "p__"}], 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"CoordinateGridObjectQ", "@", 
+        RowBox[{"#", "[", "\"\<Grid\>\"", "]"}]}], ",", "\n", "\t\t", 
+       RowBox[{"GridFunctionObject", "[", "#", "]"}], ",", "\n", "\t\t", 
+       RowBox[{"Append", "@@", 
+        RowBox[{"Lookup", "[", 
+         RowBox[{"#", ",", " ", 
+          RowBox[{"{", 
+           RowBox[{"\"\<Grid\>\"", ",", " ", "\"\<Values\>\""}], "}"}]}], 
+         "]"}]}]}], "\n", "\t\t", "]"}], "&"}], "@", "\n", "\t\t", 
+    RowBox[{"MapAt", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Part", "[", 
+        RowBox[{"#", ",", " ", "p"}], "]"}], "&"}], ",", "\n", "\t\t\t", "a", 
+      ",", "\n", "\t\t\t", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", "\"\<Grid\>\"", "}"}], ",", " ", 
+        RowBox[{"{", "\"\<Values\>\"", "}"}]}], "}"}]}], "\n", "\t\t\t", 
+     "]"}]}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"db26231e-223e-47d9-b140-7917fdfc740c"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFKeyPart\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"7e48b41f-8a60-49c0-9d7f-9545580d8fc6"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GFKeyPart", "[", 
+   RowBox[{
+    RowBox[{"c", ":", 
+     RowBox[{"GridFunctionObject", "[", "a_", "]"}]}], ",", " ", "sel__"}], 
+   "]"}], ":=", "\n", "\t", 
+  RowBox[{
+  "a", "[", "sel", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"fb743073-23b9-4c81-a3b3-23ba1713ad56"]
+}, Closed]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Structural\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"425d0f7e-824f-4ea5-92ae-b558ecd34e20"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFArray\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"35621307-74ec-4892-8be5-c883545aa1b2"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFArray", "[", 
+    RowBox[{"grid_List", ",", " ", "vals_List"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"d1", "=", 
+        RowBox[{"Dimensions", "[", "grid", "]"}]}], ",", " ", 
+       RowBox[{"d2", "=", 
+        RowBox[{"Dimensions", "[", "vals", "]"}]}], ",", " ", 
+       RowBox[{"dp", "=", 
+        RowBox[{"Depth", "[", "vals", "]"}]}]}], "}"}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"d1", "[", 
+          RowBox[{"[", 
+           RowBox[{";;", 
+            RowBox[{"-", "2"}]}], "]"}], "]"}], "=!=", "d2"}], ",", "\n", 
+        "\t\t\t", 
+        RowBox[{"PackageRaiseException", "[", 
+         RowBox[{
+         "\"\<GridFunction\>\"", ",", "\n", "\t\t\t\t", 
+          "\"\<Grid function grid and values have inconsistent dimensions (`` \
+and ``)\>\"", ",", "\n", "\t\t\t\t", "d1", ",", "\n", "\t\t\t\t", "d2"}], 
+         "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
+      
+      RowBox[{"If", "[", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "@", "d1"}], ">", "1"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"Join", "[", 
+         RowBox[{"grid", ",", " ", 
+          RowBox[{"Map", "[", 
+           RowBox[{"List", ",", " ", "vals", ",", " ", 
+            RowBox[{"{", 
+             RowBox[{"dp", "-", "1"}], "}"}]}], "]"}], ",", " ", "dp"}], 
+         "]"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"PackageRaiseException", "[", 
+         RowBox[{
+         "\"\<Grid\>\"", ",", "\n", "\t\t\t\t\t", 
+          "\"\<Grid `` has depth 1...?\>\"", ",", "\n", "\t\t\t\t\t", 
+          "grid"}], "\n", "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}]}]}], 
+    "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GFArray", "[", "grid_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"GFArray", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"grid", "[", "\"\<Grid\>\"", "]"}], "[", "\"\<Grid\>\"", "]"}], 
+    ",", " ", 
+    RowBox[{"grid", "[", "\"\<Values\>\"", "]"}]}], 
+   "]"}]}]}], \
+"CodeInput",ExpressionUUID->"2bb6990e-b11a-49e2-b070-df073dd8e86a"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFPoints\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"e6bd68b5-4a6f-471d-9ddb-646dfc88e1a2"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFPoints", "[", 
+    RowBox[{"grid_List", ",", " ", "vals_List"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Flatten", "[", 
+    RowBox[{
+     RowBox[{"GFArray", "[", 
+      RowBox[{"grid", ",", " ", "vals"}], "]"}], ",", " ", 
+     RowBox[{
+      RowBox[{"Depth", "[", "vals", "]"}], "-", "2"}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GFPoints", "[", "grid_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"GFPoints", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"grid", "[", "\"\<Grid\>\"", "]"}], "[", "\"\<Grid\>\"", "]"}], 
+    ",", " ", 
+    RowBox[{"grid", "[", "\"\<Values\>\"", "]"}]}], 
+   "]"}]}]}], \
+"CodeInput",ExpressionUUID->"4f146f91-8b98-447d-b28a-dbd70302d2a6"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFMap\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"a30d813e-7eec-4694-be85-5e22ea05f66f"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFMap", "[", 
+    RowBox[{"tf_", ",", " ", 
+     RowBox[{"{", 
+      RowBox[{"grid_List", ",", " ", "vals_List"}], "}"}]}], "]"}], ":=", 
+   "\n", "\t", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"d", "=", 
+        RowBox[{"Depth", "[", "vals", "]"}]}], ",", " ", 
+       RowBox[{"array", "=", 
+        RowBox[{"GFArray", "[", 
+         RowBox[{"grid", ",", " ", "vals"}], "]"}]}]}], "}"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"Developer`ToPackedArray", "@", 
+      RowBox[{"N", "@", 
+       RowBox[{"Map", "[", 
+        RowBox[{"tf", ",", " ", "array", ",", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Depth", "[", "vals", "]"}], "-", "1"}], "}"}]}], 
+        "]"}]}]}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFTransform", "[", 
+    RowBox[{"tf_", ",", " ", "f_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"GFTransform", "[", 
+    RowBox[{"tf", ",", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"f", "[", "\"\<Grid\>\"", "]"}], "[", "\"\<Grid\>\"", "]"}], 
+       ",", " ", 
+       RowBox[{"f", "[", "\"\<Values\>\"", "]"}]}], "}"}]}], "]"}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"760e9b4c-db9a-493b-9d8b-ff5bcb9e4bdc"]\
+
+}, Closed]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Manipulation\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"5ef91408-40e4-457f-8d9c-b0cb46df313f"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFScale\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"3c2ee178-67e7-4145-a252-6a0e6e611547"],
+
+Cell[BoxData[{
+ RowBox[{"GFScale", "//", "Clear"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFScale", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"grid_", ",", " ", "values_"}], "}"}], ",", " ", 
+     RowBox[{"n_", "?", "NumericQ"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"{", 
+    RowBox[{"grid", ",", " ", 
+     RowBox[{"values", "*", "n"}]}], "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFScale", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"grid_", ",", " ", "values_"}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"n_", "?", "NumericQ"}], ",", " ", 
+       RowBox[{"base_", "?", "NumericQ"}]}], "}"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"{", 
+    RowBox[{"grid", ",", " ", 
+     RowBox[{"base", "+", 
+      RowBox[{"n", "*", 
+       RowBox[{"(", 
+        RowBox[{"values", "-", "base"}], ")"}]}]}]}], "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFScale", "[", 
+    RowBox[{"gf_GridFunctionObject", ",", " ", 
+     RowBox[{"spec", ":", 
+      RowBox[{
+       RowBox[{"_", "?", "NumericQ"}], "|", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"_", "?", "NumericQ"}], ",", " ", 
+         RowBox[{"_", "?", "NumericQ"}]}], "}"}]}]}]}], "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{"GridFunctionObject", "@@", "\n", "\t\t", 
+    RowBox[{"GFScale", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"gf", "[", "\"\<Grid\>\"", "]"}], ",", " ", 
+        RowBox[{"gf", "[", "\"\<Values\>\"", "]"}]}], "}"}], ",", " ", 
+      "spec"}], "]"}]}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"54d9e08c-6ce5-4918-ad98-ccc27a21b9ec"]\
+
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFShift\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"cb5ef575-9240-473c-96ca-75d9bf8b1ae4"],
+
+Cell[BoxData[{
+ RowBox[{"GFShift", "//", "Clear"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFShift", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"grid_", ",", " ", "values_"}], "}"}], ",", " ", 
+     RowBox[{"n_", "?", "NumericQ"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"{", 
+    RowBox[{"grid", ",", " ", 
+     RowBox[{"values", "+", "n"}]}], "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFShift", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"grid_", ",", " ", "values_"}], "}"}], ",", " ", 
+     RowBox[{"Scaled", "[", 
+      RowBox[{"i_", "?", "NumericQ"}], "]"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"GFShift", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"grid", ",", " ", "values"}], "}"}], ",", " ", 
+     RowBox[{"Subtract", "@@", 
+      RowBox[{"Reverse", "@", 
+       RowBox[{"MinMax", "[", "values", "]"}]}]}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFShift", "[", 
+    RowBox[{"gf_GridFunctionObject", ",", " ", 
+     RowBox[{"spec", ":", 
+      RowBox[{
+       RowBox[{"_", "?", "NumericQ"}], "|", 
+       RowBox[{"Scaled", "[", 
+        RowBox[{"_", "?", "NumericQ"}], "]"}]}]}]}], "]"}], ":=", "\n", "\t", 
+   
+   RowBox[{"GridFunctionObject", "@@", "\n", "\t\t", 
+    RowBox[{"GFShift", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"gf", "[", "\"\<Grid\>\"", "]"}], ",", " ", 
+        RowBox[{"gf", "[", "\"\<Values\>\"", "]"}]}], "}"}], ",", " ", 
+      "spec"}], "]"}]}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"94edfb1c-6aca-4dcc-87f0-8dc755c923ec"]\
+
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFRescale\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"b6d8515e-ac0a-4a4f-a525-024c0450b3e2"],
+
+Cell["\<\
+\[LeftCeiling]
+\tThis requires some thought to do appropriately and cleanly
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"34686602-7f86-4a8f-866f-f16a7fed017c"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]getGFScalingRange\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"230577c3-5bd2-48bf-a482-05d7812d8a56"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"getGFScalingRange", "[", 
+    RowBox[{"values_", ",", " ", "minmax_", ",", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"m_", "?", "NumericQ"}], ",", " ", 
+       RowBox[{"n_", "?", "NumericQ"}]}], "}"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"{", 
+    RowBox[{"m", ",", " ", "n"}], "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"getGFScalingRange", "[", 
+    RowBox[{"values_", ",", " ", "minmax_", ",", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Scaled", "[", 
+        RowBox[{"i_", "?", "NumericQ"}], "]"}], ",", " ", "n_"}], "}"}]}], 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"getGFScalingRange", "[", 
+    RowBox[{"values", ",", " ", "minmax", ",", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"i", "*", 
+        RowBox[{"minmax", "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], ",", " ", "n"}], "}"}]}], "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"getGFScalingRange", "[", 
+    RowBox[{"values_", ",", " ", "minmax_", ",", " ", 
+     RowBox[{"{", 
+      RowBox[{"m_", ",", " ", 
+       RowBox[{"Scaled", "[", 
+        RowBox[{"i_", "?", "NumericQ"}], "]"}]}], "}"}]}], "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{"getGFScalingRange", "[", 
+    RowBox[{"values", ",", " ", "minmax", ",", " ", 
+     RowBox[{"{", 
+      RowBox[{"m", ",", " ", 
+       RowBox[{"i", "*", 
+        RowBox[{"minmax", "[", 
+         RowBox[{"[", "2", "]"}], "]"}]}]}], "}"}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"getGFScalingRange", "[", 
+    RowBox[{"values_", ",", " ", "minmax_", ",", " ", "\n", "\t", 
+     RowBox[{"Offset", "[", 
+      RowBox[{"spec_", ",", " ", 
+       RowBox[{"x_", "?", "NumericQ"}]}], "]"}]}], "\n", "\t", "]"}], ":=", 
+   "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"s", "=", 
+       RowBox[{"getGFScalingRange", "[", 
+        RowBox[{"values", ",", " ", "minmax", ",", " ", "spec"}], "]"}]}], 
+      "}"}], ",", "\n", "\t\t", 
+     RowBox[{"s", "-", "x"}]}], 
+    RowBox[{"(*", " ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+       "...", "this", " ", "might", " ", "not", " ", "be", " ", "right"}], 
+       "..."}], "?"}], " ", "*)"}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"getGFScalingRange", "[", 
+   RowBox[{"values_", ",", " ", "minmax_", ",", " ", "\n", "\t", 
+    RowBox[{"Offset", "[", 
+     RowBox[{"spec_", ",", " ", 
+      RowBox[{"Scaled", "[", "n_", "]"}]}], "]"}]}], "\n", "\t", "]"}], ":=", 
+  "\n", "\t", 
+  RowBox[{"getGFScalingRange", "[", "\n", "\t\t", 
+   RowBox[{"values", ",", " ", "minmax", ",", "\n", "\t\t", 
+    RowBox[{"Offset", "[", 
+     RowBox[{"spec", ",", " ", 
+      RowBox[{"Rescale", "[", 
+       RowBox[{"n", ",", " ", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", " ", "1"}], "}"}], ",", " ", "minmax"}], "]"}]}], 
+     "]"}]}], "\n", "\t\t", 
+   "]"}]}]}], \
+"CodeInput",ExpressionUUID->"8c1c1e6a-8252-4713-85d4-356d8776d18a"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]iGFRescale\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"a83fe2e3-4167-4ed4-ab34-46ec511b9d7b"],
+
+Cell[BoxData[{
+ RowBox[{"iGFRescale", "//", "Clear"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"iGFRescale", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"grid_", ",", " ", "values_"}], "}"}], ",", " ", "minmax_", ",",
+      " ", "spec_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"gspec", "=", 
+       RowBox[{"getGFScalingRange", "[", 
+        RowBox[{"values", ",", " ", "minmax", ",", " ", "spec"}], "]"}]}], 
+      "}"}], ",", "\n", "\t\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"ListQ", "@", "gspec"}], ",", "\n", "\t\t\t", 
+       RowBox[{"{", 
+        RowBox[{"grid", ",", " ", 
+         RowBox[{"Rescale", "[", 
+          RowBox[{"values", ",", " ", "minmax", ",", " ", "gspec"}], "]"}]}], 
+        "}"}], ",", "\n", "\t\t\t", 
+       RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t", 
+        RowBox[{
+        "Automatic", ",", "\n", "\t\t\t\t", 
+         "\"\<Spec `` is invalid for GFRescale\>\"", ",", "\n", "\t\t\t\t", 
+         "spec"}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}]}], "\n", 
+    "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"iGFRescale", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"grid_", ",", " ", "values_"}], "}"}], ",", " ", "spec_"}], 
+    "]"}], ":=", "\n", "\t", 
+   RowBox[{"iGFRescale", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"grid", ",", " ", "values"}], "}"}], ",", " ", 
+     RowBox[{"MinMax", "@", "values"}], ",", " ", "spec"}], "]"}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"a365dd93-8b5c-4579-b7bc-e83e7c1c4de4"]\
+
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFRescale\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"df331102-b1e7-4599-88be-91dabb17fd00"],
+
+Cell[BoxData[
+ RowBox[{"GFRescale", "//", 
+  "Clear"}]], \
+"CodeInput",ExpressionUUID->"64eed1ae-756f-4410-9e3d-246a1ac67bee"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFRescale", "[", "\n", "\t", 
+    RowBox[{"gf_GridFunctionObject", ",", "\n", "\t", 
+     RowBox[{"minMax", ":", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"_", "?", "NumericQ"}], ",", " ", 
+          RowBox[{"_", "?", "NumericQ"}]}], "}"}], "|", "Automatic"}], ")"}], 
+      ":", "Automatic"}], ",", "\n", "\t", "spec_"}], "\n", "\t", "]"}], ":=",
+    "\n", "\t", 
+   RowBox[{"With", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{"res", "=", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"PackageExceptionBlock", "[", "\"\<GFRescale\>\"", "]"}], "@",
+         "\n", "\t\t\t\t\t", 
+        RowBox[{"iGFRescale", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"gf", "[", "\"\<Grid\>\"", "]"}], ",", " ", 
+            RowBox[{"gf", "[", "\"\<Values\>\"", "]"}]}], "}"}], ",", " ", 
+          "spec"}], "]"}]}]}], "\n", "\t", "\t\t", "}"}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"GridFunctionObject", "@@", "res"}], "/;", 
+      RowBox[{"ListQ", "@", "res"}]}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"3b8d17cd-2c98-4bdb-a3c0-ccfea705de45"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFClip\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"41c690e3-f3cd-4d37-887f-b25f8ca22d9a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFClip", "[", 
+    RowBox[{"f_GridFunctionObject", ",", " ", "s__"}], "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"vs", "=", 
+       RowBox[{"Clip", "[", 
+        RowBox[{
+         RowBox[{"f", "[", "\"\<Values\>\"", "]"}], ",", " ", "s"}], "]"}]}], 
+      "}"}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"GridFunctionObject", "[", 
+       RowBox[{
+        RowBox[{"f", "[", "\"\<Grid\>\"", "]"}], ",", " ", "vs"}], "]"}], "/;", 
+      RowBox[{"ListQ", "@", "vs"}]}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"0e7e826e-c2b2-4dfc-bbb9-fb53aa3c35d1"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFChop\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"e44143f7-6d77-446a-a376-3d3d0462611d"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFChop", "[", 
+    RowBox[{"f_GridFunctionObject", ",", " ", "s__"}], "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"vs", "=", 
+       RowBox[{"Threshold", "[", 
+        RowBox[{
+         RowBox[{"f", "[", "\"\<Values\>\"", "]"}], ",", " ", "s"}], "]"}]}], 
+      "}"}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"GridFunctionObject", "[", 
+       RowBox[{
+        RowBox[{"f", "[", "\"\<Grid\>\"", "]"}], ",", " ", "vs"}], "]"}], "/;", 
+      RowBox[{"ListQ", "@", "vs"}]}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"3de86c98-b839-4235-b7ea-aa080924ffbc"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Mindless\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"4ab47757-6bbb-4f8a-8fd7-696e38205596"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFInterpolation", "[", 
+    RowBox[{"f_", ",", " ", "a___"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{
+     RowBox[{"GFPoints", "[", "f", "]"}], ",", " ", "a"}], "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFMinMax", "[", 
+    RowBox[{"f_", ",", " ", "a___"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"MinMax", "[", 
+    RowBox[{
+     RowBox[{"f", "[", "\"\<Values\>\"", "]"}], ",", " ", "a"}], "]"}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"b653619c-4f44-4387-8b53-d1fb4e8c3f98"]\
+
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Higher Level\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"14f80e2f-08a6-4433-9cd4-32f903f2971b"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFKroneckerProduct\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"9d533fb8-7412-4cc7-8a40-ef906b13d575"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GFKroneckerProduct", "[", "g__GridFunctionObject", "]"}], ":=", 
+  "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "dimensions", ",", " ", "targetDimension", ",", " ", "points", ",", " ", 
+      "grid", ",", " ", "vals", ",", " ", "kp", ",", " ", "op"}], "}"}], ",", 
+    "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"dimensions", "=", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"#", "[", "\"\<Dimensions\>\"", "]"}], "&"}], "/@", 
+       RowBox[{"{", "g", "}"}]}]}], ";", "\n", "\t\t", 
+     RowBox[{"targetDimension", "=", 
+      RowBox[{"Join", "@@", "dimensions"}]}], ";", "\n", "\t\t", 
+     RowBox[{"points", "=", 
+      RowBox[{"GFPoints", "/@", 
+       RowBox[{"{", "g", "}"}]}]}], ";", "\n", "\t\t", 
+     RowBox[{"grid", "=", 
+      RowBox[{"points", "[", 
+       RowBox[{"[", 
+        RowBox[{"All", ",", " ", "All", ",", " ", 
+         RowBox[{";;", 
+          RowBox[{"-", "2"}]}]}], "]"}], "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"vals", "=", 
+      RowBox[{"points", "[", 
+       RowBox[{"[", 
+        RowBox[{"All", ",", " ", "All", ",", " ", 
+         RowBox[{"-", "1"}]}], "]"}], "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"kp", "=", 
+      RowBox[{"KroneckerProduct", "@@", "vals"}]}], ";", "\n", "\t\t", 
+     RowBox[{"op", "=", 
+      RowBox[{"Join", "@@@", 
+       RowBox[{"Tuples", "@", "grid"}]}]}], ";", "\n", "\t\t", 
+     RowBox[{"grid", "=", 
+      RowBox[{"ArrayReshape", "[", 
+       RowBox[{"op", ",", " ", 
+        RowBox[{"Append", "[", 
+         RowBox[{"targetDimension", ",", " ", 
+          RowBox[{"Length", "@", "targetDimension"}]}], "]"}]}], "]"}]}], ";",
+      "\n", "\t\t", 
+     RowBox[{"vals", "=", 
+      RowBox[{"ArrayReshape", "[", 
+       RowBox[{"kp", ",", " ", "targetDimension"}], "]"}]}], ";", "\n", 
+     "\t\t", 
+     RowBox[{"GridFunctionObject", "[", 
+      RowBox[{"grid", ",", " ", "vals"}], "]"}]}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"c4528778-24c2-45ea-9eb4-9f18c73c8c80"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"End", "[", "]"}], 
+  ";"}]], "InputSection",ExpressionUUID->"07b32dc5-8759-49c0-8fd1-\
+21dac08e936a"]
+}, Open  ]],
+
+Cell["", "SectionSeparator",ExpressionUUID->"9b890501-c575-45aa-bf6b-\
+4a602a09f246"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{118, Automatic}, {Automatic, 36}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+

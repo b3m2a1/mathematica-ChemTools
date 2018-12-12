@@ -25,10 +25,16 @@ InterfaceCopyProperties::usage=
   "Copies properties from one object to another";
 
 
+(*InterfaceModify::usage=
+	"Replace keys in one interface with those of another" (* for future *)*)
+
+
 InterfaceMethod::usage=
   "Alias for defining object methods";
 InterfaceAttribute::usage=
   "Alias for defining object attributes";
+InterfaceOverride::usage=
+  "Alias for defining object UpValues";
 
 
 Begin["`Private`"];
@@ -170,10 +176,9 @@ InterfacePropertyList[spec_]:=
 
 
 defaultConstructorFailureFunction[head_, args__]:=
-  PackageRaiseException[
-    Automatic,
+  PackageRaiseException[Automatic,
     "Failed to build `` object from data ``",
-    head, 
+    head,
     HoldForm[{args}]
     ];
 defaultConstructorFailureFunction~SetAttributes~HoldAllComplete;
@@ -304,13 +309,17 @@ Options[RegisterInterface]=
     "Constructor"->Automatic,
     "MutationHandler"->Automatic,
     "MutationFunctions"->None,
-    "AccessorFunctions"->None,
+    "Protect"->False,
+    "AccessorFunctions"->Automatic,
     "NormalFunction"->Automatic,
     "Formatted"->True,
     "Icon"->None,
     "DefaultMethods"->{
-      Keys, SetProperty, PropertyValue,
+      Association, Keys, Values, SetProperty, PropertyValue,
       RemoveProperty, PropertyList
+      },
+    "DefaultAttributes"->{
+      "Properties", "Methods"
       }
     };
 RegisterInterface[
@@ -349,7 +358,7 @@ RegisterInterface[
       ctor===Automatic,
         createConstructor[constructor, keys];
         ctor=constructor,
-      Head[ctor]===Symbol&&DownValues[ctor]=={},
+      Head[ctor]===Symbol&&DownValues[Evaluate@ctor]=={},
         createConstructor[ctor, keys],
       AssociationQ@ctor,
         ctorFail=
@@ -402,6 +411,8 @@ RegisterInterface[
       iRegisterInterfaceFormatting[head, icon]
       ];
     iRegisterDefaultInterfaceMethods[head, OptionValue["DefaultMethods"]];
+    iRegisterDefaultInterfaceAttributes[head, OptionValue["DefaultAttributes"]];
+    If[OptionValue["Protect"], Protect[head]];
     head
     ];
 
@@ -587,20 +598,23 @@ iRegisterInterfaceConstructor[
       },
     InterfaceConstructor[head]=constructor;
     (* Constructor DownValue on the object *)
+    Unprotect[head];
     head//ClearAll;
     head~SetAttributes~HoldAllComplete;
-    head[args___]?checkInvalid:=
-      With[{a=constructor[args]},
-        If[AssociationQ@a,
-          With[{a2=Append[a, "Version"->version]},
-            If[TrueQ@validator@a2,
-              setValid@head[a2],
-              failureFunction[head, args]
-              ]
-            ],
-          failureFunction[head, args]
-          ]/;(TrueQ[failOnUndefinedArguments]||AssociationQ[a])
-        ];
+    With[{tag=SymbolName[head]},
+      head[args___]?checkInvalid:=
+        With[{a=PackageExceptionBlock[tag]@constructor[args]},
+          PackageExceptionBlock[tag]@If[AssociationQ@a,
+            With[{a2=Append[a, "Version"->version]},
+              If[TrueQ@validator@a2,
+                setValid@head[a2],
+                failureFunction[head, args]
+                ]
+              ],
+            failureFunction[head, args]
+            ]/;(TrueQ[failOnUndefinedArguments]||AssociationQ[a])
+          ];
+      ]
     ]
 
 
@@ -709,7 +723,7 @@ iRegisterInterfaceMethod~SetAttributes~HoldRest;
 iRegisterInterfaceMethod[
   head_,
   methodName_,
-  name_,
+  lhs_,
   args___,
   def_
   ]:=
@@ -718,27 +732,38 @@ iRegisterInterfaceMethod[
       mn=methodName,
       valid=InterfaceValidator[head],
       meths=InterfaceMethods[head],
-      noop=Unevaluated@name
+      attrs=Attributes[head]
       },
+    If[MemberQ[attrs, Protected], Unprotect[head]];
     InterfaceMethods[head]=
       If[meths===Null,
         <|mn->True|>,
         Append[meths, mn->True]
         ]; 
-    noop_head?valid[mn[args]]:=
+    head/:lhs?valid[mn[args]]:=
       def;
-    noop_head?valid[mn][args]:=
+    head/:lhs?valid[mn][args]:=
       def;
+    If[MemberQ[attrs, Protected], Protect[head]];
     ];
 
 
+Unprotect[InterfaceMethod];
 InterfaceMethod/:
   (
-    InterfaceMethod[
-      Verbatim[Pattern][name_, Verbatim[Blank][head_]][method_][args___]
+    InterfaceMethod[head_][
+      lhs_[method_][args___]
       ]:=def_
     ):=
-    iRegisterInterfaceMethod[head, method, name, args, def];
+    iRegisterInterfaceMethod[head, method, lhs, args, def];
+InterfaceMethod/:
+  (
+    InterfaceMethod[head_][
+      lhs_[method_[[args___]]]
+      ]:=def_
+    ):=
+    iRegisterInterfaceMethod[head, method, lhs, args, def];
+Protect[InterfaceMethod];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -749,34 +774,102 @@ InterfaceMethod/:
 iRegisterInterfaceAttribute~SetAttributes~HoldRest;
 iRegisterInterfaceAttribute[
   head_,
-  attr_,
-  name_,
+  methodName_,
+  lhs_,
   def_
   ]:=
   With[
     {
-      mn=attr,
+      mn=methodName,
       valid=InterfaceValidator[head],
       meths=InterfaceAttributes[head],
-      noop=Unevaluated@name
+      attrs=Attributes[head]
       },
+    If[MemberQ[attrs, Protected], Unprotect[head]];
     InterfaceAttributes[head]=
       If[meths===Null,
         <|mn->True|>,
         Append[meths, mn->True]
         ]; 
-    noop_head?valid[mn]:=
+    head/:lhs?valid[mn]:=
       def;
+    If[MemberQ[attrs, Protected], Protect[head]];
     ];
 
 
+Unprotect[InterfaceAttribute];
 InterfaceAttribute/:
   (
-    InterfaceAttribute[
-      Verbatim[Pattern][name_, Verbatim[Blank][head_]][attr_]
+    InterfaceAttribute[head_][
+      lhs_[method_]
       ]:=def_
     ):=
-    iRegisterInterfaceAttribute[head, attr, name, def];
+    iRegisterInterfaceAttribute[head, method, lhs, def];
+Protect[InterfaceAttribute]
+
+
+(* ::Subsubsection::Closed:: *)
+(*iRegisterInterfaceOverride*)
+
+
+
+iRegisterInterfaceOverride~SetAttributes~HoldRest;
+iRegisterInterfaceOverride[
+  head_,
+  upval_,
+  {lh___},
+  main_,
+  {rh___},
+  def_
+  ]:=
+  With[
+    {
+      mn=upval,
+      valid=InterfaceValidator[head],
+      attrs=Attributes[head]
+      },
+    If[MemberQ[attrs, Protected], Unprotect[head]];
+    head/:upval[lh, main?valid, rh]:=
+      def;
+    If[MemberQ[attrs, Protected], Protect[head]];
+    ];
+
+
+Unprotect[InterfaceOverride];
+InterfaceOverride/:
+  (
+    InterfaceOverride[head_][
+      upval_[args___]
+      ]:=def_
+    ):=
+    Module[
+      {
+        pivot,
+        argList
+        },
+      argList=Thread[HoldComplete[{args}]];
+      pivot=
+        SelectFirst[Range[Length[argList]], !FreeQ[argList[[#]], head]&,
+         Length[argList]+1];
+      argList=
+        Map[
+          Thread[#, HoldComplete]&, 
+          {
+            Take[argList, UpTo[pivot-1]], 
+            argList[[{pivot}]],
+            Drop[argList, UpTo[pivot]]
+            }
+          ];
+      Replace[argList,
+        {
+          HoldComplete[{lh___}]|{lh___}, 
+          HoldComplete[{main_}], 
+          HoldComplete[{rh___}]|{rh___}
+          }:>
+          iRegisterInterfaceOverride[head, upval, {lh}, main, {rh}, def]
+        ]
+      ];
+Protect[InterfaceOverride]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -792,16 +885,24 @@ iRegisterInterfaceAccessor[head_, dispatcher_]:=
       },
     If[KeyExistsQ[ea, "Keys"],
       With[{lookup=dispatcher["Keys"]},
-        obj_head?valid[attr_?(!KeyExistsQ[InterfaceMethods[head], #]&)]:=
-          lookup[obj, attr];
+        obj_head?valid[attr_String?(
+          !KeyExistsQ[
+            Join[InterfaceMethods[head], InterfaceAttributes[head]], 
+            #
+            ]&)]:=
+          With[{res=lookup[obj, attr]}, res/;Head[res]=!=lookup];
+        obj_head?valid[attr:Except[_String|_String[___]]]:=
+          With[{res=lookup[obj, attr]}, res/;Head[res]=!=lookup];
         obj_head?valid[attr1_, attrs__]:=
-          lookup[obj, attr1, attrs];
+          With[{res=lookup[obj, attr1, attrs]}, res/;Head[res]=!=lookup];
         ];
       ];
     If[KeyExistsQ[ea, "Parts"],
       With[{part=dispatcher["Parts"]},
         head/:obj_head?valid[[p__]]:=
-          part[obj, p];
+          With[{res=part[obj, p]},
+            res/;Head[res]=!=part
+            ];
         ];
       ];
     ];
@@ -833,11 +934,15 @@ iRegisterInterfaceFormatting[
 	*)
   ]:=
   With[{valid=InterfaceValidator[head]},
-    Format[HoldPattern[obj:head[a_]?valid]]:=
+    Format[
+      HoldPattern[
+        obj:head[a_]?(Function[Null, valid[Unevaluated[#]], HoldAllComplete])
+        ]
+      ]:=
       RawBoxes@
         BoxForm`ArrangeSummaryBox[
           head,
-          Unevaluated[Head@@{a}],
+          Unevaluated[head@@{a}],
           icon,
           {
             BoxForm`MakeSummaryItem[
@@ -856,8 +961,61 @@ iRegisterInterfaceFormatting[
 
 
 (* ::Subsubsection::Closed:: *)
+(*iRegisterDefaultInterfaceAttributes*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Properties*)
+
+
+
+registerDefaultAttr[head_, validator_, "Properties"]:=
+  (
+    InterfaceAttribute[head][HoldPattern[head[a_]]["Properties"]]:=
+      Join[
+        Keys[a],
+        Keys@InterfaceAttributes[head]
+        ]
+    )
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Methods*)
+
+
+
+registerDefaultAttr[head_, validator_, "Methods"]:=
+  (
+    InterfaceAttribute[head][HoldPattern[head[a_]]["Methods"]]:=
+      Keys@InterfaceMethods[head]
+    )
+
+
+(* ::Subsubsubsection::Closed:: *)
 (*iRegisterDefaultInterfaceMethods*)
 
+
+
+iRegisterDefaultInterfaceAttributes[head_, attrs_]:=
+  With[{v=InterfaceValidator[head]},
+    Scan[registerDefaultAttr[head, v, #]&, attrs]
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*iRegisterDefaultInterfaceMethods*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Association*)
+
+
+
+registerDefaultMethod[head_, validator_, Association]:=
+  head/:HoldPattern@Association[head[a_]?validator]:=
+    Association[a];
 
 
 (* ::Subsubsubsection::Closed:: *)
@@ -865,9 +1023,19 @@ iRegisterInterfaceFormatting[
 
 
 
-registerDefault[head_, validator_, Keys]:=
+registerDefaultMethod[head_, validator_, Keys]:=
   head/:HoldPattern@Keys[head[a_]?validator]:=
     Keys[a];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Values*)
+
+
+
+registerDefaultMethod[head_, validator_, Values]:=
+  head/:HoldPattern@Values[head[a_]?validator]:=
+    Values[a];
 
 
 (* ::Subsubsubsection::Closed:: *)
@@ -875,7 +1043,7 @@ registerDefault[head_, validator_, Keys]:=
 
 
 
-registerDefault[head_, validator_, ReplacePart]:=
+registerDefaultMethod[head_, validator_, ReplacePart]:=
   head/:HoldPattern@ReplacePart[head[a_]?validator, k_]:=
     head[ReplacePart[a, k]]
 
@@ -885,7 +1053,7 @@ registerDefault[head_, validator_, ReplacePart]:=
 
 
 
-registerDefault[head_, validator_, MapAt]:=
+registerDefaultMethod[head_, validator_, MapAt]:=
   head/:HoldPattern@MapAt[f_, head[a_]?validator, k_]:=
     head[MapAt[f, a, k]]
 
@@ -895,7 +1063,7 @@ registerDefault[head_, validator_, MapAt]:=
 
 
 
-registerDefault[head_, validator_, SetProperty]:=
+registerDefaultMethod[head_, validator_, SetProperty]:=
   head/:HoldPattern@SetProperty[obj:_head?validator, p:_Rule|_RuleDelayed]:=
     InterfaceSetProperty[obj, p]
 
@@ -905,17 +1073,17 @@ registerDefault[head_, validator_, SetProperty]:=
 
 
 
-registerDefault[head_, validator_, PropertyValue]:=
+registerDefaultMethod[head_, validator_, PropertyValue]:=
   head/:HoldPattern@PropertyValue[obj:_head?validator, p_]:=
     InterfacePropertyValue[obj, p]
 
 
 (* ::Subsubsubsection::Closed:: *)
-(*PropertyValue*)
+(*RemoveProperty*)
 
 
 
-registerDefault[head_, validator_, RemoveProperty]:=
+registerDefaultMethod[head_, validator_, RemoveProperty]:=
   head/:HoldPattern@RemoveProperty[obj:_head?validator, p_]:=
     InterfaceRemoveProperty[obj, p]
 
@@ -925,7 +1093,7 @@ registerDefault[head_, validator_, RemoveProperty]:=
 
 
 
-registerDefault[head_, validator_, PropertyList]:=
+registerDefaultMethod[head_, validator_, PropertyList]:=
   head/:HoldPattern@PropertyList[obj:_head?validator]:=
     InterfacePropertyList[obj]
 
@@ -937,7 +1105,7 @@ registerDefault[head_, validator_, PropertyList]:=
 
 iRegisterDefaultInterfaceMethods[head_, fns_]:=
   With[{v=InterfaceValidator[head]},
-    Scaled[registerDefault[head, v, #]&, fns]
+    Scan[registerDefaultMethod[head, v, #]&, fns]
     ]
 
 
