@@ -128,7 +128,19 @@ InterfaceOverride[GridFunctionObject]@
     f_GridFunctionObject,
     a__
     ]:=
-    GFChop[f, a]
+    GFChop[f, a];
+InterfaceOverride[GridFunctionObject]@
+  Permute[
+    f_GridFunctionObject,
+    spec_
+    ]:=
+    GFPermute[f, spec];
+InterfaceOverride[GridFunctionObject]@
+  Transpose[
+    f_GridFunctionObject,
+    spec___
+    ]:=
+    GFTranspose[f, spec]
 
 
 End[];

@@ -51,6 +51,8 @@ GridTranspose::usage=
   "Takes a transpose of coordinates in the grid";
 GridPermute::usage=
   "Permutes coordinates in the grid";
+GridSort::usage=
+  "Sorts a set of coordinates";
 
 
 (* ::Subsubsection::Closed:: *)
@@ -286,12 +288,21 @@ GridTransform[grid_, tf_]:=
 
 
 (* ::Subsubsection::Closed:: *)
+(*GridTranspose*)
+
+
+
+GridTranspose[g_, spec___]:=
+  GridObjectModify[g, Transpose[#, spec]&]
+
+
+(* ::Subsubsection::Closed:: *)
 (*GridPermute*)
 
 
 
 iGridPermute[g_List, newIndices_]:=
-  Module[{newGrid},
+  Module[{newGrid, newInds},
     If[GridDimension@g=!=Length@newIndices,
       PackageRaiseException[
         "Can't perform permutation `` on grid of dimension ``",
@@ -307,11 +318,12 @@ iGridPermute[g_List, newIndices_]:=
           Complement[Range[Length@newIndices], newIndices]
         ]
       ];
-    newGrid=Transpose[g, newIndices];
+    newInds=Ordering@newIndices;
+    newGrid=Transpose[g, newInds];
     Part[newGrid,
       Sequence@@
         Append[
-          ConstantArray[All, Depth[g]-2], 
+          ConstantArray[All, Length@newInds], 
           newIndices
           ]
       ]
@@ -350,6 +362,22 @@ GridSlice[g_List, n__Integer]:=
     ];
 GridSlice[g_, n__Integer]:=
   GridObjectModify[g, GridSlice[#, n]&];
+
+
+(* ::Subsubsection::Closed:: *)
+(*GridSort*)
+
+
+
+GridSort[g_List, fns_]:=
+  ArrayReshape[SortBy[GridPoints@g, fns], Dimensions[g]];
+GridSort[g_List]:=
+  ArrayReshape[Sort[GridPoints@g], Dimensions[g]];
+GridSort[g_, fn___]:=
+  GridObjectModify[
+    g,
+    GridSort[#, fn]&
+    ];
 
 
 (* ::Subsection:: *)

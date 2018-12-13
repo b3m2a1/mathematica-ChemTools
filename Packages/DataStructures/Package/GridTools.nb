@@ -72,7 +72,11 @@ ordering\>\""}], ";"}], "\n",
  RowBox[{
   RowBox[{
    RowBox[{"GridPermute", "::", "usage"}], "=", "\n", "\t", 
-   "\"\<Permutes coordinates in the grid\>\""}], 
+   "\"\<Permutes coordinates in the grid\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridSort", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Sorts a set of coordinates\>\""}], 
   ";"}]}], "CodeInput",ExpressionUUID->"d4b2a3d5-b679-424e-a459-eb9b78142f8c"]\
 
 }, Closed]],
@@ -478,6 +482,24 @@ Cell[BoxData[{
 
 Cell[CellGroupData[{
 
+Cell["\[LeftCeiling]GridTranspose\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"58d56112-81fe-4d05-bd44-772cbc7e20e8"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GridTranspose", "[", 
+   RowBox[{"g_", ",", " ", "spec___"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"GridObjectModify", "[", 
+   RowBox[{"g", ",", " ", 
+    RowBox[{
+     RowBox[{"Transpose", "[", 
+      RowBox[{"#", ",", " ", "spec"}], "]"}], "&"}]}], 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"d864ca8e-5354-4e16-b35e-c51d04fe7193"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
 Cell["\[LeftCeiling]GridPermute\[RightFloor]", "CodeSubsubsection",
  Evaluatable->True,ExpressionUUID->"9eadd860-ada4-4752-b237-209e3c6f4dfc"],
 
@@ -488,7 +510,8 @@ Cell[BoxData[{
     RowBox[{"g_List", ",", " ", "newIndices_"}], "]"}], ":=", "\n", "\t", 
    RowBox[{"Module", "[", 
     RowBox[{
-     RowBox[{"{", "newGrid", "}"}], ",", "\n", "\t", "\t", 
+     RowBox[{"{", 
+      RowBox[{"newGrid", ",", " ", "newInds"}], "}"}], ",", "\n", "\t\t", 
      RowBox[{
       RowBox[{"If", "[", 
        RowBox[{
@@ -518,9 +541,11 @@ Cell[BoxData[{
               RowBox[{"Length", "@", "newIndices"}], "]"}], ",", " ", 
              "newIndices"}], "]"}]}]}], "\n", "\t\t\t\t", "]"}]}], "\n", 
        "\t\t\t", "]"}], ";", "\n", "\t\t", 
+      RowBox[{"newInds", "=", 
+       RowBox[{"Ordering", "@", "newIndices"}]}], ";", "\n", "\t\t", 
       RowBox[{"newGrid", "=", 
        RowBox[{"Transpose", "[", 
-        RowBox[{"g", ",", " ", "newIndices"}], "]"}]}], ";", "\n", "\t\t", 
+        RowBox[{"g", ",", " ", "newInds"}], "]"}]}], ";", "\n", "\t\t", 
       RowBox[{"Part", "[", 
        RowBox[{"newGrid", ",", "\n", "\t\t\t", 
         RowBox[{"Sequence", "@@", "\n", "\t\t\t\t", 
@@ -528,10 +553,9 @@ Cell[BoxData[{
           RowBox[{
            RowBox[{"ConstantArray", "[", 
             RowBox[{"All", ",", " ", 
-             RowBox[{
-              RowBox[{"Depth", "[", "g", "]"}], "-", "2"}]}], "]"}], ",", " ",
-            "\n", "\t\t\t\t\t", "newIndices"}], "\n", "\t\t\t\t\t", "]"}]}]}],
-        "\n", "\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+             RowBox[{"Length", "@", "newInds"}]}], "]"}], ",", " ", "\n", 
+           "\t\t\t\t\t", "newIndices"}], "\n", "\t\t\t\t\t", "]"}]}]}], "\n", 
+       "\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{
    RowBox[{"GridPermute", "[", 
@@ -562,7 +586,7 @@ Cell[BoxData[{
         "\n", "\t", "\t\t\t", "]"}], "&"}]}], "\n", "\t", "\t\t", 
     "]"}]}]}]}], \
 "CodeInput",ExpressionUUID->"772b0a66-debe-4f66-a373-e8674b03e5ed"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -602,9 +626,46 @@ Cell[BoxData[{
      RowBox[{
       RowBox[{"GridSlice", "[", 
        RowBox[{"#", ",", " ", "n"}], "]"}], "&"}]}], "]"}]}], 
-  ";"}]}], \
-"CodeInput",ExpressionUUID->"74ed680c-5d64-4ff2-86a0-fe9ab08cd4aa"]
-}, Closed]]
+  ";"}]}], "CodeInput",ExpressionUUID->"74ed680c-5d64-4ff2-86a0-fe9ab08cd4aa"]\
+
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GridSort\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"45d6b0a8-4b03-4bb7-8f2a-fc007713af40"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridSort", "[", 
+    RowBox[{"g_List", ",", " ", "fns_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"ArrayReshape", "[", 
+    RowBox[{
+     RowBox[{"SortBy", "[", 
+      RowBox[{
+       RowBox[{"GridPoints", "@", "g"}], ",", " ", "fns"}], "]"}], ",", " ", 
+     RowBox[{"Dimensions", "[", "g", "]"}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridSort", "[", "g_List", "]"}], ":=", "\n", "\t", 
+   RowBox[{"ArrayReshape", "[", 
+    RowBox[{
+     RowBox[{"Sort", "[", 
+      RowBox[{"GridPoints", "@", "g"}], "]"}], ",", " ", 
+     RowBox[{"Dimensions", "[", "g", "]"}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridSort", "[", 
+    RowBox[{"g_", ",", " ", "fn___"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"GridObjectModify", "[", "\n", "\t\t", 
+    RowBox[{"g", ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"GridSort", "[", 
+       RowBox[{"#", ",", " ", "fn"}], "]"}], "&"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"12064758-bcc1-40b5-a317-95a9aad2ed68"]\
+
+}, Open  ]]
 }, Open  ]],
 
 Cell[CellGroupData[{

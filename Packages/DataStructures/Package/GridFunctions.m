@@ -25,7 +25,7 @@ GFPart::usage=
   "Applies part to a grid function";
 GFKeyPart::usage=
   "Applies key lookup to a grid function";
-GridSlice::usage=
+GFSlice::usage=
   "Slices at level n";
 
 
@@ -322,7 +322,7 @@ GFPermute[g_GridFunctionObject, newIndices_]:=
   PackageExceptionBlock["GridPermute"]@
     GFModify[g, 
       GridPermute[#, newIndices]&,
-      Transpose[#, newIndices]&
+      Transpose[#, Ordering@newIndices]&
       ]
 
 
@@ -340,8 +340,9 @@ iGFSlice[vals_, n__Integer]:=
         Depth[vals]-(2+Length[{n}])
         ]
     ];
-GridSlice[g_, n__Integer]:=
-  GFModify[g, 
+GFSlice[g_, n__Integer]:=
+  GFModify[
+    g, 
     GridSlice[#, n]&,
     iGFSlice[#, n]&
     ];

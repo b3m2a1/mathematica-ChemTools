@@ -95,7 +95,10 @@ InterfaceOverride[CoordinateGridObject]@
     GridBoundingBox[g];
 InterfaceOverride[CoordinateGridObject]@
   Permute[g_CoordinateGridObject, inds_]:=
-    GridPermute[g, inds]
+    GridPermute[g, inds];
+InterfaceOverride[CoordinateGridObject]@
+  Transpose[g_CoordinateGridObject, inds___]:=
+    GridTranspose[g, inds]
 
 
 End[];
