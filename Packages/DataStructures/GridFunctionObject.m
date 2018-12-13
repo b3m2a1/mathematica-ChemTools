@@ -74,6 +74,9 @@ InterfaceMethod[GridFunctionObject]@
 InterfaceMethod[GridFunctionObject]@
   f_GridFunctionObject["Compile"][spec___]:=
     GFCompile[f, spec];
+InterfaceMethod[GridFunctionObject]@
+  g_GridFunctionObject["Slice"][n__Integer]:=
+    GFSlice[g, n];
 
 
 (* ::Subsubsection::Closed:: *)

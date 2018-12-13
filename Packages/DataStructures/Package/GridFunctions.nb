@@ -29,7 +29,11 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{
    RowBox[{"GFKeyPart", "::", "usage"}], "=", "\n", "\t", 
-   "\"\<Applies key lookup to a grid function\>\""}], 
+   "\"\<Applies key lookup to a grid function\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridSlice", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Slices at level n\>\""}], 
   ";"}]}], "CodeInput",ExpressionUUID->"0683456a-e69c-4b41-9668-ec499b04160b"]\
 
 }, Open  ]],
@@ -59,10 +63,15 @@ ordering\>\""}], ";"}], "\n",
   ";"}], "\n", 
  RowBox[{
   RowBox[{
-   RowBox[{"GFTranspose", "::", "usage"}], "=", "\n", "\t", "\"\<\>\""}], 
-  ";"}], "\n"}], \
-"CodeInput",ExpressionUUID->"d4b2a3d5-b679-424e-a459-eb9b78142f8c"]
-}, Closed]],
+   RowBox[{"GFTranspose", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Takes a transpose of coordinates in the grid\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFPermute", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Permutes coordinates in the grid\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"d4b2a3d5-b679-424e-a459-eb9b78142f8c"]\
+
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -126,7 +135,7 @@ Cell[BoxData[
    RowBox[{"GFCompile", "::", "usage"}], "=", "\n", "\t", 
    "\"\<Clever-ish compilation\>\""}], 
   ";"}]], "CodeInput",ExpressionUUID->"d64ca50f-f7ec-4dbc-84a6-f764ad0e72b4"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -274,6 +283,7 @@ Cell[BoxData[
          RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t\t", 
           RowBox[{
           "Automatic", ",", "\n", "\t\t\t\t\t", 
+           
            "\"\<Grid dimensions (``) and function dimensions (``) disagaree\>\
 \"", ",", "\n", "\t\t\t\t\t", 
            RowBox[{"Dimensions", "[", "grid", "]"}], ",", "\n", "\t\t\t\t\t", 
@@ -343,6 +353,62 @@ Cell[BoxData[{
 "CodeInput",ExpressionUUID->"afff2841-224c-40ae-a75d-28dd471377f2"]
 }, Open  ]]
 }, Closed]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Meh\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"74d78eb1-4111-42ca-8a09-5f36ad818208"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFModify", "[", 
+    RowBox[{"gf_", ",", " ", "justOneFunc_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"InterfaceModify", "[", "\n", "\t\t", 
+    RowBox[{
+    "GridFunctionObject", ",", "\n", "\t\t", "gf", ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"With", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"newb", "=", 
+          RowBox[{"justOneFunc", "@", 
+           RowBox[{"Lookup", "[", 
+            RowBox[{"#", ",", " ", 
+             RowBox[{"{", 
+              RowBox[{"\"\<Grid\>\"", ",", " ", "\"\<Values\>\""}], "}"}]}], 
+            "]"}]}]}], "}"}], ",", "\n", "\t\t\t", 
+        RowBox[{"ReplacePart", "[", 
+         RowBox[{"#", ",", "\n", "\t\t\t\t", 
+          RowBox[{"{", "\n", "\t\t\t\t\t", 
+           RowBox[{
+            RowBox[{"\"\<Grid\>\"", "\[Rule]", 
+             RowBox[{"#", "[", 
+              RowBox[{"[", "1", "]"}], "]"}]}], ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"\"\<Values\>\"", "\[Rule]", 
+             RowBox[{"#", "[", 
+              RowBox[{"[", "2", "]"}], "]"}]}]}], "\n", "\t\t\t\t\t", "}"}]}],
+          "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", "]"}], "&"}]}], "\n", 
+    "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"c9f1d750-7f6b-4ada-8d3e-9b58df868fee"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GFModify", "[", 
+   RowBox[{"gf_", ",", " ", "gridF_", ",", " ", "valF_"}], "]"}], ":=", "\n", 
+  "\t", 
+  RowBox[{"InterfaceModify", "[", "\n", "\t\t", 
+   RowBox[{"GridFunctionObject", ",", "\n", "\t\t", "gf", ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"MapAt", "[", "\n", "\t\t\t", 
+      RowBox[{"valF", ",", "\n", "\t\t\t", 
+       RowBox[{"MapAt", "[", 
+        RowBox[{"gridF", ",", " ", "#", ",", " ", "\"\<Grid\>\""}], "]"}], 
+       ",", "\n", "\t\t\t", "\"\<Values\>\""}], "\n", "\t", "\t\t", "]"}], 
+     "&"}]}], "\n", "\t", "\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"c2e4f29a-1c3c-46d9-9c0c-4814fec164e6"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -552,8 +618,72 @@ Cell[BoxData[{
        RowBox[{"f", "[", "\"\<Values\>\"", "]"}]}], "}"}]}], "]"}]}], 
   ";"}]}], "CodeInput",ExpressionUUID->"760e9b4c-db9a-493b-9d8b-ff5bcb9e4bdc"]\
 
-}, Closed]]
 }, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFPermute\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"7f997480-91f5-49ff-90f1-98618c2b7872"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GFPermute", "[", 
+   RowBox[{"g_GridFunctionObject", ",", " ", "newIndices_"}], "]"}], ":=", 
+  "\n", "\t", 
+  RowBox[{
+   RowBox[{"PackageExceptionBlock", "[", "\"\<GridPermute\>\"", "]"}], "@", 
+   "\n", "\t\t", 
+   RowBox[{"GFModify", "[", 
+    RowBox[{"g", ",", " ", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"GridPermute", "[", 
+       RowBox[{"#", ",", " ", "newIndices"}], "]"}], "&"}], ",", "\n", 
+     "\t\t\t", 
+     RowBox[{
+      RowBox[{"Transpose", "[", 
+       RowBox[{"#", ",", " ", "newIndices"}], "]"}], "&"}]}], "\n", "\t\t\t", 
+    "]"}]}]}]], \
+"CodeInput",ExpressionUUID->"3f88d5f1-8ef2-45cb-9dff-2c29985db5a9"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFSlice\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"edcd1596-d250-4ae1-a635-b32b6d4b1c70"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"iGFSlice", "[", 
+    RowBox[{"vals_", ",", " ", "n__Integer"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Part", "[", "\n", "\t\t", 
+    RowBox[{"vals", ",", "\n", "\t\t", "n", ",", "\n", "\t\t", 
+     RowBox[{"Sequence", "@@", "\n", "\t\t\t", 
+      RowBox[{"ConstantArray", "[", 
+       RowBox[{"All", ",", " ", "\n", "\t\t\t\t", 
+        RowBox[{
+         RowBox[{"Depth", "[", "vals", "]"}], "-", 
+         RowBox[{"(", 
+          RowBox[{"2", "+", 
+           RowBox[{"Length", "[", 
+            RowBox[{"{", "n", "}"}], "]"}]}], ")"}]}]}], "\n", "\t\t\t\t", 
+       "]"}]}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridSlice", "[", 
+    RowBox[{"g_", ",", " ", "n__Integer"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"GFModify", "[", 
+    RowBox[{"g", ",", " ", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"GridSlice", "[", 
+       RowBox[{"#", ",", " ", "n"}], "]"}], "&"}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"iGFSlice", "[", 
+       RowBox[{"#", ",", " ", "n"}], "]"}], "&"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"2f8d57ad-b4cd-43e0-874b-fe1fc8038114"]\
+
+}, Open  ]]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -1023,113 +1153,6 @@ Cell[BoxData[{
       RowBox[{"grid", ",", " ", "vals"}], "]"}]}]}], "\n", "\t\t", 
    "]"}]}]}], \
 "CodeInput",ExpressionUUID->"c4528778-24c2-45ea-9eb4-9f18c73c8c80"]
-}, Open  ]]
-}, Closed]],
-
-Cell[CellGroupData[{
-
-Cell["\[LeftCeiling]Compiled SA Potential\[RightFloor]", "CodeSubsection",
- CellMargins->{{55, Inherited}, {Inherited, Inherited}},
- Evaluatable->True,
- CellChangeTimes->{{3.738598778071834*^9, 
-  3.738598788517665*^9}},ExpressionUUID->"0b2420d4-1837-4081-ac0d-\
-b0d3464a2bad"],
-
-Cell[CellGroupData[{
-
-Cell["compiledSAPot", "CodeSubsubsection",
- CellChangeTimes->{
-  3.740170183152598*^9},ExpressionUUID->"29f5ff17-4a06-410d-9deb-\
-eacdf921611f"],
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{
-   RowBox[{"compiledSAPot", "[", "potInterp_", "]"}], ":=", "\n", "\t", 
-   RowBox[{"With", "[", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{"dom", "=", 
-       RowBox[{"potInterp", "[", 
-        RowBox[{"[", "1", "]"}], "]"}]}], "}"}], ",", "\n", "\t", "\t", 
-     RowBox[{"Compile", "[", 
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{"{", 
-         RowBox[{"sa", ",", "_Real", ",", "1"}], "}"}], "}"}], ",", "\n", 
-       "\t", "\t\t", 
-       RowBox[{"With", "[", "\n", "\t", "\t\t\t", 
-        RowBox[{
-         RowBox[{"{", "\n", "\t", "\t\t\t\t", 
-          RowBox[{
-           RowBox[{"R1", "=", 
-            RowBox[{
-             RowBox[{"1", "/", 
-              RowBox[{"Sqrt", "[", "2", "]"}]}], 
-             RowBox[{"(", 
-              RowBox[{
-               RowBox[{"sa", "[", 
-                RowBox[{"[", "2", "]"}], "]"}], "+", 
-               RowBox[{"sa", "[", 
-                RowBox[{"[", "1", "]"}], "]"}]}], ")"}]}]}], ",", "\n", "\t", 
-           "\t\t\t\t", 
-           RowBox[{"R2", "=", 
-            RowBox[{
-             RowBox[{"1", "/", 
-              RowBox[{"Sqrt", "[", "2", "]"}]}], 
-             RowBox[{"(", 
-              RowBox[{
-               RowBox[{"sa", "[", 
-                RowBox[{"[", "2", "]"}], "]"}], "-", 
-               RowBox[{"sa", "[", 
-                RowBox[{"[", "1", "]"}], "]"}]}], ")"}]}]}]}], "\n", "\t", 
-          "\t\t\t\t", "}"}], ",", "\n", "\t", "\t\t\t", 
-         RowBox[{"If", "[", 
-          RowBox[{
-           RowBox[{
-            RowBox[{
-             RowBox[{"dom", "[", 
-              RowBox[{"[", 
-               RowBox[{"1", ",", "1"}], "]"}], "]"}], "\[LessEqual]", "R2", 
-             "\[LessEqual]", 
-             RowBox[{"dom", "[", 
-              RowBox[{"[", 
-               RowBox[{"1", ",", "2"}], "]"}], "]"}]}], "&&", "\n", "\t", 
-            "\t\t\t\t", 
-            RowBox[{
-             RowBox[{"dom", "[", 
-              RowBox[{"[", 
-               RowBox[{"2", ",", "1"}], "]"}], "]"}], "\[LessEqual]", "R1", 
-             "\[LessEqual]", 
-             RowBox[{"dom", "[", 
-              RowBox[{"[", 
-               RowBox[{"2", ",", "2"}], "]"}], "]"}]}]}], ",", "\n", "\t", 
-           "\t\t\t\t", 
-           RowBox[{"potInterp", "[", 
-            RowBox[{"R1", ",", " ", "R2"}], "]"}], ",", "\n", "\t", 
-           "\t\t\t\t", 
-           RowBox[{"10", "^", "9"}]}], "\n", "\t", "\t\t\t\t", "]"}]}], "\n", 
-        "\t", "\t\t\t", "]"}], ",", "\n", "\t", "\t\t", 
-       RowBox[{"RuntimeOptions", "\[Rule]", 
-        RowBox[{"{", "\n", "\t", "\t\t\t", 
-         RowBox[{
-          RowBox[{"\"\<EvaluateSymbolically\>\"", "\[Rule]", "False"}], ",", 
-          "\n", "\t", "\t\t\t", 
-          RowBox[{"\"\<WarningMessages\>\"", "\[Rule]", "False"}]}], "\n", 
-         "\t", "\t\t\t", "}"}]}]}], "\n", "\t", "\t\t", "]"}]}], "\n", "\t", 
-    "\t", "]"}]}], 
-  ";"}]], "CodeInput",ExpressionUUID->"5e0f9f7b-9b1b-4574-9e5a-a633c11da974"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["CompiledSAPot", \
-"CodeSubsubsection",ExpressionUUID->"4a0171a6-698e-4876-ba6c-06e9f690b432"],
-
-Cell[BoxData[
- RowBox[{"CompiledSAPot", "=", 
-  "compiledSAPot"}]], \
-"CodeInput",ExpressionUUID->"3ed7772c-ea43-433b-8e08-27779b76ba95"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -1324,21 +1347,23 @@ Cell[BoxData[
             RowBox[{"potInterp", ",", " ", "a"}], "]"}]}], ";", "\n", 
           "\t\t\t\t\t", 
           RowBox[{"preCoords", "=", "\n", "\t\t\t\t\t\t", 
-           RowBox[{"Quiet", "@", "\n", "\t\t\t\t\t\t\t\t", 
-            RowBox[{"Map", "[", "\n", "\t\t\t\t\t\t\t\t\t", 
-             RowBox[{
+           RowBox[{"Quiet", "@", "\n", "\t\t\t\t\t\t\t", 
+            RowBox[{"preProcessor", "@", "\n", "\t\t\t\t\t\t\t\t", 
+             RowBox[{"Map", "[", "\n", "\t\t\t\t\t\t\t\t\t", 
               RowBox[{
-               RowBox[{"If", "[", 
-                RowBox[{
-                 RowBox[{"#", "===", "Automatic"}], ",", " ", "\n", 
-                 "\t\t\t\t\t\t\t\t\t\t", 
-                 RowBox[{"Compile`GetElement", "[", 
-                  RowBox[{"crds", ",", " ", 
-                   RowBox[{"j", "++"}]}], "]"}], ",", " ", "\n", 
-                 "\t\t\t\t\t\t\t\t\t\t", "#"}], "\n", "\t\t\t\t\t\t\t\t\t\t", 
-                "]"}], "&"}], ",", "\n", "\t\t\t\t\t\t\t\t\t", 
-              RowBox[{"preProcessor", "@", "coords"}]}], "\n", 
-             "\t\t\t\t\t\t\t\t\t", "]"}]}]}], ";", "\n", "\t\t\t\t\t", 
+               RowBox[{
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"#", "===", "Automatic"}], ",", " ", "\n", 
+                  "\t\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{"Compile`GetElement", "[", 
+                   RowBox[{"crds", ",", " ", 
+                    RowBox[{"j", "++"}]}], "]"}], ",", " ", "\n", 
+                  "\t\t\t\t\t\t\t\t\t\t", "#"}], "\n", "\t\t\t\t\t\t\t\t\t\t",
+                  "]"}], "&"}], ",", "\n", "\t\t\t\t\t\t\t\t\t", "coords"}], 
+              "\n", "\t\t\t\t\t\t\t\t\t", "]"}]}]}]}], ";", "\n", 
+          "\t\t\t\t\t", 
+          RowBox[{"j", "=", "1"}], ";", "\n", "\t\t\t\t\t", 
           RowBox[{"(*", " ", 
            RowBox[{"bounds", " ", "checking", " ", "for", " ", "test"}], " ", 
            "*)"}], "\n", "\t", "\t\t\t\t", 
@@ -1347,39 +1372,64 @@ Cell[BoxData[
             RowBox[{"{", "\n", "\t\t\t\t\t\t\t", 
              RowBox[{
               RowBox[{"test", "=", "\n", "\t\t\t\t\t\t\t\t", 
-               RowBox[{"With", "[", 
+               RowBox[{"With", "[", "\n", "\t\t\t\t\t\t\t\t\t", 
                 RowBox[{
-                 RowBox[{"{", 
-                  RowBox[{"tests", "=", 
-                   RowBox[{"MapThread", "[", 
+                 RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{"tests", "=", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{"MapThread", "[", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
                     RowBox[{
                     RowBox[{
                     RowBox[{
                     RowBox[{"#", "[", 
-                    RowBox[{"[", "1", "]"}], "]"}], "\[LessEqual]", "#2", 
-                    "\[LessEqual]", 
+                    RowBox[{"[", "1", "]"}], "]"}], "\[LessEqual]", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"NumericQ", "[", "#2", "]"}], ",", " ", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{
+                    RowBox[{"j", "++"}], ";", "#2"}], ",", " ", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"Compile`GetElement", "[", 
+                    RowBox[{"pt", ",", " ", 
+                    RowBox[{"j", "++"}]}], "]"}]}], "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t\t\t", "]"}], "\[LessEqual]", 
                     RowBox[{"#", "[", 
-                    RowBox[{"[", "2", "]"}], "]"}]}], "&"}], ",", " ", 
+                    RowBox[{"[", "2", "]"}], "]"}]}], "&"}], ",", " ", "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t", 
                     RowBox[{"{", 
-                    RowBox[{"dom", ",", " ", "preCoords"}], "}"}]}], "]"}]}], 
-                  "}"}], ",", "\n", "\t", "\t", "\t\t\t\t\t\t\t", 
+                    RowBox[{"dom", ",", " ", "preCoords"}], "}"}]}], "\n", 
+                    "\t\t\t\t\t\t\t\t\t\t\t\t", "]"}]}], "\n", 
+                  "\t\t\t\t\t\t\t\t\t\t", "}"}], ",", "\n", 
+                 "\t\t\t\t\t\t\t\t\t", 
                  RowBox[{"If", "[", 
                   RowBox[{
                    RowBox[{"MemberQ", "[", 
-                    RowBox[{"tests", ",", " ", 
-                    RowBox[{"False", "&"}]}], "]"}], ",", "\n", "\t", "\t", 
-                   "\t", "\t\t\t\t\t\t\t", "False", ",", "\n", "\t", "\t", 
+                    RowBox[{"tests", ",", " ", "False"}], "]"}], ",", "\n", 
+                   "\t\t\t\t\t\t\t\t\t\t", "False", ",", "\n", "\t", "\t", 
                    "\t", "\t\t\t\t\t\t\t", 
                    RowBox[{"And", "@@", 
                     RowBox[{"DeleteCases", "[", 
                     RowBox[{"tests", ",", " ", "True"}], "]"}]}]}], "\n", 
-                  "\t", "\t\t\t\t\t\t\t\t\t", "]"}]}], "\n", "\t", 
-                "\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t\t", 
-              RowBox[{"crdSpec", "=", 
-               RowBox[{"Echo", "@", "preCoords"}]}], ",", "\n", 
+                  "\t", "\t\t\t\t\t\t\t\t\t", "]"}]}], "\n", 
+                "\t\t\t\t\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"crdSpec", "=", "preCoords"}], ",", "\n", "\t", 
               "\t\t\t\t\t\t", 
-              RowBox[{"fn", "=", "Function"}]}], "\n", "\t\t\t\t\t\t", "}"}], 
-            ",", "\n", "\t\t\t\t\t\t", 
+              RowBox[{"means", "=", 
+               RowBox[{"Mean", "/@", "dom"}]}], ",", "\n", "\t\t\t\t\t\t\t", 
+              RowBox[{"fn", "=", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{"Compile", "[", "\n", "\t\t\t\t\t\t\t\t\t", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"{", 
+                   RowBox[{"crds", ",", " ", "_Real", ",", " ", "1"}], "}"}], 
+                  "}"}], ",", "\n", "\t\t\t\t\t\t\t\t\t", 
+                 RowBox[{"Evaluate", "@", "preCoords"}], ",", "\n", 
+                 "\t\t\t\t\t\t\t\t\t", 
+                 RowBox[{"RuntimeAttributes", "\[Rule]", 
+                  RowBox[{"{", "Listable", "}"}]}]}], "\n", 
+                "\t\t\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t\t\t", 
+             "}"}], ",", "\n", "\t\t\t\t\t\t", 
             RowBox[{"Compile", "@@", "\n", "\t\t\t\t\t\t\t", 
              RowBox[{"Hold", "[", 
               RowBox[{"(*", " ", 
@@ -1396,13 +1446,9 @@ Cell[BoxData[
                 RowBox[{
                  RowBox[{"{", "\n", "\t\t\t\t\t\t\t\t\t\t", 
                   RowBox[{
-                   RowBox[{"pts", "=", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
-                    RowBox[{
-                    RowBox[{"fn", "[", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
-                    RowBox[{
-                    "crds", ",", "\n", "\t\t\t\t\t\t\t\t\t\t\t\t", 
-                    "crdSpec"}], "\n", "\t", "\t\t\t\t\t\t\t\t\t\t\t", "]"}], 
-                    "/@", "gps"}]}], ",", "\n", "\t", "\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{"pts", "=", 
+                    RowBox[{"fn", "@", "gps"}]}], ",", "\n", 
+                   "\t\t\t\t\t\t\t\t\t\t", 
                    RowBox[{"ongrid", "=", 
                     RowBox[{"Table", "[", 
                     RowBox[{"0", ",", " ", 
@@ -1410,11 +1456,10 @@ Cell[BoxData[
                     RowBox[{"i", ",", " ", 
                     RowBox[{"Length", "@", "gps"}]}], "}"}]}], "]"}]}], ",", 
                    "\n", "\t", "\t\t\t\t\t\t\t\t\t", "intres", ",", "\n", 
-                   "\t", "\t\t\t\t\t\t\t\t\t", 
-                   RowBox[{"midpt", "=", 
-                    RowBox[{"Mean", "/@", "dom"}]}], ",", "\n", "\t", 
-                   "\t\t\t\t\t\t\t\t\t", "interpvals", ",", "\n", "\t", 
-                   "\t\t\t\t\t\t\t\t\t", "interpcounter", ",", "\n", "\t", 
+                   "\t\t\t\t\t\t\t\t\t\t", 
+                   RowBox[{"midpt", "=", "means"}], ",", "\n", 
+                   "\t\t\t\t\t\t\t\t\t\t", "interpvals", ",", "\n", 
+                   "\t\t\t\t\t\t\t\t\t\t", "interpcounter", ",", "\n", "\t", 
                    "\t\t\t\t\t\t\t\t\t", "interppts", ",", "\n", "\t", 
                    "\t\t\t\t\t\t\t\t\t", 
                    RowBox[{"i", "=", "1"}], ",", "\n", "\t", 
@@ -1435,13 +1480,13 @@ Cell[BoxData[
                   RowBox[{"(*", " ", 
                    RowBox[{"Find", " ", "points", " ", "in", " ", "domain"}], 
                    " ", "*)"}], "\n", "\t", "\t\t\t\t\t\t\t\t", 
-                  RowBox[{"interpcounter", "=", "0"}], ";", "\n", "\t", 
-                  "\t\t\t\t\t\t\t\t", 
-                  RowBox[{"Do", "[", "\n", "\t", "\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{"interpcounter", "=", "0"}], ";", "\n", 
+                  "\t\t\t\t\t\t\t\t\t", 
+                  RowBox[{"Do", "[", "\n", "\t\t\t\t\t\t\t\t\t\t", 
                    RowBox[{
                     RowBox[{
                     RowBox[{"If", "[", 
-                    RowBox[{"test", ",", "\n", "\t", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"test", ",", "\n", "\t\t\t\t\t\t\t\t\t\t\t", 
                     RowBox[{
                     RowBox[{
                     RowBox[{"ongrid", "[", 
@@ -1451,16 +1496,14 @@ Cell[BoxData[
                     RowBox[{"interppts", "[", 
                     RowBox[{"[", 
                     RowBox[{"++", "interpcounter"}], "]"}], "]"}], "=", 
-                    RowBox[{"pts", "[", 
-                    RowBox[{"[", "i", "]"}], "]"}]}]}]}], "\n", 
-                    "\t\t\t\t\t\t\t\t\t\t\t", "]"}], ";", "\n", 
-                    "\t\t\t\t\t\t\t\t\t\t", 
-                    RowBox[{"i", "++"}]}], ",", "\n", "\t", 
-                    "\t\t\t\t\t\t\t\t\t", 
+                    "pt"}]}]}], "\n", "\t\t\t\t\t\t\t\t\t\t\t", "]"}], ";", 
+                    "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    RowBox[{"i", "++"}]}], ",", "\n", "\t\t\t\t\t\t\t\t\t\t", 
+                    
                     RowBox[{"{", 
-                    RowBox[{"pt", ",", " ", "pts"}], "}"}]}], "\n", "\t", 
-                   "\t\t\t\t\t\t\t\t\t", "]"}], ";", "\n", "\t", 
-                  "\t\t\t\t\t\t\t\t", 
+                    RowBox[{"pt", ",", " ", "pts"}], "}"}]}], "\n", 
+                   "\t\t\t\t\t\t\t\t\t\t", "]"}], ";", "\n", 
+                  "\t\t\t\t\t\t\t\t\t", 
                   RowBox[{"(*", " ", 
                    RowBox[{
                    "Apply", " ", "InterpolatingFunction", " ", "only", " ", 
@@ -1523,12 +1566,19 @@ Cell[BoxData[
                   "\"\<EvaluateSymbolically\>\"", "\[Rule]", "False"}], ",", 
                   "\n", "\t", "\t\t\t\t\t\t\t\t", 
                   RowBox[{"\"\<WarningMessages\>\"", "\[Rule]", "False"}]}], 
-                 "\n", "\t\t\t\t\t\t\t\t\t", "}"}]}]}], "\n", 
-              "\t\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t\t", "]"}]}]}], 
-        "\n", "\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t", 
-    "\t\t", "]"}]}], 
+                 "\n", "\t\t\t\t\t\t\t\t\t", "}"}]}], ",", "\n", 
+               "\t\t\t\t\t\t\t\t", 
+               RowBox[{"CompilationOptions", "->", 
+                RowBox[{"{", 
+                 RowBox[{
+                 "\"\<InlineExternalDefinitions\>\"", " ", "->", " ", 
+                  "True"}], "}"}]}], ",", "\n", "\t\t\t\t\t\t\t\t", 
+               RowBox[{"RuntimeAttributes", "->", 
+                RowBox[{"{", "Listable", "}"}]}]}], "\n", "\t\t\t\t\t\t\t", 
+              "]"}]}]}], "\n", "\t\t\t\t\t\t", "]"}]}]}], "\n", "\t\t\t\t\t", 
+        "]"}]}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t", "\t\t", "]"}]}], 
   ";"}]], "CodeInput",ExpressionUUID->"fc5ac6ec-69b6-44ad-8ca6-82e85c52ba9d"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1561,29 +1611,76 @@ Cell[BoxData[{
     RowBox[{"ops", ":", 
      RowBox[{"OptionsPattern", "[", "]"}]}]}], "\n", "\t", "]"}], ":=", "\n", 
   "\t", 
-  RowBox[{"If", "[", 
-   RowBox[{
+  RowBox[{
+   RowBox[{"If", "[", 
     RowBox[{
-     RowBox[{"OptionValue", "[", "\"\<Mode\>\"", "]"}], "===", 
-     "\"\<Vector\>\""}], ",", "\n", "\t\t", 
-    RowBox[{"iGFVectorizedInterpCut", "[", "\n", "\t\t\t", 
      RowBox[{
-      RowBox[{"GFInterpolation", "[", "gf", "]"}], ",", "\n", "\t\t\t", 
-      RowBox[{"Replace", "[", "\n", "\t\t\t\t", 
-       RowBox[{"coordSpec", ",", " ", "\n", "\t\t\t\t", 
-        RowBox[{"Automatic", "\[RuleDelayed]", 
-         RowBox[{"ConstantArray", "[", 
-          RowBox[{"Automatic", ",", " ", 
-           RowBox[{"GFDimension", "[", "gf", "]"}]}], "]"}]}]}], "\n", 
-       "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
-      RowBox[{"OptionValue", "[", "\"\<CoordinateTransformation\>\"", "]"}], 
-      ",", "\n", "\t\t\t", 
-      RowBox[{"OptionValue", "[", "\"\<Default\>\"", "]"}], ",", "\n", 
-      "\t\t\t", 
-      RowBox[{"OptionValue", "[", "\"\<Minimum\>\"", "]"}]}], "\n", "\t\t\t", 
-     "]"}]}], "\n", "\t\t", 
+      RowBox[{"OptionValue", "[", "\"\<Mode\>\"", "]"}], "===", 
+      "\"\<Vector\>\""}], ",", "\n", "\t\t", "iGFVectorizedInterpCut", ",", 
+     "\n", "\t\t", "iGFPointwiseInterpCut"}], "\n", "\t\t", "]"}], "[", "\n", 
+   "\t\t\t", 
+   RowBox[{
+    RowBox[{"GFInterpolation", "[", "gf", "]"}], ",", "\n", "\t\t\t", 
+    RowBox[{"Replace", "[", "\n", "\t\t\t\t", 
+     RowBox[{"coordSpec", ",", " ", "\n", "\t\t\t\t", 
+      RowBox[{"Automatic", "\[RuleDelayed]", 
+       RowBox[{"ConstantArray", "[", 
+        RowBox[{"Automatic", ",", " ", 
+         RowBox[{"GFDimension", "[", "gf", "]"}]}], "]"}]}]}], "\n", 
+     "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
+    RowBox[{"OptionValue", "[", "\"\<CoordinateTransformation\>\"", "]"}], 
+    ",", "\n", "\t\t\t", 
+    RowBox[{"OptionValue", "[", "\"\<Default\>\"", "]"}], ",", "\n", "\t\t\t", 
+    RowBox[{"OptionValue", "[", "\"\<Minimum\>\"", "]"}]}], "\n", "\t\t\t", 
    "]"}]}]}], \
 "CodeInput",ExpressionUUID->"b47a876a-235d-48d6-a152-2dbf55f2ecb7"]
+}, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFAverage\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"c056b072-4975-4133-85db-9d4a537801c5"],
+
+Cell["\<\
+\[LeftCeiling]
+\tShould allow for averaging a function over some of the dimensions using an \
+appropriate PDF.
+\tPDF must first be discretized if necessary, dimensions should be checked, \
+and grid slicing performed as 
+\tneeded.
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"a787bdc5-66a7-43a1-a8d9-1410b2206b5c"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]iGFAverage\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"d41b34b9-8f38-4b89-8adc-5c47c9ba165f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"iGFAverage", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"grid_", ",", " ", "values_"}], "}"}], ",", " ", "dist_", ",", 
+    " ", "n_"}], "]"}], ":=", "\n", "\t", 
+  "values"}]], \
+"CodeInput",ExpressionUUID->"be52c96b-ae54-4c67-b77a-70734120883f"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFAverage\[RightFloor]", "CodeSubsubsubsection",
+ Evaluatable->True,ExpressionUUID->"14536278-7efe-43ee-8c8f-fdeb7c93848e"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"GFAverage", "[", 
+    RowBox[{"gf_", ",", " ", "dist_"}], "]"}], ":="}], 
+  "*)"}]], "CodeInput",ExpressionUUID->"4e4096b0-ff59-4ee2-a6d1-782240bb14a0"]\
+
 }, Open  ]]
 }, Open  ]]
 }, Open  ]],
@@ -1599,7 +1696,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"9b890501-c575-45aa-bf6b-\
 4a602a09f246"]
 },
 WindowSize->{808, 755},
-WindowMargins->{{121, Automatic}, {Automatic, 0}},
+WindowMargins->{{Automatic, 211}, {Automatic, 0}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

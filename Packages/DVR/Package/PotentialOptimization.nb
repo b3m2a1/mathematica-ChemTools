@@ -46,7 +46,8 @@ Cell[CellGroupData[{
 Cell["\[LeftCeiling]iChemDVRGetPOGrids\[RightFloor]", "CodeSubsubsection",
  Evaluatable->True,ExpressionUUID->"46e85f99-5111-4f4e-8674-ef53df9dac85"],
 
-Cell[BoxData[
+Cell[BoxData[{
+ RowBox[{"iChemDVRGetPOGrids", "//", "Clear"}], "\n", 
  RowBox[{
   RowBox[{"iChemDVRGetPOGrids", "[", 
    RowBox[{"grid_", ",", " ", 
@@ -55,23 +56,36 @@ Cell[BoxData[
   RowBox[{"Module", "[", 
    RowBox[{
     RowBox[{"{", 
-     RowBox[{
-      RowBox[{"dim", "=", 
-       RowBox[{"Dimensions", "[", "grid", "]"}]}], ",", " ", "subgrids"}], 
-     "}"}], ",", "\n", "\t\t", 
+     RowBox[{"dim", ",", " ", "subgrids"}], "}"}], ",", "\n", "\t\t", 
     RowBox[{
+     RowBox[{"dim", "=", "\n", "\t\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"CoordinateGridObjectQ", "@", "grid"}], ",", " ", "\n", 
+        "\t\t\t\t", 
+        RowBox[{"Append", "[", 
+         RowBox[{
+          RowBox[{"Dimensions", "[", "grid", "]"}], ",", " ", 
+          RowBox[{"GridDimension", "[", "grid", "]"}]}], "]"}], ",", "\n", 
+        "\t\t\t\t", "grid"}], "\n", "\t\t\t\t", "]"}]}], ";", "\n", "\t\t", 
      RowBox[{"subgrids", "=", "\n", "\t\t\t", 
       RowBox[{"Replace", "[", "\n", "\t\t\t\t", 
        RowBox[{
-        RowBox[{"ChemDVRDefaultGridPointList", "[", "\n", "\t", "\t\t\t\t", 
-         RowBox[{"grid", ",", " ", "\n", "\t", "\t", "\t\t\t", 
-          RowBox[{"FilterRules", "[", 
-           RowBox[{
-            RowBox[{"{", "ops", "}"}], ",", " ", 
-            RowBox[{"Options", "[", "ChemDVRDefaultGridPointList", "]"}]}], 
-           "]"}]}], "\n", "\t", "\t", "\t\t\t", "]"}], ",", "\n", "\t", "\t", 
-        "\t\t", 
-        RowBox[{"{", "\n", "\t", "\t", "\t\t\t", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"CoordinateGridObjectQ", "@", "grid"}], ",", "\n", 
+          "\t\t\t\t\t", 
+          RowBox[{"grid", "[", "\"\<Points\>\"", "]"}], ",", "\n", 
+          "\t\t\t\t\t", 
+          RowBox[{"ChemDVRDefaultGridPointList", "[", "\n", "\t\t\t\t\t\t", 
+           RowBox[{"grid", ",", " ", "\n", "\t", "\t", "\t", "\t\t\t", 
+            RowBox[{"FilterRules", "[", 
+             RowBox[{
+              RowBox[{"{", "ops", "}"}], ",", " ", 
+              RowBox[{"Options", "[", "ChemDVRDefaultGridPointList", "]"}]}], 
+             "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", 
+         "]"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"{", "\n", "\t\t\t\t\t", 
          RowBox[{
           RowBox[{
            RowBox[{"l", ":", 
@@ -125,9 +139,9 @@ of dimension ``. Expected subgrids of dimension ``.\>\"", ",", "\n",
          RowBox[{"Length", "/@", "subgrids"}], ",", "\n", "\t\t\t\t", 
          RowBox[{"Most", "@", "dim"}]}], "\n", "\t\t\t\t", "]"}]}], "\n", 
       "\t\t\t", "]"}], ";", "\n", "\t\t", "subgrids"}]}], "\n", "\t\t", 
-   "]"}]}]], \
+   "]"}]}]}], \
 "CodeInput",ExpressionUUID->"5bbb04b5-3b47-4929-9648-f593aa4d6e0d"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -1292,7 +1306,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"9009c70d-1aad-415c-9701-\
 edff1eaf5262"]
 },
 WindowSize->{789, 764},
-WindowMargins->{{Automatic, 12}, {Automatic, 11}},
+WindowMargins->{{Automatic, 227}, {Automatic, 26}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

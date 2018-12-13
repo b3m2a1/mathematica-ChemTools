@@ -67,7 +67,10 @@ InterfaceAttribute[CoordinateGridObject]@
 
 InterfaceMethod[CoordinateGridObject]@
   g_CoordinateGridObject["BuildFunction"][f_]:=
-    GridCreateMapFunction[f, g]
+    GridCreateMapFunction[f, g];
+InterfaceMethod[CoordinateGridObject]@
+  g_CoordinateGridObject["Slice"][n__Integer]:=
+    GridSlice[g, n];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -86,13 +89,13 @@ InterfaceOverride[CoordinateGridObject]@
     g["Grid"]=GridMap[f, g];
 InterfaceOverride[CoordinateGridObject]@
   CoordinateBounds[g_CoordinateGridObject]:=
-    GridCoordinateBounds[g];
+    GridBounds[g];
 InterfaceOverride[CoordinateGridObject]@
   CoordinateBoundingBox[g_CoordinateGridObject]:=
-    GridCoordinateBoundingBox[g];
+    GridBoundingBox[g];
 InterfaceOverride[CoordinateGridObject]@
-  CoordinateBoundingBox[g_CoordinateGridObject]:=
-    GridCoordinateBoundingBox[g];
+  Permute[g_CoordinateGridObject, inds_]:=
+    GridPermute[g, inds]
 
 
 End[];

@@ -237,7 +237,14 @@ WFPlot[
       )|_GridFunctionObject?GridFunctionObjectQ|None):None,
   ops:OptionsPattern[]
   ]:=
-  iWFPlot[{wfns["Energies"], wfns["Wavefunctions"]}, potential, ops];
+  iWFPlot[
+    {wfns["Energies"], wfns["Wavefunctions"]}, 
+    potential, 
+    FilterRules[
+      Join[{ops}, $WFPlotOptions],
+      Options[WFPlot]
+      ]
+    ];
 
 
 End[];

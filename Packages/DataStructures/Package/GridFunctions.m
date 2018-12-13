@@ -25,6 +25,8 @@ GFPart::usage=
   "Applies part to a grid function";
 GFKeyPart::usage=
   "Applies key lookup to a grid function";
+GridSlice::usage=
+  "Slices at level n";
 
 
 (* ::Subsubsection::Closed:: *)
@@ -41,8 +43,9 @@ GFMap::usage=
 GFSort::usage=
   "";
 GFTranspose::usage=
-  "";
-
+  "Takes a transpose of coordinates in the grid";
+GFPermute::usage=
+  "Permutes coordinates in the grid";
 
 
 (* ::Subsubsection::Closed:: *)
@@ -192,6 +195,38 @@ ConstructGridFunction[a_Association]:=
 
 
 (* ::Subsection:: *)
+(*Meh*)
+
+
+
+GFModify[gf_, justOneFunc_]:=
+  InterfaceModify[
+    GridFunctionObject,
+    gf,
+    With[{newb=justOneFunc@Lookup[#, {"Grid", "Values"}]},
+      ReplacePart[#,
+        {
+          "Grid"->#[[1]],
+          "Values"->#[[2]]
+          }
+        ]
+      ]&
+    ];
+
+
+GFModify[gf_, gridF_, valF_]:=
+  InterfaceModify[
+    GridFunctionObject,
+    gf,
+    MapAt[
+      valF,
+      MapAt[gridF, #, "Grid"],
+      "Values"
+      ]&
+    ]
+
+
+(* ::Subsection:: *)
 (*GridFunction Parts*)
 
 
@@ -276,6 +311,40 @@ GFMap[tf_, {grid_List, vals_List}]:=
     ];
 GFTransform[tf_, f_]:=
   GFTransform[tf, {f["Grid"]["Grid"], f["Values"]}];
+
+
+(* ::Subsubsection::Closed:: *)
+(*GFPermute*)
+
+
+
+GFPermute[g_GridFunctionObject, newIndices_]:=
+  PackageExceptionBlock["GridPermute"]@
+    GFModify[g, 
+      GridPermute[#, newIndices]&,
+      Transpose[#, newIndices]&
+      ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*GFSlice*)
+
+
+
+iGFSlice[vals_, n__Integer]:=
+  Part[
+    vals,
+    n,
+    Sequence@@
+      ConstantArray[All, 
+        Depth[vals]-(2+Length[{n}])
+        ]
+    ];
+GridSlice[g_, n__Integer]:=
+  GFModify[g, 
+    GridSlice[#, n]&,
+    iGFSlice[#, n]&
+    ];
 
 
 (* ::Subsection:: *)
@@ -457,36 +526,6 @@ GFKroneckerProduct[g_GridFunctionObject, g2__GridFunctionObject]:=
     ]
 
 
-(* ::Subsection:: *)
-(*Compiled SA Potential*)
-
-
-
-compiledSAPot[potInterp_]:=
-  With[{dom=potInterp[[1]]},
-    Compile[{{sa,_Real,1}},
-      With[
-        {
-          R1=1/Sqrt[2](sa[[2]]+sa[[1]]),
-          R2=1/Sqrt[2](sa[[2]]-sa[[1]])
-          },
-        If[dom[[1,1]]<=R2<=dom[[1,2]]&&
-          dom[[2,1]]<=R1<=dom[[2,2]],
-          potInterp[R1, R2],
-          10^9
-          ]
-        ],
-      RuntimeOptions->{
-        "EvaluateSymbolically"->False,
-        "WarningMessages"->False
-        }
-      ]
-    ];
-
-
-CompiledSAPot=compiledSAPot
-
-
 (* ::Subsubsection::Closed:: *)
 (*GFCompile*)
 
@@ -572,39 +611,54 @@ iGFVectorizedInterpCut[interp_, coords_, preProcessor_, def_, min_]:=
           getPot[a_]:=Apply[potInterp, a];
           preCoords=
             Quiet@
+              preProcessor@
                 Map[
                   If[#===Automatic, 
                     Compile`GetElement[crds, j++], 
                     #
                     ]&,
-                  preProcessor@coords
+                  coords
                   ];
+          j=1;
           (* bounds checking for test *)
           With[
             {
               test=
-                With[{tests=MapThread[#[[1]]<=#2<=#[[2]]&, {dom, preCoords}]},
-                  If[MemberQ[tests, False&],
+                With[
+                  {
+                    tests=
+                      MapThread[
+                        #[[1]]<=
+                          If[NumericQ[#2], 
+                            j++;#2, 
+                            Compile`GetElement[pt, j++]
+                            ]<=#[[2]]&, 
+                        {dom, preCoords}
+                        ]
+                    },
+                  If[MemberQ[tests, False],
                     False,
                     And@@DeleteCases[tests, True]
                     ]
                   ],
-            crdSpec=Echo@preCoords,
-            fn=Function
-            },
+              crdSpec=preCoords,
+              means=Mean/@dom,
+              fn=
+                Compile[
+                  {{crds, _Real, 1}},
+                  Evaluate@preCoords,
+                  RuntimeAttributes->{Listable}
+                  ]
+              },
             Compile@@
               Hold[(* True Compile body but with Hold for code injection *)
                 {{gps, _Real, 2}},
                 Module[
                   {
-                    pts=
-                      fn[
-                        crds,
-                        crdSpec
-                        ]/@gps,
+                    pts=fn@gps,
                     ongrid=Table[0, {i, Length@gps}],
                     intres,
-                    midpt=Mean/@dom,
+                    midpt=means,
                     interpvals,
                     interpcounter,
                     interppts,
@@ -618,7 +672,7 @@ iGFVectorizedInterpCut[interp_, coords_, preProcessor_, def_, min_]:=
                   Do[
                     If[test,
                       ongrid[[i]]=1;
-                      interppts[[++interpcounter]]=pts[[i]]
+                      interppts[[++interpcounter]]=pt
                       ];
                     i++,
                     {pt, pts}
@@ -640,7 +694,9 @@ iGFVectorizedInterpCut[interp_, coords_, preProcessor_, def_, min_]:=
                 RuntimeOptions->{
                   "EvaluateSymbolically"->False,
                   "WarningMessages"->False
-                  }
+                  },
+                CompilationOptions->{"InlineExternalDefinitions" -> True},
+                RuntimeAttributes->{Listable}
               ]
             ]
           ]
@@ -666,7 +722,9 @@ GFCompile[
   ops:OptionsPattern[]
   ]:=
   If[OptionValue["Mode"]==="Vector",
-    iGFVectorizedInterpCut[
+    iGFVectorizedInterpCut,
+    iGFPointwiseInterpCut
+    ][
       GFInterpolation[gf],
       Replace[
         coordSpec, 
@@ -676,7 +734,37 @@ GFCompile[
       OptionValue["Default"],
       OptionValue["Minimum"]
       ]
-    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*GFAverage*)
+
+
+
+(* ::Text:: *)
+(*
+	Should allow for averaging a function over some of the dimensions using an appropriate PDF.
+	PDF must first be discretized if necessary, dimensions should be checked, and grid slicing performed as 
+	needed.
+*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*iGFAverage*)
+
+
+
+iGFAverage[{grid_, values_}, dist_, n_]:=
+  values
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*GFAverage*)
+
+
+
+(*GFAverage[gf_, dist_]:=*)
 
 
 End[];

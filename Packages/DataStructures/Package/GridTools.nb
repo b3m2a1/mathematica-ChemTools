@@ -37,7 +37,11 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{
    RowBox[{"GridKeyPart", "::", "usage"}], "=", "\n", "\t", 
-   "\"\<Applies key lookup to a coordinate grid\>\""}], 
+   "\"\<Applies key lookup to a coordinate grid\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridSlice", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Slices at level n\>\""}], 
   ";"}]}], "CodeInput",ExpressionUUID->"0683456a-e69c-4b41-9668-ec499b04160b"]\
 
 }, Closed]],
@@ -63,7 +67,12 @@ ordering\>\""}], ";"}], "\n",
   ";"}], "\n", 
  RowBox[{
   RowBox[{
-   RowBox[{"GridTranspose", "::", "usage"}], "=", "\n", "\t", "\"\<\>\""}], 
+   RowBox[{"GridTranspose", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Takes a transpose of coordinates in the grid\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridPermute", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Permutes coordinates in the grid\>\""}], 
   ";"}]}], "CodeInput",ExpressionUUID->"d4b2a3d5-b679-424e-a459-eb9b78142f8c"]\
 
 }, Closed]],
@@ -128,7 +137,7 @@ Cell[BoxData[{
    RowBox[{"GridBounds", "::", "usage"}], "=", "\"\<\>\""}], 
   ";"}]}], "CodeInput",ExpressionUUID->"4edb723a-eef6-41fa-9181-5777fa18c735"]\
 
-}, Open  ]],
+}, Closed]],
 
 Cell[BoxData[
  RowBox[{
@@ -243,7 +252,7 @@ Cell[BoxData[{
        "\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}], 
   ";"}]}], "CodeInput",ExpressionUUID->"fa794344-d66b-4650-ba92-aa142e391584"]\
 
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -286,8 +295,35 @@ Cell[BoxData[{
     "\t", "a"}], 
   ";"}]}], "CodeInput",ExpressionUUID->"afff2841-224c-40ae-a75d-28dd471377f2"]\
 
+}, Closed]]
 }, Open  ]]
-}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]I am stupid\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"d7671365-135b-4eb3-a0b9-f41b4cc9490d"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GridObjectModify\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"052ed0f0-9726-4a93-ac6c-ef4694830a1e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridObjectModify", "[", 
+    RowBox[{"g_", ",", " ", "fn_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"InterfaceModify", "[", "\n", "\t\t", 
+    RowBox[{"CoordinateGridObject", ",", "\n", "\t\t", "g", ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"MapAt", "[", "\n", "\t\t\t", 
+       RowBox[{
+       "fn", ",", "\n", "\t\t\t", "#", ",", " ", "\n", "\t\t\t", 
+        "\"\<Grid\>\""}], "\n", "\t\t\t", "]"}], "&"}]}], "\n", "\t\t", 
+    "]"}]}], ";"}]], \
+"CodeInput",ExpressionUUID->"27d4d7da-9435-431a-9c5a-6d5f86b60208"]
+}, Closed]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -310,8 +346,10 @@ Cell[BoxData[
   RowBox[{
    RowBox[{"If", "[", 
     RowBox[{
-     RowBox[{"IntegerQ", "@", "p"}], ",", " ", "Identity", ",", " ", 
-     "CoordinateGridObject"}], "]"}], "@", "\n", "\t\t", 
+     RowBox[{"AllTrue", "[", 
+      RowBox[{
+       RowBox[{"{", "p", "}"}], ",", " ", "IntegerQ"}], "]"}], ",", " ", 
+     "Identity", ",", " ", "CoordinateGridObject"}], "]"}], "@", "\n", "\t\t", 
    RowBox[{"a", "[", 
     RowBox[{"[", 
      RowBox[{"\"\<Grid\>\"", ",", " ", "p"}], "]"}], 
@@ -402,8 +440,9 @@ Cell[BoxData[{
       RowBox[{
        RowBox[{"d", ">", "3"}], ",", "\n", "\t\t\t\t", 
        RowBox[{"Map", "[", 
-        RowBox[{"tf", ",", " ", 
-         RowBox[{"d", "-", "2"}]}], "]"}], ",", "\n", "\t\t\t", 
+        RowBox[{"tf", ",", " ", "grid", ",", " ", 
+         RowBox[{"{", 
+          RowBox[{"d", "-", "2"}], "}"}]}], "]"}], ",", "\n", "\t\t\t", 
        RowBox[{"d", "\[Equal]", "3"}], ",", "\n", "\t\t\t\t", 
        RowBox[{"Map", "[", 
         RowBox[{"tf", ",", " ", "grid"}], "]"}], ",", "\n", "\t\t\t", 
@@ -422,11 +461,149 @@ Cell[BoxData[{
   RowBox[{
    RowBox[{"GridTransform", "[", 
     RowBox[{"grid_", ",", " ", "tf_"}], "]"}], ":=", "\n", "\t", 
-   RowBox[{"GridTransform", "[", 
+   RowBox[{"InterfaceModify", "[", "\n", "\t\t", 
     RowBox[{
-     RowBox[{"grid", "[", "\"\<Grid\>\"", "]"}], ",", " ", "tf"}], "]"}]}], 
+    "CoordinateGridObject", ",", "\n", "\t\t", "grid", ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"MapAt", "[", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"GridTransform", "[", 
+          RowBox[{"#", ",", " ", "tf"}], "]"}], "&"}], ",", "\n", "\t\t\t", 
+        "#", ",", " ", "\n", "\t\t\t", "\"\<Grid\>\""}], "\n", "\t\t\t", 
+       "]"}], "&"}]}], "\n", "\t\t", "]"}]}], 
   ";"}]}], "CodeInput",ExpressionUUID->"760e9b4c-db9a-493b-9d8b-ff5bcb9e4bdc"]\
 
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GridPermute\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"9eadd860-ada4-4752-b237-209e3c6f4dfc"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"iGridPermute", "[", 
+    RowBox[{"g_List", ",", " ", "newIndices_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", "newGrid", "}"}], ",", "\n", "\t", "\t", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"GridDimension", "@", "g"}], "=!=", 
+         RowBox[{"Length", "@", "newIndices"}]}], ",", "\n", "\t", "\t\t", 
+        RowBox[{"PackageRaiseException", "[", "\n", "\t", "\t\t\t", 
+         RowBox[{
+         "\"\<Can't perform permutation `` on grid of dimension ``\>\"", ",", 
+          "\n", "\t", "\t\t\t", "newIndices", ",", "\n", "\t", "\t\t\t", 
+          RowBox[{"GridDimension", "@", "g"}]}], "\n", "\t\t\t\t", "]"}]}], 
+       "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Sort", "@", "newIndices"}], "=!=", 
+         RowBox[{"Range", "[", 
+          RowBox[{"Length", "@", "newIndices"}], "]"}]}], ",", "\n", "\t\t\t", 
+        RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t", 
+         RowBox[{
+         "\"\<Permutation `` loses coordinates ``\>\"", ",", "\n", "\t\t\t\t",
+           "newIndices", ",", "\n", "\t\t\t\t", 
+          RowBox[{"Sort", "@", "\n", "\t\t\t\t\t", 
+           RowBox[{"Complement", "[", 
+            RowBox[{
+             RowBox[{"Range", "[", 
+              RowBox[{"Length", "@", "newIndices"}], "]"}], ",", " ", 
+             "newIndices"}], "]"}]}]}], "\n", "\t\t\t\t", "]"}]}], "\n", 
+       "\t\t\t", "]"}], ";", "\n", "\t\t", 
+      RowBox[{"newGrid", "=", 
+       RowBox[{"Transpose", "[", 
+        RowBox[{"g", ",", " ", "newIndices"}], "]"}]}], ";", "\n", "\t\t", 
+      RowBox[{"Part", "[", 
+       RowBox[{"newGrid", ",", "\n", "\t\t\t", 
+        RowBox[{"Sequence", "@@", "\n", "\t\t\t\t", 
+         RowBox[{"Append", "[", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"ConstantArray", "[", 
+            RowBox[{"All", ",", " ", 
+             RowBox[{
+              RowBox[{"Depth", "[", "g", "]"}], "-", "2"}]}], "]"}], ",", " ",
+            "\n", "\t\t\t\t\t", "newIndices"}], "\n", "\t\t\t\t\t", "]"}]}]}],
+        "\n", "\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridPermute", "[", 
+    RowBox[{"g_List", ",", " ", "newIndices_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{
+    RowBox[{"PackageExceptionBlock", "[", "\"\<GridPermute\>\"", "]"}], "@", 
+    "\n", "\t\t", 
+    RowBox[{"iGridPermute", "[", 
+     RowBox[{"g", ",", " ", "newIndices"}], "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GridPermute", "[", 
+   RowBox[{"g_CoordinateGridObject", ",", " ", "newIndices_"}], "]"}], ":=", 
+  "\n", "\t", 
+  RowBox[{
+   RowBox[{"PackageExceptionBlock", "[", "\"\<GridPermute\>\"", "]"}], "@", 
+   "\n", "\t", "\t", 
+   RowBox[{"InterfaceModify", "[", "\n", "\t", "\t\t", 
+    RowBox[{
+    "CoordinateGridObject", ",", "\n", "\t", "\t\t", "g", ",", "\n", "\t", 
+     "\t\t", 
+     RowBox[{
+      RowBox[{"MapAt", "[", "\n", "\t", "\t\t\t", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"GridPermute", "[", 
+          RowBox[{"#", ",", " ", "newIndices"}], "]"}], "&"}], ",", "\n", 
+        "\t", "\t\t\t", "#", ",", " ", "\n", "\t", "\t\t\t", "\"\<Grid\>\""}],
+        "\n", "\t", "\t\t\t", "]"}], "&"}]}], "\n", "\t", "\t\t", 
+    "]"}]}]}]}], \
+"CodeInput",ExpressionUUID->"772b0a66-debe-4f66-a373-e8674b03e5ed"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GridSlice\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"43f07fc5-5e6f-4858-8fc8-6bdbcaa0c6c4"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridSlice", "[", 
+    RowBox[{"g_List", ",", " ", "n__Integer"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Part", "[", "\n", "\t\t", 
+    RowBox[{"g", ",", "\n", "\t\t", "n", ",", "\n", "\t\t", 
+     RowBox[{"Sequence", "@@", "\n", "\t\t\t", 
+      RowBox[{"Append", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"ConstantArray", "[", 
+         RowBox[{"All", ",", " ", "\n", "\t\t\t\t\t", 
+          RowBox[{
+           RowBox[{"Depth", "[", "g", "]"}], "-", 
+           RowBox[{"(", 
+            RowBox[{"2", "+", 
+             RowBox[{"Length", "[", 
+              RowBox[{"{", "n", "}"}], "]"}]}], ")"}]}]}], "]"}], ",", " ", 
+        "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"1", "+", 
+          RowBox[{"Length", "[", 
+           RowBox[{"{", "n", "}"}], "]"}]}], ";;"}]}], "\n", "\t\t\t\t\t", 
+       "]"}]}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridSlice", "[", 
+    RowBox[{"g_", ",", " ", "n__Integer"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"GridObjectModify", "[", 
+    RowBox[{"g", ",", " ", 
+     RowBox[{
+      RowBox[{"GridSlice", "[", 
+       RowBox[{"#", ",", " ", "n"}], "]"}], "&"}]}], "]"}]}], 
+  ";"}]}], \
+"CodeInput",ExpressionUUID->"74ed680c-5d64-4ff2-86a0-fe9ab08cd4aa"]
 }, Closed]]
 }, Open  ]],
 
@@ -454,8 +631,8 @@ Cell[BoxData[{
    RowBox[{"GridDimensions", "[", "grid_", "]"}], ":=", "\n", "\t", 
    RowBox[{"GridDimensions", "@", 
     RowBox[{"grid", "[", "\"\<Grid\>\"", "]"}]}]}], 
-  ";"}]}], \
-"CodeInput",ExpressionUUID->"b867dd36-a037-4e8c-bc83-cbc9707832c7"]
+  ";"}]}], "CodeInput",ExpressionUUID->"b867dd36-a037-4e8c-bc83-cbc9707832c7"]\
+
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -595,7 +772,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"9b890501-c575-45aa-bf6b-\
 4a602a09f246"]
 },
 WindowSize->{808, 755},
-WindowMargins->{{70, Automatic}, {30, Automatic}},
+WindowMargins->{{12, Automatic}, {Automatic, 0}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

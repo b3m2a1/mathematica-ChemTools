@@ -25,16 +25,18 @@ InterfaceCopyProperties::usage=
   "Copies properties from one object to another";
 
 
-(*InterfaceModify::usage=
-	"Replace keys in one interface with those of another" (* for future *)*)
-
-
 InterfaceMethod::usage=
   "Alias for defining object methods";
 InterfaceAttribute::usage=
   "Alias for defining object attributes";
 InterfaceOverride::usage=
   "Alias for defining object UpValues";
+
+
+InterfaceModify::usage=
+  "Replace keys in one interface with new values";
+InterfaceAssociation::usage=
+  "Extracts the underlying Association from an interface";
 
 
 Begin["`Private`"];
@@ -151,6 +153,17 @@ InterfaceRemoveProperty[spec_, prop_]:=
   propRemove[spec, prop];
 InterfacePropertyList[spec_]:=
   propKeys[spec]
+
+
+(* ::Subsubsection::Closed:: *)
+(*CopyProperties*)
+
+
+
+InterfaceCopyProperties[obj1_, obj2_, keys_List]:=
+  copyProps[obj1, obj2, AnyTrue[keys, With[{o=#}, #===o&]&]];
+InterfaceCopyProperties[obj1_, obj2_, e_]:=
+  copyProps[obj1, obj2, e]
 
 
 (* ::Subsection:: *)
@@ -848,8 +861,11 @@ InterfaceOverride/:
         },
       argList=Thread[HoldComplete[{args}]];
       pivot=
-        SelectFirst[Range[Length[argList]], !FreeQ[argList[[#]], head]&,
-         Length[argList]+1];
+        SelectFirst[
+          Range[Length[argList]], 
+          !FreeQ[argList[[#]], head]&,
+          Length[argList]+1
+          ];
       argList=
         Map[
           Thread[#, HoldComplete]&, 
@@ -1106,6 +1122,43 @@ iRegisterDefaultInterfaceMethods[head_, fns_]:=
   With[{v=InterfaceValidator[head]},
     Scan[registerDefaultMethod[head, v, #]&, fns]
     ]
+
+
+(* ::Subsection:: *)
+(*Modifications*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*InterfaceModify*)
+
+
+
+InterfaceModify[
+  head_, 
+  og:head_[a_], 
+  fn_,
+  copyProperties_:None
+  ]:=
+  Module[{new=fn@a},
+    If[AssociationQ@new, new=head@new;];
+    If[TrueQ@InterfaceValidator[head]@new,
+      If[ListQ@copyProperties,
+        InterfaceCopyProperties[og, new, copyProperties]
+        ];
+      new,
+      $Failed (* ... maybe this should return some message ? ... *)
+      ]
+    ];
+
+
+(* ::Subsubsection::Closed:: *)
+(*InterfaceAssociation*)
+
+
+
+InterfaceAssociation[head_, head_[a_]]:=
+  a;
 
 
 End[];

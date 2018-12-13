@@ -32,6 +32,8 @@ GridPart::usage=
   "Applies part to a wavefunction";
 GridKeyPart::usage=
   "Applies key lookup to a coordinate grid";
+GridSlice::usage=
+  "Slices at level n";
 
 
 (* ::Subsubsection::Closed:: *)
@@ -46,7 +48,9 @@ GridTransform::usage=
 GridSort::usage=
   "";
 GridTranspose::usage=
-  "";
+  "Takes a transpose of coordinates in the grid";
+GridPermute::usage=
+  "Permutes coordinates in the grid";
 
 
 (* ::Subsubsection::Closed:: *)
@@ -173,6 +177,28 @@ ConstructCoordinateGrid[a_Association]:=
 
 
 (* ::Subsection:: *)
+(*I am stupid*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*GridObjectModify*)
+
+
+
+GridObjectModify[g_, fn_]:=
+  InterfaceModify[
+    CoordinateGridObject,
+    g,
+    MapAt[
+      fn,
+      #, 
+      "Grid"
+      ]&
+    ];
+
+
+(* ::Subsection:: *)
 (*Grid Parts*)
 
 
@@ -183,7 +209,7 @@ ConstructCoordinateGrid[a_Association]:=
 
 
 GridPart[c:CoordinateGridObject[a_], p__]:=
-  If[IntegerQ@p, Identity, CoordinateGridObject]@
+  If[AllTrue[{p}, IntegerQ], Identity, CoordinateGridObject]@
     a[["Grid", p]]
 
 
@@ -235,7 +261,7 @@ GridTransform[grid_List, tf_]:=
   Module[{d=Depth[grid]},
     Which[
       d>3,
-        Map[tf, d-2],
+        Map[tf, grid, {d-2}],
       d==3,
         Map[tf, grid],
       d==2,
@@ -248,7 +274,82 @@ GridTransform[grid_List, tf_]:=
       ]
     ];
 GridTransform[grid_, tf_]:=
-  GridTransform[grid["Grid"], tf];
+  InterfaceModify[
+    CoordinateGridObject,
+    grid,
+    MapAt[
+      GridTransform[#, tf]&,
+      #, 
+      "Grid"
+      ]&
+    ];
+
+
+(* ::Subsubsection::Closed:: *)
+(*GridPermute*)
+
+
+
+iGridPermute[g_List, newIndices_]:=
+  Module[{newGrid},
+    If[GridDimension@g=!=Length@newIndices,
+      PackageRaiseException[
+        "Can't perform permutation `` on grid of dimension ``",
+        newIndices,
+        GridDimension@g
+        ]
+      ];
+    If[Sort@newIndices=!=Range[Length@newIndices],
+      PackageRaiseException[
+        "Permutation `` loses coordinates ``",
+        newIndices,
+        Sort@
+          Complement[Range[Length@newIndices], newIndices]
+        ]
+      ];
+    newGrid=Transpose[g, newIndices];
+    Part[newGrid,
+      Sequence@@
+        Append[
+          ConstantArray[All, Depth[g]-2], 
+          newIndices
+          ]
+      ]
+    ];
+GridPermute[g_List, newIndices_]:=
+  PackageExceptionBlock["GridPermute"]@
+    iGridPermute[g, newIndices];
+GridPermute[g_CoordinateGridObject, newIndices_]:=
+  PackageExceptionBlock["GridPermute"]@
+    InterfaceModify[
+      CoordinateGridObject,
+      g,
+      MapAt[
+        GridPermute[#, newIndices]&,
+        #, 
+        "Grid"
+        ]&
+      ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*GridSlice*)
+
+
+
+GridSlice[g_List, n__Integer]:=
+  Part[
+    g,
+    n,
+    Sequence@@
+      Append[
+        ConstantArray[All, 
+          Depth[g]-(2+Length[{n}])], 
+          1+Length[{n}];;
+          ]
+    ];
+GridSlice[g_, n__Integer]:=
+  GridObjectModify[g, GridSlice[#, n]&];
 
 
 (* ::Subsection:: *)
