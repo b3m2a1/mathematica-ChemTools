@@ -77,10 +77,27 @@ InterfaceMethod[GridFunctionObject]@
 InterfaceMethod[GridFunctionObject]@
   g_GridFunctionObject["Slice"][n__Integer]:=
     GFSlice[g, n];
+InterfaceMethod[GridFunctionObject]@
+  g_GridFunctionObject["Add"][f__GridFunctionObject]:=
+    GFAdd[g, f];
+InterfaceMethod[GridFunctionObject]@
+  g_GridFunctionObject["Multiply"][f__GridFunctionObject]:=
+    GFMultiply[g, f];
+InterfaceMethod[GridFunctionObject]@
+  g_GridFunctionObject["Subtract"][f__GridFunctionObject]:=
+    GFSubtract[g, f];
+InterfaceMethod[GridFunctionObject]@
+  g_GridFunctionObject["Divide"][f__GridFunctionObject]:=
+    GFDivide[g, f];
 
 
 (* ::Subsubsection::Closed:: *)
 (*Overrides*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Interpolation*)
 
 
 
@@ -90,17 +107,38 @@ InterfaceOverride[GridFunctionObject]@
     a___
     ]:=
     GFInterpolation[f, a];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*MinMax*)
+
+
+
 InterfaceOverride[GridFunctionObject]@
   MinMax[
     f_GridFunctionObject
     ]:=
     GFMinMax[f];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Map*)
+
+
+
 InterfaceOverride[GridFunctionObject]@
   Map[
     fn_,
     f_GridFunctionObject
     ]:=
     GFMap[fn, f];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Translate*)
+
+
+
 InterfaceOverride[GridFunctionObject]@
   Translate[
     f_GridFunctionObject,
@@ -109,6 +147,13 @@ InterfaceOverride[GridFunctionObject]@
     With[{res=GFShift[f, n]},
       res/;Head[res]=!=GFShift
       ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Scale*)
+
+
+
 InterfaceOverride[GridFunctionObject]@
   Scale[
     f_GridFunctionObject,
@@ -117,24 +162,52 @@ InterfaceOverride[GridFunctionObject]@
     With[{res=GFScale[f, n]},
       res/;Head[res]=!=GFScale
       ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Rescale*)
+
+
+
 InterfaceOverride[GridFunctionObject]@
   Rescale[
     f_GridFunctionObject,
     a__
     ]:=
     GFRescale[f, a];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Threshold*)
+
+
+
 InterfaceOverride[GridFunctionObject]@
   Threshold[
     f_GridFunctionObject,
     a__
     ]:=
     GFChop[f, a];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Permute*)
+
+
+
 InterfaceOverride[GridFunctionObject]@
   Permute[
     f_GridFunctionObject,
     spec_
     ]:=
     GFPermute[f, spec];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Transpose*)
+
+
+
 InterfaceOverride[GridFunctionObject]@
   Transpose[
     f_GridFunctionObject,

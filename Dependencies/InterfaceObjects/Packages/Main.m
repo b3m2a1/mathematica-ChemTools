@@ -189,7 +189,8 @@ InterfaceCopyProperties[obj1_, obj2_, e_]:=
 
 
 defaultConstructorFailureFunction[head_, args__]:=
-  PackageRaiseException[Automatic,
+  PackageRaiseException[
+    Automatic,
     "Failed to build `` object from data ``",
     head,
     HoldForm[{args}]
@@ -727,6 +728,31 @@ iRegisterInterfaceMutationHandler[
 
 
 (* ::Subsubsection::Closed:: *)
+(*iRegisterMethodFallback*)
+
+
+
+InterfaceMethodQ[head_][arg_]:=
+  Depth[arg]>2&&
+    KeyExistsQ[InterfaceMethods[head], 
+      Extract[arg, ConstantArray[0, Depth[arg]-1]]
+      ];
+InterfaceMethodCall[lhs_, arg_]:=
+  lhs[
+    Extract[arg, ConstantArray[0, Depth[arg]-2]]
+    ]@Delete[arg, ConstantArray[0, Depth[arg]-2]];
+
+
+iRegisterMethodFallback[head_]:=
+  With[{valid=InterfaceValidator[head]},
+    head/:(obj_head?valid)[
+      fallbackArg_?(InterfaceMethodQ[head])
+      ]:=
+      InterfaceMethodCall[obj, fallbackArg]
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
 (*iRegisterInterfaceMethod*)
 
 
@@ -756,6 +782,7 @@ iRegisterInterfaceMethod[
       def;
     head/:lhs?valid[mn][args]:=
       def;
+    iRegisterMethodFallback[head];
     If[MemberQ[attrs, Protected], Protect[head]];
     ];
 
@@ -776,6 +803,31 @@ InterfaceMethod/:
     ):=
     iRegisterInterfaceMethod[head, method, lhs, args, def];
 Protect[InterfaceMethod];
+
+
+(* ::Subsubsection::Closed:: *)
+(*iRegisterAttributeFallback*)
+
+
+
+InterfaceAttributeQ[head_][arg_]:=
+  Depth[arg]>1&&
+    KeyExistsQ[InterfaceAttributes[head], 
+      Extract[arg, ConstantArray[0, Depth[arg]-1]]
+      ];
+InterfaceAttributeCall[lhs_, arg_]:=
+  lhs[
+    Extract[arg, ConstantArray[0, Depth[arg]-1]]
+    ]@Delete[arg, ConstantArray[0, Depth[arg]-1]];
+
+
+iRegisterAttributeFallback[head_]:=
+  With[{valid=InterfaceValidator[head]},
+    head/:(obj_head?valid)[
+      fallbackArg_?(InterfaceAttributeQ[head])
+      ]:=
+      InterfaceAttributeCall[obj, fallbackArg]
+    ]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -805,6 +857,7 @@ iRegisterInterfaceAttribute[
         ]; 
     head/:lhs?valid[mn]:=
       def;
+    iRegisterAttributeFallback[head];
     If[MemberQ[attrs, Protected], Protect[head]];
     ];
 

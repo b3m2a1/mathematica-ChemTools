@@ -63,10 +63,6 @@ Cell[BoxData[{
 ordering\>\""}], ";"}], "\n", 
  RowBox[{
   RowBox[{
-   RowBox[{"GridSort", "::", "usage"}], "=", "\n", "\t", "\"\<\>\""}], 
-  ";"}], "\n", 
- RowBox[{
-  RowBox[{
    RowBox[{"GridTranspose", "::", "usage"}], "=", "\n", "\t", 
    "\"\<Takes a transpose of coordinates in the grid\>\""}], ";"}], "\n", 
  RowBox[{
@@ -76,8 +72,30 @@ ordering\>\""}], ";"}], "\n",
  RowBox[{
   RowBox[{
    RowBox[{"GridSort", "::", "usage"}], "=", "\n", "\t", 
-   "\"\<Sorts a set of coordinates\>\""}], 
+   "\"\<Sorts a set of coordinates\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridSubgrids", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Pulls all subgrids out of the grid\>\""}], 
   ";"}]}], "CodeInput",ExpressionUUID->"d4b2a3d5-b679-424e-a459-eb9b78142f8c"]\
+
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Misc\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"634a82a3-b1c2-45fd-8752-ba01b8702c36"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridIndexFromStrides", "::", "usage"}], "=", 
+   "\"\<Might be in the wrong place...\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridStridesToIndex", "::", "usage"}], "=", 
+   "\"\<Might be in the wrong place...\>\""}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"bb0e6e0d-b499-47f5-a3ea-3c3b36bbaf2d"]\
 
 }, Closed]],
 
@@ -325,8 +343,8 @@ Cell[BoxData[
        RowBox[{
        "fn", ",", "\n", "\t\t\t", "#", ",", " ", "\n", "\t\t\t", 
         "\"\<Grid\>\""}], "\n", "\t\t\t", "]"}], "&"}]}], "\n", "\t\t", 
-    "]"}]}], ";"}]], \
-"CodeInput",ExpressionUUID->"27d4d7da-9435-431a-9c5a-6d5f86b60208"]
+    "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"27d4d7da-9435-431a-9c5a-6d5f86b60208"]
 }, Closed]]
 }, Open  ]],
 
@@ -359,7 +377,7 @@ Cell[BoxData[
      RowBox[{"\"\<Grid\>\"", ",", " ", "p"}], "]"}], 
     "]"}]}]}]], \
 "CodeInput",ExpressionUUID->"db26231e-223e-47d9-b140-7917fdfc740c"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -586,7 +604,7 @@ Cell[BoxData[{
         "\n", "\t", "\t\t\t", "]"}], "&"}]}], "\n", "\t", "\t\t", 
     "]"}]}]}]}], \
 "CodeInput",ExpressionUUID->"772b0a66-debe-4f66-a373-e8674b03e5ed"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -665,7 +683,211 @@ Cell[BoxData[{
        RowBox[{"#", ",", " ", "fn"}], "]"}], "&"}]}], "\n", "\t\t", "]"}]}], 
   ";"}]}], "CodeInput",ExpressionUUID->"12064758-bcc1-40b5-a317-95a9aad2ed68"]\
 
-}, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GridSubgrids\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"39f54b82-fd35-469d-8cde-e99147790be5"],
+
+Cell["\<\
+\[LeftCeiling]
+\tThis is probably the wrong name but we\[CloseCurlyQuote]ll roll with it for \
+now...
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"8e534aed-ba06-4e2d-a895-f9b52b01568a"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridSubgrids", "[", "grid_List", "]"}], ":=", "\n", "\t", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"dim", "=", 
+       RowBox[{"GridDimension", "[", "grid", "]"}]}], "}"}], ",", "\n", 
+     "\t\t", 
+     RowBox[{"Map", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Part", "[", "\n", "\t\t\t\t", 
+         RowBox[{"grid", ",", "\n", "\t\t\t\t", 
+          RowBox[{"Sequence", "@@", "\n", "\t\t\t\t\t", 
+           RowBox[{"Join", "[", "\n", "\t\t\t\t\t\t", 
+            RowBox[{
+             RowBox[{"ConstantArray", "[", 
+              RowBox[{"1", ",", " ", 
+               RowBox[{"#", "-", "1"}]}], "]"}], ",", "\n", "\t", "\t", "\t", 
+             "\t\t\t", 
+             RowBox[{"{", "All", "}"}], ",", "\n", "\t", "\t", "\t", "\t\t\t", 
+             RowBox[{"ConstantArray", "[", 
+              RowBox[{"1", ",", " ", 
+               RowBox[{"dim", "-", "#"}]}], "]"}], ",", "\n", "\t\t\t\t\t\t", 
+             
+             RowBox[{"{", "#", "}"}]}], "\n", "\t", "\t\t\t\t\t", "]"}]}]}], 
+         "\n", "\t\t\t\t", "]"}], "&"}], ",", "\n", "\t\t\t", 
+       RowBox[{"Range", "[", "dim", "]"}]}], "\n", "\t\t\t", "]"}]}], "\n", 
+    "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GridSubgrids", "[", "grid_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"GridSubgrids", "[", 
+   RowBox[{"Normal", "@", "grid"}], 
+   "]"}]}]}], \
+"CodeInput",ExpressionUUID->"59e40288-4b2c-412f-a7bb-603cc2e7d007"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GridProduct\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"71d098c0-4cac-4a9e-b205-708d1b77f6c7"],
+
+Cell["\<\
+\[LeftCeiling]
+\tHow exactly this should be done isn\[CloseCurlyQuote]t entirely clear... We \
+want the Cartesian product of all of the passed grids but the dimension of \
+each passed grid is unspecified...
+\tOne way to handle this would be do decompose each grid into its subgrids \
+and Cartesian product over those... but some of the passed grids might not be \
+product grids to start out with...
+\tWe\[CloseCurlyQuote]ll start out by trying a Map at the deepest nesting \
+level of an Outer product grid, recursing until we have the deepest grid \
+nesting level...?
+\tNo need--it\[CloseCurlyQuote]s already handled by Outer
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"c6f76096-708f-4b78-9355-ee9fc2c7e8f2"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridProduct", "[", "grids__List", "]"}], ":=", "\n", "\t", 
+   RowBox[{"Outer", "[", 
+    RowBox[{"Join", ",", " ", "\n", "\t\t", "grids", ",", "\n", "\t\t", 
+     RowBox[{"Sequence", "@@", "\n", "\t", "\t", 
+      RowBox[{"Map", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"Depth", "[", "#", "]"}], "-", "2"}], "&"}], ",", " ", 
+        RowBox[{"{", "grids", "}"}]}], "]"}]}]}], "\n", "\t\t", "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GridProduct", "[", "grids__CoordinateGridObject", "]"}], ":=", 
+  "\n", "\t", 
+  RowBox[{"GridProduct", "@@", "\n", "\t\t", 
+   RowBox[{"Map", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"#", "[", "\"\<Grid\>\"", "]"}], "&"}], ",", " ", "grids"}], 
+    "]"}]}]}]}], \
+"CodeInput",ExpressionUUID->"65dbc696-fddb-44f1-9c18-1eb29b3e73ce"]
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]Misc\[RightFloor]", "CodeSubsection",
+ Evaluatable->True,ExpressionUUID->"17f06431-b5a2-4c5b-af3a-6ad2e8946260"],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GridIndexFromStrides\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"50941bc9-77c3-4848-9c07-2d14e41c0f67"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GridIndexFromStrides", "[", 
+   RowBox[{
+    RowBox[{"strides", ":", 
+     RowBox[{"{", "__Integer", "}"}]}], ",", " ", "inds_"}], "]"}], ":=", 
+  "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{"accstr", ",", "\n", "\t\t\t", 
+      RowBox[{"stride", "=", "strides"}], ",", "\n", "\t\t\t", 
+      RowBox[{"ind", "=", 
+       RowBox[{"inds", "-", "1"}]}], ",", "\n", "\t\t\t", "moddable", ",", 
+      "\n", "\t\t\t", "modres"}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"accstr", "=", "\n", "\t\t\t", 
+      RowBox[{"N", "@", "\n", "\t\t\t\t", 
+       RowBox[{"Append", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{
+         RowBox[{"Reverse", "@", 
+          RowBox[{"FoldList", "[", 
+           RowBox[{"Times", ",", 
+            RowBox[{"strides", "[", 
+             RowBox[{"[", 
+              RowBox[{
+               RowBox[{"-", "1"}], ";;", "2", ";;", 
+               RowBox[{"-", "1"}]}], "]"}], "]"}]}], "]"}]}], ",", "\n", 
+         "\t\t\t\t\t", "1"}], "\n", "\t\t\t\t\t", "]"}]}]}], ";", "\n", 
+     "\t\t", 
+     RowBox[{"moddable", "=", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"ListQ", "@", "inds"}], ",", 
+        RowBox[{"Map", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"ind", "/", "#"}], "&"}], ",", " ", "accstr"}], "]"}], ",",
+         " ", 
+        RowBox[{"ind", "/", "accstr"}]}], "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"modres", "=", 
+      RowBox[{"1", "+", 
+       RowBox[{"Mod", "[", 
+        RowBox[{
+         RowBox[{"Floor", "[", "moddable", "]"}], ",", " ", "stride"}], 
+        "]"}]}]}], ";", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"ListQ", "@", "inds"}], ",", " ", "Transpose", ",", " ", 
+        "Identity"}], "]"}], "@", "modres"}]}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"5f3f9b87-bc95-49b4-995a-ccdec8d1338f"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GridStridesToIndex\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"24c89704-0bc9-4aa6-8d90-1396f2302abf"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GridStridesToIndex", "[", 
+   RowBox[{
+    RowBox[{"strides", ":", 
+     RowBox[{"{", "__Integer", "}"}]}], ",", " ", "inds_"}], "]"}], ":=", 
+  "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{"accstr", ",", "\n", "\t\t\t", 
+      RowBox[{"stride", "=", "strides"}], ",", "\n", "\t\t\t", 
+      RowBox[{"ind", "=", 
+       RowBox[{"inds", "-", "1"}]}]}], "\n", "\t\t\t", "}"}], ",", "\n", 
+    "\t\t", 
+    RowBox[{
+     RowBox[{"accstr", "=", "\n", "\t\t\t", 
+      RowBox[{"Append", "[", "\n", "\t\t\t\t", 
+       RowBox[{
+        RowBox[{"Reverse", "@", 
+         RowBox[{"FoldList", "[", 
+          RowBox[{"Times", ",", " ", 
+           RowBox[{"strides", "[", 
+            RowBox[{"[", 
+             RowBox[{
+              RowBox[{"-", "1"}], ";;", "2", ";;", 
+              RowBox[{"-", "1"}]}], "]"}], "]"}]}], "]"}]}], ",", "\n", 
+        "\t\t\t\t", "1"}], "\n", "\t\t\t\t", "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"ind", ".", "accstr"}], "+", "1"}]}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"55992e46-b172-4965-bc75-22bd9b578c70"]
+}, Closed]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -820,7 +1042,7 @@ Cell[BoxData[{
     RowBox[{"g", "[", "\"\<Grid\>\"", "]"}], "]"}]}], 
   ";"}]}], "CodeInput",ExpressionUUID->"086e440a-7c37-4a5c-932d-57d0143be7e8"]\
 
-}, Open  ]],
+}, Closed]],
 
 Cell[BoxData[
  RowBox[{
@@ -833,7 +1055,7 @@ Cell["", "SectionSeparator",ExpressionUUID->"9b890501-c575-45aa-bf6b-\
 4a602a09f246"]
 },
 WindowSize->{808, 755},
-WindowMargins->{{12, Automatic}, {Automatic, 0}},
+WindowMargins->{{264, Automatic}, {48, Automatic}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

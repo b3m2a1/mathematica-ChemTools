@@ -240,10 +240,13 @@ WFPlot[
   iWFPlot[
     {wfns["Energies"], wfns["Wavefunctions"]}, 
     potential, 
-    FilterRules[
-      Join[{ops}, $WFPlotOptions],
-      Options[WFPlot]
-      ]
+    Flatten@{
+      FilterRules[
+        Join[{ops}, $WFPlotOptions],
+        Options[WFPlot]
+        ],
+      ops
+      }
     ];
 
 

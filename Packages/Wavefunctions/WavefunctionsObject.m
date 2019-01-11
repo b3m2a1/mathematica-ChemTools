@@ -57,7 +57,33 @@ InterfaceMethod[WavefunctionsObject]@
 
 InterfaceMethod[WavefunctionsObject]@
   c_WavefunctionsObject["ExpectationValues"][o___]:=
-  WFExpectationValues[c, o]
+  WFExpectationValues[c, o];
+InterfaceMethod[WavefunctionsObject]@
+  c_WavefunctionsObject["OperatorMatrix"][o___]:=
+  WFOperatorMatrix[c, o];
+InterfaceMethod[WavefunctionsObject]@
+  c_WavefunctionsObject["OperatorMatrixElements"][o___]:=
+  WFOperatorMatrixElements[c, o];
+InterfaceMethod[WavefunctionsObject]@
+  c_WavefunctionsObject["Overlaps"][wf__]:=
+  WFOverlap[c, wf];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Overrides*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Length*)
+
+
+
+InterfaceOverride[WavefunctionsObject]@
+  Length[
+    f_WavefunctionsObject
+    ]:=
+    WFLength[f];
 
 
 End[];

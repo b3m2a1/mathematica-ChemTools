@@ -540,7 +540,7 @@ Cell[BoxData[
    "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"1e4ef713-896a-4285-bcb7-7460c6363b6c"]
-}, Open  ]]
+}, Closed]]
 }, Open  ]]
 }, Open  ]],
 
@@ -585,15 +585,16 @@ Cell["\[LeftCeiling]Select\[RightFloor]", "CodeSubsubsection",
 Cell[BoxData[
  RowBox[{
   RowBox[{
-   RowBox[{"ChemSpectrumSelect", "[", "\n", "\t", 
-    RowBox[{"spec_", ",", "\n", "\t", "test_"}], "\n", "\t", "]"}], ":=", 
-   "\n", "\t", 
-   RowBox[{"ChemSpectrumModify", "[", 
-    RowBox[{"spec", ",", " ", "\n", "\t\t", 
-     RowBox[{"Select", "[", 
-      RowBox[{
-       RowBox[{"ChemSpectrumPoints", "@", "spec"}], ",", " ", "test"}], 
-      "]"}]}], "\n", "\t\t", "]"}]}], ";", 
+   RowBox[{
+    RowBox[{"ChemSpectrumSelect", "[", "\n", "\t", 
+     RowBox[{"spec_", ",", "\n", "\t", "test_"}], "\n", "\t", "]"}], ":=", 
+    "\n", "\t", 
+    RowBox[{"ChemSpectrumModify", "[", 
+     RowBox[{"spec", ",", " ", "\n", "\t\t", 
+      RowBox[{"Select", "[", 
+       RowBox[{
+        RowBox[{"ChemSpectrumPoints", "@", "spec"}], ",", " ", "test"}], 
+       "]"}]}], "\n", "\t\t", "]"}]}], ";"}], 
   RowBox[{"(*", " ", 
    RowBox[{
     RowBox[{"This", " ", "might", " ", "be", " ", "expensive"}], "..."}], " ",
@@ -720,24 +721,27 @@ Cell[BoxData[
          RowBox[{"UnitStep", "[", 
           RowBox[{"fr", ",", " ", 
            RowBox[{"fr", "-", "freqMin"}]}], "]"}]}], "\n", "\t\t\t\t\t", 
-        "]"}], "*", "\n", "\t\t\t\t", 
+        "]"}], "*", "\n", "\t\t\t\t\t", 
        RowBox[{"If", "[", 
         RowBox[{
-         RowBox[{"freqMax", "===", "\[Infinity]"}], ",", " ", "\n", 
+         RowBox[{"freqMax", "===", "\[Infinity]"}], ",", " ", "\n", "\t", 
          "\t\t\t\t\t", 
          RowBox[{"ConstantArray", "[", 
           RowBox[{"1", ",", " ", 
-           RowBox[{"Length", "@", "fr"}]}], "]"}], ",", "\n", "\t\t\t\t\t", 
+           RowBox[{"Length", "@", "fr"}]}], "]"}], ",", "\n", "\t", 
+         "\t\t\t\t\t", 
          RowBox[{"UnitStep", "[", 
           RowBox[{"fr", ",", " ", 
-           RowBox[{"freqMax", "-", "fr"}]}], "]"}]}], "\n", "\t\t\t\t\t", 
-        "]"}]}]}], ";", "\n", "\t\t\t", 
+           RowBox[{"freqMax", "-", "fr"}]}], "]"}]}], "\n", "\t", 
+        "\t\t\t\t\t", "]"}]}]}], ";", "\n", "\t\t\t", 
      RowBox[{"fr", "=", 
       RowBox[{"Pick", "[", 
-       RowBox[{"fr", ",", " ", "sp"}], "]"}]}], ";", "\n", "\t\t\t", 
+       RowBox[{"fr", ",", " ", "sp", ",", " ", "1"}], "]"}]}], ";", "\n", 
+     "\t\t\t", 
      RowBox[{"in", "=", 
       RowBox[{"Pick", "[", 
-       RowBox[{"in", ",", " ", "sp"}], "]"}]}], ";", "\n", "\t\t\t", 
+       RowBox[{"in", ",", " ", "sp", ",", " ", "1"}], "]"}]}], ";", "\n", 
+     "\t\t\t", 
      RowBox[{"sp", "=", "\n", "\t\t\t\t", 
       RowBox[{
        RowBox[{"If", "[", 
@@ -764,10 +768,12 @@ Cell[BoxData[
         "]"}]}]}], ";", "\n", "\t\t\t", 
      RowBox[{"fr", "=", 
       RowBox[{"Pick", "[", 
-       RowBox[{"fr", ",", " ", "sp"}], "]"}]}], ";", "\n", "\t\t\t", 
+       RowBox[{"fr", ",", " ", "sp", ",", " ", "1"}], "]"}]}], ";", "\n", 
+     "\t\t\t", 
      RowBox[{"in", "=", 
       RowBox[{"Pick", "[", 
-       RowBox[{"in", ",", " ", "sp"}], "]"}]}], ";", "\n", "\t\t\t", 
+       RowBox[{"in", ",", " ", "sp", ",", " ", "1"}], "]"}]}], ";", "\n", 
+     "\t\t\t", 
      RowBox[{"{", "\n", "\t\t\t\t", 
       RowBox[{"fr", ",", "\n", "\t\t\t\t", "in"}], "\n", "\t\t\t\t", 
       "}"}]}]}], "\n", "\t\t", 
@@ -788,10 +794,10 @@ Cell[BoxData[
       RowBox[{
        RowBox[{"-", "\[Infinity]"}], ",", " ", "\[Infinity]"}], "}"}]}]}], 
    "\n", "\t", "]"}], ":=", "\n", "\t", 
-  RowBox[{"ChemSpectrumTransform", "[", 
+  RowBox[{"ChemSpectrumTransform", "[", "\n", "\t\t", 
    RowBox[{"spec", ",", " ", "\n", "\t\t", 
     RowBox[{
-     RowBox[{"chemSpectrumWindow", "[", 
+     RowBox[{"chemSpectrumWindow", "[", "\n", "\t\t\t", 
       RowBox[{"#", ",", " ", "\n", "\t\t\t", 
        RowBox[{"ChemSpectrumTrueFrequency", "[", 
         RowBox[{"spec", ",", " ", "f"}], "]"}], ",", " ", "\n", "\t\t\t", 
@@ -800,7 +806,7 @@ Cell[BoxData[
      "&"}]}], "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"ea6bd3f5-21e4-4632-a748-2009c9e75e6e"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 

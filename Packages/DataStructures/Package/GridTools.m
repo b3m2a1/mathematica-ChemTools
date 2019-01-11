@@ -45,14 +45,23 @@ GridPoints::usage=
   "Flattens down to the coordiante points";
 GridTransform::usage=
   "Applies a transformation to the coordinates points, maintaining ordering";
-GridSort::usage=
-  "";
 GridTranspose::usage=
   "Takes a transpose of coordinates in the grid";
 GridPermute::usage=
   "Permutes coordinates in the grid";
 GridSort::usage=
   "Sorts a set of coordinates";
+GridSubgrids::usage=
+  "Pulls all subgrids out of the grid";
+
+
+(* ::Subsubsection::Closed:: *)
+(*Misc*)
+
+
+
+GridIndexFromStrides::usage="Might be in the wrong place...";
+GridStridesToIndex::usage="Might be in the wrong place...";
 
 
 (* ::Subsubsection::Closed:: *)
@@ -378,6 +387,116 @@ GridSort[g_, fn___]:=
     g,
     GridSort[#, fn]&
     ];
+
+
+(* ::Subsubsection::Closed:: *)
+(*GridSubgrids*)
+
+
+
+(* ::Text:: *)
+(*
+	This is probably the wrong name but we\[CloseCurlyQuote]ll roll with it for now...
+*)
+
+
+
+GridSubgrids[grid_List]:=
+  Module[{dim=GridDimension[grid]},
+    Map[
+      Part[
+        grid,
+        Sequence@@
+          Join[
+            ConstantArray[1, #-1],
+            {All},
+            ConstantArray[1, dim-#],
+            {#}
+            ]
+        ]&,
+      Range[dim]
+      ]
+    ];
+GridSubgrids[grid_]:=
+  GridSubgrids[Normal@grid]
+
+
+(* ::Subsubsection::Closed:: *)
+(*GridProduct*)
+
+
+
+(* ::Text:: *)
+(*
+	How exactly this should be done isn\[CloseCurlyQuote]t entirely clear... We want the Cartesian product of all of the passed grids but the dimension of each passed grid is unspecified...
+	One way to handle this would be do decompose each grid into its subgrids and Cartesian product over those... but some of the passed grids might not be product grids to start out with...
+	We\[CloseCurlyQuote]ll start out by trying a Map at the deepest nesting level of an Outer product grid, recursing until we have the deepest grid nesting level...?
+	No need--it\[CloseCurlyQuote]s already handled by Outer
+*)
+
+
+
+GridProduct[grids__List]:=
+  Outer[Join, 
+    grids,
+    Sequence@@
+    Map[Depth[#]-2&, {grids}]
+    ];
+GridProduct[grids__CoordinateGridObject]:=
+  GridProduct@@
+    Map[#["Grid"]&, grids]
+
+
+(* ::Subsection:: *)
+(*Misc*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*GridIndexFromStrides*)
+
+
+
+GridIndexFromStrides[strides:{__Integer}, inds_]:=
+  Module[
+    {
+      accstr,
+      stride=strides,
+      ind=inds-1,
+      moddable,
+      modres
+      },
+    accstr=
+      N@
+        Append[
+          Reverse@FoldList[Times,strides[[-1;;2;;-1]]],
+          1
+          ];
+    moddable=If[ListQ@inds,Map[ind/#&, accstr], ind/accstr];
+    modres=1+Mod[Floor[moddable], stride];
+    If[ListQ@inds, Transpose, Identity]@modres
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*GridStridesToIndex*)
+
+
+
+GridStridesToIndex[strides:{__Integer}, inds_]:=
+  Module[
+    {
+      accstr,
+      stride=strides,
+      ind=inds-1
+      },
+    accstr=
+      Append[
+        Reverse@FoldList[Times, strides[[-1;;2;;-1]]],
+        1
+        ];
+    ind.accstr+1
+    ]
 
 
 (* ::Subsection:: *)

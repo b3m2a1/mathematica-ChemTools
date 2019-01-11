@@ -379,12 +379,12 @@ chemSpectrumWindow[
           ConstantArray[1, Length@fr],
           UnitStep[fr, fr-freqMin]
           ]*
-        If[freqMax===\[Infinity], 
-          ConstantArray[1, Length@fr],
-          UnitStep[fr, freqMax-fr]
-          ];
-      fr=Pick[fr, sp];
-      in=Pick[in, sp];
+          If[freqMax===\[Infinity], 
+            ConstantArray[1, Length@fr],
+            UnitStep[fr, freqMax-fr]
+            ];
+      fr=Pick[fr, sp, 1];
+      in=Pick[in, sp, 1];
       sp=
         If[intMin===-\[Infinity], 
           ConstantArray[1, Length@in],
@@ -394,8 +394,8 @@ chemSpectrumWindow[
           ConstantArray[1, Length@in],
           UnitStep[in, intMax-in]
           ];
-      fr=Pick[fr, sp];
-      in=Pick[in, sp];
+      fr=Pick[fr, sp, 1];
+      in=Pick[in, sp, 1];
       {
         fr,
         in
@@ -407,8 +407,10 @@ ChemSpectrumWindow[spec_,
   f:{_, _}, 
   i:{_, _}:{-\[Infinity], \[Infinity]}
   ]:=
-  ChemSpectrumTransform[spec, 
-    chemSpectrumWindow[#, 
+  ChemSpectrumTransform[
+    spec, 
+    chemSpectrumWindow[
+      #, 
       ChemSpectrumTrueFrequency[spec, f], 
       ChemSpectrumTrueIntensity[spec, i]
       ]&

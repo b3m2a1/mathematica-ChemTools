@@ -1,1 +1,1 @@
-Get["ChemTools`ChemTools`"]; 
+Get@FileNameJoin@{Nest[DirectoryName, $InputFileName, 2], "ChemTools.wl"}

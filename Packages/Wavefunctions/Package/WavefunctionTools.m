@@ -32,8 +32,12 @@ WFKeyPart::usage=
 
 
 
-ChemSeparableWavefunctions::usage=
+SelfConsistentWavefunctions::usage=
   "Function for doing 1D SCF averaging of a potential with a DVR";
+
+
+WFEigensystem::usage=
+  "Generates wavefunctions from a Hamiltonian in a smart way";
 
 
 (* ::Subsubsection::Closed:: *)
@@ -56,6 +60,8 @@ WFOperatorMatrix::usage=
   "Operator matrix over a normalized, discretized set of wavefunctions";
 WFOperatorMatrixElements::usage=
   "Operator matrix elements over a normalized, discretized set of wavefunctions";
+WFOverlap::usage=
+  "Takes the overlap between two sets of wavefunctions";
 
 
 (* ::Subsubsection::Closed:: *)
@@ -64,6 +70,7 @@ WFOperatorMatrixElements::usage=
 
 
 WFNormal::usage="";
+WFLength::usage="";
 
 
 Begin["`Private`"];
@@ -104,10 +111,17 @@ constructWavefunctionData[erg_, wf_, grid_]:=
   Module[
     {
       engs=Developer`ToPackedArray@N[erg],
-      wfns=Developer`ToPackedArray@N[wf],
+      wfns=
+        If[!GridFunctionObjectQ@wf[[1]],
+          Developer`ToPackedArray@N[wf],
+          wf
+          ],
       gr=CoordinateGridObject[grid]
       },
-    {engs, GridFunctionObject[gr, #]&/@wfns}
+    If[!GridFunctionObjectQ@wfns[[1]],
+      wfns=GridFunctionObject[gr, #]&/@wfns
+      ];
+    {engs, wfns}
     ]
 
 
@@ -116,6 +130,7 @@ constructWavefunctionData[erg_, wf_, grid_]:=
 
 
 
+ConstructWavefunctions//Clear;
 ConstructWavefunctions[
   {
     energies_,
@@ -135,6 +150,33 @@ ConstructWavefunctions[
       <|$Failed->True|> (* requires Association return to throw the error *)
       ]
     ];
+ConstructWavefunctions[
+  "SCF",
+  args___
+  ]:=
+  Module[
+    {res, energies, wfns, grid},
+    res=Flatten@{SelfConsistentWavefunctions[args]};
+    If[!MatchQ[res, {__Association}],
+      PackageRaiseException[
+        Automatic,
+        "Failed to generate valid SCF wavefunctions"
+        ],
+      energies=
+        Map[Plus@@#Energies&, res];
+      wfns=
+        Map[GFKroneckerProduct@@#Wavefunctions&, res];
+      grid=
+        wfns[[1]]["Grid"]; 
+      ConstructWavefunctions[
+        {
+          energies,
+          wfns
+          },
+        grid
+        ]
+      ]
+    ];
 ConstructWavefunctions[a_Association]:=
   a;
 
@@ -150,6 +192,20 @@ WFNormal[wfns_]:=
     Flatten@#["Values"]&/@wfns["Wavefunctions"]//Developer`ToPackedArray,
     wfns["Wavefunctions"][[1]]["Grid"]//Normal
     }
+
+
+(* ::Subsection:: *)
+(*Mindless*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*WFLength*)
+
+
+
+WFLength[wf_]:=
+  Length@wf["Wavefunctions"];
 
 
 (* ::Subsection:: *)
@@ -475,7 +531,8 @@ operatorMatrix[exf_, grid_, wfnsL_, wfnsR_, assumeRealSym_, assumeHerm_, mult_]:
         {i, Length@wfnsL},
         {j, Length@wfnsR}
         ]
-    ]
+    ];
+  Developer`ToPackedArray@mat
   ]
 
 
@@ -538,7 +595,7 @@ iWFOperatorMatrix[
   evs_,
   asrs_,
   ash_,
-  mul_,
+  mult_,
   ops:OptionsPattern[]
   ]:=
   Module[
@@ -548,7 +605,8 @@ iWFOperatorMatrix[
       sels,
       mat,
       exf,
-      mo
+      mo,
+      mul=mult
       },
       If[!ListQ@mul, mul=ConstantArray[mul, Length@exfns]];
       Table[
@@ -586,7 +644,7 @@ iWFOperatorMatrixElements[
   evs_,
   ash_,
   asrs_,
-  mul_,
+  mult_,
   ops:OptionsPattern[]
   ]:=
   Module[
@@ -595,11 +653,10 @@ iWFOperatorMatrixElements[
       els,
       sels,
       mat,
-      exf,
-      mo,
       wfL,
       wfR,
-      res
+      res,
+      mul=mult
       },
     {sels, exfns}=Transpose[List@@@exfns];
     (* get a list of LHS wavefunctions and RHS wavefunctions for each set of expectation value functions *)
@@ -608,7 +665,7 @@ iWFOperatorMatrixElements[
         Map[
           Part[wfns, #]&,
           Replace[
-            Replace[#, k:{Except[_List], _}:>{k}][[All, 1]], 
+            Replace[#, k:{Except[_List], _}:>{k}][[All, 1]],
             i_Integer:>{i},
             1
             ]
@@ -620,7 +677,7 @@ iWFOperatorMatrixElements[
         Map[
           Part[wfns, #]&,
           Replace[
-            Replace[#, k:{Except[_List], _}:>{k}][[All, 2]], 
+            Replace[#, k:{Except[_List], _}:>{k}][[All, 2]],
             i_Integer:>{i},
             1
             ]
@@ -631,18 +688,37 @@ iWFOperatorMatrixElements[
     (* Thread over the right and left wavefunctions, the operators, and the multiplicativity *)
     res=
       MapThread[
-        With[{l=#, r=#2, m=If[ListQ@#3&&!ListQ@#4, ConstantArray[#4, Length@#3], #4]},
-          (* Thread over the operators and multiplicativity *)
-          If[Length@#3==1, First, Identity]@
+        With[
+          {
+            exfn=#3,
+            m=If[ListQ@#3&&!ListQ@#4, ConstantArray[#4, Length@#3], #4]
+            },
+          (* need another thread in case multiple specs were provided for a single function *)
+          If[Length@#==1, First, Identity]@
             MapThread[
-              If[Length@wfL>1||Length@wfR>1,
-                operatorMatrix[exf, grid, wfL, wfR, asrs, ash, mo],
-                expectationValue[exf, grid, wfL[[1]], wfR[[1]], mo]
-                ],
-              {
-                #3,
-                m
-                }
+              With[{l=#, r=#2},
+                (* Thread over the operators and multiplicativity *)
+                If[!ListQ@exfn,
+                  If[Length@l>1||Length@r>1,
+                    operatorMatrix[exfn, grid, l, r, asrs, ash, m],
+                    expectationValue[exfn, grid, l[[1]], r[[1]], m]
+                    ],
+                  If[Length@exfn==1, First, Identity]@
+                    MapThread[
+                      With[{exf=#, mo=#2},
+                        If[Length@l>1||Length@r>1,
+                          operatorMatrix[exf, grid, l, r, asrs, ash, mo],
+                          expectationValue[exf, grid, l[[1]], r[[1]], mo]
+                          ]
+                        ]&,
+                      {
+                        exfn,
+                        m
+                        }
+                      ]
+                  ]
+                ]&,
+              {#, #2}
               ]
           ]&,
         {
@@ -665,13 +741,574 @@ WFOperatorMatrixElements[
   ops:OptionsPattern[]
   ]:=
   iWFOperatorMatrixElements[
-    {c["Grid"]["Points"], Flatten@#["Values"]&/@c["Wavefunctions"]},
+    {
+      c["Grid"]["Points"], 
+      Flatten@#["Values"]&/@c["Wavefunctions"]
+      },
     evs,
     TrueQ@OptionValue["AssumeSymmetric"],
     TrueQ@OptionValue["AssumeHermitian"],
     OptionValue["MultiplicativeOperator"],
     ops
     ];
+
+
+(* ::Subsection:: *)
+(*Overlaps*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*getWFOverlapVals*)
+
+
+
+getWFOverlapVals[wfns1_, wfns2_]:=
+  Module[
+    {
+      g1=wfns1["Wavefunctions"],
+      g2=wfns2["Wavefunctions"],
+      grid1,
+      grid2,
+      vals1,
+      vals2
+      },
+    grid1=g1[[1]]["Grid"];
+    grid2=g2[[1]]["Grid"];
+    If[grid1=!=grid2,
+      PackageRaiseException[
+        Automatic,
+        "Wavefunction overlap can only be computed on the same grid"
+        ]
+      ];
+    Map[Flatten[#["Values"]]&]/@{g1, g2}
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*WFOverlapMatrix*)
+
+
+
+WFOverlapMatrix[wfns1_, wfns2_]:=
+  PackageExceptionBlock["WFOverlapMatrix"]@
+    Module[
+      {
+        vals1,
+        vals2
+        },
+      {vals1, vals2}=getWFOverlapVals[wfns1, wfns2];
+      vals1.Transpose[vals2]
+      ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*WFOverlapElements*)
+
+
+
+WFOverlapElements[
+  wfns1_, 
+  wfns2_,
+  pairs:{{_Integer, _Integer}..}
+  ]:=
+  PackageExceptionBlock["WFOverlapMatrix"]@
+    Module[
+      {
+        vals1,
+        vals2,
+        pt=Transpose@pairs
+        },
+      If[Max@pt[[1]]>WFLength[wfns1]||
+            Max@pt[[2]]>WFLength[wfns2]||
+            Min@pt<=0,
+        PackageRaiseExceptin[Automatic,
+          "Pair specification out of bounds for wavefunctions"
+          ]
+        ];
+      {vals1, vals2}=getWFOverlapVals[wfns1, wfns2];
+      vals1=vals1[[pt[[1]]]];
+      vals2=vals2[[pt[[2]]]];
+      MapThread[Dot, {vals1, vals2}]
+      ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*WFOverlap*)
+
+
+
+WFOverlap[wfns1_, wfns2_, Optional[All, All]]:=
+  WFOverlapMatrix[wfns1, wfns2];
+WFOverlap[wfns1_, wfns2_, pairs:{{_Integer, _Integer}..}]:=
+  WFOverlapMatrix[wfns1, wfns2, pairs];
+
+
+(* ::Subsection:: *)
+(*SCF*)
+
+
+
+catchSCFException=PackageExceptionBlock["SCFWavefunctions"];
+
+
+(* ::Subsubsection::Closed:: *)
+(*constructSCFWfn*)
+
+
+
+constructSCFWfn//Clear
+constructSCFWfn[
+  ctor_,
+  grid_,
+  pot_,
+  n_
+  ]:=
+  Module[
+    {
+      res=ctor[grid, pot, n],
+      energy=I
+      },
+    If[VectorQ[res, Internal`RealValuedNumberQ],
+      res=GridFunctionObject[grid, res]
+      ];
+    If[ChemDVRResultsObjectQ@res,
+      res=res["Wavefunctions"]
+      ];
+    If[WavefunctionsObjectQ@res,
+      energy=res["Energies"];
+      res=res["Wavefunctions"];
+      If[Length@res==1,
+        res=res[[1]];
+        energy=energy[[1]];,
+        res=res[[n]];
+        energy=energy[[n]];
+        ]
+      ];
+    If[!GridFunctionObjectQ@res||!NumericQ@energy,
+      PackageRaiseException[
+        Automatic,
+        "Constructed wavefunction `` is not a valid wavefunction",
+        Short@res
+        ]
+      ];
+    {energy, res}
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*scfAveragePot*)
+
+
+
+(* ::Text:: *)
+(*
+	This one might be kinda tricky... Need to average over every other DOF somehow to get a new pot...
+	In general this is just a Fold-ed Dot operation but can we do this cleaner in n-dimensions....?
+
+	Basically we reduce every element in every list by a dot operation, but we probably need to permute first...
+*)
+
+
+
+scfAveragePot//Clear
+scfAveragePot[potVals_, wfns:{__List}]:=
+  Fold[
+    With[{vec=#2},
+      Map[Dot[#, vec]&, #]
+      ]&,
+    potVals,
+    wfns
+    ];
+scfAveragePot[potVals_, wfns:{__List}, i_]:=
+  scfAveragePot[
+    Transpose[potVals, 
+      (* 
+			I'm not sure if this is justified (or how to justify it)
+			I would have thought we wanted to have the relevant degree of freedom be the last element in the thing
+			That way the wfns and the Dimensions of the potVals would align, 
+				i.e. Dot wfn_1 into the potVals with matrix arranged so that dimension 1 is at the outer most level.
+			Apparently not though.  Apparently the excluded dimension should be at the outer most level...?
+			*)
+      Insert[Range[2, Length[wfns]], 1, i]
+      (*Insert[Range[1, Length[wfns]-1], Length[wfns], i]*)
+      ],
+    Delete[wfns, i]
+    ];
+scfAveragePots[potVals_, wfns:{__List}]:=
+  Table[
+    scfAveragePot[potVals, wfns, i],
+    {i, Length@wfns}
+    ];
+
+
+(* ::Subsubsection::Closed:: *)
+(*scfOverlapFactor*)
+
+
+
+scfOverlapFactor//Clear;
+scfOverlapFactor[
+  old:{__GridFunctionObject}, 
+  new:{__GridFunctionObject}
+  ]:=
+  Times@@
+    MapThread[
+      Flatten[#["Values"]].Flatten[#2["Values"]]&,
+      {
+        old,
+        new
+        }
+      ];
+scfOverlapFactor[___]:=0;
+
+
+(* ::Subsubsection::Closed:: *)
+(*scfWfnsFromPots*)
+
+
+
+scfWfnsFromPots[wfConstructors_, grids_, pots_, state_]:=
+  MapThread[
+    constructSCFWfn,
+    {
+      wfConstructors,
+      grids,
+      pots,
+      state
+      }
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*initSCF*)
+
+
+
+initSCF//Clear
+initSCF[
+  wfConstructor_,
+  potGrid_,
+  grids_,
+  state_
+  ]:=
+  Module[
+    {
+      minPos,
+      potSlices
+      },
+    minPos=
+      FirstPosition[potGrid, Min@potGrid];
+      (* Might be able to do this faster...? Somewhat annoying that Min won't also return the pos but ah well *)
+    potSlices=
+      potGrid[[Sequence@@ReplacePart[minPos, #->All]]]&/@
+        Range[Length@grids];
+    scfWfnsFromPots[
+      wfConstructor,
+      grids,
+      potSlices,
+      state
+      ]
+    ];
+initSCF[Automatic, bleh___]:=
+  initSCF[bleh];
+
+
+(* ::Subsubsection::Closed:: *)
+(*normalizeConstructors*)
+
+
+
+(* ::Text:: *)
+(*
+	It would be nice to provide the grid directly and potential to avoid recomputation but this might be unfeasible given the different type of grids the DVR might require.
+	Likely we\[CloseCurlyQuote]ll have to simply provide the Points, Range, and some Interpolation over the potential and provided grid...
+	This can be optimized if the KE will not depend on the grid at all... If that\[CloseCurlyQuote]s the case we\[CloseCurlyQuote]ll be able to just change up the potential we add to the DVR KE. Actually since the number of points and grid elements shouldn\[CloseCurlyQuote]t change this can be done cleaner...
+*)
+
+
+
+normalizeConstructors//Clear
+normalizeConstructors[{dvr_ChemDVRObject, ops:OptionsPattern[]}]:=
+  Module[
+    {
+      opts=Association[ops],
+      pointNum,
+      keMat=None,
+      points,
+      range,
+      grid,
+      pot,
+      res
+      },
+    Function[
+      {
+        grid1D,
+        potential,
+        n
+        },
+      pot=
+        Interpolation[Transpose@{grid1D, potential}];
+      If[keMat===None,
+        (* 
+				we set it up so that we never recompute the KE or anything...
+				the overhead might still get us so it's probably worth optimizing further after the first call but for now we
+				can roll with this
+			*)
+        points={Length@grid1D};
+        range={MinMax@grid1D};
+        res=
+          dvr[
+            "Points"->points,
+            "Range"->range,
+            "PotentialFunction"->pot,
+            "WavefunctionSelection"->{n}
+            ];
+        keMat=res["KineticEnergy"];
+        grid=res["Grid"];
+        res,
+        dvr[
+          "Points"->points,
+          "Range"->range,
+          "Grid"->grid,
+          "KineticEnergy"->keMat,
+          "PotentialFunction"->pot,
+          "WavefunctionSelection"->{n}
+          ]
+        ]
+      ]
+    ];
+normalizeConstructors[dvr_ChemDVRObject]:=
+  normalizeConstructors[{dvr, {(* at some point this will become options for real... *)}}];
+normalizeConstructors[{s_String, ops:OptionsPattern[]}]:=
+  With[{res=ChemDVRObject[s, ops]},
+    If[!ChemDVRObjectQ@res,
+      PackageRaiseException[
+        Automatic,
+        "Don't know how to handle wavefunction constructor ``",
+        s
+        ]
+      ];
+    res
+    ];
+normalizeConstructors[s_String]:=
+  normalizeConstructors[{s, {}}];
+normalizeConstructors[e_]:=
+  e;
+
+
+(* ::Subsubsection::Closed:: *)
+(*iSCFWavefunction*)
+
+
+
+(* ::Text:: *)
+(*
+	Wavefunction constructors need to be same length as pot.
+	Need to perform some type of potential check to make sure that it\[CloseCurlyQuote]s a valid potential that can truly be used to generate wavefunctions....?
+*)
+
+
+
+iSCFWavefunction[
+  wfConstructors_,
+  pot_GridFunctionObject,
+  stateVec:{___Integer},
+  init:_WavefunctionsObject|_GridFunctionObject|Automatic,
+  maxIts_Integer,
+  converge:_Real?(0<#<=1&)
+  ]:=
+  Catch@
+    Module[
+      {
+        grid,
+        subGrids,
+        potGrid,
+        dim,
+        pots,
+        iter=0,
+        opro,
+        vecs,
+        old,
+        new=None,
+        states=stateVec,
+        constructors=wfConstructors,
+        engs
+        },
+      grid=Normal@pot["Grid"];
+      potGrid=Normal@pot["Values"];
+      subGrids=GridSubgrids@pot["Grid"];
+      dim=Length@subGrids;
+      Which[
+        !ListQ@states,
+          states=ConstantArray[1, dim],
+        Length@states<dim,
+          states=PadRight[states, dim, 1];
+        ];
+      Which[
+        !ListQ@constructors,
+          constructors=ConstantArray[constructors, dim],
+        Length@constructors<dim,
+          PackageRaiseException[
+            Automatic,
+            "Too few wavefunction constructors (``) for SCF dimension (``)",
+            Length@constructors,
+            dim
+            ]
+        ];
+      constructors=normalizeConstructors/@constructors;
+      old=initSCF[init, constructors, potGrid, subGrids, states];
+      engs=old[[All, 1]];
+      old=old[[All, 2]];
+      vecs=(Flatten@#["Values"]&/@old)^2;
+      pots=scfAveragePots[potGrid, vecs];
+      While[(opro=scfOverlapFactor[old, new])<converge&&iter<maxIts,
+        If[new=!=None, 
+          old=new,
+          new=old;
+          ];
+        Do[
+          (* 
+					Probably right...? 
+					For the first loop we compute one excessive wfn but everything's clean beyond that
+				*)
+          pots[[i]]=
+            scfAveragePot[potGrid, vecs, i];
+          new[[i]]=
+            constructSCFWfn[
+              constructors[[i]],
+              subGrids[[i]],
+              pots[[i]],
+              states[[i]]
+              ];
+          engs[[i]]=new[[i, 1]];
+          new[[i]]=new[[i, 2]];
+          vecs[[i]]=(Flatten@new[[i]]["Values"])^2,
+          {i, Length@pots}
+          ];
+        iter++
+        ];
+      <|
+        "Energies"->engs,
+        "Wavefunctions"->If[!ListQ@new, old, new],
+        "OverlapProduct"->opro,
+        "Potentials":>
+          MapThread[GridFunctionObject, {subGrids, pots}],
+        "Iterations"->iter
+        |>
+      ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*iSelfConsistentWavefunctions*)
+
+
+
+Options[iSelfConsistentWavefunctions]=
+  {
+    "StateVectors"->Automatic,
+    "InitialWavefunctions"->Automatic,
+    "ConvergenceGoal"->Automatic,
+    "MaxIterations"->Automatic
+    };
+iSelfConsistentWavefunctions[
+  wfConstructors_,
+  pot_GridFunctionObject,
+  ops:OptionsPattern[]
+  ]:=
+  catchSCFException@
+    Module[
+      {
+        stateVec,
+        init,
+        maxIts,
+        converge,
+        res
+        },
+      stateVec=OptionValue["StateVectors"];
+      init=OptionValue["InitialWavefunctions"];
+      converge=OptionValue["ConvergenceGoal"];
+      maxIts=OptionValue["MaxIterations"];
+      If[!TrueQ[0<converge<1],
+        converge=.99999
+        ];
+      If[!(IntegerQ[maxIts]&&maxIts>=0),
+        maxIts=15
+        ];
+      res=
+        Which[
+          stateVec===Automatic,
+            stateVec={};
+            iSCFWavefunction[
+              wfConstructors,
+              pot,
+              stateVec,
+              init,
+              maxIts,
+              converge
+              ],
+          MatrixQ[stateVec, IntegerQ],
+            iSCFWavefunction[
+              wfConstructors,
+              pot,
+              #,
+              init,
+              maxIts,
+              converge
+              ]&/@stateVec,
+          True,
+            iSCFWavefunction[
+              wfConstructors,
+              pot,
+              stateVec,
+              init,
+              maxIts,
+              converge
+              ]
+          ];
+        If[!MatchQ[res, _Association|{__Association}],
+          PackageRaiseException[
+            Automatic,
+            "Failed to generate SCF wavefunctions, got ``"(*"...and that's all I have to say"*),
+            Short@res
+            ]
+          ];
+        res
+      ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*SelfConsistentWavefunctions*)
+
+
+
+Options[SelfConsistentWavefunctions]=
+  Options[iSelfConsistentWavefunctions];
+SelfConsistentWavefunctions[
+  wfConstructors_,
+  pot_GridFunctionObject,
+  ops:OptionsPattern[]
+  ]:=
+  iSelfConsistentWavefunctions[
+    wfConstructors,
+    pot,
+    ops
+    ];
+SelfConsistentWavefunctions[
+  constructor_,
+  grid_,
+  potential_List?VectorQ,
+  ops:OptionsPattern[]
+  ]:=
+  catchSCFException@
+    With[{pot=GridFunctionObject[grid, potential]},
+      If[!GridFunctionObjectQ@pot,
+        PackageRaiseException[
+          Automatic,
+          "Potential could not be constructed from grid and values passed"
+          ];
+        ]
+      ]
 
 
 End[];

@@ -65,6 +65,16 @@ GFChop::usage="";
 
 
 
+GFCombine::usage=
+  "Combines GridFunctions by value";
+GFAdd::usage=
+  "Raw Plus over GridFunctions";
+GFMultiply::usage=
+  "Raw Times over GridFunctions";
+GFSubtract::usage="";
+GFDivide::usage="";
+
+
 GFDerivative::usage=
   "Finite difference derivatives";
 GFIntegrate::usage=
@@ -91,6 +101,8 @@ GFInterpolation::usage=
 GFMinMax::usage=
   "";
 GFDimension::usage=
+  "";
+GFLength::usage=
   "";
 
 
@@ -498,6 +510,8 @@ GFMinMax[f_, a___]:=
   MinMax[f["Values"], a];
 GFDimension[f_]:=
   GridDimension[f["Grid"]];
+GFLength[f_]:=
+  GridLength@f["Grid"]
 
 
 (* ::Subsection:: *)
@@ -525,6 +539,54 @@ GFKroneckerProduct[g_GridFunctionObject, g2__GridFunctionObject]:=
     vals=ArrayReshape[kp, targetDimension];
     GridFunctionObject[grid, vals]
     ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*GFCombine*)
+
+
+
+GFCombine[combiner_, f_GridFunctionObject, s__GridFunctionObject]:=
+  Module[{vals=#["Values"]&/@{f, s}},
+    vals=combiner@vals;
+    GFModify[f, Identity, vals&](* surely this is not the best way to do this... *)
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*GFAdd*)
+
+
+
+GFAdd[f_GridFunctionObject, s__GridFunctionObject]:=
+  GFCombine[Apply[Plus], f, s];
+
+
+(* ::Subsubsection::Closed:: *)
+(*GFSubtract*)
+
+
+
+GFSubtract[f_GridFunctionObject, s__GridFunctionObject]:=
+  GFCombine[Apply[Subtract], f, s];
+
+
+(* ::Subsubsection::Closed:: *)
+(*GFDivide*)
+
+
+
+GFMultiply[f_GridFunctionObject, s__GridFunctionObject]:=
+  GFCombine[Apply[Divide], f, s];
+
+
+(* ::Subsubsection::Closed:: *)
+(*GFMultiply*)
+
+
+
+GFMultiply[f_GridFunctionObject, s__GridFunctionObject]:=
+  GFCombine[Apply[Times], f, s];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -766,6 +828,38 @@ iGFAverage[{grid_, values_}, dist_, n_]:=
 
 
 (*GFAverage[gf_, dist_]:=*)
+
+
+(* ::Subsubsection::Closed:: *)
+(*GFIntegrate*)
+
+
+
+(* ::Text:: *)
+(*
+	One-dimensional integration via Trapezoid Rule...in n-dim unspecified. 
+	Asked about here: https://mathematica.stackexchange.com/questions/189007/trapezoid-rule-esque-integration-with-unevenly-spaced-n-d-grid
+*)
+
+
+
+GFIntegrate[
+  grid_List?(VectorQ[#, Internal`RealValuedNumericQ]&), 
+  f_List?(VectorQ[#, Internal`RealValuedNumericQ]&)
+  ]:=
+  Module[
+    {
+      diffs=Differences[grid],
+      means=MovingAverage[f, 2]
+      },
+    diffs.means
+    ];
+GFIntegrate[
+  grid_List?(VectorQ[#, Internal`RealValuedNumericQ]&), 
+  f_List?(VectorQ[#, Internal`RealValuedNumericQ]&),
+  vec_List?(VectorQ[#, Internal`RealValuedNumericQ]&)
+  ]:=
+  GFIntegrate[grid, f*vec];
 
 
 End[];

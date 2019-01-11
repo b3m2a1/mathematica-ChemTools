@@ -84,7 +84,9 @@ chemSpectrumPlotDiscrete[
       data,
       FilterRules[
         {
-          ops
+          ops,
+          PlotRange->All,
+          PlotStyle->Red
           },
         Options@ListLinePlot
         ]
