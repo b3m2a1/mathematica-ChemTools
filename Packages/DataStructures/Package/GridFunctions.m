@@ -39,13 +39,16 @@ GFPoints::usage=
 GFArray::usage=
   "Creates the normal array";
 GFMap::usage=
-  "Applies a transformation to the coordinates points, maintaining ordering";
+  "Maps a function over the function gridpoints";
+GFApply::usage=
+  "Applies a function to the function values";
 GFSort::usage=
   "";
 GFTranspose::usage=
   "Takes a transpose of coordinates in the grid";
 GFPermute::usage=
   "Permutes coordinates in the grid";
+GFModify::usage="";
 
 
 (* ::Subsubsection::Closed:: *)
@@ -58,6 +61,9 @@ GFShift::usage="";
 GFRescale::usage="";
 GFClip::usage="";
 GFChop::usage="";
+GFJoin::usage="";
+GFGridScale::usage="";
+GFGridShift::usage="";
 
 
 (* ::Subsubsection::Closed:: *)
@@ -202,12 +208,14 @@ ConstructGridFunction[grid_, vals_]:=
       <|$Failed->True|> (* requires Association return to throw the error *)
       ]
     ];
+ConstructGridFunction[GridFunctionObject[g_]?GridFunctionObjectQ]:=
+  g;
 ConstructGridFunction[a_Association]:=
   a; (* should probably just do a quick validation... *)
 
 
 (* ::Subsection:: *)
-(*Meh*)
+(*GFModify*)
 
 
 
@@ -275,6 +283,34 @@ GFKeyPart[c:GridFunctionObject[a_], sel__]:=
 
 
 (* ::Subsubsection::Closed:: *)
+(*GFExtractArrayValues*)
+
+
+
+GFExtractArrayValues[arr_]:=
+  Module[{d=Depth[arr]},
+    Part[d,
+      Sequence@@
+        Append[ConstantArray[All, d-1], -1]
+      ]
+    ];
+
+
+(* ::Subsubsection::Closed:: *)
+(*GFExtractArrayGrid*)
+
+
+
+GFExtractArrayGrid[arr_]:=
+  Module[{d=Depth[arr]},
+    Part[d,
+      Sequence@@
+        Append[ConstantArray[All, d-1], ;;-2]
+      ]
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
 (*GFArray*)
 
 
@@ -321,8 +357,36 @@ GFMap[tf_, {grid_List, vals_List}]:=
   Module[{d=Depth[vals], array=GFArray[grid, vals]},
     Developer`ToPackedArray@N@Map[tf, array, {Depth[vals]-1}]
     ];
-GFTransform[tf_, f_]:=
-  GFTransform[tf, {f["Grid"]["Grid"], f["Values"]}];
+GFMap[tf_, f_]:=
+  Module[
+    {
+      ogg=f["Grid"]["Grid"],
+      ogv=f["Values"],
+      res,
+      g,
+      v
+      },
+    res=GFMap[tf, {ogg, ogv}];
+    Which[
+      Dimensions[res]===Dimensions[ogv],
+        GFModify[f,
+          Identity,
+          res&
+          ],
+      Dimensions[res]===Dimensions[ogg],
+        GFModify[f,
+          GFExtractArrayGrid[res]&,
+          GFExtractArrayValues[res]&
+          ],
+      True,
+        PackageRaiseException[
+          Automatic,
+          "Mapped function returned array of dimension `` but should have dimension ``",
+          Dimensions[res],
+          Dimensions[ogv]
+          ]
+      ]
+    ]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -381,6 +445,19 @@ GFScale[gf_GridFunctionObject, spec:_?NumericQ|{_?NumericQ, _?NumericQ}]:=
 
 
 (* ::Subsubsection::Closed:: *)
+(*GFGridScale*)
+
+
+
+GFGridScale//Clear
+GFGridScale[{grid_, values_}, n_]:=
+  {GridScale[grid, n], values};
+GFGridScale[gf_GridFunctionObject, spec_]:=
+  GridFunctionObject@@
+    GFGridScale[{gf["Grid"], gf["Values"]}, spec];
+
+
+(* ::Subsubsection::Closed:: *)
 (*GFShift*)
 
 
@@ -393,6 +470,19 @@ GFShift[{grid_, values_}, Scaled[i_?NumericQ]]:=
 GFShift[gf_GridFunctionObject, spec:_?NumericQ|Scaled[_?NumericQ]]:=
   GridFunctionObject@@
     GFShift[{gf["Grid"], gf["Values"]}, spec];
+
+
+(* ::Subsubsection::Closed:: *)
+(*GFGridShift*)
+
+
+
+GFGridShift//Clear
+GFGridShift[{grid_, values_}, n_]:=
+  {GridShift[grid, n], values};
+GFGridShift[gf_GridFunctionObject, spec_]:=
+  GridFunctionObject@@
+    GFGridShift[{gf["Grid"], gf["Values"]}, spec];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -497,6 +587,43 @@ GFChop[f_GridFunctionObject, s__]:=
   With[{vs=Threshold[f["Values"], s]},
     GridFunctionObject[f["Grid"], vs]/;ListQ@vs
     ];
+
+
+(* ::Subsubsection::Closed:: *)
+(*GFJoin*)
+
+
+
+GFJoin[a_GridFunctionObject, s__]:=
+  Module[
+    {
+      grids=#["Grid"]&/@{a, s},
+      gridNew,
+      vals,
+      valNew,
+      valDims
+      },
+    gridNew=GridJoin@@grids;
+    If[!CoordinateGridObjectQ@gridNew,
+      gridNew,
+      vals=#["Values"]&/@{a, s};
+      valDims=Dimensions/@vals;
+      If[Length@DeleteDuplicates[Rest/@valDims]>1,
+        PackageRaiseException[
+          Automatic,
+          "Values of dimensions `` cannot be joined",
+          valDims
+          ],
+        valNew=Join@@vals
+        ];
+      GFModify[
+        a,
+        gridNew&,
+        valNew&
+        ],
+      gridNew
+      ]
+    ]
 
 
 (* ::Subsection:: *)

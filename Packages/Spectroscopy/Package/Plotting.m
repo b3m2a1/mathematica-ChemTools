@@ -68,12 +68,20 @@ chemSpectrumPlotDiscrete[
     {
       freqs,
       pts,
+      ints,
       data,
       padding
       },
     freqs=spec["Frequencies"];
-    pts=spec["Points"];
-    padding=Transpose[{freqs, ConstantArray[0., Length@freqs]}];
+    ints=spec["Intensities"];
+    pts=Transpose[{freqs, ints}];
+    padding=
+      Transpose[
+        {
+          freqs, 
+          ConstantArray[Rescale[-10.^-6, {0, 1}, MinMax[ints]], Length@freqs]
+          }
+        ];
     data=
       Riffle[
         Riffle[padding, pts],
@@ -85,7 +93,7 @@ chemSpectrumPlotDiscrete[
       FilterRules[
         {
           ops,
-          PlotRange->All,
+          PlotRange->{All, Threshold@MinMax@ints},
           PlotStyle->Red
           },
         Options@ListLinePlot

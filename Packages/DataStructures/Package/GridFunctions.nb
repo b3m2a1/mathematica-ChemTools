@@ -55,8 +55,11 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{
    RowBox[{"GFMap", "::", "usage"}], "=", "\n", "\t", 
-   "\"\<Applies a transformation to the coordinates points, maintaining \
-ordering\>\""}], ";"}], "\n", 
+   "\"\<Maps a function over the function gridpoints\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFApply", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Applies a function to the function values\>\""}], ";"}], "\n", 
  RowBox[{
   RowBox[{
    RowBox[{"GFSort", "::", "usage"}], "=", "\n", "\t", "\"\<\>\""}], 
@@ -68,7 +71,10 @@ ordering\>\""}], ";"}], "\n",
  RowBox[{
   RowBox[{
    RowBox[{"GFPermute", "::", "usage"}], "=", "\n", "\t", 
-   "\"\<Permutes coordinates in the grid\>\""}], 
+   "\"\<Permutes coordinates in the grid\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFModify", "::", "usage"}], "=", "\"\<\>\""}], 
   ";"}]}], "CodeInput",ExpressionUUID->"d4b2a3d5-b679-424e-a459-eb9b78142f8c"]\
 
 }, Closed]],
@@ -93,7 +99,16 @@ Cell[BoxData[{
    RowBox[{"GFClip", "::", "usage"}], "=", "\"\<\>\""}], ";"}], "\n", 
  RowBox[{
   RowBox[{
-   RowBox[{"GFChop", "::", "usage"}], "=", "\"\<\>\""}], 
+   RowBox[{"GFChop", "::", "usage"}], "=", "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFJoin", "::", "usage"}], "=", "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFGridScale", "::", "usage"}], "=", "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFGridShift", "::", "usage"}], "=", "\"\<\>\""}], 
   ";"}]}], "CodeInput",ExpressionUUID->"c11e51ee-9c80-4d57-8056-dd7859121ad3"]\
 
 }, Closed]],
@@ -186,8 +201,8 @@ Cell[BoxData[{
 Cell[BoxData[
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
-  ";"}]], \
-"InputSection",ExpressionUUID->"eb1d7e10-f3ca-44af-a40a-46e42b1adc0b"],
+  ";"}]], "InputSection",ExpressionUUID->"eb1d7e10-f3ca-44af-a40a-\
+46e42b1adc0b"],
 
 Cell[CellGroupData[{
 
@@ -229,7 +244,7 @@ Cell[BoxData[
       RowBox[{"GridDimensions", "[", "grid", "]"}]}]}]}], "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"94240285-1ea5-479d-b339-11a665096cc1"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -326,7 +341,7 @@ Cell[BoxData[
        "*)"}], "\n", "\t\t\t", "}"}]}]}], "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"fa794344-d66b-4650-ba92-aa142e391584"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -365,6 +380,12 @@ Cell[BoxData[{
     "\n", "\t\t", "]"}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{
+   RowBox[{"ConstructGridFunction", "[", 
+    RowBox[{
+     RowBox[{"GridFunctionObject", "[", "g_", "]"}], "?", 
+     "GridFunctionObjectQ"}], "]"}], ":=", "\n", "\t", "g"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
    RowBox[{
     RowBox[{"ConstructGridFunction", "[", "a_Association", "]"}], ":=", "\n", 
     "\t", "a"}], ";"}], " ", 
@@ -376,12 +397,12 @@ Cell[BoxData[{
    "*)"}]}]}], \
 "CodeInput",ExpressionUUID->"afff2841-224c-40ae-a75d-28dd471377f2"]
 }, Open  ]]
-}, Closed]]
-}, Closed]],
+}, Open  ]]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
-Cell["\[LeftCeiling]Meh\[RightFloor]", "CodeSubsection",
+Cell["\[LeftCeiling]GFModify\[RightFloor]", "CodeSubsection",
  Evaluatable->True,ExpressionUUID->"74d78eb1-4111-42ca-8a09-5f36ad818208"],
 
 Cell[BoxData[
@@ -506,6 +527,60 @@ Cell["\[LeftCeiling]Structural\[RightFloor]", "CodeSubsection",
 
 Cell[CellGroupData[{
 
+Cell["\[LeftCeiling]GFExtractArrayValues\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"76ee4dc2-02c8-44af-bbea-19224678932d"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFExtractArrayValues", "[", "arr_", "]"}], ":=", "\n", "\t", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"d", "=", 
+       RowBox[{"Depth", "[", "arr", "]"}]}], "}"}], ",", "\n", "\t\t", 
+     RowBox[{"Part", "[", 
+      RowBox[{"d", ",", "\n", "\t\t\t", 
+       RowBox[{"Sequence", "@@", "\n", "\t\t\t\t", 
+        RowBox[{"Append", "[", 
+         RowBox[{
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"All", ",", " ", 
+            RowBox[{"d", "-", "1"}]}], "]"}], ",", " ", 
+          RowBox[{"-", "1"}]}], "]"}]}]}], "\n", "\t\t\t", "]"}]}], "\n", 
+    "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"5c83045c-391a-490b-b635-7d6bc21b058c"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFExtractArrayGrid\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"bfcc41fd-458c-4683-b7b5-056599c932eb"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GFExtractArrayGrid", "[", "arr_", "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"d", "=", 
+      RowBox[{"Depth", "[", "arr", "]"}]}], "}"}], ",", "\n", "\t\t", 
+    RowBox[{"Part", "[", 
+     RowBox[{"d", ",", "\n", "\t\t\t", 
+      RowBox[{"Sequence", "@@", "\n", "\t\t\t\t", 
+       RowBox[{"Append", "[", 
+        RowBox[{
+         RowBox[{"ConstantArray", "[", 
+          RowBox[{"All", ",", " ", 
+           RowBox[{"d", "-", "1"}]}], "]"}], ",", " ", 
+         RowBox[{";;", 
+          RowBox[{"-", "2"}]}]}], "]"}]}]}], "\n", "\t\t\t", "]"}]}], "\n", 
+   "\t\t", "]"}]}]], \
+"CodeInput",ExpressionUUID->"e99274eb-ce70-4e7e-a155-41fed7dd2431"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
 Cell["\[LeftCeiling]GFArray\[RightFloor]", "CodeSubsubsection",
  Evaluatable->True,ExpressionUUID->"35621307-74ec-4892-8be5-c883545aa1b2"],
 
@@ -600,7 +675,7 @@ Cell[BoxData[{
 Cell[CellGroupData[{
 
 Cell["\[LeftCeiling]GFMap\[RightFloor]", "CodeSubsubsection",
- Evaluatable->True,ExpressionUUID->"a30d813e-7eec-4694-be85-5e22ea05f66f"],
+ Evaluatable->True,ExpressionUUID->"075169e8-2943-450a-b10b-b5b3fc4c67b5"],
 
 Cell[BoxData[{
  RowBox[{
@@ -629,19 +704,60 @@ Cell[BoxData[{
            RowBox[{"Depth", "[", "vals", "]"}], "-", "1"}], "}"}]}], 
         "]"}]}]}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
  RowBox[{
-  RowBox[{
-   RowBox[{"GFTransform", "[", 
-    RowBox[{"tf_", ",", " ", "f_"}], "]"}], ":=", "\n", "\t", 
-   RowBox[{"GFTransform", "[", 
-    RowBox[{"tf", ",", " ", 
-     RowBox[{"{", 
+  RowBox[{"GFMap", "[", 
+   RowBox[{"tf_", ",", " ", "f_"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"ogg", "=", 
+       RowBox[{
+        RowBox[{"f", "[", "\"\<Grid\>\"", "]"}], "[", "\"\<Grid\>\"", "]"}]}],
+       ",", "\n", "\t\t\t", 
+      RowBox[{"ogv", "=", 
+       RowBox[{"f", "[", "\"\<Values\>\"", "]"}]}], ",", "\n", "\t\t\t", 
+      "res", ",", "\n", "\t\t\t", "g", ",", "\n", "\t\t\t", "v"}], "\n", 
+     "\t\t\t", "}"}], ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"res", "=", 
+      RowBox[{"GFMap", "[", 
+       RowBox[{"tf", ",", " ", 
+        RowBox[{"{", 
+         RowBox[{"ogg", ",", " ", "ogv"}], "}"}]}], "]"}]}], ";", "\n", 
+     "\t\t", 
+     RowBox[{"Which", "[", "\n", "\t\t\t", 
       RowBox[{
        RowBox[{
-        RowBox[{"f", "[", "\"\<Grid\>\"", "]"}], "[", "\"\<Grid\>\"", "]"}], 
-       ",", " ", 
-       RowBox[{"f", "[", "\"\<Values\>\"", "]"}]}], "}"}]}], "]"}]}], 
-  ";"}]}], "CodeInput",ExpressionUUID->"760e9b4c-db9a-493b-9d8b-ff5bcb9e4bdc"]\
-
+        RowBox[{"Dimensions", "[", "res", "]"}], "===", 
+        RowBox[{"Dimensions", "[", "ogv", "]"}]}], ",", "\n", "\t", "\t\t\t", 
+       
+       RowBox[{"GFModify", "[", 
+        RowBox[{
+        "f", ",", "\n", "\t\t\t\t\t", "Identity", ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"res", "&"}]}], "\n", "\t\t\t\t\t", "]"}], ",", "\n", 
+       "\t\t\t", 
+       RowBox[{
+        RowBox[{"Dimensions", "[", "res", "]"}], "===", 
+        RowBox[{"Dimensions", "[", "ogg", "]"}]}], ",", "\n", "\t\t\t\t", 
+       RowBox[{"GFModify", "[", 
+        RowBox[{"f", ",", "\n", "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"GFExtractArrayGrid", "[", "res", "]"}], "&"}], ",", "\n", 
+         "\t\t\t\t\t", 
+         RowBox[{
+          RowBox[{"GFExtractArrayValues", "[", "res", "]"}], "&"}]}], "\n", 
+        "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t", "True", ",", "\n", 
+       "\t\t\t\t", 
+       RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t\t", 
+        RowBox[{
+        "Automatic", ",", "\n", "\t\t\t\t\t", 
+         "\"\<Mapped function returned array of dimension `` but should have \
+dimension ``\>\"", ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"Dimensions", "[", "res", "]"}], ",", "\n", "\t\t\t\t\t", 
+         RowBox[{"Dimensions", "[", "ogv", "]"}]}], "\n", "\t\t\t\t\t", 
+        "]"}]}], "\n", "\t\t\t", "]"}]}]}], "\n", "\t\t", 
+   "]"}]}]}], \
+"CodeInput",ExpressionUUID->"7ba2206a-9854-43c2-9ae1-3ce2f3fd8feb"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -771,7 +887,43 @@ Cell[BoxData[{
       "spec"}], "]"}]}]}], 
   ";"}]}], "CodeInput",ExpressionUUID->"54d9e08c-6ce5-4918-ad98-ccc27a21b9ec"]\
 
-}, Closed]],
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFGridScale\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"527d9b99-d3b0-426e-9efa-01edc05322d8"],
+
+Cell[BoxData[{
+ RowBox[{"GFGridScale", "//", "Clear"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFGridScale", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"grid_", ",", " ", "values_"}], "}"}], ",", " ", "n_"}], "]"}], 
+   ":=", "\n", "\t", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"GridScale", "[", 
+      RowBox[{"grid", ",", " ", "n"}], "]"}], ",", " ", "values"}], "}"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFGridScale", "[", 
+    RowBox[{"gf_GridFunctionObject", ",", " ", "spec_"}], "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{"GridFunctionObject", "@@", "\n", "\t\t", 
+    RowBox[{"GFGridScale", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"gf", "[", "\"\<Grid\>\"", "]"}], ",", " ", 
+        RowBox[{"gf", "[", "\"\<Values\>\"", "]"}]}], "}"}], ",", " ", 
+      "spec"}], "]"}]}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"611a07f3-2352-48d7-89a5-d66193e0f50b"]\
+
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -826,6 +978,42 @@ Cell[BoxData[{
   ";"}]}], "CodeInput",ExpressionUUID->"94edfb1c-6aca-4dcc-87f0-8dc755c923ec"]\
 
 }, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFGridShift\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"90354ed7-e04d-4c6b-b1f2-1a64e69d48d8"],
+
+Cell[BoxData[{
+ RowBox[{"GFGridShift", "//", "Clear"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFGridShift", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"grid_", ",", " ", "values_"}], "}"}], ",", " ", "n_"}], "]"}], 
+   ":=", "\n", "\t", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"GridShift", "[", 
+      RowBox[{"grid", ",", " ", "n"}], "]"}], ",", " ", "values"}], "}"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GFGridShift", "[", 
+    RowBox[{"gf_GridFunctionObject", ",", " ", "spec_"}], "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{"GridFunctionObject", "@@", "\n", "\t\t", 
+    RowBox[{"GFGridShift", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"gf", "[", "\"\<Grid\>\"", "]"}], ",", " ", 
+        RowBox[{"gf", "[", "\"\<Values\>\"", "]"}]}], "}"}], ",", " ", 
+      "spec"}], "]"}]}]}], 
+  ";"}]}], "CodeInput",ExpressionUUID->"5a7cffbc-969b-47e5-b96c-e304df520f41"]\
+
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -1078,7 +1266,71 @@ Cell[BoxData[
         RowBox[{"f", "[", "\"\<Grid\>\"", "]"}], ",", " ", "vs"}], "]"}], "/;", 
       RowBox[{"ListQ", "@", "vs"}]}]}], "\n", "\t\t", "]"}]}], 
   ";"}]], "CodeInput",ExpressionUUID->"3de86c98-b839-4235-b7ea-aa080924ffbc"]
-}, Closed]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GFJoin\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"bb9484d7-2972-478e-99af-64668e53ac13"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GFJoin", "[", 
+   RowBox[{"a_GridFunctionObject", ",", " ", "s__"}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"grids", "=", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"#", "[", "\"\<Grid\>\"", "]"}], "&"}], "/@", 
+        RowBox[{"{", 
+         RowBox[{"a", ",", " ", "s"}], "}"}]}]}], ",", "\n", "\t\t\t", 
+      "gridNew", ",", "\n", "\t\t\t", "vals", ",", "\n", "\t\t\t", "valNew", 
+      ",", "\n", "\t\t\t", "valDims"}], "\n", "\t\t\t", "}"}], ",", "\n", 
+    "\t\t", 
+    RowBox[{
+     RowBox[{"gridNew", "=", 
+      RowBox[{"GridJoin", "@@", "grids"}]}], ";", "\n", "\t\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"!", 
+        RowBox[{"CoordinateGridObjectQ", "@", "gridNew"}]}], ",", "\n", 
+       "\t\t\t", "gridNew", ",", "\n", "\t\t\t", 
+       RowBox[{
+        RowBox[{"vals", "=", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"#", "[", "\"\<Values\>\"", "]"}], "&"}], "/@", 
+          RowBox[{"{", 
+           RowBox[{"a", ",", " ", "s"}], "}"}]}]}], ";", "\n", "\t\t\t", 
+        RowBox[{"valDims", "=", 
+         RowBox[{"Dimensions", "/@", "vals"}]}], ";", "\n", "\t\t\t", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Length", "@", 
+            RowBox[{"DeleteDuplicates", "[", 
+             RowBox[{"Rest", "/@", "valDims"}], "]"}]}], ">", "1"}], ",", 
+          "\n", "\t\t\t\t", 
+          RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t\t", 
+           RowBox[{
+           "Automatic", ",", "\n", "\t\t\t\t\t", 
+            "\"\<Values of dimensions `` cannot be joined\>\"", ",", "\n", 
+            "\t\t\t\t\t", "valDims"}], "\n", "\t\t\t\t\t", "]"}], ",", "\n", 
+          "\t\t\t\t", 
+          RowBox[{"valNew", "=", 
+           RowBox[{"Join", "@@", "vals"}]}]}], "\n", "\t\t\t\t", "]"}], ";", 
+        "\n", "\t\t\t", 
+        RowBox[{"GFModify", "[", "\n", "\t\t\t\t", 
+         RowBox[{"a", ",", "\n", "\t\t\t\t", 
+          RowBox[{"gridNew", "&"}], ",", "\n", "\t\t\t\t", 
+          RowBox[{"valNew", "&"}]}], "\n", "\t\t\t\t", "]"}]}], ",", "\n", 
+       "\t\t\t", "gridNew"}], "\n", "\t\t\t", "]"}]}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"218366d0-6674-4318-9755-ac2e455ec82e"]
+}, Open  ]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1115,7 +1367,7 @@ Cell[BoxData[{
    "f", "[", "\"\<Grid\>\"", 
     "]"}]}]}]}], \
 "CodeInput",ExpressionUUID->"b653619c-4f44-4387-8b53-d1fb4e8c3f98"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1220,7 +1472,7 @@ Cell[BoxData[
    "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"404c1440-035b-4124-946c-24e8957e03d9"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1238,7 +1490,7 @@ Cell[BoxData[
      RowBox[{"Apply", "[", "Plus", "]"}], ",", " ", "f", ",", " ", "s"}], 
     "]"}]}], ";"}]], \
 "CodeInput",ExpressionUUID->"edfa3411-19cd-4bc1-b675-ab5ab4981cf5"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1256,7 +1508,7 @@ Cell[BoxData[
      RowBox[{"Apply", "[", "Subtract", "]"}], ",", " ", "f", ",", " ", "s"}], 
     "]"}]}], ";"}]], \
 "CodeInput",ExpressionUUID->"b83a770b-3337-48cd-863b-681df147f325"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1274,7 +1526,7 @@ Cell[BoxData[
      RowBox[{"Apply", "[", "Divide", "]"}], ",", " ", "f", ",", " ", "s"}], 
     "]"}]}], ";"}]], \
 "CodeInput",ExpressionUUID->"03ccc013-514e-4abf-a9b6-d87563e55087"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1292,7 +1544,7 @@ Cell[BoxData[
      RowBox[{"Apply", "[", "Times", "]"}], ",", " ", "f", ",", " ", "s"}], 
     "]"}]}], ";"}]], \
 "CodeInput",ExpressionUUID->"90d2689f-9c15-4366-ac8f-6bb33b287147"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1893,7 +2145,7 @@ Cell[BoxData[{
      RowBox[{"f", "*", "vec"}]}], "]"}]}], 
   ";"}]}], "CodeInput",ExpressionUUID->"b69b3ee0-4e15-4695-8b30-58a607f67eb6"]\
 
-}, Open  ]]
+}, Closed]]
 }, Open  ]],
 
 Cell[BoxData[
@@ -1907,7 +2159,16 @@ Cell["", "SectionSeparator",ExpressionUUID->"9b890501-c575-45aa-bf6b-\
 4a602a09f246"]
 },
 WindowSize->{808, 755},
-WindowMargins->{{Automatic, 133}, {0, Automatic}},
+WindowMargins->{{Automatic, 225}, {5, Automatic}},
+TaggingRules->{
+ "UUIDButtons" -> {
+   "Active" -> {
+     "Button-b8297203-6b28-48f9-8ba3-edbd5eb431d2" -> False, 
+      "Button-8c92aebb-2725-4f7c-a6a8-f90e3a4dce9c" -> False, 
+      "Button-ede3a027-3279-40a0-8aa4-1fcc5f60357d" -> False, 
+      "Button-89ffd2c3-ec41-4179-a9b1-8e28670bca2c" -> False, 
+      "Button-ca46e5e0-4fd1-47e8-8cf6-72998922b757" -> False, 
+      "Button-a6d68254-3684-4d32-83fc-e5ef6f443930" -> False}}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

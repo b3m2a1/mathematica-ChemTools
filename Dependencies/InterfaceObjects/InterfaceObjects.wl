@@ -26,6 +26,8 @@ If[Temp`PackageScope`InterfaceObjectsLoading`Private`$DependencyLoad,
     Get@FileNameJoin@{DirectoryName@$InputFileName, "InterfaceObjectsLoader.wl"}
     ],
   If[!TrueQ[Evaluate[Symbol["InterfaceObjects`PackageScope`Private`$LoadCompleted"]]],
-    <<InterfaceObjects`InterfaceObjectsLoader`
-    ]
+    <<InterfaceObjects`InterfaceObjectsLoader`,
+   BeginPackage["InterfaceObjects`"];
+   EndPackage[];
+   ]
   ]

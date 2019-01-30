@@ -262,15 +262,24 @@ ChemSpectrumNorm[spec_]:=
 ChemSpectrumMode[spec_]:=
   Module[
     {
-      fdiffs=Differences[spec["Frequencies"]],
+      freqs=spec["Frequencies"],
+      subDiffs,
+      fdiffs,
       stdev,
       mean,
-      rat
+      rat,
+      range,
+      subDiv
       },
+    freqs=
+      Pick[freqs, #>.0001&/@Rescale[spec["Intensities"]]];
+    fdiffs=Differences[freqs];
     stdev=StandardDeviation@fdiffs;
     mean=Mean@fdiffs;
     rat=stdev/mean;
-    If[rat<.1,
+    (* I might actually want to filter out the non-zero frequencies before I do all this... *)
+    range=Subtract@@Reverse@MinMax[freqs];
+    If[(*rat<10&&*)mean/range<.0005,
       "Continuous",
       "Discrete"
       ]
@@ -435,7 +444,7 @@ chemSpectrumScale[
 
 ChemSpectrumScale[spec_, 
   sc_?NumericQ, 
-  o_?NumericQ:0
+  o:(_?NumericQ):0
   ]:=
   ChemSpectrumTransform[spec, 
     chemSpectrumScale[#, 

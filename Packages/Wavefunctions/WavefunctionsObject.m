@@ -37,7 +37,7 @@ RegisterInterface[
 
 InterfaceAttribute[WavefunctionsObject]@
   c_WavefunctionsObject["Grid"]:=
-  c["Wavefunctions"][[1]]["Grid"];
+  WFGrid[c];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -67,6 +67,24 @@ InterfaceMethod[WavefunctionsObject]@
 InterfaceMethod[WavefunctionsObject]@
   c_WavefunctionsObject["Overlaps"][wf__]:=
   WFOverlap[c, wf];
+InterfaceMethod[WavefunctionsObject]@
+  c_WavefunctionsObject["Rephase"][ops___]:=
+  WFRephase[c, ops];
+InterfaceMethod[WavefunctionsObject]@
+  c_WavefunctionsObject["Frequencies"][spec___]:=
+  WFFrequencies[c, spec];
+InterfaceMethod[WavefunctionsObject]@
+  c_WavefunctionsObject["TransitionMoments"][spec__]:=
+  WFTransitionMoments[c, spec]
+InterfaceMethod[WavefunctionsObject]@
+  c_WavefunctionsObject["OscillatorStrengths"][spec__]:=
+  WFOscillatorStrengths[c, spec]
+InterfaceMethod[WavefunctionsObject]@
+  c_WavefunctionsObject["Intensities"][spec__]:=
+  WFIntensities[c, spec]
+InterfaceMethod[WavefunctionsObject]@
+  c_WavefunctionsObject["CorrectPhase"][ops___]:=
+  WFCorrectPhase[c, ops]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -84,6 +102,19 @@ InterfaceOverride[WavefunctionsObject]@
     f_WavefunctionsObject
     ]:=
     WFLength[f];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Join*)
+
+
+
+InterfaceOverride[WavefunctionsObject]@
+  Join[
+    f_WavefunctionsObject,
+    e__
+    ]:=
+    WFMerge[{f, e}];
 
 
 End[];

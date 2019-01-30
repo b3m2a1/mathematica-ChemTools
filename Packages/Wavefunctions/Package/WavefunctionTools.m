@@ -28,6 +28,14 @@ WFKeyPart::usage=
 
 
 (* ::Subsubsection::Closed:: *)
+(*Meh*)
+
+
+
+WFGrid::usage="";
+
+
+(* ::Subsubsection::Closed:: *)
 (*Creation*)
 
 
@@ -47,6 +55,8 @@ WFEigensystem::usage=
 
 WFProduct::usage=
   "Creates product wavefunctions out of 1D wavefunctions";
+WFMerge::usage=
+  "Joins sets of wavefunctions";
 
 
 (* ::Subsubsection::Closed:: *)
@@ -71,6 +81,30 @@ WFOverlap::usage=
 
 WFNormal::usage="";
 WFLength::usage="";
+
+
+(* ::Subsubsection::Closed:: *)
+(*Phases*)
+
+
+
+WFScale::usage=
+  "Scales every wf...basically here until we get a good GridMultifunctionObject";
+WFRephase::usage=
+  "Rephases wavefunctions by doing full overlap matrix and then ordering";
+WFCorrectPhase::usage=
+  "Tries to get smooth phasing";
+
+
+(* ::Subsubsection::Closed:: *)
+(*Spectra*)
+
+
+
+WFFrequencies::usage="";
+WFTransitionMoments::usage="";
+WFOscillatorStrengths::usage="";
+WFIntensities::usage="";
 
 
 Begin["`Private`"];
@@ -177,6 +211,35 @@ ConstructWavefunctions[
         ]
       ]
     ];
+ConstructWavefunctions[
+  "Diagonalize",
+  t_?SquareMatrixQ,
+  v_?SquareMatrixQ,
+  grid:Except[_?OptionQ],
+  ops:OptionsPattern[]
+  ]:=
+  Module[
+    {
+      g=CoordinateGridObject[grid],
+      ret
+      },
+    If[CoordinateGridObjectQ[g],
+      ret=WFEigensystem[t, v, ops];
+      ConstructWavefunctions[ret, grid]
+      ]
+    ];
+ConstructWavefunctions[
+  "Diagonalize",
+  t_?SquareMatrixQ,
+  grid_?(Not@SquareMatrixQ[#]&),
+  ops:OptionsPattern[]
+  ]:=
+  ConstructWavefunctions["Diagonalize",
+    t,
+    SparseArray[{}, Dimensions[t]],
+    grid, 
+    ops
+    ];
 ConstructWavefunctions[a_Association]:=
   a;
 
@@ -197,6 +260,14 @@ WFNormal[wfns_]:=
 (* ::Subsection:: *)
 (*Mindless*)
 
+
+
+(* ::Subsubsection::Closed:: *)
+(*WFGrid*)
+
+
+
+WFGrid[wfns_]:=wfns["Wavefunctions"][[1]]["Grid"];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -258,6 +329,525 @@ WFPart[WavefunctionsObject[c_], sel_, p__]:=
 
 WFKeyPart[c:WavefunctionsObject[a_], sel__]:=
   a[sel]
+
+
+(* ::Subsection:: *)
+(*Eigensystems*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*WFPrepareHamiltonian*)
+
+
+
+Options[WFPrepareHamiltonian]=
+  {
+    "ValidateHamiltonian"->True,
+    "PruningEnergy"->None,
+    "HamiltonianRounding"->None
+    };
+WFPrepareHamiltonian[T_, V_, ops:OptionsPattern[]]:=
+  Module[
+    {
+      prune=OptionValue["PruningEnergy"],
+      vDiag,
+      prunePos,
+      fullLen,
+      round=OptionValue["HamiltonianRounding"],
+      keMat=ReleaseHold@T,
+      peMat=ReleaseHold@V,
+      ham,
+      validate=OptionValue["ValidateHamiltonian"]=!=False,
+      hermCut
+      },
+    If[!SquareMatrixQ[keMat]||
+      (validate&&!MatrixQ[keMat, Internal`RealValuedNumericQ]),
+      PackageRaiseException[
+        Automatic,
+        "The kinetic energy is not a square numerical matrix"
+        ]
+      ];
+    If[!SquareMatrixQ[peMat]||
+      (validate&&!MatrixQ[peMat, Internal`RealValuedNumericQ]),
+      PackageRaiseException[
+        Automatic,
+        "The potential energy is not a square numerical matrix"
+        ]
+      ];
+    ham=keMat+peMat;
+    fullLen=Length@ham;
+    If[!SquareMatrixQ[ham]||
+      (validate&&!MatrixQ[ham, Internal`RealValuedNumericQ]),
+      PackageRaiseException[
+        Automatic,
+        "The Hamiltonian is not a square numerical matrix"
+        ]
+      ]; 
+    If[NumericQ@prune||MatchQ[prune, Scaled[_?NumericQ]],
+      vDiag=Normal@Diagonal[ReleaseHold@V];
+      prune=
+        Replace[prune, 
+          {
+            i_?NumericQ:>Rescale[i, MinMax@vDiag],
+            Scaled[s_]:>s
+            }
+          ];
+      vDiag=Rescale[vDiag];
+      prunePos=Flatten@Position[vDiag, _?(#>prune&), 1];
+      ham=
+        ham[[
+          Complement[Range[Length@ham], prunePos], 
+          Complement[Range[Length@ham], prunePos]
+          ]];
+      ];
+    If[round>1, round=10^-round];
+    If[NumericQ@round, ham=Round[ham, N@round]];
+    If[validate&&!HermitianMatrixQ@ham, 
+      If[HermitianMatrixQ[ham, Tolerance->10^-7],
+        hermCut=
+          SelectFirst[
+            Range[
+              Floor@$MachinePrecision,
+              7,
+              -1
+              ],
+            HermitianMatrixQ[ham, Tolerance->10^-#]&
+            ];
+        PackageRaiseException[
+          Automatic,
+          "Hamiltonian isn't Hermitian. \
+Numerical instability may have introduced lack of hermiticity. \
+Try passing \"HamiltonianRounding\"->``.",
+          With[{c=hermCut}, HoldForm[10^-c]]
+          ],
+        PackageRaiseException@
+          "Hamiltonian is neither Hermitian nor approximately Hermitian"
+        ]
+      ]; 
+    {ham, {If[ListQ@prunePos, prunePos, {}], fullLen}}
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*WFDecomposeHamiltonian*)
+
+
+
+WFDecomposeHamiltonian[ham_]:=
+  Module[
+    {
+      hamDiag,
+      rowSums,
+      disks,
+      diskIntersections
+      },
+    (*do Gerschgorin*)
+    Null
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*WFEigensystem*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*getWFSel*)
+
+
+
+getWFSel[nwfs_, len_, head_, solver_]:=
+  Replace[nwfs,
+    {
+      Automatic:>
+        If[head===SparseArray, 
+          -Abs[Max@{Min@{Floor[len/10], 25}, 3}],
+          If[solver===Eigenvalues,
+            -Abs[Max@{Min@{Floor[len/10], 25}, 3}],
+            Sequence@@{}
+            ]
+          ],
+      i_Integer:>
+        -i,
+      _:>Sequence@@{}
+      }
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*getWFEigSysMethod*)
+
+
+
+getWFEigSysMethod[hamType_, ops_, arnops_]:=
+  Replace[OptionValue[WFEigensystem, ops, Method], 
+    Automatic:>
+      If[hamType===SparseArray, 
+        arnops=
+          KeyValueMap[
+            Switch[#,
+              "MaxIterations",
+                If[IntegerQ@#2&&Positive[#2],
+                  #->#2,
+                  Nothing
+                  ],
+              "BasisSize",
+                If[IntegerQ@#2&&Positive[#2],
+                  #->#2,
+                  Nothing
+                  ],
+              "Tolerance",
+                If[NumericQ@#2&&Positive[#2],
+                  #->#2,
+                  Nothing
+                  ],
+              "StartingVector",
+                If[VectorQ[#2, Internal`RealValuedNumericQ],
+                  #->#2,
+                  Nothing
+                  ]
+              ]&, 
+            AssociationThread[
+              {
+                "MaxIterations",
+                "BasisSize",
+                "Tolerance",
+                "StartingVector"
+                },
+              OptionValue[
+                WFEigensystem, ops,
+                {
+                  "ArnoldiIterations", 
+                  "ArnoldiBasisSize", 
+                  "ArnoldiTolerance",
+                  "ArnoldiGuessWavefunction"
+                  }
+                ]
+              ]
+            ];
+        Flatten@{"Arnoldi", arnops},
+        Automatic
+        ]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*getWFEigSys*)
+
+
+
+getWFEigSys[solver_, ham_, wfnSel_, realify_, arnops_, ops_]:=
+  If[TrueQ[realify], Re, Identity]@
+    solver[
+      ham,
+      wfnSel,
+      Sequence@@Flatten@{
+        Method->
+          getWFEigSysMethod[Head@ham, ops, arnops],
+        FilterRules[
+          FilterRules[ops,
+            Alternatives@@
+              Keys@Options@solver
+            ],
+          Except[Method]
+          ]
+        }
+      ];
+getWFEigSys~SetAttributes~HoldAll
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*getHamAdjPars*)
+
+
+
+getHamAdjPars[ham_, {hamDiag_, hamDiagMax_, rowSums_, hamEigMax_}]:=
+  Module[
+    {rowBounds},
+    (*
+		If things are pruned I want the maximum possible eigenvalue to return by Gerschgorin--
+			this is what I'll give for all the pruned positions
+		*)
+    hamDiag=Diagonal[ham];
+    hamDiagMax=Max[hamDiag];
+    rowSums=Total@*Abs/@ham;
+    rowBounds=2*Abs[hamDiag]-rowSums;
+    hamEigMax=Max@hamDiag+Max@Abs@rowBounds;
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*adjustHam*)
+
+
+
+adjustHam[ham_, shift_, hamDiag_, hamDiagMax_, rowSums_, {rowShift_}]:=
+  Module[
+    {
+      rowMin,
+      rowBounds
+      },
+    (*
+		If there is no shift, I force all eigenvalues to be negative then pick the largest ones. This is faster with the 
+		Arnoldi algorithm.
+		
+		By Gerschgorin's theorm this means I need to push the diagonal large enough
+			such that all of the eigenvalue disks are wholly negative
+		
+		If there is a shift, I shift so that the minimum abs. value eigenvalue may be expected to be around there 
+		*)
+    If[shift===Automatic,
+      hamDiag-=hamDiagMax;
+      (* row sums computed previously *)
+      rowBounds=2*Abs[hamDiag]-rowSums;
+      rowMin=Min@rowBounds; (* Pick largest displacement in negative sense *)
+      rowShift=-(2*Abs[rowMin]+hamDiagMax); (* Shift by twice this to wholly avoid zero*),
+      rowShift=-(shift+Min[hamDiag])
+      ];
+    ham=ham+SparseArray[Band[{1,1}]->rowShift, {Length@ham, Length@ham}]
+    ];
+adjustHam~SetAttributes~HoldAll;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*reshiftWfns*)
+
+
+
+reshiftWfns[wfns_, rowShift_]:=
+  If[TrueQ[NumericQ@rowShift],
+    wfns[[1]]=
+      wfns[[1]]-rowShift;
+    ];
+reshiftWfns~SetAttributes~HoldFirst
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*reshiftEngs*)
+
+
+
+reshiftEngs[engs_, rowShift_]:=
+  If[TrueQ[NumericQ@rowShift],
+      engs-rowShift,
+      engs
+      ];
+reshiftEngs~SetAttributes~HoldFirst
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*rephaseWfns*)
+
+
+
+rephaseWfns[wfns_, True]:=
+  Module[{phase},
+    phase=Sign@wfns[[2, 1]];
+    wfns={wfns[[1]], phase*#&/@wfns[[2]]}
+    ];
+rephaseWfns[wfns_, _]:=
+  Module[{phase},
+    phase=If[Total@wfns[[2, 1]]<0, -1, 1];
+    wfns={wfns[[1]], phase*wfns[[2]]}
+    ];
+rephaseWfns~SetAttributes~HoldFirst
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*revertPruning*)
+
+
+
+revertPruning[wfns_, wfnSel_, hamEigMax_, prunePos_, origLen_]:=
+  (
+    If[wfnSel===All,
+      wfns[[1]]=
+        Join[
+          wfns[[1]], 
+          ConstantArray[hamEigMax, Length@prunePos]
+          ]
+      ];
+    wfns[[2]]=
+      Map[
+        Join[
+          #, 
+          ConstantArray[0., Length@prunePos]
+          ][[ getPrunePosOrder[prunePos, origLen] ]]&,
+        wfns[[2]]
+        ]
+      );
+revertPruning~SetAttributes~HoldFirst;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*revertEngPruning*)
+
+
+
+revertEngPruning[engs_, wfnSel_, hamEigMax_, prunePos_]:=
+  If[wfnSel===All,
+    engs=Join[
+      engs, 
+        ConstantArray[hamEigMax, Length@prunePos]
+      ]
+    ];
+revertEngPruning~SetAttributes~HoldFirst;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*getPrunePosOrder*)
+
+
+
+getPrunePosOrder[prunePos_, origLen_]:=
+  (*
+		Will need to reconstruct the wavefunctions to resample the grid properly
+		The first entries will be the pruned positions.
+		The last entries will be fill.
+		Need to resort so that the fill is in the right spot.
+		*)
+  Ordering@Join[Complement[Range[origLen], prunePos], prunePos]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*sortWfnsThings*)
+
+
+
+sortWfnsThings[wfns_]:=
+  wfns=wfns[[{1,2}, Ordering[First@wfns]]];
+sortWfnsThings~SetAttributes~HoldFirst
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*WFEigensystem*)
+
+
+
+(* ::Text:: *)
+(*
+	I should write something using Gerschgorin to reduce initial Hamiltonian size for the first whatever number of eigenvalues.
+*)
+
+
+
+Options[WFEigensystem]=
+  Join[
+    Options@Eigensystem,
+    {
+      "NumberOfWavefunctions"->Automatic,
+      "CorrectPhase"->True,
+      "NodelessGroundState"->True,
+      "SortEnergies"->True,
+      "WavefunctionEigensolver"->Eigensystem,
+      "PreadjustHamiltonian"->True,
+      "HamiltonianPreprocessor"->None,
+      "RealValued"->True,
+      "ArnoldiIterations"->Automatic,
+      "ArnoldiBasisSize"->Automatic,
+      "ArnoldiTolerance"->Automatic,
+      "ArnoldiGuessWavefunction"->Automatic,
+      "TargetEigenvalue"->Automatic
+      },
+    Options[WFPrepareHamiltonian]
+    ];
+WFEigensystem[T_, V_, ops:OptionsPattern[]]:=
+  Module[
+    {
+      useFlags,
+      ham,
+      wfnSel,
+      hamAdj,
+      shift,
+      hamDiag,
+      hamDiagMax,
+      rowSums,
+      rowBounds,
+      rowMin,
+      rowShift,
+      hamEigMax,
+      nwfs=OptionValue["NumberOfWavefunctions"],
+      sort=OptionValue["SortEnergies"]=!=False,
+      rephase=OptionValue["CorrectPhase"]=!=False,
+      prepper=OptionValue["HamiltonianPreprocessor"],
+      wfns,
+      solver=
+        Replace[OptionValue["WavefunctionEigensolver"],
+          Eigenvectors->Eigensystem
+          ],
+      origLen,
+      prunePos,
+      hamPruned,
+      arnops,
+      nodeless=TrueQ["NodelessGroundState"]
+      },
+    Internal`WithLocalSettings[
+      useFlags=
+        Quiet@
+          Fold[
+            Lookup,
+            SystemOptions["LinearAlgebraOptions"->"UseMatrixPropertyFlags"],
+            {"LinearAlgebraOptions", "UseMatrixPropertyFlags"}
+            ];
+      Quiet@SetSystemOptions["LinearAlgebraOptions"->"UseMatrixPropertyFlags"->True],
+      {ham, {prunePos, origLen}}=
+        WFPrepareHamiltonian[
+          T, V, 
+          FilterRules[{ops}, Options[WFPrepareHamiltonian]]
+          ];
+      shift=Replace[OptionValue["TargetEigenvalue"], Except[_?NumericQ]->Automatic];
+      hamPruned=Length@prunePos>0;
+      wfnSel=
+        getWFSel[nwfs, Length@ham, Head@ham, solver];
+      hamAdj=Length@{wfnSel}>0&&TrueQ@OptionValue["PreadjustHamiltonian"];
+      If[hamAdj&&shift===Automatic, wfnSel=-wfnSel];
+      If[hamAdj||hamPruned,
+        getHamAdjPars[ham, 
+          {hamDiag, hamDiagMax, rowSums, hamEigMax}
+          ];
+        ];
+      If[hamAdj, 
+        adjustHam[ham, shift, hamDiag, hamDiagMax, rowSums, {rowShift}]
+        ];
+      If[prepper=!=None,
+        With[{h=prepper[ham]},
+          If[Head[h]===Head[ham], ham=h]
+          ]
+        ];
+      wfns=
+        getWFEigSys[solver, ham, wfnSel, TrueQ["RealValued"], arnops, {ops}];
+      Which[
+        VectorQ[wfns, Internal`RealValuedNumberQ],
+          (* just energies, so just return them *)
+          reshiftEngs[wfns, rowShift];
+          If[hamPruned,
+            revertPruning[wfns, wfnSel, hamEigMax, prunePos, origLen]
+            ];
+          If[sort, 
+            sortWfnsThings[wfns]
+            ];,
+        Length@wfns==2&&
+          VectorQ[wfns[[1]], Internal`RealValuedNumberQ]&&
+          MatrixQ[wfns[[2]], Internal`RealValuedNumberQ],
+          (* full eigensystem *)
+          reshiftWfns[wfns, rowShift];
+          If[hamPruned,
+            revertPruning[wfns, wfnSel, hamEigMax, prunePos, origLen]
+            ];
+          If[sort, 
+            sortWfnsThings[wfns]
+            ];
+          If[rephase,
+            rephaseWfns[wfns, nodeless]
+            ];,
+        True,
+          Null
+        ],
+      Quiet@SetSystemOptions["LinearAlgebraOptions"->"UseMatrixPropertyFlags"->useFlags]
+      ];
+    wfns
+    ];
 
 
 (* ::Subsection:: *)
@@ -325,102 +915,123 @@ WFProduct[
 
 
 (* ::Subsection:: *)
-(*GridWavefunctions*)
+(*State Selections*)
 
 
 
-(* ::Subsubsection::Closed:: *)
-(*iChemDVRDefaultThreadGridWavefunctions*)
+(* ::Subsubsubsection::Closed:: *)
+(*pullOpVals*)
 
 
 
-iChemDVRDefaultThreadGridWavefunctions[gps_, wfns_, retE_]:=
-  Module[
-    {
-      grid=gps
-      },
-      If[!ListQ@First@grid,
-        grid=List/@grid
-        ];
-    grid=Developer`ToPackedArray@grid;
-    If[retE, 
-      MapThread[
-        #->Join[grid, List/@#2, 2]&,
-        wfns
-        ],
-      Map[
-        Join[grid, List/@#, 2]&, 
-        wfns[[2]]
-        ]
+pullOpVals[dims_, res_]:=
+  With[{n=TakeWhile[dims, #===1&], d2=Dimensions[res]},
+    If[Length@n>0&&Length[n]<=Length[d2],
+      Part[res, Sequence@@n],
+      res
       ]
-    ];
-
-
-(* ::Subsubsection::Closed:: *)
-(*ChemDVRDefaultGridWavefunctions*)
-
-
-
-Options[ChemDVRDefaultGridWavefunctions]=
-  Join[
-    {
-      "ReturnEnergies"->False,
-      "PruningEnergy"->None
-      },
-    Options[ChemDVRDefaultWavefunctionSelection],
-    Options[ChemDVRDefaultGridPointList]
-    ];
-ChemDVRDefaultGridWavefunctions[
-  grid_, 
-  wfs_,
-  V_,
-  o:OptionsPattern[]
-  ]:=
-  With[
-    {
-      coreGridPoints=
-        ChemDVRDefaultPruneGridPoints[
-          ChemDVRDefaultGridPointList[grid, 
-            FilterRules[{o}, Options@ChemDVRDefaultGridPointList]
-            ],
-          V,
-          OptionValue["PruningEnergy"]
-          ],
-      wfns=
-        ChemDVRDefaultWavefunctionSelection[
-          ReleaseHold@wfs,
-          FilterRules[{o}, Options[ChemDVRDefaultWavefunctionSelection]]
-          ],
-      retE=TrueQ@OptionValue["ReturnEnergies"]
-      },
-    iChemDVRDefaultThreadGridWavefunctions[
-      coreGridPoints,
-      wfns,
-      retE
-      ]
-    ];
-
-
-(* ::Subsection:: *)
-(*ChemDVRDefaultInterpolatingWavefunctions*)
-
-
-
-Options[ChemDVRDefaultInterpolatingWavefunctions]=
-  Options@ChemDVRDefaultGridWavefunctions;
-ChemDVRDefaultInterpolatingWavefunctions[
-  grid_,
-  wfs_,
-  V_,
-  ops:OptionsPattern[]
-  ]:=
-  With[
-    {wf=ChemDVRDefaultGridWavefunctions[grid, wfs, V, ops]},
-    If[MatchQ[wf[[1]], _Rule],
-      #[[1]]->Interpolation[#[[2]]]&,
-      Interpolation
-      ]/@wf
     ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*operatorMatElCalc*)
+
+
+
+(* ::Text:: *)
+(*
+	operatorMatElCalcInner will always return a list?
+*)
+
+
+
+operatorMatElCalc[wfl_, wfr_, exfn_, mul_, grid_, asrs_, ash_]:=
+  Module[
+    {    
+      m=If[ListQ@exfn&&!ListQ@mul, ConstantArray[mul, Length@exfn], mul],
+      res
+      },
+    (* need another thread in case multiple specs were provided for a single function *)
+    res=
+      MapThread[
+        (* Thread over the operators and multiplicativity *)
+        pullOpVals[
+          Dimensions[#],
+          operatorMatElCalcInner[#, #2, exfn, m, grid, asrs, ash]
+          ]&,
+        {wfl, wfr}
+        ];
+    If[Length[wfl]==1, res[[1]], res]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*innerSpecPatQ*)
+
+
+
+multiPart=_Span|{__Integer};
+innerSpecPatQ[{_Integer, _Integer}]:=True;
+innerSpecPatQ[{_Integer, multiPart}]:=True;
+innerSpecPatQ[{multiPart, _Integer}]:=True;
+innerSpecPatQ[{multiPart, multiPart}]:=True;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*statePairListQ*)
+
+
+
+Clear[basicStatePairQ, statePairListQ]
+basicStatePairQ[({_, _}?innerSpecPatQ)]:=True;
+basicStatePairQ[_]:=False;
+statePairListQ[{{_, _}?innerSpecPatQ..}]:=True;
+statePairListQ[_]:=False;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*statePairsQ*)
+
+
+
+statePairsQ[spec_]:=
+  basicStatePairQ[spec]||statePairListQ[spec];
+statePairsQ[_]:=False
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*getStatePairSelections*)
+
+
+
+getStatePairSelections//Clear;
+getStatePairSelections[objs1_, objs2_, sels_]:=
+  {
+    Map[
+      Map[
+        Part[objs1, #]&,
+        Replace[
+          If[basicStatePairQ[#], {#}, #][[All, 1]],
+          i_Integer:>{i},
+          1
+          ]
+        ]&,
+      sels
+      ],
+    Map[
+      Map[
+        Part[objs2, #]&,
+        Replace[
+          If[basicStatePairQ[#], {#}, #][[All, 2]],
+          i_Integer:>{i},
+          1
+          ]
+        ]&,
+      sels
+      ]
+    };
+getStatePairSelections[objs1_, sels_]:=
+  getStatePairSelections[objs1, objs1, sels]
 
 
 (* ::Subsection:: *)
@@ -637,8 +1248,37 @@ WFOperatorMatrix[
 
 
 
-Options[WFOperatorMatrixElements]=
-  Options@WFOperatorMatrix;
+(* ::Subsubsubsection::Closed:: *)
+(*operatorMatElCalcInner*)
+
+
+
+operatorMatElCalcInner[l_, r_, exfn_, m_, grid_, asrs_, ash_]:=
+  If[!ListQ@exfn,
+    If[Length@l>1||Length@r>1,
+      operatorMatrix[exfn, grid, l, r, asrs, ash, m],
+      expectationValue[exfn, grid, l[[1]], r[[1]], m]
+      ],
+    MapThread[
+      With[{exf=#, mo=#2},
+        If[Length@l>1||Length@r>1,
+          operatorMatrix[exf, grid, l, r, asrs, ash, mo],
+          expectationValue[exf, grid, l[[1]], r[[1]], mo]
+          ]
+        ]&,
+      {
+        exfn,
+        m
+        }
+      ]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*iWFOperatorMatrixElements*)
+
+
+
 iWFOperatorMatrixElements[
   {grid_, wfns_},
   evs_,
@@ -660,84 +1300,51 @@ iWFOperatorMatrixElements[
       },
     {sels, exfns}=Transpose[List@@@exfns];
     (* get a list of LHS wavefunctions and RHS wavefunctions for each set of expectation value functions *)
-    wfL=
-      Map[
-        Map[
-          Part[wfns, #]&,
-          Replace[
-            Replace[#, k:{Except[_List], _}:>{k}][[All, 1]],
-            i_Integer:>{i},
-            1
-            ]
-          ]&,
-        sels
-        ];
-    wfR=
-      Map[
-        Map[
-          Part[wfns, #]&,
-          Replace[
-            Replace[#, k:{Except[_List], _}:>{k}][[All, 2]],
-            i_Integer:>{i},
-            1
-            ]
-          ]&,
-        sels
-        ];
+    {wfL, wfR}=getStatePairSelections[wfns, sels];
     If[!ListQ@mul, mul=ConstantArray[mul, Length@exfns]];
     (* Thread over the right and left wavefunctions, the operators, and the multiplicativity *)
     res=
       MapThread[
-        With[
-          {
-            exfn=#3,
-            m=If[ListQ@#3&&!ListQ@#4, ConstantArray[#4, Length@#3], #4]
-            },
-          (* need another thread in case multiple specs were provided for a single function *)
-          If[Length@#==1, First, Identity]@
-            MapThread[
-              With[{l=#, r=#2},
-                (* Thread over the operators and multiplicativity *)
-                If[!ListQ@exfn,
-                  If[Length@l>1||Length@r>1,
-                    operatorMatrix[exfn, grid, l, r, asrs, ash, m],
-                    expectationValue[exfn, grid, l[[1]], r[[1]], m]
-                    ],
-                  If[Length@exfn==1, First, Identity]@
-                    MapThread[
-                      With[{exf=#, mo=#2},
-                        If[Length@l>1||Length@r>1,
-                          operatorMatrix[exf, grid, l, r, asrs, ash, mo],
-                          expectationValue[exf, grid, l[[1]], r[[1]], mo]
-                          ]
-                        ]&,
-                      {
-                        exfn,
-                        m
-                        }
-                      ]
-                  ]
-                ]&,
-              {#, #2}
-              ]
-          ]&,
+        operatorMatElCalc[##, grid, asrs, ash]&,
         {
-          wfL,
-          wfR,
-          exfns,
-          mul
+          wfL, wfR, exfns, mul
           }
         ];
     If[Length@wfL==1, res[[1]], res]
     ];
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*opElMatchQ*)
+
+
+
+opElMatchQ//Clear
+opElMatchQ[
+  (({_, _}?innerSpecPatQ->_)|
+  ({{_, _}?innerSpecPatQ...}->_)|
+  {(({{_, _}?innerSpecPatQ...}|{_, _}?innerSpecPatQ)->_)..})
+  ]:=True;
+opElMatchQ[a_]:=
+  PackageThrowMessage[
+    "OperatorElementSpec",
+    "Operator element spec `` is invalid. \
+A valid spec is a map from selection specs to functions",
+    "MessageParameters"->{a}
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*WFOperatorMatrixElements*)
+
+
+
+WFOperatorMatrixElements//Clear
+Options[WFOperatorMatrixElements]=
+  Options@WFOperatorMatrix;
 WFOperatorMatrixElements[
   c_WavefunctionsObject,
-  evs:
-    (({_, _}->_)|
-    ({{_, _}...}->_)|
-    {(({{_, _}...}|{_, _})->_)..}),
+  evs_?opElMatchQ,
   ops:OptionsPattern[]
   ]:=
   iWFOperatorMatrixElements[
@@ -745,7 +1352,13 @@ WFOperatorMatrixElements[
       c["Grid"]["Points"], 
       Flatten@#["Values"]&/@c["Wavefunctions"]
       },
-    evs,
+    Map[
+      If[statePairListQ[#[[1]]],
+        Thread[#],
+        #
+        ]&,
+      Flatten[{evs}]
+      ],
     TrueQ@OptionValue["AssumeSymmetric"],
     TrueQ@OptionValue["AssumeHermitian"],
     OptionValue["MultiplicativeOperator"],
@@ -763,7 +1376,8 @@ WFOperatorMatrixElements[
 
 
 
-getWFOverlapVals[wfns1_, wfns2_]:=
+getWFOverlapVals//Clear
+getWFOverlapVals[wfns1_, wfns2_, checkGrid:True|False:True]:=
   Module[
     {
       g1=wfns1["Wavefunctions"],
@@ -771,17 +1385,29 @@ getWFOverlapVals[wfns1_, wfns2_]:=
       grid1,
       grid2,
       vals1,
-      vals2
+      vals2,
+      vals
       },
-    grid1=g1[[1]]["Grid"];
-    grid2=g2[[1]]["Grid"];
-    If[grid1=!=grid2,
-      PackageRaiseException[
-        Automatic,
-        "Wavefunction overlap can only be computed on the same grid"
+    If[checkGrid,
+      grid1=g1[[1]]["Grid"];
+      grid2=g2[[1]]["Grid"];
+      If[grid1=!=grid2,
+        PackageRaiseException[
+          Automatic,
+          "Wavefunction overlap can only be computed on the same grid"
+          ]
         ]
       ];
-    Map[Flatten[#["Values"]]&]/@{g1, g2}
+    vals=Map[Flatten[#["Values"]]&]/@{g1, g2};
+    If[!checkGrid,
+      If[Length[vals[[1]]]!=Length[vals[[2]]],
+        PackageRaiseException[
+          Automatic,
+          "Wavefunction overlap can only be computed for wavefunctions of same dimension"
+          ]
+        ]
+      ];
+    vals
     ]
 
 
@@ -790,14 +1416,14 @@ getWFOverlapVals[wfns1_, wfns2_]:=
 
 
 
-WFOverlapMatrix[wfns1_, wfns2_]:=
+WFOverlapMatrix[wfns1_, wfns2_, checkGrid_]:=
   PackageExceptionBlock["WFOverlapMatrix"]@
     Module[
       {
         vals1,
         vals2
         },
-      {vals1, vals2}=getWFOverlapVals[wfns1, wfns2];
+      {vals1, vals2}=getWFOverlapVals[wfns1, wfns2, checkGrid];
       vals1.Transpose[vals2]
       ]
 
@@ -807,30 +1433,78 @@ WFOverlapMatrix[wfns1_, wfns2_]:=
 
 
 
+(* ::Text:: *)
+(*
+	I should write in a few special fast cases for the most common operations... There are a few easily optimizable patterns for sure.
+*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*calcOverlaps*)
+
+
+
+calcOverlaps[l_, r_]:=
+  Which[
+    Depth[l]==2&&Depth[r]==2,
+      r.l,
+    Depth[l]==3&&Depth[r]==3,
+      l.Transpose[r]//
+        If[Length[l]==1, Apply[Join], Identity](* is this rigorously what we want...? *),
+    Depth[l]==3&&Depth[r]==2,
+      Join@@(l.Transpose[{r}]),
+    Depth[l]==2&&Depth[r]==3,
+      Join@@(r.Transpose[{l}])(* do I need a transpose here...? *),
+    True,
+      Map[calcOverlaps[#, r]&, l]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*calcOverlapElements*)
+
+
+
+calcOverlapElements[spec_]:=
+  MapThread[
+    pullOpVals[
+      #,
+      calcOverlaps[#[[1]], #2[[1]]]
+      ]&,
+    spec
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*WFOverlapElements*)
+
+
+
+WFOverlapElements//Clear
 WFOverlapElements[
   wfns1_, 
   wfns2_,
-  pairs:{{_Integer, _Integer}..}
+  pairs_?statePairListQ,
+  checkGrid_
   ]:=
-  PackageExceptionBlock["WFOverlapMatrix"]@
+  PackageExceptionBlock["WFOverlapElements"]@
     Module[
       {
         vals1,
-        vals2,
-        pt=Transpose@pairs
+        vals2
         },
-      If[Max@pt[[1]]>WFLength[wfns1]||
-            Max@pt[[2]]>WFLength[wfns2]||
-            Min@pt<=0,
-        PackageRaiseExceptin[Automatic,
-          "Pair specification out of bounds for wavefunctions"
-          ]
-        ];
-      {vals1, vals2}=getWFOverlapVals[wfns1, wfns2];
-      vals1=vals1[[pt[[1]]]];
-      vals2=vals2[[pt[[2]]]];
-      MapThread[Dot, {vals1, vals2}]
-      ]
+      {vals1, vals2}=getWFOverlapVals[wfns1, wfns2, checkGrid];
+      calcOverlapElements@
+        getStatePairSelections[vals1, vals2, pairs]
+      ];
+WFOverlapElements[
+  wfns1_, 
+  wfns2_,
+  pairs_?basicStatePairQ,
+  checkGrid_
+  ]:=
+  First@WFOverlapElements[wfns1, wfns2, {pairs}, checkGrid];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -838,10 +1512,19 @@ WFOverlapElements[
 
 
 
-WFOverlap[wfns1_, wfns2_, Optional[All, All]]:=
-  WFOverlapMatrix[wfns1, wfns2];
-WFOverlap[wfns1_, wfns2_, pairs:{{_Integer, _Integer}..}]:=
-  WFOverlapMatrix[wfns1, wfns2, pairs];
+WFOverlap//Clear
+
+
+Options[WFOverlap]=
+  {
+    "CheckGrid"->False
+    };
+WFOverlap[wfns1_, wfns2_, Optional[All, All], ops:OptionsPattern[]]:=
+  WFOverlapMatrix[wfns1, wfns2, TrueQ@OptionValue["CheckGrid"]];
+WFOverlap[wfns1_, wfns2_, 
+  pairs:(_?basicStatePairQ)|(_?statePairListQ), ops:OptionsPattern[]
+  ]:=
+  WFOverlapElements[wfns1, wfns2, pairs, TrueQ@OptionValue["CheckGrid"]];
 
 
 (* ::Subsection:: *)
@@ -1309,6 +1992,716 @@ SelfConsistentWavefunctions[
           ];
         ]
       ]
+
+
+(* ::Subsection:: *)
+(*Phases*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*WFScale*)
+
+
+
+WFScale[gfs:{__GridFunctionObject}, n_]:=
+  Map[GFScale[#, n]&, gfs];
+WFScale[wf_, n_]:=
+  WavefunctionsObject[
+    {
+      wf["Energies"],
+      WFScale[wf["Wavefunctions"], n]
+      },
+    wf["Grid"]
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*WFRephase*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*iWFRephaseIterative*)
+
+
+
+(* ::Text:: *)
+(*
+	Idea is that the things with max Abs overlap should be forced all positive or all negative. We do this pairwise and iteratively to compute as few overlaps as possible.
+*)
+
+
+
+iWFRephaseIterative[baseOrder_, vals_]:=
+  Module[
+    {
+      range=Range[Length@vals],
+      orders={},
+      prev=1,
+      sign=baseOrder,
+      signs,
+      phases,
+      new,
+      comp
+      },
+    signs=
+      Table[
+        (*
+					I know you're thinking "is this the best way?" 
+					I asked myself the same thing and I think it is for *large* sets of overlaps. 
+					For smaller ones maybe not but in the small case it's fast enough anyway to not care 
+				*)
+        AppendTo[orders, prev];
+        comp=Complement[range, orders ];
+        phases=vals[[comp]].vals[[ prev ]];
+        new=Ordering[Abs@phases, -1][[1]];
+        prev=comp[[new]];
+        sign*=Sign@phases[[new]],
+        {n, 2, Length@vals}
+        ];
+    AppendTo[orders, prev];
+    PrependTo[signs, baseOrder];
+    {
+      signs,
+      orders
+      }
+  ];
+iWFRephaseIterative~SetAttributes~HoldRest;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*iWFRephaseBlock*)
+
+
+
+iWFRephaseBlock[baseOrder_, vals_]:=
+  Module[
+    {
+      block,
+      range=Range[Length@vals],
+      orders={},
+      prev=1,
+      sign=baseOrder,
+      signs,
+      phases,
+      new,
+      comp
+      },
+    block=vals.Transpose[vals];
+    signs=
+      Table[
+        AppendTo[orders, prev];
+        comp=Complement[range, orders];
+        phases=block[[prev, comp]];
+        new=Ordering[Abs@phases, -1][[1]];
+        prev=comp[[new]];
+        sign*=Sign@phases[[new]],
+        {n, 2, Length@vals}
+        ];
+    AppendTo[orders, prev];
+    PrependTo[signs, baseOrder];
+    {
+      signs,
+      orders
+      }
+  ];
+iWFRephaseBlock~SetAttributes~HoldRest;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*iWFDirectRephase*)
+
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*rephaseThingies*)
+
+
+
+(* ::Text:: *)
+(*
+	This should be made smarter, but the basic idea is that the overlap of two similar wavefunctions will determine its phase by being either positive or negative and there are almost no other options.
+	This requires the overlaps to truly be computed across similar wavefunctions.
+*)
+
+
+
+If[OwnValues[rephaseThingies]=={},
+  rephaseThingies:=
+    rephaseThingies=
+      Compile[{{overlaps, _Real, 1}, {init, _Integer}, {tol, _Real}},
+        Module[{prev, el, ov=overlaps,swapEl=init},
+          Prepend[
+            Table[
+              el=ov[[i]];
+              If[el<-tol, swapEl=-swapEl];
+              swapEl,
+              {i, Length@ov}
+              ],
+            init
+            ]
+          ],
+        CompilationTarget->"C"
+        ]
+  ]
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*iWFDirectRephase*)
+
+
+
+iWFDirectRephase[baseOrder_, vals_]:=
+  Module[
+    {
+      overlaps,
+      phases,
+      basePhase=baseOrder
+      },
+    overlaps=
+      MapThread[Dot, {Most@vals, Rest@vals}];
+    (* might make sense to only compute the necessary elements?*)
+    phases=rephaseThingies[overlaps, basePhase, 0];
+    {
+      phases,
+      Range[Length[vals]]
+      }
+    ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*iWFRephaseOrdering*)
+
+
+
+(* ::Text:: *)
+(*
+	Idea is that the things with max Abs overlap should be forced all positive or all negative. We do this pairwise and iteratively to compute as few overlaps as possible.
+*)
+
+
+
+iWFRephaseOrdering[wfns:{_GridFunctionObject, __}, baseOrder:1|-1:1, mode_]:=
+  Module[
+    {
+      ovecs,
+      bvecs,
+      vals,
+      moo=mode
+      },
+    (* 
+			this function is nice because it also does some typechecking for us
+		*)
+    vals=
+      getWFOverlapVals[
+        <|"Wavefunctions"->{wfns[[1]] }|>,
+        <|"Wavefunctions"-> wfns[[2;;]]|>
+        ];
+    vals=Join@@vals;
+    If[!MemberQ[{"Iterative", "Block", "Direct"}, moo],
+      If[Length@vals>3000, 
+        moo="Iterative",
+        moo="Block"
+        ]
+      ];
+    Switch[moo,
+      "Direct",
+        iWFDirectRephase[baseOrder, vals],
+      "Iterative",
+        iWFRephaseIterative[baseOrder, vals],
+      _,
+        iWFRephaseBlock[baseOrder, vals]
+      ]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*WFRephase*)
+
+
+
+(* ::Text:: *)
+(*
+	Need to include phase correction over two states now...or across states? Force orthog?
+*)
+
+
+
+Options[WFRephase]=
+  {
+    "TargetState"->2,
+    "BasePhase"->1,
+    "Reorder"->False,
+    Method->Automatic
+    };
+WFRephase[{energies_, wfns:{_GridFunctionObject, __}}, ops:OptionsPattern[]]:=
+  PackageExceptionBlock["WFRephase"]@
+    Module[{res, new, sort, phases},
+      res=
+        iWFRephaseOrdering[wfns, 
+          -1^(!TrueQ[OptionValue["BasePhase"]>1]),
+          OptionValue[Method]
+          ];
+      {phases, sort}=res;
+      If[TrueQ@OptionValue["Reorder"],
+        {energies[[sort]], MapThread[Scale, {wfns[[sort]], phases}]},
+        {energies, MapThread[Scale, {wfns, phases[[Ordering@sort]]}]}
+        ]
+      ];
+WFRephase[wf:{__WavefunctionsObject}, ops:OptionsPattern[]]:=
+  Module[
+    {
+      target,
+      fullWfn,
+      fullScaling,
+      res,
+      phases,
+      sort
+      },
+    target=OptionValue["TargetState"];
+    fullWfn=
+      #["Wavefunctions"][[target]]&/@wf;
+    res=
+        iWFRephaseOrdering[
+          fullWfn,
+          -1^(!TrueQ[OptionValue["BasePhase"]>1]),
+          OptionValue[Method]
+          ];
+    {phases, sort}=res;
+    MapThread[WFScale, {wf, phases}]
+    ];
+WFRephase[wf_WavefunctionsObject, ops:OptionsPattern[]]:=
+  If[Length@wf>1,
+    WavefunctionsObject[
+      WFRephase[
+        {
+          wf["Energies"],
+          wf["Wavefunctions"]
+          },
+        ops
+        ],
+      wf["Wavefunctions"][[1]]["Grid"]
+      ],
+    wf
+    ];
+
+
+(* ::Subsubsection::Closed:: *)
+(*WFMerge*)
+
+
+
+Options[WFMerge]=
+  {
+    "CheckGrid"->True
+    };
+WFMerge[wf:{__WavefunctionsObject}, OptionsPattern[]]:=
+  PackageExceptionBlock["WFMerge"]@
+    Module[
+      {
+        grids,
+        energies,
+        functions
+        },
+      If[OptionValue["CheckGrid"]=!=False,
+        grids=#["Wavefunctions"][[1]]["Grid"]&/@wf,
+        If[Length@DeleteDuplicates[grids]>1,
+          PackageRaiseException[
+            Automatic,
+            "Can't merge wavefunctions over different grids"
+            ]
+          ],
+        grids={wf[[1]]["Wavefunctions"][[1]]["Grid"]}
+        ];
+      energies=Apply[Join, #["Energies"]&/@wf];
+      functions=Apply[Join, #["Wavefunctions"]&/@wf];
+      WavefunctionsObject[
+        {
+          energies,
+          functions
+          },
+        grids[[1]]
+        ]
+      ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*WFCorrectPhase*)
+
+
+
+Options[WFCorrectPhase]=
+  {
+    "NodelessGroundState"->True
+    };
+WFCorrectPhase[wfns_List, ops:OptionsPattern[]]:=
+  Module[{phase, wfs},
+    If[TrueQ@OptionValue["NodelessGroundState"],
+      phase=Sign@wfns[[1]];
+      wfs=phase*#&/@wfns,
+      phase=If[Total@wfns[[1]]<0, -1, 1];
+      wfs=phase*wfns
+      ];
+    wfs
+    ];
+WFCorrectPhase[wfns_, ops:OptionsPattern[]]:=
+PackageExceptionBlock["WFCorrectPhase"]@
+  Module[
+    {
+      wfs=Flatten@#["Values"]&/@wfns["Wavefunctions"],
+      gfs,
+      grid=wfns["Grid"]
+      },
+    wfs=WFCorrectPhase[Developer`ToPackedArray[wfs], ops];
+    gfs=GridFunctionObject[grid, #]&/@wfs;
+    WavefunctionsObject@
+      ReplacePart[
+        Replace[wfns, HoldPattern[WavefunctionsObject[a_]]:>a],
+        "Wavefunctions"->gfs
+        ]
+    ]
+
+
+(* ::Subsection:: *)
+(*Spectra*)
+
+
+
+(* ::Subsubsection::Closed:: *)
+(*WFFrequencies*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*subtractPairs*)
+
+
+
+subtractPairs[l_, r_]:=
+  Which[
+    Length[l]==0||Length[r]==0,
+      r-l,
+    Length[l]==1&&Length[r]==1,
+      r[[1]]-l[[1]],
+    Length[l]==1,
+      r-l[[1]],
+    Length[r]==1,
+      r[[1]]-l,
+    True,
+      Map[subtractPairs[#, r]&, l]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*calcFreqSubVals*)
+
+
+
+calcFreqSubVals[spec_]:=
+  MapThread[
+    pullOpVals[
+      #,
+      subtractPairs[#[[1]], #2[[1]]]
+      ]&,
+    spec
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*iWFFrequencies*)
+
+
+
+iWFFrequencies//Clear
+iWFFrequencies[engs_, n0_Integer]:=
+  If[Length@engs>n0,
+    engs[[n0+1;;]]-engs[[n0]],
+    PackageRaiseException[
+      Automatic,
+      "No enough energies to calculate frequencies from ``",
+      n0
+      ]
+    ];
+iWFFrequencies[engs_, fullTSpec_?statePairListQ]:=
+  calcFreqSubVals@
+    getStatePairSelections[engs, fullTSpec];
+iWFFrequencies[engs_, fullTSpec_?basicStatePairQ]:=
+  First@iWFFrequencies[engs, {fullTSpec}];
+iWFFrequencies[engs_]:=
+  iWFFrequencies[engs, {1, 2;;Length[engs]}];
+iWFFrequencies[engs_, a_]:=
+  PackageRaiseException[
+    Automatic,
+    "Can't process state specification ``",
+    a
+    ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*WFFrequencies*)
+
+
+
+WFFrequencies[wfns_WavefunctionsObject, spec_]:=
+  PackageExceptionBlock["Frequencies"]@
+    iWFFrequencies[wfns["Energies"], spec];
+WFFrequencies[wfns_WavefunctionsObject]:=
+  PackageExceptionBlock["Frequencies"]@
+    iWFFrequencies[wfns["Energies"]]
+
+
+(* ::Subsubsection::Closed:: *)
+(*getDipoleVecs*)
+
+
+
+getDipoleVecs[wfns_, dfs_]:=
+  Module[
+    {
+      wfnGrid,
+      gps,
+      dipVals
+      },
+    wfnGrid=WFGrid@wfns;
+    gps=wfnGrid@"Points";
+    dipVals=
+      Developer`ToPackedArray@
+        If[ListQ@dfs, 
+          Map[GridMap[#, gps]&, dfs],
+          Transpose[GridMap[dfs, gps], RotateLeft[Range[Depth[gps]-1]]]
+          ];
+    If[Length@dipVals<3,
+      PackageRaiseException[
+        Automatic,
+        "Too few dipole functions. Requires x, y, and z components."
+        ],
+      dipVals=dipVals[[;;3]]
+      ];
+    Map[
+      GridFunctionObject[wfnGrid, #]&,
+      dipVals
+      ]
+    ];
+
+
+(* ::Subsubsection::Closed:: *)
+(*WFTransitionMoments*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*iWFTransitionMoments*)
+
+
+
+iWFTransitionMoments[
+  wfns_,
+  dipoleVectors:{_List, _List, _List},
+  transitions_
+  ]:=
+  Map[
+    Developer`ToPackedArray@
+      With[{vec=#},
+        WFOperatorMatrixElements[
+          wfns,
+          transitions->(vec&)
+          ]
+        ]&,
+    dipoleVectors
+    ]
+
+
+(* ::Text:: *)
+(*
+	If we aren\[CloseCurlyQuote]t given the dipole vectors explicitly we\[CloseCurlyQuote]ll generate them
+*)
+
+
+
+iWFTransitionMoments[
+  wfns_,
+  dfs_,
+  transitions_
+  ]:=
+  Module[
+    {
+      dipoleVecs
+      },
+    dipoleVecs=getDipoleVecs[wfns, dfs];
+    If[!AllTrue[dipoleVecs, GridFunctionObjectQ],
+      PackageRaiseException[
+        Automatic,
+        "Dipole functions didn't create 3 dipole vectors"
+        ]
+      ];
+    iWFTransitionMoments[
+      wfns,
+      Flatten@#@"Values"&/@dipoleVecs,
+      transitions
+      ]
+    ]
+
+
+iWFTransitionMoments[
+  wfns_,
+  dfs_
+  ]:=
+  iWFTransitionMoments[wfns, dfs, {1, 2;;Length[wfns]}]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*postProcessTrans*)
+
+
+
+postProcessTrans[transitions_, moms_]:=
+  Which[
+    VectorQ[moms, Internal`RealValuedNumericQ],
+      moms,
+    Length[moms]==3&&MatrixQ[moms, Internal`RealValuedNumericQ],
+      Developer`ToPackedArray@Transpose@moms,
+    True,
+      MapThread[
+        postProcessTrans, 
+        {transitions, Transpose@moms}
+        ]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*WFTransitionMoments*)
+
+
+
+WFTransitionMoments[
+  wfns_WavefunctionsObject,
+  dipole_,
+  transitions_
+  ]:=
+  PackageExceptionBlock["TransitionMoments"]@
+    Module[
+      {
+        moms=iWFTransitionMoments[wfns, dipole, transitions]
+        },
+      postProcessTrans[transitions, moms]
+      ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*WFOscillatorStrengths*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*normTmVecs*)
+
+
+
+normTMVecs[tms_]:=
+  Module[{d=Depth[tms], dim=Dimensions[tms]},
+    If[Length[dim]==d-1&&dim[[-1]]==3,
+      Map[
+        Dot[#, #]&,
+        tms,
+        {d-2}
+        ],
+      normTMVecs/@tms
+      ]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*iWFOscillatorStrengths*)
+
+
+
+iWFOscillatorStrengths[
+  wfs_,
+  dip_,
+  transitions_
+  ]:=
+  Module[
+    {
+      tmoms,
+      norm2ed
+      },
+    tmoms=WFTransitionMoments[wfs, dip, transitions];
+    norm2ed=normTMVecs[tmoms];
+    norm2ed/Max[norm2ed]
+    ];
+iWFOscillatorStrengths[
+  wfs_,
+  dip_,
+  n_Integer
+  ]:=
+  iWFOscillatorStrengths[
+    wfs,
+    dip,
+    {n, n+1;;Length[wfs]}
+    ];
+iWFOscillatorStrengths[
+  wfs_,
+  dip_
+  ]:=
+  iWFOscillatorStrengths[
+    wfs,
+    dip,
+    1
+    ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*WFOscillatorStrengths*)
+
+
+
+WFOscillatorStrengths[wfs_WavefunctionsObject, dip_, spec___]:=
+  PackageExceptionBlock["OscillatorStrengths"]@
+    iWFOscillatorStrengths[wfs, dip, spec]
+
+
+(* ::Subsubsection::Closed:: *)
+(*WFIntensities*)
+
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*transposeInts*)
+
+
+
+transposeInts[freqs_, oscs_]:=
+  Which[
+    Depth[freqs]==1,
+      {freqs, oscs},
+    Depth[freqs]==2,
+      Transpose[{freqs, oscs}],
+    Depth[freqs]-1==Length@Dimensions[freqs],
+      Transpose[{freqs, oscs}, RotateRight[Range[Length@Dimensions[freqs]]]],
+    True,
+      MapThread[
+        transposeInts,
+        {freqs, oscs}
+        ]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*WFIntensities*)
+
+
+
+WFIntensities[wfs_WavefunctionsObject, dip_, spec___]:=
+  Module[
+    {
+      freqs,
+      oscs
+      },
+    freqs=WFFrequencies[wfs, spec];
+    oscs=WFOscillatorStrengths[wfs, dip, spec];
+    transposeInts[freqs, #/Max[#]&[freqs*oscs]]
+    ]
 
 
 End[];

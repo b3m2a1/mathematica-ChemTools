@@ -103,7 +103,7 @@ Cell[BoxData[
    "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"aac44946-66ff-4846-b302-cb14e47ba8ca"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -126,22 +126,35 @@ Cell[BoxData[{
     RowBox[{
      RowBox[{"{", "\n", "\t\t\t", 
       RowBox[{
-      "freqs", ",", "\n", "\t\t\t", "pts", ",", "\n", "\t\t\t", "data", ",", 
-       "\n", "\t\t\t", "padding"}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
-     
+      "freqs", ",", "\n", "\t\t\t", "pts", ",", "\n", "\t\t\t", "ints", ",", 
+       "\n", "\t\t\t", "data", ",", "\n", "\t\t\t", "padding"}], "\n", 
+      "\t\t\t", "}"}], ",", "\n", "\t\t", 
      RowBox[{
       RowBox[{"freqs", "=", 
        RowBox[{"spec", "[", "\"\<Frequencies\>\"", "]"}]}], ";", "\n", "\t\t", 
+      RowBox[{"ints", "=", 
+       RowBox[{"spec", "[", "\"\<Intensities\>\"", "]"}]}], ";", "\n", "\t\t", 
       RowBox[{"pts", "=", 
-       RowBox[{"spec", "[", "\"\<Points\>\"", "]"}]}], ";", "\n", "\t\t", 
-      RowBox[{"padding", "=", 
        RowBox[{"Transpose", "[", 
         RowBox[{"{", 
-         RowBox[{"freqs", ",", " ", 
+         RowBox[{"freqs", ",", " ", "ints"}], "}"}], "]"}]}], ";", "\n", 
+      "\t\t", 
+      RowBox[{"padding", "=", "\n", "\t\t\t", 
+       RowBox[{"Transpose", "[", "\n", "\t\t\t\t", 
+        RowBox[{"{", "\n", "\t\t\t\t\t", 
+         RowBox[{"freqs", ",", " ", "\n", "\t\t\t\t\t", 
           RowBox[{"ConstantArray", "[", 
-           RowBox[{"0.", ",", " ", 
-            RowBox[{"Length", "@", "freqs"}]}], "]"}]}], "}"}], "]"}]}], ";", 
-      "\n", "\t\t", 
+           RowBox[{
+            RowBox[{"Rescale", "[", 
+             RowBox[{
+              RowBox[{"-", 
+               RowBox[{"10.", "^", 
+                RowBox[{"-", "6"}]}]}], ",", " ", 
+              RowBox[{"{", 
+               RowBox[{"0", ",", " ", "1"}], "}"}], ",", " ", 
+              RowBox[{"MinMax", "[", "ints", "]"}]}], "]"}], ",", " ", 
+            RowBox[{"Length", "@", "freqs"}]}], "]"}]}], "\n", "\t\t\t\t\t", 
+         "}"}], "\n", "\t\t\t\t", "]"}]}], ";", "\n", "\t\t", 
       RowBox[{"data", "=", "\n", "\t\t\t", 
        RowBox[{"Riffle", "[", "\n", "\t\t\t\t", 
         RowBox[{
@@ -155,15 +168,19 @@ Cell[BoxData[{
          RowBox[{
           RowBox[{"{", "\n", "\t\t\t\t\t", 
            RowBox[{"ops", ",", "\n", "\t\t\t\t\t", 
-            RowBox[{"PlotRange", "\[Rule]", "All"}], ",", "\n", "\t\t\t\t\t", 
-            
+            RowBox[{"PlotRange", "\[Rule]", 
+             RowBox[{"{", 
+              RowBox[{"All", ",", " ", 
+               RowBox[{"Threshold", "@", 
+                RowBox[{"MinMax", "@", "ints"}]}]}], "}"}]}], ",", "\n", 
+            "\t\t\t\t\t", 
             RowBox[{"PlotStyle", "\[Rule]", "Red"}]}], "\n", "\t\t\t\t\t", 
            "}"}], ",", "\n", "\t\t\t\t", 
           RowBox[{"Options", "@", "ListLinePlot"}]}], "\n", "\t\t\t\t", 
          "]"}]}], "\n", "\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}], 
-  ";"}]}], \
-"CodeInput",ExpressionUUID->"2555089b-2204-4169-880d-7dd0d437e832"]
-}, Open  ]],
+  ";"}]}], "CodeInput",ExpressionUUID->"2555089b-2204-4169-880d-7dd0d437e832"]\
+
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -226,7 +243,7 @@ Cell[BoxData[{
       "]"}]}]}], "\n", "\t\t", 
    "]"}]}]}], \
 "CodeInput",ExpressionUUID->"b33a8b92-dce3-4ca0-8ff2-1d945815fdbd"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -277,7 +294,7 @@ Cell[BoxData[
      RowBox[{"spec", ",", " ", "ops"}], "]"}]}], "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"8acd5a79-04a7-4605-adfd-20522cd29add"]
-}, Closed]]
+}, Open  ]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -2207,8 +2224,8 @@ Cell[BoxData[
                 ",", "\n", "\t\t\t\t\t", 
                RowBox[{"PassEventsUp", "\[Rule]", "False"}]}], "\n", 
               "\t\t\t\t\t", "}"}]}]}], "\n", "\t\t\t\t", "]"}], ",", "\n", 
-          "\t\t\t", "#"}], "\n", "\t\t\t", "]"}], "&"}]}]}], "\n", "\t", 
-     "]"}]}], "\n", "\t", "]"}]}]], "CodeInput",
+          "\t\t\t", "#"}], "\n", "\t\t\t", "]"}], "&"}]}]}], "\n", "\t", "]"}]
+     }], "\n", "\t", "]"}]}]], "CodeInput",
  CellChangeTimes->{{3.6941860852714376`*^9, 3.6941860963436537`*^9}, {
    3.694186204638138*^9, 3.694186246315735*^9}, {3.694186287181645*^9, 
    3.6941863810789623`*^9}, {3.6941864135779037`*^9, 3.694186440097644*^9}, {
@@ -2387,7 +2404,16 @@ Cell["", "SectionSeparator",ExpressionUUID->"7caa748b-78fc-4082-aded-\
 e57495d40106"]
 },
 WindowSize->{808, 755},
-WindowMargins->{{72, Automatic}, {Automatic, 0}},
+WindowMargins->{{Automatic, 161}, {0, Automatic}},
+TaggingRules->{
+ "UUIDButtons" -> {
+   "Active" -> {
+     "Button-b8297203-6b28-48f9-8ba3-edbd5eb431d2" -> False, 
+      "Button-8c92aebb-2725-4f7c-a6a8-f90e3a4dce9c" -> False, 
+      "Button-ede3a027-3279-40a0-8aa4-1fcc5f60357d" -> False, 
+      "Button-89ffd2c3-ec41-4179-a9b1-8e28670bca2c" -> False, 
+      "Button-ca46e5e0-4fd1-47e8-8cf6-72998922b757" -> False, 
+      "Button-a6d68254-3684-4d32-83fc-e5ef6f443930" -> False}}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

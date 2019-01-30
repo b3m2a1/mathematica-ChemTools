@@ -521,26 +521,55 @@ Cell[BoxData[
    RowBox[{
     RowBox[{"{", "\n", "\t\t\t", 
      RowBox[{
-      RowBox[{"fdiffs", "=", 
-       RowBox[{"Differences", "[", 
-        RowBox[{"spec", "[", "\"\<Frequencies\>\"", "]"}], "]"}]}], ",", "\n",
-       "\t\t\t", "stdev", ",", "\n", "\t\t\t", "mean", ",", "\n", "\t\t\t", 
-      "rat"}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
+      RowBox[{"freqs", "=", 
+       RowBox[{"spec", "[", "\"\<Frequencies\>\"", "]"}]}], ",", "\n", 
+      "\t\t\t", "subDiffs", ",", "\n", "\t\t\t", "fdiffs", ",", "\n", 
+      "\t\t\t", "stdev", ",", "\n", "\t\t\t", "mean", ",", "\n", "\t\t\t", 
+      "rat", ",", "\n", "\t\t\t", "range", ",", "\n", "\t\t\t", "subDiv"}], 
+     "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
     RowBox[{
+     RowBox[{"freqs", "=", "\n", "\t\t\t", 
+      RowBox[{"Pick", "[", 
+       RowBox[{"freqs", ",", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"#", ">", ".0001"}], "&"}], "/@", 
+         RowBox[{"Rescale", "[", 
+          RowBox[{"spec", "[", "\"\<Intensities\>\"", "]"}], "]"}]}]}], 
+       "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"fdiffs", "=", 
+      RowBox[{"Differences", "[", "freqs", "]"}]}], ";", "\n", "\t\t", 
      RowBox[{"stdev", "=", 
       RowBox[{"StandardDeviation", "@", "fdiffs"}]}], ";", "\n", "\t\t", 
      RowBox[{"mean", "=", 
       RowBox[{"Mean", "@", "fdiffs"}]}], ";", "\n", "\t\t", 
      RowBox[{"rat", "=", 
       RowBox[{"stdev", "/", "mean"}]}], ";", "\n", "\t\t", 
-     RowBox[{"If", "[", 
+     RowBox[{"(*", " ", 
       RowBox[{
-       RowBox[{"rat", "<", ".1"}], ",", "\n", "\t\t\t", "\"\<Continuous\>\"", 
-       ",", "\n", "\t\t\t", "\"\<Discrete\>\""}], "\n", "\t\t\t", "]"}]}]}], 
-   "\n", "\t\t", 
+       RowBox[{
+        RowBox[{
+        "I", " ", "might", " ", "actually", " ", "want", " ", "to", " ", 
+         "filter", " ", "out", " ", "the", " ", "non"}], "-", 
+        RowBox[{
+        "zero", " ", "frequencies", " ", "before", " ", "I", " ", "do", " ", 
+         "all", " ", "this"}]}], "..."}], " ", "*)"}], "\n", "\t\t", 
+     RowBox[{"range", "=", 
+      RowBox[{"Subtract", "@@", 
+       RowBox[{"Reverse", "@", 
+        RowBox[{"MinMax", "[", "freqs", "]"}]}]}]}], ";", "\n", "\t\t", 
+     RowBox[{"If", "[", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"rat", "<", "10"}], "&&"}], "*)"}], 
+      RowBox[{
+       RowBox[{
+        RowBox[{"mean", "/", "range"}], "<", ".0005"}], ",", "\n", "\t\t\t", 
+       "\"\<Continuous\>\"", ",", "\n", "\t\t\t", "\"\<Discrete\>\""}], "\n", 
+      "\t\t\t", "]"}]}]}], "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"1e4ef713-896a-4285-bcb7-7460c6363b6c"]
-}, Closed]]
+}, Open  ]]
 }, Open  ]]
 }, Open  ]],
 
@@ -806,7 +835,7 @@ Cell[BoxData[
      "&"}]}], "\n", "\t\t", 
    "]"}]}]], \
 "CodeInput",ExpressionUUID->"ea6bd3f5-21e4-4632-a748-2009c9e75e6e"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -843,9 +872,10 @@ Cell[BoxData[
   RowBox[{"ChemSpectrumScale", "[", 
    RowBox[{"spec_", ",", " ", "\n", "\t", 
     RowBox[{"sc_", "?", "NumericQ"}], ",", " ", "\n", "\t", 
-    RowBox[{"o_", "?", 
-     RowBox[{"NumericQ", ":", "0"}]}]}], "\n", "\t", "]"}], ":=", "\n", "\t", 
-  
+    RowBox[{"o", ":", 
+     RowBox[{"(", 
+      RowBox[{"_", "?", "NumericQ"}], ")"}], ":", "0"}]}], "\n", "\t", "]"}], 
+  ":=", "\n", "\t", 
   RowBox[{"ChemSpectrumTransform", "[", 
    RowBox[{"spec", ",", " ", "\n", "\t\t", 
     RowBox[{
@@ -1474,7 +1504,25 @@ Cell["", "SectionSeparator",ExpressionUUID->"7caa748b-78fc-4082-aded-\
 e57495d40106"]
 },
 WindowSize->{808, 755},
-WindowMargins->{{131, Automatic}, {Automatic, 46}},
+WindowMargins->{{Automatic, 84}, {Automatic, 0}},
+TaggingRules->{
+ "UUIDButtons" -> {
+   "Active" -> {
+     "Button-590233c6-9680-4d8a-a854-3b15b03893d8" -> False, 
+      "Button-33d6ec4d-a39a-4e80-8d92-b8c5561caada" -> False, 
+      "Button-c0a09a32-e26b-44bc-931b-a7a8eaa0a4c0" -> False, 
+      "Button-4f342a03-9e58-4750-a06d-ce41ba26caad" -> False, 
+      "Button-a28516f9-2411-4ad5-87c4-dde843a65756" -> False, 
+      "Button-451406bf-3901-4e2c-bbfb-9864f8531f68" -> False, 
+      "Button-0d27d59a-6c0a-4062-941e-7021a66cffb6" -> False, 
+      "Button-d418e9af-6b42-439f-a2d9-cf94f63c942b" -> False, 
+      "Button-4a98cbb2-0f4f-4744-9fda-a829730130bc" -> False, 
+      "Button-b8297203-6b28-48f9-8ba3-edbd5eb431d2" -> False, 
+      "Button-8c92aebb-2725-4f7c-a6a8-f90e3a4dce9c" -> False, 
+      "Button-ede3a027-3279-40a0-8aa4-1fcc5f60357d" -> False, 
+      "Button-89ffd2c3-ec41-4179-a9b1-8e28670bca2c" -> False, 
+      "Button-ca46e5e0-4fd1-47e8-8cf6-72998922b757" -> False, 
+      "Button-a6d68254-3684-4d32-83fc-e5ef6f443930" -> False}}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

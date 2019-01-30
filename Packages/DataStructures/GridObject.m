@@ -86,7 +86,7 @@ InterfaceOverride[CoordinateGridObject]@
     GridDepth[g];
 InterfaceOverride[CoordinateGridObject]@
   Map[f_, g_CoordinateGridObject]:=
-    g["Grid"]=GridMap[f, g];
+    (*g["Grid"]=*)GridMap[f, g];
 InterfaceOverride[CoordinateGridObject]@
   CoordinateBounds[g_CoordinateGridObject]:=
     GridBounds[g];

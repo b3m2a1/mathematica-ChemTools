@@ -184,7 +184,7 @@ kroneckerSum[m1_, m2_]:=
 
 
 ChemDVRKroeneckerProductKineticEnergy[keMats:{__List}]:=
-  Fold[kroneckerSum, keMats]
+  Fold[kroneckerSum, Reverse@keMats]
 
 
 (*
@@ -579,108 +579,72 @@ Options[iChemDVRDefaultKineticEnergy1D]=
     };
 iChemDVRDefaultKineticEnergy1D[
   elementFunction_,
-  gridpoints_List?(VectorQ[#, Internal`RealValuedNumericQ]&),
-  ops:OptionsPattern[]
-  ]:=
+  gridpoints_List?(VectorQ[#1,Internal`RealValuedNumericQ]&),
+  ops:OptionsPattern[]]:=
   Module[
     {
-      gn=Length@gridpoints,
-      dx,
-      hb=OptionValue["HBar"],
-      m,
-      sf,
-      prec,
-      coeff,
-      tmat,
-      ke,
-      elf,
-      kelfOps
+      gn=Length[gridpoints],dx,
+      hb=OptionValue["HBar"],m,sf,prec,
+      coeff,tmat,ke,elf,kelfOps
       },
-    (** --------------------------- Element Function --------------------------- **)
     elf=
       Replace[elementFunction,
         {
-          s_String:>
-            iChemDVRDefaultKineticEnergyElementFunction[s],
-          {s:Except["BasisSet", _String], o___}:>
-            iChemDVRDefaultKineticEnergyElementFunction[s, o]
-          }
+          s_String:>iChemDVRDefaultKineticEnergyElementFunction[s],
+          {s:Except["BasisSet",_String],o___}:>
+            iChemDVRDefaultKineticEnergyElementFunction[s,o]}
         ];
     kelfOps=
       Replace[elementFunction,
         {
-          k:{"BasisSet", __?(Not@*OptionQ), o___?OptionQ}:>
+          k:{"BasisSet",__?(Not@*OptionQ),o___?OptionQ}:>
             Join[
               FilterRules[
-                {
-                  o, 
-                  "MeshSpacing"->1
-                  },
-                Except[Alternatives@@Keys@Options@iChemDVRBasisSetKineticEnergy]
+                {o,"MeshSpacing"->1},
+                Except[Alternatives@@Keys[Options[iChemDVRBasisSetKineticEnergy]]]
                 ],
-              Lookup[
-                $iChemDVRDefaultKineticEnergyOptions,
-                Key@Take[k, 2],
-                {}
-                ]
+              Lookup[$iChemDVRDefaultKineticEnergyOptions,Key[Take[k,2]],{}]
               ],
-          {s_String, o___?OptionQ}:>
-            Join[
-              {o},
-              Lookup[$iChemDVRDefaultKineticEnergyOptions,
-                s,
-                {}
-                ]
-              ],
-          s_String:>
-            Lookup[$iChemDVRDefaultKineticEnergyOptions,
-              s,
-              {}
-              ],
-          {_, o___?OptionQ}:>
-            {o},
+          {s_String,o___?OptionQ}:>
+            Join[{o},Lookup[$iChemDVRDefaultKineticEnergyOptions,s,{}]],
+          s_String:>Lookup[$iChemDVRDefaultKineticEnergyOptions,s,{}],
+          {_,o___?OptionQ}:>{o},
           _->{}
           }
         ];
-    (** --------------------------- Parameter Setup--------------------------- **)
-    m=Lookup[kelfOps, "Mass", OptionValue["Mass"]];
+    m=Lookup[kelfOps,"Mass",OptionValue["Mass"]];
     dx=
-      Replace[Lookup[kelfOps, "MeshSpacing", OptionValue["MeshSpacing"]],
+      Replace[
+        Lookup[kelfOps,"MeshSpacing",OptionValue["MeshSpacing"]],
         Automatic:>gridpoints[[2]]-gridpoints[[1]]
         ];
-    hb=Lookup[kelfOps, "Mass", OptionValue["HBar"]];
+    hb=Lookup[kelfOps,"HBar",OptionValue["HBar"]];
     sf=
       Replace[
-        Lookup[kelfOps, "ScalingFactor", OptionValue["ScalingFactor"]],
+        Lookup[kelfOps,"ScalingFactor",OptionValue["ScalingFactor"]],
         Except[_?NumericQ]->1
         ];
-    prec=Lookup[kelfOps, Precision, OptionValue[Precision]];
+    prec=Lookup[kelfOps,Precision,OptionValue[Precision]];
     tmat=OptionValue["TransformationMatrix"];
-    If[SquareMatrixQ@tmat&&Length@tmat!=gn,
+    If[SquareMatrixQ[tmat]&&Length[tmat]!=gn,
       PackageRaiseException[
         Automatic,
         "\"TransformationMatrix\" dimension (``) and grid dimension (``) don't match",
-        Short@elf
+        Short[elf]
         ]
       ];
-    coeff=sf*(hb^2)/(2*m*dx^2);
-    (** --------------------------- Matrix Calculation --------------------------- **)
+    coeff=sf*(hb^2)/(2*m*(dx^2));
     ke=
       Which[
-        MatchQ[elf, {"BasisSet", ___}],
+        MatchQ[elf,{"BasisSet",___}],
           sf*
-            iChemDVRBasisSetKineticEnergy[
-              Rest@elf,
-              gn
-              ],
-        Quiet@NumericQ@elf[1, 1],
-          Table[elf[i, j], {i, gn}, {j, gn}],
-        Quiet@NumericQ@elf[1, 1, gn],
-          Table[elf[i, j, gn], {i, gn}, {j, gn}],
-        Quiet@NumericQ@elf[1, 1, gn, gridpoints[[1]], gridpoints[[1]]],
-          Table[
-            elf[i, j, gn, gridpoints[[i]], gridpoints[[j]]], 
-            {i, gn}, {j, gn}],
+            iChemDVRBasisSetKineticEnergy[Rest[elf],gn],
+        Quiet[NumericQ[elf[1,1]]],
+          Table[elf[i,j],{i,gn},{j,gn}],
+        Quiet[NumericQ[elf[1,1,gn]]],
+          Table[elf[i,j,gn],{i,gn},{j,gn}],
+        Quiet[NumericQ[elf[1,1,gn,gridpoints[[1]],gridpoints[[1]]]]],
+          Table[elf[i,j,gn,gridpoints[[i]],gridpoints[[j]]],{i,gn},{j,gn}],
         True,
           PackageRaiseException[
             "DVRRun",
@@ -689,23 +653,20 @@ Expected to take (i, j), (i, j, N) or (i, j, N, x[i], x[j])",
             "MessageParameters"->{elf}
             ]
         ];
-    If[!MatrixQ[ke, NumericQ], 
+    If[!MatrixQ[ke,NumericQ],
       PackageRaiseException[
         Automatic,
         "Kinetic energy function `` returned non-numerical KE",
-        Short@elf
+        Short[elf]
         ]
       ];
-    (** --------------------------- Post Processing --------------------------- **)
-    If[SquareMatrixQ@tmat,
-      ke=tmat.ke.Transpose[tmat]
+    If[SquareMatrixQ[tmat],ke=tmat.ke.Transpose[tmat]];
+    If[Lookup[kelfOps,"IncludeCoefficient",OptionValue["IncludeCoefficient"]],
+      ke*=coeff
       ];
-    If[Lookup[kelfOps, "IncludeCoefficient", OptionValue["IncludeCoefficient"]], 
-      ke=coeff*ke
-      ];
-    If[prec===Infinity,
+    If[prec===\[Infinity],
       ke,
-      N[ke, prec]
+      N[ke,prec]
       ]
     ];
 iChemDVRDefaultKineticEnergy1D[
@@ -714,8 +675,8 @@ iChemDVRDefaultKineticEnergy1D[
   ops:OptionsPattern[]
   ]:=
   iChemDVRDefaultKineticEnergy1D[
-    elementFunction,
-    Flatten@gridpoints,
+    elementFunction, 
+    Flatten[gridpoints], 
     ops
     ]
 

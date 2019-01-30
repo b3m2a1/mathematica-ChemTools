@@ -65,30 +65,174 @@ InterfaceAttribute[GridFunctionObject]@
 
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*Product*)
+
+
+
 InterfaceMethod[GridFunctionObject]@
   f_GridFunctionObject["Product"][o__GridFunctionObject]:=
     GFKroneckerProduct[f, o];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Plot*)
+
+
+
 InterfaceMethod[GridFunctionObject]@
   f_GridFunctionObject["Plot"][ops___]:=
     GFPlot[f, ops];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Compile*)
+
+
+
 InterfaceMethod[GridFunctionObject]@
   f_GridFunctionObject["Compile"][spec___]:=
     GFCompile[f, spec];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Slice*)
+
+
+
 InterfaceMethod[GridFunctionObject]@
   g_GridFunctionObject["Slice"][n__Integer]:=
     GFSlice[g, n];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Add*)
+
+
+
 InterfaceMethod[GridFunctionObject]@
   g_GridFunctionObject["Add"][f__GridFunctionObject]:=
     GFAdd[g, f];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Multiply*)
+
+
+
 InterfaceMethod[GridFunctionObject]@
   g_GridFunctionObject["Multiply"][f__GridFunctionObject]:=
     GFMultiply[g, f];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Subtract*)
+
+
+
 InterfaceMethod[GridFunctionObject]@
   g_GridFunctionObject["Subtract"][f__GridFunctionObject]:=
     GFSubtract[g, f];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Divide*)
+
+
+
 InterfaceMethod[GridFunctionObject]@
   g_GridFunctionObject["Divide"][f__GridFunctionObject]:=
     GFDivide[g, f];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*GridShift*)
+
+
+
+InterfaceMethod[GridFunctionObject]@
+  g_GridFunctionObject["GridShift"][n_]:=
+    GFGridShift[g, n];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*GridScale*)
+
+
+
+InterfaceMethod[GridFunctionObject]@
+  g_GridFunctionObject["GridScale"][n_]:=
+    GFGridScale[g, n];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Scale*)
+
+
+
+InterfaceMethod[GridFunctionObject]@
+  g_GridFunctionObject["Scale"][n_]:=
+    GFScale[g, n];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Shift*)
+
+
+
+InterfaceMethod[GridFunctionObject]@
+  g_GridFunctionObject["Shift"][n_]:=
+    GFShift[g, n];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Permute*)
+
+
+
+InterfaceMethod[GridFunctionObject]@
+  g_GridFunctionObject["Permute"][a___]:=
+    GFPermute[g, a];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Rescale*)
+
+
+
+InterfaceMethod[GridFunctionObject]@
+  g_GridFunctionObject["Rescale"][a___]:=
+    GFRescale[g, a];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Apply*)
+
+
+
+InterfaceMethod[GridFunctionObject]@
+  g_GridFunctionObject["Apply"][a___]:=
+    GFApply[g, a];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Map*)
+
+
+
+InterfaceMethod[GridFunctionObject]@
+  g_GridFunctionObject["Map"][a___]:=
+    GFMap[g, a];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Modify*)
+
+
+
+InterfaceMethod[GridFunctionObject]@
+  g_GridFunctionObject["Modify"][f__GridFunctionObject]:=
+    GFModify[g, f];
 
 
 (* ::Subsubsection::Closed:: *)
@@ -132,6 +276,19 @@ InterfaceOverride[GridFunctionObject]@
     f_GridFunctionObject
     ]:=
     GFMap[fn, f];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Apply*)
+
+
+
+InterfaceOverride[GridFunctionObject]@
+  Apply[
+    fn_,
+    f_GridFunctionObject
+    ]:=
+    GFApply[fn, f];
 
 
 (* ::Subsubsubsection::Closed:: *)
@@ -214,6 +371,21 @@ InterfaceOverride[GridFunctionObject]@
     spec___
     ]:=
     GFTranspose[f, spec]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Join*)
+
+
+
+InterfaceOverride[GridFunctionObject]@
+  Join[
+    f_GridFunctionObject,
+    e__GridFunctionObject
+    ]:=
+    With[{res=GFJoin[f, e]},
+      res/;Head[res]=!=GFJoin
+      ];
 
 
 End[];

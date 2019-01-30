@@ -76,7 +76,17 @@ ordering\>\""}], ";"}], "\n",
  RowBox[{
   RowBox[{
    RowBox[{"GridSubgrids", "::", "usage"}], "=", "\n", "\t", 
-   "\"\<Pulls all subgrids out of the grid\>\""}], 
+   "\"\<Pulls all subgrids out of the grid\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridJoin", "::", "usage"}], "=", "\n", "\t", 
+   "\"\<Tries to intelligently join two grids\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridScale", "::", "usage"}], "=", "\"\<\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridShift", "::", "usage"}], "=", "\"\<\>\""}], 
   ";"}]}], "CodeInput",ExpressionUUID->"d4b2a3d5-b679-424e-a459-eb9b78142f8c"]\
 
 }, Closed]],
@@ -94,10 +104,20 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{
    RowBox[{"GridStridesToIndex", "::", "usage"}], "=", 
-   "\"\<Might be in the wrong place...\>\""}], 
-  ";"}]}], "CodeInput",ExpressionUUID->"bb0e6e0d-b499-47f5-a3ea-3c3b36bbaf2d"]\
-
-}, Closed]],
+   "\"\<Might be in the wrong place...\>\""}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridPointRestructure", "::", "usage"}], "=", "\"\<Bloop\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridSmoothSort", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GridPointSmoothOrdering", "::", "usage"}], "=", 
+  "\"\<\>\""}]}], \
+"CodeInput",ExpressionUUID->"bb0e6e0d-b499-47f5-a3ea-3c3b36bbaf2d"]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -143,7 +163,7 @@ Cell[BoxData[{
    "\"\<Builds a GridFunctionObject by mapping over the grid\>\""}], 
   ";"}]}], "CodeInput",ExpressionUUID->"d23ab68f-215a-46cd-bdf3-239f660bdb6b"]\
 
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -164,8 +184,8 @@ Cell[BoxData[{
 Cell[BoxData[
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
-  ";"}]], "InputSection",ExpressionUUID->"eb1d7e10-f3ca-44af-a40a-\
-46e42b1adc0b"],
+  ";"}]], \
+"InputSection",ExpressionUUID->"eb1d7e10-f3ca-44af-a40a-46e42b1adc0b"],
 
 Cell[CellGroupData[{
 
@@ -343,8 +363,8 @@ Cell[BoxData[
        RowBox[{
        "fn", ",", "\n", "\t\t\t", "#", ",", " ", "\n", "\t\t\t", 
         "\"\<Grid\>\""}], "\n", "\t\t\t", "]"}], "&"}]}], "\n", "\t\t", 
-    "]"}]}], 
-  ";"}]], "CodeInput",ExpressionUUID->"27d4d7da-9435-431a-9c5a-6d5f86b60208"]
+    "]"}]}], ";"}]], \
+"CodeInput",ExpressionUUID->"27d4d7da-9435-431a-9c5a-6d5f86b60208"]
 }, Closed]]
 }, Open  ]],
 
@@ -439,8 +459,8 @@ Cell[BoxData[{
    RowBox[{"GridPoints", "[", "grid_", "]"}], ":=", "\n", "\t", 
    RowBox[{"GridPoints", "@", 
     RowBox[{"grid", "[", "\"\<Grid\>\"", "]"}]}]}], 
-  ";"}]}], "CodeInput",ExpressionUUID->"50c5c756-3c3a-4519-b8ef-e851ea8f1c6b"]\
-
+  ";"}]}], \
+"CodeInput",ExpressionUUID->"50c5c756-3c3a-4519-b8ef-e851ea8f1c6b"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -687,6 +707,148 @@ Cell[BoxData[{
 
 Cell[CellGroupData[{
 
+Cell["\[LeftCeiling]GridPointRestructure\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"76aae97d-f47d-462e-b20b-a50a53fffa82"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GridPointRestructure", "[", 
+   RowBox[{"grid_List", ",", " ", 
+    RowBox[{"sortBy_:", "None"}]}], "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", "\n", "\t\t", 
+   RowBox[{
+    RowBox[{"{", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"dims", "=", 
+       RowBox[{"Dimensions", "[", "grid", "]"}]}], ",", "\n", "\t\t\t", 
+      RowBox[{"pts", "=", 
+       RowBox[{"GridPoints", "[", "grid", "]"}]}]}], "\n", "\t\t\t", "}"}], 
+    ",", " ", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"pts", "=", "\n", "\t\t\t", 
+      RowBox[{"Developer`ToPackedArray", "@", "\n", "\t\t\t\t", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"sortBy", "=!=", "None"}], ",", " ", 
+         RowBox[{"SortBy", "[", 
+          RowBox[{"pts", ",", " ", "sortBy"}], "]"}], ",", " ", 
+         RowBox[{"Sort", "[", "pts", "]"}]}], "]"}]}]}], ";", "\n", "\t\t", 
+     RowBox[{"Developer`ToPackedArray", "@", " ", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"just", " ", "to", " ", "be", " ", "safe"}], "..."}], "*)"}], 
+      "\n", "\t\t\t", 
+      RowBox[{"ArrayReshape", "[", 
+       RowBox[{"pts", ",", " ", "dims"}], "]"}]}]}]}], "\n", "\t\t", 
+   "]"}]}]], \
+"CodeInput",ExpressionUUID->"b7df593b-5f2e-406b-a0bc-5fda974a23d2"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GridSmoothSort\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"808052c9-c674-4f04-b260-41e94ae26077"],
+
+Cell["\<\
+\[LeftCeiling]
+\tSorts a grid in a smooth fashion so that when flattened there are no jumps
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"fefe3782-f6d0-477e-89ea-5dc4cb679b68"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridSmoothSort", "[", 
+    RowBox[{"grid_List", ",", " ", 
+     RowBox[{"sortBy_:", "None"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Module", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"dim", "=", 
+        RowBox[{"Dimensions", "[", "grid", "]"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"restructured", "=", 
+        RowBox[{"GridPointRestructure", "[", 
+         RowBox[{"grid", ",", " ", "sortBy"}], "]"}]}]}], "\n", "\t\t\t", 
+      "}"}], ",", "\n", "\t\t", 
+     RowBox[{"Fold", "[", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"With", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"n", "=", "#2"}], "}"}], ",", "\n", "\t\t\t\t", 
+          RowBox[{"MapIndexed", "[", "\n", "\t", "\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"EvenQ", "[", 
+                 RowBox[{"#2", "[", 
+                  RowBox[{"[", "n", "]"}], "]"}], "]"}], ",", " ", "Reverse", 
+                ",", " ", "Identity"}], "]"}], "[", "#", "]"}], "&"}], ",", 
+            "\n", "\t\t\t\t\t", "#", ",", "\n", "\t\t\t\t\t", 
+            RowBox[{"{", "n", "}"}]}], "\n", "\t\t\t\t\t", "]"}]}], "\n", 
+         "\t\t\t\t", "]"}], "&"}], ",", "\n", "\t\t\t", "restructured", ",", 
+       "\n", "\t\t\t", 
+       RowBox[{"Range", "[", 
+        RowBox[{
+         RowBox[{"Length", "[", "dim", "]"}], "-", "2"}], "]"}]}], "\n", 
+      "\t\t\t", "]"}]}], "\n", "\t\t", "]"}]}], 
+  ";"}]], "CodeInput",ExpressionUUID->"db169e34-c707-48d6-b3d8-9079f72e941c"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GridPointSmoothOrdering\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"56b86072-cfee-4404-9fc9-bff4790a0dad"],
+
+Cell["\<\
+\[LeftCeiling]
+\tProvides a smooth gridpoint based reordering method. You gotta specify the \
+grid sorting order but beyond that not much to do...
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"f45d462a-ec3f-4b49-8e91-4491f52f532e"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridPointSmoothOrdering", "[", 
+    RowBox[{"grid_List", ",", " ", 
+     RowBox[{"sortBy_:", "None"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"Module", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"gpos", "=", 
+        RowBox[{"GridPoints", "[", "grid", "]"}]}], ",", "\n", "\t\t\t", 
+       RowBox[{"gridReordering", "=", 
+        RowBox[{"GridSmoothSort", "[", 
+         RowBox[{"grid", ",", " ", "sortBy"}], "]"}]}]}], "\n", "\t\t\t", 
+      "}"}], ",", "\n", "\t\t", 
+     RowBox[{"Flatten", "@", "\n", "\t\t\t", 
+      RowBox[{"Lookup", "[", 
+       RowBox[{
+        RowBox[{"PositionIndex", "[", "gpos", "]"}], ",", " ", 
+        RowBox[{"GridPoints", "[", "gridReordering", "]"}]}], "]"}]}]}], "\n",
+     "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridPointSmoothOrdering", "[", 
+    RowBox[{"grid_", ",", " ", 
+     RowBox[{"sortBy_:", "None"}]}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"GridPointSmoothOrdering", "[", 
+    RowBox[{
+     RowBox[{"grid", "[", "\"\<Grid\>\"", "]"}], ",", " ", "sortBy"}], 
+    "]"}]}], ";"}]}], \
+"CodeInput",ExpressionUUID->"96f9407f-f22e-4766-98c4-9368033b0109"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
 Cell["\[LeftCeiling]GridSubgrids\[RightFloor]", "CodeSubsubsection",
  Evaluatable->True,ExpressionUUID->"39f54b82-fd35-469d-8cde-e99147790be5"],
 
@@ -782,6 +944,127 @@ Cell[BoxData[{
       RowBox[{"#", "[", "\"\<Grid\>\"", "]"}], "&"}], ",", " ", "grids"}], 
     "]"}]}]}]}], \
 "CodeInput",ExpressionUUID->"65dbc696-fddb-44f1-9c18-1eb29b3e73ce"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GridJoin\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"abf280a9-ecee-4b26-8b33-b7ef9f956b61"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridJoin", "[", "grids__List", "]"}], ":=", "\n", "\t", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"dims", "=", 
+       RowBox[{"Dimensions", "/@", 
+        RowBox[{"{", "grids", "}"}]}]}], "}"}], ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "@", 
+          RowBox[{"DeleteDuplicates", "[", 
+           RowBox[{"Rest", "/@", "dims"}], "]"}]}], ">", "1"}], ",", "\n", 
+        "\t\t\t", 
+        RowBox[{"PackageRaiseException", "[", 
+         RowBox[{
+         "Automatic", ",", "\n", "\t\t\t\t", 
+          "\"\<Grids with dimensions `` can't be joined\>\"", ",", "\n", 
+          "\t\t\t\t", "dims"}], "\n", "\t\t\t\t", "]"}]}], "\n", "\t\t\t", 
+       "]"}], ";", "\n", "\t\t", 
+      RowBox[{"Join", "[", "grids", "]"}]}]}], "\n", "\t\t", "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GridJoin", "[", 
+   RowBox[{
+   "grid1_CoordinateGridObject", ",", " ", "grids__CoordinateGridObject"}], 
+   "]"}], ":=", "\n", "\t", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"gs", "=", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"#", "[", "\"\<Grid\>\"", "]"}], "&"}], "/@", 
+       RowBox[{"{", "grids", "}"}]}]}], "}"}], ",", "\n", "\t\t", 
+    RowBox[{"GridObjectModify", "[", "\n", "\t\t\t", 
+     RowBox[{"grid1", ",", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"GridJoin", "[", 
+        RowBox[{"#", ",", " ", 
+         RowBox[{"Sequence", "@@", "gs"}]}], "]"}], "&"}]}], "\n", "\t\t\t", 
+     "]"}]}], "\n", "\t\t", 
+   "]"}]}]}], \
+"CodeInput",ExpressionUUID->"a1132021-be43-4691-bf56-378b8e38f0f7"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GridScale\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"2f124703-384d-4d9d-994a-96caa9fe10e4"],
+
+Cell[BoxData[{
+ RowBox[{"GridScale", "//", "Clear"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridScale", "[", 
+    RowBox[{"grid_List", ",", " ", "n_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{"NumericQ", "[", "n", "]"}], ",", "\n", "\t\t", 
+     RowBox[{"n", "*", "grid"}], ",", "\n", "\t\t", 
+     RowBox[{"GridMap", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"#", "*", "n"}], "&"}], ",", " ", "grid"}], "]"}]}], "\n", 
+    "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GridScale", "[", 
+   RowBox[{"grid_CoordinateGridObject", ",", " ", "scaling_"}], "]"}], ":=", 
+  "\n", "\t", 
+  RowBox[{"GridObjectModify", "[", "\n", "\t\t", 
+   RowBox[{"grid", ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"GridScale", "[", 
+      RowBox[{"#", ",", " ", "scaling"}], "]"}], "&"}]}], "\n", "\t\t", 
+   "]"}]}]}], \
+"CodeInput",ExpressionUUID->"5413198b-9f0e-4421-bad7-d5f98f78a6ec"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\[LeftCeiling]GridShift\[RightFloor]", "CodeSubsubsection",
+ Evaluatable->True,ExpressionUUID->"11ea7e05-9efa-4daa-8f2b-323e4bec6c0d"],
+
+Cell[BoxData[{
+ RowBox[{"GridShift", "//", "Clear"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GridShift", "[", 
+    RowBox[{"grid_List", ",", " ", "n_"}], "]"}], ":=", "\n", "\t", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{"NumericQ", "[", "n", "]"}], ",", "\n", "\t\t", 
+     RowBox[{"n", "+", "grid"}], ",", "\n", "\t\t", 
+     RowBox[{"GridMap", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"#", "+", "n"}], "&"}], ",", " ", "grid"}], "]"}]}], "\n", 
+    "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"GridShift", "[", 
+   RowBox[{"grid_CoordinateGridObject", ",", " ", "shift_"}], "]"}], ":=", 
+  "\n", "\t", 
+  RowBox[{"GridObjectModify", "[", "\n", "\t\t", 
+   RowBox[{"grid", ",", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"GridShift", "[", 
+      RowBox[{"#", ",", " ", "shift"}], "]"}], "&"}]}], "\n", "\t\t", 
+   "]"}]}]}], \
+"CodeInput",ExpressionUUID->"75701567-5277-4dc4-ab9e-ed857a676033"]
 }, Closed]]
 }, Open  ]],
 
@@ -980,6 +1263,13 @@ Cell[CellGroupData[{
 Cell["\[LeftCeiling]Functions\[RightFloor]", "CodeSubsection",
  Evaluatable->True,ExpressionUUID->"b3119857-0a67-4662-a494-43b021cd626b"],
 
+Cell["\<\
+\[LeftCeiling]
+\tOh wait dis exis already wen i make GridTransform...
+\[RightFloor]\
+\>", "Text",
+ Evaluatable->True,ExpressionUUID->"518e33e2-d1e4-4fd7-92ed-4399e8ddae2e"],
+
 Cell[BoxData[{
  RowBox[{
   RowBox[{
@@ -1055,7 +1345,16 @@ Cell["", "SectionSeparator",ExpressionUUID->"9b890501-c575-45aa-bf6b-\
 4a602a09f246"]
 },
 WindowSize->{808, 755},
-WindowMargins->{{264, Automatic}, {48, Automatic}},
+WindowMargins->{{Automatic, 234}, {37, Automatic}},
+TaggingRules->{
+ "UUIDButtons" -> {
+   "Active" -> {
+     "Button-b8297203-6b28-48f9-8ba3-edbd5eb431d2" -> False, 
+      "Button-8c92aebb-2725-4f7c-a6a8-f90e3a4dce9c" -> False, 
+      "Button-ede3a027-3279-40a0-8aa4-1fcc5f60357d" -> False, 
+      "Button-89ffd2c3-ec41-4179-a9b1-8e28670bca2c" -> False, 
+      "Button-ca46e5e0-4fd1-47e8-8cf6-72998922b757" -> False, 
+      "Button-a6d68254-3684-4d32-83fc-e5ef6f443930" -> False}}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

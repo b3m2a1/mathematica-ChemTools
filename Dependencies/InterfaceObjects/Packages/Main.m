@@ -728,27 +728,28 @@ iRegisterInterfaceMutationHandler[
 
 
 (* ::Subsubsection::Closed:: *)
-(*iRegisterMethodFallback*)
+(*InterfaceCallFallback*)
 
 
 
-InterfaceMethodQ[head_][arg_]:=
-  Depth[arg]>2&&
-    KeyExistsQ[InterfaceMethods[head], 
-      Extract[arg, ConstantArray[0, Depth[arg]-1]]
-      ];
-InterfaceMethodCall[lhs_, arg_]:=
-  lhs[
-    Extract[arg, ConstantArray[0, Depth[arg]-2]]
-    ]@Delete[arg, ConstantArray[0, Depth[arg]-2]];
-
-
-iRegisterMethodFallback[head_]:=
-  With[{valid=InterfaceValidator[head]},
-    head/:(obj_head?valid)[
-      fallbackArg_?(InterfaceMethodQ[head])
-      ]:=
-      InterfaceMethodCall[obj, fallbackArg]
+InterfaceCallFallback//Clear
+InterfaceCallFallback[head_][lhs_, arg_]:=
+  Module[{d1=Depth[arg], d2, argHead, baseHead, res, $failed},
+    argHead=Head[arg];
+    baseHead=If[!AtomQ@argHead, Head@argHead, argHead];
+    res=
+      Which[
+        KeyExistsQ[InterfaceMethods[head], baseHead],
+          lhs[argHead]@@arg,
+        KeyExistsQ[InterfaceAttributes[head], baseHead],
+          If[argHead===baseHead,
+            lhs[argHead],
+            lhs[baseHead]@@argHead
+            ]@@arg,
+        True,
+          $failed
+        ];
+    res/;res=!=$failed
     ]
 
 
@@ -803,31 +804,6 @@ InterfaceMethod/:
     ):=
     iRegisterInterfaceMethod[head, method, lhs, args, def];
 Protect[InterfaceMethod];
-
-
-(* ::Subsubsection::Closed:: *)
-(*iRegisterAttributeFallback*)
-
-
-
-InterfaceAttributeQ[head_][arg_]:=
-  Depth[arg]>1&&
-    KeyExistsQ[InterfaceAttributes[head], 
-      Extract[arg, ConstantArray[0, Depth[arg]-1]]
-      ];
-InterfaceAttributeCall[lhs_, arg_]:=
-  lhs[
-    Extract[arg, ConstantArray[0, Depth[arg]-1]]
-    ]@Delete[arg, ConstantArray[0, Depth[arg]-1]];
-
-
-iRegisterAttributeFallback[head_]:=
-  With[{valid=InterfaceValidator[head]},
-    head/:(obj_head?valid)[
-      fallbackArg_?(InterfaceAttributeQ[head])
-      ]:=
-      InterfaceAttributeCall[obj, fallbackArg]
-    ]
 
 
 (* ::Subsubsection::Closed:: *)
@@ -953,14 +929,49 @@ iRegisterInterfaceAccessor[head_, dispatcher_]:=
       },
     If[KeyExistsQ[ea, "Keys"],
       With[{lookup=dispatcher["Keys"]},
-        obj_head?valid[attr_String?(
-          !KeyExistsQ[
-            Join[InterfaceMethods[head], InterfaceAttributes[head]], 
-            #
-            ]&)]:=
-          With[{res=lookup[obj, attr]}, res/;Head[res]=!=lookup];
-        obj_head?valid[attr:Except[_String|_String[___]]]:=
-          With[{res=lookup[obj, attr]}, res/;Head[res]=!=lookup];
+        obj_head?valid[arg_String]:=
+          Module[
+            {
+              res=lookup[obj, arg],
+              unevaluate=False
+              }, 
+            unevaluate=
+              (MissingQ@res||Head[res]===lookup);
+            unevaluate=
+              unevaluate&&
+                (
+                  KeyExistsQ[InterfaceAttributes[head], arg]||
+                    KeyExistsQ[InterfaceMethods[head], arg]
+                  );
+            res/;!unevaluate
+            ];
+        obj_head?valid[meth_String[arg___]]:=
+          Module[
+            {
+              res=lookup[obj, arg],
+              unevaluate=False
+              }, 
+            unevaluate=
+              (MissingQ@res||Head[res]===lookup);
+            unevaluate=
+              unevaluate&&
+                KeyExistsQ[InterfaceMethods[head], meth];
+            res/;!unevaluate
+            ];
+        obj_head?valid[arg:Except[_String|_String[___]]]:=
+          Module[
+            {
+              res=lookup[obj, arg],
+              unevaluate=False
+              }, 
+            unevaluate=
+              (MissingQ@res||Head[res]===lookup);
+            If[unevaluate,
+              res=InterfaceCallFallback[head][obj, arg];
+              unevaluate=(Head[res]===InterfaceCallFallback)
+              ];
+            res/;!unevaluate
+            ];
         obj_head?valid[attr1_, attrs__]:=
           With[{res=lookup[obj, attr1, attrs]}, res/;Head[res]=!=lookup];
         ];
@@ -1211,6 +1222,8 @@ InterfaceModify[
 
 
 InterfaceAssociation[head_, head_[a_]]:=
+  a;
+InterfaceAssociation[head_][head_[a_]]:=
   a;
 
 

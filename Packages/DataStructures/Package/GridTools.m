@@ -53,6 +53,10 @@ GridSort::usage=
   "Sorts a set of coordinates";
 GridSubgrids::usage=
   "Pulls all subgrids out of the grid";
+GridJoin::usage=
+  "Tries to intelligently join two grids";
+GridScale::usage="";
+GridShift::usage="";
 
 
 (* ::Subsubsection::Closed:: *)
@@ -62,6 +66,9 @@ GridSubgrids::usage=
 
 GridIndexFromStrides::usage="Might be in the wrong place...";
 GridStridesToIndex::usage="Might be in the wrong place...";
+GridPointRestructure::usage="Bloop";
+GridSmoothSort::usage="";
+GridPointSmoothOrdering::usage=""
 
 
 (* ::Subsubsection::Closed:: *)
@@ -390,6 +397,82 @@ GridSort[g_, fn___]:=
 
 
 (* ::Subsubsection::Closed:: *)
+(*GridPointRestructure*)
+
+
+
+GridPointRestructure[grid_List, sortBy_:None]:=
+  Module[
+    {
+      dims=Dimensions[grid],
+      pts=GridPoints[grid]
+      }, 
+    pts=
+      Developer`ToPackedArray@
+        If[sortBy=!=None, SortBy[pts, sortBy], Sort[pts]];
+    Developer`ToPackedArray@ (*just to be safe...*)
+      ArrayReshape[pts, dims]
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*GridSmoothSort*)
+
+
+
+(* ::Text:: *)
+(*
+	Sorts a grid in a smooth fashion so that when flattened there are no jumps
+*)
+
+
+
+GridSmoothSort[grid_List, sortBy_:None]:=
+  Module[
+    {
+      dim=Dimensions[grid],
+      restructured=GridPointRestructure[grid, sortBy]
+      },
+    Fold[
+      With[{n=#2},
+        MapIndexed[
+          If[EvenQ[#2[[n]]], Reverse, Identity][#]&,
+          #,
+          {n}
+          ]
+        ]&,
+      restructured,
+      Range[Length[dim]-2]
+      ]
+    ];
+
+
+(* ::Subsubsection::Closed:: *)
+(*GridPointSmoothOrdering*)
+
+
+
+(* ::Text:: *)
+(*
+	Provides a smooth gridpoint based reordering method. You gotta specify the grid sorting order but beyond that not much to do...
+*)
+
+
+
+GridPointSmoothOrdering[grid_List, sortBy_:None]:=
+  Module[
+    {
+      gpos=GridPoints[grid],
+      gridReordering=GridSmoothSort[grid, sortBy]
+      },
+    Flatten@
+      Lookup[PositionIndex[gpos], GridPoints[gridReordering]]
+    ];
+GridPointSmoothOrdering[grid_, sortBy_:None]:=
+  GridPointSmoothOrdering[grid["Grid"], sortBy];
+
+
+(* ::Subsubsection::Closed:: *)
 (*GridSubgrids*)
 
 
@@ -445,6 +528,66 @@ GridProduct[grids__List]:=
 GridProduct[grids__CoordinateGridObject]:=
   GridProduct@@
     Map[#["Grid"]&, grids]
+
+
+(* ::Subsubsection::Closed:: *)
+(*GridJoin*)
+
+
+
+GridJoin[grids__List]:=
+  Module[{dims=Dimensions/@{grids}},
+    If[Length@DeleteDuplicates[Rest/@dims]>1,
+      PackageRaiseException[Automatic,
+        "Grids with dimensions `` can't be joined",
+        dims
+        ]
+      ];
+    Join[grids]
+    ];
+GridJoin[grid1_CoordinateGridObject, grids__CoordinateGridObject]:=
+  Module[{gs=#["Grid"]&/@{grids}},
+    GridObjectModify[
+      grid1,
+      GridJoin[#, Sequence@@gs]&
+      ]
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*GridScale*)
+
+
+
+GridScale//Clear
+GridScale[grid_List, n_]:=
+  If[NumericQ[n],
+    n*grid,
+    GridMap[#*n&, grid]
+    ];
+GridScale[grid_CoordinateGridObject, scaling_]:=
+  GridObjectModify[
+    grid,
+    GridScale[#, scaling]&
+    ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*GridShift*)
+
+
+
+GridShift//Clear
+GridShift[grid_List, n_]:=
+  If[NumericQ[n],
+    n+grid,
+    GridMap[#+n&, grid]
+    ];
+GridShift[grid_CoordinateGridObject, shift_]:=
+  GridObjectModify[
+    grid,
+    GridShift[#, shift]&
+    ]
 
 
 (* ::Subsection:: *)
@@ -548,6 +691,13 @@ GridPointNumber[g_]:=
 
 (* ::Subsection:: *)
 (*Functions*)
+
+
+
+(* ::Text:: *)
+(*
+	Oh wait dis exis already wen i make GridTransform...
+*)
 
 
 
