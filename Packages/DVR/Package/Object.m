@@ -690,6 +690,7 @@ ChemDVRGrid[obj:dvrObjPattern, ops:OptionsPattern[]]:=
 ChemDVRKineticEnergy[obj:_ChemDVRResultsObject, ops:OptionsPattern[]]:=
   ChemDVRGet[obj["Object"], $dvrke][
     obj["Grid"],
+    "TransformationMatrix"->obj["Transformation"],
     ops
     ];
 

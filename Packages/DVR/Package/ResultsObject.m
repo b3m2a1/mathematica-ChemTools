@@ -30,32 +30,35 @@ sparseArrayQ=
 
 
 packedSquareMatrixQ=
-  If[!(Developer`PackedArrayQ[#]||sparseArrayQ[#]),
+  TrueQ@If[!(Developer`PackedArrayQ[#]||sparseArrayQ[#]),
     PackageRaiseException[Automatic,
       "Matrix `` isn't packed",
       #
       ],
     True
     ]&&
-    If[!(SquareMatrixQ[#]),
+    TrueQ@If[!(SquareMatrixQ[#]),
       PackageRaiseException[Automatic,
         "Matrix isn't square"
         ],
       True
       ]&&
-    If[!(MatrixQ[#, Internal`RealValuedNumericQ]),
+    TrueQ@If[!(MatrixQ[#, Internal`RealValuedNumericQ]),
       PackageRaiseException[Automatic,
         "Matrix is non-real"
         ],
       True
-      ]&
+      ]&;
+softSQMQ=
+  Block[{PackageRaiseException}, packedSquareMatrixQ[#]]&
 
 
 $keyTypeMap=
   <|
     "Object"->_ChemDVRObject,
     "Grid"->_CoordinateGridObject?CoordinateGridObjectQ,
-    "Transformation"->{(None|_List?packedSquareMatrixQ)..},
+    "Transformation"->
+      None|_List?softSQMQ|{(None|_List?packedSquareMatrixQ)..},
     "KineticEnergy"->_?packedSquareMatrixQ,
     "PotentialEnergy"->_?packedSquareMatrixQ,
     "Wavefunctions"->_WavefunctionsObject?WavefunctionsObjectQ,

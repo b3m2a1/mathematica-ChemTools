@@ -35,23 +35,27 @@ Begin["`Private`"];
 
 iChemDVRGetPOGrids//Clear
 iChemDVRGetPOGrids[grid_, ops:OptionsPattern[]]:=
-  Module[{dim, subgrids},
+  Module[{dim, subgrids, subgridObjects},
     dim=
       If[CoordinateGridObjectQ@grid, 
         Append[Dimensions[grid], GridDimension[grid]],
-        grid
+        Dimensions[grid]
         ];
     subgrids=
       Replace[
-        If[CoordinateGridObjectQ@grid,
-          grid["Points"],
-          ChemDVRDefaultGridPointList[
-            grid, 
-            FilterRules[{ops}, Options[ChemDVRDefaultGridPointList]]
-            ]
-          ],
+        Developer`ToPackedArray@
+          If[CoordinateGridObjectQ@grid,
+            grid["Points"],
+            ChemDVRDefaultGridPointList[
+              grid, 
+              FilterRules[{ops}, Options[ChemDVRDefaultGridPointList]]
+              ]
+            ],
         {
-          l:{{Repeated[_?NumericQ, {dim[[-1]]}]}, ___List}:>
+          l_List?(
+            MatrixQ[#, Internal`RealValuedNumberQ]&&
+              Dimensions[#][[-1]]==dim[[-1]]&
+            ):>
             Map[
               DeleteDuplicates@l[[All, #]]&,
               Range[dim[[-1]]]
@@ -59,7 +63,8 @@ iChemDVRGetPOGrids[grid_, ops:OptionsPattern[]]:=
           l_List:>{l}
           }
         ];
-    If[!MatchQ[subgrids, {Repeated[_?NumericQ, {#}]}&/@Most@dim],
+    subgridObjects=CoordinateGridObject/@subgrids//Quiet;
+    If[!AllTrue[subgridObjects, CoordinateGridObjectQ],
       PackageRaiseException[
         Automatic,
         "Potential optimizer couldn't decompose grid.\
@@ -68,7 +73,10 @@ iChemDVRGetPOGrids[grid_, ops:OptionsPattern[]]:=
         Most@dim
         ]
       ];
-    subgrids
+    If[CoordinateGridObjectQ@grid,
+      subgridObjects,
+      subgrids
+      ]
     ]
 
 
@@ -81,8 +89,7 @@ iChemDVRDefault1DPOGrid//Clear
 
 
 iChemDVRDefault1DPOGrid[
-  grid_,
-  wfs:{{_?NumericQ, ___}, {_List, ___}},
+  wfs_WavefunctionsObject,
   bs_
   ]:=
   Module[
@@ -93,12 +100,10 @@ iChemDVRDefault1DPOGrid[
       chob
       },
     xmat=
-      ChemDVRDefaultOperatorMatrix[
-        grid,
-        wfs,
-        {#&},
-        {{1, 1}, {0, 0}}(* This is just a dud potential we feed in because it won't be used *),
-        "WavefunctionSelection"->bs
+      (* the Flatten/@First@ is currently just a kludge until I get OperatorMatrix working cleaner... *)
+      Flatten/@First@WFOperatorMatrix[
+        wfs[[ Replace[bs, i_Integer:>;;i] ]],
+        #&
         ];
     If[!SquareMatrixQ[xmat],
       xmat=xmat[[1]]
@@ -107,7 +112,41 @@ iChemDVRDefault1DPOGrid[
     gporder=Ordering[gps];
     gps=gps[[gporder]];
     chob=chob[[gporder]];
-    {gps, chob, wfs[[2]], wfs[[1, Replace[bs, i_Integer:>;;i]]]}
+    {gps, chob, Normal[wfs][[2]], wfs["Energies"][[Replace[bs, i_Integer:>;;i]]]}
+    ];
+iChemDVRDefault1DPOGrid[
+  gridObject_,
+  wfList:{
+    es_List?(VectorQ[#, Internal`RealValuedNumericQ]&), 
+    wfs_List?(MatrixQ[#, Internal`RealValuedNumericQ]&)
+    },
+  bs_
+  ]:=
+  Module[
+    {
+      grid,
+      wfns
+      },
+    grid=
+      If[!CoordinateGridObjectQ[gridObject], 
+        CoordinateGridObject@gridObject, 
+        gridObject
+        ];
+    wfns=WavefunctionsObject[wfList, grid];
+    iChemDVRDefault1DPOGrid[wfns, bs]
+    ];
+iChemDVRDefault1DPOGrid[
+  grid_,
+  wfs_List?(MatrixQ[#, Internal`RealValuedNumericQ]&),
+  bs_
+  ]:=
+  iChemDVRDefault1DPOGrid[
+    grid,
+    {
+      ConstantArray[0., Length@wfs],
+      wfs
+      },
+    bs
     ];
 iChemDVRDefault1DPOGrid[
   grid_,
@@ -277,7 +316,7 @@ iChemDVRGetPOPotentialEnergy[pf_, subgrids_, fullDim_, ops:OptionsPattern[]]:=
         None
         ]&,
       {
-        subgrids,
+        If[CoordinateGridObjectQ[#], Flatten@Normal[#], #]&/@subgrids,
         potFuns
         }
       ]

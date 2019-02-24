@@ -80,6 +80,8 @@ GridDimension::usage=
   "";
 GridDimensions::usage=
   "";
+GridDepth::usage=
+  "";
 GridPointNumber::usage=
   "";
 GridMeshSpacings=
@@ -675,7 +677,7 @@ GridDimension[grid_]:=
 
 
 GridDepth[grid_List]:=
-  GridDepth[grid]-1;
+  Depth[grid]-1;
 GridDepth[grid_]:=
   GridDepth@grid["Grid"];
 

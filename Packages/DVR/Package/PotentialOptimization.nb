@@ -56,7 +56,8 @@ Cell[BoxData[{
   RowBox[{"Module", "[", 
    RowBox[{
     RowBox[{"{", 
-     RowBox[{"dim", ",", " ", "subgrids"}], "}"}], ",", "\n", "\t\t", 
+     RowBox[{"dim", ",", " ", "subgrids", ",", " ", "subgridObjects"}], "}"}],
+     ",", "\n", "\t\t", 
     RowBox[{
      RowBox[{"dim", "=", "\n", "\t\t\t", 
       RowBox[{"If", "[", 
@@ -67,40 +68,48 @@ Cell[BoxData[{
          RowBox[{
           RowBox[{"Dimensions", "[", "grid", "]"}], ",", " ", 
           RowBox[{"GridDimension", "[", "grid", "]"}]}], "]"}], ",", "\n", 
-        "\t\t\t\t", "grid"}], "\n", "\t\t\t\t", "]"}]}], ";", "\n", "\t\t", 
+        "\t\t\t\t", 
+        RowBox[{"Dimensions", "[", "grid", "]"}]}], "\n", "\t\t\t\t", "]"}]}],
+      ";", "\n", "\t\t", 
      RowBox[{"subgrids", "=", "\n", "\t\t\t", 
       RowBox[{"Replace", "[", "\n", "\t\t\t\t", 
        RowBox[{
-        RowBox[{"If", "[", 
-         RowBox[{
-          RowBox[{"CoordinateGridObjectQ", "@", "grid"}], ",", "\n", 
-          "\t\t\t\t\t", 
-          RowBox[{"grid", "[", "\"\<Points\>\"", "]"}], ",", "\n", 
-          "\t\t\t\t\t", 
-          RowBox[{"ChemDVRDefaultGridPointList", "[", "\n", "\t\t\t\t\t\t", 
-           RowBox[{"grid", ",", " ", "\n", "\t", "\t", "\t", "\t\t\t", 
-            RowBox[{"FilterRules", "[", 
-             RowBox[{
-              RowBox[{"{", "ops", "}"}], ",", " ", 
-              RowBox[{"Options", "[", "ChemDVRDefaultGridPointList", "]"}]}], 
-             "]"}]}], "\n", "\t\t\t\t\t\t", "]"}]}], "\n", "\t\t\t\t\t", 
-         "]"}], ",", "\n", "\t\t\t\t", 
+        RowBox[{"Developer`ToPackedArray", "@", "\n", "\t\t\t\t\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"CoordinateGridObjectQ", "@", "grid"}], ",", "\n", "\t", 
+           "\t\t\t\t\t", 
+           RowBox[{"grid", "[", "\"\<Points\>\"", "]"}], ",", "\n", "\t", 
+           "\t\t\t\t\t", 
+           RowBox[{
+           "ChemDVRDefaultGridPointList", "[", "\n", "\t", "\t\t\t\t\t\t", 
+            RowBox[{
+            "grid", ",", " ", "\n", "\t", "\t", "\t", "\t", "\t\t\t", 
+             RowBox[{"FilterRules", "[", 
+              RowBox[{
+               RowBox[{"{", "ops", "}"}], ",", " ", 
+               RowBox[{"Options", "[", "ChemDVRDefaultGridPointList", "]"}]}],
+               "]"}]}], "\n", "\t", "\t\t\t\t\t\t", "]"}]}], "\n", "\t", 
+          "\t\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t\t", 
         RowBox[{"{", "\n", "\t\t\t\t\t", 
          RowBox[{
           RowBox[{
-           RowBox[{"l", ":", 
-            RowBox[{"{", 
+           RowBox[{"l_List", "?", 
+            RowBox[{"(", "\n", "\t\t\t\t\t\t", 
              RowBox[{
-              RowBox[{"{", 
-               RowBox[{"Repeated", "[", 
+              RowBox[{
+               RowBox[{"MatrixQ", "[", 
+                RowBox[{"#", ",", " ", "Internal`RealValuedNumberQ"}], "]"}], 
+               "&&", "\n", "\t\t\t\t\t\t\t", 
+               RowBox[{
                 RowBox[{
-                 RowBox[{"_", "?", "NumericQ"}], ",", " ", 
-                 RowBox[{"{", 
-                  RowBox[{"dim", "[", 
-                   RowBox[{"[", 
-                    RowBox[{"-", "1"}], "]"}], "]"}], "}"}]}], "]"}], "}"}], 
-              ",", " ", "___List"}], "}"}]}], ":>", "\n", "\t", "\t\t\t\t\t", 
-           
+                 RowBox[{"Dimensions", "[", "#", "]"}], "[", 
+                 RowBox[{"[", 
+                  RowBox[{"-", "1"}], "]"}], "]"}], "\[Equal]", 
+                RowBox[{"dim", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"-", "1"}], "]"}], "]"}]}]}], "&"}], "\n", 
+             "\t\t\t\t\t\t", ")"}]}], ":>", "\n", "\t\t\t\t\t\t", 
            RowBox[{"Map", "[", "\n", "\t\t\t\t\t\t\t", 
             RowBox[{
              RowBox[{
@@ -117,19 +126,16 @@ Cell[BoxData[{
           RowBox[{"l_List", "\[RuleDelayed]", 
            RowBox[{"{", "l", "}"}]}]}], "\n", "\t\t\t\t\t", "}"}]}], "\n", 
        "\t\t\t\t", "]"}]}], ";", "\n", "\t\t", 
+     RowBox[{"subgridObjects", "=", 
+      RowBox[{
+       RowBox[{"CoordinateGridObject", "/@", "subgrids"}], "//", "Quiet"}]}], 
+     ";", "\n", "\t\t", 
      RowBox[{"If", "[", 
       RowBox[{
        RowBox[{"!", 
-        RowBox[{"MatchQ", "[", 
-         RowBox[{"subgrids", ",", " ", 
-          RowBox[{
-           RowBox[{
-            RowBox[{"{", 
-             RowBox[{"Repeated", "[", 
-              RowBox[{
-               RowBox[{"_", "?", "NumericQ"}], ",", " ", 
-               RowBox[{"{", "#", "}"}]}], "]"}], "}"}], "&"}], "/@", 
-           RowBox[{"Most", "@", "dim"}]}]}], "]"}]}], ",", "\n", "\t\t\t", 
+        RowBox[{"AllTrue", "[", 
+         RowBox[{"subgridObjects", ",", " ", "CoordinateGridObjectQ"}], 
+         "]"}]}], ",", "\n", "\t\t\t", 
        RowBox[{"PackageRaiseException", "[", "\n", "\t\t\t\t", 
         RowBox[{
         "Automatic", ",", "\n", "\t\t\t\t", 
@@ -138,7 +144,12 @@ of dimension ``. Expected subgrids of dimension ``.\>\"", ",", "\n",
          "\t\t\t\t", 
          RowBox[{"Length", "/@", "subgrids"}], ",", "\n", "\t\t\t\t", 
          RowBox[{"Most", "@", "dim"}]}], "\n", "\t\t\t\t", "]"}]}], "\n", 
-      "\t\t\t", "]"}], ";", "\n", "\t\t", "subgrids"}]}], "\n", "\t\t", 
+      "\t\t\t", "]"}], ";", "\n", "\t\t", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"CoordinateGridObjectQ", "@", "grid"}], ",", "\n", "\t\t\t", 
+       "subgridObjects", ",", "\n", "\t\t\t", "subgrids"}], "\n", "\t\t\t", 
+      "]"}]}]}], "\n", "\t\t", 
    "]"}]}]}], \
 "CodeInput",ExpressionUUID->"5bbb04b5-3b47-4929-9648-f593aa4d6e0d"]
 }, Open  ]],
@@ -161,17 +172,8 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{
    RowBox[{"iChemDVRDefault1DPOGrid", "[", "\n", "\t", 
-    RowBox[{"grid_", ",", "\n", "\t", 
-     RowBox[{"wfs", ":", 
-      RowBox[{"{", 
-       RowBox[{
-        RowBox[{"{", 
-         RowBox[{
-          RowBox[{"_", "?", "NumericQ"}], ",", " ", "___"}], "}"}], ",", " ", 
-        
-        RowBox[{"{", 
-         RowBox[{"_List", ",", " ", "___"}], "}"}]}], "}"}]}], ",", "\n", 
-     "\t", "bs_"}], "\n", "\t", "]"}], ":=", "\n", "\t", 
+    RowBox[{"wfs_WavefunctionsObject", ",", "\n", "\t", "bs_"}], "\n", "\t", 
+    "]"}], ":=", "\n", "\t", 
    RowBox[{"Module", "[", "\n", "\t\t", 
     RowBox[{
      RowBox[{"{", "\n", "\t\t\t", 
@@ -180,25 +182,27 @@ Cell[BoxData[{
         "\n", "\t\t\t", "chob"}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
      RowBox[{
       RowBox[{"xmat", "=", "\n", "\t\t\t", 
-       RowBox[{"ChemDVRDefaultOperatorMatrix", "[", "\n", "\t\t\t\t", 
-        RowBox[{"grid", ",", "\n", "\t\t\t\t", "wfs", ",", "\n", "\t\t\t\t", 
-         RowBox[{"{", 
-          RowBox[{"#", "&"}], "}"}], ",", "\n", "\t\t\t\t", 
-         RowBox[{"{", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+         RowBox[{"the", " ", 
+          RowBox[{"Flatten", "/@", 
+           RowBox[{"First", "@", " ", "is"}]}], " ", "currently", " ", "just",
+           " ", "a", " ", "kludge", " ", "until", " ", "I", " ", "get", " ", 
+          "OperatorMatrix", " ", "working", " ", "cleaner"}], "..."}], " ", 
+        "*)"}], "\n", "\t\t\t", 
+       RowBox[{"Flatten", "/@", 
+        RowBox[{"First", "@", 
+         RowBox[{"WFOperatorMatrix", "[", "\n", "\t\t\t\t", 
           RowBox[{
-           RowBox[{"{", 
-            RowBox[{"1", ",", " ", "1"}], "}"}], ",", " ", 
-           RowBox[{"{", 
-            RowBox[{"0", ",", " ", "0"}], "}"}]}], "}"}], 
-         RowBox[{"(*", " ", 
-          RowBox[{
-          "This", " ", "is", " ", "just", " ", "a", " ", "dud", " ", 
-           "potential", " ", "we", " ", "feed", " ", "in", " ", "because", 
-           " ", "it", " ", 
-           RowBox[{"won", "'"}], "t", " ", "be", " ", "used"}], " ", "*)"}], 
-         ",", "\n", "\t\t\t\t", 
-         RowBox[{"\"\<WavefunctionSelection\>\"", "\[Rule]", "bs"}]}], "\n", 
-        "\t\t\t\t", "]"}]}], ";", "\n", "\t\t", 
+           RowBox[{"wfs", "[", 
+            RowBox[{"[", " ", 
+             RowBox[{"Replace", "[", 
+              RowBox[{"bs", ",", " ", 
+               RowBox[{"i_Integer", "\[RuleDelayed]", 
+                RowBox[{";;", "i"}]}]}], "]"}], " ", "]"}], "]"}], ",", "\n", 
+           "\t\t\t\t", 
+           RowBox[{"#", "&"}]}], "\n", "\t\t\t\t", "]"}]}]}]}], ";", "\n", 
+      "\t\t", 
       RowBox[{"If", "[", 
        RowBox[{
         RowBox[{"!", 
@@ -221,16 +225,78 @@ Cell[BoxData[{
         RowBox[{"[", "gporder", "]"}], "]"}]}], ";", "\n", "\t\t", 
       RowBox[{"{", 
        RowBox[{"gps", ",", " ", "chob", ",", " ", 
-        RowBox[{"wfs", "[", 
+        RowBox[{
+         RowBox[{"Normal", "[", "wfs", "]"}], "[", 
          RowBox[{"[", "2", "]"}], "]"}], ",", " ", 
-        RowBox[{"wfs", "[", 
+        RowBox[{
+         RowBox[{"wfs", "[", "\"\<Energies\>\"", "]"}], "[", 
          RowBox[{"[", 
-          RowBox[{"1", ",", " ", 
-           RowBox[{"Replace", "[", 
-            RowBox[{"bs", ",", " ", 
-             RowBox[{"i_Integer", "\[RuleDelayed]", 
-              RowBox[{";;", "i"}]}]}], "]"}]}], "]"}], "]"}]}], "}"}]}]}], 
-    "\n", "\t\t", "]"}]}], ";"}], "\n", 
+          RowBox[{"Replace", "[", 
+           RowBox[{"bs", ",", " ", 
+            RowBox[{"i_Integer", "\[RuleDelayed]", 
+             RowBox[{";;", "i"}]}]}], "]"}], "]"}], "]"}]}], "}"}]}]}], "\n", 
+    "\t\t", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"iChemDVRDefault1DPOGrid", "[", "\n", "\t", 
+    RowBox[{"gridObject_", ",", "\n", "\t", 
+     RowBox[{"wfList", ":", 
+      RowBox[{"{", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"es_List", "?", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"VectorQ", "[", 
+            RowBox[{"#", ",", " ", "Internal`RealValuedNumericQ"}], "]"}], 
+           "&"}], ")"}]}], ",", " ", "\n", "\t\t", 
+        RowBox[{"wfs_List", "?", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"MatrixQ", "[", 
+            RowBox[{"#", ",", " ", "Internal`RealValuedNumericQ"}], "]"}], 
+           "&"}], ")"}]}]}], "\n", "\t\t", "}"}]}], ",", "\n", "\t", "bs_"}], 
+    "\n", "\t", "]"}], ":=", "\n", "\t", 
+   RowBox[{"Module", "[", "\n", "\t\t", 
+    RowBox[{
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{"grid", ",", "\n", "\t\t\t", "wfns"}], "\n", "\t\t\t", "}"}], 
+     ",", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"grid", "=", "\n", "\t\t\t", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"!", 
+          RowBox[{"CoordinateGridObjectQ", "[", "gridObject", "]"}]}], ",", 
+         " ", "\n", "\t\t\t\t", 
+         RowBox[{"CoordinateGridObject", "@", "gridObject"}], ",", " ", "\n", 
+         "\t\t\t\t", "gridObject"}], "\n", "\t\t\t\t", "]"}]}], ";", "\n", 
+      "\t\t", 
+      RowBox[{"wfns", "=", 
+       RowBox[{"WavefunctionsObject", "[", 
+        RowBox[{"wfList", ",", " ", "grid"}], "]"}]}], ";", "\n", "\t\t", 
+      RowBox[{"iChemDVRDefault1DPOGrid", "[", 
+       RowBox[{"wfns", ",", " ", "bs"}], "]"}]}]}], "\n", "\t\t", "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"iChemDVRDefault1DPOGrid", "[", "\n", "\t", 
+    RowBox[{"grid_", ",", "\n", "\t", 
+     RowBox[{"wfs_List", "?", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"MatrixQ", "[", 
+         RowBox[{"#", ",", " ", "Internal`RealValuedNumericQ"}], "]"}], "&"}],
+        ")"}]}], ",", "\n", "\t", "bs_"}], "\n", "\t", "]"}], ":=", "\n", 
+   "\t", 
+   RowBox[{"iChemDVRDefault1DPOGrid", "[", "\n", "\t\t", 
+    RowBox[{"grid", ",", "\n", "\t\t", 
+     RowBox[{"{", "\n", "\t\t\t", 
+      RowBox[{
+       RowBox[{"ConstantArray", "[", 
+        RowBox[{"0.", ",", " ", 
+         RowBox[{"Length", "@", "wfs"}]}], "]"}], ",", "\n", "\t\t\t", 
+       "wfs"}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", "bs"}], "\n", 
+    "\t\t", "]"}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{"iChemDVRDefault1DPOGrid", "[", "\n", "\t", 
    RowBox[{
@@ -244,7 +310,7 @@ Cell[BoxData[{
      "\t\t\t", "]"}], ",", "\n", "\t\t", "bs"}], "\n", "\t\t", 
    "]"}]}]}], \
 "CodeInput",ExpressionUUID->"30299f9e-332c-47a4-a470-01bbc3a5fc2f"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -401,7 +467,7 @@ Cell[BoxData[
           RowBox[{"Options", "@", "ChemDVRDefaultKineticEnergyLists"}]}], 
          "]"}]}], "\n", "\t\t\t", "]"}]}]}], "\n", "\t\t", "]"}]}], 
   ";"}]], "CodeInput",ExpressionUUID->"49f26404-30ad-4bbb-b1d8-92df97c6d097"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -493,11 +559,19 @@ Cell[BoxData[
            "\t\t\t\t", "None"}], "\n", "\t\t\t\t", "]"}], "&"}], ",", "\n", 
         "\t\t\t", 
         RowBox[{"{", "\n", "\t\t\t\t", 
-         RowBox[{"subgrids", ",", "\n", "\t\t\t\t", "potFuns"}], "\n", 
-         "\t\t\t\t", "}"}]}], "\n", "\t\t\t", "]"}]}]}], "\n", "\t\t", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"CoordinateGridObjectQ", "[", "#", "]"}], ",", " ", 
+              RowBox[{"Flatten", "@", 
+               RowBox[{"Normal", "[", "#", "]"}]}], ",", " ", "#"}], "]"}], 
+            "&"}], "/@", "subgrids"}], ",", "\n", "\t\t\t\t", "potFuns"}], 
+         "\n", "\t\t\t\t", "}"}]}], "\n", "\t\t\t", "]"}]}]}], "\n", "\t\t", 
     "]"}]}], ";"}]], \
 "CodeInput",ExpressionUUID->"cf599c57-b1e3-4f15-9299-1233b194ac43"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -1306,7 +1380,13 @@ Cell["", "SectionSeparator",ExpressionUUID->"9009c70d-1aad-415c-9701-\
 edff1eaf5262"]
 },
 WindowSize->{789, 764},
-WindowMargins->{{Automatic, 227}, {Automatic, 26}},
+WindowMargins->{{25, Automatic}, {Automatic, 1}},
+TaggingRules->{
+ "UUIDButtons" -> {
+   "Active" -> {
+     "Button-89ffd2c3-ec41-4179-a9b1-8e28670bca2c" -> False, 
+      "Button-ca46e5e0-4fd1-47e8-8cf6-72998922b757" -> False, 
+      "Button-a6d68254-3684-4d32-83fc-e5ef6f443930" -> False}}},
 FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2018)",
 StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 

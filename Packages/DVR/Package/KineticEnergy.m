@@ -396,6 +396,17 @@ iChemDVRBSKERep[
 
 
 (* ::Subsubsubsection::Closed:: *)
+(*Fourier*)
+
+
+
+iChemDVRNamedRecKE["Fourier"|"Sine"|Sin, pts_]:=
+  {
+    0->(#^2*Pi^2&)
+    };
+
+
+(* ::Subsubsubsection::Closed:: *)
 (*Legendre*)
 
 
@@ -474,7 +485,7 @@ iChemDVRBasisSetKineticEnergy[
           iChemDVRRecKERep[
             iChemDVRNamedRecKE[spec[[1]], pts], 
             pts, 
-            ops
+            FilterRules[{ops}, Options[iChemDVRRecKERep]]
             ],
         {(_Integer->_)..},
           iChemDVRRecKERep[spec, pts, ops],
@@ -482,25 +493,25 @@ iChemDVRBasisSetKineticEnergy[
           iChemDVRBSKERep[
             Join[spec, {\[FormalX], Identity, Automatic}],
             pts,
-            ops
+            FilterRules[{ops}, Options[iChemDVRBSKERep]]
             ],
         {_, _Symbol},
           iChemDVRBSKERep[
             Join[spec, {Identity, Automatic}],
             pts,
-            ops
+            FilterRules[{ops}, Options[iChemDVRBSKERep]]
             ],
         {_, _Symbol, _},
           iChemDVRBSKERep[
             Append[spec, Automatic],
             pts,
-            ops
+            FilterRules[{ops}, Options[iChemDVRBSKERep]]
             ],
         {_, _Symbol, _, _},
           iChemDVRBSKERep[
             spec,
             pts,
-            ops
+            FilterRules[{ops}, Options[iChemDVRBSKERep]]
             ],
         _,
           PackageRaiseException[Automatic,
@@ -535,26 +546,37 @@ $iChemDVRDefaultKineticEnergyOptions=
   {
     {"BasisSet", "Legendre"}->
       {
-        "ScalingFactor"->1/100
+        "ScalingFactor"->1/100, 
+        "IncludeGridQuantum"->False
         },
     "ColbertMillerPolar"->
       {
         "MeshSpacing"->1,
-        "ScalingFactor"->1/100
+        "ScalingFactor"->1/100,
+        "IncludeGridQuantum"->False
         },
     "ColbertMillerAzimuthal"->
       {
-        "MeshSpacing"->1
+        "MeshSpacing"->1,
+        "IncludeGridQuantum"->False
         },
     "MeyerAzimuthal"->
       {
-        "MeshSpacing"->1
+        "MeshSpacing"->1,
+        "IncludeGridQuantum"->False
         }
     };
 
 
 (* ::Subsubsection::Closed:: *)
 (*iChemDVRDefaultKineticEnergy1D*)
+
+
+
+(* ::Text:: *)
+(*
+	I should provide a nicer way to bake in other mass dependencies than the standard grid quantum...
+*)
 
 
 
@@ -575,7 +597,8 @@ Options[iChemDVRDefaultKineticEnergy1D]=
     Precision->MachinePrecision,
     "MeshSpacing"->Automatic,
     "TransformationMatrix"->None,
-    "IncludeCoefficient"->True
+    "IncludeCoefficient"->True,
+    "IncludeGridQuantum"->True
     };
 iChemDVRDefaultKineticEnergy1D[
   elementFunction_,
@@ -636,9 +659,11 @@ iChemDVRDefaultKineticEnergy1D[
     coeff=sf*(hb^2)/(2*m*(dx^2));
     ke=
       Which[
-        MatchQ[elf,{"BasisSet",___}],
-          sf*
-            iChemDVRBasisSetKineticEnergy[Rest[elf],gn],
+        MatchQ[elf, {"BasisSet",___}],
+          If[TrueQ@Lookup[kelfOps,"IncludeGridQuantum",OptionValue["IncludeGridQuantum"]],
+            coeff,
+            sf
+            ]*iChemDVRBasisSetKineticEnergy[Rest[elf],gn],
         Quiet[NumericQ[elf[1,1]]],
           Table[elf[i,j],{i,gn},{j,gn}],
         Quiet[NumericQ[elf[1,1,gn]]],
@@ -660,7 +685,9 @@ Expected to take (i, j), (i, j, N) or (i, j, N, x[i], x[j])",
         Short[elf]
         ]
       ];
-    If[SquareMatrixQ[tmat],ke=tmat.ke.Transpose[tmat]];
+    If[SquareMatrixQ[tmat],
+      ke=(*Transpose[tmat]*)tmat.ke.Transpose[tmat](*tmat*)
+      ];
     If[Lookup[kelfOps,"IncludeCoefficient",OptionValue["IncludeCoefficient"]],
       ke*=coeff
       ];
@@ -875,6 +902,52 @@ ChemDVRDefaultKineticEnergyElementFunction[
 
 
 
+(* ::Subsubsubsection::Closed:: *)
+(*getGPSubgrids*)
+
+
+
+getGPSubgrids[gridpoints_, ops___]:=
+  Which[
+    CoordinateGridObjectQ@gridpoints,
+      GridSubgrids[gridpoints],
+    VectorQ[gridpoints, Internal`RealValuedNumberQ],
+      {gridpoints},
+    MatrixQ[gridpoints, Internal`RealValuedNumberQ],
+      Map[
+        DeleteDuplicates, 
+        Transpose@gridpoints
+        ],
+    MatchQ[gridpoints, {__CoordinateGridObject?CoordinateGridObjectQ}],
+      Flatten@*Normal/@gridpoints,
+    True,
+      With[{gg=Quiet@Catch[CoordinateGridObject[gridpoints], _]},
+        If[CoordinateGridObjectQ[gg],
+          GridSubgrids[gg],
+          Replace[
+            ChemDVRDefaultGridPointList[
+              gridpoints, 
+              FilterRules[{ops}, Options[ChemDVRDefaultGridPointList]]
+              ],
+            {
+              l:{__List}:>
+                Map[
+                  DeleteDuplicates, 
+                  Transpose@l
+                  ],
+              l_List:>{l}
+              }
+            ]
+          ]
+        ]
+    ];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*ChemDVRDefaultKineticEnergyLists*)
+
+
+
 Options[ChemDVRDefaultKineticEnergyLists]=
   Options[iChemDVRDefaultKineticEnergy1D];
 ChemDVRDefaultKineticEnergyLists[
@@ -884,30 +957,7 @@ ChemDVRDefaultKineticEnergyLists[
   ]:=
   With[
     {
-      subgrids=
-        Replace[gridpoints,
-          Except[{{Repeated[_?NumericQ, {3, Infinity}]}..}]:>
-            Replace[
-              If[CoordinateGridObjectQ@gridpoints,
-               If[gridpoints["Dimension"]===1, 
-                  Flatten@gridpoints["Points"],
-                  gridpoints["Points"]
-                  ],
-               ChemDVRDefaultGridPointList[
-                  gridpoints, 
-                  FilterRules[{ops}, Options[ChemDVRDefaultGridPointList]]
-                  ]
-               ],
-              {
-                l:{__List}:>
-                  Map[
-                    DeleteDuplicates, 
-                    Transpose@l
-                    ],
-                l_List:>{l}
-                }
-              ]
-          ],
+      subgrids=getGPSubgrids[gridpoints, ops],
       masses=OptionValue["Mass"],
       sclFacs=OptionValue["ScalingFactor"],
       hb=OptionValue["HBar"],
@@ -966,7 +1016,7 @@ ChemDVRDefaultKineticEnergyLists[
           Length@keels
           ],
         Take[
-          Flatten@ConstantArray[tm, Length@keels],
+          Flatten[ConstantArray[tm, Length@keels], 1],
           Length@keels
           ]
         }
@@ -1011,7 +1061,10 @@ ChemDVRDefaultKineticEnergy[
                   ],
              gridpoints
              ],
-          FilterRules[{ops}, Options[iChemDVRDefaultKineticEnergy1D]]
+          FilterRules[
+            {ops}, 
+            Options[iChemDVRDefaultKineticEnergy1D]
+            ]
           ],
       keels_List:>
         ChemDVRKroeneckerProductKineticEnergy@

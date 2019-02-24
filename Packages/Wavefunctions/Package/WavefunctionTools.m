@@ -738,7 +738,7 @@ Options[WFEigensystem]=
     {
       "NumberOfWavefunctions"->Automatic,
       "CorrectPhase"->True,
-      "NodelessGroundState"->True,
+      "NodelessGroundState"->False,
       "SortEnergies"->True,
       "WavefunctionEigensolver"->Eigensystem,
       "PreadjustHamiltonian"->True,
@@ -780,7 +780,7 @@ WFEigensystem[T_, V_, ops:OptionsPattern[]]:=
       prunePos,
       hamPruned,
       arnops,
-      nodeless=TrueQ["NodelessGroundState"]
+      nodeless=TrueQ@OptionValue["NodelessGroundState"]
       },
     Internal`WithLocalSettings[
       useFlags=
