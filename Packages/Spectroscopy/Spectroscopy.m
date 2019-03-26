@@ -8,14 +8,471 @@ ChemSpectrum::usage="Object head for wrapping up spectral data";
 Begin["`Private`"];
 
 
-(* ::Text:: *)
-(*
-	This is empty. I just wanted ChemSpectrum declared out here.
-*)
+RegisterInterface[
+  ChemSpectrum,
+  {
+    "Frequencies",
+    "Intensities",
+    "Units",
+    "MetaInfomation"
+    },
+  "Validator"->
+    ChemSpectrumQ,
+  "Constructor"->
+    ChemSpectrumBuild,
+  "MutationFunctions"->{"Keys"},
+  "AccessorFunctions"->
+    <|
+      "Keys"->ChemSpectrumKey,
+      "Parts"->ChemSpectrumPart
+      |>,
+  "NormalFunction"->(#["Points"]&),
+  "Formatted"->False,
+  "Protect"->False
+  ]
+
+
+(* ::Subsubsection::Closed:: *)
+(*Methods*)
 
 
 
-ChemSpectrumCopy;
+(* ::Subsubsubsection::Closed:: *)
+(*cachedCompute*)
+
+
+
+cachedCompute[spec_, prop_, func_, args___]:=
+  Replace[InterfacePropertyValue[spec, prop],
+    Missing["KeyAbsent", prop]:>
+      With[{v=func[args]},
+        InterfaceSetProperty[spec, prop->v];
+        v
+        ]
+    ];
+cachedCompute~SetAttributes~HoldAllComplete
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*chemSpecBind*)
+
+
+
+chemSpecBind[fn_, method_]:=
+  (
+    InterfaceMethod[ChemSpectrum]@
+      s_ChemSpectrum[method][a___]:=
+        fn[s, a];
+    )
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*chemSpecBindProp*)
+
+
+
+chemSpecBindProp[fn_, prop_]:=
+  (
+    InterfaceAttribute[ChemSpectrum]@
+      s_ChemSpectrum[prop]:=fn[s];
+    )
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Sort*)
+
+
+
+chemSpecSort[spec_]:=
+  With[
+    {
+      s2=
+        ChemSpectrumCopy[ChemSpectrumSort[spec], spec]
+      },
+    InterfaceSetProperty[s2, "SortedQ"->True];
+    s2
+    ]
+
+
+InterfaceMethod[ChemSpectrum]@
+  s_ChemSpectrum["Sort"][]:=
+    chemSpecSort@s;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Sorted*)
+
+
+
+chemSpecSorted[spec_]:=
+  If[TrueQ@spec["SortedQ"], 
+    spec, 
+    chemSpecSort[spec]
+    ]
+
+
+InterfaceMethod[ChemSpectrum]@
+  s_ChemSpectrum["Sorted"][]:=
+    chemSpecSorted@s;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Interpolation*)
+
+
+
+chemSpecInterp[spec_]:=
+  cachedCompute[
+    spec,
+    "Interpolation",
+    ChemSpectrumInterpolation,
+    spec
+    ];
+
+
+InterfaceAttribute[ChemSpectrum]@
+  s_ChemSpectrum["Interpolation"]:=
+    chemSpecInterp@s;
+InterfaceMethod[ChemSpectrum]@
+  s_ChemSpectrum["Interpolation"][]:=
+    ChemSpectrumInterpolation@s;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Length*)
+
+
+
+InterfaceOverride[ChemSpectrum]@
+  Length[s_ChemSpectrum]:=
+    ChemSpectrumLength@s;
+InterfaceAttribute[ChemSpectrum]@
+  s_ChemSpectrum["Length"]:=
+    ChemSpectrumLength@s;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Points*)
+
+
+
+InterfaceAttribute[ChemSpectrum]@
+  s_ChemSpectrum["Points"]:=
+    ChemSpectrumPoints@s;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Mode*)
+
+
+
+chemSpecMode[spec_]:=
+  cachedCompute[
+    spec,
+    "Mode",
+    ChemSpectrumMode,
+    spec
+    ];
+
+
+InterfaceAttribute[ChemSpectrum]@
+  s_ChemSpectrum["Mode"]:=
+    chemSpecMode@s;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Norm*)
+
+
+
+chemSpecNorm[spec_]:=
+  cachedCompute[
+    spec,
+    "Norm",
+    ChemSpectrumNorm,
+    spec
+    ];
+
+
+InterfaceOverride[ChemSpectrum]@
+  Norm[s_ChemSpectrum]:=
+    chemSpecNorm@s;
+InterfaceAttribute[ChemSpectrum]@
+  s_ChemSpectrum["Norm"]:=
+    chemSpecNorm@s;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*RegularlySampledQ*)
+
+
+
+chemSpecRegularlySampledQ[spec_]:=
+  cachedCompute[
+    spec,
+    "RegularlySampledQ",
+    ChemSpectrumRegularlySampledQ,
+    spec
+    ];
+
+
+InterfaceAttribute[ChemSpectrum]@
+  s_ChemSpectrum["RegularlySampledQ"]:=
+    chemSpecRegularlySampledQ@s;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*FrequencyRange*)
+
+
+
+chemSpecFrequencyRange[spec_]:=
+  cachedCompute[
+    spec,
+    "FrequencyRange",
+    ChemSpectrumFrequencyRange,
+    spec
+    ];
+
+
+InterfaceAttribute[ChemSpectrum]@
+  s_ChemSpectrum["FrequencyRange"]:=
+    chemSpecFrequencyRange@s;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*IntensityRange*)
+
+
+
+chemSpecIntensityRange[spec_]:=
+  cachedCompute[
+    spec,
+    "IntensityRange",
+    ChemSpectrumIntensityRange,
+    spec
+    ];
+
+
+InterfaceAttribute[ChemSpectrum]@
+  s_ChemSpectrum["IntensityRange"]:=
+    chemSpecIntensityRange@s;
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Select*)
+
+
+
+InterfaceMethod[ChemSpectrum]@
+  s_ChemSpectrum["Select"][a__]:=
+    ChemSpectrumSelect[s, a];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Clip*)
+
+
+
+chemSpecBind[ChemSpectrumClip, "Clip"];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Chop*)
+
+
+
+chemSpecBind[ChemSpectrumChop, "Chop"];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Window*)
+
+
+
+chemSpecBind[ChemSpectrumWindow, "Window"];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Scale*)
+
+
+
+chemSpecBind[ChemSpectrumScale, "Scale"];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Shift*)
+
+
+
+chemSpecBind[ChemSpectrumShift, "Shift"];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Smooth*)
+
+
+
+chemSpecBind[ChemSpectrumSmooth, "Smooth"];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Normalize*)
+
+
+
+chemSpecBind[ChemSpectrumNormalize, "Normalize"];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Adjust*)
+
+
+
+chemSpecBind[ChemSpectrumAdjust, "Adjust"];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Peaks*)
+
+
+
+chemSpecBindProp[ChemSpectrumFindPeaks, "Peaks"];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*FindPeaks*)
+
+
+
+chemSpecBind[ChemSpectrumFindPeaks, "FindPeaks"];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*NearestPeaks*)
+
+
+
+chemSpecBind[ChemSpectrumNearestPeaks, "NearestPeaks"];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Distribution*)
+
+
+
+chemSpecBind[ChemSpectrumDistribution, "Distribution"];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*NormalDistribution*)
+
+
+
+chemSpecGauss[spec_]:=
+  cachedCompute[
+    spec,
+    "NormalDistribution",
+    ChemSpectrumNormalDistribution,
+    spec
+    ]
+
+
+chemSpecBind[ChemSpectrumNormalDistribution, "NormalDistribution"];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*CauchyDistribution*)
+
+
+
+chemSpecBind[ChemSpectrumCauchyDistribution, "CauchyDistribution"];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Plot*)
+
+
+
+chemSpecBind[ChemSpectrumPlot, "Plot"];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Modify*)
+
+
+
+chemSpecBind[ChemSpectrumModify, "Modify"];
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Transform*)
+
+
+
+chemSpecBind[ChemSpectrumTransform, "Transform"];
+
+
+(* ::Subsubsection::Closed:: *)
+(*Overrides*)
+
+
+
+InterfaceOverride[ChemSpectrum]@
+  Join[c__ChemSpectrum]:=
+    ChemSpectrumJoin[c]
+
+
+(* ::Subsection:: *)
+(*Formatting*)
+
+
+
+$specIcon=
+  Image[
+    Import@PackageFilePath["Resources", "Icons", "ContinuousSpectrumIcon.png"],
+    ImageSize->{32,32}
+    ];
+
+
+$discSpecIcon=
+  Image[
+    Import@PackageFilePath["Resources", "Icons", "DiscreteSpectrumIcon.png"],
+    ImageSize->{32,32}
+    ];
+
+
+Format[spec_ChemSpectrum?ChemSpectrumQ]:=
+  RawBoxes@BoxForm`ArrangeSummaryBox[
+    "ChemSpectrum",
+    spec,
+    If[spec["Mode"]==="Continuous", 
+      $specIcon,
+      $discSpecIcon
+      ],
+    {
+      BoxForm`MakeSummaryItem[{"Points: ", spec["Length"]}, StandardForm]
+      },
+    {
+      BoxForm`MakeSummaryItem[
+        {"Frequency Range: ", Round[spec["FrequencyRange"], .001]},
+        StandardForm
+        ],
+      BoxForm`MakeSummaryItem[
+        {"Intensity Range: ", Round[spec["IntensityRange"], .001]},
+        StandardForm
+        ],
+      BoxForm`MakeSummaryItem[
+        {"Units: ", spec["Units"]},
+        StandardForm
+        ]
+      },
+    StandardForm
+    ];
+
+
+Protect[ChemSpectrum];
 
 
 End[];

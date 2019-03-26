@@ -9,6 +9,9 @@
 
 ChemSpectrumSort::usage="";
 ChemSpectrumPart::usage="";
+ChemSpectrumKey::usage="";
+ChemSpectrumLength::usage="";
+ChemSpectrumJoin::usage="";
 
 
 ChemSpectrumPoints::usage="";
@@ -81,6 +84,15 @@ Begin["`Private`"];
 
 
 (* ::Subsubsubsection::Closed:: *)
+(*Key*)
+
+
+
+ChemSpectrumKey[ChemSpectrum[a_Association], k__]:=
+  a[k];
+
+
+(* ::Subsubsubsection::Closed:: *)
 (*Slice*)
 
 
@@ -130,6 +142,43 @@ ChemSpectrumPoints[spec_, p_:All]:=
       Transpose@Developer`ToPackedArray@l,
       l
       ]
+    ]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Length*)
+
+
+
+ChemSpectrumLength[spec_]:=
+  Length@spec["Frequencies"]
+
+
+(* ::Subsubsubsection::Closed:: *)
+(*Join*)
+
+
+
+ChemSpectrumJoin[spec1_, spec2s__]:=
+  Module[
+    {
+      assocs=
+        InterfaceAssociation[ChemSpectrum, #]&/@{spec1, spec2s},
+      newAssoc
+      },
+    newAssoc=
+      Merge[
+        assocs,
+        Which[
+          ListQ[#[[1]]], 
+            Join@@#, 
+          AssociationQ[#[[1]]],
+            Merge[#, Last],
+          True,
+            Last[#]
+          ]&
+        ];
+    With[{new=newAssoc}, ChemSpectrum[new]]
     ]
 
 
@@ -448,15 +497,15 @@ ChemSpectrumScale[spec_,
   ]:=
   ChemSpectrumTransform[spec, 
     chemSpectrumScale[#, 
-      {sc, o},
-      {1, 0}
+      {1, 0},
+      {sc, o}
       ]&
     ]
 
 
 ChemSpectrumScale[spec_, 
-  {sc_?NumericQ, o_?NumericQ},
-  {is_?NumericQ, oi_?NumericQ}
+  {is_?NumericQ, oi_?NumericQ},
+  {sc_?NumericQ, o_?NumericQ}
   ]:=
   ChemSpectrumTransform[spec, 
     chemSpectrumScale[#, 

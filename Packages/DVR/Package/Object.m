@@ -2645,6 +2645,14 @@ iChemDVRRunOperatorMatrixElements[obj_ChemDVRObject]:=
 
 
 (* ::Subsubsection::Closed:: *)
+(*iChemDVRReturnHamiltonianQ*)
+
+
+
+iChemDVRReturnHamiltonianQ
+
+
+(* ::Subsubsection::Closed:: *)
 (*checkResults*)
 
 
@@ -2820,7 +2828,14 @@ iChemDVRRun2[obj:dvrObjPattern,ops:OptionsPattern[]]:=
     checkResults[res];
     If[res["Options", "EndPoint"]===$dvrpe, Return@res];
     RunCheckPoint=$dvrpe;
-    
+    (*(** ---------------------------- HAMILTONIAN ------------------------------ **)
+		If[iChemDVRReturnHamiltonianQ[res],
+			res["PotentialEnergy"]=
+				iChemDVRRunPotentialEnergy[res]
+			];
+		checkResults[res];
+		If[res["Options", "EndPoint"]===$dvrpe, Return@res];
+		RunCheckPoint=$dvrpe;*)
     (** ------------------------- EXTENDED WAVEFUNCTIONS ------------------------- **)
     (* 
 			Need better support for this. It should be used in place of the Wavefunctions or something... 
@@ -2829,7 +2844,7 @@ iChemDVRRun2[obj:dvrObjPattern,ops:OptionsPattern[]]:=
       res["Wavefunctions"]=iChemDVRRunExtendWavefunctions[res];
       Return@res
       ];
-    checkResults[res]'
+    checkResults[res];
     (** ----------------------------- WAVEFUNCTIONS ------------------------------- **)
     If[iChemDVRRunCalculateWFQ[res],
       res["Wavefunctions"]=
