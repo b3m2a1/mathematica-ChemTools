@@ -1,3 +1,5 @@
+(* ::Package:: *)
+
 (* This is a convenience file to load all of the packages in this app *)
 Map[
   Function[
@@ -22,7 +24,10 @@ Map[
     "Utilities",
     "Compute",
     "Import",
-    "Formats"
+    "Formats",
+    "Wavefunctions",
+    "DataStructures",
+    "WSim"
     }
   ]
 
