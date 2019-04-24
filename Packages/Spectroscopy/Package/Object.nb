@@ -1,604 +1,331 @@
-Notebook[{
-
-Cell[CellGroupData[{
-Cell["Spectra", "CodeSection",
- CellChangeTimes->{{3.692619234792058*^9, 
-  3.6926192387674026`*^9}},ExpressionUUID->"94f0d441-d035-414d-91d6-\
-ddfa26b58e71"],
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{
-   RowBox[{"$SpectrumPropertyCache", "::", "usage"}], "=", "\n", "\t", 
-   "\"\<Expression store for cached spectrum computation\>\""}], 
-  ";"}], "\n", 
- RowBox[{
-  RowBox[{
-   RowBox[{"ChemSpectrumQ", "::", "usage"}], "=", "\n", "\t", 
-   "\"\<Tests whether an object is a ChemSpectrum\>\""}], ";"}], "\n", 
- RowBox[{
-  RowBox[{
-   RowBox[{"ChemSpectrumBuild", "::", "usage"}], "=", "\n", "\t", 
-   "\"\<Creates the true ChemSpectrum object\>\""}], ";"}], "\n", 
- RowBox[{
-  RowBox[{
-   RowBox[{"ChemSpectrumCopy", "::", "usage"}], "=", "\n", "\t", 
-   "\"\<Copies a ChemSpectrum object and preserves its metadata/cache \
-data\>\""}], 
-  ";"}]}], "CodeInput",ExpressionUUID->"211276db-1d2c-4ca0-b0d1-1f0c1262989b"],
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{
-   RowBox[{"ChemSpectrumModify", "::", "usage"}], "=", "\n", "\t", 
-   "\"\<Creates a copy of the spectrum with modified parameters\>\""}], 
-  ";"}], "\n", 
- RowBox[{
-  RowBox[{
-   RowBox[{"ChemSpectrumTransform", "::", "usage"}], "=", "\n", "\t", 
-   "\"\<Applies a transformation to the spectrum data and returns a modifed \
-spectrum\>\""}], 
-  ";"}]}], "CodeInput",ExpressionUUID->"f0e32566-e3b0-48c8-a4ff-0857d2fbff10"],
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
-  ";"}]], "InputSection",ExpressionUUID->"feb5ca9c-1c12-4ed7-a0ff-\
-7cac3736862a"],
-
-Cell[CellGroupData[{
-
-Cell["\[LeftCeiling]Constructor\[RightFloor]", "CodeSubsection",
- Evaluatable->True,ExpressionUUID->"deca5199-81e3-4eb0-b4c3-3af1769f614b"],
-
-Cell[CellGroupData[{
-
-Cell["\[LeftCeiling]ChemSpectrumQ\[RightFloor]", "CodeSubsubsection",
- Evaluatable->True,ExpressionUUID->"8ef4b8a6-7396-4dc5-bf7e-eb13fb37dd54"],
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{
-   RowBox[{"validateSpectrum", "[", "d_Association", "]"}], ":=", "\n", "\t", 
-   
-   RowBox[{
-    RowBox[{"AllTrue", "[", 
-     RowBox[{
-      RowBox[{"{", "\"\<Version\>\"", "}"}], ",", " ", 
-      RowBox[{
-       RowBox[{"KeyExistsQ", "[", 
-        RowBox[{"d", ",", " ", "#"}], "]"}], "&"}]}], "]"}], "&&", "\n", 
-    "\t\t", 
-    RowBox[{"AllTrue", "[", 
-     RowBox[{
-      RowBox[{"{", 
-       RowBox[{"\"\<Frequencies\>\"", ",", " ", "\"\<Intensities\>\""}], 
-       "}"}], ",", " ", 
-      RowBox[{
-       RowBox[{"Developer`PackedArrayQ", "@", 
-        RowBox[{"d", "[", "#", "]"}]}], "&"}]}], "]"}], "&&", "\n", "\t\t\t", 
-    
-    RowBox[{
-     RowBox[{"Length", "@", 
-      RowBox[{"d", "[", "\"\<Frequencies\>\"", "]"}]}], "\[Equal]", 
-     RowBox[{"Length", "@", 
-      RowBox[{"d", "[", "\"\<Intensities\>\"", "]"}]}]}]}]}], ";"}], "\n", 
- RowBox[{
-  RowBox[{
-   RowBox[{"ChemSpectrumQ", "[", "a_Association", "]"}], ":=", "\n", "\t", 
-   RowBox[{"validateSpectrum", "@", "a"}]}], ";"}], "\n", 
- RowBox[{
-  RowBox[{"ChemSpectrumQ", "[", "spec_ChemSpectrum", "]"}], ":=", "\n", "\t", 
-  
-  RowBox[{"validateSpectrum", "@", 
-   RowBox[{"InterfaceAssociation", "[", 
-    RowBox[{"ChemSpectrum", ",", " ", "spec"}], 
-    "]"}]}]}]}], \
-"CodeInput",ExpressionUUID->"0e9b3215-0f8c-4d84-90d2-f173d67133ae"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["\[LeftCeiling]continuousSpectrumQ\[RightFloor]", "CodeSubsubsection",
- Evaluatable->True,ExpressionUUID->"87967411-e36c-4146-b3bb-38c79f050efc"],
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"continuousSpectrumQ", "[", "spec_", "]"}], ":=", "\n", "\t", 
-  RowBox[{
-   RowBox[{"spec", "[", "\"\<Mode\>\"", "]"}], "===", 
-   "\"\<Continuous\>\""}]}]], \
-"CodeInput",ExpressionUUID->"2d3dd880-f6e2-4e44-953a-8c91ba8e0feb"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["\[LeftCeiling]spectrumListQ\[RightFloor]", "CodeSubsubsection",
- Evaluatable->True,ExpressionUUID->"26f8de43-9f69-4e0b-918d-8073fdfd6f9d"],
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{
-   RowBox[{"spectrumListQ", "[", 
-    RowBox[{"{", 
-     RowBox[{"a_List", ",", " ", "b_List"}], "}"}], "]"}], ":=", "\n", "\t", 
-   RowBox[{
-    RowBox[{
-     RowBox[{"Length", "[", "a", "]"}], "===", 
-     RowBox[{"Length", "[", "b", "]"}]}], "//", "TrueQ"}]}], ";"}], "\n", 
- RowBox[{
-  RowBox[{
-   RowBox[{"spectrumListQ", "[", 
-    RowBox[{"d", ":", 
-     RowBox[{"{", "__List", "}"}]}], "]"}], ":=", "\n", "\t", 
-   RowBox[{
-    RowBox[{"With", "[", 
-     RowBox[{
-      RowBox[{"{", 
-       RowBox[{"dim", "=", 
-        RowBox[{"Dimensions", "[", "d", "]"}]}], "}"}], ",", "\n", "\t\t", 
-      RowBox[{
-       RowBox[{
-        RowBox[{"Length", "[", "dim", "]"}], "==", "2"}], "&&", 
-       RowBox[{
-        RowBox[{"dim", "[", 
-         RowBox[{"[", 
-          RowBox[{"-", "1"}], "]"}], "]"}], "\[Equal]", "2"}]}]}], "\n", 
-     "\t\t", "]"}], "//", "TrueQ"}]}], ";"}], "\n", 
- RowBox[{
-  RowBox[{"spectrumListQ", "[", "__", "]"}], ":=", "\n", "\t", 
-  "False"}]}], \
-"CodeInput",ExpressionUUID->"181a5387-af9e-49e6-84f6-a09dba45d2ba"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["\[LeftCeiling]getSpectrumList\[RightFloor]", "CodeSubsubsection",
- Evaluatable->True,ExpressionUUID->"b5986e66-1606-4fc3-9b45-1372a7b0c693"],
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"getSpectrumList", "[", "d_List", "]"}], ":=", "\n", "\t", 
-  RowBox[{"Module", "[", "\n", "\t\t", 
-   RowBox[{
-    RowBox[{"{", "\n", "\t\t\t", 
-     RowBox[{"m", "=", "d"}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
-    RowBox[{
-     RowBox[{"If", "[", 
-      RowBox[{
-       RowBox[{
-        RowBox[{"Length", "@", 
-         RowBox[{"Dimensions", "@", "m"}]}], "!=", "2"}], ",", "\n", 
-       "\t\t\t\t", 
-       RowBox[{
-       "specError", "@", "\n", "\t\t\t\t\t", 
-        "\"\<Spectral data must be a list of frequencies and \
-intensities\>\""}]}], "\n", "\t\t\t\t", "]"}], ";", "\n", "\t\t\t", 
-     RowBox[{"m", "=", 
-      RowBox[{"Developer`ToPackedArray", "@", "m"}]}], ";", "\n", "\t\t\t", 
-     RowBox[{"If", "[", 
-      RowBox[{
-       RowBox[{"!", 
-        RowBox[{"Developer`PackedArrayQ", "@", "m"}]}], ",", " ", 
-       RowBox[{"m", "=", 
-        RowBox[{"Developer`ToPackedArray", "@", 
-         RowBox[{"N", "@", "m"}]}]}]}], "]"}], ";", "\n", "\t\t\t", 
-     RowBox[{"If", "[", 
-      RowBox[{
-       RowBox[{"!", 
-        RowBox[{"Developer`PackedArrayQ", "@", "m"}]}], ",", "\n", "\t\t\t\t", 
-       RowBox[{
-       "specError", "@", "\n", "\t\t\t\t\t", 
-        "\"\<Spectral data must be real-valued numeric\>\""}]}], "\n", 
-      "\t\t\t\t", "]"}], ";", "\n", "\t\t\t", 
-     RowBox[{"If", "[", 
-      RowBox[{
-       RowBox[{
-        RowBox[{"Last", "@", 
-         RowBox[{"Dimensions", "[", "m", "]"}]}], "==", "2"}], ",", " ", 
-       RowBox[{"m", "=", 
-        RowBox[{"Transpose", "@", "m"}]}]}], "]"}], ";", "\n", "\t\t\t", 
-     "m"}]}], "\n", "\t\t", 
-   "]"}]}]], \
-"CodeInput",ExpressionUUID->"0ef21b26-3f23-4f3e-ae89-13cf0d40f9d6"]
-}, Closed]],
-
-Cell[CellGroupData[{
-
-Cell["\[LeftCeiling]ChemSpectrumBuild\[RightFloor]", "CodeSubsubsection",
- Evaluatable->True,ExpressionUUID->"0f50c791-969f-4a3e-b0a5-b6929d0ac2a1"],
-
-Cell[BoxData[
- RowBox[{"ChemSpectrumBuild", "//", 
-  "Clear"}]], \
-"CodeInput",ExpressionUUID->"1f9d566b-158e-42c5-8d35-ea749ecf1877"],
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{
-   RowBox[{"iChemSpectrumBuild", "[", "\n", "\t", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{"freq_", ",", " ", "ints_"}], "}"}], ",", " ", "\n", "\t", 
-     RowBox[{"meta_:", "Automatic"}], ",", "\n", "\t", 
-     RowBox[{"version_:", "Automatic"}], ",", "\n", "\t", 
-     RowBox[{"units_:", "Automatic"}]}], "\n", "\t", "]"}], ":=", "\n", "\t", 
-   
-   RowBox[{"Module", "[", "\n", "\t\t", 
-    RowBox[{
-     RowBox[{"{", "a", "}"}], ",", "\n", "\t\t", 
-     RowBox[{
-      RowBox[{"a", "=", "\n", "\t\t\t", 
-       RowBox[{"<|", "\n", "\t\t\t\t", 
-        RowBox[{
-         RowBox[{"\"\<Frequencies\>\"", "\[Rule]", 
-          RowBox[{"Developer`ToPackedArray", "@", "freq"}]}], ",", "\n", "\t",
-          "\t", "\t\t", 
-         RowBox[{"\"\<Intensities\>\"", "->", 
-          RowBox[{"Developer`ToPackedArray", "@", "ints"}]}], ",", "\n", "\t",
-          "\t\t\t", 
-         RowBox[{"\"\<Units\>\"", "\[Rule]", 
-          RowBox[{"Replace", "[", 
-           RowBox[{"units", ",", " ", 
-            RowBox[{"Automatic", "\[Rule]", "None"}]}], "]"}]}], ",", "\n", 
-         "\t", "\t\t\t", 
-         RowBox[{"\"\<MetaInfomation\>\"", "\[Rule]", 
-          RowBox[{"Replace", "[", 
-           RowBox[{"meta", ",", " ", 
-            RowBox[{"Automatic", "\[Rule]", 
-             RowBox[{"<|", "|>"}]}]}], "]"}]}]}], "\n", "\t\t\t\t", "|>"}]}], 
-      ";", "\n", "\t\t", 
-      RowBox[{"validateSpectrum", "[", "a", "]"}], ";", "\n", "\t\t", "a"}]}],
-     "\n", "\t\t", "]"}]}], ";"}], "\n", 
- RowBox[{
-  RowBox[{
-   RowBox[{"iChemSpectrumBuild", "[", "\n", "\t", 
-    RowBox[{
-     RowBox[{"l_List", "?", "spectrumListQ"}], ",", " ", "\n", "\t", 
-     RowBox[{"meta_:", "Automatic"}], ",", "\n", "\t", 
-     RowBox[{"version_:", "Automatic"}], ",", "\n", "\t", 
-     RowBox[{"units_:", "Automatic"}]}], "\n", "\t", "]"}], ":=", "\n", "\t", 
-   
-   RowBox[{"(", "\n", "\t\t", 
-    RowBox[{"iChemSpectrumBuild", "[", "\n", "\t\t\t", 
-     RowBox[{
-      RowBox[{"Transpose", "@", "l"}], ",", "\n", "\t", "\t\t", "meta", ",", 
-      "\n", "\t", "\t\t", "version", ",", "\n", "\t\t\t", "units"}], "\n", 
-     "\t\t\t", "]"}], "\n", "\t\t", ")"}]}], ";"}], "\n", 
- RowBox[{
-  RowBox[{
-   RowBox[{"iChemSpectrumBuild", "[", "a_Association", "]"}], ":=", "\n", 
-   "\t", 
-   RowBox[{"reformatSpectrumObject", "[", "a", "]"}]}], ";"}], "\n", 
- RowBox[{
-  RowBox[{
-   RowBox[{"ChemSpectrumBuild", "[", "e__", "]"}], ":=", "\n", "\t", 
-   RowBox[{"iChemSpectrumBuild", "[", "e", "]"}]}], 
-  ";"}]}], "CodeInput",ExpressionUUID->"3b9c0003-e1fe-4fb7-98ad-acdf302b143e"]\
-
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["\[LeftCeiling]specError\[RightFloor]", "CodeSubsubsection",
- Evaluatable->True,ExpressionUUID->"043015ea-b4e1-404f-83e0-d062e4414575"],
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"specError", "[", 
-   RowBox[{"msg_", ",", " ", "pars___"}], "]"}], ":=", "\n", "\t", 
-  RowBox[{"PackageRaiseException", "[", 
-   RowBox[{"Automatic", ",", "\n", "\t\t", "msg", ",", "\n", "\t\t", "pars"}],
-    "\n", "\t\t", 
-   "]"}]}]], \
-"CodeInput",ExpressionUUID->"26c72faf-32cd-4249-bd36-ea756d4dcbd3"]
-}, Closed]],
-
-Cell[CellGroupData[{
-
-Cell["\[LeftCeiling]ConstructChemSpectrumObject\[RightFloor]", \
-"CodeSubsubsection",
- Evaluatable->True,ExpressionUUID->"a769540f-474e-4b12-9a6f-abab7b44cf03"],
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"ConstructChemSpectrumObject", "[", 
-   RowBox[{"d_List", ",", " ", "meta_"}], "]"}], ":=", "\n", "\t", 
-  RowBox[{"ChemSpectrum", "[", 
-   RowBox[{
-    RowBox[{"getSpectrumList", "[", "d", "]"}], ",", " ", "meta"}], 
-   "]"}]}]], \
-"CodeInput",ExpressionUUID->"f2d708a2-7961-45dc-87f9-66d81c6dc50e"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["\[LeftCeiling]reformatSpectrumObject\[RightFloor]", "CodeSubsubsection",
- 
- Evaluatable->True,ExpressionUUID->"834f4684-9049-4f71-8c46-0ea8c66d7d6e"],
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"reformatSpectrumObject", "[", "a_Association", "]"}], ":=", "\n", 
-  "\t\t", 
-  RowBox[{"Module", "[", "\n", "\t\t\t", 
-   RowBox[{
-    RowBox[{"{", "\n", "\t\t\t\t", 
-     RowBox[{"freq", ",", "\n", "\t\t\t\t", "int"}], "\n", "\t\t\t\t", "}"}], 
-    ",", "\n", "\t\t\t", 
-    RowBox[{
-     RowBox[{"freq", "=", 
-      RowBox[{"Lookup", "[", 
-       RowBox[{"a", ",", " ", "\"\<Frequencies\>\"", ",", " ", 
-        RowBox[{"specError", "@", "\"\<No frequencies provides\>\""}]}], 
-       "]"}]}], ";", "\n", "\t\t\t", 
-     RowBox[{"If", "[", 
-      RowBox[{
-       RowBox[{
-        RowBox[{"Length", "@", 
-         RowBox[{"Dimensions", "@", "freq"}]}], "\[NotEqual]", "1"}], ",", 
-       " ", "\n", "\t\t\t\t", 
-       RowBox[{
-       "specError", "@", 
-        "\"\<Frequency data not a list of real numbers\>\""}]}], "\n", 
-      "\t\t\t\t", "]"}], ";", "\n", "\t\t\t", 
-     RowBox[{"freq", "=", 
-      RowBox[{"Developer`ToPackedArray", "@", "freq"}]}], ";", "\n", "\t\t\t", 
-     RowBox[{"If", "[", 
-      RowBox[{
-       RowBox[{"!", 
-        RowBox[{"Developer`PackedArrayQ", "@", "freq"}]}], ",", " ", "\n", 
-       "\t\t\t\t", 
-       RowBox[{
-       "specError", "@", "\n", "\t\t\t\t\t", 
-        "\"\<Frequency data must be real-valued numeric\>\""}]}], "\n", 
-      "\t\t\t\t", "]"}], ";", "\n", "\t\t\t", 
-     RowBox[{"int", "=", 
-      RowBox[{"Lookup", "[", 
-       RowBox[{"a", ",", " ", "\"\<Intensities\>\"", ",", " ", 
-        RowBox[{"specError", "@", "\"\<No intensities provides\>\""}]}], 
-       "]"}]}], ";", "\n", "\t\t\t", 
-     RowBox[{"If", "[", 
-      RowBox[{
-       RowBox[{
-        RowBox[{"Length", "@", 
-         RowBox[{"Dimensions", "@", "freq"}]}], "\[NotEqual]", "1"}], ",", 
-       " ", "\n", "\t\t\t\t", 
-       RowBox[{
-       "specError", "@", 
-        "\"\<Intensity data not a list of real numbers\>\""}]}], "\n", 
-      "\t\t\t\t", "]"}], ";", "\n", "\t\t\t", 
-     RowBox[{"int", "=", 
-      RowBox[{"Developer`ToPackedArray", "@", "int"}]}], ";", "\n", "\t\t\t", 
-     
-     RowBox[{"If", "[", 
-      RowBox[{
-       RowBox[{"!", 
-        RowBox[{"Developer`PackedArrayQ", "@", "int"}]}], ",", " ", "\n", 
-       "\t\t\t\t", 
-       RowBox[{
-       "specError", "@", "\n", "\t\t\t\t\t", 
-        "\"\<Intensity data must be real-valued numeric\>\""}]}], "\n", 
-      "\t\t\t\t", "]"}], ";", "\n", "\t\t\t", 
-     RowBox[{"Join", "[", "\n", "\t\t\t\t", 
-      RowBox[{"a", ",", "\n", "\t\t\t\t", 
-       RowBox[{"<|", "\n", "\t\t\t\t\t", 
-        RowBox[{
-         RowBox[{"\"\<Frequencies\>\"", "\[Rule]", "freq"}], ",", "\n", 
-         "\t\t\t\t\t", 
-         RowBox[{"\"\<Intensities\>\"", "\[Rule]", "int"}]}], "\n", 
-        "\t\t\t\t\t", "|>"}]}], "\n", "\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", 
-   "]"}]}]], \
-"CodeInput",ExpressionUUID->"1a1714b3-9e4f-4d98-bc26-707982a51632"]
-}, Closed]]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["\[LeftCeiling]Object Stuff\[RightFloor]", "CodeSubsection",
- Evaluatable->True,ExpressionUUID->"9edc58e9-cd53-4c13-b20c-0acbe5bef6a0"],
-
-Cell["\<\
-\[LeftCeiling]
-\tNeed to maintain a list of properties *not* to copy...
-\[RightFloor]\
-\>", "Text",
- Evaluatable->True,ExpressionUUID->"a3efabb3-c105-4b37-a9a4-0380363b9591"],
-
-Cell[CellGroupData[{
-
-Cell["\[LeftCeiling]Copy\[RightFloor]", "CodeSubsubsection",
- Evaluatable->True,ExpressionUUID->"d0e28d45-485d-4168-abee-555dd6074b0b"],
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{
-   RowBox[{"ChemSpectrumCopy", "[", 
-    RowBox[{"spec_", ",", " ", 
-     RowBox[{"test", ":", 
-      RowBox[{"Except", "[", "_ChemSpectrum", "]"}], ":", 
-      RowBox[{"(", 
-       RowBox[{"True", "&"}], ")"}]}]}], "]"}], ":=", "\n", "\t", 
-   RowBox[{"With", "[", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{"copy", "=", 
-       RowBox[{"ChemSpectrumBuild", "[", 
-        RowBox[{"Normal", "@", "spec"}], "]"}]}], "}"}], ",", "\n", "\t\t", 
-     RowBox[{
-      RowBox[{"ChemSpectrumCopy", "[", 
-       RowBox[{"spec", ",", " ", "copy", ",", " ", "test"}], "]"}], ";", "\n",
-       "\t\t", "copy"}]}], "\n", "\t\t", "]"}]}], ";"}], "\n", 
- RowBox[{
-  RowBox[{"ChemSpectrumCopy", "[", "\n", "\t", 
-   RowBox[{"spec1_", ",", " ", "\n", "\t", "spec2_", ",", " ", "\n", "\t", 
-    RowBox[{"keyTest_:", 
-     RowBox[{"(", 
-      RowBox[{"True", "&"}], ")"}]}]}], "\n", "\t", "]"}], ":=", "\n", "\t", 
-  RowBox[{"(", "\n", "\t\t", 
-   RowBox[{
-    RowBox[{"InterfaceCopyProperties", "[", 
-     RowBox[{"spec1", ",", " ", "spec2", ",", " ", "keyTest"}], "]"}], ";", 
-    "\n", "\t\t", "spec2"}], "\n", "\t\t", 
-   ")"}]}]}], \
-"CodeInput",ExpressionUUID->"c3999804-1fd2-4617-9e56-8a3b13833f08"]
-}, Open  ]]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["\[LeftCeiling]Modify\[RightFloor]", "CodeSubsection",
- Evaluatable->True,ExpressionUUID->"fb6cac4c-8214-4417-8a5c-af040662c7dd"],
-
-Cell[CellGroupData[{
-
-Cell["\[LeftCeiling]Modify\[RightFloor]", "CodeSubsubsection",
- Evaluatable->True,ExpressionUUID->"76fc5e4e-b214-45b9-a65c-51f0d860e114"],
-
-Cell["\<\
-\[LeftCeiling]
-\tModifies some part of a ChemSpectrum
-\[RightFloor]\
-\>", "Text",
- Evaluatable->True,ExpressionUUID->"de7b9e4d-ccb1-4f88-b7af-cbc0959e23b8"],
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"getModdedAss", "[", "\n", "\t", 
-   RowBox[{"spec_", ",", "\n", "\t", 
-    RowBox[{"specL", ":", 
-     RowBox[{
-      RowBox[{"(", 
-       RowBox[{"_List", "?", "spectrumListQ"}], ")"}], "|", "Automatic"}], 
-     ":", "Automatic"}], ",", " ", "\n", "\t", 
-    RowBox[{"attrs", ":", 
-     RowBox[{"_", "?", "OptionQ"}], ":", 
-     RowBox[{"<|", "|>"}]}]}], "\n", "\t", "]"}], ":=", "\n", "\t", 
-  RowBox[{"Module", "[", "\n", "\t\t", 
-   RowBox[{
-    RowBox[{"{", "\n", "\t\t\t", 
-     RowBox[{
-      RowBox[{"abase", " ", "=", " ", 
-       RowBox[{"InterfaceAssociation", "[", 
-        RowBox[{"ChemSpectrum", ",", " ", "spec"}], "]"}]}], ",", "\n", 
-      "\t\t\t", 
-      RowBox[{"pl", "=", "specL"}], ",", "\n", "\t\t\t", "meta", ",", "\n", 
-      "\t\t\t", "sp2"}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", 
-    RowBox[{
-     RowBox[{"If", "[", 
-      RowBox[{
-       RowBox[{"specL", "===", "Automatic"}], ",", "\n", "\t\t\t", 
-       RowBox[{"pl", "=", 
-        RowBox[{"{", 
-         RowBox[{
-          RowBox[{"spec", "[", "\"\<Frequencies\>\"", "]"}], ",", " ", 
-          RowBox[{"spec", "[", "\"\<Intensities\>\"", "]"}]}], "}"}]}], ",", 
-       "\n", "\t\t\t", 
-       RowBox[{"pl", "=", "specL"}]}], "\n", "\t\t\t", "]"}], ";", "\n", 
-     "\t\t", 
-     RowBox[{"meta", "=", 
-      RowBox[{"Merge", "[", "\n", "\t\t\t", 
-       RowBox[{
-        RowBox[{"{", "\n", "\t\t\t\t", 
-         RowBox[{
-          RowBox[{"KeyDrop", "[", "\n", "\t\t\t\t\t", 
-           RowBox[{"abase", ",", " ", "\n", "\t\t\t\t\t", 
-            RowBox[{"{", 
-             RowBox[{"\"\<Frequencies\>\"", ",", " ", "\"\<Intensities\>\""}],
-              "}"}]}], "\n", "\t\t\t\t\t", "]"}], ",", "\n", "\t\t\t\t", 
-          "attrs"}], "\n", "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", "Last"}], 
-       "\n", "\t\t\t", "]"}]}], ";", "\n", "\t\t", 
-     RowBox[{"Merge", "[", "\n", "\t\t\t", 
-      RowBox[{
-       RowBox[{"{", "\n", "\t\t\t\t", 
-        RowBox[{"abase", ",", "\n", "\t\t\t\t", 
-         RowBox[{"<|", "\n", "\t\t\t\t\t", 
-          RowBox[{
-           RowBox[{"\"\<Frequencies\>\"", "->", 
-            RowBox[{"specL", "[", 
-             RowBox[{"[", "1", "]"}], "]"}]}], ",", "\n", "\t", "\t\t\t\t", 
-           RowBox[{"\"\<Intensities\>\"", "->", 
-            RowBox[{"specL", "[", 
-             RowBox[{"[", "2", "]"}], "]"}]}], ",", "\n", "\t", "\t\t\t\t", 
-           RowBox[{"\"\<MetaInformation\>\"", "\[Rule]", "meta"}]}], "\n", 
-          "\t\t\t\t\t", "|>"}]}], "\n", "\t\t\t\t", "}"}], ",", "\n", 
-       "\t\t\t", 
-       RowBox[{
-        RowBox[{"If", "[", 
-         RowBox[{
-          RowBox[{"AssociationQ", "@", 
-           RowBox[{"#", "[", 
-            RowBox[{"[", "1", "]"}], "]"}]}], ",", "\n", "\t\t\t\t", 
-          RowBox[{"Merge", "[", 
-           RowBox[{"#", ",", " ", "Last"}], "]"}], ",", "\n", "\t\t\t\t", 
-          RowBox[{"Last", "[", "#", "]"}]}], "\n", "\t\t\t\t", "]"}], "&"}]}],
-       "\n", "\t\t\t", "]"}]}]}], "\n", "\t\t", 
-   "]"}]}]], \
-"CodeInput",ExpressionUUID->"30b18609-df5e-4c7b-a111-e967cebb6ab5"],
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"ChemSpectrumModify", "[", "\n", "\t", 
-   RowBox[{"spec_", ",", " ", "\n", "\t", 
-    RowBox[{"specL", ":", 
-     RowBox[{
-      RowBox[{"_List", "?", "spectrumListQ"}], "|", "Automatic"}], ":", 
-     "Automatic"}], ",", " ", "\n", "\t", 
-    RowBox[{"attrs", ":", 
-     RowBox[{"_", "?", "OptionQ"}], ":", 
-     RowBox[{"<|", "|>"}]}]}], "\n", "\t", "]"}], ":=", "\n", "\t", 
-  RowBox[{"InterfaceModify", "[", "\n", "\t\t", 
-   RowBox[{"ChemSpectrum", ",", "\n", "\t\t", "spec", ",", "\n", "\t\t", 
-    RowBox[{
-     RowBox[{"getModdedAss", "[", 
-      RowBox[{"spec", ",", " ", "specL", ",", " ", "attrs"}], "]"}], "&"}]}], 
-   "\n", "\t\t", 
-   "]"}]}]], \
-"CodeInput",ExpressionUUID->"e620cca0-9f4f-43e8-b291-9ff496e273ac"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["\[LeftCeiling]Transform\[RightFloor]", "CodeSubsubsection",
- Evaluatable->True,ExpressionUUID->"cddd450f-4a6e-4594-9839-cbb1cd20e35b"],
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"ChemSpectrumTransform", "[", 
-   RowBox[{"spec_", ",", " ", "fn_"}], "]"}], ":=", "\n", "\t", 
-  RowBox[{"ChemSpectrumModify", "[", 
-   RowBox[{"spec", ",", " ", 
-    RowBox[{"fn", "[", 
-     RowBox[{"{", 
-      RowBox[{
-       RowBox[{"spec", "[", "\"\<Frequencies\>\"", "]"}], ",", " ", 
-       RowBox[{"spec", "[", "\"\<Intensities\>\"", "]"}]}], "}"}], "]"}]}], 
-   "]"}]}]], \
-"CodeInput",ExpressionUUID->"31c4b5a4-ae50-4db8-bc28-5ef9d83adfe9"]
-}, Closed]]
-}, Open  ]],
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"End", "[", "]"}], 
-  ";"}]], "InputSection",ExpressionUUID->"9dac5ffd-3497-409e-be10-\
-a60ab050c12b"]
-}, Open  ]],
-
-Cell["", "SectionSeparator",ExpressionUUID->"7caa748b-78fc-4082-aded-\
-e57495d40106"]
-},
-WindowSize->{808, 755},
-WindowMargins->{{Automatic, 245}, {Automatic, 0}},
-TaggingRules->{
- "UUIDButtons" -> {
-   "Active" -> {
-     "Button-89ffd2c3-ec41-4179-a9b1-8e28670bca2c" -> False, 
-      "Button-ca46e5e0-4fd1-47e8-8cf6-72998922b757" -> False, 
-      "Button-a6d68254-3684-4d32-83fc-e5ef6f443930" -> False}}},
-FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
-2018)",
-StyleDefinitions->FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
-  CharacterEncoding -> "UTF-8"]
-]
-
+Notebook[{Cell[CellGroupData[{Cell["Spectra", "CodeSection", 
+      CellChangeTimes -> {{3.692619234792058*^9, 3.6926192387674026*^9}}], 
+     Cell[BoxData[{RowBox[{RowBox[{RowBox[{"$SpectrumPropertyCache", "::", 
+              "usage"}], "=", "\n", "\t", 
+            "\"Expression store for cached spectrum computation\""}], ";"}], 
+        "\n", RowBox[{RowBox[{RowBox[{"ChemSpectrumQ", "::", "usage"}], "=", 
+            "\n", "\t", "\"Tests whether an object is a ChemSpectrum\""}], 
+          ";"}], "\n", RowBox[{RowBox[{RowBox[{"ChemSpectrumBuild", "::", 
+              "usage"}], "=", "\n", "\t", 
+            "\"Creates the true ChemSpectrum object\""}], ";"}], "\n", 
+        RowBox[{RowBox[{RowBox[{"ChemSpectrumCopy", "::", "usage"}], "=", 
+            "\n", "\t", "\"Copies a ChemSpectrum object and preserves its \
+metadata/cache data\""}], ";"}]}], "CodeInput"], 
+     Cell[BoxData[{RowBox[{RowBox[{RowBox[{"ChemSpectrumModify", "::", 
+              "usage"}], "=", "\n", "\t", 
+            "\"Creates a copy of the spectrum with modified parameters\""}], 
+          ";"}], "\n", RowBox[{RowBox[{RowBox[{"ChemSpectrumTransform", "::", 
+              "usage"}], "=", "\n", "\t", "\"Applies a transformation to the \
+spectrum data and returns a modifed spectrum\""}], ";"}]}], "CodeInput"], 
+     Cell[BoxData[RowBox[{RowBox[{"Begin", "[", "\"`Private`\"", "]"}], 
+         ";"}]], "InputSection"], 
+     Cell[CellGroupData[{Cell["\[LeftCeiling]Constructor\[RightFloor]", 
+         "CodeSubsection", Evaluatable -> True], 
+        Cell[CellGroupData[{Cell["\[LeftCeiling]ChemSpectrumQ\[RightFloor]", 
+            "CodeSubsubsection", Evaluatable -> True], 
+           Cell[BoxData[{RowBox[{RowBox[{RowBox[{"validateSpectrum", "[", 
+                    "d_Association", "]"}], ":=", "\n", "\t", RowBox[
+                   {RowBox[{"AllTrue", "[", RowBox[{RowBox[{"{", 
+                          "\"Version\"", "}"}], ",", " ", RowBox[{RowBox[
+                          {"KeyExistsQ", "[", RowBox[{"d", ",", " ", "#"}], 
+                          "]"}], "&"}]}], "]"}], "&&", "\n", "\t\t", 
+                    RowBox[{"AllTrue", "[", RowBox[{RowBox[{"{", RowBox[
+                          {"\"Frequencies\"", ",", " ", "\"Intensities\""}], 
+                          "}"}], ",", " ", RowBox[{RowBox[
+                          {"Developer`PackedArrayQ", "@", RowBox[{"d", "[", 
+                          "#", "]"}]}], "&"}]}], "]"}], "&&", "\n", "\t\t\t", 
+                    RowBox[{RowBox[{"Length", "@", RowBox[{"d", "[", 
+                          "\"Frequencies\"", "]"}]}], "\[Equal]", RowBox[
+                       {"Length", "@", RowBox[{"d", "[", "\"Intensities\"", 
+                          "]"}]}]}]}]}], ";"}], "\n", RowBox[{RowBox[
+                 {RowBox[{"ChemSpectrumQ", "[", "a_Association", "]"}], ":=", 
+                  "\n", "\t", RowBox[{"validateSpectrum", "@", "a"}]}], 
+                ";"}], "\n", RowBox[{RowBox[{"ChemSpectrumQ", "[", 
+                  "spec_ChemSpectrum", "]"}], ":=", "\n", "\t", 
+                RowBox[{"validateSpectrum", "@", RowBox[
+                   {"InterfaceAssociation", "[", RowBox[{"ChemSpectrum", ",", 
+                      " ", "spec"}], "]"}]}]}]}], "CodeInput"]}, Closed]], 
+        Cell[CellGroupData[
+          {Cell["\[LeftCeiling]continuousSpectrumQ\[RightFloor]", 
+            "CodeSubsubsection", Evaluatable -> True], 
+           Cell[BoxData[RowBox[{RowBox[{"continuousSpectrumQ", "[", "spec_", 
+                 "]"}], ":=", "\n", "\t", RowBox[{RowBox[{"spec", "[", 
+                   "\"Mode\"", "]"}], "===", "\"Continuous\""}]}]], 
+            "CodeInput"]}, Closed]], Cell[CellGroupData[
+          {Cell["\[LeftCeiling]spectrumListQ\[RightFloor]", 
+            "CodeSubsubsection", Evaluatable -> True], 
+           Cell[BoxData[{RowBox[{RowBox[{RowBox[{"spectrumListQ", "[", 
+                    RowBox[{"{", RowBox[{"a_List", ",", " ", "b_List"}], 
+                      "}"}], "]"}], ":=", "\n", "\t", RowBox[
+                   {RowBox[{RowBox[{"Length", "[", "a", "]"}], "===", 
+                      RowBox[{"Length", "[", "b", "]"}]}], "//", "TrueQ"}]}], 
+                ";"}], "\n", RowBox[{RowBox[{RowBox[{"spectrumListQ", "[", 
+                    RowBox[{"d", ":", RowBox[{"{", "__List", "}"}]}], "]"}], 
+                  ":=", "\n", "\t", RowBox[{RowBox[{"With", "[", RowBox[
+                       {RowBox[{"{", RowBox[{"dim", "=", RowBox[
+                          {"Dimensions", "[", "d", "]"}]}], "}"}], ",", "\n", 
+                        "\t\t", RowBox[{RowBox[{RowBox[{"Length", "[", "dim", 
+                          "]"}], "==", "2"}], "&&", RowBox[{RowBox[{"dim", 
+                          "[", RowBox[{"[", RowBox[{"-", "1"}], "]"}], "]"}], 
+                          "\[Equal]", "2"}]}]}], "\n", "\t\t", "]"}], "//", 
+                    "TrueQ"}]}], ";"}], "\n", RowBox[{RowBox[
+                 {"spectrumListQ", "[", "__", "]"}], ":=", "\n", "\t", 
+                "False"}]}], "CodeInput"]}, Closed]], 
+        Cell[CellGroupData[
+          {Cell["\[LeftCeiling]getSpectrumList\[RightFloor]", 
+            "CodeSubsubsection", Evaluatable -> True], 
+           Cell[BoxData[RowBox[{RowBox[{"getSpectrumList", "[", "d_List", 
+                 "]"}], ":=", "\n", "\t", RowBox[{"Module", "[", "\n", 
+                 "\t\t", RowBox[{RowBox[{"{", "\n", "\t\t\t", RowBox[
+                      {"m", "=", "d"}], "\n", "\t\t\t", "}"}], ",", "\n", 
+                   "\t\t", RowBox[{RowBox[{"If", "[", RowBox[{RowBox[
+                          {RowBox[{"Length", "@", RowBox[{"Dimensions", "@", 
+                          "m"}]}], "!=", "2"}], ",", "\n", "\t\t\t\t", 
+                         RowBox[{"specError", "@", "\n", "\t\t\t\t\t", "\"Spe\
+ctral data must be a list of frequencies and intensities\""}]}], "\n", 
+                       "\t\t\t\t", "]"}], ";", "\n", "\t\t\t", RowBox[
+                      {"m", "=", RowBox[{"Developer`ToPackedArray", "@", 
+                         "m"}]}], ";", "\n", "\t\t\t", RowBox[{"If", "[", 
+                       RowBox[{RowBox[{"!", RowBox[{"Developer`PackedArrayQ", 
+                          "@", "m"}]}], ",", " ", RowBox[{"m", "=", RowBox[
+                          {"Developer`ToPackedArray", "@", RowBox[{"N", "@", 
+                          "m"}]}]}]}], "]"}], ";", "\n", "\t\t\t", RowBox[
+                      {"If", "[", RowBox[{RowBox[{"!", RowBox[
+                          {"Developer`PackedArrayQ", "@", "m"}]}], ",", "\n", 
+                         "\t\t\t\t", RowBox[{"specError", "@", "\n", 
+                          "\t\t\t\t\t", 
+                          "\"Spectral data must be real-valued numeric\""}]}]\
+, "\n", "\t\t\t\t", "]"}], ";", "\n", "\t\t\t", RowBox[{"If", "[", RowBox[
+                        {RowBox[{RowBox[{"Last", "@", RowBox[{"Dimensions", 
+                          "[", "m", "]"}]}], "==", "2"}], ",", " ", RowBox[
+                          {"m", "=", RowBox[{"Transpose", "@", "m"}]}]}], 
+                       "]"}], ";", "\n", "\t\t\t", "m"}]}], "\n", "\t\t", 
+                 "]"}]}]], "CodeInput"]}, Closed]], 
+        Cell[CellGroupData[
+          {Cell["\[LeftCeiling]ChemSpectrumBuild\[RightFloor]", 
+            "CodeSubsubsection", Evaluatable -> True], 
+           Cell[BoxData[RowBox[{"ChemSpectrumBuild", "//", "Clear"}]], 
+            "CodeInput"], Cell[BoxData[{RowBox[{RowBox[{RowBox[
+                   {"iChemSpectrumBuild", "[", "\n", "\t", RowBox[
+                     {RowBox[{"{", RowBox[{"freq_", ",", " ", "ints_"}], 
+                        "}"}], ",", " ", "\n", "\t", RowBox[{"meta_:", 
+                        "Automatic"}], ",", "\n", "\t", RowBox[{"version_:", 
+                        "Automatic"}], ",", "\n", "\t", RowBox[{"units_:", 
+                        "Automatic"}]}], "\n", "\t", "]"}], ":=", "\n", "\t", 
+                  RowBox[{"Module", "[", "\n", "\t\t", RowBox[
+                     {RowBox[{"{", "a", "}"}], ",", "\n", "\t\t", RowBox[
+                       {RowBox[{"a", "=", "\n", "\t\t\t", RowBox[{"<|", "\n", 
+                          "\t\t\t\t", RowBox[{RowBox[{"\"Frequencies\"", 
+                          "\[Rule]", RowBox[{"Developer`ToPackedArray", "@", 
+                          "freq"}]}], ",", "\n", "\t", "\t", "\t\t", RowBox[
+                          {"\"Intensities\"", "->", RowBox[
+                          {"Developer`ToPackedArray", "@", "ints"}]}], ",", 
+                          "\n", "\t", "\t\t\t", RowBox[{"\"Units\"", 
+                          "\[Rule]", RowBox[{"Replace", "[", RowBox[{"units", 
+                          ",", " ", RowBox[{"Automatic", "\[Rule]", 
+                          "None"}]}], "]"}]}], ",", "\n", "\t", "\t\t\t", 
+                          RowBox[{"\"MetaInfomation\"", "\[Rule]", RowBox[
+                          {"Replace", "[", RowBox[{"meta", ",", " ", RowBox[
+                          {"Automatic", "\[Rule]", RowBox[{"<|", "|>"}]}]}], 
+                          "]"}]}]}], "\n", "\t\t\t\t", "|>"}]}], ";", "\n", 
+                        "\t\t", RowBox[{"validateSpectrum", "[", "a", "]"}], 
+                        ";", "\n", "\t\t", "a"}]}], "\n", "\t\t", "]"}]}], 
+                ";"}], "\n", RowBox[{RowBox[{RowBox[{"iChemSpectrumBuild", 
+                    "[", "\n", "\t", RowBox[{RowBox[{"l_List", "?", 
+                        "spectrumListQ"}], ",", " ", "\n", "\t", RowBox[
+                       {"meta_:", "Automatic"}], ",", "\n", "\t", RowBox[
+                       {"version_:", "Automatic"}], ",", "\n", "\t", 
+                      RowBox[{"units_:", "Automatic"}]}], "\n", "\t", "]"}], 
+                  ":=", "\n", "\t", RowBox[{"(", "\n", "\t\t", RowBox[
+                     {"iChemSpectrumBuild", "[", "\n", "\t\t\t", RowBox[
+                       {RowBox[{"Transpose", "@", "l"}], ",", "\n", "\t", 
+                        "\t\t", "meta", ",", "\n", "\t", "\t\t", "version", 
+                        ",", "\n", "\t\t\t", "units"}], "\n", "\t\t\t", 
+                      "]"}], "\n", "\t\t", ")"}]}], ";"}], "\n", 
+              RowBox[{RowBox[{RowBox[{"iChemSpectrumBuild", "[", 
+                    "a_Association", "]"}], ":=", "\n", "\t", RowBox[
+                   {"reformatSpectrumObject", "[", "a", "]"}]}], ";"}], "\n", 
+              RowBox[{RowBox[{RowBox[{"ChemSpectrumBuild", "[", "e__", "]"}], 
+                  ":=", "\n", "\t", RowBox[{"iChemSpectrumBuild", "[", "e", 
+                    "]"}]}], ";"}]}], "CodeInput"]}, Closed]], 
+        Cell[CellGroupData[{Cell["\[LeftCeiling]specError\[RightFloor]", 
+            "CodeSubsubsection", Evaluatable -> True], 
+           Cell[BoxData[RowBox[{RowBox[{"specError", "[", RowBox[{"msg_", 
+                   ",", " ", "pars___"}], "]"}], ":=", "\n", "\t", RowBox[
+                {"PackageRaiseException", "[", RowBox[{"Automatic", ",", 
+                   "\n", "\t\t", "msg", ",", "\n", "\t\t", "pars"}], "\n", 
+                 "\t\t", "]"}]}]], "CodeInput"]}, Closed]], 
+        Cell[CellGroupData[
+          {Cell["\[LeftCeiling]ConstructChemSpectrumObject\[RightFloor]", 
+            "CodeSubsubsection", Evaluatable -> True], 
+           Cell[BoxData[RowBox[{RowBox[{"ConstructChemSpectrumObject", "[", 
+                 RowBox[{"d_List", ",", " ", "meta_"}], "]"}], ":=", "\n", 
+               "\t", RowBox[{"ChemSpectrum", "[", RowBox[{RowBox[
+                    {"getSpectrumList", "[", "d", "]"}], ",", " ", "meta"}], 
+                 "]"}]}]], "CodeInput"]}, Open]], 
+        Cell[CellGroupData[
+          {Cell["\[LeftCeiling]reformatSpectrumObject\[RightFloor]", 
+            "CodeSubsubsection", Evaluatable -> True], 
+           Cell[BoxData[RowBox[{RowBox[{"reformatSpectrumObject", "[", 
+                 "a_Association", "]"}], ":=", "\n", "\t\t", RowBox[
+                {"Module", "[", "\n", "\t\t\t", RowBox[{RowBox[{"{", "\n", 
+                     "\t\t\t\t", RowBox[{"freq", ",", "\n", "\t\t\t\t", 
+                       "int"}], "\n", "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+                   RowBox[{RowBox[{"freq", "=", RowBox[{"Lookup", "[", 
+                         RowBox[{"a", ",", " ", "\"Frequencies\"", ",", " ", 
+                          RowBox[{"specError", "@", 
+                          "\"No frequencies provides\""}]}], "]"}]}], ";", 
+                     "\n", "\t\t\t", RowBox[{"If", "[", RowBox[{RowBox[
+                          {RowBox[{"Length", "@", RowBox[{"Dimensions", "@", 
+                          "freq"}]}], "\[NotEqual]", "1"}], ",", " ", "\n", 
+                         "\t\t\t\t", RowBox[{"specError", "@", 
+                          "\"Frequency data not a list of real numbers\""}]}]\
+, "\n", "\t\t\t\t", "]"}], ";", "\n", "\t\t\t", RowBox[{"freq", "=", 
+                       RowBox[{"Developer`ToPackedArray", "@", "freq"}]}], 
+                     ";", "\n", "\t\t\t", RowBox[{"If", "[", RowBox[
+                        {RowBox[{"!", RowBox[{"Developer`PackedArrayQ", "@", 
+                          "freq"}]}], ",", " ", "\n", "\t\t\t\t", RowBox[
+                          {"specError", "@", "\n", "\t\t\t\t\t", 
+                          "\"Frequency data must be real-valued numeric\""}]}]\
+, "\n", "\t\t\t\t", "]"}], ";", "\n", "\t\t\t", RowBox[{"int", "=", RowBox[
+                        {"Lookup", "[", RowBox[{"a", ",", " ", 
+                          "\"Intensities\"", ",", " ", RowBox[{"specError", 
+                          "@", "\"No intensities provides\""}]}], "]"}]}], 
+                     ";", "\n", "\t\t\t", RowBox[{"If", "[", RowBox[
+                        {RowBox[{RowBox[{"Length", "@", RowBox[{"Dimensions", 
+                          "@", "freq"}]}], "\[NotEqual]", "1"}], ",", " ", 
+                         "\n", "\t\t\t\t", RowBox[{"specError", "@", 
+                          "\"Intensity data not a list of real numbers\""}]}]\
+, "\n", "\t\t\t\t", "]"}], ";", "\n", "\t\t\t", RowBox[{"int", "=", RowBox[
+                        {"Developer`ToPackedArray", "@", "int"}]}], ";", 
+                     "\n", "\t\t\t", RowBox[{"If", "[", RowBox[{RowBox[
+                          {"!", RowBox[{"Developer`PackedArrayQ", "@", 
+                          "int"}]}], ",", " ", "\n", "\t\t\t\t", RowBox[
+                          {"specError", "@", "\n", "\t\t\t\t\t", 
+                          "\"Intensity data must be real-valued numeric\""}]}]\
+, "\n", "\t\t\t\t", "]"}], ";", "\n", "\t\t\t", RowBox[{"Join", "[", "\n", 
+                       "\t\t\t\t", RowBox[{"a", ",", "\n", "\t\t\t\t", 
+                         RowBox[{"<|", "\n", "\t\t\t\t\t", RowBox[{RowBox[
+                          {"\"Frequencies\"", "\[Rule]", "freq"}], ",", "\n", 
+                          "\t\t\t\t\t", RowBox[{"\"Intensities\"", "\[Rule]", 
+                          "int"}]}], "\n", "\t\t\t\t\t", "|>"}]}], "\n", 
+                       "\t\t\t\t", "]"}]}]}], "\n", "\t\t\t", "]"}]}]], 
+            "CodeInput"]}, Closed]]}, Open]], 
+     Cell[CellGroupData[{Cell["\[LeftCeiling]Object Stuff\[RightFloor]", 
+         "CodeSubsection", Evaluatable -> True], Cell["\[LeftCeiling]\n\tNeed \
+to maintain a list of properties *not* to copy...\n\[RightFloor]", "Text", 
+         Evaluatable -> True], Cell[CellGroupData[
+          {Cell["\[LeftCeiling]Copy\[RightFloor]", "CodeSubsubsection", 
+            Evaluatable -> True], Cell[BoxData[
+             {RowBox[{RowBox[{RowBox[{"ChemSpectrumCopy", "[", RowBox[
+                     {"spec_", ",", " ", RowBox[{"test", ":", RowBox[
+                         {"Except", "[", "_ChemSpectrum", "]"}], ":", 
+                        RowBox[{"(", RowBox[{"True", "&"}], ")"}]}]}], "]"}], 
+                  ":=", "\n", "\t", RowBox[{"With", "[", RowBox[
+                     {RowBox[{"{", RowBox[{"copy", "=", RowBox[
+                          {"ChemSpectrumBuild", "[", RowBox[{"Normal", "@", 
+                          "spec"}], "]"}]}], "}"}], ",", "\n", "\t\t", 
+                      RowBox[{RowBox[{"ChemSpectrumCopy", "[", RowBox[
+                          {"spec", ",", " ", "copy", ",", " ", "test"}], 
+                          "]"}], ";", "\n", "\t\t", "copy"}]}], "\n", "\t\t", 
+                    "]"}]}], ";"}], "\n", RowBox[{RowBox[{"ChemSpectrumCopy", 
+                  "[", "\n", "\t", RowBox[{"spec1_", ",", " ", "\n", "\t", 
+                    "spec2_", ",", " ", "\n", "\t", RowBox[{"keyTest_:", 
+                      RowBox[{"(", RowBox[{"True", "&"}], ")"}]}]}], "\n", 
+                  "\t", "]"}], ":=", "\n", "\t", RowBox[{"(", "\n", "\t\t", 
+                  RowBox[{RowBox[{"InterfaceCopyProperties", "[", RowBox[
+                       {"spec1", ",", " ", "spec2", ",", " ", "keyTest"}], 
+                      "]"}], ";", "\n", "\t\t", "spec2"}], "\n", "\t\t", 
+                  ")"}]}]}], "CodeInput"]}, Closed]]}, Open]], 
+     Cell[CellGroupData[{Cell["\[LeftCeiling]Modify\[RightFloor]", 
+         "CodeSubsection", Evaluatable -> True], 
+        Cell[CellGroupData[{Cell["\[LeftCeiling]Modify\[RightFloor]", 
+            "CodeSubsubsection", Evaluatable -> True], Cell["\[LeftCeiling]\n\
+\tModifies some part of a ChemSpectrum\n\[RightFloor]", "Text", 
+            Evaluatable -> True], Cell[BoxData[RowBox[{RowBox[
+                {"getModdedAss", "[", "\n", "\t", RowBox[{"spec_", ",", "\n", 
+                   "\t", RowBox[{"specL", ":", RowBox[{RowBox[{"(", RowBox[
+                          {"_List", "?", "spectrumListQ"}], ")"}], "|", 
+                       "Automatic"}], ":", "Automatic"}], ",", " ", "\n", 
+                   "\t", RowBox[{"attrs", ":", RowBox[{RowBox[{"_", "?", 
+                         "OptionQ"}], "|", RowBox[{"_", "?", 
+                         "AssociationQ"}]}], ":", RowBox[{"<|", "|>"}]}]}], 
+                 "\n", "\t", "]"}], ":=", "\n", "\t", RowBox[{"Module", "[", 
+                 "\n", "\t\t", RowBox[{RowBox[{"{", "\n", "\t\t\t", 
+                     RowBox[{RowBox[{"abase", " ", "=", " ", RowBox[
+                          {"InterfaceAssociation", "[", RowBox[
+                          {"ChemSpectrum", ",", " ", "spec"}], "]"}]}], ",", 
+                       "\n", "\t\t\t", RowBox[{"pl", "=", "specL"}], ",", 
+                       "\n", "\t\t\t", "meta", ",", "\n", "\t\t\t", "sp2"}], 
+                     "\n", "\t\t\t", "}"}], ",", "\n", "\t\t", RowBox[
+                    {RowBox[{"If", "[", RowBox[{RowBox[{"specL", "===", 
+                          "Automatic"}], ",", "\n", "\t\t\t", RowBox[{"pl", 
+                          "=", RowBox[{"{", RowBox[{RowBox[{"spec", "[", 
+                          "\"Frequencies\"", "]"}], ",", " ", RowBox[{"spec", 
+                          "[", "\"Intensities\"", "]"}]}], "}"}]}], ",", 
+                         "\n", "\t\t\t", RowBox[{"pl", "=", "specL"}]}], 
+                       "\n", "\t\t\t", "]"}], ";", "\n", "\t\t", RowBox[
+                      {"meta", "=", RowBox[{"Merge", "[", "\n", "\t\t\t", 
+                         RowBox[{RowBox[{"{", "\n", "\t\t\t\t", RowBox[
+                          {RowBox[{"KeyDrop", "[", "\n", "\t\t\t\t\t", RowBox[
+                          {"abase", ",", " ", "\n", "\t\t\t\t\t", RowBox[
+                          {"{", RowBox[{"\"Frequencies\"", ",", " ", 
+                          "\"Intensities\""}], "}"}]}], "\n", "\t\t\t\t\t", 
+                          "]"}], ",", "\n", "\t\t\t\t", "attrs"}], "\n", 
+                          "\t\t\t\t", "}"}], ",", "\n", "\t\t\t", "Last"}], 
+                         "\n", "\t\t\t", "]"}]}], ";", "\n", "\t\t", 
+                     RowBox[{"Merge", "[", "\n", "\t\t\t", RowBox[
+                        {RowBox[{"{", "\n", "\t\t\t\t", RowBox[{"abase", ",", 
+                          "\n", "\t\t\t\t", RowBox[{"<|", "\n", "\t\t\t\t\t", 
+                          RowBox[{RowBox[{"\"Frequencies\"", "->", RowBox[
+                          {"specL", "[", RowBox[{"[", "1", "]"}], "]"}]}], 
+                          ",", "\n", "\t", "\t\t\t\t", RowBox[
+                          {"\"Intensities\"", "->", RowBox[{"specL", "[", 
+                          RowBox[{"[", "2", "]"}], "]"}]}], ",", "\n", "\t", 
+                          "\t\t\t\t", RowBox[{"\"MetaInformation\"", 
+                          "\[Rule]", "meta"}]}], "\n", "\t\t\t\t\t", 
+                          "|>"}]}], "\n", "\t\t\t\t", "}"}], ",", "\n", 
+                         "\t\t\t", RowBox[{RowBox[{"If", "[", RowBox[
+                          {RowBox[{"AssociationQ", "@", RowBox[{"#", "[", 
+                          RowBox[{"[", "1", "]"}], "]"}]}], ",", "\n", 
+                          "\t\t\t\t", RowBox[{"Merge", "[", RowBox[{"#", ",", 
+                          " ", "Last"}], "]"}], ",", "\n", "\t\t\t\t", RowBox[
+                          {"Last", "[", "#", "]"}]}], "\n", "\t\t\t\t", 
+                          "]"}], "&"}]}], "\n", "\t\t\t", "]"}]}]}], "\n", 
+                 "\t\t", "]"}]}]], "CodeInput"], 
+           Cell[BoxData[RowBox[{RowBox[{"ChemSpectrumModify", "[", "\n", 
+                 "\t", RowBox[{"spec_", ",", " ", "\n", "\t", RowBox[
+                    {"specL", ":", RowBox[{RowBox[{"_List", "?", 
+                         "spectrumListQ"}], "|", "Automatic"}], ":", 
+                     "Automatic"}], ",", " ", "\n", "\t", RowBox[{"attrs", 
+                     ":", RowBox[{RowBox[{"_", "?", "OptionQ"}], "|", 
+                       RowBox[{"_", "?", "AssociationQ"}]}], ":", RowBox[
+                      {"<|", "|>"}]}]}], "\n", "\t", "]"}], ":=", "\n", "\t", 
+               RowBox[{"InterfaceModify", "[", "\n", "\t\t", RowBox[
+                  {"ChemSpectrum", ",", "\n", "\t\t", "spec", ",", "\n", 
+                   "\t\t", RowBox[{RowBox[{"getModdedAss", "[", RowBox[
+                        {"spec", ",", " ", "specL", ",", " ", "attrs"}], 
+                       "]"}], "&"}]}], "\n", "\t\t", "]"}]}]], "CodeInput"]}, 
+          Open]], Cell[CellGroupData[
+          {Cell["\[LeftCeiling]Transform\[RightFloor]", "CodeSubsubsection", 
+            Evaluatable -> True], Cell[BoxData[RowBox[{RowBox[
+                {"ChemSpectrumTransform", "[", RowBox[{"spec_", ",", " ", 
+                   "fn_"}], "]"}], ":=", "\n", "\t", RowBox[
+                {"ChemSpectrumModify", "[", RowBox[{"spec", ",", " ", "\n", 
+                   "\t  ", RowBox[{"fn", "[", RowBox[{"{", RowBox[
+                        {RowBox[{"spec", "[", "\"Frequencies\"", "]"}], ",", 
+                         " ", RowBox[{"spec", "[", "\"Intensities\"", 
+                          "]"}]}], "}"}], "]"}]}], "\n", "\t  ", "]"}]}]], 
+            "CodeInput"]}, Open]]}, Open]], 
+     Cell[BoxData[RowBox[{RowBox[{"End", "[", "]"}], ";"}]], 
+      "InputSection"]}, Open]], Cell["", "SectionSeparator"]}, 
+ WindowSize -> {808, 755}, WindowMargins -> {{Automatic, 245}, 
+   {Automatic, 0}}, TaggingRules -> 
+  {"UUIDButtons" -> 
+    {"Active" -> {"Button-89ffd2c3-ec41-4179-a9b1-8e28670bca2c" -> False, 
+       "Button-ca46e5e0-4fd1-47e8-8cf6-72998922b757" -> False, 
+       "Button-a6d68254-3684-4d32-83fc-e5ef6f443930" -> False}}}, 
+ FrontEndVersion -> 
+  "11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, 2018)", 
+ StyleDefinitions -> FrontEnd`FileName[{"BTools"}, "CodePackage.nb", 
+   CharacterEncoding -> "UTF-8"]]

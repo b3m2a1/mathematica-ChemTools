@@ -249,7 +249,7 @@ ChemSpectrumCopy[
 getModdedAss[
   spec_,
   specL:(_List?spectrumListQ)|Automatic:Automatic, 
-  attrs:_?OptionQ:<||>
+  attrs:_?OptionQ|_?AssociationQ:<||>
   ]:=
   Module[
     {
@@ -292,7 +292,7 @@ getModdedAss[
 ChemSpectrumModify[
   spec_, 
   specL:_List?spectrumListQ|Automatic:Automatic, 
-  attrs:_?OptionQ:<||>
+  attrs:_?OptionQ|_?AssociationQ:<||>
   ]:=
   InterfaceModify[
     ChemSpectrum,
@@ -307,7 +307,9 @@ ChemSpectrumModify[
 
 
 ChemSpectrumTransform[spec_, fn_]:=
-  ChemSpectrumModify[spec, fn[{spec["Frequencies"], spec["Intensities"]}]]
+  ChemSpectrumModify[spec, 
+    fn[{spec["Frequencies"], spec["Intensities"]}]
+    ]
 
 
 End[];

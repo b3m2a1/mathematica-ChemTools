@@ -444,20 +444,17 @@ chemSpectrumWindow[
       fr=Pick[fr, sp, 1];
       in=Pick[in, sp, 1];
       sp=
-        If[intMin===-\[Infinity], 
-          ConstantArray[1, Length@in],
-          UnitStep[in, in-intMin]
+        If[TrueQ[intMin>-\[Infinity]], 
+          UnitStep[in, in-intMin],
+          ConstantArray[1, Length@in]
           ]*
-        If[intMax===\[Infinity], 
-          ConstantArray[1, Length@in],
-          UnitStep[in, intMax-in]
+        If[TrueQ[intMax<\[Infinity]], 
+          UnitStep[in, intMax-in],
+          ConstantArray[1, Length@in]
           ];
       fr=Pick[fr, sp, 1];
       in=Pick[in, sp, 1];
-      {
-        fr,
-        in
-        }
+      {fr, in}
     ]
 
 
