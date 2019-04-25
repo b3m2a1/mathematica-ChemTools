@@ -58,9 +58,14 @@ chemSpectrumPlotContinuous[spec_, ops:OptionsPattern[]]:=
 
 
 
-Options[chemSpectrumPlotDiscrete]=
+(* ::Subsubsubsubsection::Closed:: *)
+(*Old*)
+
+
+
+Options[chemSpectrumPlotDiscreteOld]=
   Options@ListLinePlot;
-chemSpectrumPlotDiscrete[
+chemSpectrumPlotDiscreteOld[
   spec_,
   ops:OptionsPattern[]
   ]:=
@@ -95,6 +100,45 @@ chemSpectrumPlotDiscrete[
           ops,
           PlotRange->{All, Threshold@MinMax@ints},
           PlotStyle->Red
+          },
+        Options@ListLinePlot
+        ]
+      ]
+    ];
+
+
+(* ::Subsubsubsubsection::Closed:: *)
+(*New*)
+
+
+
+Options[chemSpectrumPlotDiscrete]=
+  Options@ListLinePlot;
+chemSpectrumPlotDiscrete[
+  spec_,
+  ops:OptionsPattern[]
+  ]:=
+  Module[
+    {
+      freqs,
+      pts,
+      ints,
+      data,
+      padding
+      },
+    freqs=spec["Frequencies"];
+    ints=spec["Intensities"];
+    pts=Transpose[{freqs, ints}];
+    ListPlot[
+      pts,
+      FilterRules[
+        {
+          ops,
+          PlotRange->All,
+          PlotStyle->Red,
+          PlotMarkers->Style["", ShowStringCharacters->False],
+          Filling->Axis,
+          FillingStyle->Opacity[1]
           },
         Options@ListLinePlot
         ]

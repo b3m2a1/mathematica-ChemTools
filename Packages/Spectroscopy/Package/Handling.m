@@ -419,19 +419,25 @@ ChemSpectrumChop[
 
 
 
+chemSpectrumWindow//Clear
 chemSpectrumWindow[
   {freq_, int_},
-  {freqMin_, freqMax_}, 
-  {intMin_, intMax_}
+  {freqMin0_, freqMax0_}, 
+  {intMin0_, intMax0_}
   ]:=
   Module[
     {
       sp,
       fr=freq,
       in=int,
-      frMs={freqMin, freqMax},
-      inm=intMin,  inM=intMax
+      freqMin = Replace[freqMin0, All->-Infinity],
+      freqMax = Replace[freqMax0, All->Infinity],
+      intMin = Replace[intMin0, All->-Infinity],
+      intMax = Replace[intMax0, All->Infinity],
+      frMs, inm,  inM
       },
+      frMs={freqMin, freqMax};
+      inm=intMin;  inM=intMax;
       sp=
         If[freqMin===-\[Infinity], 
           ConstantArray[1, Length@fr],
@@ -444,13 +450,13 @@ chemSpectrumWindow[
       fr=Pick[fr, sp, 1];
       in=Pick[in, sp, 1];
       sp=
-        If[TrueQ[intMin>-\[Infinity]], 
-          UnitStep[in, in-intMin],
-          ConstantArray[1, Length@in]
+        If[intMin===-\[Infinity], 
+          ConstantArray[1, Length@in],
+          UnitStep[in, in-intMin]
           ]*
-        If[TrueQ[intMax<\[Infinity]], 
-          UnitStep[in, intMax-in],
-          ConstantArray[1, Length@in]
+        If[intMax===\[Infinity], 
+          ConstantArray[1, Length@in],
+          UnitStep[in, intMax-in]
           ];
       fr=Pick[fr, sp, 1];
       in=Pick[in, sp, 1];
@@ -458,18 +464,20 @@ chemSpectrumWindow[
     ]
 
 
-ChemSpectrumWindow[spec_, 
-  f:{_, _}, 
-  i:{_, _}:{-\[Infinity], \[Infinity]}
+ChemSpectrumWindow//Clear
+ChemSpectrumWindow[
+  spec_, 
+  f:{_, _}|All, 
+  i:{_, _}|All:All
   ]:=
   ChemSpectrumTransform[
     spec, 
     chemSpectrumWindow[
       #, 
-      ChemSpectrumTrueFrequency[spec, f], 
-      ChemSpectrumTrueIntensity[spec, i]
+      ChemSpectrumTrueFrequency[spec, Replace[f, All->{All, All}]], 
+      ChemSpectrumTrueIntensity[spec, Replace[i, All->{All, All}]]
       ]&
-    ]
+    ];
 
 
 (* ::Subsubsection::Closed:: *)

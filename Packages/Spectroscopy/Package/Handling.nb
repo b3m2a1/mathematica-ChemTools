@@ -411,92 +411,112 @@ MixtureDistribution based on the peaks and intensities\""}], ";"}], "\n",
                         "}"}]}], "\n", "\t\t", "]"}]}], ";"}]}], 
             "CodeInput"]}, Closed]], Cell[CellGroupData[
           {Cell["\[LeftCeiling]Window\[RightFloor]", "CodeSubsubsection", 
-            Evaluatable -> True], Cell[BoxData[RowBox[{RowBox[
-                {"chemSpectrumWindow", "[", "\n", "\t", RowBox[
-                  {RowBox[{"{", RowBox[{"freq_", ",", " ", "int_"}], "}"}], 
-                   ",", "\n", "\t", RowBox[{"{", RowBox[{"freqMin_", ",", 
-                       " ", "freqMax_"}], "}"}], ",", " ", "\n", "\t", 
-                   RowBox[{"{", RowBox[{"intMin_", ",", " ", "intMax_"}], 
-                     "}"}]}], "\n", "\t", "]"}], ":=", "\n", "\t", RowBox[
-                {"Module", "[", "\n", "\t\t", RowBox[{RowBox[{"{", "\n", 
-                     "\t\t\t", RowBox[{"sp", ",", "\n", "\t\t\t", RowBox[
-                        {"fr", "=", "freq"}], ",", "\n", "\t\t\t", RowBox[
-                        {"in", "=", "int"}], ",", "\n", "\t\t\t", RowBox[
-                        {"frMs", "=", RowBox[{"{", RowBox[{"freqMin", ",", 
-                          " ", "freqMax"}], "}"}]}], ",", "\n", "\t\t\t", 
-                       RowBox[{"inm", "=", "intMin"}], ",", "  ", RowBox[
-                        {"inM", "=", "intMax"}]}], "\n", "\t\t\t", "}"}], 
-                   ",", "\n", "\t\t\t", RowBox[{RowBox[{"sp", "=", "\n", 
-                       "\t\t\t\t", RowBox[{RowBox[{"If", "[", RowBox[
-                          {RowBox[{"freqMin", "===", RowBox[{"-", 
+            Evaluatable -> True], Cell[BoxData[{RowBox[{"chemSpectrumWindow", 
+                "//", "Clear"}], "\n", RowBox[{RowBox[{"chemSpectrumWindow", 
+                  "[", "\n", "\t", RowBox[{RowBox[{"{", RowBox[{"freq_", ",", 
+                        " ", "int_"}], "}"}], ",", "\n", "\t", RowBox[
+                     {"{", RowBox[{"freqMin0_", ",", " ", "freqMax0_"}], 
+                      "}"}], ",", " ", "\n", "\t", RowBox[{"{", RowBox[
+                       {"intMin0_", ",", " ", "intMax0_"}], "}"}]}], "\n", 
+                  "\t", "]"}], ":=", "\n", "\t", RowBox[{"Module", "[", "\n", 
+                  "\t\t", RowBox[{RowBox[{"{", "\n", "\t\t\t", RowBox[
+                       {"sp", ",", "\n", "\t\t\t", RowBox[{"fr", "=", 
+                          "freq"}], ",", "\n", "\t\t\t", RowBox[{"in", "=", 
+                          "int"}], ",", "\n", "\t\t\t", RowBox[{"freqMin", 
+                          " ", "=", " ", RowBox[{"Replace", "[", RowBox[
+                          {"freqMin0", ",", " ", RowBox[{"All", "\[Rule]", 
+                          RowBox[{"-", "Infinity"}]}]}], "]"}]}], ",", "\n", 
+                        "\t\t\t", RowBox[{"freqMax", " ", "=", " ", RowBox[
+                          {"Replace", "[", RowBox[{"freqMax0", ",", " ", 
+                          RowBox[{"All", "\[Rule]", "Infinity"}]}], "]"}]}], 
+                        ",", "\n", "\t\t\t", RowBox[{"intMin", " ", "=", " ", 
+                          RowBox[{"Replace", "[", RowBox[{"intMin0", ",", 
+                          " ", RowBox[{"All", "\[Rule]", RowBox[{"-", 
+                          "Infinity"}]}]}], "]"}]}], ",", "\n", "\t\t\t", 
+                        RowBox[{"intMax", " ", "=", " ", RowBox[{"Replace", 
+                          "[", RowBox[{"intMax0", ",", " ", RowBox[{"All", 
+                          "\[Rule]", "Infinity"}]}], "]"}]}], ",", "\n", 
+                        "\t\t\t", "frMs", ",", " ", "inm", ",", "  ", 
+                        "inM"}], "\n", "\t\t\t", "}"}], ",", "\n", "\t\t\t", 
+                    RowBox[{RowBox[{"frMs", "=", RowBox[{"{", RowBox[
+                          {"freqMin", ",", " ", "freqMax"}], "}"}]}], ";", 
+                      "\n", "\t\t\t", RowBox[{"inm", "=", "intMin"}], ";", 
+                      "  ", RowBox[{"inM", "=", "intMax"}], ";", "\n", 
+                      "\t\t\t", RowBox[{"sp", "=", "\n", "\t\t\t\t", 
+                        RowBox[{RowBox[{"If", "[", RowBox[{RowBox[{"freqMin", 
+                          "===", RowBox[{"-", "\[Infinity]"}]}], ",", " ", 
+                          "\n", "\t\t\t\t\t", RowBox[{"ConstantArray", "[", 
+                          RowBox[{"1", ",", " ", RowBox[{"Length", "@", 
+                          "fr"}]}], "]"}], ",", "\n", "\t\t\t\t\t", RowBox[
+                          {"UnitStep", "[", RowBox[{"fr", ",", " ", RowBox[
+                          {"fr", "-", "freqMin"}]}], "]"}]}], "\n", 
+                          "\t\t\t\t\t", "]"}], "*", "\n", "\t\t\t\t\t", 
+                          RowBox[{"If", "[", RowBox[{RowBox[{"freqMax", 
+                          "===", "\[Infinity]"}], ",", " ", "\n", "\t", 
+                          "\t\t\t\t\t", RowBox[{"ConstantArray", "[", RowBox[
+                          {"1", ",", " ", RowBox[{"Length", "@", "fr"}]}], 
+                          "]"}], ",", "\n", "\t", "\t\t\t\t\t", RowBox[
+                          {"UnitStep", "[", RowBox[{"fr", ",", " ", RowBox[
+                          {"freqMax", "-", "fr"}]}], "]"}]}], "\n", 
+                          "\t\t\t\t\t\t", "]"}]}]}], ";", "\n", "\t\t\t", 
+                      RowBox[{"fr", "=", RowBox[{"Pick", "[", RowBox[{"fr", 
+                          ",", " ", "sp", ",", " ", "1"}], "]"}]}], ";", 
+                      "\n", "\t\t\t", RowBox[{"in", "=", RowBox[{"Pick", "[", 
+                          RowBox[{"in", ",", " ", "sp", ",", " ", "1"}], 
+                          "]"}]}], ";", "\n", "\t\t\t", RowBox[{"sp", "=", 
+                        "\n", "\t\t\t\t", RowBox[{RowBox[{"If", "[", RowBox[
+                          {RowBox[{"intMin", "===", RowBox[{"-", 
                           "\[Infinity]"}]}], ",", " ", "\n", "\t\t\t\t\t", 
                           RowBox[{"ConstantArray", "[", RowBox[{"1", ",", 
-                          " ", RowBox[{"Length", "@", "fr"}]}], "]"}], ",", 
-                          "\n", "\t\t\t\t\t", RowBox[{"UnitStep", "[", RowBox[
-                          {"fr", ",", " ", RowBox[{"fr", "-", "freqMin"}]}], 
-                          "]"}]}], "\n", "\t\t\t\t\t", "]"}], "*", "\n", 
-                         "\t\t\t\t\t", RowBox[{"If", "[", RowBox[{RowBox[
-                          {"freqMax", "===", "\[Infinity]"}], ",", " ", "\n", 
-                          "\t", "\t\t\t\t\t", RowBox[{"ConstantArray", "[", 
-                          RowBox[{"1", ",", " ", RowBox[{"Length", "@", 
-                          "fr"}]}], "]"}], ",", "\n", "\t", "\t\t\t\t\t", 
-                          RowBox[{"UnitStep", "[", RowBox[{"fr", ",", " ", 
-                          RowBox[{"freqMax", "-", "fr"}]}], "]"}]}], "\n", 
-                          "\t\t\t\t\t\t", "]"}]}]}], ";", "\n", "\t\t\t", 
-                     RowBox[{"fr", "=", RowBox[{"Pick", "[", RowBox[{"fr", 
-                          ",", " ", "sp", ",", " ", "1"}], "]"}]}], ";", 
-                     "\n", "\t\t\t", RowBox[{"in", "=", RowBox[{"Pick", "[", 
-                         RowBox[{"in", ",", " ", "sp", ",", " ", "1"}], 
-                         "]"}]}], ";", "\n", "\t\t\t", RowBox[{"sp", "=", 
-                       "\n", "\t\t\t\t", RowBox[{RowBox[{"If", "[", RowBox[
-                          {RowBox[{"TrueQ", "[", RowBox[{"intMin", ">", 
-                          RowBox[{"-", "\[Infinity]"}]}], "]"}], ",", " ", 
+                          " ", RowBox[{"Length", "@", "in"}]}], "]"}], ",", 
                           "\n", "\t\t\t\t\t", RowBox[{"UnitStep", "[", RowBox[
                           {"in", ",", " ", RowBox[{"in", "-", "intMin"}]}], 
-                          "]"}], ",", "\n", "\t\t\t\t\t", RowBox[
-                          {"ConstantArray", "[", RowBox[{"1", ",", " ", 
-                          RowBox[{"Length", "@", "in"}]}], "]"}]}], "\n", 
-                          "\t\t\t\t\t", "]"}], "*", "\n", "\t\t\t\t", 
-                         RowBox[{"If", "[", RowBox[{RowBox[{"TrueQ", "[", 
-                          RowBox[{"intMax", "<", "\[Infinity]"}], "]"}], ",", 
-                          " ", "\n", "\t\t\t\t\t", RowBox[{"UnitStep", "[", 
-                          RowBox[{"in", ",", " ", RowBox[{"intMax", "-", 
-                          "in"}]}], "]"}], ",", "\n", "\t\t\t\t\t", RowBox[
-                          {"ConstantArray", "[", RowBox[{"1", ",", " ", 
-                          RowBox[{"Length", "@", "in"}]}], "]"}]}], "\n", 
-                          "\t\t\t\t\t", "]"}]}]}], ";", "\n", "\t\t\t", 
-                     RowBox[{"fr", "=", RowBox[{"Pick", "[", RowBox[{"fr", 
-                          ",", " ", "sp", ",", " ", "1"}], "]"}]}], ";", 
-                     "\n", "\t\t\t", RowBox[{"in", "=", RowBox[{"Pick", "[", 
-                         RowBox[{"in", ",", " ", "sp", ",", " ", "1"}], 
-                         "]"}]}], ";", "\n", "\t\t\t", RowBox[{"{", RowBox[
-                        {"fr", ",", " ", "in"}], "}"}]}]}], "\n", "\t\t", 
-                 "]"}]}]], "CodeInput"], Cell[BoxData[
-             RowBox[{RowBox[{"ChemSpectrumWindow", "[", RowBox[{"spec_", ",", 
-                   " ", "\n", "\t", RowBox[{"f", ":", RowBox[{"{", RowBox[
-                        {"_", ",", " ", "_"}], "}"}]}], ",", " ", "\n", "\t", 
-                   RowBox[{"i", ":", RowBox[{"{", RowBox[{"_", ",", " ", 
-                         "_"}], "}"}], ":", RowBox[{"{", RowBox[{RowBox[
-                          {"-", "\[Infinity]"}], ",", " ", "\[Infinity]"}], 
-                       "}"}]}]}], "\n", "\t", "]"}], ":=", "\n", "\t", RowBox[
-                {"ChemSpectrumTransform", "[", "\n", "\t\t", RowBox[
-                  {"spec", ",", " ", "\n", "\t\t", RowBox[{RowBox[
-                      {"chemSpectrumWindow", "[", "\n", "\t\t\t", RowBox[
-                        {"#", ",", " ", "\n", "\t\t\t", RowBox[
+                          "]"}]}], "\n", "\t\t\t\t\t", "]"}], "*", "\n", 
+                          "\t\t\t\t", RowBox[{"If", "[", RowBox[{RowBox[
+                          {"intMax", "===", "\[Infinity]"}], ",", " ", "\n", 
+                          "\t\t\t\t\t", RowBox[{"ConstantArray", "[", RowBox[
+                          {"1", ",", " ", RowBox[{"Length", "@", "in"}]}], 
+                          "]"}], ",", "\n", "\t\t\t\t\t", RowBox[{"UnitStep", 
+                          "[", RowBox[{"in", ",", " ", RowBox[{"intMax", "-", 
+                          "in"}]}], "]"}]}], "\n", "\t\t\t\t\t", "]"}]}]}], 
+                      ";", "\n", "\t\t\t", RowBox[{"fr", "=", RowBox[{"Pick", 
+                          "[", RowBox[{"fr", ",", " ", "sp", ",", " ", "1"}], 
+                          "]"}]}], ";", "\n", "\t\t\t", RowBox[{"in", "=", 
+                        RowBox[{"Pick", "[", RowBox[{"in", ",", " ", "sp", 
+                          ",", " ", "1"}], "]"}]}], ";", "\n", "\t\t\t", 
+                      RowBox[{"{", RowBox[{"fr", ",", " ", "in"}], "}"}]}]}], 
+                  "\n", "\t\t", "]"}]}]}], "CodeInput"], 
+           Cell[BoxData[{RowBox[{"ChemSpectrumWindow", "//", "Clear"}], "\n", 
+              RowBox[{RowBox[{RowBox[{"ChemSpectrumWindow", "[", "\n", "  ", 
+                    RowBox[{"spec_", ",", " ", "\n", "\t", RowBox[{"f", ":", 
+                        RowBox[{RowBox[{"{", RowBox[{"_", ",", " ", "_"}], 
+                          "}"}], "|", "All"}]}], ",", " ", "\n", "\t", 
+                      RowBox[{"i", ":", RowBox[{RowBox[{"{", RowBox[{"_", 
+                          ",", " ", "_"}], "}"}], "|", "All"}], ":", 
+                        "All"}]}], "\n", "\t", "]"}], ":=", "\n", "\t", 
+                  RowBox[{"ChemSpectrumTransform", "[", "\n", "\t\t", 
+                    RowBox[{"spec", ",", " ", "\n", "\t\t", RowBox[
+                       {RowBox[{"chemSpectrumWindow", "[", "\n", "\t\t\t", 
+                          RowBox[{"#", ",", " ", "\n", "\t\t\t", RowBox[
                           {"ChemSpectrumTrueFrequency", "[", RowBox[{"spec", 
-                          ",", " ", "f"}], "]"}], ",", " ", "\n", "\t\t\t", 
-                         RowBox[{"ChemSpectrumTrueIntensity", "[", RowBox[
-                          {"spec", ",", " ", "i"}], "]"}]}], "\n", "\t\t\t", 
-                       "]"}], "&"}]}], "\n", "\t\t", "]"}]}]], "CodeInput"]}, 
-          Closed]], Cell[CellGroupData[
-          {Cell["\[LeftCeiling]Scale\[RightFloor]", "CodeSubsubsection", 
-            Evaluatable -> True], Cell[BoxData[RowBox[{RowBox[
-                {"chemSpectrumScale", "[", "\n", "\t", RowBox[
-                  {RowBox[{"{", RowBox[{"freq_", ",", " ", "int_"}], "}"}], 
-                   ",", "\n", "\t", RowBox[{"{", RowBox[{"sc_", ",", " ", 
-                       "o_"}], "}"}], ",", "\n", "\t", RowBox[{"{", 
-                     RowBox[{"is_", ",", " ", "oi_"}], "}"}]}], "\n", "\t", 
-                 "]"}], ":=", "\n", "\t", RowBox[{"{", "\n", "\t\t", 
+                          ",", " ", RowBox[{"Replace", "[", RowBox[{"f", ",", 
+                          " ", RowBox[{"All", "\[Rule]", RowBox[{"{", RowBox[
+                          {"All", ",", " ", "All"}], "}"}]}]}], "]"}]}], 
+                          "]"}], ",", " ", "\n", "\t\t\t", RowBox[
+                          {"ChemSpectrumTrueIntensity", "[", RowBox[{"spec", 
+                          ",", " ", RowBox[{"Replace", "[", RowBox[{"i", ",", 
+                          " ", RowBox[{"All", "\[Rule]", RowBox[{"{", RowBox[
+                          {"All", ",", " ", "All"}], "}"}]}]}], "]"}]}], 
+                          "]"}]}], "\n", "\t\t\t", "]"}], "&"}]}], "\n", 
+                    "\t\t", "]"}]}], ";"}]}], "CodeInput"]}, Open]], 
+        Cell[CellGroupData[{Cell["\[LeftCeiling]Scale\[RightFloor]", 
+            "CodeSubsubsection", Evaluatable -> True], 
+           Cell[BoxData[RowBox[{RowBox[{"chemSpectrumScale", "[", "\n", "\t", 
+                 RowBox[{RowBox[{"{", RowBox[{"freq_", ",", " ", "int_"}], 
+                     "}"}], ",", "\n", "\t", RowBox[{"{", RowBox[{"sc_", ",", 
+                       " ", "o_"}], "}"}], ",", "\n", "\t", RowBox[
+                    {"{", RowBox[{"is_", ",", " ", "oi_"}], "}"}]}], "\n", 
+                 "\t", "]"}], ":=", "\n", "\t", RowBox[{"{", "\n", "\t\t", 
                  RowBox[{RowBox[{RowBox[{"sc", "*", RowBox[{"(", RowBox[
                           {"freq", "-", "o"}], ")"}]}], "+", "o"}], ",", " ", 
                    "\n", "\t\t", RowBox[{RowBox[{"is", "*", RowBox[{"(", 
